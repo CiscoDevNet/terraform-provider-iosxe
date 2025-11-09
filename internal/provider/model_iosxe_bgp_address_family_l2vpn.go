@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -36,18 +37,22 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type BGPAddressFamilyL2VPN struct {
-	Device     types.String `tfsdk:"device"`
-	Id         types.String `tfsdk:"id"`
-	DeleteMode types.String `tfsdk:"delete_mode"`
-	Asn        types.String `tfsdk:"asn"`
-	AfName     types.String `tfsdk:"af_name"`
+	Device                 types.String `tfsdk:"device"`
+	Id                     types.String `tfsdk:"id"`
+	DeleteMode             types.String `tfsdk:"delete_mode"`
+	Asn                    types.String `tfsdk:"asn"`
+	AfName                 types.String `tfsdk:"af_name"`
+	RewriteEvpnRtAsn       types.Bool   `tfsdk:"rewrite_evpn_rt_asn"`
+	BgpNexthopTriggerDelay types.Int64  `tfsdk:"bgp_nexthop_trigger_delay"`
 }
 
 type BGPAddressFamilyL2VPNData struct {
-	Device types.String `tfsdk:"device"`
-	Id     types.String `tfsdk:"id"`
-	Asn    types.String `tfsdk:"asn"`
-	AfName types.String `tfsdk:"af_name"`
+	Device                 types.String `tfsdk:"device"`
+	Id                     types.String `tfsdk:"id"`
+	Asn                    types.String `tfsdk:"asn"`
+	AfName                 types.String `tfsdk:"af_name"`
+	RewriteEvpnRtAsn       types.Bool   `tfsdk:"rewrite_evpn_rt_asn"`
+	BgpNexthopTriggerDelay types.Int64  `tfsdk:"bgp_nexthop_trigger_delay"`
 }
 
 // End of section. //template:end types
@@ -82,6 +87,14 @@ func (data BGPAddressFamilyL2VPN) toBody(ctx context.Context) string {
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
 	}
+	if !data.RewriteEvpnRtAsn.IsNull() && !data.RewriteEvpnRtAsn.IsUnknown() {
+		if data.RewriteEvpnRtAsn.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"l2vpn-evpn.rewrite-evpn-rt-asn", map[string]string{})
+		}
+	}
+	if !data.BgpNexthopTriggerDelay.IsNull() && !data.BgpNexthopTriggerDelay.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"l2vpn-evpn.bgp.nexthop.trigger.delay", strconv.FormatInt(data.BgpNexthopTriggerDelay.ValueInt64(), 10))
+	}
 	return body
 }
 
@@ -99,6 +112,20 @@ func (data *BGPAddressFamilyL2VPN) updateFromBody(ctx context.Context, res gjson
 	} else {
 		data.AfName = types.StringNull()
 	}
+	if value := res.Get(prefix + "l2vpn-evpn.rewrite-evpn-rt-asn"); !data.RewriteEvpnRtAsn.IsNull() {
+		if value.Exists() {
+			data.RewriteEvpnRtAsn = types.BoolValue(true)
+		} else {
+			data.RewriteEvpnRtAsn = types.BoolValue(false)
+		}
+	} else {
+		data.RewriteEvpnRtAsn = types.BoolNull()
+	}
+	if value := res.Get(prefix + "l2vpn-evpn.bgp.nexthop.trigger.delay"); value.Exists() && !data.BgpNexthopTriggerDelay.IsNull() {
+		data.BgpNexthopTriggerDelay = types.Int64Value(value.Int())
+	} else {
+		data.BgpNexthopTriggerDelay = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -109,6 +136,14 @@ func (data *BGPAddressFamilyL2VPN) fromBody(ctx context.Context, res gjson.Resul
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
+	}
+	if value := res.Get(prefix + "l2vpn-evpn.rewrite-evpn-rt-asn"); value.Exists() {
+		data.RewriteEvpnRtAsn = types.BoolValue(true)
+	} else {
+		data.RewriteEvpnRtAsn = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "l2vpn-evpn.bgp.nexthop.trigger.delay"); value.Exists() {
+		data.BgpNexthopTriggerDelay = types.Int64Value(value.Int())
 	}
 }
 
@@ -121,6 +156,14 @@ func (data *BGPAddressFamilyL2VPNData) fromBody(ctx context.Context, res gjson.R
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
+	if value := res.Get(prefix + "l2vpn-evpn.rewrite-evpn-rt-asn"); value.Exists() {
+		data.RewriteEvpnRtAsn = types.BoolValue(true)
+	} else {
+		data.RewriteEvpnRtAsn = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "l2vpn-evpn.bgp.nexthop.trigger.delay"); value.Exists() {
+		data.BgpNexthopTriggerDelay = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -129,6 +172,12 @@ func (data *BGPAddressFamilyL2VPNData) fromBody(ctx context.Context, res gjson.R
 
 func (data *BGPAddressFamilyL2VPN) getDeletedItems(ctx context.Context, state BGPAddressFamilyL2VPN) []string {
 	deletedItems := make([]string, 0)
+	if !state.BgpNexthopTriggerDelay.IsNull() && data.BgpNexthopTriggerDelay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/l2vpn-evpn/bgp/nexthop/trigger/delay", state.getPath()))
+	}
+	if !state.RewriteEvpnRtAsn.IsNull() && data.RewriteEvpnRtAsn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/l2vpn-evpn/rewrite-evpn-rt-asn", state.getPath()))
+	}
 
 	return deletedItems
 }
@@ -139,6 +188,9 @@ func (data *BGPAddressFamilyL2VPN) getDeletedItems(ctx context.Context, state BG
 
 func (data *BGPAddressFamilyL2VPN) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.RewriteEvpnRtAsn.IsNull() && !data.RewriteEvpnRtAsn.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/l2vpn-evpn/rewrite-evpn-rt-asn", data.getPath()))
+	}
 
 	return emptyLeafsDelete
 }
@@ -149,6 +201,12 @@ func (data *BGPAddressFamilyL2VPN) getEmptyLeafsDelete(ctx context.Context) []st
 
 func (data *BGPAddressFamilyL2VPN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.BgpNexthopTriggerDelay.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/l2vpn-evpn/bgp/nexthop/trigger/delay", data.getPath()))
+	}
+	if !data.RewriteEvpnRtAsn.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/l2vpn-evpn/rewrite-evpn-rt-asn", data.getPath()))
+	}
 
 	return deletePaths
 }

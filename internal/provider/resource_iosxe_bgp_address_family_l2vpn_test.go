@@ -39,6 +39,8 @@ func TestAccIosxeBGPAddressFamilyL2VPN(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_l2vpn.test", "af_name", "evpn"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_l2vpn.test", "rewrite_evpn_rt_asn", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_l2vpn.test", "bgp_nexthop_trigger_delay", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -110,6 +112,8 @@ func testAccIosxeBGPAddressFamilyL2VPNConfig_all() string {
 	config := `resource "iosxe_bgp_address_family_l2vpn" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "evpn"` + "\n"
+	config += `	rewrite_evpn_rt_asn = true` + "\n"
+	config += `	bgp_nexthop_trigger_delay = 10` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

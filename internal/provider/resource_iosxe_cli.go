@@ -25,8 +25,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-restconf"
 	"github.com/tidwall/sjson"
 )
 
@@ -59,6 +61,12 @@ func (r *CliResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: "This attribute contains the CLI commands.",
 				Required:            true,
 			},
+			"raw": schema.BoolAttribute{
+				MarkdownDescription: "If true, the CLI commands will be sent as raw CLI.",
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
+			},
 		},
 	}
 }
@@ -74,6 +82,7 @@ func (r *CliResource) Configure(_ context.Context, req resource.ConfigureRequest
 func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var device types.String
 	var cli types.String
+	var raw types.Bool
 
 	diags := req.Plan.GetAttribute(ctx, path.Root("device"), &device)
 	resp.Diagnostics.Append(diags...)
@@ -81,6 +90,11 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 	diags = req.Plan.GetAttribute(ctx, path.Root("cli"), &cli)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	diags = req.Plan.GetAttribute(ctx, path.Root("raw"), &raw)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -96,8 +110,17 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 
 	if d.Managed {
 		body := ""
-		body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
-		request := d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+		if raw.ValueBool() {
+			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+		} else {
+			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.clis", cli.ValueString())
+		}
+		var request restconf.Req
+		if raw.ValueBool() {
+			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+		} else {
+			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans", strings.NewReader(body))
+		}
 		_, err := d.Client.Do(request)
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
@@ -110,6 +133,8 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 	diags = resp.State.SetAttribute(ctx, path.Root("device"), device)
 	resp.Diagnostics.Append(diags...)
 	diags = resp.State.SetAttribute(ctx, path.Root("cli"), cli)
+	resp.Diagnostics.Append(diags...)
+	diags = resp.State.SetAttribute(ctx, path.Root("raw"), raw)
 	resp.Diagnostics.Append(diags...)
 }
 
@@ -119,6 +144,7 @@ func (r *CliResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var device types.String
 	var cli types.String
+	var raw types.Bool
 
 	diags := req.Plan.GetAttribute(ctx, path.Root("device"), &device)
 	resp.Diagnostics.Append(diags...)
@@ -126,6 +152,11 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 	diags = req.Plan.GetAttribute(ctx, path.Root("cli"), &cli)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	diags = req.Plan.GetAttribute(ctx, path.Root("raw"), &raw)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -141,8 +172,17 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	if d.Managed {
 		body := ""
-		body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
-		request := d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+		if raw.ValueBool() {
+			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+		} else {
+			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.clis", cli.ValueString())
+		}
+		var request restconf.Req
+		if raw.ValueBool() {
+			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+		} else {
+			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans", strings.NewReader(body))
+		}
 		_, err := d.Client.Do(request)
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
@@ -155,6 +195,8 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	diags = resp.State.SetAttribute(ctx, path.Root("device"), device)
 	resp.Diagnostics.Append(diags...)
 	diags = resp.State.SetAttribute(ctx, path.Root("cli"), cli)
+	resp.Diagnostics.Append(diags...)
+	diags = resp.State.SetAttribute(ctx, path.Root("raw"), raw)
 	resp.Diagnostics.Append(diags...)
 }
 

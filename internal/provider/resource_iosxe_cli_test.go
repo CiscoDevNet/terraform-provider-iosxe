@@ -20,22 +20,21 @@
 package provider
 
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccIosxeCli(t *testing.T) {
-	if os.Getenv("IOSXE179") == "" && os.Getenv("IOSXE1713") == "" {
-		t.Skip("skipping test, set environment variable IOSXE179 or IOSXE1713")
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIosxeCliConfig_loopback(),
+			},
+			{
+				Config: testAccIosxeCliConfig_raw(),
 			},
 		},
 	})
@@ -47,6 +46,18 @@ func testAccIosxeCliConfig_loopback() string {
 		cli = <<-EOT
 		interface Loopback123
 		description configured-via-restconf-cli
+		EOT
+	}
+	`
+}
+
+func testAccIosxeCliConfig_raw() string {
+	return `
+	resource "iosxe_cli" "test" {
+	    raw = true
+		cli = <<-EOT
+		interface Loopback123
+		description configured-via-restconf-cli-raw
 		EOT
 	}
 	`

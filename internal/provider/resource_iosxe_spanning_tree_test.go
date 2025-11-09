@@ -39,12 +39,15 @@ func TestAccIosxeSpanningTree(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "mode", "mst"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "logging", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "loopguard_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "portfast_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "portfast_bpduguard_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "extend_system_id", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "mst_instances.0.id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "mst_instances.0.vlan_ids.0", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "vlans.0.id", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "vlans.0.priority", "32768"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -99,6 +102,7 @@ func testAccIosxeSpanningTreeConfig_minimum() string {
 func testAccIosxeSpanningTreeConfig_all() string {
 	config := `resource "iosxe_spanning_tree" "test" {` + "\n"
 	config += `	mode = "mst"` + "\n"
+	config += `	logging = true` + "\n"
 	config += `	loopguard_default = true` + "\n"
 	config += `	portfast_default = true` + "\n"
 	config += `	portfast_bpduguard_default = true` + "\n"
@@ -106,6 +110,10 @@ func testAccIosxeSpanningTreeConfig_all() string {
 	config += `	mst_instances = [{` + "\n"
 	config += `		id = 1` + "\n"
 	config += `		vlan_ids = [10]` + "\n"
+	config += `	}]` + "\n"
+	config += `	vlans = [{` + "\n"
+	config += `		id = "10"` + "\n"
+	config += `		priority = 32768` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

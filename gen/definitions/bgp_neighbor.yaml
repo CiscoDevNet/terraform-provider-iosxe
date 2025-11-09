@@ -90,7 +90,7 @@ attributes:
     exclude_test: true
   - yang_name: update-source/interface/interface-choice/Loopback/Loopback
     xpath: update-source/interface/Loopback
-    tf_name: update_source_loopback
+    tf_name: update_source_interface_loopback
     type: Int64
     example: 100
   - yang_name: ebgp-multihop
@@ -98,6 +98,9 @@ attributes:
     exclude_test: true
   - yang_name: ebgp-multihop/max-hop
     example: 10
+    exclude_test: true
+  - yang_name: inherit/peer-session
+    example: PEER_SESSION_TEMPLATE_1
     exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000

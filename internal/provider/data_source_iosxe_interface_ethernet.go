@@ -387,6 +387,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Rate Limit",
 				Computed:            true,
 			},
+			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
+				MarkdownDescription: "Enable vpn-id support on this interface",
+				Computed:            true,
+			},
 			"ip_dhcp_snooping_trust": schema.BoolAttribute{
 				MarkdownDescription: "DHCP Snooping trust config",
 				Computed:            true,
@@ -505,6 +509,42 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 			},
 			"authentication_timer_reauthenticate_server": schema.BoolAttribute{
 				MarkdownDescription: "Obtain re-authentication timeout value from the server",
+				Computed:            true,
+			},
+			"authentication_event_server_alive_action_reinitialize": schema.BoolAttribute{
+				MarkdownDescription: "Reinitialize all authorized clients",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_authorize": schema.BoolAttribute{
+				MarkdownDescription: "Authorize the port",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Critical Authorization VLAN",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_authorize_voice": schema.BoolAttribute{
+				MarkdownDescription: "Authorize the port for VOICE traffic",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_reinitialize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Critical Authorization VLAN",
+				Computed:            true,
+			},
+			"authentication_event_fail_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Authentication Fail vlan",
+				Computed:            true,
+			},
+			"authentication_event_fail_action_next_method": schema.BoolAttribute{
+				MarkdownDescription: "Move to next authentication method",
+				Computed:            true,
+			},
+			"authentication_event_no_response_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Guest vlan",
+				Computed:            true,
+			},
+			"authentication_event_linksec_fail_action_next_method": schema.BoolAttribute{
+				MarkdownDescription: "Move to next authentication method",
 				Computed:            true,
 			},
 			"mab": schema.BoolAttribute{
@@ -638,6 +678,18 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 			"ip_nat_outside": schema.BoolAttribute{
 				MarkdownDescription: "Outside interface for address translation",
 				Computed:            true,
+			},
+			"evpn_ethernet_segments": schema.ListNestedAttribute{
+				MarkdownDescription: "Ethernet segment local discriminator value",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"es_value": schema.Int64Attribute{
+							MarkdownDescription: "Ethernet segment local discriminator value",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}

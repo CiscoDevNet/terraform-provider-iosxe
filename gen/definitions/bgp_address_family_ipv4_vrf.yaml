@@ -26,6 +26,11 @@ attributes:
         xpath: ipv4-unicast/bgp/router-id/interface/Loopback
         tf_name: ipv4_unicast_router_id_loopback
         example: 101
+      - yang_name: ipv4-unicast/bgp/router-id/id-choice/ip-id/ip-id
+        xpath: ipv4-unicast/bgp/router-id/ip-id
+        tf_name: ipv4_unicast_router_id_ip
+        example: 10.1.1.1
+        exclude_test: true
       - yang_name: ipv4-unicast/aggregate-address
         tf_name: ipv4_unicast_aggregate_addresses
         type: List

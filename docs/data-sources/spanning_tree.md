@@ -28,11 +28,13 @@ data "iosxe_spanning_tree" "example" {
 
 - `extend_system_id` (Boolean) Extend system-id into priority portion of the bridge id (PVST & Rapid PVST only)
 - `id` (String) The path of the retrieved object.
+- `logging` (Boolean) Enable Spanning tree logging
 - `loopguard_default` (Boolean) Enable loopguard by default on all ports
 - `mode` (String) Spanning tree operating mode
 - `mst_instances` (Attributes List) Map vlans to an MST instance (see [below for nested schema](#nestedatt--mst_instances))
 - `portfast_bpduguard_default` (Boolean) Enable bpdu guard by default on all portfast edge ports
 - `portfast_default` (Boolean) Enable portfast by default on all access ports
+- `vlans` (Attributes List) VLAN Switch Spanning Tree (see [below for nested schema](#nestedatt--vlans))
 
 <a id="nestedatt--mst_instances"></a>
 ### Nested Schema for `mst_instances`
@@ -41,3 +43,12 @@ Read-Only:
 
 - `id` (Number)
 - `vlan_ids` (List of Number) Range of vlans to add to the instance mapping
+
+
+<a id="nestedatt--vlans"></a>
+### Nested Schema for `vlans`
+
+Read-Only:
+
+- `id` (String)
+- `priority` (Number) Set the bridge priority for the spanning tree

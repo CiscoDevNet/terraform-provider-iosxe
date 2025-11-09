@@ -119,6 +119,10 @@ func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Enable Auto Anycast Gateway MAC",
 				Computed:            true,
 			},
+			"flooding_suppression_address_resolution_disable": schema.BoolAttribute{
+				MarkdownDescription: "Disable flooding suppression",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -80,6 +80,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_arp_inspection_limit_rate", "1000"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_snooping_trust", "true"))
 	}
@@ -96,6 +97,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_server_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_nat_inside", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -150,6 +152,13 @@ resource "iosxe_restconf" "PreReq4" {
 	path = "Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=TEMP1"
 	attributes = {
 		"template_name" = "TEMP1"
+	}
+}
+
+resource "iosxe_restconf" "PreReq5" {
+	path = "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1"
+	attributes = {
+		"es-value" = "1"
 	}
 }
 
@@ -215,6 +224,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	}
+	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}
@@ -233,7 +243,10 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	cdp_tlv_location = false` + "\n"
 	config += `	cdp_tlv_server_location = false` + "\n"
 	config += `	ip_nat_inside = true` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
+	config += `	evpn_ethernet_segments = [{` + "\n"
+	config += `		es_value = 1` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, iosxe_restconf.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

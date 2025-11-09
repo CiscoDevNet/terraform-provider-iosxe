@@ -69,6 +69,7 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "mac_address", "0000.dead.beef"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -176,6 +177,7 @@ func testAccIosxeInterfaceVLANConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	load_interval = 30` + "\n"
 	config += `	mac_address = "0000.dead.beef"` + "\n"
+	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

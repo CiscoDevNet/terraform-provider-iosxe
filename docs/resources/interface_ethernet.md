@@ -62,17 +62,18 @@ resource "iosxe_interface_ethernet" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout                    = 300
-  spanning_tree_link_type        = "point-to-point"
-  bpduguard_enable               = false
-  bpduguard_disable              = false
-  spanning_tree_portfast         = true
-  spanning_tree_portfast_disable = false
-  spanning_tree_portfast_trunk   = true
-  spanning_tree_portfast_edge    = false
-  negotiation_auto               = false
-  service_policy_input           = "POLICY1"
-  service_policy_output          = "POLICY1"
+  arp_timeout                             = 300
+  spanning_tree_link_type                 = "point-to-point"
+  bpduguard_enable                        = false
+  bpduguard_disable                       = false
+  spanning_tree_portfast                  = true
+  spanning_tree_portfast_disable          = false
+  spanning_tree_portfast_trunk            = true
+  spanning_tree_portfast_edge             = false
+  ip_dhcp_relay_information_option_vpn_id = true
+  negotiation_auto                        = false
+  service_policy_input                    = "POLICY1"
+  service_policy_output                   = "POLICY1"
   ip_flow_monitors = [
     {
       name      = "MON1"
@@ -87,6 +88,11 @@ resource "iosxe_interface_ethernet" "example" {
   cdp_tlv_location                 = false
   cdp_tlv_server_location          = false
   ip_nat_inside                    = true
+  evpn_ethernet_segments = [
+    {
+      es_value = 1
+    }
+  ]
 }
 ```
 
@@ -103,6 +109,19 @@ resource "iosxe_interface_ethernet" "example" {
 
 - `arp_timeout` (Number) Set ARP cache timeout
   - Range: `0`-`2147483`
+- `authentication_event_fail_action_authorize_vlan` (Number) Configure Authentication Fail vlan
+  - Range: `1`-`4094`
+- `authentication_event_fail_action_next_method` (Boolean) Move to next authentication method
+- `authentication_event_linksec_fail_action_next_method` (Boolean) Move to next authentication method
+- `authentication_event_no_response_action_authorize_vlan` (Number) Configure Guest vlan
+  - Range: `1`-`4094`
+- `authentication_event_server_alive_action_reinitialize` (Boolean) Reinitialize all authorized clients
+- `authentication_event_server_dead_action_authorize` (Boolean) Authorize the port
+- `authentication_event_server_dead_action_authorize_vlan` (Number) Configure Critical Authorization VLAN
+  - Range: `1`-`4094`
+- `authentication_event_server_dead_action_authorize_voice` (Boolean) Authorize the port for VOICE traffic
+- `authentication_event_server_dead_action_reinitialize_vlan` (Number) Configure Critical Authorization VLAN
+  - Range: `1`-`4094`
 - `authentication_host_mode` (String) Set the Host mode for authentication on this interface
   - Choices: `multi-auth`, `multi-domain`, `multi-host`, `single-host`
 - `authentication_order_dot1x` (Boolean) Authentication method dot1x allowed
@@ -183,6 +202,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
   - Range: `1`-`65535`
 - `encapsulation_dot1q_vlan_id` (Number) - Range: `1`-`4094`
+- `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -191,6 +211,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
   - Range: `0`-`4294967295`
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+- `ip_dhcp_relay_information_option_vpn_id` (Boolean) Enable vpn-id support on this interface
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
@@ -259,6 +280,15 @@ resource "iosxe_interface_ethernet" "example" {
 Required:
 
 - `name` (String) Apply a policy for feature device-tracking
+
+
+<a id="nestedatt--evpn_ethernet_segments"></a>
+### Nested Schema for `evpn_ethernet_segments`
+
+Required:
+
+- `es_value` (Number) Ethernet segment local discriminator value
+  - Range: `1`-`65535`
 
 
 <a id="nestedatt--helper_addresses"></a>

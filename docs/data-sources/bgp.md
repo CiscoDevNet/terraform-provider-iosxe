@@ -34,4 +34,5 @@ data "iosxe_bgp" "example" {
 - `default_ipv4_unicast` (Boolean) Activate ipv4-unicast for a peer by default
 - `id` (String) The path of the retrieved object.
 - `log_neighbor_changes` (Boolean) Log neighbor up/down and reset reason
+- `router_id_ip` (String) Manually configured router identifier
 - `router_id_loopback` (Number) Loopback interface

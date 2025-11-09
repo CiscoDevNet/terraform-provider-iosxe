@@ -97,6 +97,7 @@ Optional:
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+- `ipv4_unicast_router_id_ip` (String) Manually configured router identifier
 - `ipv4_unicast_router_id_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 

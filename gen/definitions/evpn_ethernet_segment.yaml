@@ -1,0 +1,38 @@
+---
+name: EVPN Ethernet Segment
+path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=%v
+test_tags: [C9000V]
+doc_category: EVPN
+attributes:
+  # l2vpn evpn ethernet-segment 1
+  - yang_name: es-value
+    example: 1
+  # df-election wait-time 3
+  - yang_name: df-election/wait-time
+    example: 3
+  # redundancy all-active
+  - yang_name: redundancy/redundancy-choice/all-active/all-active
+    xpath: redundancy/all-active
+    example: false
+  # redundancy single-active
+  - yang_name: redundancy/redundancy-choice/single-active/single-active
+    xpath: redundancy/single-active
+    example: true
+  # identifier type 0 0001.0000.0000.0000.000A
+  # identifier type 3
+  - yang_name: identifier/type
+    tf_name: identifier_types
+    type: List
+    attributes:
+      - yang_name: identifier-type
+        tf_name: type
+        id: true
+        example: 3
+      - yang_name: esi-type-choice/hex-string/hex-string
+        xpath: hex-string
+        tf_name: hex_string
+        example: 00.00.00.00.00.00.01.01.01
+        exclude_test: true
+      - yang_name: esi-type-choice/system-mac/system-mac
+        xpath: system-mac
+        example: 0011.2233.4455

@@ -71,6 +71,10 @@ func (d *SpanningTreeDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Spanning tree operating mode",
 				Computed:            true,
 			},
+			"logging": schema.BoolAttribute{
+				MarkdownDescription: "Enable Spanning tree logging",
+				Computed:            true,
+			},
 			"loopguard_default": schema.BoolAttribute{
 				MarkdownDescription: "Enable loopguard by default on all ports",
 				Computed:            true,
@@ -99,6 +103,22 @@ func (d *SpanningTreeDataSource) Schema(ctx context.Context, req datasource.Sche
 						"vlan_ids": schema.ListAttribute{
 							MarkdownDescription: "Range of vlans to add to the instance mapping",
 							ElementType:         types.Int64Type,
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"vlans": schema.ListNestedAttribute{
+				MarkdownDescription: "VLAN Switch Spanning Tree",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"priority": schema.Int64Attribute{
+							MarkdownDescription: "Set the bridge priority for the spanning tree",
 							Computed:            true,
 						},
 					},

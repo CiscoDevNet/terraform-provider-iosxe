@@ -14,19 +14,20 @@ This resource can manage the EVPN configuration.
 
 ```terraform
 resource "iosxe_evpn" "example" {
-  replication_type_ingress  = false
-  replication_type_static   = true
-  replication_type_p2mp     = false
-  replication_type_mp2mp    = false
-  mac_duplication_limit     = 10
-  mac_duplication_time      = 100
-  ip_duplication_limit      = 10
-  ip_duplication_time       = 100
-  router_id_loopback        = 100
-  default_gateway_advertise = true
-  logging_peer_state        = true
-  route_target_auto_vni     = true
-  anycast_gateway_mac_auto  = true
+  replication_type_ingress                        = false
+  replication_type_static                         = true
+  replication_type_p2mp                           = false
+  replication_type_mp2mp                          = false
+  mac_duplication_limit                           = 10
+  mac_duplication_time                            = 100
+  ip_duplication_limit                            = 10
+  ip_duplication_time                             = 100
+  router_id_loopback                              = 100
+  default_gateway_advertise                       = true
+  logging_peer_state                              = true
+  route_target_auto_vni                           = true
+  anycast_gateway_mac_auto                        = true
+  flooding_suppression_address_resolution_disable = true
 }
 ```
 
@@ -40,6 +41,7 @@ resource "iosxe_evpn" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `flooding_suppression_address_resolution_disable` (Boolean) Disable flooding suppression
 - `ip_duplication_limit` (Number) Number of IP moves within specified time interval
   - Range: `2`-`1000`
 - `ip_duplication_time` (Number) IP duplication timer
