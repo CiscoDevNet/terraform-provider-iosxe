@@ -27,7 +27,7 @@ _ Introduce universal `host` provider attribute and deprecate `url` attribute
 - Add `bgp_nexthop_trigger_delay` and `rewrite_evpn_rt_asn` attributes to `iosxe_bgp_address_family_l2vpn` resource and data source
 - Add `ip_routing_protocol_purge_interface`, `ip_ssh_bulk_mode` and `ip_ssh_bulk_mode_window_size` attributes to `iosxe_system` resource and data source
 - Add `logging_count`, `persistent_*` and `rate_limit_*` attributes to `iosxe_logging` resource and data source
-- Add `iosxe_bgp_template_peer_policy` resource and data source
+- Add `iosxe_bgp_peer_policy_template` resource and data source
 - Add `ip_dhcp_relay_information_option_vpn_id` attribute to `iosxe_interface_ethernet` and `iosxe_interface_vlan` resources and data sources
 - Add `local_routing` attribute to `iosxe_interface_nve` resource and data source
 - Add `ipv4_unicast_maximum_paths_ebgp` and `ipv4_unicast_maximum_paths_ibgp` attributes to the `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources and data sources
