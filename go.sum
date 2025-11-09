@@ -170,14 +170,10 @@ github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RR
 github.com/mitchellh/reflectwalk v1.0.0/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
 github.com/mitchellh/reflectwalk v1.0.2 h1:G2LzWKi524PWgd3mLHV8Y5k7s6XUvT0Gef6zxSIeXaQ=
 github.com/mitchellh/reflectwalk v1.0.2/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
-github.com/netascode/go-netconf v0.0.0-20251108110619-99e60c68e573 h1:GdI7614kZnIn3X5xP2FEQHWZ9gFNJqWHBHsjWW/cMe4=
-github.com/netascode/go-netconf v0.0.0-20251108110619-99e60c68e573/go.mod h1:QM8/qgJ6evLG++Xg5IKSwlpvr96ewnRYG7UoyeOICtc=
-github.com/netascode/go-netconf v0.0.0-20251108190810-5031bc83ac08 h1:HynxbZiCQIfT2S5dTa4e1TmZTk9JbL3Pyc6HTTr/5mU=
-github.com/netascode/go-netconf v0.0.0-20251108190810-5031bc83ac08/go.mod h1:jn8ngIedJqzgfu91eA9yBBFnzfhzGy1opCJb89HObwQ=
+github.com/netascode/go-netconf v0.0.0-20251109114417-e31220364d37 h1:ug3SDHIXFUarb0YtSszlofWjlhhuiRcED2HGv1saraM=
+github.com/netascode/go-netconf v0.0.0-20251109114417-e31220364d37/go.mod h1:jn8ngIedJqzgfu91eA9yBBFnzfhzGy1opCJb89HObwQ=
 github.com/netascode/go-restconf v0.1.18 h1:N1V/+VfFGaGokhjy0G60G6w4Lyf4OXw84IbM6zkaW2I=
 github.com/netascode/go-restconf v0.1.18/go.mod h1:BbFhcp/T59u2AWNN6sxUH0iq4pbkMSK/C//yemPT91c=
-github.com/netascode/xmldot v0.4.3 h1:SZWxoIsIt4SKhNgehkmbcsB+IAczwJhn1sFxkLXlahA=
-github.com/netascode/xmldot v0.4.3/go.mod h1:T0zddov+d7Sgam8cpJSOr155HiKyXwY58PE/iiuXbT8=
 github.com/netascode/xmldot v0.5.0 h1:BNxsQrNee6zHhly4qi8s/4LkzaEK2ehL5nAQm5r4Zqg=
 github.com/netascode/xmldot v0.5.0/go.mod h1:T0zddov+d7Sgam8cpJSOr155HiKyXwY58PE/iiuXbT8=
 github.com/oklog/run v1.2.0 h1:O8x3yXwah4A73hJdlrwo/2X6J62gE5qTMusH0dvz60E=
@@ -293,8 +289,6 @@ golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.2.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.37.0 h1:fdNQudmxPjkdUTPnLn5mdQv7Zwvbvpaxqs831goi9kQ=
-golang.org/x/sys v0.37.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
 golang.org/x/sys v0.38.0 h1:3yZWxaJjBmCWXqhN1qh02AkOnCQ1poK6oF+a7xWL6Gc=
 golang.org/x/sys v0.38.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
 golang.org/x/telemetry v0.0.0-20251008203120-078029d740a8 h1:LvzTn0GQhWuvKH/kVRS3R3bVAsdQWI7hvfLHGgh9+lU=
