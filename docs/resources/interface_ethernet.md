@@ -62,17 +62,18 @@ resource "iosxe_interface_ethernet" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout                    = 300
-  spanning_tree_link_type        = "point-to-point"
-  bpduguard_enable               = false
-  bpduguard_disable              = false
-  spanning_tree_portfast         = true
-  spanning_tree_portfast_disable = false
-  spanning_tree_portfast_trunk   = true
-  spanning_tree_portfast_edge    = false
-  negotiation_auto               = false
-  service_policy_input           = "POLICY1"
-  service_policy_output          = "POLICY1"
+  arp_timeout                             = 300
+  spanning_tree_link_type                 = "point-to-point"
+  bpduguard_enable                        = false
+  bpduguard_disable                       = false
+  spanning_tree_portfast                  = true
+  spanning_tree_portfast_disable          = false
+  spanning_tree_portfast_trunk            = true
+  spanning_tree_portfast_edge             = false
+  ip_dhcp_relay_information_option_vpn_id = true
+  negotiation_auto                        = false
+  service_policy_input                    = "POLICY1"
+  service_policy_output                   = "POLICY1"
   ip_flow_monitors = [
     {
       name      = "MON1"
@@ -210,6 +211,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
   - Range: `0`-`4294967295`
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+- `ip_dhcp_relay_information_option_vpn_id` (Boolean) Enable vpn-id support on this interface
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
