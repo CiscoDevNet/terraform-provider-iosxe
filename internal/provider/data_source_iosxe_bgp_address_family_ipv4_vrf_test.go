@@ -52,6 +52,8 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_distance_bgp_external", "20"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_distance_bgp_internal", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_distance_bgp_local", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_maximum_paths_ebgp", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_maximum_paths_ibgp", "2"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -137,6 +139,8 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `		ipv4_unicast_distance_bgp_external = 20` + "\n"
 	config += `		ipv4_unicast_distance_bgp_internal = 200` + "\n"
 	config += `		ipv4_unicast_distance_bgp_local = 200` + "\n"
+	config += `		ipv4_unicast_maximum_paths_ebgp = 2` + "\n"
+	config += `		ipv4_unicast_maximum_paths_ibgp = 2` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
