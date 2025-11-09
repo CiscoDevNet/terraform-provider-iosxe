@@ -55,8 +55,8 @@ data "iosxe_vrf" "example" {
 Read-Only:
 
 - `name` (String) Source VRF name or 'global'
-- `route_map` (String) Route map reference
 - `unicast_all` (Boolean) All routes
+- `unicast_all_route_map` (String) Route map reference
 
 
 <a id="nestedatt--ipv4_route_target_export"></a>

@@ -50,7 +50,7 @@ func TestAccIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_target_export_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_replicate.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_replicate.0.route_map", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all_route_map", "RM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_import.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_import_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_export.0.value", "22:22"))
@@ -140,7 +140,7 @@ func testAccIosxeVRFConfig_all() string {
 	config += `	ipv4_route_replicate = [{` + "\n"
 	config += `		name = "VRF1"` + "\n"
 	config += `		unicast_all = true` + "\n"
-	config += `		route_map = "RM1"` + "\n"
+	config += `		unicast_all_route_map = "RM1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_route_target_import = [{` + "\n"
 	config += `		value = "22:22"` + "\n"

@@ -192,7 +192,7 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "All routes",
 							Computed:            true,
 						},
-						"route_map": schema.StringAttribute{
+						"unicast_all_route_map": schema.StringAttribute{
 							MarkdownDescription: "Route map reference",
 							Computed:            true,
 						},

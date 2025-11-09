@@ -251,7 +251,7 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							MarkdownDescription: helpers.NewAttributeDescription("All routes").String,
 							Optional:            true,
 						},
-						"route_map": schema.StringAttribute{
+						"unicast_all_route_map": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
 							Optional:            true,
 						},

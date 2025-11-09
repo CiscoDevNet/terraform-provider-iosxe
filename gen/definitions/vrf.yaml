@@ -92,7 +92,7 @@ attributes:
         tf_name: unicast_all
         example: true
       - yang_name: unicast/source-proto-config/all/route-map
-        tf_name: route_map
+        tf_name: unicast_all_route_map
         description: Route map reference
         example: RM1
   - yang_name: address-family/ipv6/route-target/import-route-target/without-stitching

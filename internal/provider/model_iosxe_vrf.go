@@ -105,9 +105,9 @@ type VRFIpv4RouteTargetExportStitching struct {
 	Stitching types.Bool   `tfsdk:"stitching"`
 }
 type VRFIpv4RouteReplicate struct {
-	Name       types.String `tfsdk:"name"`
-	UnicastAll types.Bool   `tfsdk:"unicast_all"`
-	RouteMap   types.String `tfsdk:"route_map"`
+	Name               types.String `tfsdk:"name"`
+	UnicastAll         types.Bool   `tfsdk:"unicast_all"`
+	UnicastAllRouteMap types.String `tfsdk:"unicast_all_route_map"`
 }
 type VRFIpv6RouteTargetImport struct {
 	Value types.String `tfsdk:"value"`
@@ -254,8 +254,8 @@ func (data VRF) toBody(ctx context.Context) string {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.route-replicate.from.vrf"+"."+strconv.Itoa(index)+"."+"unicast.source-proto-config.all", map[string]string{})
 				}
 			}
-			if !item.RouteMap.IsNull() && !item.RouteMap.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.route-replicate.from.vrf"+"."+strconv.Itoa(index)+"."+"unicast.source-proto-config.all.route-map", item.RouteMap.ValueString())
+			if !item.UnicastAllRouteMap.IsNull() && !item.UnicastAllRouteMap.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.route-replicate.from.vrf"+"."+strconv.Itoa(index)+"."+"unicast.source-proto-config.all.route-map", item.UnicastAllRouteMap.ValueString())
 			}
 		}
 	}
@@ -598,10 +598,10 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Ipv4RouteReplicate[i].UnicastAll = types.BoolNull()
 		}
-		if value := r.Get("unicast.source-proto-config.all.route-map"); value.Exists() && !data.Ipv4RouteReplicate[i].RouteMap.IsNull() {
-			data.Ipv4RouteReplicate[i].RouteMap = types.StringValue(value.String())
+		if value := r.Get("unicast.source-proto-config.all.route-map"); value.Exists() && !data.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() {
+			data.Ipv4RouteReplicate[i].UnicastAllRouteMap = types.StringValue(value.String())
 		} else {
-			data.Ipv4RouteReplicate[i].RouteMap = types.StringNull()
+			data.Ipv4RouteReplicate[i].UnicastAllRouteMap = types.StringNull()
 		}
 	}
 	for i := range data.Ipv6RouteTargetImport {
@@ -867,7 +867,7 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 				item.UnicastAll = types.BoolValue(false)
 			}
 			if cValue := v.Get("unicast.source-proto-config.all.route-map"); cValue.Exists() {
-				item.RouteMap = types.StringValue(cValue.String())
+				item.UnicastAllRouteMap = types.StringValue(cValue.String())
 			}
 			data.Ipv4RouteReplicate = append(data.Ipv4RouteReplicate, item)
 			return true
@@ -1056,7 +1056,7 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 				item.UnicastAll = types.BoolValue(false)
 			}
 			if cValue := v.Get("unicast.source-proto-config.all.route-map"); cValue.Exists() {
-				item.RouteMap = types.StringValue(cValue.String())
+				item.UnicastAllRouteMap = types.StringValue(cValue.String())
 			}
 			data.Ipv4RouteReplicate = append(data.Ipv4RouteReplicate, item)
 			return true
@@ -1248,7 +1248,7 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 				found = false
 			}
 			if found {
-				if !state.Ipv4RouteReplicate[i].RouteMap.IsNull() && data.Ipv4RouteReplicate[j].RouteMap.IsNull() {
+				if !state.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() && data.Ipv4RouteReplicate[j].UnicastAllRouteMap.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-replicate/from/vrf=%v/unicast/source-proto-config/all/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Ipv4RouteReplicate[i].UnicastAll.IsNull() && data.Ipv4RouteReplicate[j].UnicastAll.IsNull() {

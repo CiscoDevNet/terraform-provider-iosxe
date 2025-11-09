@@ -39,9 +39,9 @@ resource "iosxe_vrf" "example" {
   ]
   ipv4_route_replicate = [
     {
-      name        = "VRF1"
-      unicast_all = true
-      route_map   = "RM1"
+      name                  = "VRF1"
+      unicast_all           = true
+      unicast_all_route_map = "RM1"
     }
   ]
   ipv6_route_target_import = [
