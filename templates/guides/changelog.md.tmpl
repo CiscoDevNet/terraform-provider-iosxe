@@ -18,6 +18,7 @@ description: |-
 - Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
 - Add `iosxe_bgp_template_peer_policy` resource
 - Add `ip_dhcp_relay_information_option_vpn_id` attribute to `iosxe_interface_ethernet` resource and `iosxe_interface_vlan` resource
+- Add `local_routing` attribute to `iosxe_interface_nve` resource and data source
 
 ## 0.9.3
 
