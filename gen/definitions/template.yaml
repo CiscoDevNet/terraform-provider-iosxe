@@ -14,6 +14,14 @@ attributes:
     example: 3
   - yang_name: dot1x/timeout/tx-period
     example: 2
+  - yang_name: dot1x/timeout/quiet-period
+    example: 4
+  - yang_name: dot1x/timeout/supp-timeout
+    example: 10
+  - yang_name: dot1x/timeout/ratelimit-period
+    example: 10
+  - yang_name: dot1x/timeout/server-timeout
+    example: 30
   - yang_name: service-policy/type/control/subscriber
     example: dot1x_policy
   - yang_name: service-policy/input/policy-map-name

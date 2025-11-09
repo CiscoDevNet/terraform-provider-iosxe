@@ -88,6 +88,22 @@ func (d *TemplateDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "Timeout for supplicant retries",
 				Computed:            true,
 			},
+			"dot1x_timeout_quiet_period": schema.Int64Attribute{
+				MarkdownDescription: "QuietPeriod in Seconds",
+				Computed:            true,
+			},
+			"dot1x_timeout_supp_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for supplicant reply",
+				Computed:            true,
+			},
+			"dot1x_timeout_ratelimit_period": schema.Int64Attribute{
+				MarkdownDescription: "Ratelimit Period in seconds",
+				Computed:            true,
+			},
+			"dot1x_timeout_server_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for Radius Retries",
+				Computed:            true,
+			},
 			"service_policy_type_control_subscriber": schema.StringAttribute{
 				MarkdownDescription: "Apply a subscriber control policy to the interface",
 				Computed:            true,
