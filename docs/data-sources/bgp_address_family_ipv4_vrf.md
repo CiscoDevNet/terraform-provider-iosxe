@@ -47,6 +47,7 @@ Read-Only:
 - `ipv4_unicast_distance_bgp_external` (Number)
 - `ipv4_unicast_distance_bgp_internal` (Number)
 - `ipv4_unicast_distance_bgp_local` (Number)
+- `ipv4_unicast_import_path_selection_all` (Boolean) Import all available paths
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
@@ -73,6 +74,7 @@ Read-Only:
 
 - `ipv4_address` (String)
 - `ipv4_mask` (String)
+- `summary_only` (Boolean) Filter more specific routes from updates
 
 
 <a id="nestedatt--vrfs--ipv4_unicast_networks"></a>

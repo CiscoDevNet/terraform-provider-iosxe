@@ -41,6 +41,8 @@ attributes:
           - yang_name: ipv4-mask
             id: true
             example: 255.255.0.0
+          - yang_name: summary-only
+            example: true
       - yang_name: ipv4-unicast/redistribute-vrf/static
         tf_name: ipv4_unicast_redistribute_static
         example: true
@@ -110,7 +112,9 @@ attributes:
         tf_name: ipv4_unicast_distance_bgp_internal
         example: 200
       - yang_name: ipv4-unicast/distance/bgp/local
-        example: 200
+        example: 200          
+      - yang_name: ipv4-unicast/import/path/selection/all
+        example: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

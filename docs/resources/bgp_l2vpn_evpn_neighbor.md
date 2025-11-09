@@ -20,6 +20,12 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
   send_community         = "both"
   route_reflector_client = false
   soft_reconfiguration   = "inbound"
+  route_map = [
+    {
+      inout          = "in"
+      route_map_name = "RM1"
+    }
+  ]
 }
 ```
 
@@ -38,6 +44,7 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `route_map` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_map))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
 - `soft_reconfiguration` (String) Per neighbor soft reconfiguration
@@ -46,6 +53,14 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--route_map"></a>
+### Nested Schema for `route_map`
+
+Required:
+
+- `inout` (String) - Choices: `in`, `out`
+- `route_map_name` (String)
 
 ## Import
 
