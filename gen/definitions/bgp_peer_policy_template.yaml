@@ -1,5 +1,5 @@
 ---
-name: BGP Template Peer Policy
+name: BGP Peer Policy Template
 path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-policy[name=%v]
 doc_category: BGP
 attributes:

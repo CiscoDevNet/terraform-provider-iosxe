@@ -46,26 +46,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &BGPTemplatePeerPolicyResource{}
-	_ resource.ResourceWithImportState = &BGPTemplatePeerPolicyResource{}
+	_ resource.Resource                = &BGPPeerPolicyTemplateResource{}
+	_ resource.ResourceWithImportState = &BGPPeerPolicyTemplateResource{}
 )
 
-func NewBGPTemplatePeerPolicyResource() resource.Resource {
-	return &BGPTemplatePeerPolicyResource{}
+func NewBGPPeerPolicyTemplateResource() resource.Resource {
+	return &BGPPeerPolicyTemplateResource{}
 }
 
-type BGPTemplatePeerPolicyResource struct {
+type BGPPeerPolicyTemplateResource struct {
 	data *IosxeProviderData
 }
 
-func (r *BGPTemplatePeerPolicyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_bgp_template_peer_policy"
+func (r *BGPPeerPolicyTemplateResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_bgp_peer_policy_template"
 }
 
-func (r *BGPTemplatePeerPolicyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *BGPPeerPolicyTemplateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the BGP Template Peer Policy configuration.",
+		MarkdownDescription: "This resource can manage the BGP Peer Policy Template configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -145,7 +145,7 @@ func (r *BGPTemplatePeerPolicyResource) Schema(ctx context.Context, req resource
 	}
 }
 
-func (r *BGPTemplatePeerPolicyResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *BGPPeerPolicyTemplateResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -157,8 +157,8 @@ func (r *BGPTemplatePeerPolicyResource) Configure(_ context.Context, req resourc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *BGPTemplatePeerPolicyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan BGPTemplatePeerPolicy
+func (r *BGPPeerPolicyTemplateResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan BGPPeerPolicyTemplate
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -241,8 +241,8 @@ func (r *BGPTemplatePeerPolicyResource) Create(ctx context.Context, req resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *BGPTemplatePeerPolicyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state BGPTemplatePeerPolicy
+func (r *BGPPeerPolicyTemplateResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state BGPPeerPolicyTemplate
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -268,7 +268,7 @@ func (r *BGPTemplatePeerPolicyResource) Read(ctx context.Context, req resource.R
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = BGPTemplatePeerPolicy{Device: state.Device, Id: state.Id}
+				state = BGPPeerPolicyTemplate{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -318,8 +318,8 @@ func (r *BGPTemplatePeerPolicyResource) Read(ctx context.Context, req resource.R
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *BGPTemplatePeerPolicyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state BGPTemplatePeerPolicy
+func (r *BGPPeerPolicyTemplateResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state BGPPeerPolicyTemplate
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -419,8 +419,8 @@ func (r *BGPTemplatePeerPolicyResource) Update(ctx context.Context, req resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *BGPTemplatePeerPolicyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state BGPTemplatePeerPolicy
+func (r *BGPPeerPolicyTemplateResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state BGPPeerPolicyTemplate
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -518,7 +518,7 @@ func (r *BGPTemplatePeerPolicyResource) Delete(ctx context.Context, req resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *BGPTemplatePeerPolicyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *BGPPeerPolicyTemplateResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -538,7 +538,7 @@ func (r *BGPTemplatePeerPolicyResource) ImportState(ctx context.Context, req res
 	}
 
 	// construct path for 'id' attribute
-	var state BGPTemplatePeerPolicy
+	var state BGPPeerPolicyTemplate
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

@@ -41,7 +41,7 @@ import (
 // End of section. //template:end imports
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
-type BGPTemplatePeerPolicy struct {
+type BGPPeerPolicyTemplate struct {
 	Device                 types.String                     `tfsdk:"device"`
 	Id                     types.String                     `tfsdk:"id"`
 	DeleteMode             types.String                     `tfsdk:"delete_mode"`
@@ -49,23 +49,23 @@ type BGPTemplatePeerPolicy struct {
 	Name                   types.String                     `tfsdk:"name"`
 	RouteReflectorClient   types.Bool                       `tfsdk:"route_reflector_client"`
 	SendCommunity          types.String                     `tfsdk:"send_community"`
-	RouteMaps              []BGPTemplatePeerPolicyRouteMaps `tfsdk:"route_maps"`
+	RouteMaps              []BGPPeerPolicyTemplateRouteMaps `tfsdk:"route_maps"`
 	AllowasInAsNumber      types.Int64                      `tfsdk:"allowas_in_as_number"`
 	AsOverrideSplitHorizon types.Bool                       `tfsdk:"as_override_split_horizon"`
 }
 
-type BGPTemplatePeerPolicyData struct {
+type BGPPeerPolicyTemplateData struct {
 	Device                 types.String                     `tfsdk:"device"`
 	Id                     types.String                     `tfsdk:"id"`
 	Asn                    types.String                     `tfsdk:"asn"`
 	Name                   types.String                     `tfsdk:"name"`
 	RouteReflectorClient   types.Bool                       `tfsdk:"route_reflector_client"`
 	SendCommunity          types.String                     `tfsdk:"send_community"`
-	RouteMaps              []BGPTemplatePeerPolicyRouteMaps `tfsdk:"route_maps"`
+	RouteMaps              []BGPPeerPolicyTemplateRouteMaps `tfsdk:"route_maps"`
 	AllowasInAsNumber      types.Int64                      `tfsdk:"allowas_in_as_number"`
 	AsOverrideSplitHorizon types.Bool                       `tfsdk:"as_override_split_horizon"`
 }
-type BGPTemplatePeerPolicyRouteMaps struct {
+type BGPPeerPolicyTemplateRouteMaps struct {
 	InOut        types.String `tfsdk:"in_out"`
 	RouteMapName types.String `tfsdk:"route_map_name"`
 }
@@ -74,16 +74,16 @@ type BGPTemplatePeerPolicyRouteMaps struct {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
-func (data BGPTemplatePeerPolicy) getPath() string {
+func (data BGPPeerPolicyTemplate) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/template/peer-policy=%v", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-func (data BGPTemplatePeerPolicyData) getPath() string {
+func (data BGPPeerPolicyTemplateData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/template/peer-policy=%v", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it
-func (data BGPTemplatePeerPolicy) getPathShort() string {
+func (data BGPPeerPolicyTemplate) getPathShort() string {
 	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
@@ -94,13 +94,13 @@ func (data BGPTemplatePeerPolicy) getPathShort() string {
 }
 
 // getXPath returns the XPath for NETCONF operations
-func (data BGPTemplatePeerPolicy) getXPath() string {
+func (data BGPPeerPolicyTemplate) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-policy[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
-func (data BGPTemplatePeerPolicyData) getXPath() string {
+func (data BGPPeerPolicyTemplateData) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-policy[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
@@ -110,7 +110,7 @@ func (data BGPTemplatePeerPolicyData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPTemplatePeerPolicy) toBody(ctx context.Context) string {
+func (data BGPPeerPolicyTemplate) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -149,7 +149,7 @@ func (data BGPTemplatePeerPolicy) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPTemplatePeerPolicy) toBodyXML(ctx context.Context) string {
+func (data BGPPeerPolicyTemplate) toBodyXML(ctx context.Context) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -197,7 +197,7 @@ func (data BGPTemplatePeerPolicy) toBodyXML(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
-func (data *BGPTemplatePeerPolicy) updateFromBody(ctx context.Context, res gjson.Result) {
+func (data *BGPPeerPolicyTemplate) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -275,7 +275,7 @@ func (data *BGPTemplatePeerPolicy) updateFromBody(ctx context.Context, res gjson
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
-func (data *BGPTemplatePeerPolicy) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *BGPPeerPolicyTemplate) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
@@ -349,7 +349,7 @@ func (data *BGPTemplatePeerPolicy) updateFromBodyXML(ctx context.Context, res xm
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
-func (data *BGPTemplatePeerPolicy) fromBody(ctx context.Context, res gjson.Result) {
+func (data *BGPPeerPolicyTemplate) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -363,9 +363,9 @@ func (data *BGPTemplatePeerPolicy) fromBody(ctx context.Context, res gjson.Resul
 		data.SendCommunity = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "route-map1"); value.Exists() {
-		data.RouteMaps = make([]BGPTemplatePeerPolicyRouteMaps, 0)
+		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMaps, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPTemplatePeerPolicyRouteMaps{}
+			item := BGPPeerPolicyTemplateRouteMaps{}
 			if cValue := v.Get("inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -390,7 +390,7 @@ func (data *BGPTemplatePeerPolicy) fromBody(ctx context.Context, res gjson.Resul
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
-func (data *BGPTemplatePeerPolicyData) fromBody(ctx context.Context, res gjson.Result) {
+func (data *BGPPeerPolicyTemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -404,9 +404,9 @@ func (data *BGPTemplatePeerPolicyData) fromBody(ctx context.Context, res gjson.R
 		data.SendCommunity = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "route-map1"); value.Exists() {
-		data.RouteMaps = make([]BGPTemplatePeerPolicyRouteMaps, 0)
+		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMaps, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPTemplatePeerPolicyRouteMaps{}
+			item := BGPPeerPolicyTemplateRouteMaps{}
 			if cValue := v.Get("inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -431,7 +431,7 @@ func (data *BGPTemplatePeerPolicyData) fromBody(ctx context.Context, res gjson.R
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
-func (data *BGPTemplatePeerPolicy) fromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *BGPPeerPolicyTemplate) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); value.Exists() {
 		data.RouteReflectorClient = types.BoolValue(true)
 	} else {
@@ -441,9 +441,9 @@ func (data *BGPTemplatePeerPolicy) fromBodyXML(ctx context.Context, res xmldot.R
 		data.SendCommunity = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map1"); value.Exists() {
-		data.RouteMaps = make([]BGPTemplatePeerPolicyRouteMaps, 0)
+		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMaps, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPTemplatePeerPolicyRouteMaps{}
+			item := BGPPeerPolicyTemplateRouteMaps{}
 			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -468,7 +468,7 @@ func (data *BGPTemplatePeerPolicy) fromBodyXML(ctx context.Context, res xmldot.R
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
-func (data *BGPTemplatePeerPolicyData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *BGPPeerPolicyTemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); value.Exists() {
 		data.RouteReflectorClient = types.BoolValue(true)
 	} else {
@@ -478,9 +478,9 @@ func (data *BGPTemplatePeerPolicyData) fromBodyXML(ctx context.Context, res xmld
 		data.SendCommunity = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map1"); value.Exists() {
-		data.RouteMaps = make([]BGPTemplatePeerPolicyRouteMaps, 0)
+		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMaps, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPTemplatePeerPolicyRouteMaps{}
+			item := BGPPeerPolicyTemplateRouteMaps{}
 			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -505,7 +505,7 @@ func (data *BGPTemplatePeerPolicyData) fromBodyXML(ctx context.Context, res xmld
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
-func (data *BGPTemplatePeerPolicy) getDeletedItems(ctx context.Context, state BGPTemplatePeerPolicy) []string {
+func (data *BGPPeerPolicyTemplate) getDeletedItems(ctx context.Context, state BGPPeerPolicyTemplate) []string {
 	deletedItems := make([]string, 0)
 	if !state.AsOverrideSplitHorizon.IsNull() && data.AsOverrideSplitHorizon.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/as-override/split-horizon", state.getPath()))
@@ -555,7 +555,7 @@ func (data *BGPTemplatePeerPolicy) getDeletedItems(ctx context.Context, state BG
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
-func (data *BGPTemplatePeerPolicy) addDeletedItemsXML(ctx context.Context, state BGPTemplatePeerPolicy, body string) string {
+func (data *BGPPeerPolicyTemplate) addDeletedItemsXML(ctx context.Context, state BGPPeerPolicyTemplate, body string) string {
 	b := netconf.NewBody(body)
 	if !state.AsOverrideSplitHorizon.IsNull() && data.AsOverrideSplitHorizon.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/as-override/split-horizon")
@@ -611,7 +611,7 @@ func (data *BGPTemplatePeerPolicy) addDeletedItemsXML(ctx context.Context, state
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
-func (data *BGPTemplatePeerPolicy) getEmptyLeafsDelete(ctx context.Context) []string {
+func (data *BGPPeerPolicyTemplate) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.AsOverrideSplitHorizon.IsNull() && !data.AsOverrideSplitHorizon.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/as-override/split-horizon", data.getPath()))
@@ -628,7 +628,7 @@ func (data *BGPTemplatePeerPolicy) getEmptyLeafsDelete(ctx context.Context) []st
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
-func (data *BGPTemplatePeerPolicy) getDeletePaths(ctx context.Context) []string {
+func (data *BGPPeerPolicyTemplate) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.AsOverrideSplitHorizon.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/as-override/split-horizon", data.getPath()))
@@ -655,7 +655,7 @@ func (data *BGPTemplatePeerPolicy) getDeletePaths(ctx context.Context) []string 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
-func (data *BGPTemplatePeerPolicy) addDeletePathsXML(ctx context.Context, body string) string {
+func (data *BGPPeerPolicyTemplate) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.AsOverrideSplitHorizon.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/as-override/split-horizon")

@@ -32,31 +32,31 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeBGPTemplatePeerPolicy(t *testing.T) {
+func TestAccIosxeBGPPeerPolicyTemplate(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_template_peer_policy.test", "name", "PEERPOLICY_1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_template_peer_policy.test", "route_reflector_client", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_template_peer_policy.test", "send_community", "both"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_template_peer_policy.test", "route_maps.0.in_out", "in"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_template_peer_policy.test", "route_maps.0.route_map_name", "ROUTEMAP_1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_template_peer_policy.test", "allowas_in_as_number", "2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_template_peer_policy.test", "as_override_split_horizon", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_policy_template.test", "name", "PEERPOLICY_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_policy_template.test", "route_reflector_client", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_policy_template.test", "send_community", "both"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_policy_template.test", "route_maps.0.in_out", "in"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_policy_template.test", "route_maps.0.route_map_name", "ROUTEMAP_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_policy_template.test", "allowas_in_as_number", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_policy_template.test", "as_override_split_horizon", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeBGPTemplatePeerPolicyPrerequisitesConfig + testAccIosxeBGPTemplatePeerPolicyConfig_minimum(),
+				Config: testAccIosxeBGPPeerPolicyTemplatePrerequisitesConfig + testAccIosxeBGPPeerPolicyTemplateConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeBGPTemplatePeerPolicyPrerequisitesConfig + testAccIosxeBGPTemplatePeerPolicyConfig_all(),
+				Config: testAccIosxeBGPPeerPolicyTemplatePrerequisitesConfig + testAccIosxeBGPPeerPolicyTemplateConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_bgp_template_peer_policy.test",
+				ResourceName:            "iosxe_bgp_peer_policy_template.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeBGPTemplatePeerPolicyImportStateIdFunc("iosxe_bgp_template_peer_policy.test"),
+				ImportStateIdFunc:       iosxeBGPPeerPolicyTemplateImportStateIdFunc("iosxe_bgp_peer_policy_template.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -68,7 +68,7 @@ func TestAccIosxeBGPTemplatePeerPolicy(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeBGPTemplatePeerPolicyImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeBGPPeerPolicyTemplateImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
 		Asn := primary.Attributes["asn"]
@@ -81,7 +81,7 @@ func iosxeBGPTemplatePeerPolicyImportStateIdFunc(resourceName string) resource.I
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccIosxeBGPTemplatePeerPolicyPrerequisitesConfig = `
+const testAccIosxeBGPPeerPolicyTemplatePrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
@@ -102,8 +102,8 @@ resource "iosxe_yang" "PreReq1" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeBGPTemplatePeerPolicyConfig_minimum() string {
-	config := `resource "iosxe_bgp_template_peer_policy" "test" {` + "\n"
+func testAccIosxeBGPPeerPolicyTemplateConfig_minimum() string {
+	config := `resource "iosxe_bgp_peer_policy_template" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	name = "PEERPOLICY_1"` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
@@ -115,8 +115,8 @@ func testAccIosxeBGPTemplatePeerPolicyConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeBGPTemplatePeerPolicyConfig_all() string {
-	config := `resource "iosxe_bgp_template_peer_policy" "test" {` + "\n"
+func testAccIosxeBGPPeerPolicyTemplateConfig_all() string {
+	config := `resource "iosxe_bgp_peer_policy_template" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	name = "PEERPOLICY_1"` + "\n"
 	config += `	route_reflector_client = true` + "\n"

@@ -30,20 +30,20 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeBGPTemplatePeerPolicy(t *testing.T) {
+func TestAccDataSourceIosxeBGPPeerPolicyTemplate(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_template_peer_policy.test", "route_reflector_client", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_template_peer_policy.test", "send_community", "both"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_template_peer_policy.test", "route_maps.0.in_out", "in"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_template_peer_policy.test", "route_maps.0.route_map_name", "ROUTEMAP_1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_template_peer_policy.test", "allowas_in_as_number", "2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_template_peer_policy.test", "as_override_split_horizon", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_peer_policy_template.test", "route_reflector_client", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_peer_policy_template.test", "send_community", "both"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_peer_policy_template.test", "route_maps.0.in_out", "in"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_peer_policy_template.test", "route_maps.0.route_map_name", "ROUTEMAP_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_peer_policy_template.test", "allowas_in_as_number", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_peer_policy_template.test", "as_override_split_horizon", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeBGPTemplatePeerPolicyPrerequisitesConfig + testAccDataSourceIosxeBGPTemplatePeerPolicyConfig(),
+				Config: testAccDataSourceIosxeBGPPeerPolicyTemplatePrerequisitesConfig + testAccDataSourceIosxeBGPPeerPolicyTemplateConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -53,7 +53,7 @@ func TestAccDataSourceIosxeBGPTemplatePeerPolicy(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccDataSourceIosxeBGPTemplatePeerPolicyPrerequisitesConfig = `
+const testAccDataSourceIosxeBGPPeerPolicyTemplatePrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
@@ -74,8 +74,8 @@ resource "iosxe_yang" "PreReq1" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeBGPTemplatePeerPolicyConfig() string {
-	config := `resource "iosxe_bgp_template_peer_policy" "test" {` + "\n"
+func testAccDataSourceIosxeBGPPeerPolicyTemplateConfig() string {
+	config := `resource "iosxe_bgp_peer_policy_template" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	name = "PEERPOLICY_1"` + "\n"
@@ -91,10 +91,10 @@ func testAccDataSourceIosxeBGPTemplatePeerPolicyConfig() string {
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_bgp_template_peer_policy" "test" {
+		data "iosxe_bgp_peer_policy_template" "test" {
 			asn = "65000"
 			name = "PEERPOLICY_1"
-			depends_on = [iosxe_bgp_template_peer_policy.test]
+			depends_on = [iosxe_bgp_peer_policy_template.test]
 		}
 	`
 	return config
