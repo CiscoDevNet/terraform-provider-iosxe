@@ -1,6 +1,6 @@
 ---
 name: BFD
-path: Cisco-IOS-XE-native:native/bfd
+path: /Cisco-IOS-XE-native:native/bfd
 doc_category: BFD
 attributes:
   - yang_name: Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4

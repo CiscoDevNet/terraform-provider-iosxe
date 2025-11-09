@@ -144,8 +144,8 @@ func iosxeTemplateImportStateIdFunc(resourceName string) resource.ImportStateIdF
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeTemplatePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=dot1x_policy]"
 	attributes = {
 		"name" = "dot1x_policy"
 		"type" = "control"
@@ -162,7 +162,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeTemplateConfig_minimum() string {
 	config := `resource "iosxe_template" "test" {` + "\n"
 	config += `	template_name = "TEMP1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -243,7 +243,7 @@ func testAccIosxeTemplateConfig_all() string {
 	config += `	cts_manual_policy_static_trusted = false` + "\n"
 	config += `	cts_manual_propagate_sgt = false` + "\n"
 	config += `	cts_role_based_enforcement = false` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

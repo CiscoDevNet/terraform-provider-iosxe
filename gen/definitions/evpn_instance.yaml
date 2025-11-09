@@ -1,6 +1,6 @@
 ---
 name: EVPN Instance
-path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=%v
+path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance[evpn-instance-num=%v]
 test_tags: [C9000V]
 no_delete_attributes: true
 skip_minimum_test: true

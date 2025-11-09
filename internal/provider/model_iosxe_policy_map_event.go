@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -120,6 +123,19 @@ func (data PolicyMapEvent) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data PolicyMapEvent) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[event-type=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.EventType.ValueString()))
+	return path
+}
+
+func (data PolicyMapEventData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[event-type=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.EventType.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -288,6 +304,203 @@ func (data PolicyMapEvent) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data PolicyMapEvent) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.EventType.IsNull() && !data.EventType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/event-type", data.EventType.ValueString())
+	}
+	if !data.MatchType.IsNull() && !data.MatchType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match-type", data.MatchType.ValueString())
+	}
+	if len(data.ClassNumbers) > 0 {
+		for _, item := range data.ClassNumbers {
+			cBody := netconf.Body{}
+			if !item.Number.IsNull() && !item.Number.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "number", strconv.FormatInt(item.Number.ValueInt64(), 10))
+			}
+			if !item.Class.IsNull() && !item.Class.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "class", item.Class.ValueString())
+			}
+			if !item.ExecutionType.IsNull() && !item.ExecutionType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "execution-type", item.ExecutionType.ValueString())
+			}
+			if len(item.ActionNumbers) > 0 {
+				for _, citem := range item.ActionNumbers {
+					ccBody := netconf.Body{}
+					if !citem.Number.IsNull() && !citem.Number.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "number", strconv.FormatInt(citem.Number.ValueInt64(), 10))
+					}
+					if !citem.PauseReauthentication.IsNull() && !citem.PauseReauthentication.IsUnknown() {
+						if citem.PauseReauthentication.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "pause/reauthentication", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "pause/reauthentication")
+						}
+					}
+					if !citem.Authorize.IsNull() && !citem.Authorize.IsUnknown() {
+						if citem.Authorize.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "authorize", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "authorize")
+						}
+					}
+					if !citem.TerminateConfig.IsNull() && !citem.TerminateConfig.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "terminate-config", citem.TerminateConfig.ValueString())
+					}
+					if !citem.ActivateServiceTemplateConfigServiceTemplate.IsNull() && !citem.ActivateServiceTemplateConfigServiceTemplate.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "activate/service-template-config/service-template", citem.ActivateServiceTemplateConfigServiceTemplate.ValueString())
+					}
+					if !citem.ActivateServiceTemplateConfigAaaList.IsNull() && !citem.ActivateServiceTemplateConfigAaaList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "activate/service-template-config/aaa-list", citem.ActivateServiceTemplateConfigAaaList.ValueString())
+					}
+					if !citem.ActivateServiceTemplateConfigPrecedence.IsNull() && !citem.ActivateServiceTemplateConfigPrecedence.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "activate/service-template-config/precedence", strconv.FormatInt(citem.ActivateServiceTemplateConfigPrecedence.ValueInt64(), 10))
+					}
+					if !citem.ActivateServiceTemplateConfigReplaceAll.IsNull() && !citem.ActivateServiceTemplateConfigReplaceAll.IsUnknown() {
+						if citem.ActivateServiceTemplateConfigReplaceAll.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "activate/service-template-config/replace-all", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "activate/service-template-config/replace-all")
+						}
+					}
+					if !citem.ActivateInterfaceTemplate.IsNull() && !citem.ActivateInterfaceTemplate.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "activate/interface-template", citem.ActivateInterfaceTemplate.ValueString())
+					}
+					if !citem.ActivatePolicyTypeControlSubscriber.IsNull() && !citem.ActivatePolicyTypeControlSubscriber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "activate/policy/type/control/subscriber", citem.ActivatePolicyTypeControlSubscriber.ValueString())
+					}
+					if !citem.DeactivateInterfaceTemplate.IsNull() && !citem.DeactivateInterfaceTemplate.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "deactivate/interface-template", citem.DeactivateInterfaceTemplate.ValueString())
+					}
+					if !citem.DeactivateServiceTemplate.IsNull() && !citem.DeactivateServiceTemplate.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "deactivate/service-template", citem.DeactivateServiceTemplate.ValueString())
+					}
+					if !citem.DeactivatePolicyTypeControlSubscriber.IsNull() && !citem.DeactivatePolicyTypeControlSubscriber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "deactivate/policy/type/control/subscriber", citem.DeactivatePolicyTypeControlSubscriber.ValueString())
+					}
+					if !citem.AuthenticateUsingMethod.IsNull() && !citem.AuthenticateUsingMethod.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/method", citem.AuthenticateUsingMethod.ValueString())
+					}
+					if !citem.AuthenticateUsingRetries.IsNull() && !citem.AuthenticateUsingRetries.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/retries", strconv.FormatInt(citem.AuthenticateUsingRetries.ValueInt64(), 10))
+					}
+					if !citem.AuthenticateUsingRetryTime.IsNull() && !citem.AuthenticateUsingRetryTime.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/retry-time", strconv.FormatInt(citem.AuthenticateUsingRetryTime.ValueInt64(), 10))
+					}
+					if !citem.AuthenticateUsingPriority.IsNull() && !citem.AuthenticateUsingPriority.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/priority", strconv.FormatInt(citem.AuthenticateUsingPriority.ValueInt64(), 10))
+					}
+					if !citem.AuthenticateUsingAaaAuthcList.IsNull() && !citem.AuthenticateUsingAaaAuthcList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa/authc-list", citem.AuthenticateUsingAaaAuthcList.ValueString())
+					}
+					if !citem.AuthenticateUsingAaaAuthzList.IsNull() && !citem.AuthenticateUsingAaaAuthzList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa/authz-list", citem.AuthenticateUsingAaaAuthzList.ValueString())
+					}
+					if !citem.AuthenticateUsingBoth.IsNull() && !citem.AuthenticateUsingBoth.IsUnknown() {
+						if citem.AuthenticateUsingBoth.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/both", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "authenticate/using/both")
+						}
+					}
+					if !citem.AuthenticateUsingParameterMap.IsNull() && !citem.AuthenticateUsingParameterMap.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/parameter-map", citem.AuthenticateUsingParameterMap.ValueString())
+					}
+					if !citem.Replace.IsNull() && !citem.Replace.IsUnknown() {
+						if citem.Replace.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "replace", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "replace")
+						}
+					}
+					if !citem.Restrict.IsNull() && !citem.Restrict.IsUnknown() {
+						if citem.Restrict.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "restrict", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "restrict")
+						}
+					}
+					if !citem.ClearSession.IsNull() && !citem.ClearSession.IsUnknown() {
+						if citem.ClearSession.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "clear-session", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "clear-session")
+						}
+					}
+					if !citem.ClearAuthenticatedDataHostsOnPort.IsNull() && !citem.ClearAuthenticatedDataHostsOnPort.IsUnknown() {
+						if citem.ClearAuthenticatedDataHostsOnPort.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "clear-authenticated-data-hosts-on-port", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "clear-authenticated-data-hosts-on-port")
+						}
+					}
+					if !citem.Protect.IsNull() && !citem.Protect.IsUnknown() {
+						if citem.Protect.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "protect", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "protect")
+						}
+					}
+					if !citem.ErrDisable.IsNull() && !citem.ErrDisable.IsUnknown() {
+						if citem.ErrDisable.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "err-disable", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "err-disable")
+						}
+					}
+					if !citem.ResumeReauthentication.IsNull() && !citem.ResumeReauthentication.IsUnknown() {
+						if citem.ResumeReauthentication.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "resume/reauthentication", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "resume/reauthentication")
+						}
+					}
+					if !citem.AuthenticationRestart.IsNull() && !citem.AuthenticationRestart.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authentication-restart", strconv.FormatInt(citem.AuthenticationRestart.ValueInt64(), 10))
+					}
+					if !citem.SetDomain.IsNull() && !citem.SetDomain.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "set-domain", citem.SetDomain.ValueString())
+					}
+					if !citem.Unauthorize.IsNull() && !citem.Unauthorize.IsUnknown() {
+						if citem.Unauthorize.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "unauthorize", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "unauthorize")
+						}
+					}
+					if !citem.Notify.IsNull() && !citem.Notify.IsUnknown() {
+						if citem.Notify.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "notify", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "notify")
+						}
+					}
+					if !citem.SetTimerName.IsNull() && !citem.SetTimerName.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "set-timer/name", citem.SetTimerName.ValueString())
+					}
+					if !citem.SetTimerValue.IsNull() && !citem.SetTimerValue.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "set-timer/value", strconv.FormatInt(citem.SetTimerValue.ValueInt64(), 10))
+					}
+					if !citem.MapAttributeToServiceTable.IsNull() && !citem.MapAttributeToServiceTable.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "map/attribute-to-service/table", citem.MapAttributeToServiceTable.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "action-number", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/class-number", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -599,6 +812,313 @@ func (data *PolicyMapEvent) updateFromBody(ctx context.Context, res gjson.Result
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/event-type"); value.Exists() && !data.EventType.IsNull() {
+		data.EventType = types.StringValue(value.String())
+	} else {
+		data.EventType = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match-type"); value.Exists() && !data.MatchType.IsNull() {
+		data.MatchType = types.StringValue(value.String())
+	} else {
+		data.MatchType = types.StringNull()
+	}
+	for i := range data.ClassNumbers {
+		keys := [...]string{"number"}
+		keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].Number.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/class-number").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.ClassNumbers[i].Number.IsNull() {
+			data.ClassNumbers[i].Number = types.Int64Value(value.Int())
+		} else {
+			data.ClassNumbers[i].Number = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "class"); value.Exists() && !data.ClassNumbers[i].Class.IsNull() {
+			data.ClassNumbers[i].Class = types.StringValue(value.String())
+		} else {
+			data.ClassNumbers[i].Class = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "execution-type"); value.Exists() && !data.ClassNumbers[i].ExecutionType.IsNull() {
+			data.ClassNumbers[i].ExecutionType = types.StringValue(value.String())
+		} else {
+			data.ClassNumbers[i].ExecutionType = types.StringNull()
+		}
+		for ci := range data.ClassNumbers[i].ActionNumbers {
+			keys := [...]string{"number"}
+			keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "action-number").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "number"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].Number.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].Number = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Number = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "pause/reauthentication"); !data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authorize"); !data.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Authorize = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Authorize = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Authorize = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "terminate-config"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].TerminateConfig.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].TerminateConfig = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].TerminateConfig = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "activate/service-template-config/service-template"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "activate/service-template-config/aaa-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "activate/service-template-config/precedence"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "activate/service-template-config/replace-all"); !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "activate/interface-template"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "activate/policy/type/control/subscriber"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "deactivate/interface-template"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "deactivate/service-template"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "deactivate/policy/type/control/subscriber"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/method"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/retries"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/retry-time"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/priority"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/aaa/authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/aaa/authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/both"); !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/parameter-map"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "replace"); !data.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Replace = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Replace = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Replace = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "restrict"); !data.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Restrict = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Restrict = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Restrict = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "clear-session"); !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearSession = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearSession = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ClearSession = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "clear-authenticated-data-hosts-on-port"); !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "protect"); !data.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Protect = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Protect = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Protect = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "err-disable"); !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ErrDisable = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ErrDisable = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ErrDisable = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "resume/reauthentication"); !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authentication-restart"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "set-domain"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].SetDomain = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].SetDomain = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "unauthorize"); !data.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Unauthorize = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Unauthorize = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Unauthorize = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "notify"); !data.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Notify = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Notify = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Notify = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "set-timer/name"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerName = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerName = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "set-timer/value"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].SetTimerValue.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerValue = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerValue = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "map/attribute-to-service/table"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable = types.StringNull()
+			}
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -940,6 +1460,338 @@ func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) 
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *PolicyMapEvent) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match-type"); value.Exists() {
+		data.MatchType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/class-number"); value.Exists() {
+		data.ClassNumbers = make([]PolicyMapEventClassNumbers, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PolicyMapEventClassNumbers{}
+			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
+				item.Number = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "class"); cValue.Exists() {
+				item.Class = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "execution-type"); cValue.Exists() {
+				item.ExecutionType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "action-number"); cValue.Exists() {
+				item.ActionNumbers = make([]PolicyMapEventClassNumbersActionNumbers, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PolicyMapEventClassNumbersActionNumbers{}
+					if ccValue := helpers.GetFromXPath(cv, "number"); ccValue.Exists() {
+						cItem.Number = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "pause/reauthentication"); ccValue.Exists() {
+						cItem.PauseReauthentication = types.BoolValue(true)
+					} else {
+						cItem.PauseReauthentication = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authorize"); ccValue.Exists() {
+						cItem.Authorize = types.BoolValue(true)
+					} else {
+						cItem.Authorize = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "terminate-config"); ccValue.Exists() {
+						cItem.TerminateConfig = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/service-template"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigServiceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/aaa-list"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigAaaList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/precedence"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigPrecedence = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/replace-all"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(true)
+					} else {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/interface-template"); ccValue.Exists() {
+						cItem.ActivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/policy/type/control/subscriber"); ccValue.Exists() {
+						cItem.ActivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "deactivate/interface-template"); ccValue.Exists() {
+						cItem.DeactivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "deactivate/service-template"); ccValue.Exists() {
+						cItem.DeactivateServiceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "deactivate/policy/type/control/subscriber"); ccValue.Exists() {
+						cItem.DeactivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/method"); ccValue.Exists() {
+						cItem.AuthenticateUsingMethod = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/retries"); ccValue.Exists() {
+						cItem.AuthenticateUsingRetries = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/retry-time"); ccValue.Exists() {
+						cItem.AuthenticateUsingRetryTime = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/priority"); ccValue.Exists() {
+						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/both"); ccValue.Exists() {
+						cItem.AuthenticateUsingBoth = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingBoth = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/parameter-map"); ccValue.Exists() {
+						cItem.AuthenticateUsingParameterMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "replace"); ccValue.Exists() {
+						cItem.Replace = types.BoolValue(true)
+					} else {
+						cItem.Replace = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "restrict"); ccValue.Exists() {
+						cItem.Restrict = types.BoolValue(true)
+					} else {
+						cItem.Restrict = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "clear-session"); ccValue.Exists() {
+						cItem.ClearSession = types.BoolValue(true)
+					} else {
+						cItem.ClearSession = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "clear-authenticated-data-hosts-on-port"); ccValue.Exists() {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(true)
+					} else {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "protect"); ccValue.Exists() {
+						cItem.Protect = types.BoolValue(true)
+					} else {
+						cItem.Protect = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "err-disable"); ccValue.Exists() {
+						cItem.ErrDisable = types.BoolValue(true)
+					} else {
+						cItem.ErrDisable = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "resume/reauthentication"); ccValue.Exists() {
+						cItem.ResumeReauthentication = types.BoolValue(true)
+					} else {
+						cItem.ResumeReauthentication = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authentication-restart"); ccValue.Exists() {
+						cItem.AuthenticationRestart = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "set-domain"); ccValue.Exists() {
+						cItem.SetDomain = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "unauthorize"); ccValue.Exists() {
+						cItem.Unauthorize = types.BoolValue(true)
+					} else {
+						cItem.Unauthorize = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "notify"); ccValue.Exists() {
+						cItem.Notify = types.BoolValue(true)
+					} else {
+						cItem.Notify = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "set-timer/name"); ccValue.Exists() {
+						cItem.SetTimerName = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "set-timer/value"); ccValue.Exists() {
+						cItem.SetTimerValue = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "map/attribute-to-service/table"); ccValue.Exists() {
+						cItem.MapAttributeToServiceTable = types.StringValue(ccValue.String())
+					}
+					item.ActionNumbers = append(item.ActionNumbers, cItem)
+					return true
+				})
+			}
+			data.ClassNumbers = append(data.ClassNumbers, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *PolicyMapEventData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match-type"); value.Exists() {
+		data.MatchType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/class-number"); value.Exists() {
+		data.ClassNumbers = make([]PolicyMapEventClassNumbers, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PolicyMapEventClassNumbers{}
+			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
+				item.Number = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "class"); cValue.Exists() {
+				item.Class = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "execution-type"); cValue.Exists() {
+				item.ExecutionType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "action-number"); cValue.Exists() {
+				item.ActionNumbers = make([]PolicyMapEventClassNumbersActionNumbers, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PolicyMapEventClassNumbersActionNumbers{}
+					if ccValue := helpers.GetFromXPath(cv, "number"); ccValue.Exists() {
+						cItem.Number = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "pause/reauthentication"); ccValue.Exists() {
+						cItem.PauseReauthentication = types.BoolValue(true)
+					} else {
+						cItem.PauseReauthentication = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authorize"); ccValue.Exists() {
+						cItem.Authorize = types.BoolValue(true)
+					} else {
+						cItem.Authorize = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "terminate-config"); ccValue.Exists() {
+						cItem.TerminateConfig = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/service-template"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigServiceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/aaa-list"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigAaaList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/precedence"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigPrecedence = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/service-template-config/replace-all"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(true)
+					} else {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/interface-template"); ccValue.Exists() {
+						cItem.ActivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "activate/policy/type/control/subscriber"); ccValue.Exists() {
+						cItem.ActivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "deactivate/interface-template"); ccValue.Exists() {
+						cItem.DeactivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "deactivate/service-template"); ccValue.Exists() {
+						cItem.DeactivateServiceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "deactivate/policy/type/control/subscriber"); ccValue.Exists() {
+						cItem.DeactivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/method"); ccValue.Exists() {
+						cItem.AuthenticateUsingMethod = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/retries"); ccValue.Exists() {
+						cItem.AuthenticateUsingRetries = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/retry-time"); ccValue.Exists() {
+						cItem.AuthenticateUsingRetryTime = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/priority"); ccValue.Exists() {
+						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/both"); ccValue.Exists() {
+						cItem.AuthenticateUsingBoth = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingBoth = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/parameter-map"); ccValue.Exists() {
+						cItem.AuthenticateUsingParameterMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "replace"); ccValue.Exists() {
+						cItem.Replace = types.BoolValue(true)
+					} else {
+						cItem.Replace = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "restrict"); ccValue.Exists() {
+						cItem.Restrict = types.BoolValue(true)
+					} else {
+						cItem.Restrict = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "clear-session"); ccValue.Exists() {
+						cItem.ClearSession = types.BoolValue(true)
+					} else {
+						cItem.ClearSession = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "clear-authenticated-data-hosts-on-port"); ccValue.Exists() {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(true)
+					} else {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "protect"); ccValue.Exists() {
+						cItem.Protect = types.BoolValue(true)
+					} else {
+						cItem.Protect = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "err-disable"); ccValue.Exists() {
+						cItem.ErrDisable = types.BoolValue(true)
+					} else {
+						cItem.ErrDisable = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "resume/reauthentication"); ccValue.Exists() {
+						cItem.ResumeReauthentication = types.BoolValue(true)
+					} else {
+						cItem.ResumeReauthentication = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authentication-restart"); ccValue.Exists() {
+						cItem.AuthenticationRestart = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "set-domain"); ccValue.Exists() {
+						cItem.SetDomain = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "unauthorize"); ccValue.Exists() {
+						cItem.Unauthorize = types.BoolValue(true)
+					} else {
+						cItem.Unauthorize = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "notify"); ccValue.Exists() {
+						cItem.Notify = types.BoolValue(true)
+					} else {
+						cItem.Notify = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "set-timer/name"); ccValue.Exists() {
+						cItem.SetTimerName = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "set-timer/value"); ccValue.Exists() {
+						cItem.SetTimerValue = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "map/attribute-to-service/table"); ccValue.Exists() {
+						cItem.MapAttributeToServiceTable = types.StringValue(ccValue.String())
+					}
+					item.ActionNumbers = append(item.ActionNumbers, cItem)
+					return true
+				})
+			}
+			data.ClassNumbers = append(data.ClassNumbers, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMapEvent) []string {
@@ -1111,6 +1963,188 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *PolicyMapEvent) addDeletedItemsXML(ctx context.Context, state PolicyMapEvent, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.ClassNumbers {
+		stateKeys := [...]string{"number"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].Number.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ClassNumbers[i].Number.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ClassNumbers {
+			found = true
+			if state.ClassNumbers[i].Number.ValueInt64() != data.ClassNumbers[j].Number.ValueInt64() {
+				found = false
+			}
+			if found {
+				for ci := range state.ClassNumbers[i].ActionNumbers {
+					cstateKeys := [...]string{"number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.ClassNumbers[j].ActionNumbers {
+						found = true
+						if state.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64() != data.ClassNumbers[j].ActionNumbers[cj].Number.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].MapAttributeToServiceTable.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/map/attribute-to-service/table", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerValue.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerValue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-timer/value", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerName.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-timer/name", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Notify.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/notify", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Unauthorize.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/unauthorize", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetDomain.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-domain", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticationRestart.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authentication-restart", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ResumeReauthentication.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/resume/reauthentication", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ErrDisable.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/err-disable", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Protect.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/protect", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearAuthenticatedDataHostsOnPort.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/clear-authenticated-data-hosts-on-port", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearSession.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/clear-session", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Restrict.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/restrict", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Replace.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/replace", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingParameterMap.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/parameter-map", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/both", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authz-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authc-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/priority", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetryTime.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/retry-time", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetries.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/retries", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingMethod.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/method", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivatePolicyTypeControlSubscriber.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/policy/type/control/subscriber", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateServiceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/service-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateInterfaceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/interface-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivatePolicyTypeControlSubscriber.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/policy/type/control/subscriber", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateInterfaceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/interface-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigReplaceAll.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/replace-all", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigPrecedence.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/precedence", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigAaaList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/aaa-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/service-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].TerminateConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].TerminateConfig.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/terminate-config", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Authorize.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authorize", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].PauseReauthentication.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/pause/reauthentication", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v", predicates, cpredicates))
+					}
+				}
+				if !state.ClassNumbers[i].ExecutionType.IsNull() && data.ClassNumbers[j].ExecutionType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/execution-type", predicates))
+				}
+				if !state.ClassNumbers[i].Class.IsNull() && data.ClassNumbers[j].Class.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/class", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v", predicates))
+		}
+	}
+	if !state.MatchType.IsNull() && data.MatchType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match-type")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *PolicyMapEvent) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1185,3 +2219,27 @@ func (data *PolicyMapEvent) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *PolicyMapEvent) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.ClassNumbers {
+		keys := [...]string{"number"}
+		keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].Number.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/class-number%v", predicates))
+	}
+	if !data.MatchType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match-type")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

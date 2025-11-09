@@ -1,6 +1,6 @@
 ---
 name: Access List Role Based
-path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:role-based=%v
+path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:role-based[name=%v]
 no_delete_attributes: true
 doc_category: System
 attributes:

@@ -1,6 +1,6 @@
 ---
 name: Service Template
-path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=%v
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template[word=%v]
 doc_category: System
 no_delete_attributes: true
 attributes:

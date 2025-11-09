@@ -1,6 +1,6 @@
 ---
 name: AAA Authentication
-path: Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication
+path: /Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication
 doc_category: AAA
 test_tags: [AAA]
 attributes:

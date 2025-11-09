@@ -47,29 +47,11 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "source_interfaces_vrf.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "source_interfaces_vrf.0.interface_name", "Loopback100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts.0.ipv4_host", "1.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.ipv4_host", "1.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts.0.ipv4_host", "1.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.ipv4_host", "1.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts.0.ipv6_host", "2001::1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.ipv6_host", "2001::1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts.0.ipv6_host", "2001::1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.ipv6_host", "2001::1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "logging_count", "true"))
 	}
@@ -95,8 +77,8 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeLoggingPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -105,13 +87,13 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 		"vrf/forwarding" = "VRF1"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
 `
@@ -140,66 +122,16 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	config += `	ipv4_hosts = [{` + "\n"
 	config += `		ipv4_host = "1.1.1.1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	ipv4_hosts_transport = [{` + "\n"
-	config += `		ipv4_host = "1.1.1.1"` + "\n"
-	config += `		transport_udp_ports = [{` + "\n"
-	config += `			port_number = 10000` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tcp_ports = [{` + "\n"
-	config += `			port_number = 10001` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tls_ports = [{` + "\n"
-	config += `			port_number = 10002` + "\n"
-	config += `		}]` + "\n"
-	config += `	}]` + "\n"
 	config += `	ipv4_vrf_hosts = [{` + "\n"
 	config += `		ipv4_host = "1.1.1.1"` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	ipv4_vrf_hosts_transport = [{` + "\n"
-	config += `		ipv4_host = "1.1.1.1"` + "\n"
-	config += `		vrf = "VRF1"` + "\n"
-	config += `		transport_udp_ports = [{` + "\n"
-	config += `			port_number = 10000` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tcp_ports = [{` + "\n"
-	config += `			port_number = 10001` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tls_ports = [{` + "\n"
-	config += `			port_number = 10002` + "\n"
-	config += `		}]` + "\n"
-	config += `	}]` + "\n"
 	config += `	ipv6_hosts = [{` + "\n"
 	config += `		ipv6_host = "2001::1"` + "\n"
-	config += `	}]` + "\n"
-	config += `	ipv6_hosts_transport = [{` + "\n"
-	config += `		ipv6_host = "2001::1"` + "\n"
-	config += `		transport_udp_ports = [{` + "\n"
-	config += `			port_number = 10000` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tcp_ports = [{` + "\n"
-	config += `			port_number = 10001` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tls_ports = [{` + "\n"
-	config += `			port_number = 10002` + "\n"
-	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_vrf_hosts = [{` + "\n"
 	config += `		ipv6_host = "2001::1"` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
-	config += `	}]` + "\n"
-	config += `	ipv6_vrf_hosts_transport = [{` + "\n"
-	config += `		ipv6_host = "2001::1"` + "\n"
-	config += `		vrf = "VRF1"` + "\n"
-	config += `		transport_udp_ports = [{` + "\n"
-	config += `			port_number = 10000` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tcp_ports = [{` + "\n"
-	config += `			port_number = 10001` + "\n"
-	config += `		}]` + "\n"
-	config += `		transport_tls_ports = [{` + "\n"
-	config += `			port_number = 10002` + "\n"
-	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	logging_count = true` + "\n"
@@ -210,7 +142,7 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	config += `	persistent_size = 1000000` + "\n"
 	config += `	persistent_filesize = 500000` + "\n"
 	config += `	rate_limit_all = 200` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

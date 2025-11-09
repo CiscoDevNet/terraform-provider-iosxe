@@ -1,6 +1,6 @@
 ---
 name: Interface Port Channel
-path: Cisco-IOS-XE-native:native/interface/Port-channel=%v
+path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=%v]
 doc_category: Interface
 test_tags: [C9000V]
 attributes:
@@ -146,6 +146,7 @@ attributes:
     example: 1300
   - yang_name: ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all
     example: true
+    exclude_test: true
   - yang_name: ipv6/address/autoconfig/default
     example: true
     exclude_test: true
@@ -216,7 +217,7 @@ attributes:
         example: 1
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
@@ -225,7 +226,7 @@ test_prerequisites:
         value: ""
       - name: address-family/ipv6
         value: ""
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100
@@ -233,18 +234,18 @@ test_prerequisites:
         value: 10.0.0.100
       - name: ip/address/primary/mask
         value: 255.255.255.255
-  - path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=1
+  - path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]
     attributes:
       - name: name
         value: 1
-  - path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=1/access-list-seq-rule=10
+  - path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]/access-list-seq-rule[sequence=10]
     attributes:
       - name: sequence
         value: 10
       - name: permit/std-ace/any
         value: ""
     dependencies: [2]
-  - path: Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=bfd_template1
+  - path: /Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=bfd_template1]
     attributes:
       - name: name
         value: bfd_template1
@@ -254,14 +255,14 @@ test_prerequisites:
         value: 200
       - name: interval-singlehop-v2/mill-unit/multiplier
         value: 4
-  - path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1
+  - path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]
     no_delete: true
     attributes:
       - name: es-value
         value: 1
       - name: redundancy/single-active
         value: ""
-  - path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1/identifier/type=3
+  - path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]/identifier/type[identifier-type=3]
     no_delete: true
     attributes:
       - name: identifier-type

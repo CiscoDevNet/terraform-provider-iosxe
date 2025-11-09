@@ -114,8 +114,8 @@ func iosxeOSPFVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFu
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeOSPFVRFPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -133,7 +133,7 @@ func testAccIosxeOSPFVRFConfig_minimum() string {
 	config := `resource "iosxe_ospf_vrf" "test" {` + "\n"
 	config += `	process_id = 2` + "\n"
 	config += `	vrf = "VRF1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -191,7 +191,7 @@ func testAccIosxeOSPFVRFConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	auto_cost_reference_bandwidth = 40000` + "\n"
 	config += `	passive_interface_default = true` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

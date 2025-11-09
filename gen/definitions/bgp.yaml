@@ -1,6 +1,6 @@
 ---
 name: BGP
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]
 doc_category: BGP
 attributes:
   - yang_name: id
@@ -28,7 +28,7 @@ attributes:
   - yang_name: bgp/update-delay
     example: 200
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

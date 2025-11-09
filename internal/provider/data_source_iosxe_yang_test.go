@@ -23,32 +23,32 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccDataSourceIosxeRestconf(t *testing.T) {
+func TestAccDataSourceIosxeYang(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeRestconfConfigInterface,
+				Config: testAccDataSourceIosxeYangConfigInterface,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("data.iosxe_restconf.test", "id", "Cisco-IOS-XE-native:native/banner/login"),
-					resource.TestCheckResourceAttr("data.iosxe_restconf.test", "attributes.banner", "My Banner"),
+					resource.TestCheckResourceAttr("data.iosxe_yang.test", "id", "/Cisco-IOS-XE-native:native/banner/login"),
+					resource.TestCheckResourceAttr("data.iosxe_yang.test", "attributes.banner", "My Banner"),
 				),
 			},
 		},
 	})
 }
 
-const testAccDataSourceIosxeRestconfConfigInterface = `
-resource "iosxe_restconf" "test" {
-	path = "Cisco-IOS-XE-native:native/banner/login"
+const testAccDataSourceIosxeYangConfigInterface = `
+resource "iosxe_yang" "test" {
+	path = "/Cisco-IOS-XE-native:native/banner/login"
 	attributes = {
 		banner = "My Banner"
 	}
 }
 
-data "iosxe_restconf" "test" {
-	path = "Cisco-IOS-XE-native:native/banner/login"
-	depends_on = [iosxe_restconf.test]
+data "iosxe_yang" "test" {
+	path = "/Cisco-IOS-XE-native:native/banner/login"
+	depends_on = [iosxe_yang.test]
 }
 `

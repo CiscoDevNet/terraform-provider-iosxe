@@ -1,6 +1,6 @@
 ---
 name: Interface Tunnel
-path: Cisco-IOS-XE-native:native/interface/Tunnel=%s
+path: /Cisco-IOS-XE-native:native/interface/Tunnel[name=%s]
 doc_category: Interface
 no_delete:
 attributes:
@@ -161,7 +161,7 @@ attributes:
     example: VRF1
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

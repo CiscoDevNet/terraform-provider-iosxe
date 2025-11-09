@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -227,6 +230,19 @@ func (data Template) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data Template) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details[template_name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.TemplateName.ValueString()))
+	return path
+}
+
+func (data TemplateData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details[template_name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.TemplateName.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -552,6 +568,405 @@ func (data Template) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data Template) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.TemplateName.IsNull() && !data.TemplateName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/template_name", data.TemplateName.ValueString())
+	}
+	if !data.Dot1xPae.IsNull() && !data.Dot1xPae.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/pae", data.Dot1xPae.ValueString())
+	}
+	if !data.Dot1xMaxReauthReq.IsNull() && !data.Dot1xMaxReauthReq.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/max-reauth-req", strconv.FormatInt(data.Dot1xMaxReauthReq.ValueInt64(), 10))
+	}
+	if !data.Dot1xMaxReq.IsNull() && !data.Dot1xMaxReq.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/max-req", strconv.FormatInt(data.Dot1xMaxReq.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutTxPeriod.IsNull() && !data.Dot1xTimeoutTxPeriod.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/timeout/tx-period", strconv.FormatInt(data.Dot1xTimeoutTxPeriod.ValueInt64(), 10))
+	}
+	if !data.ServicePolicyTypeControlSubscriber.IsNull() && !data.ServicePolicyTypeControlSubscriber.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/service-policy/type/control/subscriber", data.ServicePolicyTypeControlSubscriber.ValueString())
+	}
+	if !data.ServicePolicyInput.IsNull() && !data.ServicePolicyInput.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/service-policy/input/policy-map-name", data.ServicePolicyInput.ValueString())
+	}
+	if !data.ServicePolicyOutput.IsNull() && !data.ServicePolicyOutput.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/service-policy/output/policy-map-name", data.ServicePolicyOutput.ValueString())
+	}
+	if !data.SourceTemplate.IsNull() && !data.SourceTemplate.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/source/template", data.SourceTemplate.ValueString())
+	}
+	if !data.SwitchportModeTrunk.IsNull() && !data.SwitchportModeTrunk.IsUnknown() {
+		if data.SwitchportModeTrunk.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/mode/trunk", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/mode/trunk")
+		}
+	}
+	if !data.SwitchportModeAccess.IsNull() && !data.SwitchportModeAccess.IsUnknown() {
+		if data.SwitchportModeAccess.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/mode/access", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/mode/access")
+		}
+	}
+	if !data.SwitchportNonegotiate.IsNull() && !data.SwitchportNonegotiate.IsUnknown() {
+		if data.SwitchportNonegotiate.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/nonegotiate", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/nonegotiate")
+		}
+	}
+	if !data.SwitchportBlockUnicast.IsNull() && !data.SwitchportBlockUnicast.IsUnknown() {
+		if data.SwitchportBlockUnicast.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/block/unicast", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/block/unicast")
+		}
+	}
+	if !data.SwitchportPortSecurity.IsNull() && !data.SwitchportPortSecurity.IsUnknown() {
+		if data.SwitchportPortSecurity.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security")
+		}
+	}
+	if !data.SwitchportPortSecurityAgingStatic.IsNull() && !data.SwitchportPortSecurityAgingStatic.IsUnknown() {
+		if data.SwitchportPortSecurityAgingStatic.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/aging/static", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/aging/static")
+		}
+	}
+	if !data.SwitchportPortSecurityAgingTime.IsNull() && !data.SwitchportPortSecurityAgingTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/aging/time", strconv.FormatInt(data.SwitchportPortSecurityAgingTime.ValueInt64(), 10))
+	}
+	if !data.SwitchportPortSecurityAgingType.IsNull() && !data.SwitchportPortSecurityAgingType.IsUnknown() {
+		if data.SwitchportPortSecurityAgingType.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type")
+		}
+	}
+	if !data.SwitchportPortSecurityAgingTypeInactivity.IsNull() && !data.SwitchportPortSecurityAgingTypeInactivity.IsUnknown() {
+		if data.SwitchportPortSecurityAgingTypeInactivity.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type/inactivity", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/aging/type/inactivity")
+		}
+	}
+	if len(data.SwitchportPortSecurityMaximumRange) > 0 {
+		for _, item := range data.SwitchportPortSecurityMaximumRange {
+			cBody := netconf.Body{}
+			if !item.Range.IsNull() && !item.Range.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "range", strconv.FormatInt(item.Range.ValueInt64(), 10))
+			}
+			if !item.Vlan.IsNull() && !item.Vlan.IsUnknown() {
+				if item.Vlan.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "vlan", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "vlan")
+				}
+			}
+			if !item.VlanAccess.IsNull() && !item.VlanAccess.IsUnknown() {
+				if item.VlanAccess.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "vlan/access", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "vlan/access")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/switchport/port-security/maximum/range", cBody.Res())
+		}
+	}
+	if !data.SwitchportPortSecurityViolationProtect.IsNull() && !data.SwitchportPortSecurityViolationProtect.IsUnknown() {
+		if data.SwitchportPortSecurityViolationProtect.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/violation/protect", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/violation/protect")
+		}
+	}
+	if !data.SwitchportPortSecurityViolationRestrict.IsNull() && !data.SwitchportPortSecurityViolationRestrict.IsUnknown() {
+		if data.SwitchportPortSecurityViolationRestrict.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/violation/restrict", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/violation/restrict")
+		}
+	}
+	if !data.SwitchportPortSecurityViolationShutdown.IsNull() && !data.SwitchportPortSecurityViolationShutdown.IsUnknown() {
+		if data.SwitchportPortSecurityViolationShutdown.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/port-security/violation/shutdown", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/port-security/violation/shutdown")
+		}
+	}
+	if !data.SwitchportAccessVlan.IsNull() && !data.SwitchportAccessVlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/access/vlan", strconv.FormatInt(data.SwitchportAccessVlan.ValueInt64(), 10))
+	}
+	if !data.SwitchportVoiceVlan.IsNull() && !data.SwitchportVoiceVlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/voice/vlan", strconv.FormatInt(data.SwitchportVoiceVlan.ValueInt64(), 10))
+	}
+	if !data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() && !data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/private-vlan/host-association/primary-range", strconv.FormatInt(data.SwitchportPrivateVlanHostAssociationPrimaryRange.ValueInt64(), 10))
+	}
+	if !data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() && !data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/private-vlan/host-association/secondary-range", strconv.FormatInt(data.SwitchportPrivateVlanHostAssociationSecondaryRange.ValueInt64(), 10))
+	}
+	if !data.SwitchportTrunkAllowedVlans.IsNull() && !data.SwitchportTrunkAllowedVlans.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/vlans", data.SwitchportTrunkAllowedVlans.ValueString())
+	}
+	if !data.SwitchportTrunkAllowedVlansNone.IsNull() && !data.SwitchportTrunkAllowedVlansNone.IsUnknown() {
+		if data.SwitchportTrunkAllowedVlansNone.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/none", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/none")
+		}
+	}
+	if !data.SwitchportTrunkAllowedVlansAll.IsNull() && !data.SwitchportTrunkAllowedVlansAll.IsUnknown() {
+		if data.SwitchportTrunkAllowedVlansAll.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/all", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/switchport/trunk/allowed/vlan/all")
+		}
+	}
+	if !data.SwitchportTrunkNativeVlanTag.IsNull() && !data.SwitchportTrunkNativeVlanTag.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/trunk/native/vlan/tag", data.SwitchportTrunkNativeVlanTag.ValueBool())
+	}
+	if !data.SwitchportTrunkNativeVlanVlanId.IsNull() && !data.SwitchportTrunkNativeVlanVlanId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport/trunk/native/vlan/vlan-id", strconv.FormatInt(data.SwitchportTrunkNativeVlanVlanId.ValueInt64(), 10))
+	}
+	if !data.Mab.IsNull() && !data.Mab.IsUnknown() {
+		if data.Mab.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mab", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mab")
+		}
+	}
+	if !data.MabEap.IsNull() && !data.MabEap.IsUnknown() {
+		if data.MabEap.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mab/eap", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mab/eap")
+		}
+	}
+	if !data.AccessSessionClosed.IsNull() && !data.AccessSessionClosed.IsUnknown() {
+		if data.AccessSessionClosed.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/closed", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/access-session/closed")
+		}
+	}
+	if !data.AccessSessionMonitor.IsNull() && !data.AccessSessionMonitor.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/monitor", data.AccessSessionMonitor.ValueBool())
+	}
+	if !data.AccessSessionPortControl.IsNull() && !data.AccessSessionPortControl.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/port-control", data.AccessSessionPortControl.ValueString())
+	}
+	if !data.AccessSessionControlDirection.IsNull() && !data.AccessSessionControlDirection.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/control-direction", data.AccessSessionControlDirection.ValueString())
+	}
+	if !data.AccessSessionHostMode.IsNull() && !data.AccessSessionHostMode.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/host-mode", data.AccessSessionHostMode.ValueString())
+	}
+	if !data.AccessSessionInterfaceTemplateSticky.IsNull() && !data.AccessSessionInterfaceTemplateSticky.IsUnknown() {
+		if data.AccessSessionInterfaceTemplateSticky.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/interface-template/sticky", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/access-session/interface-template/sticky")
+		}
+	}
+	if !data.AccessSessionInterfaceTemplateStickyTimer.IsNull() && !data.AccessSessionInterfaceTemplateStickyTimer.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/access-session/interface-template/sticky/timer", strconv.FormatInt(data.AccessSessionInterfaceTemplateStickyTimer.ValueInt64(), 10))
+	}
+	if !data.AuthenticationPeriodic.IsNull() && !data.AuthenticationPeriodic.IsUnknown() {
+		if data.AuthenticationPeriodic.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/periodic", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/periodic")
+		}
+	}
+	if !data.AuthenticationTimerReauthenticateServer.IsNull() && !data.AuthenticationTimerReauthenticateServer.IsUnknown() {
+		if data.AuthenticationTimerReauthenticateServer.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/timer/reauthenticate/server", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/timer/reauthenticate/server")
+		}
+	}
+	if !data.AuthenticationTimerReauthenticateRange.IsNull() && !data.AuthenticationTimerReauthenticateRange.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/timer/reauthenticate/range", strconv.FormatInt(data.AuthenticationTimerReauthenticateRange.ValueInt64(), 10))
+	}
+	if !data.SpanningTreeBpduguardEnable.IsNull() && !data.SpanningTreeBpduguardEnable.IsUnknown() {
+		if data.SpanningTreeBpduguardEnable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/bpduguard/enable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/bpduguard/enable")
+		}
+	}
+	if !data.SpanningTreeServicePolicy.IsNull() && !data.SpanningTreeServicePolicy.IsUnknown() {
+		if data.SpanningTreeServicePolicy.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/service-policy", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/service-policy")
+		}
+	}
+	if !data.SpanningTreePortfast.IsNull() && !data.SpanningTreePortfast.IsUnknown() {
+		if data.SpanningTreePortfast.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast")
+		}
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() && !data.SpanningTreePortfastDisable.IsUnknown() {
+		if data.SpanningTreePortfastDisable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast/disable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast/disable")
+		}
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() && !data.SpanningTreePortfastEdge.IsUnknown() {
+		if data.SpanningTreePortfastEdge.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast/edge", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast/edge")
+		}
+	}
+	if !data.SpanningTreePortfastNetwork.IsNull() && !data.SpanningTreePortfastNetwork.IsUnknown() {
+		if data.SpanningTreePortfastNetwork.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/spanning-tree/portfast/network", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/spanning-tree/portfast/network")
+		}
+	}
+	if !data.StormControlBroadcastLevelPpsThreshold.IsNull() && !data.StormControlBroadcastLevelPpsThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/pps/threshold", data.StormControlBroadcastLevelPpsThreshold.ValueString())
+	}
+	if !data.StormControlBroadcastLevelBpsThreshold.IsNull() && !data.StormControlBroadcastLevelBpsThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/bps/threshold", strconv.FormatFloat(data.StormControlBroadcastLevelBpsThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlBroadcastLevelThreshold.IsNull() && !data.StormControlBroadcastLevelThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/broadcast/level/threshold", strconv.FormatFloat(data.StormControlBroadcastLevelThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlMulticastLevelPpsThreshold.IsNull() && !data.StormControlMulticastLevelPpsThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/pps/threshold", data.StormControlMulticastLevelPpsThreshold.ValueString())
+	}
+	if !data.StormControlMulticastLevelBpsThreshold.IsNull() && !data.StormControlMulticastLevelBpsThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/bps/threshold", strconv.FormatFloat(data.StormControlMulticastLevelBpsThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlMulticastLevelThreshold.IsNull() && !data.StormControlMulticastLevelThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/multicast/level/threshold", strconv.FormatFloat(data.StormControlMulticastLevelThreshold.ValueFloat64(), 'f', 1, 64))
+	}
+	if !data.StormControlActionShutdown.IsNull() && !data.StormControlActionShutdown.IsUnknown() {
+		if data.StormControlActionShutdown.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/action/shutdown", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/storm-control/action/shutdown")
+		}
+	}
+	if !data.StormControlActionTrap.IsNull() && !data.StormControlActionTrap.IsUnknown() {
+		if data.StormControlActionTrap.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/storm-control/action/trap", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/storm-control/action/trap")
+		}
+	}
+	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
+	}
+	if !data.IpDhcpSnoopingLimitRate.IsNull() && !data.IpDhcpSnoopingLimitRate.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/snooping/limit/rate", strconv.FormatInt(data.IpDhcpSnoopingLimitRate.ValueInt64(), 10))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
+		if data.IpDhcpSnoopingTrust.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/snooping/trust", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/snooping/trust")
+		}
+	}
+	if len(data.IpAccessGroup) > 0 {
+		for _, item := range data.IpAccessGroup {
+			cBody := netconf.Body{}
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
+			}
+			if !item.AccessList.IsNull() && !item.AccessList.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "access-list", item.AccessList.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/access-group", cBody.Res())
+		}
+	}
+	if !data.SubscriberAgingInactivityTimerValue.IsNull() && !data.SubscriberAgingInactivityTimerValue.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber/aging/inactivity-timer/value", strconv.FormatInt(data.SubscriberAgingInactivityTimerValue.ValueInt64(), 10))
+	}
+	if !data.SubscriberAgingInactivityTimerProbe.IsNull() && !data.SubscriberAgingInactivityTimerProbe.IsUnknown() {
+		if data.SubscriberAgingInactivityTimerProbe.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber/aging/inactivity-timer/probe", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber/aging/inactivity-timer/probe")
+		}
+	}
+	if !data.SubscriberAgingProbe.IsNull() && !data.SubscriberAgingProbe.IsUnknown() {
+		if data.SubscriberAgingProbe.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber/aging/probe", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber/aging/probe")
+		}
+	}
+	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.IsUnknown() {
+		if data.DeviceTracking.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/device-tracking", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/device-tracking")
+		}
+	}
+	if len(data.DeviceTrackingAttachPolicy) > 0 {
+		for _, item := range data.DeviceTrackingAttachPolicy {
+			cBody := netconf.Body{}
+			if !item.PolicyName.IsNull() && !item.PolicyName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "policy-name", item.PolicyName.ValueString())
+			}
+			if !item.VlanRange.IsNull() && !item.VlanRange.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vlan/vlan-range", item.VlanRange.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/device-tracking/attach-policy/policy-name", cBody.Res())
+		}
+	}
+	if !data.DeviceTrackingVlanRange.IsNull() && !data.DeviceTrackingVlanRange.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/device-tracking/vlan/vlan-range", data.DeviceTrackingVlanRange.ValueString())
+	}
+	if !data.CtsManual.IsNull() && !data.CtsManual.IsUnknown() {
+		if data.CtsManual.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/cts/manual", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/cts/manual")
+		}
+	}
+	if !data.CtsManualPolicyStaticSgt.IsNull() && !data.CtsManualPolicyStaticSgt.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/cts/manual/policy/static/sgt", strconv.FormatInt(data.CtsManualPolicyStaticSgt.ValueInt64(), 10))
+	}
+	if !data.CtsManualPolicyStaticTrusted.IsNull() && !data.CtsManualPolicyStaticTrusted.IsUnknown() {
+		if data.CtsManualPolicyStaticTrusted.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/cts/manual/policy/static/trusted", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/cts/manual/policy/static/trusted")
+		}
+	}
+	if !data.CtsManualPropagateSgt.IsNull() && !data.CtsManualPropagateSgt.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/cts/manual/propagate/sgt", data.CtsManualPropagateSgt.ValueBool())
+	}
+	if !data.CtsRoleBasedEnforcement.IsNull() && !data.CtsRoleBasedEnforcement.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/cts/role-based/enforcement", data.CtsRoleBasedEnforcement.ValueBool())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -1163,6 +1578,613 @@ func (data *Template) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *Template) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template_name"); value.Exists() && !data.TemplateName.IsNull() {
+		data.TemplateName = types.StringValue(value.String())
+	} else {
+		data.TemplateName = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/pae"); value.Exists() && !data.Dot1xPae.IsNull() {
+		data.Dot1xPae = types.StringValue(value.String())
+	} else {
+		data.Dot1xPae = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-reauth-req"); value.Exists() && !data.Dot1xMaxReauthReq.IsNull() {
+		data.Dot1xMaxReauthReq = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xMaxReauthReq = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-req"); value.Exists() && !data.Dot1xMaxReq.IsNull() {
+		data.Dot1xMaxReq = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xMaxReq = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/tx-period"); value.Exists() && !data.Dot1xTimeoutTxPeriod.IsNull() {
+		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutTxPeriod = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/type/control/subscriber"); value.Exists() && !data.ServicePolicyTypeControlSubscriber.IsNull() {
+		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyTypeControlSubscriber = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/input/policy-map-name"); value.Exists() && !data.ServicePolicyInput.IsNull() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyInput = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/output/policy-map-name"); value.Exists() && !data.ServicePolicyOutput.IsNull() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyOutput = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/template"); value.Exists() && !data.SourceTemplate.IsNull() {
+		data.SourceTemplate = types.StringValue(value.String())
+	} else {
+		data.SourceTemplate = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/mode/trunk"); !data.SwitchportModeTrunk.IsNull() {
+		if value.Exists() {
+			data.SwitchportModeTrunk = types.BoolValue(true)
+		} else {
+			data.SwitchportModeTrunk = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportModeTrunk = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/mode/access"); !data.SwitchportModeAccess.IsNull() {
+		if value.Exists() {
+			data.SwitchportModeAccess = types.BoolValue(true)
+		} else {
+			data.SwitchportModeAccess = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportModeAccess = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/nonegotiate"); !data.SwitchportNonegotiate.IsNull() {
+		if value.Exists() {
+			data.SwitchportNonegotiate = types.BoolValue(true)
+		} else {
+			data.SwitchportNonegotiate = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportNonegotiate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/block/unicast"); !data.SwitchportBlockUnicast.IsNull() {
+		if value.Exists() {
+			data.SwitchportBlockUnicast = types.BoolValue(true)
+		} else {
+			data.SwitchportBlockUnicast = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportBlockUnicast = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security"); !data.SwitchportPortSecurity.IsNull() {
+		if value.Exists() {
+			data.SwitchportPortSecurity = types.BoolValue(true)
+		} else {
+			data.SwitchportPortSecurity = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportPortSecurity = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/static"); !data.SwitchportPortSecurityAgingStatic.IsNull() {
+		if value.Exists() {
+			data.SwitchportPortSecurityAgingStatic = types.BoolValue(true)
+		} else {
+			data.SwitchportPortSecurityAgingStatic = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportPortSecurityAgingStatic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/time"); value.Exists() && !data.SwitchportPortSecurityAgingTime.IsNull() {
+		data.SwitchportPortSecurityAgingTime = types.Int64Value(value.Int())
+	} else {
+		data.SwitchportPortSecurityAgingTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/type"); !data.SwitchportPortSecurityAgingType.IsNull() {
+		if value.Exists() {
+			data.SwitchportPortSecurityAgingType = types.BoolValue(true)
+		} else {
+			data.SwitchportPortSecurityAgingType = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportPortSecurityAgingType = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/type/inactivity"); !data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
+		if value.Exists() {
+			data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(true)
+		} else {
+			data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolNull()
+	}
+	for i := range data.SwitchportPortSecurityMaximumRange {
+		keys := [...]string{"range"}
+		keyValues := [...]string{strconv.FormatInt(data.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/maximum/range").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "range"); value.Exists() && !data.SwitchportPortSecurityMaximumRange[i].Range.IsNull() {
+			data.SwitchportPortSecurityMaximumRange[i].Range = types.Int64Value(value.Int())
+		} else {
+			data.SwitchportPortSecurityMaximumRange[i].Range = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "vlan"); !data.SwitchportPortSecurityMaximumRange[i].Vlan.IsNull() {
+			if value.Exists() {
+				data.SwitchportPortSecurityMaximumRange[i].Vlan = types.BoolValue(true)
+			} else {
+				data.SwitchportPortSecurityMaximumRange[i].Vlan = types.BoolValue(false)
+			}
+		} else {
+			data.SwitchportPortSecurityMaximumRange[i].Vlan = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "vlan/access"); !data.SwitchportPortSecurityMaximumRange[i].VlanAccess.IsNull() {
+			if value.Exists() {
+				data.SwitchportPortSecurityMaximumRange[i].VlanAccess = types.BoolValue(true)
+			} else {
+				data.SwitchportPortSecurityMaximumRange[i].VlanAccess = types.BoolValue(false)
+			}
+		} else {
+			data.SwitchportPortSecurityMaximumRange[i].VlanAccess = types.BoolNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/protect"); !data.SwitchportPortSecurityViolationProtect.IsNull() {
+		if value.Exists() {
+			data.SwitchportPortSecurityViolationProtect = types.BoolValue(true)
+		} else {
+			data.SwitchportPortSecurityViolationProtect = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportPortSecurityViolationProtect = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/restrict"); !data.SwitchportPortSecurityViolationRestrict.IsNull() {
+		if value.Exists() {
+			data.SwitchportPortSecurityViolationRestrict = types.BoolValue(true)
+		} else {
+			data.SwitchportPortSecurityViolationRestrict = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportPortSecurityViolationRestrict = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/shutdown"); !data.SwitchportPortSecurityViolationShutdown.IsNull() {
+		if value.Exists() {
+			data.SwitchportPortSecurityViolationShutdown = types.BoolValue(true)
+		} else {
+			data.SwitchportPortSecurityViolationShutdown = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportPortSecurityViolationShutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/access/vlan"); value.Exists() && !data.SwitchportAccessVlan.IsNull() {
+		data.SwitchportAccessVlan = types.Int64Value(value.Int())
+	} else {
+		data.SwitchportAccessVlan = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/voice/vlan"); value.Exists() && !data.SwitchportVoiceVlan.IsNull() {
+		data.SwitchportVoiceVlan = types.Int64Value(value.Int())
+	} else {
+		data.SwitchportVoiceVlan = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/private-vlan/host-association/primary-range"); value.Exists() && !data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
+		data.SwitchportPrivateVlanHostAssociationPrimaryRange = types.Int64Value(value.Int())
+	} else {
+		data.SwitchportPrivateVlanHostAssociationPrimaryRange = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/private-vlan/host-association/secondary-range"); value.Exists() && !data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
+		data.SwitchportPrivateVlanHostAssociationSecondaryRange = types.Int64Value(value.Int())
+	} else {
+		data.SwitchportPrivateVlanHostAssociationSecondaryRange = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/vlans"); value.Exists() && !data.SwitchportTrunkAllowedVlans.IsNull() {
+		data.SwitchportTrunkAllowedVlans = types.StringValue(value.String())
+	} else {
+		data.SwitchportTrunkAllowedVlans = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/none"); !data.SwitchportTrunkAllowedVlansNone.IsNull() {
+		if value.Exists() {
+			data.SwitchportTrunkAllowedVlansNone = types.BoolValue(true)
+		} else {
+			data.SwitchportTrunkAllowedVlansNone = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/all"); !data.SwitchportTrunkAllowedVlansAll.IsNull() {
+		if value.Exists() {
+			data.SwitchportTrunkAllowedVlansAll = types.BoolValue(true)
+		} else {
+			data.SwitchportTrunkAllowedVlansAll = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/native/vlan/tag"); !data.SwitchportTrunkNativeVlanTag.IsNull() {
+		if value.Exists() {
+			data.SwitchportTrunkNativeVlanTag = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SwitchportTrunkNativeVlanTag = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/native/vlan/vlan-id"); value.Exists() && !data.SwitchportTrunkNativeVlanVlanId.IsNull() {
+		data.SwitchportTrunkNativeVlanVlanId = types.Int64Value(value.Int())
+	} else {
+		data.SwitchportTrunkNativeVlanVlanId = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mab"); !data.Mab.IsNull() {
+		if value.Exists() {
+			data.Mab = types.BoolValue(true)
+		} else {
+			data.Mab = types.BoolValue(false)
+		}
+	} else {
+		data.Mab = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mab/eap"); !data.MabEap.IsNull() {
+		if value.Exists() {
+			data.MabEap = types.BoolValue(true)
+		} else {
+			data.MabEap = types.BoolValue(false)
+		}
+	} else {
+		data.MabEap = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/closed"); !data.AccessSessionClosed.IsNull() {
+		if value.Exists() {
+			data.AccessSessionClosed = types.BoolValue(true)
+		} else {
+			data.AccessSessionClosed = types.BoolValue(false)
+		}
+	} else {
+		data.AccessSessionClosed = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/monitor"); !data.AccessSessionMonitor.IsNull() {
+		if value.Exists() {
+			data.AccessSessionMonitor = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.AccessSessionMonitor = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/port-control"); value.Exists() && !data.AccessSessionPortControl.IsNull() {
+		data.AccessSessionPortControl = types.StringValue(value.String())
+	} else {
+		data.AccessSessionPortControl = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/control-direction"); value.Exists() && !data.AccessSessionControlDirection.IsNull() {
+		data.AccessSessionControlDirection = types.StringValue(value.String())
+	} else {
+		data.AccessSessionControlDirection = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/host-mode"); value.Exists() && !data.AccessSessionHostMode.IsNull() {
+		data.AccessSessionHostMode = types.StringValue(value.String())
+	} else {
+		data.AccessSessionHostMode = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/interface-template/sticky"); !data.AccessSessionInterfaceTemplateSticky.IsNull() {
+		if value.Exists() {
+			data.AccessSessionInterfaceTemplateSticky = types.BoolValue(true)
+		} else {
+			data.AccessSessionInterfaceTemplateSticky = types.BoolValue(false)
+		}
+	} else {
+		data.AccessSessionInterfaceTemplateSticky = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/interface-template/sticky/timer"); value.Exists() && !data.AccessSessionInterfaceTemplateStickyTimer.IsNull() {
+		data.AccessSessionInterfaceTemplateStickyTimer = types.Int64Value(value.Int())
+	} else {
+		data.AccessSessionInterfaceTemplateStickyTimer = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/periodic"); !data.AuthenticationPeriodic.IsNull() {
+		if value.Exists() {
+			data.AuthenticationPeriodic = types.BoolValue(true)
+		} else {
+			data.AuthenticationPeriodic = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationPeriodic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/timer/reauthenticate/server"); !data.AuthenticationTimerReauthenticateServer.IsNull() {
+		if value.Exists() {
+			data.AuthenticationTimerReauthenticateServer = types.BoolValue(true)
+		} else {
+			data.AuthenticationTimerReauthenticateServer = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationTimerReauthenticateServer = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/timer/reauthenticate/range"); value.Exists() && !data.AuthenticationTimerReauthenticateRange.IsNull() {
+		data.AuthenticationTimerReauthenticateRange = types.Int64Value(value.Int())
+	} else {
+		data.AuthenticationTimerReauthenticateRange = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/bpduguard/enable"); !data.SpanningTreeBpduguardEnable.IsNull() {
+		if value.Exists() {
+			data.SpanningTreeBpduguardEnable = types.BoolValue(true)
+		} else {
+			data.SpanningTreeBpduguardEnable = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreeBpduguardEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/service-policy"); !data.SpanningTreeServicePolicy.IsNull() {
+		if value.Exists() {
+			data.SpanningTreeServicePolicy = types.BoolValue(true)
+		} else {
+			data.SpanningTreeServicePolicy = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreeServicePolicy = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast"); !data.SpanningTreePortfast.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfast = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfast = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfast = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/disable"); !data.SpanningTreePortfastDisable.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastDisable = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastDisable = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/edge"); !data.SpanningTreePortfastEdge.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastEdge = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastEdge = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/network"); !data.SpanningTreePortfastNetwork.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastNetwork = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastNetwork = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastNetwork = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/threshold"); value.Exists() && !data.StormControlBroadcastLevelPpsThreshold.IsNull() {
+		data.StormControlBroadcastLevelPpsThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlBroadcastLevelPpsThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/threshold"); value.Exists() && !data.StormControlBroadcastLevelBpsThreshold.IsNull() {
+		data.StormControlBroadcastLevelBpsThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlBroadcastLevelBpsThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold"); value.Exists() && !data.StormControlBroadcastLevelThreshold.IsNull() {
+		data.StormControlBroadcastLevelThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlBroadcastLevelThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/threshold"); value.Exists() && !data.StormControlMulticastLevelPpsThreshold.IsNull() {
+		data.StormControlMulticastLevelPpsThreshold = types.StringValue(value.String())
+	} else {
+		data.StormControlMulticastLevelPpsThreshold = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/threshold"); value.Exists() && !data.StormControlMulticastLevelBpsThreshold.IsNull() {
+		data.StormControlMulticastLevelBpsThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlMulticastLevelBpsThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold"); value.Exists() && !data.StormControlMulticastLevelThreshold.IsNull() {
+		data.StormControlMulticastLevelThreshold = types.Float64Value(value.Float())
+	} else {
+		data.StormControlMulticastLevelThreshold = types.Float64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/shutdown"); !data.StormControlActionShutdown.IsNull() {
+		if value.Exists() {
+			data.StormControlActionShutdown = types.BoolValue(true)
+		} else {
+			data.StormControlActionShutdown = types.BoolValue(false)
+		}
+	} else {
+		data.StormControlActionShutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/trap"); !data.StormControlActionTrap.IsNull() {
+		if value.Exists() {
+			data.StormControlActionTrap = types.BoolValue(true)
+		} else {
+			data.StormControlActionTrap = types.BoolValue(false)
+		}
+	} else {
+		data.StormControlActionTrap = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	} else {
+		data.LoadInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/snooping/limit/rate"); value.Exists() && !data.IpDhcpSnoopingLimitRate.IsNull() {
+		data.IpDhcpSnoopingLimitRate = types.Int64Value(value.Int())
+	} else {
+		data.IpDhcpSnoopingLimitRate = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/snooping/trust"); !data.IpDhcpSnoopingTrust.IsNull() {
+		if value.Exists() {
+			data.IpDhcpSnoopingTrust = types.BoolValue(true)
+		} else {
+			data.IpDhcpSnoopingTrust = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpSnoopingTrust = types.BoolNull()
+	}
+	for i := range data.IpAccessGroup {
+		keys := [...]string{"direction"}
+		keyValues := [...]string{data.IpAccessGroup[i].Direction.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "direction"); value.Exists() && !data.IpAccessGroup[i].Direction.IsNull() {
+			data.IpAccessGroup[i].Direction = types.StringValue(value.String())
+		} else {
+			data.IpAccessGroup[i].Direction = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "access-list"); value.Exists() && !data.IpAccessGroup[i].AccessList.IsNull() {
+			data.IpAccessGroup[i].AccessList = types.StringValue(value.String())
+		} else {
+			data.IpAccessGroup[i].AccessList = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/inactivity-timer/value"); value.Exists() && !data.SubscriberAgingInactivityTimerValue.IsNull() {
+		data.SubscriberAgingInactivityTimerValue = types.Int64Value(value.Int())
+	} else {
+		data.SubscriberAgingInactivityTimerValue = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/inactivity-timer/probe"); !data.SubscriberAgingInactivityTimerProbe.IsNull() {
+		if value.Exists() {
+			data.SubscriberAgingInactivityTimerProbe = types.BoolValue(true)
+		} else {
+			data.SubscriberAgingInactivityTimerProbe = types.BoolValue(false)
+		}
+	} else {
+		data.SubscriberAgingInactivityTimerProbe = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/probe"); !data.SubscriberAgingProbe.IsNull() {
+		if value.Exists() {
+			data.SubscriberAgingProbe = types.BoolValue(true)
+		} else {
+			data.SubscriberAgingProbe = types.BoolValue(false)
+		}
+	} else {
+		data.SubscriberAgingProbe = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking"); !data.DeviceTracking.IsNull() {
+		if value.Exists() {
+			data.DeviceTracking = types.BoolValue(true)
+		} else {
+			data.DeviceTracking = types.BoolValue(false)
+		}
+	} else {
+		data.DeviceTracking = types.BoolNull()
+	}
+	for i := range data.DeviceTrackingAttachPolicy {
+		keys := [...]string{"policy-name"}
+		keyValues := [...]string{data.DeviceTrackingAttachPolicy[i].PolicyName.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/attach-policy/policy-name").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "policy-name"); value.Exists() && !data.DeviceTrackingAttachPolicy[i].PolicyName.IsNull() {
+			data.DeviceTrackingAttachPolicy[i].PolicyName = types.StringValue(value.String())
+		} else {
+			data.DeviceTrackingAttachPolicy[i].PolicyName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vlan/vlan-range"); value.Exists() && !data.DeviceTrackingAttachPolicy[i].VlanRange.IsNull() {
+			data.DeviceTrackingAttachPolicy[i].VlanRange = types.StringValue(value.String())
+		} else {
+			data.DeviceTrackingAttachPolicy[i].VlanRange = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/vlan/vlan-range"); value.Exists() && !data.DeviceTrackingVlanRange.IsNull() {
+		data.DeviceTrackingVlanRange = types.StringValue(value.String())
+	} else {
+		data.DeviceTrackingVlanRange = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual"); !data.CtsManual.IsNull() {
+		if value.Exists() {
+			data.CtsManual = types.BoolValue(true)
+		} else {
+			data.CtsManual = types.BoolValue(false)
+		}
+	} else {
+		data.CtsManual = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/policy/static/sgt"); value.Exists() && !data.CtsManualPolicyStaticSgt.IsNull() {
+		data.CtsManualPolicyStaticSgt = types.Int64Value(value.Int())
+	} else {
+		data.CtsManualPolicyStaticSgt = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/policy/static/trusted"); !data.CtsManualPolicyStaticTrusted.IsNull() {
+		if value.Exists() {
+			data.CtsManualPolicyStaticTrusted = types.BoolValue(true)
+		} else {
+			data.CtsManualPolicyStaticTrusted = types.BoolValue(false)
+		}
+	} else {
+		data.CtsManualPolicyStaticTrusted = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/propagate/sgt"); !data.CtsManualPropagateSgt.IsNull() {
+		if value.Exists() {
+			data.CtsManualPropagateSgt = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.CtsManualPropagateSgt = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/role-based/enforcement"); !data.CtsRoleBasedEnforcement.IsNull() {
+		if value.Exists() {
+			data.CtsRoleBasedEnforcement = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.CtsRoleBasedEnforcement = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -1840,6 +2862,674 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *Template) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/pae"); value.Exists() {
+		data.Dot1xPae = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-reauth-req"); value.Exists() {
+		data.Dot1xMaxReauthReq = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-req"); value.Exists() {
+		data.Dot1xMaxReq = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/tx-period"); value.Exists() {
+		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/type/control/subscriber"); value.Exists() {
+		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/input/policy-map-name"); value.Exists() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/output/policy-map-name"); value.Exists() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/template"); value.Exists() {
+		data.SourceTemplate = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/mode/trunk"); value.Exists() {
+		data.SwitchportModeTrunk = types.BoolValue(true)
+	} else {
+		data.SwitchportModeTrunk = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/mode/access"); value.Exists() {
+		data.SwitchportModeAccess = types.BoolValue(true)
+	} else {
+		data.SwitchportModeAccess = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/nonegotiate"); value.Exists() {
+		data.SwitchportNonegotiate = types.BoolValue(true)
+	} else {
+		data.SwitchportNonegotiate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/block/unicast"); value.Exists() {
+		data.SwitchportBlockUnicast = types.BoolValue(true)
+	} else {
+		data.SwitchportBlockUnicast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security"); value.Exists() {
+		data.SwitchportPortSecurity = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurity = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/static"); value.Exists() {
+		data.SwitchportPortSecurityAgingStatic = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityAgingStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/time"); value.Exists() {
+		data.SwitchportPortSecurityAgingTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/type"); value.Exists() {
+		data.SwitchportPortSecurityAgingType = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityAgingType = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/type/inactivity"); value.Exists() {
+		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/maximum/range"); value.Exists() {
+		data.SwitchportPortSecurityMaximumRange = make([]TemplateSwitchportPortSecurityMaximumRange, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := TemplateSwitchportPortSecurityMaximumRange{}
+			if cValue := helpers.GetFromXPath(v, "range"); cValue.Exists() {
+				item.Range = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan"); cValue.Exists() {
+				item.Vlan = types.BoolValue(true)
+			} else {
+				item.Vlan = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan/access"); cValue.Exists() {
+				item.VlanAccess = types.BoolValue(true)
+			} else {
+				item.VlanAccess = types.BoolValue(false)
+			}
+			data.SwitchportPortSecurityMaximumRange = append(data.SwitchportPortSecurityMaximumRange, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/protect"); value.Exists() {
+		data.SwitchportPortSecurityViolationProtect = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityViolationProtect = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/restrict"); value.Exists() {
+		data.SwitchportPortSecurityViolationRestrict = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityViolationRestrict = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/shutdown"); value.Exists() {
+		data.SwitchportPortSecurityViolationShutdown = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityViolationShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/access/vlan"); value.Exists() {
+		data.SwitchportAccessVlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/voice/vlan"); value.Exists() {
+		data.SwitchportVoiceVlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/private-vlan/host-association/primary-range"); value.Exists() {
+		data.SwitchportPrivateVlanHostAssociationPrimaryRange = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/private-vlan/host-association/secondary-range"); value.Exists() {
+		data.SwitchportPrivateVlanHostAssociationSecondaryRange = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/vlans"); value.Exists() {
+		data.SwitchportTrunkAllowedVlans = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/none"); value.Exists() {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolValue(true)
+	} else {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/all"); value.Exists() {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolValue(true)
+	} else {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/native/vlan/tag"); value.Exists() {
+		data.SwitchportTrunkNativeVlanTag = types.BoolValue(value.Bool())
+	} else {
+		data.SwitchportTrunkNativeVlanTag = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/native/vlan/vlan-id"); value.Exists() {
+		data.SwitchportTrunkNativeVlanVlanId = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mab"); value.Exists() {
+		data.Mab = types.BoolValue(true)
+	} else {
+		data.Mab = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mab/eap"); value.Exists() {
+		data.MabEap = types.BoolValue(true)
+	} else {
+		data.MabEap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/closed"); value.Exists() {
+		data.AccessSessionClosed = types.BoolValue(true)
+	} else {
+		data.AccessSessionClosed = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/monitor"); value.Exists() {
+		data.AccessSessionMonitor = types.BoolValue(value.Bool())
+	} else {
+		data.AccessSessionMonitor = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/port-control"); value.Exists() {
+		data.AccessSessionPortControl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/control-direction"); value.Exists() {
+		data.AccessSessionControlDirection = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/host-mode"); value.Exists() {
+		data.AccessSessionHostMode = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/interface-template/sticky"); value.Exists() {
+		data.AccessSessionInterfaceTemplateSticky = types.BoolValue(true)
+	} else {
+		data.AccessSessionInterfaceTemplateSticky = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/interface-template/sticky/timer"); value.Exists() {
+		data.AccessSessionInterfaceTemplateStickyTimer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/periodic"); value.Exists() {
+		data.AuthenticationPeriodic = types.BoolValue(true)
+	} else {
+		data.AuthenticationPeriodic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/timer/reauthenticate/server"); value.Exists() {
+		data.AuthenticationTimerReauthenticateServer = types.BoolValue(true)
+	} else {
+		data.AuthenticationTimerReauthenticateServer = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/timer/reauthenticate/range"); value.Exists() {
+		data.AuthenticationTimerReauthenticateRange = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/bpduguard/enable"); value.Exists() {
+		data.SpanningTreeBpduguardEnable = types.BoolValue(true)
+	} else {
+		data.SpanningTreeBpduguardEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/service-policy"); value.Exists() {
+		data.SpanningTreeServicePolicy = types.BoolValue(true)
+	} else {
+		data.SpanningTreeServicePolicy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast"); value.Exists() {
+		data.SpanningTreePortfast = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/disable"); value.Exists() {
+		data.SpanningTreePortfastDisable = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/edge"); value.Exists() {
+		data.SpanningTreePortfastEdge = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/network"); value.Exists() {
+		data.SpanningTreePortfastNetwork = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastNetwork = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/threshold"); value.Exists() {
+		data.StormControlBroadcastLevelPpsThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/threshold"); value.Exists() {
+		data.StormControlBroadcastLevelBpsThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold"); value.Exists() {
+		data.StormControlBroadcastLevelThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/threshold"); value.Exists() {
+		data.StormControlMulticastLevelPpsThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/threshold"); value.Exists() {
+		data.StormControlMulticastLevelBpsThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold"); value.Exists() {
+		data.StormControlMulticastLevelThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/shutdown"); value.Exists() {
+		data.StormControlActionShutdown = types.BoolValue(true)
+	} else {
+		data.StormControlActionShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/trap"); value.Exists() {
+		data.StormControlActionTrap = types.BoolValue(true)
+	} else {
+		data.StormControlActionTrap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/snooping/limit/rate"); value.Exists() {
+		data.IpDhcpSnoopingLimitRate = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/snooping/trust"); value.Exists() {
+		data.IpDhcpSnoopingTrust = types.BoolValue(true)
+	} else {
+		data.IpDhcpSnoopingTrust = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group"); value.Exists() {
+		data.IpAccessGroup = make([]TemplateIpAccessGroup, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := TemplateIpAccessGroup{}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			data.IpAccessGroup = append(data.IpAccessGroup, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/inactivity-timer/value"); value.Exists() {
+		data.SubscriberAgingInactivityTimerValue = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/inactivity-timer/probe"); value.Exists() {
+		data.SubscriberAgingInactivityTimerProbe = types.BoolValue(true)
+	} else {
+		data.SubscriberAgingInactivityTimerProbe = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/probe"); value.Exists() {
+		data.SubscriberAgingProbe = types.BoolValue(true)
+	} else {
+		data.SubscriberAgingProbe = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking"); value.Exists() {
+		data.DeviceTracking = types.BoolValue(true)
+	} else {
+		data.DeviceTracking = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/attach-policy/policy-name"); value.Exists() {
+		data.DeviceTrackingAttachPolicy = make([]TemplateDeviceTrackingAttachPolicy, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := TemplateDeviceTrackingAttachPolicy{}
+			if cValue := helpers.GetFromXPath(v, "policy-name"); cValue.Exists() {
+				item.PolicyName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan/vlan-range"); cValue.Exists() {
+				item.VlanRange = types.StringValue(cValue.String())
+			}
+			data.DeviceTrackingAttachPolicy = append(data.DeviceTrackingAttachPolicy, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/vlan/vlan-range"); value.Exists() {
+		data.DeviceTrackingVlanRange = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual"); value.Exists() {
+		data.CtsManual = types.BoolValue(true)
+	} else {
+		data.CtsManual = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/policy/static/sgt"); value.Exists() {
+		data.CtsManualPolicyStaticSgt = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/policy/static/trusted"); value.Exists() {
+		data.CtsManualPolicyStaticTrusted = types.BoolValue(true)
+	} else {
+		data.CtsManualPolicyStaticTrusted = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/propagate/sgt"); value.Exists() {
+		data.CtsManualPropagateSgt = types.BoolValue(value.Bool())
+	} else {
+		data.CtsManualPropagateSgt = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/role-based/enforcement"); value.Exists() {
+		data.CtsRoleBasedEnforcement = types.BoolValue(value.Bool())
+	} else {
+		data.CtsRoleBasedEnforcement = types.BoolNull()
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *TemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/pae"); value.Exists() {
+		data.Dot1xPae = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-reauth-req"); value.Exists() {
+		data.Dot1xMaxReauthReq = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/max-req"); value.Exists() {
+		data.Dot1xMaxReq = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/tx-period"); value.Exists() {
+		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/type/control/subscriber"); value.Exists() {
+		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/input/policy-map-name"); value.Exists() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/output/policy-map-name"); value.Exists() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/template"); value.Exists() {
+		data.SourceTemplate = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/mode/trunk"); value.Exists() {
+		data.SwitchportModeTrunk = types.BoolValue(true)
+	} else {
+		data.SwitchportModeTrunk = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/mode/access"); value.Exists() {
+		data.SwitchportModeAccess = types.BoolValue(true)
+	} else {
+		data.SwitchportModeAccess = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/nonegotiate"); value.Exists() {
+		data.SwitchportNonegotiate = types.BoolValue(true)
+	} else {
+		data.SwitchportNonegotiate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/block/unicast"); value.Exists() {
+		data.SwitchportBlockUnicast = types.BoolValue(true)
+	} else {
+		data.SwitchportBlockUnicast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security"); value.Exists() {
+		data.SwitchportPortSecurity = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurity = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/static"); value.Exists() {
+		data.SwitchportPortSecurityAgingStatic = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityAgingStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/time"); value.Exists() {
+		data.SwitchportPortSecurityAgingTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/type"); value.Exists() {
+		data.SwitchportPortSecurityAgingType = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityAgingType = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/aging/type/inactivity"); value.Exists() {
+		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/maximum/range"); value.Exists() {
+		data.SwitchportPortSecurityMaximumRange = make([]TemplateSwitchportPortSecurityMaximumRange, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := TemplateSwitchportPortSecurityMaximumRange{}
+			if cValue := helpers.GetFromXPath(v, "range"); cValue.Exists() {
+				item.Range = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan"); cValue.Exists() {
+				item.Vlan = types.BoolValue(true)
+			} else {
+				item.Vlan = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan/access"); cValue.Exists() {
+				item.VlanAccess = types.BoolValue(true)
+			} else {
+				item.VlanAccess = types.BoolValue(false)
+			}
+			data.SwitchportPortSecurityMaximumRange = append(data.SwitchportPortSecurityMaximumRange, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/protect"); value.Exists() {
+		data.SwitchportPortSecurityViolationProtect = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityViolationProtect = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/restrict"); value.Exists() {
+		data.SwitchportPortSecurityViolationRestrict = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityViolationRestrict = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/violation/shutdown"); value.Exists() {
+		data.SwitchportPortSecurityViolationShutdown = types.BoolValue(true)
+	} else {
+		data.SwitchportPortSecurityViolationShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/access/vlan"); value.Exists() {
+		data.SwitchportAccessVlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/voice/vlan"); value.Exists() {
+		data.SwitchportVoiceVlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/private-vlan/host-association/primary-range"); value.Exists() {
+		data.SwitchportPrivateVlanHostAssociationPrimaryRange = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/private-vlan/host-association/secondary-range"); value.Exists() {
+		data.SwitchportPrivateVlanHostAssociationSecondaryRange = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/vlans"); value.Exists() {
+		data.SwitchportTrunkAllowedVlans = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/none"); value.Exists() {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolValue(true)
+	} else {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/allowed/vlan/all"); value.Exists() {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolValue(true)
+	} else {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/native/vlan/tag"); value.Exists() {
+		data.SwitchportTrunkNativeVlanTag = types.BoolValue(value.Bool())
+	} else {
+		data.SwitchportTrunkNativeVlanTag = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/trunk/native/vlan/vlan-id"); value.Exists() {
+		data.SwitchportTrunkNativeVlanVlanId = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mab"); value.Exists() {
+		data.Mab = types.BoolValue(true)
+	} else {
+		data.Mab = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mab/eap"); value.Exists() {
+		data.MabEap = types.BoolValue(true)
+	} else {
+		data.MabEap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/closed"); value.Exists() {
+		data.AccessSessionClosed = types.BoolValue(true)
+	} else {
+		data.AccessSessionClosed = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/monitor"); value.Exists() {
+		data.AccessSessionMonitor = types.BoolValue(value.Bool())
+	} else {
+		data.AccessSessionMonitor = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/port-control"); value.Exists() {
+		data.AccessSessionPortControl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/control-direction"); value.Exists() {
+		data.AccessSessionControlDirection = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/host-mode"); value.Exists() {
+		data.AccessSessionHostMode = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/interface-template/sticky"); value.Exists() {
+		data.AccessSessionInterfaceTemplateSticky = types.BoolValue(true)
+	} else {
+		data.AccessSessionInterfaceTemplateSticky = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-session/interface-template/sticky/timer"); value.Exists() {
+		data.AccessSessionInterfaceTemplateStickyTimer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/periodic"); value.Exists() {
+		data.AuthenticationPeriodic = types.BoolValue(true)
+	} else {
+		data.AuthenticationPeriodic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/timer/reauthenticate/server"); value.Exists() {
+		data.AuthenticationTimerReauthenticateServer = types.BoolValue(true)
+	} else {
+		data.AuthenticationTimerReauthenticateServer = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/timer/reauthenticate/range"); value.Exists() {
+		data.AuthenticationTimerReauthenticateRange = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/bpduguard/enable"); value.Exists() {
+		data.SpanningTreeBpduguardEnable = types.BoolValue(true)
+	} else {
+		data.SpanningTreeBpduguardEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/service-policy"); value.Exists() {
+		data.SpanningTreeServicePolicy = types.BoolValue(true)
+	} else {
+		data.SpanningTreeServicePolicy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast"); value.Exists() {
+		data.SpanningTreePortfast = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/disable"); value.Exists() {
+		data.SpanningTreePortfastDisable = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/edge"); value.Exists() {
+		data.SpanningTreePortfastEdge = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/spanning-tree/portfast/network"); value.Exists() {
+		data.SpanningTreePortfastNetwork = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastNetwork = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/pps/threshold"); value.Exists() {
+		data.StormControlBroadcastLevelPpsThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/bps/threshold"); value.Exists() {
+		data.StormControlBroadcastLevelBpsThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/broadcast/level/threshold"); value.Exists() {
+		data.StormControlBroadcastLevelThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/pps/threshold"); value.Exists() {
+		data.StormControlMulticastLevelPpsThreshold = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/bps/threshold"); value.Exists() {
+		data.StormControlMulticastLevelBpsThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/multicast/level/threshold"); value.Exists() {
+		data.StormControlMulticastLevelThreshold = types.Float64Value(value.Float())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/shutdown"); value.Exists() {
+		data.StormControlActionShutdown = types.BoolValue(true)
+	} else {
+		data.StormControlActionShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/storm-control/action/trap"); value.Exists() {
+		data.StormControlActionTrap = types.BoolValue(true)
+	} else {
+		data.StormControlActionTrap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/snooping/limit/rate"); value.Exists() {
+		data.IpDhcpSnoopingLimitRate = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/snooping/trust"); value.Exists() {
+		data.IpDhcpSnoopingTrust = types.BoolValue(true)
+	} else {
+		data.IpDhcpSnoopingTrust = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group"); value.Exists() {
+		data.IpAccessGroup = make([]TemplateIpAccessGroup, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := TemplateIpAccessGroup{}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			data.IpAccessGroup = append(data.IpAccessGroup, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/inactivity-timer/value"); value.Exists() {
+		data.SubscriberAgingInactivityTimerValue = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/inactivity-timer/probe"); value.Exists() {
+		data.SubscriberAgingInactivityTimerProbe = types.BoolValue(true)
+	} else {
+		data.SubscriberAgingInactivityTimerProbe = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber/aging/probe"); value.Exists() {
+		data.SubscriberAgingProbe = types.BoolValue(true)
+	} else {
+		data.SubscriberAgingProbe = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking"); value.Exists() {
+		data.DeviceTracking = types.BoolValue(true)
+	} else {
+		data.DeviceTracking = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/attach-policy/policy-name"); value.Exists() {
+		data.DeviceTrackingAttachPolicy = make([]TemplateDeviceTrackingAttachPolicy, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := TemplateDeviceTrackingAttachPolicy{}
+			if cValue := helpers.GetFromXPath(v, "policy-name"); cValue.Exists() {
+				item.PolicyName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan/vlan-range"); cValue.Exists() {
+				item.VlanRange = types.StringValue(cValue.String())
+			}
+			data.DeviceTrackingAttachPolicy = append(data.DeviceTrackingAttachPolicy, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/vlan/vlan-range"); value.Exists() {
+		data.DeviceTrackingVlanRange = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual"); value.Exists() {
+		data.CtsManual = types.BoolValue(true)
+	} else {
+		data.CtsManual = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/policy/static/sgt"); value.Exists() {
+		data.CtsManualPolicyStaticSgt = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/policy/static/trusted"); value.Exists() {
+		data.CtsManualPolicyStaticTrusted = types.BoolValue(true)
+	} else {
+		data.CtsManualPolicyStaticTrusted = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/manual/propagate/sgt"); value.Exists() {
+		data.CtsManualPropagateSgt = types.BoolValue(value.Bool())
+	} else {
+		data.CtsManualPropagateSgt = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cts/role-based/enforcement"); value.Exists() {
+		data.CtsRoleBasedEnforcement = types.BoolValue(value.Bool())
+	} else {
+		data.CtsRoleBasedEnforcement = types.BoolNull()
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *Template) getDeletedItems(ctx context.Context, state Template) []string {
@@ -2137,6 +3827,320 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, body string) string {
+	b := netconf.NewBody(body)
+	if !state.CtsRoleBasedEnforcement.IsNull() && data.CtsRoleBasedEnforcement.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/role-based/enforcement")
+	}
+	if !state.CtsManualPropagateSgt.IsNull() && data.CtsManualPropagateSgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual/propagate/sgt")
+	}
+	if !state.CtsManualPolicyStaticTrusted.IsNull() && data.CtsManualPolicyStaticTrusted.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual/policy/static/trusted")
+	}
+	if !state.CtsManualPolicyStaticSgt.IsNull() && data.CtsManualPolicyStaticSgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual/policy/static/sgt")
+	}
+	if !state.CtsManual.IsNull() && data.CtsManual.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cts/manual")
+	}
+	if !state.DeviceTrackingVlanRange.IsNull() && data.DeviceTrackingVlanRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/device-tracking/vlan/vlan-range")
+	}
+	for i := range state.DeviceTrackingAttachPolicy {
+		stateKeys := [...]string{"policy-name"}
+		stateKeyValues := [...]string{state.DeviceTrackingAttachPolicy[i].PolicyName.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.DeviceTrackingAttachPolicy[i].PolicyName.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.DeviceTrackingAttachPolicy {
+			found = true
+			if state.DeviceTrackingAttachPolicy[i].PolicyName.ValueString() != data.DeviceTrackingAttachPolicy[j].PolicyName.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.DeviceTrackingAttachPolicy[i].VlanRange.IsNull() && data.DeviceTrackingAttachPolicy[j].VlanRange.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/device-tracking/attach-policy/policy-name%v/vlan/vlan-range", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/device-tracking/attach-policy/policy-name%v", predicates))
+		}
+	}
+	if !state.DeviceTracking.IsNull() && data.DeviceTracking.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/device-tracking")
+	}
+	if !state.SubscriberAgingProbe.IsNull() && data.SubscriberAgingProbe.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber/aging/probe")
+	}
+	if !state.SubscriberAgingInactivityTimerProbe.IsNull() && data.SubscriberAgingInactivityTimerProbe.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber/aging/inactivity-timer/probe")
+	}
+	if !state.SubscriberAgingInactivityTimerValue.IsNull() && data.SubscriberAgingInactivityTimerValue.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber/aging/inactivity-timer/value")
+	}
+	for i := range state.IpAccessGroup {
+		stateKeys := [...]string{"direction"}
+		stateKeyValues := [...]string{state.IpAccessGroup[i].Direction.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpAccessGroup[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpAccessGroup {
+			found = true
+			if state.IpAccessGroup[i].Direction.ValueString() != data.IpAccessGroup[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.IpAccessGroup[i].AccessList.IsNull() && data.IpAccessGroup[j].AccessList.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/access-group%v/access-list", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/access-group%v", predicates))
+		}
+	}
+	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/snooping/trust")
+	}
+	if !state.IpDhcpSnoopingLimitRate.IsNull() && data.IpDhcpSnoopingLimitRate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/snooping/limit/rate")
+	}
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load-interval")
+	}
+	if !state.StormControlActionTrap.IsNull() && data.StormControlActionTrap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/action/trap")
+	}
+	if !state.StormControlActionShutdown.IsNull() && data.StormControlActionShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/action/shutdown")
+	}
+	if !state.StormControlMulticastLevelThreshold.IsNull() && data.StormControlMulticastLevelThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/threshold")
+	}
+	if !state.StormControlMulticastLevelBpsThreshold.IsNull() && data.StormControlMulticastLevelBpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/bps/threshold")
+	}
+	if !state.StormControlMulticastLevelPpsThreshold.IsNull() && data.StormControlMulticastLevelPpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/multicast/level/pps/threshold")
+	}
+	if !state.StormControlBroadcastLevelThreshold.IsNull() && data.StormControlBroadcastLevelThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/threshold")
+	}
+	if !state.StormControlBroadcastLevelBpsThreshold.IsNull() && data.StormControlBroadcastLevelBpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/bps/threshold")
+	}
+	if !state.StormControlBroadcastLevelPpsThreshold.IsNull() && data.StormControlBroadcastLevelPpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/storm-control/broadcast/level/pps/threshold")
+	}
+	if !state.SpanningTreePortfastNetwork.IsNull() && data.SpanningTreePortfastNetwork.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/portfast/network")
+	}
+	if !state.SpanningTreePortfastEdge.IsNull() && data.SpanningTreePortfastEdge.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/portfast/edge")
+	}
+	if !state.SpanningTreePortfastDisable.IsNull() && data.SpanningTreePortfastDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/portfast/disable")
+	}
+	if !state.SpanningTreeServicePolicy.IsNull() && data.SpanningTreeServicePolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/service-policy")
+	}
+	if !state.SpanningTreeBpduguardEnable.IsNull() && data.SpanningTreeBpduguardEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/spanning-tree/bpduguard/enable")
+	}
+	if !state.AuthenticationTimerReauthenticateRange.IsNull() && data.AuthenticationTimerReauthenticateRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/timer/reauthenticate/range")
+	}
+	if !state.AuthenticationTimerReauthenticateServer.IsNull() && data.AuthenticationTimerReauthenticateServer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/timer/reauthenticate/server")
+	}
+	if !state.AuthenticationPeriodic.IsNull() && data.AuthenticationPeriodic.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/periodic")
+	}
+	if !state.AccessSessionInterfaceTemplateStickyTimer.IsNull() && data.AccessSessionInterfaceTemplateStickyTimer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/interface-template/sticky/timer")
+	}
+	if !state.AccessSessionInterfaceTemplateSticky.IsNull() && data.AccessSessionInterfaceTemplateSticky.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/interface-template/sticky")
+	}
+	if !state.AccessSessionHostMode.IsNull() && data.AccessSessionHostMode.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/host-mode")
+	}
+	if !state.AccessSessionControlDirection.IsNull() && data.AccessSessionControlDirection.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/control-direction")
+	}
+	if !state.AccessSessionPortControl.IsNull() && data.AccessSessionPortControl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/port-control")
+	}
+	if !state.AccessSessionMonitor.IsNull() && data.AccessSessionMonitor.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/monitor")
+	}
+	if !state.AccessSessionClosed.IsNull() && data.AccessSessionClosed.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/access-session/closed")
+	}
+	if !state.MabEap.IsNull() && data.MabEap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mab/eap")
+	}
+	if !state.Mab.IsNull() && data.Mab.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mab")
+	}
+	if !state.SwitchportTrunkNativeVlanVlanId.IsNull() && data.SwitchportTrunkNativeVlanVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/native/vlan/vlan-id")
+	}
+	if !state.SwitchportTrunkNativeVlanTag.IsNull() && data.SwitchportTrunkNativeVlanTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/native/vlan/tag")
+	}
+	if !state.SwitchportTrunkAllowedVlansAll.IsNull() && data.SwitchportTrunkAllowedVlansAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/all")
+	}
+	if !state.SwitchportTrunkAllowedVlansNone.IsNull() && data.SwitchportTrunkAllowedVlansNone.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/none")
+	}
+	if !state.SwitchportTrunkAllowedVlans.IsNull() && data.SwitchportTrunkAllowedVlans.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/vlans")
+	}
+	if !state.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
+	}
+	if !state.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
+	}
+	if !state.SwitchportVoiceVlan.IsNull() && data.SwitchportVoiceVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/voice/vlan")
+	}
+	if !state.SwitchportAccessVlan.IsNull() && data.SwitchportAccessVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/access/vlan")
+	}
+	if !state.SwitchportPortSecurityViolationShutdown.IsNull() && data.SwitchportPortSecurityViolationShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/violation/shutdown")
+	}
+	if !state.SwitchportPortSecurityViolationRestrict.IsNull() && data.SwitchportPortSecurityViolationRestrict.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/violation/restrict")
+	}
+	if !state.SwitchportPortSecurityViolationProtect.IsNull() && data.SwitchportPortSecurityViolationProtect.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/violation/protect")
+	}
+	for i := range state.SwitchportPortSecurityMaximumRange {
+		stateKeys := [...]string{"range"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SwitchportPortSecurityMaximumRange {
+			found = true
+			if state.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64() != data.SwitchportPortSecurityMaximumRange[j].Range.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.SwitchportPortSecurityMaximumRange[i].VlanAccess.IsNull() && data.SwitchportPortSecurityMaximumRange[j].VlanAccess.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/switchport/port-security/maximum/range%v/vlan/access", predicates))
+				}
+				if !state.SwitchportPortSecurityMaximumRange[i].Vlan.IsNull() && data.SwitchportPortSecurityMaximumRange[j].Vlan.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/switchport/port-security/maximum/range%v/vlan", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/switchport/port-security/maximum/range%v", predicates))
+		}
+	}
+	if !state.SwitchportPortSecurityAgingTypeInactivity.IsNull() && data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
+	}
+	if !state.SwitchportPortSecurityAgingType.IsNull() && data.SwitchportPortSecurityAgingType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
+	}
+	if !state.SwitchportPortSecurityAgingTime.IsNull() && data.SwitchportPortSecurityAgingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/time")
+	}
+	if !state.SwitchportPortSecurityAgingStatic.IsNull() && data.SwitchportPortSecurityAgingStatic.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/static")
+	}
+	if !state.SwitchportPortSecurity.IsNull() && data.SwitchportPortSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security")
+	}
+	if !state.SwitchportBlockUnicast.IsNull() && data.SwitchportBlockUnicast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/block/unicast")
+	}
+	if !state.SwitchportNonegotiate.IsNull() && data.SwitchportNonegotiate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/nonegotiate")
+	}
+	if !state.SwitchportModeAccess.IsNull() && data.SwitchportModeAccess.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/mode/access")
+	}
+	if !state.SwitchportModeTrunk.IsNull() && data.SwitchportModeTrunk.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/mode/trunk")
+	}
+	if !state.SourceTemplate.IsNull() && data.SourceTemplate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/template")
+	}
+	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/output/policy-map-name")
+	}
+	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/input/policy-map-name")
+	}
+	if !state.ServicePolicyTypeControlSubscriber.IsNull() && data.ServicePolicyTypeControlSubscriber.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/type/control/subscriber")
+	}
+	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/tx-period")
+	}
+	if !state.Dot1xMaxReq.IsNull() && data.Dot1xMaxReq.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/max-req")
+	}
+	if !state.Dot1xMaxReauthReq.IsNull() && data.Dot1xMaxReauthReq.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/max-reauth-req")
+	}
+	if !state.Dot1xPae.IsNull() && data.Dot1xPae.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/pae")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -2484,3 +4488,245 @@ func (data *Template) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *Template) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.CtsRoleBasedEnforcement.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cts/role-based/enforcement")
+	}
+	if !data.CtsManualPropagateSgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cts/manual/propagate/sgt")
+	}
+	if !data.CtsManualPolicyStaticTrusted.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cts/manual/policy/static/trusted")
+	}
+	if !data.CtsManualPolicyStaticSgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cts/manual/policy/static/sgt")
+	}
+	if !data.CtsManual.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cts/manual")
+	}
+	if !data.DeviceTrackingVlanRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/device-tracking/vlan/vlan-range")
+	}
+	for i := range data.DeviceTrackingAttachPolicy {
+		keys := [...]string{"policy-name"}
+		keyValues := [...]string{data.DeviceTrackingAttachPolicy[i].PolicyName.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/device-tracking/attach-policy/policy-name%v", predicates))
+	}
+	if !data.DeviceTracking.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/device-tracking")
+	}
+	if !data.SubscriberAgingProbe.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/subscriber/aging/probe")
+	}
+	if !data.SubscriberAgingInactivityTimerProbe.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/subscriber/aging/inactivity-timer/probe")
+	}
+	if !data.SubscriberAgingInactivityTimerValue.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/subscriber/aging/inactivity-timer/value")
+	}
+	for i := range data.IpAccessGroup {
+		keys := [...]string{"direction"}
+		keyValues := [...]string{data.IpAccessGroup[i].Direction.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/access-group%v", predicates))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/snooping/trust")
+	}
+	if !data.IpDhcpSnoopingLimitRate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/snooping/limit/rate")
+	}
+	if !data.LoadInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/load-interval")
+	}
+	if !data.StormControlActionTrap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/action/trap")
+	}
+	if !data.StormControlActionShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/action/shutdown")
+	}
+	if !data.StormControlMulticastLevelThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/threshold")
+	}
+	if !data.StormControlMulticastLevelBpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/bps/threshold")
+	}
+	if !data.StormControlMulticastLevelPpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/multicast/level/pps/threshold")
+	}
+	if !data.StormControlBroadcastLevelThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/threshold")
+	}
+	if !data.StormControlBroadcastLevelBpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/bps/threshold")
+	}
+	if !data.StormControlBroadcastLevelPpsThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/storm-control/broadcast/level/pps/threshold")
+	}
+	if !data.SpanningTreePortfastNetwork.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/spanning-tree/portfast/network")
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/spanning-tree/portfast/edge")
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/spanning-tree/portfast/disable")
+	}
+	if !data.SpanningTreeServicePolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/spanning-tree/service-policy")
+	}
+	if !data.SpanningTreeBpduguardEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/spanning-tree/bpduguard/enable")
+	}
+	if !data.AuthenticationTimerReauthenticateRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/timer/reauthenticate/range")
+	}
+	if !data.AuthenticationTimerReauthenticateServer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/timer/reauthenticate/server")
+	}
+	if !data.AuthenticationPeriodic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/periodic")
+	}
+	if !data.AccessSessionInterfaceTemplateStickyTimer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/interface-template/sticky/timer")
+	}
+	if !data.AccessSessionInterfaceTemplateSticky.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/interface-template/sticky")
+	}
+	if !data.AccessSessionHostMode.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/host-mode")
+	}
+	if !data.AccessSessionControlDirection.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/control-direction")
+	}
+	if !data.AccessSessionPortControl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/port-control")
+	}
+	if !data.AccessSessionMonitor.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/monitor")
+	}
+	if !data.AccessSessionClosed.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/access-session/closed")
+	}
+	if !data.MabEap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mab/eap")
+	}
+	if !data.Mab.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mab")
+	}
+	if !data.SwitchportTrunkNativeVlanVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/trunk/native/vlan/vlan-id")
+	}
+	if !data.SwitchportTrunkNativeVlanTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/trunk/native/vlan/tag")
+	}
+	if !data.SwitchportTrunkAllowedVlansAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/trunk/allowed/vlan/all")
+	}
+	if !data.SwitchportTrunkAllowedVlansNone.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/trunk/allowed/vlan/none")
+	}
+	if !data.SwitchportTrunkAllowedVlans.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/trunk/allowed/vlan/vlans")
+	}
+	if !data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association")
+	}
+	if !data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association")
+	}
+	if !data.SwitchportVoiceVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/voice/vlan")
+	}
+	if !data.SwitchportAccessVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/access/vlan")
+	}
+	if !data.SwitchportPortSecurityViolationShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/violation/shutdown")
+	}
+	if !data.SwitchportPortSecurityViolationRestrict.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/violation/restrict")
+	}
+	if !data.SwitchportPortSecurityViolationProtect.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/violation/protect")
+	}
+	for i := range data.SwitchportPortSecurityMaximumRange {
+		keys := [...]string{"range"}
+		keyValues := [...]string{strconv.FormatInt(data.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/switchport/port-security/maximum/range%v", predicates))
+	}
+	if !data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type")
+	}
+	if !data.SwitchportPortSecurityAgingType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type")
+	}
+	if !data.SwitchportPortSecurityAgingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/time")
+	}
+	if !data.SwitchportPortSecurityAgingStatic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/static")
+	}
+	if !data.SwitchportPortSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security")
+	}
+	if !data.SwitchportBlockUnicast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/block/unicast")
+	}
+	if !data.SwitchportNonegotiate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/nonegotiate")
+	}
+	if !data.SwitchportModeAccess.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/mode/access")
+	}
+	if !data.SwitchportModeTrunk.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/mode/trunk")
+	}
+	if !data.SourceTemplate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/source/template")
+	}
+	if !data.ServicePolicyOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/service-policy/output/policy-map-name")
+	}
+	if !data.ServicePolicyInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/service-policy/input/policy-map-name")
+	}
+	if !data.ServicePolicyTypeControlSubscriber.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/service-policy/type/control/subscriber")
+	}
+	if !data.Dot1xTimeoutTxPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/timeout/tx-period")
+	}
+	if !data.Dot1xMaxReq.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/max-req")
+	}
+	if !data.Dot1xMaxReauthReq.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/max-reauth-req")
+	}
+	if !data.Dot1xPae.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/pae")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

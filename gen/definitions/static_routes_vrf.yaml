@@ -1,6 +1,6 @@
 ---
 name: Static Routes VRF
-path: Cisco-IOS-XE-native:native/ip/route/vrf=%s
+path: /Cisco-IOS-XE-native:native/ip/route/vrf[name=%s]
 no_delete_attributes: true
 skip_minimum_test: true
 doc_category: Routing
@@ -62,7 +62,7 @@ attributes:
             exclude_test: true 
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

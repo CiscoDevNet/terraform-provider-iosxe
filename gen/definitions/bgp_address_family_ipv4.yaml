@@ -1,6 +1,6 @@
 ---
 name: BGP Address Family IPv4
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=%s]
 doc_category: BGP
 attributes:
   - yang_name: id
@@ -85,7 +85,7 @@ attributes:
     example: 2
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
       - name: id
         value: 65000

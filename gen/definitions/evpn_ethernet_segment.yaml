@@ -1,6 +1,6 @@
 ---
 name: EVPN Ethernet Segment
-path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=%v
+path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=%v]
 test_tags: [C9000V]
 doc_category: EVPN
 attributes:

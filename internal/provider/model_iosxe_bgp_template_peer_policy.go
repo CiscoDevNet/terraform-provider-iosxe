@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -90,6 +93,19 @@ func (data BGPTemplatePeerPolicy) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data BGPTemplatePeerPolicy) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-policy[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data BGPTemplatePeerPolicyData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-policy[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -130,6 +146,54 @@ func (data BGPTemplatePeerPolicy) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data BGPTemplatePeerPolicy) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
+		if data.RouteReflectorClient.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/route-reflector-client", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/route-reflector-client")
+		}
+	}
+	if !data.SendCommunity.IsNull() && !data.SendCommunity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/send-community/send-community-where", data.SendCommunity.ValueString())
+	}
+	if len(data.RouteMaps) > 0 {
+		for _, item := range data.RouteMaps {
+			cBody := netconf.Body{}
+			if !item.InOut.IsNull() && !item.InOut.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "inout", item.InOut.ValueString())
+			}
+			if !item.RouteMapName.IsNull() && !item.RouteMapName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "route-map-name", item.RouteMapName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-map1", cBody.Res())
+		}
+	}
+	if !data.AllowasInAsNumber.IsNull() && !data.AllowasInAsNumber.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/allowas-in/as-number", strconv.FormatInt(data.AllowasInAsNumber.ValueInt64(), 10))
+	}
+	if !data.AsOverrideSplitHorizon.IsNull() && !data.AsOverrideSplitHorizon.IsUnknown() {
+		if data.AsOverrideSplitHorizon.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/as-override/split-horizon", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/as-override/split-horizon")
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -208,6 +272,80 @@ func (data *BGPTemplatePeerPolicy) updateFromBody(ctx context.Context, res gjson
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *BGPTemplatePeerPolicy) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); !data.RouteReflectorClient.IsNull() {
+		if value.Exists() {
+			data.RouteReflectorClient = types.BoolValue(true)
+		} else {
+			data.RouteReflectorClient = types.BoolValue(false)
+		}
+	} else {
+		data.RouteReflectorClient = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/send-community/send-community-where"); value.Exists() && !data.SendCommunity.IsNull() {
+		data.SendCommunity = types.StringValue(value.String())
+	} else {
+		data.SendCommunity = types.StringNull()
+	}
+	for i := range data.RouteMaps {
+		keys := [...]string{"inout"}
+		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map1").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "inout"); value.Exists() && !data.RouteMaps[i].InOut.IsNull() {
+			data.RouteMaps[i].InOut = types.StringValue(value.String())
+		} else {
+			data.RouteMaps[i].InOut = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "route-map-name"); value.Exists() && !data.RouteMaps[i].RouteMapName.IsNull() {
+			data.RouteMaps[i].RouteMapName = types.StringValue(value.String())
+		} else {
+			data.RouteMaps[i].RouteMapName = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/allowas-in/as-number"); value.Exists() && !data.AllowasInAsNumber.IsNull() {
+		data.AllowasInAsNumber = types.Int64Value(value.Int())
+	} else {
+		data.AllowasInAsNumber = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/as-override/split-horizon"); !data.AsOverrideSplitHorizon.IsNull() {
+		if value.Exists() {
+			data.AsOverrideSplitHorizon = types.BoolValue(true)
+		} else {
+			data.AsOverrideSplitHorizon = types.BoolValue(false)
+		}
+	} else {
+		data.AsOverrideSplitHorizon = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -291,6 +429,80 @@ func (data *BGPTemplatePeerPolicyData) fromBody(ctx context.Context, res gjson.R
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *BGPTemplatePeerPolicy) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); value.Exists() {
+		data.RouteReflectorClient = types.BoolValue(true)
+	} else {
+		data.RouteReflectorClient = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/send-community/send-community-where"); value.Exists() {
+		data.SendCommunity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map1"); value.Exists() {
+		data.RouteMaps = make([]BGPTemplatePeerPolicyRouteMaps, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BGPTemplatePeerPolicyRouteMaps{}
+			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
+				item.InOut = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMaps = append(data.RouteMaps, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/allowas-in/as-number"); value.Exists() {
+		data.AllowasInAsNumber = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/as-override/split-horizon"); value.Exists() {
+		data.AsOverrideSplitHorizon = types.BoolValue(true)
+	} else {
+		data.AsOverrideSplitHorizon = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *BGPTemplatePeerPolicyData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); value.Exists() {
+		data.RouteReflectorClient = types.BoolValue(true)
+	} else {
+		data.RouteReflectorClient = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/send-community/send-community-where"); value.Exists() {
+		data.SendCommunity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map1"); value.Exists() {
+		data.RouteMaps = make([]BGPTemplatePeerPolicyRouteMaps, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BGPTemplatePeerPolicyRouteMaps{}
+			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
+				item.InOut = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMaps = append(data.RouteMaps, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/allowas-in/as-number"); value.Exists() {
+		data.AllowasInAsNumber = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/as-override/split-horizon"); value.Exists() {
+		data.AsOverrideSplitHorizon = types.BoolValue(true)
+	} else {
+		data.AsOverrideSplitHorizon = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *BGPTemplatePeerPolicy) getDeletedItems(ctx context.Context, state BGPTemplatePeerPolicy) []string {
@@ -341,6 +553,62 @@ func (data *BGPTemplatePeerPolicy) getDeletedItems(ctx context.Context, state BG
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *BGPTemplatePeerPolicy) addDeletedItemsXML(ctx context.Context, state BGPTemplatePeerPolicy, body string) string {
+	b := netconf.NewBody(body)
+	if !state.AsOverrideSplitHorizon.IsNull() && data.AsOverrideSplitHorizon.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/as-override/split-horizon")
+	}
+	if !state.AllowasInAsNumber.IsNull() && data.AllowasInAsNumber.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/allowas-in/as-number")
+	}
+	for i := range state.RouteMaps {
+		stateKeys := [...]string{"inout"}
+		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RouteMaps[i].InOut.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RouteMaps {
+			found = true
+			if state.RouteMaps[i].InOut.ValueString() != data.RouteMaps[j].InOut.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map1%v/route-map-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map1%v", predicates))
+		}
+	}
+	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
+	}
+	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-reflector-client")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *BGPTemplatePeerPolicy) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -384,3 +652,36 @@ func (data *BGPTemplatePeerPolicy) getDeletePaths(ctx context.Context) []string 
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *BGPTemplatePeerPolicy) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.AsOverrideSplitHorizon.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/as-override/split-horizon")
+	}
+	if !data.AllowasInAsNumber.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/allowas-in/as-number")
+	}
+	for i := range data.RouteMaps {
+		keys := [...]string{"inout"}
+		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/route-map1%v", predicates))
+	}
+	if !data.SendCommunity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/send-community/send-community-where")
+	}
+	if !data.RouteReflectorClient.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/route-reflector-client")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

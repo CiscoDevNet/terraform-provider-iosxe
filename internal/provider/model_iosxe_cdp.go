@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -88,6 +91,17 @@ func (data CDP) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data CDP) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/cdp"
+	return path
+}
+
+func (data CDPData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/cdp"
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -143,6 +157,75 @@ func (data CDP) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CDP) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Holdtime.IsNull() && !data.Holdtime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime", strconv.FormatInt(data.Holdtime.ValueInt64(), 10))
+	}
+	if !data.Timer.IsNull() && !data.Timer.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:timer", strconv.FormatInt(data.Timer.ValueInt64(), 10))
+	}
+	if !data.Run.IsNull() && !data.Run.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable", data.Run.ValueBool())
+	}
+	if !data.FilterTlvList.IsNull() && !data.FilterTlvList.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list", data.FilterTlvList.ValueString())
+	}
+	if len(data.TlvLists) > 0 {
+		for _, item := range data.TlvLists {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.VtpMgmtDomain.IsNull() && !item.VtpMgmtDomain.IsUnknown() {
+				if item.VtpMgmtDomain.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "vtp-mgmt-domain", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "vtp-mgmt-domain")
+				}
+			}
+			if !item.Cos.IsNull() && !item.Cos.IsUnknown() {
+				if item.Cos.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "cos", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "cos")
+				}
+			}
+			if !item.Duplex.IsNull() && !item.Duplex.IsUnknown() {
+				if item.Duplex.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "duplex", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "duplex")
+				}
+			}
+			if !item.Trust.IsNull() && !item.Trust.IsUnknown() {
+				if item.Trust.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "trust", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "trust")
+				}
+			}
+			if !item.Version.IsNull() && !item.Version.IsUnknown() {
+				if item.Version.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "version", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "version")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -250,6 +333,109 @@ func (data *CDP) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() && !data.Holdtime.IsNull() {
+		data.Holdtime = types.Int64Value(value.Int())
+	} else {
+		data.Holdtime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() && !data.Timer.IsNull() {
+		data.Timer = types.Int64Value(value.Int())
+	} else {
+		data.Timer = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); !data.Run.IsNull() {
+		if value.Exists() {
+			data.Run = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Run = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() && !data.FilterTlvList.IsNull() {
+		data.FilterTlvList = types.StringValue(value.String())
+	} else {
+		data.FilterTlvList = types.StringNull()
+	}
+	for i := range data.TlvLists {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.TlvLists[i].Name.IsNull() {
+			data.TlvLists[i].Name = types.StringValue(value.String())
+		} else {
+			data.TlvLists[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vtp-mgmt-domain"); !data.TlvLists[i].VtpMgmtDomain.IsNull() {
+			if value.Exists() {
+				data.TlvLists[i].VtpMgmtDomain = types.BoolValue(true)
+			} else {
+				data.TlvLists[i].VtpMgmtDomain = types.BoolValue(false)
+			}
+		} else {
+			data.TlvLists[i].VtpMgmtDomain = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "cos"); !data.TlvLists[i].Cos.IsNull() {
+			if value.Exists() {
+				data.TlvLists[i].Cos = types.BoolValue(true)
+			} else {
+				data.TlvLists[i].Cos = types.BoolValue(false)
+			}
+		} else {
+			data.TlvLists[i].Cos = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "duplex"); !data.TlvLists[i].Duplex.IsNull() {
+			if value.Exists() {
+				data.TlvLists[i].Duplex = types.BoolValue(true)
+			} else {
+				data.TlvLists[i].Duplex = types.BoolValue(false)
+			}
+		} else {
+			data.TlvLists[i].Duplex = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "trust"); !data.TlvLists[i].Trust.IsNull() {
+			if value.Exists() {
+				data.TlvLists[i].Trust = types.BoolValue(true)
+			} else {
+				data.TlvLists[i].Trust = types.BoolValue(false)
+			}
+		} else {
+			data.TlvLists[i].Trust = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "version"); !data.TlvLists[i].Version.IsNull() {
+			if value.Exists() {
+				data.TlvLists[i].Version = types.BoolValue(true)
+			} else {
+				data.TlvLists[i].Version = types.BoolValue(false)
+			}
+		} else {
+			data.TlvLists[i].Version = types.BoolNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -373,6 +559,120 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() {
+		data.Holdtime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() {
+		data.Timer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
+		data.Run = types.BoolValue(value.Bool())
+	} else {
+		data.Run = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
+		data.FilterTlvList = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
+		data.TlvLists = make([]CDPTlvLists, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CDPTlvLists{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vtp-mgmt-domain"); cValue.Exists() {
+				item.VtpMgmtDomain = types.BoolValue(true)
+			} else {
+				item.VtpMgmtDomain = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "cos"); cValue.Exists() {
+				item.Cos = types.BoolValue(true)
+			} else {
+				item.Cos = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "duplex"); cValue.Exists() {
+				item.Duplex = types.BoolValue(true)
+			} else {
+				item.Duplex = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "trust"); cValue.Exists() {
+				item.Trust = types.BoolValue(true)
+			} else {
+				item.Trust = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "version"); cValue.Exists() {
+				item.Version = types.BoolValue(true)
+			} else {
+				item.Version = types.BoolValue(false)
+			}
+			data.TlvLists = append(data.TlvLists, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() {
+		data.Holdtime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() {
+		data.Timer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
+		data.Run = types.BoolValue(value.Bool())
+	} else {
+		data.Run = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
+		data.FilterTlvList = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
+		data.TlvLists = make([]CDPTlvLists, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CDPTlvLists{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vtp-mgmt-domain"); cValue.Exists() {
+				item.VtpMgmtDomain = types.BoolValue(true)
+			} else {
+				item.VtpMgmtDomain = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "cos"); cValue.Exists() {
+				item.Cos = types.BoolValue(true)
+			} else {
+				item.Cos = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "duplex"); cValue.Exists() {
+				item.Duplex = types.BoolValue(true)
+			} else {
+				item.Duplex = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "trust"); cValue.Exists() {
+				item.Trust = types.BoolValue(true)
+			} else {
+				item.Trust = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "version"); cValue.Exists() {
+				item.Version = types.BoolValue(true)
+			} else {
+				item.Version = types.BoolValue(false)
+			}
+			data.TlvLists = append(data.TlvLists, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CDP) getDeletedItems(ctx context.Context, state CDP) []string {
@@ -435,6 +735,74 @@ func (data *CDP) getDeletedItems(ctx context.Context, state CDP) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CDP) addDeletedItemsXML(ctx context.Context, state CDP, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.TlvLists {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.TlvLists[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.TlvLists[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.TlvLists {
+			found = true
+			if state.TlvLists[i].Name.ValueString() != data.TlvLists[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.TlvLists[i].Version.IsNull() && data.TlvLists[j].Version.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/version", predicates))
+				}
+				if !state.TlvLists[i].Trust.IsNull() && data.TlvLists[j].Trust.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/trust", predicates))
+				}
+				if !state.TlvLists[i].Duplex.IsNull() && data.TlvLists[j].Duplex.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/duplex", predicates))
+				}
+				if !state.TlvLists[i].Cos.IsNull() && data.TlvLists[j].Cos.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/cos", predicates))
+				}
+				if !state.TlvLists[i].VtpMgmtDomain.IsNull() && data.TlvLists[j].VtpMgmtDomain.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/vtp-mgmt-domain", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v", predicates))
+		}
+	}
+	if !state.FilterTlvList.IsNull() && data.FilterTlvList.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list")
+	}
+	if !state.Run.IsNull() && data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:run-enable")
+	}
+	if !state.Timer.IsNull() && data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:timer")
+	}
+	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:holdtime")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CDP) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -490,3 +858,36 @@ func (data *CDP) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CDP) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.TlvLists {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v", predicates))
+	}
+	if !data.FilterTlvList.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list")
+	}
+	if !data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable")
+	}
+	if !data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:timer")
+	}
+	if !data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

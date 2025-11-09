@@ -1,6 +1,6 @@
 ---
 name: BGP Template Peer Policy
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/template/peer-policy=%v
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-policy[name=%v]
 doc_category: BGP
 attributes:
   - yang_name: id
@@ -30,11 +30,11 @@ attributes:
     tf_name: as_override_split_horizon
     example: true
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
       - name: id
         value: 65000
-  - path: Cisco-IOS-XE-native:native/route-map=ROUTEMAP_1
+  - path: /Cisco-IOS-XE-native:native/route-map[name=ROUTEMAP_1]
     attributes:
       - name: name
         value: ROUTEMAP_1

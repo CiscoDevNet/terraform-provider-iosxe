@@ -23,42 +23,49 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/netascode/go-netconf"
 	"github.com/netascode/go-restconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
 
-type Restconf struct {
-	Device     types.String   `tfsdk:"device"`
-	Id         types.String   `tfsdk:"id"`
-	Path       types.String   `tfsdk:"path"`
-	Delete     types.Bool     `tfsdk:"delete"`
-	Attributes types.Map      `tfsdk:"attributes"`
-	Lists      []RestconfList `tfsdk:"lists"`
+type Yang struct {
+	Device     types.String `tfsdk:"device"`
+	Id         types.String `tfsdk:"id"`
+	Path       types.String `tfsdk:"path"`
+	Delete     types.Bool   `tfsdk:"delete"`
+	Attributes types.Map    `tfsdk:"attributes"`
+	Lists      []YangList   `tfsdk:"lists"`
 }
 
-type RestconfList struct {
+type YangList struct {
 	Name   types.String `tfsdk:"name"`
 	Key    types.String `tfsdk:"key"`
 	Items  []types.Map  `tfsdk:"items"`
 	Values types.List   `tfsdk:"values"`
 }
 
-type RestconfDataSourceModel struct {
+type YangDataSourceModel struct {
 	Device     types.String `tfsdk:"device"`
 	Id         types.String `tfsdk:"id"`
 	Path       types.String `tfsdk:"path"`
 	Attributes types.Map    `tfsdk:"attributes"`
 }
 
-func (data Restconf) getPath() string {
-	return data.Path.ValueString()
+func (data Yang) getPath() string {
+	return helpers.ConvertXPathToRestconfPath(data.Path.ValueString())
+}
+
+func (data YangDataSourceModel) getPath() string {
+	return helpers.ConvertXPathToRestconfPath(data.Path.ValueString())
 }
 
 // if last path element has a key -> remove it
-func (data Restconf) getPathShort() string {
-	path := data.Path.ValueString()
+func (data Yang) getPathShort() string {
+	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
 	if len(matches) <= 1 {
@@ -67,20 +74,20 @@ func (data Restconf) getPathShort() string {
 	return matches[1]
 }
 
-func (data Restconf) toBody(ctx context.Context) string {
-	body := `{"` + helpers.LastElement(data.Path.ValueString()) + `":{}}`
+func (data Yang) toBody(ctx context.Context) string {
+	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 
 	var attributes map[string]string
 	data.Attributes.ElementsAs(ctx, &attributes, false)
 
 	for attr, value := range attributes {
 		attr = strings.ReplaceAll(attr, "/", ".")
-		body, _ = sjson.Set(body, helpers.LastElement(data.Path.ValueString())+"."+attr, value)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+attr, value)
 	}
 	for i := range data.Lists {
 		listName := strings.ReplaceAll(data.Lists[i].Name.ValueString(), "/", ".")
 		if len(data.Lists[i].Items) > 0 {
-			body, _ = sjson.Set(body, helpers.LastElement(data.Path.ValueString())+"."+listName, []interface{}{})
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+listName, []interface{}{})
 			for ii := range data.Lists[i].Items {
 				var listAttributes map[string]string
 				data.Lists[i].Items[ii].ElementsAs(ctx, &listAttributes, false)
@@ -89,19 +96,49 @@ func (data Restconf) toBody(ctx context.Context) string {
 					attr = strings.ReplaceAll(attr, "/", ".")
 					attrs = attrs.Set(attr, value)
 				}
-				body, _ = sjson.SetRaw(body, helpers.LastElement(data.Path.ValueString())+"."+listName+".-1", attrs.Str)
+				body, _ = sjson.SetRaw(body, helpers.LastElement(data.getPath())+"."+listName+".-1", attrs.Str)
 			}
 		} else if len(data.Lists[i].Values.Elements()) > 0 {
 			var values []string
 			data.Lists[i].Values.ElementsAs(ctx, &values, false)
-			body, _ = sjson.Set(body, helpers.LastElement(data.Path.ValueString())+"."+listName, values)
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+listName, values)
 		}
 	}
 
 	return body
 }
 
-func (data *Restconf) fromBody(ctx context.Context, res gjson.Result) {
+func (data Yang) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+
+	var attributes map[string]string
+	data.Attributes.ElementsAs(ctx, &attributes, false)
+
+	for attr, value := range attributes {
+		body = helpers.SetFromXPath(body, data.Path.ValueString()+"/"+attr, value)
+	}
+	for i := range data.Lists {
+		if len(data.Lists[i].Items) > 0 {
+			for ii := range data.Lists[i].Items {
+				var listAttributes map[string]string
+				data.Lists[i].Items[ii].ElementsAs(ctx, &listAttributes, false)
+				attrs := netconf.Body{}
+				for attr, value := range listAttributes {
+					attrs = helpers.SetFromXPath(attrs, attr, value)
+				}
+				body = helpers.SetRawFromXPath(body, data.Path.ValueString()+"/"+data.Lists[i].Name.ValueString(), attrs.Res())
+			}
+		} else if len(data.Lists[i].Values.Elements()) > 0 {
+			var values []string
+			data.Lists[i].Values.ElementsAs(ctx, &values, false)
+			body = helpers.SetFromXPath(body, data.Path.ValueString()+"/"+data.Lists[i].Name.ValueString(), values)
+		}
+	}
+
+	return body.Res()
+}
+
+func (data *Yang) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -179,13 +216,80 @@ func (data *Restconf) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Restconf) getDeletedItems(ctx context.Context, state Restconf) []string {
+func (data *Yang) fromBodyXML(ctx context.Context, res xmldot.Result) {
+
+	// Parse attributes
+	attributes := data.Attributes.Elements()
+	for attr := range attributes {
+		value := helpers.GetFromXPath(res, "data"+data.Path.ValueString()+"/"+attr)
+		if !value.Exists() || value.String() == "" {
+			attributes[attr] = types.StringValue("")
+		} else {
+			attributes[attr] = types.StringValue(value.String())
+		}
+	}
+	data.Attributes = types.MapValueMust(types.StringType, attributes)
+
+	// Parse lists
+	for i := range data.Lists {
+		keys := strings.Split(data.Lists[i].Key.ValueString(), ",")
+		listName := data.Lists[i].Name.ValueString()
+
+		if len(data.Lists[i].Items) > 0 {
+			// Complex list items with multiple attributes
+			for ii := range data.Lists[i].Items {
+				// Get key values from plan
+				var keyValues []string
+				for _, key := range keys {
+					v, _ := data.Lists[i].Items[ii].Elements()[key].ToTerraformValue(ctx)
+					var keyValue string
+					v.As(&keyValue)
+					keyValues = append(keyValues, keyValue)
+				}
+
+				// Build XPath to find the specific list item by key(s)
+				xpathPredicates := ""
+				for ik, key := range keys {
+					xpathPredicates += "[" + key + "='" + keyValues[ik] + "']"
+				}
+				itemXPath := listName + xpathPredicates
+
+				// Find the matching list item in XML response
+				itemResult := helpers.GetFromXPath(res, "data"+data.Path.ValueString()+"/"+itemXPath)
+
+				// Parse attributes from the matched item
+				itemAttributes := data.Lists[i].Items[ii].Elements()
+				for attr := range itemAttributes {
+					value := helpers.GetFromXPath(itemResult, attr)
+					if !value.Exists() || value.String() == "" {
+						itemAttributes[attr] = types.StringValue("")
+					} else {
+						itemAttributes[attr] = types.StringValue(value.String())
+					}
+				}
+				data.Lists[i].Items[ii] = types.MapValueMust(types.StringType, itemAttributes)
+			}
+		} else if len(data.Lists[i].Values.Elements()) > 0 {
+			// Simple leaf-list values
+			listResult := helpers.GetFromXPath(res, "data"+data.Path.ValueString()+"/"+listName)
+			if listResult.IsArray() {
+				values := make([]attr.Value, 0)
+				for _, v := range listResult.Array() {
+					values = append(values, types.StringValue(v.String()))
+				}
+				data.Lists[i].Values = types.ListValueMust(data.Lists[i].Values.ElementType(ctx), values)
+			}
+		}
+	}
+}
+
+func (data *Yang) getDeletedItems(ctx context.Context, state Yang) []string {
 	deletedItems := make([]string, 0)
 	for l := range state.Lists {
 		name := state.Lists[l].Name.ValueString()
 		namePath := strings.ReplaceAll(name, "/", ".")
 		keys := strings.Split(state.Lists[l].Key.ValueString(), ",")
-		var dataList RestconfList
+		var dataList YangList
 		for _, dl := range data.Lists {
 			if dl.Name.ValueString() == name {
 				dataList = dl

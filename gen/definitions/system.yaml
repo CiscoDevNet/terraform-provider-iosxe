@@ -1,6 +1,6 @@
 ---
 name: System
-path: Cisco-IOS-XE-native:native
+path: /Cisco-IOS-XE-native:native
 no_delete: true
 doc_category: System
 attributes:
@@ -676,7 +676,7 @@ attributes:
     test_tags: [C9000V]
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

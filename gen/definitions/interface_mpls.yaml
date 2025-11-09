@@ -1,7 +1,7 @@
 ---
 name: Interface MPLS
-path: Cisco-IOS-XE-native:native/interface/%s=%v/mpls
-augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/mpls
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/mpls
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/mpls
 doc_category: MPLS
 attributes:
   - yang_name: type
@@ -33,7 +33,7 @@ attributes:
     example: 1200
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]
     attributes:
       - name: name
         value: 1

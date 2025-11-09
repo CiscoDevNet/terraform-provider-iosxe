@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -29,28 +30,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces
-var _ resource.Resource = &RestconfResource{}
-var _ resource.ResourceWithImportState = &RestconfResource{}
+var _ resource.Resource = &YangResource{}
+var _ resource.ResourceWithImportState = &YangResource{}
 
-func NewRestconfResource() resource.Resource {
-	return &RestconfResource{}
+func NewYangResource() resource.Resource {
+	return &YangResource{}
 }
 
-type RestconfResource struct {
+type YangResource struct {
 	data *IosxeProviderData
 }
 
-func (r *RestconfResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_restconf"
+func (r *YangResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_yang"
 }
 
-func (r *RestconfResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *YangResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "Manages IOS-XE objects via RESTCONF calls. This resource can only manage a single object. It is able to read the state and therefore reconcile configuration drift.",
+		MarkdownDescription: "Manages IOS-XE objects via YANG paths. This resource can only manage a single object. It is able to read the state and therefore reconcile configuration drift.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -65,7 +67,7 @@ func (r *RestconfResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"path": schema.StringAttribute{
-				MarkdownDescription: "A RESTCONF path, e.g. `openconfig-interfaces:interfaces`.",
+				MarkdownDescription: "A YANG path, e.g. `openconfig-interfaces:interfaces`.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -113,8 +115,8 @@ func (r *RestconfResource) Schema(ctx context.Context, req resource.SchemaReques
 	}
 }
 
-func (r *RestconfResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var data Restconf
+func (r *YangResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data Yang
 
 	diag := req.Config.Get(ctx, &data)
 
@@ -138,7 +140,7 @@ func (r *RestconfResource) ValidateConfig(ctx context.Context, req resource.Vali
 	}
 }
 
-func (r *RestconfResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *YangResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -146,8 +148,8 @@ func (r *RestconfResource) Configure(_ context.Context, req resource.ConfigureRe
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
-func (r *RestconfResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan Restconf
+func (r *YangResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan Yang
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -156,7 +158,7 @@ func (r *RestconfResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.Path.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
 	if !ok {
@@ -165,14 +167,29 @@ func (r *RestconfResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	if device.Managed {
-		body := plan.toBody(ctx)
-		res, err := device.Client.PatchData(plan.getPathShort(), body)
-		if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-			_, err = device.Client.PutData(plan.getPath(), body)
-		}
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-			return
+		if device.Protocol == "restconf" {
+			body := plan.toBody(ctx)
+			res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
+			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+				_, err = device.RestconfClient.PutData(plan.getPath(), body)
+			}
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				return
+			}
+		} else {
+			// Serialize NETCONF operations when reuse disabled
+			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+			if locked {
+				defer device.NetconfOpMutex.Unlock()
+			}
+			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+			body := plan.toBodyXML(ctx)
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
+			}
 		}
 	}
 
@@ -182,14 +199,14 @@ func (r *RestconfResource) Create(ctx context.Context, req resource.CreateReques
 		plan.Attributes = types.MapNull(types.StringType)
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Create finished successfully", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Create finished successfully", plan.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *RestconfResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state Restconf
+func (r *YangResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state Yang
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -198,7 +215,7 @@ func (r *RestconfResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Path.ValueString()))
 
 	device, ok := r.data.Devices[state.Device.ValueString()]
 	if !ok {
@@ -207,28 +224,46 @@ func (r *RestconfResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 
 	if device.Managed {
-		res, err := device.Client.GetData(state.getPath())
-		if res.StatusCode == 404 {
-			state.Attributes = types.MapNull(types.StringType)
-			state.Lists = make([]RestconfList, 0)
+		if device.Protocol == "restconf" {
+			res, err := device.RestconfClient.GetData(state.getPath())
+			if res.StatusCode == 404 {
+				state.Attributes = types.MapNull(types.StringType)
+				state.Lists = make([]YangList, 0)
+			} else {
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
+					return
+				}
+
+				state.fromBody(ctx, res.Res)
+			}
 		} else {
+			// Serialize NETCONF operations (all ops when reuse disabled, reads concurrent when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+			if locked {
+				defer device.NetconfOpMutex.Unlock()
+			}
+			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+			filter := helpers.GetXpathFilter(state.Path.ValueString())
+			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
 				return
 			}
 
-			state.fromBody(ctx, res.Res)
+			state.fromBodyXML(ctx, res.Res)
 		}
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *RestconfResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state Restconf
+func (r *YangResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state Yang
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -244,7 +279,7 @@ func (r *RestconfResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Path.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
 	if !ok {
@@ -253,23 +288,38 @@ func (r *RestconfResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 
 	if device.Managed {
-		body := plan.toBody(ctx)
-		res, err := device.Client.PatchData(plan.getPathShort(), body)
-		if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-			_, err = device.Client.PutData(plan.getPath(), body)
-		}
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-			return
-		}
+		if device.Protocol == "restconf" {
+			body := plan.toBody(ctx)
+			res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
+			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+				_, err = device.RestconfClient.PutData(plan.getPath(), body)
+			}
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				return
+			}
 
-		deletedItems := plan.getDeletedItems(ctx, state)
-		tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
+			deletedItems := plan.getDeletedItems(ctx, state)
+			tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
 
-		for _, i := range deletedItems {
-			res, err := device.Client.DeleteData(i)
-			if err != nil && res.StatusCode != 404 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+			for _, i := range deletedItems {
+				res, err := device.RestconfClient.DeleteData(i)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
+			}
+		} else {
+			// Serialize NETCONF operations when reuse disabled
+			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+			if locked {
+				defer device.NetconfOpMutex.Unlock()
+			}
+			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+			body := plan.toBodyXML(ctx)
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
 		}
@@ -279,14 +329,14 @@ func (r *RestconfResource) Update(ctx context.Context, req resource.UpdateReques
 		plan.Attributes = types.MapNull(types.StringType)
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Update finished successfully", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Update finished successfully", plan.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *RestconfResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state Restconf
+func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state Yang
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -295,7 +345,7 @@ func (r *RestconfResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Path.ValueString()))
 
 	device, ok := r.data.Devices[state.Device.ValueString()]
 	if !ok {
@@ -304,19 +354,35 @@ func (r *RestconfResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 
 	if device.Managed && state.Delete.ValueBool() {
-		res, err := device.Client.DeleteData(state.getPath())
-		if err != nil && res.StatusCode != 404 {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-			return
+		if device.Protocol == "restconf" {
+			res, err := device.RestconfClient.DeleteData(state.getPath())
+			if err != nil && res.StatusCode != 404 {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+				return
+			}
+		} else {
+			// Serialize NETCONF operations when reuse disabled
+			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+			if locked {
+				defer device.NetconfOpMutex.Unlock()
+			}
+			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+			body := netconf.Body{}
+			body = helpers.RemoveFromXPath(body, state.Path.ValueString())
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
+			}
 		}
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Delete finished successfully", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Delete finished successfully", state.Path.ValueString()))
 
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *RestconfResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *YangResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Import", req.ID))

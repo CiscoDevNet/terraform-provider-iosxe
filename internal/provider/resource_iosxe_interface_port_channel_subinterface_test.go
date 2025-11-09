@@ -106,8 +106,8 @@ func iosxeInterfacePortChannelSubinterfaceImportStateIdFunc(resourceName string)
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelSubinterfacePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -116,8 +116,8 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/interface/Port-channel=10"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/interface/Port-channel[name=10]"
 	delete = false
 	attributes = {
 		"name" = "10"
@@ -125,24 +125,24 @@ resource "iosxe_restconf" "PreReq1" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=1"
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]"
 	attributes = {
 		"name" = "1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq3" {
-	path = "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=1/access-list-seq-rule=10"
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]/access-list-seq-rule[sequence=10]"
 	attributes = {
 		"sequence" = "10"
 		"permit/std-ace/any" = ""
 	}
-	depends_on = [iosxe_restconf.PreReq2, ]
+	depends_on = [iosxe_yang.PreReq2, ]
 }
 
-resource "iosxe_restconf" "PreReq4" {
-	path = "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=bfd_template1"
+resource "iosxe_yang" "PreReq4" {
+	path = "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=bfd_template1]"
 	attributes = {
 		"name" = "bfd_template1"
 		"interval-singlehop-v2/mill-unit/min-tx" = "200"
@@ -160,7 +160,7 @@ resource "iosxe_restconf" "PreReq4" {
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
 	config += `	name = "10.666"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -205,7 +205,7 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

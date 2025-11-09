@@ -1,6 +1,6 @@
 ---
 name: AS Path Access List
-path: Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=%v
+path: /Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list[name=%v]
 no_delete_attributes: true
 skip_minimum_test: true
 doc_category: BGP

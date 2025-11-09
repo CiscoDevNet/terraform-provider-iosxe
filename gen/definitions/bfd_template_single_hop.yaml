@@ -1,6 +1,6 @@
 ---
 name: BFD Template Single Hop
-path: Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=%v
+path: /Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=%v]
 no_delete_attributes: true
 doc_category: BFD
 attributes:

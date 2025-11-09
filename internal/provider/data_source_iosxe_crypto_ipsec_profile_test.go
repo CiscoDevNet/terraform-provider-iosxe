@@ -50,8 +50,8 @@ func TestAccDataSourceIosxeCryptoIPSecProfile(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeCryptoIPSecProfilePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=TS1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set[tag=TS1]"
 	attributes = {
 		"tag" = "TS1"
 		"esp" = "esp-aes"
@@ -59,8 +59,8 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/profile=vpn300"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/profile[name=vpn300]"
 	attributes = {
 		"name" = "vpn300"
 		"aaa/authentication/anyconnect-eap" = "attached"
@@ -78,7 +78,7 @@ func testAccDataSourceIosxeCryptoIPSecProfileConfig() string {
 	config += `	name = "vpn200"` + "\n"
 	config += `	set_transform_set = ["TS1"]` + "\n"
 	config += `	set_ikev2_profile = "vpn300"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

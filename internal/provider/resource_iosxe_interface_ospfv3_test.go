@@ -80,8 +80,8 @@ func iosxeInterfaceOSPFv3ImportStateIdFunc(resourceName string) resource.ImportS
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfaceOSPFv3PrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
 	}
@@ -97,7 +97,7 @@ func testAccIosxeInterfaceOSPFv3Config_minimum() string {
 	config := `resource "iosxe_interface_ospfv3" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -115,7 +115,7 @@ func testAccIosxeInterfaceOSPFv3Config_all() string {
 	config += `	network_type_point_to_multipoint = false` + "\n"
 	config += `	network_type_point_to_point = true` + "\n"
 	config += `	cost = 1000` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

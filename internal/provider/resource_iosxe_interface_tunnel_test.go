@@ -116,8 +116,8 @@ func iosxeInterfaceTunnelImportStateIdFunc(resourceName string) resource.ImportS
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfaceTunnelPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -135,7 +135,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeInterfaceTunnelConfig_minimum() string {
 	config := `resource "iosxe_interface_tunnel" "test" {` + "\n"
 	config += `	name = 90` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -193,7 +193,7 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	snmp_trap_link_status = false` + "\n"
 	config += `	logging_event_link_status_enable = true` + "\n"
 	config += `	tunnel_vrf = "VRF1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

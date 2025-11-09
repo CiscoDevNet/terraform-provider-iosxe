@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -96,6 +99,19 @@ func (data InterfaceNVE) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data InterfaceNVE) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/interface/nve[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
+	return path
+}
+
+func (data InterfaceNVEData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/interface/nve[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -157,6 +173,80 @@ func (data InterfaceNVE) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data InterfaceNVE) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", strconv.FormatInt(data.Name.ValueInt64(), 10))
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
+		if data.Shutdown.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
+		}
+	}
+	if !data.HostReachabilityProtocolBgp.IsNull() && !data.HostReachabilityProtocolBgp.IsUnknown() {
+		if data.HostReachabilityProtocolBgp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/host-reachability/protocol/bgp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/host-reachability/protocol/bgp")
+		}
+	}
+	if !data.SourceInterfaceLoopback.IsNull() && !data.SourceInterfaceLoopback.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/source-interface/Loopback", strconv.FormatInt(data.SourceInterfaceLoopback.ValueInt64(), 10))
+	}
+	if len(data.VniVrfs) > 0 {
+		for _, item := range data.VniVrfs {
+			cBody := netconf.Body{}
+			if !item.VniRange.IsNull() && !item.VniRange.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vni-range", item.VniRange.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/member-in-one-line/member/vni", cBody.Res())
+		}
+	}
+	if len(data.Vnis) > 0 {
+		for _, item := range data.Vnis {
+			cBody := netconf.Body{}
+			if !item.VniRange.IsNull() && !item.VniRange.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vni-range", item.VniRange.ValueString())
+			}
+			if !item.Ipv4MulticastGroup.IsNull() && !item.Ipv4MulticastGroup.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mcast-group/multicast-group-min", item.Ipv4MulticastGroup.ValueString())
+			}
+			if !item.IngressReplication.IsNull() && !item.IngressReplication.IsUnknown() {
+				if item.IngressReplication.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ir-cp-config/ingress-replication", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ir-cp-config/ingress-replication")
+				}
+			}
+			if !item.LocalRouting.IsNull() && !item.LocalRouting.IsUnknown() {
+				if item.LocalRouting.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ir-cp-config/local-routing", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ir-cp-config/local-routing")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/member/vni", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -288,6 +378,132 @@ func (data *InterfaceNVE) updateFromBody(ctx context.Context, res gjson.Result) 
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *InterfaceNVE) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.Int64Value(value.Int())
+	} else {
+		data.Name = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
+		if value.Exists() {
+			data.Shutdown = types.BoolValue(true)
+		} else {
+			data.Shutdown = types.BoolValue(false)
+		}
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host-reachability/protocol/bgp"); !data.HostReachabilityProtocolBgp.IsNull() {
+		if value.Exists() {
+			data.HostReachabilityProtocolBgp = types.BoolValue(true)
+		} else {
+			data.HostReachabilityProtocolBgp = types.BoolValue(false)
+		}
+	} else {
+		data.HostReachabilityProtocolBgp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface/Loopback"); value.Exists() && !data.SourceInterfaceLoopback.IsNull() {
+		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
+	} else {
+		data.SourceInterfaceLoopback = types.Int64Null()
+	}
+	for i := range data.VniVrfs {
+		keys := [...]string{"vni-range"}
+		keyValues := [...]string{data.VniVrfs[i].VniRange.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/member-in-one-line/member/vni").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "vni-range"); value.Exists() && !data.VniVrfs[i].VniRange.IsNull() {
+			data.VniVrfs[i].VniRange = types.StringValue(value.String())
+		} else {
+			data.VniVrfs[i].VniRange = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.VniVrfs[i].Vrf.IsNull() {
+			data.VniVrfs[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.VniVrfs[i].Vrf = types.StringNull()
+		}
+	}
+	for i := range data.Vnis {
+		keys := [...]string{"vni-range"}
+		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "vni-range"); value.Exists() && !data.Vnis[i].VniRange.IsNull() {
+			data.Vnis[i].VniRange = types.StringValue(value.String())
+		} else {
+			data.Vnis[i].VniRange = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mcast-group/multicast-group-min"); value.Exists() && !data.Vnis[i].Ipv4MulticastGroup.IsNull() {
+			data.Vnis[i].Ipv4MulticastGroup = types.StringValue(value.String())
+		} else {
+			data.Vnis[i].Ipv4MulticastGroup = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ir-cp-config/ingress-replication"); !data.Vnis[i].IngressReplication.IsNull() {
+			if value.Exists() {
+				data.Vnis[i].IngressReplication = types.BoolValue(true)
+			} else {
+				data.Vnis[i].IngressReplication = types.BoolValue(false)
+			}
+		} else {
+			data.Vnis[i].IngressReplication = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ir-cp-config/local-routing"); !data.Vnis[i].LocalRouting.IsNull() {
+			if value.Exists() {
+				data.Vnis[i].LocalRouting = types.BoolValue(true)
+			} else {
+				data.Vnis[i].LocalRouting = types.BoolValue(false)
+			}
+		} else {
+			data.Vnis[i].LocalRouting = types.BoolNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *InterfaceNVE) fromBody(ctx context.Context, res gjson.Result) {
@@ -418,6 +634,128 @@ func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *InterfaceNVE) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host-reachability/protocol/bgp"); value.Exists() {
+		data.HostReachabilityProtocolBgp = types.BoolValue(true)
+	} else {
+		data.HostReachabilityProtocolBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface/Loopback"); value.Exists() {
+		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member-in-one-line/member/vni"); value.Exists() {
+		data.VniVrfs = make([]InterfaceNVEVniVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceNVEVniVrfs{}
+			if cValue := helpers.GetFromXPath(v, "vni-range"); cValue.Exists() {
+				item.VniRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.VniVrfs = append(data.VniVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni"); value.Exists() {
+		data.Vnis = make([]InterfaceNVEVnis, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceNVEVnis{}
+			if cValue := helpers.GetFromXPath(v, "vni-range"); cValue.Exists() {
+				item.VniRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mcast-group/multicast-group-min"); cValue.Exists() {
+				item.Ipv4MulticastGroup = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ir-cp-config/ingress-replication"); cValue.Exists() {
+				item.IngressReplication = types.BoolValue(true)
+			} else {
+				item.IngressReplication = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ir-cp-config/local-routing"); cValue.Exists() {
+				item.LocalRouting = types.BoolValue(true)
+			} else {
+				item.LocalRouting = types.BoolValue(false)
+			}
+			data.Vnis = append(data.Vnis, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *InterfaceNVEData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host-reachability/protocol/bgp"); value.Exists() {
+		data.HostReachabilityProtocolBgp = types.BoolValue(true)
+	} else {
+		data.HostReachabilityProtocolBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface/Loopback"); value.Exists() {
+		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member-in-one-line/member/vni"); value.Exists() {
+		data.VniVrfs = make([]InterfaceNVEVniVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceNVEVniVrfs{}
+			if cValue := helpers.GetFromXPath(v, "vni-range"); cValue.Exists() {
+				item.VniRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.VniVrfs = append(data.VniVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni"); value.Exists() {
+		data.Vnis = make([]InterfaceNVEVnis, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceNVEVnis{}
+			if cValue := helpers.GetFromXPath(v, "vni-range"); cValue.Exists() {
+				item.VniRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mcast-group/multicast-group-min"); cValue.Exists() {
+				item.Ipv4MulticastGroup = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ir-cp-config/ingress-replication"); cValue.Exists() {
+				item.IngressReplication = types.BoolValue(true)
+			} else {
+				item.IngressReplication = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ir-cp-config/local-routing"); cValue.Exists() {
+				item.LocalRouting = types.BoolValue(true)
+			} else {
+				item.LocalRouting = types.BoolValue(false)
+			}
+			data.Vnis = append(data.Vnis, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNVE) []string {
@@ -499,6 +837,98 @@ func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNV
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *InterfaceNVE) addDeletedItemsXML(ctx context.Context, state InterfaceNVE, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Vnis {
+		stateKeys := [...]string{"vni-range"}
+		stateKeyValues := [...]string{state.Vnis[i].VniRange.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vnis[i].VniRange.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vnis {
+			found = true
+			if state.Vnis[i].VniRange.ValueString() != data.Vnis[j].VniRange.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Vnis[i].LocalRouting.IsNull() && data.Vnis[j].LocalRouting.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/ir-cp-config/local-routing", predicates))
+				}
+				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/ir-cp-config/ingress-replication", predicates))
+				}
+				if !state.Vnis[i].Ipv4MulticastGroup.IsNull() && data.Vnis[j].Ipv4MulticastGroup.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/mcast-group/multicast-group-min", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v", predicates))
+		}
+	}
+	for i := range state.VniVrfs {
+		stateKeys := [...]string{"vni-range"}
+		stateKeyValues := [...]string{state.VniVrfs[i].VniRange.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.VniVrfs[i].VniRange.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.VniVrfs {
+			found = true
+			if state.VniVrfs[i].VniRange.ValueString() != data.VniVrfs[j].VniRange.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.VniVrfs[i].Vrf.IsNull() && data.VniVrfs[j].Vrf.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member-in-one-line/member/vni%v/vrf", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member-in-one-line/member/vni%v", predicates))
+		}
+	}
+	if !state.SourceInterfaceLoopback.IsNull() && data.SourceInterfaceLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source-interface/Loopback")
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *InterfaceNVE) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -554,3 +984,43 @@ func (data *InterfaceNVE) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *InterfaceNVE) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Vnis {
+		keys := [...]string{"vni-range"}
+		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/member/vni%v", predicates))
+	}
+	for i := range data.VniVrfs {
+		keys := [...]string{"vni-range"}
+		keyValues := [...]string{data.VniVrfs[i].VniRange.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/member-in-one-line/member/vni%v", predicates))
+	}
+	if !data.SourceInterfaceLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/source-interface/Loopback")
+	}
+	if !data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

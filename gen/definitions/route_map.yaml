@@ -1,6 +1,6 @@
 ---
 name: Route Map
-path: Cisco-IOS-XE-native:native/route-map=%v
+path: /Cisco-IOS-XE-native:native/route-map[name=%v]
 no_delete_attributes: true
 doc_category: System
 attributes:
@@ -358,7 +358,7 @@ attributes:
         example: 10000
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]
     attributes:
       - name: name
         value: 1

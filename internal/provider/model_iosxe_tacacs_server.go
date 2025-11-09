@@ -29,6 +29,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -80,6 +83,19 @@ func (data TACACSServer) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data TACACSServer) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data TACACSServerData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -106,6 +122,34 @@ func (data TACACSServer) toBody(ctx context.Context) string {
 
 // End of section. //template:end toBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data TACACSServer) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.AddressIpv4.IsNull() && !data.AddressIpv4.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address/ipv4", data.AddressIpv4.ValueString())
+	}
+	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
+	}
+	if !data.Encryption.IsNull() && !data.Encryption.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/key/encryption", data.Encryption.ValueString())
+	}
+	if !data.Key.IsNull() && !data.Key.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", data.Key.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *TACACSServer) updateFromBody(ctx context.Context, res gjson.Result) {
@@ -131,6 +175,28 @@ func (data *TACACSServer) updateFromBody(ctx context.Context, res gjson.Result) 
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *TACACSServer) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/ipv4"); value.Exists() && !data.AddressIpv4.IsNull() {
+		data.AddressIpv4 = types.StringValue(value.String())
+	} else {
+		data.AddressIpv4 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timeout"); value.Exists() && !data.Timeout.IsNull() {
+		data.Timeout = types.Int64Value(value.Int())
+	} else {
+		data.Timeout = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -178,6 +244,44 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *TACACSServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/ipv4"); value.Exists() {
+		data.AddressIpv4 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timeout"); value.Exists() {
+		data.Timeout = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/key/encryption"); value.Exists() {
+		data.Encryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/key/key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *TACACSServerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/ipv4"); value.Exists() {
+		data.AddressIpv4 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timeout"); value.Exists() {
+		data.Timeout = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/key/encryption"); value.Exists() {
+		data.Encryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/key/key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServer) []string {
@@ -199,6 +303,29 @@ func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServe
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *TACACSServer) addDeletedItemsXML(ctx context.Context, state TACACSServer, body string) string {
+	b := netconf.NewBody(body)
+	if !state.Key.IsNull() && data.Key.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
+	}
+	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
+	}
+	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timeout")
+	}
+	if !state.AddressIpv4.IsNull() && data.AddressIpv4.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/ipv4")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -231,3 +358,26 @@ func (data *TACACSServer) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *TACACSServer) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.Key.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
+	}
+	if !data.Encryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
+	}
+	if !data.Timeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timeout")
+	}
+	if !data.AddressIpv4.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address/ipv4")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

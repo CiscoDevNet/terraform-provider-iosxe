@@ -185,11 +185,11 @@ Optional:
 Required:
 
 - `ip` (String) Network number
+- `wildcard` (String) OSPF wild card bits
 
 Optional:
 
 - `area` (String) Set the OSPF area ID
-- `wildcard` (String) OSPF wild card bits
 
 
 <a id="nestedatt--passive_interface_disable_five_gigabit_ethernets"></a>
@@ -310,9 +310,6 @@ Required:
 Required:
 
 - `ip` (String) IP summary address
-
-Optional:
-
 - `mask` (String) Summary mask
 
 ## Import

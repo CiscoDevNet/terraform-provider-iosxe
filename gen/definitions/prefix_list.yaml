@@ -1,6 +1,6 @@
 ---
 name: Prefix List
-path: Cisco-IOS-XE-native:native/ip/prefix-lists
+path: /Cisco-IOS-XE-native:native/ip/prefix-lists
 no_delete_attributes: true
 doc_category: System
 attributes:

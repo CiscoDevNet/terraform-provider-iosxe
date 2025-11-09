@@ -27,6 +27,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -76,6 +79,17 @@ func (data Banner) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data Banner) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/banner"
+	return path
+}
+
+func (data BannerData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/banner"
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -98,6 +112,31 @@ func (data Banner) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data Banner) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.ExecBanner.IsNull() && !data.ExecBanner.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/exec/banner", data.ExecBanner.ValueString())
+	}
+	if !data.LoginBanner.IsNull() && !data.LoginBanner.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/login/banner", data.LoginBanner.ValueString())
+	}
+	if !data.PromptTimeoutBanner.IsNull() && !data.PromptTimeoutBanner.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/prompt-timeout/banner", data.PromptTimeoutBanner.ValueString())
+	}
+	if !data.MotdBanner.IsNull() && !data.MotdBanner.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/motd/banner", data.MotdBanner.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -129,6 +168,33 @@ func (data *Banner) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *Banner) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec/banner"); value.Exists() && !data.ExecBanner.IsNull() {
+		data.ExecBanner = types.StringValue(value.String())
+	} else {
+		data.ExecBanner = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login/banner"); value.Exists() && !data.LoginBanner.IsNull() {
+		data.LoginBanner = types.StringValue(value.String())
+	} else {
+		data.LoginBanner = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prompt-timeout/banner"); value.Exists() && !data.PromptTimeoutBanner.IsNull() {
+		data.PromptTimeoutBanner = types.StringValue(value.String())
+	} else {
+		data.PromptTimeoutBanner = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/motd/banner"); value.Exists() && !data.MotdBanner.IsNull() {
+		data.MotdBanner = types.StringValue(value.String())
+	} else {
+		data.MotdBanner = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -176,6 +242,44 @@ func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *Banner) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec/banner"); value.Exists() {
+		data.ExecBanner = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login/banner"); value.Exists() {
+		data.LoginBanner = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prompt-timeout/banner"); value.Exists() {
+		data.PromptTimeoutBanner = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/motd/banner"); value.Exists() {
+		data.MotdBanner = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *BannerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec/banner"); value.Exists() {
+		data.ExecBanner = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login/banner"); value.Exists() {
+		data.LoginBanner = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prompt-timeout/banner"); value.Exists() {
+		data.PromptTimeoutBanner = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/motd/banner"); value.Exists() {
+		data.MotdBanner = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *Banner) getDeletedItems(ctx context.Context, state Banner) []string {
@@ -197,6 +301,29 @@ func (data *Banner) getDeletedItems(ctx context.Context, state Banner) []string 
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *Banner) addDeletedItemsXML(ctx context.Context, state Banner, body string) string {
+	b := netconf.NewBody(body)
+	if !state.MotdBanner.IsNull() && data.MotdBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/motd/banner")
+	}
+	if !state.PromptTimeoutBanner.IsNull() && data.PromptTimeoutBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prompt-timeout/banner")
+	}
+	if !state.LoginBanner.IsNull() && data.LoginBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/login/banner")
+	}
+	if !state.ExecBanner.IsNull() && data.ExecBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/exec/banner")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -229,3 +356,26 @@ func (data *Banner) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *Banner) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.MotdBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/motd/banner")
+	}
+	if !data.PromptTimeoutBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prompt-timeout/banner")
+	}
+	if !data.LoginBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/login/banner")
+	}
+	if !data.ExecBanner.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/exec/banner")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

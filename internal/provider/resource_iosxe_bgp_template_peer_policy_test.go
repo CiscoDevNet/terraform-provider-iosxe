@@ -82,15 +82,15 @@ func iosxeBGPTemplatePeerPolicyImportStateIdFunc(resourceName string) resource.I
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPTemplatePeerPolicyPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/route-map=ROUTEMAP_1"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/route-map[name=ROUTEMAP_1]"
 	attributes = {
 		"name" = "ROUTEMAP_1"
 	}
@@ -106,7 +106,7 @@ func testAccIosxeBGPTemplatePeerPolicyConfig_minimum() string {
 	config := `resource "iosxe_bgp_template_peer_policy" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	name = "PEERPOLICY_1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -127,7 +127,7 @@ func testAccIosxeBGPTemplatePeerPolicyConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	allowas_in_as_number = 2` + "\n"
 	config += `	as_override_split_horizon = true` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

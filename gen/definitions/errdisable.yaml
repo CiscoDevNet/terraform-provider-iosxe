@@ -1,6 +1,6 @@
 ---
 name: Errdisable
-path: Cisco-IOS-XE-native:native/errdisable
+path: /Cisco-IOS-XE-native:native/errdisable
 doc_category: System
 attributes:
   - yang_name: detect/cause/all

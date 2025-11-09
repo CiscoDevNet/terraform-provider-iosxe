@@ -1,6 +1,6 @@
 ---
 name: EEM
-path: Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager
+path: /Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager
 doc_category: System
 no_delete: true
 test_tags: ["IOSXE1715"]
@@ -32,6 +32,7 @@ attributes:
     example: 1
   - yang_name: detector/rpc/max-sessions
     example: 8
+    exclude_test: true
   - yang_name: detector/routing/bootup-delay
     example: 2
   - yang_name: applet

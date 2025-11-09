@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -124,6 +127,19 @@ func (data ServiceTemplate) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data ServiceTemplate) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template[word=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data ServiceTemplateData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template[word=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -224,6 +240,114 @@ func (data ServiceTemplate) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data ServiceTemplate) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/word", data.Name.ValueString())
+	}
+	if len(data.AccessGroups) > 0 {
+		for _, item := range data.AccessGroups {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-group-config", cBody.Res())
+		}
+	}
+	if !data.InactivityTimer.IsNull() && !data.InactivityTimer.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/inactivity-timer/value", strconv.FormatInt(data.InactivityTimer.ValueInt64(), 10))
+	}
+	if !data.InactivityTimerProbe.IsNull() && !data.InactivityTimerProbe.IsUnknown() {
+		if data.InactivityTimerProbe.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/inactivity-timer/probe", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inactivity-timer/probe")
+		}
+	}
+	if !data.Vlan.IsNull() && !data.Vlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/vlan", strconv.FormatInt(data.Vlan.ValueInt64(), 10))
+	}
+	if !data.VoiceVlan.IsNull() && !data.VoiceVlan.IsUnknown() {
+		if data.VoiceVlan.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/voice/vlan", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/voice/vlan")
+		}
+	}
+	if !data.LinksecPolicy.IsNull() && !data.LinksecPolicy.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/linksec/policy", data.LinksecPolicy.ValueString())
+	}
+	if !data.Sgt.IsNull() && !data.Sgt.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/sgt", strconv.FormatInt(data.Sgt.ValueInt64(), 10))
+	}
+	if !data.AbsoluteTimer.IsNull() && !data.AbsoluteTimer.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/absolute-timer", strconv.FormatInt(data.AbsoluteTimer.ValueInt64(), 10))
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if len(data.InterfaceTemplates) > 0 {
+		for _, item := range data.InterfaceTemplates {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/interface-template", cBody.Res())
+		}
+	}
+	if !data.TunnelCapwapName.IsNull() && !data.TunnelCapwapName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/tunnel/type/capwap/name", data.TunnelCapwapName.ValueString())
+	}
+	if !data.Vnid.IsNull() && !data.Vnid.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/vnid", data.Vnid.ValueString())
+	}
+	if !data.RedirectAppendClientMac.IsNull() && !data.RedirectAppendClientMac.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redirect/append/client-mac", data.RedirectAppendClientMac.ValueString())
+	}
+	if !data.RedirectAppendSwitchMac.IsNull() && !data.RedirectAppendSwitchMac.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redirect/append/switch-mac", data.RedirectAppendSwitchMac.ValueString())
+	}
+	if !data.RedirectUrl.IsNull() && !data.RedirectUrl.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redirect/url/url_name", data.RedirectUrl.ValueString())
+	}
+	if !data.RedirectUrlMatchAcl.IsNull() && !data.RedirectUrlMatchAcl.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redirect/url/match/acl_name", data.RedirectUrlMatchAcl.ValueString())
+	}
+	if !data.RedirectUrlMatchAction.IsNull() && !data.RedirectUrlMatchAction.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redirect/url/match/action", data.RedirectUrlMatchAction.ValueString())
+	}
+	if !data.DnsAclPreauth.IsNull() && !data.DnsAclPreauth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dns-acl/preauth", data.DnsAclPreauth.ValueString())
+	}
+	if !data.ServicePolicyQosInput.IsNull() && !data.ServicePolicyQosInput.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/service-policy/qos/input", data.ServicePolicyQosInput.ValueString())
+	}
+	if !data.ServicePolicyQosOutput.IsNull() && !data.ServicePolicyQosOutput.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/service-policy/qos/output", data.ServicePolicyQosOutput.ValueString())
+	}
+	if len(data.Tags) > 0 {
+		for _, item := range data.Tags {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/tag-config", cBody.Res())
+		}
+	}
+	if !data.MdnsServicePolicy.IsNull() && !data.MdnsServicePolicy.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mdns-service-policy", data.MdnsServicePolicy.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -430,6 +554,208 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *ServiceTemplate) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/word"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	for i := range data.AccessGroups {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-group-config").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.AccessGroups[i].Name.IsNull() {
+			data.AccessGroups[i].Name = types.StringValue(value.String())
+		} else {
+			data.AccessGroups[i].Name = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inactivity-timer/value"); value.Exists() && !data.InactivityTimer.IsNull() {
+		data.InactivityTimer = types.Int64Value(value.Int())
+	} else {
+		data.InactivityTimer = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inactivity-timer/probe"); !data.InactivityTimerProbe.IsNull() {
+		if value.Exists() {
+			data.InactivityTimerProbe = types.BoolValue(true)
+		} else {
+			data.InactivityTimerProbe = types.BoolValue(false)
+		}
+	} else {
+		data.InactivityTimerProbe = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan"); value.Exists() && !data.Vlan.IsNull() {
+		data.Vlan = types.Int64Value(value.Int())
+	} else {
+		data.Vlan = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice/vlan"); !data.VoiceVlan.IsNull() {
+		if value.Exists() {
+			data.VoiceVlan = types.BoolValue(true)
+		} else {
+			data.VoiceVlan = types.BoolValue(false)
+		}
+	} else {
+		data.VoiceVlan = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/linksec/policy"); value.Exists() && !data.LinksecPolicy.IsNull() {
+		data.LinksecPolicy = types.StringValue(value.String())
+	} else {
+		data.LinksecPolicy = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sgt"); value.Exists() && !data.Sgt.IsNull() {
+		data.Sgt = types.Int64Value(value.Int())
+	} else {
+		data.Sgt = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/absolute-timer"); value.Exists() && !data.AbsoluteTimer.IsNull() {
+		data.AbsoluteTimer = types.Int64Value(value.Int())
+	} else {
+		data.AbsoluteTimer = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	for i := range data.InterfaceTemplates {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/interface-template").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.InterfaceTemplates[i].Name.IsNull() {
+			data.InterfaceTemplates[i].Name = types.StringValue(value.String())
+		} else {
+			data.InterfaceTemplates[i].Name = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tunnel/type/capwap/name"); value.Exists() && !data.TunnelCapwapName.IsNull() {
+		data.TunnelCapwapName = types.StringValue(value.String())
+	} else {
+		data.TunnelCapwapName = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid"); value.Exists() && !data.Vnid.IsNull() {
+		data.Vnid = types.StringValue(value.String())
+	} else {
+		data.Vnid = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/append/client-mac"); value.Exists() && !data.RedirectAppendClientMac.IsNull() {
+		data.RedirectAppendClientMac = types.StringValue(value.String())
+	} else {
+		data.RedirectAppendClientMac = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/append/switch-mac"); value.Exists() && !data.RedirectAppendSwitchMac.IsNull() {
+		data.RedirectAppendSwitchMac = types.StringValue(value.String())
+	} else {
+		data.RedirectAppendSwitchMac = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/url_name"); value.Exists() && !data.RedirectUrl.IsNull() {
+		data.RedirectUrl = types.StringValue(value.String())
+	} else {
+		data.RedirectUrl = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/match/acl_name"); value.Exists() && !data.RedirectUrlMatchAcl.IsNull() {
+		data.RedirectUrlMatchAcl = types.StringValue(value.String())
+	} else {
+		data.RedirectUrlMatchAcl = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/match/action"); value.Exists() && !data.RedirectUrlMatchAction.IsNull() {
+		data.RedirectUrlMatchAction = types.StringValue(value.String())
+	} else {
+		data.RedirectUrlMatchAction = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dns-acl/preauth"); value.Exists() && !data.DnsAclPreauth.IsNull() {
+		data.DnsAclPreauth = types.StringValue(value.String())
+	} else {
+		data.DnsAclPreauth = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/qos/input"); value.Exists() && !data.ServicePolicyQosInput.IsNull() {
+		data.ServicePolicyQosInput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyQosInput = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/qos/output"); value.Exists() && !data.ServicePolicyQosOutput.IsNull() {
+		data.ServicePolicyQosOutput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyQosOutput = types.StringNull()
+	}
+	for i := range data.Tags {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Tags[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag-config").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Tags[i].Name.IsNull() {
+			data.Tags[i].Name = types.StringValue(value.String())
+		} else {
+			data.Tags[i].Name = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdns-service-policy"); value.Exists() && !data.MdnsServicePolicy.IsNull() {
+		data.MdnsServicePolicy = types.StringValue(value.String())
+	} else {
+		data.MdnsServicePolicy = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -641,6 +967,208 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *ServiceTemplate) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-group-config"); value.Exists() {
+		data.AccessGroups = make([]ServiceTemplateAccessGroups, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ServiceTemplateAccessGroups{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.AccessGroups = append(data.AccessGroups, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inactivity-timer/value"); value.Exists() {
+		data.InactivityTimer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inactivity-timer/probe"); value.Exists() {
+		data.InactivityTimerProbe = types.BoolValue(true)
+	} else {
+		data.InactivityTimerProbe = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan"); value.Exists() {
+		data.Vlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice/vlan"); value.Exists() {
+		data.VoiceVlan = types.BoolValue(true)
+	} else {
+		data.VoiceVlan = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/linksec/policy"); value.Exists() {
+		data.LinksecPolicy = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sgt"); value.Exists() {
+		data.Sgt = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/absolute-timer"); value.Exists() {
+		data.AbsoluteTimer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interface-template"); value.Exists() {
+		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplates, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ServiceTemplateInterfaceTemplates{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.InterfaceTemplates = append(data.InterfaceTemplates, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tunnel/type/capwap/name"); value.Exists() {
+		data.TunnelCapwapName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid"); value.Exists() {
+		data.Vnid = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/append/client-mac"); value.Exists() {
+		data.RedirectAppendClientMac = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/append/switch-mac"); value.Exists() {
+		data.RedirectAppendSwitchMac = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/url_name"); value.Exists() {
+		data.RedirectUrl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/match/acl_name"); value.Exists() {
+		data.RedirectUrlMatchAcl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/match/action"); value.Exists() {
+		data.RedirectUrlMatchAction = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dns-acl/preauth"); value.Exists() {
+		data.DnsAclPreauth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/qos/input"); value.Exists() {
+		data.ServicePolicyQosInput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/qos/output"); value.Exists() {
+		data.ServicePolicyQosOutput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag-config"); value.Exists() {
+		data.Tags = make([]ServiceTemplateTags, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ServiceTemplateTags{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.Tags = append(data.Tags, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdns-service-policy"); value.Exists() {
+		data.MdnsServicePolicy = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *ServiceTemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-group-config"); value.Exists() {
+		data.AccessGroups = make([]ServiceTemplateAccessGroups, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ServiceTemplateAccessGroups{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.AccessGroups = append(data.AccessGroups, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inactivity-timer/value"); value.Exists() {
+		data.InactivityTimer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inactivity-timer/probe"); value.Exists() {
+		data.InactivityTimerProbe = types.BoolValue(true)
+	} else {
+		data.InactivityTimerProbe = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan"); value.Exists() {
+		data.Vlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/voice/vlan"); value.Exists() {
+		data.VoiceVlan = types.BoolValue(true)
+	} else {
+		data.VoiceVlan = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/linksec/policy"); value.Exists() {
+		data.LinksecPolicy = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sgt"); value.Exists() {
+		data.Sgt = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/absolute-timer"); value.Exists() {
+		data.AbsoluteTimer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interface-template"); value.Exists() {
+		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplates, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ServiceTemplateInterfaceTemplates{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.InterfaceTemplates = append(data.InterfaceTemplates, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tunnel/type/capwap/name"); value.Exists() {
+		data.TunnelCapwapName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid"); value.Exists() {
+		data.Vnid = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/append/client-mac"); value.Exists() {
+		data.RedirectAppendClientMac = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/append/switch-mac"); value.Exists() {
+		data.RedirectAppendSwitchMac = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/url_name"); value.Exists() {
+		data.RedirectUrl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/match/acl_name"); value.Exists() {
+		data.RedirectUrlMatchAcl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redirect/url/match/action"); value.Exists() {
+		data.RedirectUrlMatchAction = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dns-acl/preauth"); value.Exists() {
+		data.DnsAclPreauth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/qos/input"); value.Exists() {
+		data.ServicePolicyQosInput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/qos/output"); value.Exists() {
+		data.ServicePolicyQosOutput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag-config"); value.Exists() {
+		data.Tags = make([]ServiceTemplateTags, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ServiceTemplateTags{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.Tags = append(data.Tags, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdns-service-policy"); value.Exists() {
+		data.MdnsServicePolicy = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceTemplate) []string {
@@ -783,6 +1311,164 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *ServiceTemplate) addDeletedItemsXML(ctx context.Context, state ServiceTemplate, body string) string {
+	b := netconf.NewBody(body)
+	if !state.MdnsServicePolicy.IsNull() && data.MdnsServicePolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mdns-service-policy")
+	}
+	for i := range state.Tags {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Tags[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Tags[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Tags {
+			found = true
+			if state.Tags[i].Name.ValueString() != data.Tags[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/tag-config%v", predicates))
+		}
+	}
+	if !state.ServicePolicyQosOutput.IsNull() && data.ServicePolicyQosOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/qos/output")
+	}
+	if !state.ServicePolicyQosInput.IsNull() && data.ServicePolicyQosInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/qos/input")
+	}
+	if !state.DnsAclPreauth.IsNull() && data.DnsAclPreauth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dns-acl/preauth")
+	}
+	if !state.RedirectUrlMatchAction.IsNull() && data.RedirectUrlMatchAction.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/url/match/action")
+	}
+	if !state.RedirectUrlMatchAcl.IsNull() && data.RedirectUrlMatchAcl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/url/match/acl_name")
+	}
+	if !state.RedirectUrl.IsNull() && data.RedirectUrl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/url/url_name")
+	}
+	if !state.RedirectAppendSwitchMac.IsNull() && data.RedirectAppendSwitchMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/append/switch-mac")
+	}
+	if !state.RedirectAppendClientMac.IsNull() && data.RedirectAppendClientMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redirect/append/client-mac")
+	}
+	if !state.Vnid.IsNull() && data.Vnid.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vnid")
+	}
+	if !state.TunnelCapwapName.IsNull() && data.TunnelCapwapName.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tunnel/type/capwap/name")
+	}
+	for i := range state.InterfaceTemplates {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.InterfaceTemplates[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.InterfaceTemplates[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.InterfaceTemplates {
+			found = true
+			if state.InterfaceTemplates[i].Name.ValueString() != data.InterfaceTemplates[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/interface-template%v", predicates))
+		}
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+	if !state.AbsoluteTimer.IsNull() && data.AbsoluteTimer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/absolute-timer")
+	}
+	if !state.Sgt.IsNull() && data.Sgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sgt")
+	}
+	if !state.LinksecPolicy.IsNull() && data.LinksecPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/linksec/policy")
+	}
+	if !state.VoiceVlan.IsNull() && data.VoiceVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/voice/vlan")
+	}
+	if !state.Vlan.IsNull() && data.Vlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan")
+	}
+	if !state.InactivityTimerProbe.IsNull() && data.InactivityTimerProbe.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inactivity-timer/probe")
+	}
+	if !state.InactivityTimer.IsNull() && data.InactivityTimer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inactivity-timer/value")
+	}
+	for i := range state.AccessGroups {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.AccessGroups[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.AccessGroups[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.AccessGroups {
+			found = true
+			if state.AccessGroups[i].Name.ValueString() != data.AccessGroups[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-group-config%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *ServiceTemplate) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -881,3 +1567,101 @@ func (data *ServiceTemplate) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *ServiceTemplate) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.MdnsServicePolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mdns-service-policy")
+	}
+	for i := range data.Tags {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Tags[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/tag-config%v", predicates))
+	}
+	if !data.ServicePolicyQosOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/service-policy/qos/output")
+	}
+	if !data.ServicePolicyQosInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/service-policy/qos/input")
+	}
+	if !data.DnsAclPreauth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dns-acl/preauth")
+	}
+	if !data.RedirectUrlMatchAction.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redirect/url/match/action")
+	}
+	if !data.RedirectUrlMatchAcl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redirect/url/match/acl_name")
+	}
+	if !data.RedirectUrl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redirect/url/url_name")
+	}
+	if !data.RedirectAppendSwitchMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redirect/append/switch-mac")
+	}
+	if !data.RedirectAppendClientMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redirect/append/client-mac")
+	}
+	if !data.Vnid.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vnid")
+	}
+	if !data.TunnelCapwapName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tunnel/type/capwap/name")
+	}
+	for i := range data.InterfaceTemplates {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/interface-template%v", predicates))
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+	if !data.AbsoluteTimer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/absolute-timer")
+	}
+	if !data.Sgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/sgt")
+	}
+	if !data.LinksecPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/linksec/policy")
+	}
+	if !data.VoiceVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/voice/vlan")
+	}
+	if !data.Vlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vlan")
+	}
+	if !data.InactivityTimerProbe.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inactivity-timer/probe")
+	}
+	if !data.InactivityTimer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inactivity-timer/value")
+	}
+	for i := range data.AccessGroups {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/access-group-config%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

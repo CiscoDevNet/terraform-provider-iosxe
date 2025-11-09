@@ -95,8 +95,8 @@ func iosxeBGPAddressFamilyIPv4ImportStateIdFunc(resourceName string) resource.Im
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPAddressFamilyIPv4PrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
@@ -112,7 +112,7 @@ func testAccIosxeBGPAddressFamilyIPv4Config_minimum() string {
 	config := `resource "iosxe_bgp_address_family_ipv4" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -152,7 +152,7 @@ func testAccIosxeBGPAddressFamilyIPv4Config_all() string {
 	config += `	ipv4_unicast_distance_bgp_local = 200` + "\n"
 	config += `	ipv4_unicast_maximum_paths_ebgp = 2` + "\n"
 	config += `	ipv4_unicast_maximum_paths_ibgp = 2` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

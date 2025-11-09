@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -234,6 +237,17 @@ func (data Logging) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data Logging) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/logging"
+	return path
+}
+
+func (data LoggingData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/logging"
+	return path
 }
 
 // End of section. //template:end getPath
@@ -547,6 +561,351 @@ func (data Logging) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data Logging) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.MonitorSeverity.IsNull() && !data.MonitorSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/monitor-config/common-config/monitor/severity", data.MonitorSeverity.ValueString())
+	}
+	if !data.BufferedSize.IsNull() && !data.BufferedSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/buffered/size-value", strconv.FormatInt(data.BufferedSize.ValueInt64(), 10))
+	}
+	if !data.BufferedSeverity.IsNull() && !data.BufferedSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/buffered/severity-level", data.BufferedSeverity.ValueString())
+	}
+	if !data.ConsoleSeverity.IsNull() && !data.ConsoleSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/console-config/common-config/console/severity", data.ConsoleSeverity.ValueString())
+	}
+	if !data.Facility.IsNull() && !data.Facility.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/facility", data.Facility.ValueString())
+	}
+	if !data.HistorySize.IsNull() && !data.HistorySize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/history/size", strconv.FormatInt(data.HistorySize.ValueInt64(), 10))
+	}
+	if !data.HistorySeverity.IsNull() && !data.HistorySeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/history/severity-level", data.HistorySeverity.ValueString())
+	}
+	if !data.Trap.IsNull() && !data.Trap.IsUnknown() {
+		if data.Trap.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/trap", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/trap")
+		}
+	}
+	if !data.TrapSeverity.IsNull() && !data.TrapSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/trap/severity", data.TrapSeverity.ValueString())
+	}
+	if !data.OriginIdType.IsNull() && !data.OriginIdType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/origin-id/type-value", data.OriginIdType.ValueString())
+	}
+	if !data.OriginIdName.IsNull() && !data.OriginIdName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/origin-id/string", data.OriginIdName.ValueString())
+	}
+	if !data.FileName.IsNull() && !data.FileName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/file/name", data.FileName.ValueString())
+	}
+	if !data.FileMaxSize.IsNull() && !data.FileMaxSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/file/max-size", strconv.FormatInt(data.FileMaxSize.ValueInt64(), 10))
+	}
+	if !data.FileMinSize.IsNull() && !data.FileMinSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/file/min-size", strconv.FormatInt(data.FileMinSize.ValueInt64(), 10))
+	}
+	if !data.FileSeverity.IsNull() && !data.FileSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/file/severity", data.FileSeverity.ValueString())
+	}
+	if !data.SourceInterface.IsNull() && !data.SourceInterface.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/source-interface-conf/interface-name-non-vrf", data.SourceInterface.ValueString())
+	}
+	if !data.Console.IsNull() && !data.Console.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/console-config/console", data.Console.ValueBool())
+	}
+	if len(data.SourceInterfacesVrf) > 0 {
+		for _, item := range data.SourceInterfacesVrf {
+			cBody := netconf.Body{}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if !item.InterfaceName.IsNull() && !item.InterfaceName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "interface-name", item.InterfaceName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/source-interface-conf/source-interface-vrf", cBody.Res())
+		}
+	}
+	if len(data.Ipv4Hosts) > 0 {
+		for _, item := range data.Ipv4Hosts {
+			cBody := netconf.Body{}
+			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv4-host", item.Ipv4Host.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-list", cBody.Res())
+		}
+	}
+	if len(data.Ipv4HostsTransport) > 0 {
+		for _, item := range data.Ipv4HostsTransport {
+			cBody := netconf.Body{}
+			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv4-host", item.Ipv4Host.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				for _, citem := range item.TransportUdpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				for _, citem := range item.TransportTcpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				for _, citem := range item.TransportTlsPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-transport-list", cBody.Res())
+		}
+	}
+	if len(data.Ipv4VrfHosts) > 0 {
+		for _, item := range data.Ipv4VrfHosts {
+			cBody := netconf.Body{}
+			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv4-host", item.Ipv4Host.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-vrf-list", cBody.Res())
+		}
+	}
+	if len(data.Ipv4VrfHostsTransport) > 0 {
+		for _, item := range data.Ipv4VrfHostsTransport {
+			cBody := netconf.Body{}
+			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv4-host", item.Ipv4Host.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				for _, citem := range item.TransportUdpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				for _, citem := range item.TransportTcpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				for _, citem := range item.TransportTlsPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-vrf-transport-list", cBody.Res())
+		}
+	}
+	if len(data.Ipv6Hosts) > 0 {
+		for _, item := range data.Ipv6Hosts {
+			cBody := netconf.Body{}
+			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-host", item.Ipv6Host.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-list", cBody.Res())
+		}
+	}
+	if len(data.Ipv6HostsTransport) > 0 {
+		for _, item := range data.Ipv6HostsTransport {
+			cBody := netconf.Body{}
+			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-host", item.Ipv6Host.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				for _, citem := range item.TransportUdpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				for _, citem := range item.TransportTcpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				for _, citem := range item.TransportTlsPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-transport-list", cBody.Res())
+		}
+	}
+	if len(data.Ipv6VrfHosts) > 0 {
+		for _, item := range data.Ipv6VrfHosts {
+			cBody := netconf.Body{}
+			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-host", item.Ipv6Host.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-vrf-list", cBody.Res())
+		}
+	}
+	if len(data.Ipv6VrfHostsTransport) > 0 {
+		for _, item := range data.Ipv6VrfHostsTransport {
+			cBody := netconf.Body{}
+			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-host", item.Ipv6Host.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				for _, citem := range item.TransportUdpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				for _, citem := range item.TransportTcpPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				for _, citem := range item.TransportTlsPorts {
+					ccBody := netconf.Body{}
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list", cBody.Res())
+		}
+	}
+	if !data.LoggingCount.IsNull() && !data.LoggingCount.IsUnknown() {
+		if data.LoggingCount.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/count", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/count")
+		}
+	}
+	if !data.PersistentUrl.IsNull() && !data.PersistentUrl.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/url", data.PersistentUrl.ValueString())
+	}
+	if !data.PersistentSize.IsNull() && !data.PersistentSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/size", strconv.FormatInt(data.PersistentSize.ValueInt64(), 10))
+	}
+	if !data.PersistentFilesize.IsNull() && !data.PersistentFilesize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/filesize", strconv.FormatInt(data.PersistentFilesize.ValueInt64(), 10))
+	}
+	if !data.PersistentBatch.IsNull() && !data.PersistentBatch.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/batch", strconv.FormatInt(data.PersistentBatch.ValueInt64(), 10))
+	}
+	if !data.PersistentThreshold.IsNull() && !data.PersistentThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/threshold", strconv.FormatInt(data.PersistentThreshold.ValueInt64(), 10))
+	}
+	if !data.PersistentImmediate.IsNull() && !data.PersistentImmediate.IsUnknown() {
+		if data.PersistentImmediate.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/immediate", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/immediate")
+		}
+	}
+	if !data.PersistentNotify.IsNull() && !data.PersistentNotify.IsUnknown() {
+		if data.PersistentNotify.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/notify", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/notify")
+		}
+	}
+	if !data.PersistentProtected.IsNull() && !data.PersistentProtected.IsUnknown() {
+		if data.PersistentProtected.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/protected", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/protected")
+		}
+	}
+	if !data.RateLimitAll.IsNull() && !data.RateLimitAll.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range", strconv.FormatInt(data.RateLimitAll.ValueInt64(), 10))
+	}
+	if !data.RateLimitAllExceptSeverity.IsNull() && !data.RateLimitAllExceptSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range", data.RateLimitAllExceptSeverity.ValueString())
+	}
+	if !data.RateLimitConsole.IsNull() && !data.RateLimitConsole.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range", strconv.FormatInt(data.RateLimitConsole.ValueInt64(), 10))
+	}
+	if !data.RateLimitConsoleExceptSeverity.IsNull() && !data.RateLimitConsoleExceptSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range", data.RateLimitConsoleExceptSeverity.ValueString())
+	}
+	if !data.RateLimitConsoleAll.IsNull() && !data.RateLimitConsoleAll.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range", strconv.FormatInt(data.RateLimitConsoleAll.ValueInt64(), 10))
+	}
+	if !data.RateLimitConsoleAllExceptSeverity.IsNull() && !data.RateLimitConsoleAllExceptSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range", data.RateLimitConsoleAllExceptSeverity.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -1395,6 +1754,849 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/monitor-config/common-config/monitor/severity"); value.Exists() && !data.MonitorSeverity.IsNull() {
+		data.MonitorSeverity = types.StringValue(value.String())
+	} else {
+		data.MonitorSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/size-value"); value.Exists() && !data.BufferedSize.IsNull() {
+		data.BufferedSize = types.Int64Value(value.Int())
+	} else {
+		data.BufferedSize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/severity-level"); value.Exists() && !data.BufferedSeverity.IsNull() {
+		data.BufferedSeverity = types.StringValue(value.String())
+	} else {
+		data.BufferedSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/common-config/console/severity"); value.Exists() && !data.ConsoleSeverity.IsNull() {
+		data.ConsoleSeverity = types.StringValue(value.String())
+	} else {
+		data.ConsoleSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/facility"); value.Exists() && !data.Facility.IsNull() {
+		data.Facility = types.StringValue(value.String())
+	} else {
+		data.Facility = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size"); value.Exists() && !data.HistorySize.IsNull() {
+		data.HistorySize = types.Int64Value(value.Int())
+	} else {
+		data.HistorySize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/severity-level"); value.Exists() && !data.HistorySeverity.IsNull() {
+		data.HistorySeverity = types.StringValue(value.String())
+	} else {
+		data.HistorySeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap"); !data.Trap.IsNull() {
+		if value.Exists() {
+			data.Trap = types.BoolValue(true)
+		} else {
+			data.Trap = types.BoolValue(false)
+		}
+	} else {
+		data.Trap = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap/severity"); value.Exists() && !data.TrapSeverity.IsNull() {
+		data.TrapSeverity = types.StringValue(value.String())
+	} else {
+		data.TrapSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/origin-id/type-value"); value.Exists() && !data.OriginIdType.IsNull() {
+		data.OriginIdType = types.StringValue(value.String())
+	} else {
+		data.OriginIdType = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/origin-id/string"); value.Exists() && !data.OriginIdName.IsNull() {
+		data.OriginIdName = types.StringValue(value.String())
+	} else {
+		data.OriginIdName = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/name"); value.Exists() && !data.FileName.IsNull() {
+		data.FileName = types.StringValue(value.String())
+	} else {
+		data.FileName = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/max-size"); value.Exists() && !data.FileMaxSize.IsNull() {
+		data.FileMaxSize = types.Int64Value(value.Int())
+	} else {
+		data.FileMaxSize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/min-size"); value.Exists() && !data.FileMinSize.IsNull() {
+		data.FileMinSize = types.Int64Value(value.Int())
+	} else {
+		data.FileMinSize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/severity"); value.Exists() && !data.FileSeverity.IsNull() {
+		data.FileSeverity = types.StringValue(value.String())
+	} else {
+		data.FileSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/interface-name-non-vrf"); value.Exists() && !data.SourceInterface.IsNull() {
+		data.SourceInterface = types.StringValue(value.String())
+	} else {
+		data.SourceInterface = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/console"); !data.Console.IsNull() {
+		if value.Exists() {
+			data.Console = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Console = types.BoolNull()
+	}
+	for i := range data.SourceInterfacesVrf {
+		keys := [...]string{"vrf"}
+		keyValues := [...]string{data.SourceInterfacesVrf[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/source-interface-vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.SourceInterfacesVrf[i].Vrf.IsNull() {
+			data.SourceInterfacesVrf[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.SourceInterfacesVrf[i].Vrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "interface-name"); value.Exists() && !data.SourceInterfacesVrf[i].InterfaceName.IsNull() {
+			data.SourceInterfacesVrf[i].InterfaceName = types.StringValue(value.String())
+		} else {
+			data.SourceInterfacesVrf[i].InterfaceName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4Hosts {
+		keys := [...]string{"ipv4-host"}
+		keyValues := [...]string{data.Ipv4Hosts[i].Ipv4Host.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4Hosts[i].Ipv4Host.IsNull() {
+			data.Ipv4Hosts[i].Ipv4Host = types.StringValue(value.String())
+		} else {
+			data.Ipv4Hosts[i].Ipv4Host = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4HostsTransport {
+		keys := [...]string{"ipv4-host"}
+		keyValues := [...]string{data.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-transport-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4HostsTransport[i].Ipv4Host.IsNull() {
+			data.Ipv4HostsTransport[i].Ipv4Host = types.StringValue(value.String())
+		} else {
+			data.Ipv4HostsTransport[i].Ipv4Host = types.StringNull()
+		}
+		for ci := range data.Ipv4HostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4HostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4HostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "profile"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
+		}
+	}
+	for i := range data.Ipv4VrfHosts {
+		keys := [...]string{"ipv4-host", "vrf"}
+		keyValues := [...]string{data.Ipv4VrfHosts[i].Ipv4Host.ValueString(), data.Ipv4VrfHosts[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4VrfHosts[i].Ipv4Host.IsNull() {
+			data.Ipv4VrfHosts[i].Ipv4Host = types.StringValue(value.String())
+		} else {
+			data.Ipv4VrfHosts[i].Ipv4Host = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.Ipv4VrfHosts[i].Vrf.IsNull() {
+			data.Ipv4VrfHosts[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Ipv4VrfHosts[i].Vrf = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4VrfHostsTransport {
+		keys := [...]string{"ipv4-host", "vrf"}
+		keyValues := [...]string{data.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), data.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-transport-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4VrfHostsTransport[i].Ipv4Host.IsNull() {
+			data.Ipv4VrfHostsTransport[i].Ipv4Host = types.StringValue(value.String())
+		} else {
+			data.Ipv4VrfHostsTransport[i].Ipv4Host = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.Ipv4VrfHostsTransport[i].Vrf.IsNull() {
+			data.Ipv4VrfHostsTransport[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Ipv4VrfHostsTransport[i].Vrf = types.StringNull()
+		}
+		for ci := range data.Ipv4VrfHostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4VrfHostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4VrfHostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "profile"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
+		}
+	}
+	for i := range data.Ipv6Hosts {
+		keys := [...]string{"ipv6-host"}
+		keyValues := [...]string{data.Ipv6Hosts[i].Ipv6Host.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6Hosts[i].Ipv6Host.IsNull() {
+			data.Ipv6Hosts[i].Ipv6Host = types.StringValue(value.String())
+		} else {
+			data.Ipv6Hosts[i].Ipv6Host = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6HostsTransport {
+		keys := [...]string{"ipv6-host"}
+		keyValues := [...]string{data.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-transport-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6HostsTransport[i].Ipv6Host.IsNull() {
+			data.Ipv6HostsTransport[i].Ipv6Host = types.StringValue(value.String())
+		} else {
+			data.Ipv6HostsTransport[i].Ipv6Host = types.StringNull()
+		}
+		for ci := range data.Ipv6HostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6HostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6HostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "profile"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
+		}
+	}
+	for i := range data.Ipv6VrfHosts {
+		keys := [...]string{"ipv6-host", "vrf"}
+		keyValues := [...]string{data.Ipv6VrfHosts[i].Ipv6Host.ValueString(), data.Ipv6VrfHosts[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6VrfHosts[i].Ipv6Host.IsNull() {
+			data.Ipv6VrfHosts[i].Ipv6Host = types.StringValue(value.String())
+		} else {
+			data.Ipv6VrfHosts[i].Ipv6Host = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.Ipv6VrfHosts[i].Vrf.IsNull() {
+			data.Ipv6VrfHosts[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6VrfHosts[i].Vrf = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6VrfHostsTransport {
+		keys := [...]string{"ipv6-host", "vrf"}
+		keyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6VrfHostsTransport[i].Ipv6Host.IsNull() {
+			data.Ipv6VrfHostsTransport[i].Ipv6Host = types.StringValue(value.String())
+		} else {
+			data.Ipv6VrfHostsTransport[i].Ipv6Host = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.Ipv6VrfHostsTransport[i].Vrf.IsNull() {
+			data.Ipv6VrfHostsTransport[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6VrfHostsTransport[i].Vrf = types.StringNull()
+		}
+		for ci := range data.Ipv6VrfHostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6VrfHostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6VrfHostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "profile"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/count"); !data.LoggingCount.IsNull() {
+		if value.Exists() {
+			data.LoggingCount = types.BoolValue(true)
+		} else {
+			data.LoggingCount = types.BoolValue(false)
+		}
+	} else {
+		data.LoggingCount = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/url"); value.Exists() && !data.PersistentUrl.IsNull() {
+		data.PersistentUrl = types.StringValue(value.String())
+	} else {
+		data.PersistentUrl = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/size"); value.Exists() && !data.PersistentSize.IsNull() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	} else {
+		data.PersistentSize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/filesize"); value.Exists() && !data.PersistentFilesize.IsNull() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	} else {
+		data.PersistentFilesize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/batch"); value.Exists() && !data.PersistentBatch.IsNull() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	} else {
+		data.PersistentBatch = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/threshold"); value.Exists() && !data.PersistentThreshold.IsNull() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	} else {
+		data.PersistentThreshold = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/immediate"); !data.PersistentImmediate.IsNull() {
+		if value.Exists() {
+			data.PersistentImmediate = types.BoolValue(true)
+		} else {
+			data.PersistentImmediate = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentImmediate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/notify"); !data.PersistentNotify.IsNull() {
+		if value.Exists() {
+			data.PersistentNotify = types.BoolValue(true)
+		} else {
+			data.PersistentNotify = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentNotify = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/protected"); !data.PersistentProtected.IsNull() {
+		if value.Exists() {
+			data.PersistentProtected = types.BoolValue(true)
+		} else {
+			data.PersistentProtected = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentProtected = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range"); value.Exists() && !data.RateLimitAll.IsNull() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitAll = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range"); value.Exists() && !data.RateLimitAllExceptSeverity.IsNull() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitAllExceptSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range"); value.Exists() && !data.RateLimitConsole.IsNull() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitConsole = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range"); value.Exists() && !data.RateLimitConsoleExceptSeverity.IsNull() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitConsoleExceptSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range"); value.Exists() && !data.RateLimitConsoleAll.IsNull() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitConsoleAll = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range"); value.Exists() && !data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitConsoleAllExceptSeverity = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
@@ -2149,6 +3351,752 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *Logging) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/monitor-config/common-config/monitor/severity"); value.Exists() {
+		data.MonitorSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/size-value"); value.Exists() {
+		data.BufferedSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/severity-level"); value.Exists() {
+		data.BufferedSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/common-config/console/severity"); value.Exists() {
+		data.ConsoleSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/facility"); value.Exists() {
+		data.Facility = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size"); value.Exists() {
+		data.HistorySize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/severity-level"); value.Exists() {
+		data.HistorySeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap"); value.Exists() {
+		data.Trap = types.BoolValue(true)
+	} else {
+		data.Trap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap/severity"); value.Exists() {
+		data.TrapSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/origin-id/type-value"); value.Exists() {
+		data.OriginIdType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/origin-id/string"); value.Exists() {
+		data.OriginIdName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/name"); value.Exists() {
+		data.FileName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/max-size"); value.Exists() {
+		data.FileMaxSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/min-size"); value.Exists() {
+		data.FileMinSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/severity"); value.Exists() {
+		data.FileSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/interface-name-non-vrf"); value.Exists() {
+		data.SourceInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/console"); value.Exists() {
+		data.Console = types.BoolValue(value.Bool())
+	} else {
+		data.Console = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/source-interface-vrf"); value.Exists() {
+		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrf, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingSourceInterfacesVrf{}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interface-name"); cValue.Exists() {
+				item.InterfaceName = types.StringValue(cValue.String())
+			}
+			data.SourceInterfacesVrf = append(data.SourceInterfacesVrf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-list"); value.Exists() {
+		data.Ipv4Hosts = make([]LoggingIpv4Hosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4Hosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			data.Ipv4Hosts = append(data.Ipv4Hosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-transport-list"); value.Exists() {
+		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4HostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4HostsTransport = append(data.Ipv4HostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-list"); value.Exists() {
+		data.Ipv4VrfHosts = make([]LoggingIpv4VrfHosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4VrfHosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.Ipv4VrfHosts = append(data.Ipv4VrfHosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-transport-list"); value.Exists() {
+		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4VrfHostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4VrfHostsTransport = append(data.Ipv4VrfHostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-list"); value.Exists() {
+		data.Ipv6Hosts = make([]LoggingIpv6Hosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6Hosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			data.Ipv6Hosts = append(data.Ipv6Hosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-transport-list"); value.Exists() {
+		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6HostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6HostsTransport = append(data.Ipv6HostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-list"); value.Exists() {
+		data.Ipv6VrfHosts = make([]LoggingIpv6VrfHosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6VrfHosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.Ipv6VrfHosts = append(data.Ipv6VrfHosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list"); value.Exists() {
+		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6VrfHostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6VrfHostsTransport = append(data.Ipv6VrfHostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/count"); value.Exists() {
+		data.LoggingCount = types.BoolValue(true)
+	} else {
+		data.LoggingCount = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/url"); value.Exists() {
+		data.PersistentUrl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/size"); value.Exists() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/filesize"); value.Exists() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/batch"); value.Exists() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/threshold"); value.Exists() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/immediate"); value.Exists() {
+		data.PersistentImmediate = types.BoolValue(true)
+	} else {
+		data.PersistentImmediate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/notify"); value.Exists() {
+		data.PersistentNotify = types.BoolValue(true)
+	} else {
+		data.PersistentNotify = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/protected"); value.Exists() {
+		data.PersistentProtected = types.BoolValue(true)
+	} else {
+		data.PersistentProtected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range"); value.Exists() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range"); value.Exists() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range"); value.Exists() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range"); value.Exists() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/monitor-config/common-config/monitor/severity"); value.Exists() {
+		data.MonitorSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/size-value"); value.Exists() {
+		data.BufferedSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/severity-level"); value.Exists() {
+		data.BufferedSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/common-config/console/severity"); value.Exists() {
+		data.ConsoleSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/facility"); value.Exists() {
+		data.Facility = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size"); value.Exists() {
+		data.HistorySize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/severity-level"); value.Exists() {
+		data.HistorySeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap"); value.Exists() {
+		data.Trap = types.BoolValue(true)
+	} else {
+		data.Trap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trap/severity"); value.Exists() {
+		data.TrapSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/origin-id/type-value"); value.Exists() {
+		data.OriginIdType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/origin-id/string"); value.Exists() {
+		data.OriginIdName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/name"); value.Exists() {
+		data.FileName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/max-size"); value.Exists() {
+		data.FileMaxSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/min-size"); value.Exists() {
+		data.FileMinSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/file/severity"); value.Exists() {
+		data.FileSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/interface-name-non-vrf"); value.Exists() {
+		data.SourceInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/console"); value.Exists() {
+		data.Console = types.BoolValue(value.Bool())
+	} else {
+		data.Console = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/source-interface-vrf"); value.Exists() {
+		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrf, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingSourceInterfacesVrf{}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interface-name"); cValue.Exists() {
+				item.InterfaceName = types.StringValue(cValue.String())
+			}
+			data.SourceInterfacesVrf = append(data.SourceInterfacesVrf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-list"); value.Exists() {
+		data.Ipv4Hosts = make([]LoggingIpv4Hosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4Hosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			data.Ipv4Hosts = append(data.Ipv4Hosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-transport-list"); value.Exists() {
+		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4HostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4HostsTransport = append(data.Ipv4HostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-list"); value.Exists() {
+		data.Ipv4VrfHosts = make([]LoggingIpv4VrfHosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4VrfHosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.Ipv4VrfHosts = append(data.Ipv4VrfHosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-transport-list"); value.Exists() {
+		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv4VrfHostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4VrfHostsTransport = append(data.Ipv4VrfHostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-list"); value.Exists() {
+		data.Ipv6Hosts = make([]LoggingIpv6Hosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6Hosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			data.Ipv6Hosts = append(data.Ipv6Hosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-transport-list"); value.Exists() {
+		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6HostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6HostsTransport = append(data.Ipv6HostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-list"); value.Exists() {
+		data.Ipv6VrfHosts = make([]LoggingIpv6VrfHosts, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6VrfHosts{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.Ipv6VrfHosts = append(data.Ipv6VrfHosts, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list"); value.Exists() {
+		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LoggingIpv6VrfHostsTransport{}
+			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportUdpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTcpPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTlsPorts{}
+					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6VrfHostsTransport = append(data.Ipv6VrfHostsTransport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/count"); value.Exists() {
+		data.LoggingCount = types.BoolValue(true)
+	} else {
+		data.LoggingCount = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/url"); value.Exists() {
+		data.PersistentUrl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/size"); value.Exists() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/filesize"); value.Exists() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/batch"); value.Exists() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/threshold"); value.Exists() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/immediate"); value.Exists() {
+		data.PersistentImmediate = types.BoolValue(true)
+	} else {
+		data.PersistentImmediate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/notify"); value.Exists() {
+		data.PersistentNotify = types.BoolValue(true)
+	} else {
+		data.PersistentNotify = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/protected"); value.Exists() {
+		data.PersistentProtected = types.BoolValue(true)
+	} else {
+		data.PersistentProtected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range"); value.Exists() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range"); value.Exists() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range"); value.Exists() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range"); value.Exists() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []string {
@@ -2819,6 +4767,782 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body string) string {
+	b := netconf.NewBody(body)
+	if !state.RateLimitConsoleAllExceptSeverity.IsNull() && data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range")
+	}
+	if !state.RateLimitConsoleAll.IsNull() && data.RateLimitConsoleAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range")
+	}
+	if !state.RateLimitConsoleExceptSeverity.IsNull() && data.RateLimitConsoleExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range")
+	}
+	if !state.RateLimitConsole.IsNull() && data.RateLimitConsole.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range")
+	}
+	if !state.RateLimitAllExceptSeverity.IsNull() && data.RateLimitAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range")
+	}
+	if !state.RateLimitAll.IsNull() && data.RateLimitAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range")
+	}
+	if !state.PersistentProtected.IsNull() && data.PersistentProtected.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/protected")
+	}
+	if !state.PersistentNotify.IsNull() && data.PersistentNotify.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/notify")
+	}
+	if !state.PersistentImmediate.IsNull() && data.PersistentImmediate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/immediate")
+	}
+	if !state.PersistentThreshold.IsNull() && data.PersistentThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/threshold")
+	}
+	if !state.PersistentBatch.IsNull() && data.PersistentBatch.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/batch")
+	}
+	if !state.PersistentFilesize.IsNull() && data.PersistentFilesize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/filesize")
+	}
+	if !state.PersistentSize.IsNull() && data.PersistentSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/size")
+	}
+	if !state.PersistentUrl.IsNull() && data.PersistentUrl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/url")
+	}
+	if !state.LoggingCount.IsNull() && data.LoggingCount.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/count")
+	}
+	for i := range state.Ipv6VrfHostsTransport {
+		stateKeys := [...]string{"ipv6-host", "vrf"}
+		stateKeyValues := [...]string{state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), state.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6VrfHostsTransport {
+			found = true
+			if state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString() != data.Ipv6VrfHostsTransport[j].Ipv6Host.ValueString() {
+				found = false
+			}
+			if state.Ipv6VrfHostsTransport[i].Vrf.ValueString() != data.Ipv6VrfHostsTransport[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv6VrfHostsTransport[i].TransportTlsPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6VrfHostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv6VrfHostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv6VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list%v/transport/tls/port%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv6VrfHostsTransport[i].TransportTcpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6VrfHostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv6VrfHostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list%v/transport/tcp/port-config%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv6VrfHostsTransport[i].TransportUdpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6VrfHostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv6VrfHostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list%v/transport/udp/port-config%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv6VrfHosts {
+		stateKeys := [...]string{"ipv6-host", "vrf"}
+		stateKeyValues := [...]string{state.Ipv6VrfHosts[i].Ipv6Host.ValueString(), state.Ipv6VrfHosts[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6VrfHosts[i].Ipv6Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6VrfHosts[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6VrfHosts {
+			found = true
+			if state.Ipv6VrfHosts[i].Ipv6Host.ValueString() != data.Ipv6VrfHosts[j].Ipv6Host.ValueString() {
+				found = false
+			}
+			if state.Ipv6VrfHosts[i].Vrf.ValueString() != data.Ipv6VrfHosts[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-vrf-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv6HostsTransport {
+		stateKeys := [...]string{"ipv6-host"}
+		stateKeyValues := [...]string{state.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6HostsTransport[i].Ipv6Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6HostsTransport {
+			found = true
+			if state.Ipv6HostsTransport[i].Ipv6Host.ValueString() != data.Ipv6HostsTransport[j].Ipv6Host.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv6HostsTransport[i].TransportTlsPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6HostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv6HostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv6HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-transport-list%v/transport/tls/port%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv6HostsTransport[i].TransportTcpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6HostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv6HostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-transport-list%v/transport/tcp/port-config%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv6HostsTransport[i].TransportUdpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6HostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv6HostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-transport-list%v/transport/udp/port-config%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-transport-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv6Hosts {
+		stateKeys := [...]string{"ipv6-host"}
+		stateKeyValues := [...]string{state.Ipv6Hosts[i].Ipv6Host.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6Hosts[i].Ipv6Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6Hosts {
+			found = true
+			if state.Ipv6Hosts[i].Ipv6Host.ValueString() != data.Ipv6Hosts[j].Ipv6Host.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv6/ipv6-host-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv4VrfHostsTransport {
+		stateKeys := [...]string{"ipv4-host", "vrf"}
+		stateKeyValues := [...]string{state.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), state.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4VrfHostsTransport {
+			found = true
+			if state.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString() != data.Ipv4VrfHostsTransport[j].Ipv4Host.ValueString() {
+				found = false
+			}
+			if state.Ipv4VrfHostsTransport[i].Vrf.ValueString() != data.Ipv4VrfHostsTransport[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv4VrfHostsTransport[i].TransportTlsPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4VrfHostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv4VrfHostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv4VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-vrf-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-vrf-transport-list%v/transport/tls/port%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv4VrfHostsTransport[i].TransportTcpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4VrfHostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv4VrfHostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-vrf-transport-list%v/transport/tcp/port-config%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv4VrfHostsTransport[i].TransportUdpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4VrfHostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv4VrfHostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-vrf-transport-list%v/transport/udp/port-config%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-vrf-transport-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv4VrfHosts {
+		stateKeys := [...]string{"ipv4-host", "vrf"}
+		stateKeyValues := [...]string{state.Ipv4VrfHosts[i].Ipv4Host.ValueString(), state.Ipv4VrfHosts[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4VrfHosts[i].Ipv4Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4VrfHosts[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4VrfHosts {
+			found = true
+			if state.Ipv4VrfHosts[i].Ipv4Host.ValueString() != data.Ipv4VrfHosts[j].Ipv4Host.ValueString() {
+				found = false
+			}
+			if state.Ipv4VrfHosts[i].Vrf.ValueString() != data.Ipv4VrfHosts[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-vrf-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv4HostsTransport {
+		stateKeys := [...]string{"ipv4-host"}
+		stateKeyValues := [...]string{state.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4HostsTransport[i].Ipv4Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4HostsTransport {
+			found = true
+			if state.Ipv4HostsTransport[i].Ipv4Host.ValueString() != data.Ipv4HostsTransport[j].Ipv4Host.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv4HostsTransport[i].TransportTlsPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4HostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv4HostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv4HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-transport-list%v/transport/tls/port%v/profile", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-transport-list%v/transport/tls/port%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv4HostsTransport[i].TransportTcpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4HostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv4HostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-transport-list%v/transport/tcp/port-config%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Ipv4HostsTransport[i].TransportUdpPorts {
+					cstateKeys := [...]string{"port-number"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4HostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv4HostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-transport-list%v/transport/udp/port-config%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-transport-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv4Hosts {
+		stateKeys := [...]string{"ipv4-host"}
+		stateKeyValues := [...]string{state.Ipv4Hosts[i].Ipv4Host.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4Hosts[i].Ipv4Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4Hosts {
+			found = true
+			if state.Ipv4Hosts[i].Ipv4Host.ValueString() != data.Ipv4Hosts[j].Ipv4Host.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/host/ipv4-host-list%v", predicates))
+		}
+	}
+	for i := range state.SourceInterfacesVrf {
+		stateKeys := [...]string{"vrf"}
+		stateKeyValues := [...]string{state.SourceInterfacesVrf[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SourceInterfacesVrf[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SourceInterfacesVrf {
+			found = true
+			if state.SourceInterfacesVrf[i].Vrf.ValueString() != data.SourceInterfacesVrf[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.SourceInterfacesVrf[i].InterfaceName.IsNull() && data.SourceInterfacesVrf[j].InterfaceName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/source-interface-conf/source-interface-vrf%v/interface-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/source-interface-conf/source-interface-vrf%v", predicates))
+		}
+	}
+	if !state.Console.IsNull() && data.Console.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/console-config/console")
+	}
+	if !state.SourceInterface.IsNull() && data.SourceInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source-interface-conf/interface-name-non-vrf")
+	}
+	if !state.FileSeverity.IsNull() && data.FileSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/severity")
+	}
+	if !state.FileMinSize.IsNull() && data.FileMinSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/min-size")
+	}
+	if !state.FileMaxSize.IsNull() && data.FileMaxSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/max-size")
+	}
+	if !state.FileName.IsNull() && data.FileName.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/file/name")
+	}
+	if !state.OriginIdName.IsNull() && data.OriginIdName.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/origin-id/string")
+	}
+	if !state.OriginIdType.IsNull() && data.OriginIdType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/origin-id/type-value")
+	}
+	if !state.TrapSeverity.IsNull() && data.TrapSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap/severity")
+	}
+	if !state.Trap.IsNull() && data.Trap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/trap")
+	}
+	if !state.HistorySeverity.IsNull() && data.HistorySeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/severity-level")
+	}
+	if !state.HistorySize.IsNull() && data.HistorySize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/size")
+	}
+	if !state.Facility.IsNull() && data.Facility.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/facility")
+	}
+	if !state.ConsoleSeverity.IsNull() && data.ConsoleSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/console-config/common-config/console/severity")
+	}
+	if !state.BufferedSeverity.IsNull() && data.BufferedSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered/severity-level")
+	}
+	if !state.BufferedSize.IsNull() && data.BufferedSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered/size-value")
+	}
+	if !state.MonitorSeverity.IsNull() && data.MonitorSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/monitor-config/common-config/monitor/severity")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *Logging) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -2995,3 +5719,200 @@ func (data *Logging) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *Logging) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range")
+	}
+	if !data.RateLimitConsoleAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range")
+	}
+	if !data.RateLimitConsoleExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range")
+	}
+	if !data.RateLimitConsole.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range")
+	}
+	if !data.RateLimitAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range")
+	}
+	if !data.RateLimitAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range")
+	}
+	if !data.PersistentProtected.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/protected")
+	}
+	if !data.PersistentNotify.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/notify")
+	}
+	if !data.PersistentImmediate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/immediate")
+	}
+	if !data.PersistentThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/threshold")
+	}
+	if !data.PersistentBatch.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/batch")
+	}
+	if !data.PersistentFilesize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/filesize")
+	}
+	if !data.PersistentSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/size")
+	}
+	if !data.PersistentUrl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/url")
+	}
+	if !data.LoggingCount.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/count")
+	}
+	for i := range data.Ipv6VrfHostsTransport {
+		keys := [...]string{"ipv6-host", "vrf"}
+		keyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list%v", predicates))
+	}
+	for i := range data.Ipv6VrfHosts {
+		keys := [...]string{"ipv6-host", "vrf"}
+		keyValues := [...]string{data.Ipv6VrfHosts[i].Ipv6Host.ValueString(), data.Ipv6VrfHosts[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv6/ipv6-host-vrf-list%v", predicates))
+	}
+	for i := range data.Ipv6HostsTransport {
+		keys := [...]string{"ipv6-host"}
+		keyValues := [...]string{data.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv6/ipv6-host-transport-list%v", predicates))
+	}
+	for i := range data.Ipv6Hosts {
+		keys := [...]string{"ipv6-host"}
+		keyValues := [...]string{data.Ipv6Hosts[i].Ipv6Host.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv6/ipv6-host-list%v", predicates))
+	}
+	for i := range data.Ipv4VrfHostsTransport {
+		keys := [...]string{"ipv4-host", "vrf"}
+		keyValues := [...]string{data.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), data.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv4-host-vrf-transport-list%v", predicates))
+	}
+	for i := range data.Ipv4VrfHosts {
+		keys := [...]string{"ipv4-host", "vrf"}
+		keyValues := [...]string{data.Ipv4VrfHosts[i].Ipv4Host.ValueString(), data.Ipv4VrfHosts[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv4-host-vrf-list%v", predicates))
+	}
+	for i := range data.Ipv4HostsTransport {
+		keys := [...]string{"ipv4-host"}
+		keyValues := [...]string{data.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv4-host-transport-list%v", predicates))
+	}
+	for i := range data.Ipv4Hosts {
+		keys := [...]string{"ipv4-host"}
+		keyValues := [...]string{data.Ipv4Hosts[i].Ipv4Host.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/host/ipv4-host-list%v", predicates))
+	}
+	for i := range data.SourceInterfacesVrf {
+		keys := [...]string{"vrf"}
+		keyValues := [...]string{data.SourceInterfacesVrf[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/source-interface-conf/source-interface-vrf%v", predicates))
+	}
+	if !data.Console.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/console-config/console")
+	}
+	if !data.SourceInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/source-interface-conf/interface-name-non-vrf")
+	}
+	if !data.FileSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/file/severity")
+	}
+	if !data.FileMinSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/file/min-size")
+	}
+	if !data.FileMaxSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/file/max-size")
+	}
+	if !data.FileName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/file/name")
+	}
+	if !data.OriginIdName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/origin-id/string")
+	}
+	if !data.OriginIdType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/origin-id/type-value")
+	}
+	if !data.TrapSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap/severity")
+	}
+	if !data.Trap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/trap")
+	}
+	if !data.HistorySeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/history/severity-level")
+	}
+	if !data.HistorySize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/history/size")
+	}
+	if !data.Facility.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/facility")
+	}
+	if !data.ConsoleSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/console-config/common-config/console/severity")
+	}
+	if !data.BufferedSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/buffered/severity-level")
+	}
+	if !data.BufferedSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/buffered/size-value")
+	}
+	if !data.MonitorSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/monitor-config/common-config/monitor/severity")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

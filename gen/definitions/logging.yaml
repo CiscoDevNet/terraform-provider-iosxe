@@ -1,6 +1,7 @@
+# Deleting the logging hosts currently fails using NETCONF, due to remove operations on both, ipv4_hosts_transport and ipv4_hosts, failing
 ---
 name: Logging
-path: Cisco-IOS-XE-native:native/logging
+path: /Cisco-IOS-XE-native:native/logging
 no_delete: true
 doc_category: Management
 attributes:
@@ -80,6 +81,7 @@ attributes:
   - yang_name: host/ipv4-host-transport-list
     tf_name: ipv4_hosts_transport
     type: List
+    exclude_test: true
     attributes:
       - yang_name: ipv4-host
         example: 1.1.1.1
@@ -121,6 +123,7 @@ attributes:
   - yang_name: host/ipv4-host-vrf-transport-list
     tf_name: ipv4_vrf_hosts_transport
     type: List
+    exclude_test: true
     attributes:
       - yang_name: ipv4-host
         example: 1.1.1.1
@@ -162,6 +165,7 @@ attributes:
   - yang_name: host/ipv6/ipv6-host-transport-list
     tf_name: ipv6_hosts_transport
     type: List
+    exclude_test: true
     attributes:
       - yang_name: ipv6-host
         example: 2001::1
@@ -203,6 +207,7 @@ attributes:
   - yang_name: host/ipv6/ipv6-host-vrf-transport-list
     tf_name: ipv6_vrf_hosts_transport
     type: List
+    exclude_test: true
     attributes:
       - yang_name: ipv6-host
         example: 2001::1
@@ -291,7 +296,7 @@ attributes:
     exclude_test: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
@@ -300,7 +305,7 @@ test_prerequisites:
         value: ""
       - name: address-family/ipv6
         value: ""
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

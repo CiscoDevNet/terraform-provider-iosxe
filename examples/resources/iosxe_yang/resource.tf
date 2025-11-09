@@ -1,12 +1,12 @@
-resource "iosxe_restconf" "simple" {
-  path = "Cisco-IOS-XE-native:native/banner/login"
+resource "iosxe_yang" "simple" {
+  path = "/Cisco-IOS-XE-native:native/banner/login"
   attributes = {
     banner = "My Banner"
   }
 }
 
-resource "iosxe_restconf" "nested_list" {
-  path = "Cisco-IOS-XE-native:native/ip"
+resource "iosxe_yang" "nested_list" {
+  path = "/Cisco-IOS-XE-native:native/ip"
   attributes = {
     source-route = "true"
   }

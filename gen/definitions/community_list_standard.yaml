@@ -1,6 +1,6 @@
 ---
 name: Community List Standard
-path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=%v
+path: /Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard[name=%v]
 no_delete_attributes: true
 skip_minimum_test: true
 doc_category: BGP

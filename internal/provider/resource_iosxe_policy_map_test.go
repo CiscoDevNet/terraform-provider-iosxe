@@ -79,8 +79,8 @@ func iosxePolicyMapImportStateIdFunc(resourceName string) resource.ImportStateId
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxePolicyMapPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=CLASS1]"
 	attributes = {
 		"name" = "CLASS1"
 		"prematch" = "match-all"
@@ -96,7 +96,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxePolicyMapConfig_minimum() string {
 	config := `resource "iosxe_policy_map" "test" {` + "\n"
 	config += `	name = "POLICY1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -116,7 +116,7 @@ func testAccIosxePolicyMapConfig_all() string {
 	config += `			bandwidth_percent = 10` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

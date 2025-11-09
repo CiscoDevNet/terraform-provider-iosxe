@@ -1,6 +1,6 @@
 ---
 name: BGP IPv4 Unicast VRF Neighbor
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=unicast/vrf=%s/ipv4-unicast/neighbor=%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv4[af-name=unicast]/vrf[name=%s]/ipv4-unicast/neighbor[id=%s]
 skip_minimum_test: true
 doc_category: BGP
 attributes:
@@ -142,7 +142,7 @@ attributes:
   - yang_name: advertisement-interval
     example: 300
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
@@ -151,11 +151,11 @@ test_prerequisites:
         value: 1:1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
       - name: id
         value: 65000
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/with-vrf/ipv4=unicast
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/address-family/with-vrf/ipv4[af-name=unicast]
     attributes:
       - name: af-name
         value: unicast
@@ -167,7 +167,7 @@ test_prerequisites:
               - name: name
                 value: VRF1
     dependencies: [0, 1]
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

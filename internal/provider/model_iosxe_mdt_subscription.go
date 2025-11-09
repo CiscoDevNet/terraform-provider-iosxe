@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -94,6 +97,19 @@ func (data MDTSubscription) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data MDTSubscription) getXPath() string {
+	path := "/Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription[subscription-id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.SubscriptionId.ValueInt64()))
+	return path
+}
+
+func (data MDTSubscriptionData) getXPath() string {
+	path := "/Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription[subscription-id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.SubscriptionId.ValueInt64()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -142,6 +158,58 @@ func (data MDTSubscription) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data MDTSubscription) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.SubscriptionId.IsNull() && !data.SubscriptionId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/subscription-id", strconv.FormatInt(data.SubscriptionId.ValueInt64(), 10))
+	}
+	if !data.Stream.IsNull() && !data.Stream.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/base/stream", data.Stream.ValueString())
+	}
+	if !data.Encoding.IsNull() && !data.Encoding.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/base/encoding", data.Encoding.ValueString())
+	}
+	if !data.SourceVrf.IsNull() && !data.SourceVrf.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/base/source-vrf", data.SourceVrf.ValueString())
+	}
+	if !data.SourceAddress.IsNull() && !data.SourceAddress.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/base/source-address", data.SourceAddress.ValueString())
+	}
+	if !data.UpdatePolicyPeriodic.IsNull() && !data.UpdatePolicyPeriodic.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/base/period", strconv.FormatInt(data.UpdatePolicyPeriodic.ValueInt64(), 10))
+	}
+	if !data.UpdatePolicyOnChange.IsNull() && !data.UpdatePolicyOnChange.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/base/no-synch-on-start", data.UpdatePolicyOnChange.ValueBool())
+	}
+	if !data.FilterXpath.IsNull() && !data.FilterXpath.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/base/xpath", data.FilterXpath.ValueString())
+	}
+	if len(data.Receivers) > 0 {
+		for _, item := range data.Receivers {
+			cBody := netconf.Body{}
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "address", item.Address.ValueString())
+			}
+			if !item.Port.IsNull() && !item.Port.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "port", strconv.FormatInt(item.Port.ValueInt64(), 10))
+			}
+			if !item.Protocol.IsNull() && !item.Protocol.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "protocol", item.Protocol.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/mdt-receivers", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -234,6 +302,94 @@ func (data *MDTSubscription) updateFromBody(ctx context.Context, res gjson.Resul
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *MDTSubscription) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscription-id"); value.Exists() && !data.SubscriptionId.IsNull() {
+		data.SubscriptionId = types.Int64Value(value.Int())
+	} else {
+		data.SubscriptionId = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/stream"); value.Exists() && !data.Stream.IsNull() {
+		data.Stream = types.StringValue(value.String())
+	} else {
+		data.Stream = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/encoding"); value.Exists() && !data.Encoding.IsNull() {
+		data.Encoding = types.StringValue(value.String())
+	} else {
+		data.Encoding = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/source-vrf"); value.Exists() && !data.SourceVrf.IsNull() {
+		data.SourceVrf = types.StringValue(value.String())
+	} else {
+		data.SourceVrf = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/source-address"); value.Exists() && !data.SourceAddress.IsNull() {
+		data.SourceAddress = types.StringValue(value.String())
+	} else {
+		data.SourceAddress = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/period"); value.Exists() && !data.UpdatePolicyPeriodic.IsNull() {
+		data.UpdatePolicyPeriodic = types.Int64Value(value.Int())
+	} else {
+		data.UpdatePolicyPeriodic = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/no-synch-on-start"); !data.UpdatePolicyOnChange.IsNull() {
+		if value.Exists() {
+			data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.UpdatePolicyOnChange = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/xpath"); value.Exists() && !data.FilterXpath.IsNull() {
+		data.FilterXpath = types.StringValue(value.String())
+	} else {
+		data.FilterXpath = types.StringNull()
+	}
+	for i := range data.Receivers {
+		keys := [...]string{"address", "port"}
+		keyValues := [...]string{data.Receivers[i].Address.ValueString(), strconv.FormatInt(data.Receivers[i].Port.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdt-receivers").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Receivers[i].Address.IsNull() {
+			data.Receivers[i].Address = types.StringValue(value.String())
+		} else {
+			data.Receivers[i].Address = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "port"); value.Exists() && !data.Receivers[i].Port.IsNull() {
+			data.Receivers[i].Port = types.Int64Value(value.Int())
+		} else {
+			data.Receivers[i].Port = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "protocol"); value.Exists() && !data.Receivers[i].Protocol.IsNull() {
+			data.Receivers[i].Protocol = types.StringValue(value.String())
+		} else {
+			data.Receivers[i].Protocol = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -337,6 +493,100 @@ func (data *MDTSubscriptionData) fromBody(ctx context.Context, res gjson.Result)
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *MDTSubscription) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/stream"); value.Exists() {
+		data.Stream = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/encoding"); value.Exists() {
+		data.Encoding = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/source-vrf"); value.Exists() {
+		data.SourceVrf = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/source-address"); value.Exists() {
+		data.SourceAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/period"); value.Exists() {
+		data.UpdatePolicyPeriodic = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/no-synch-on-start"); value.Exists() {
+		data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
+	} else {
+		data.UpdatePolicyOnChange = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/xpath"); value.Exists() {
+		data.FilterXpath = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdt-receivers"); value.Exists() {
+		data.Receivers = make([]MDTSubscriptionReceivers, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := MDTSubscriptionReceivers{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "port"); cValue.Exists() {
+				item.Port = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "protocol"); cValue.Exists() {
+				item.Protocol = types.StringValue(cValue.String())
+			}
+			data.Receivers = append(data.Receivers, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *MDTSubscriptionData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/stream"); value.Exists() {
+		data.Stream = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/encoding"); value.Exists() {
+		data.Encoding = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/source-vrf"); value.Exists() {
+		data.SourceVrf = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/source-address"); value.Exists() {
+		data.SourceAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/period"); value.Exists() {
+		data.UpdatePolicyPeriodic = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/no-synch-on-start"); value.Exists() {
+		data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
+	} else {
+		data.UpdatePolicyOnChange = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/base/xpath"); value.Exists() {
+		data.FilterXpath = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdt-receivers"); value.Exists() {
+		data.Receivers = make([]MDTSubscriptionReceivers, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := MDTSubscriptionReceivers{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "port"); cValue.Exists() {
+				item.Port = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "protocol"); cValue.Exists() {
+				item.Protocol = types.StringValue(cValue.String())
+			}
+			data.Receivers = append(data.Receivers, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *MDTSubscription) getDeletedItems(ctx context.Context, state MDTSubscription) []string {
@@ -402,6 +652,77 @@ func (data *MDTSubscription) getDeletedItems(ctx context.Context, state MDTSubsc
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *MDTSubscription) addDeletedItemsXML(ctx context.Context, state MDTSubscription, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Receivers {
+		stateKeys := [...]string{"address", "port"}
+		stateKeyValues := [...]string{state.Receivers[i].Address.ValueString(), strconv.FormatInt(state.Receivers[i].Port.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Receivers[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Receivers[i].Port.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Receivers {
+			found = true
+			if state.Receivers[i].Address.ValueString() != data.Receivers[j].Address.ValueString() {
+				found = false
+			}
+			if state.Receivers[i].Port.ValueInt64() != data.Receivers[j].Port.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Receivers[i].Protocol.IsNull() && data.Receivers[j].Protocol.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/mdt-receivers%v/protocol", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/mdt-receivers%v", predicates))
+		}
+	}
+	if !state.FilterXpath.IsNull() && data.FilterXpath.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/xpath")
+	}
+	if !state.UpdatePolicyOnChange.IsNull() && data.UpdatePolicyOnChange.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/no-synch-on-start")
+	}
+	if !state.UpdatePolicyPeriodic.IsNull() && data.UpdatePolicyPeriodic.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/period")
+	}
+	if !state.SourceAddress.IsNull() && data.SourceAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/source-address")
+	}
+	if !state.SourceVrf.IsNull() && data.SourceVrf.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/source-vrf")
+	}
+	if !state.Encoding.IsNull() && data.Encoding.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/encoding")
+	}
+	if !state.Stream.IsNull() && data.Stream.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/base/stream")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *MDTSubscription) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -447,3 +768,45 @@ func (data *MDTSubscription) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *MDTSubscription) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Receivers {
+		keys := [...]string{"address", "port"}
+		keyValues := [...]string{data.Receivers[i].Address.ValueString(), strconv.FormatInt(data.Receivers[i].Port.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/mdt-receivers%v", predicates))
+	}
+	if !data.FilterXpath.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/base/xpath")
+	}
+	if !data.UpdatePolicyOnChange.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/base/no-synch-on-start")
+	}
+	if !data.UpdatePolicyPeriodic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/base/period")
+	}
+	if !data.SourceAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/base/source-address")
+	}
+	if !data.SourceVrf.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/base/source-vrf")
+	}
+	if !data.Encoding.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/base/encoding")
+	}
+	if !data.Stream.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/base/stream")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML
