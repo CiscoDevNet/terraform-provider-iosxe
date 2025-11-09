@@ -120,4 +120,7 @@ resource "iosxe_logging" "example" {
       ]
     }
   ]
+  persistent_size     = 1000000
+  persistent_filesize = 500000
+  rate_limit_all      = 200
 }

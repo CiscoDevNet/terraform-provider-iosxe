@@ -27,11 +27,12 @@ attributes:
       - yang_name: identifier-type
         tf_name: type
         id: true
-        example: 0
+        example: 3
       - yang_name: esi-type-choice/hex-string/hex-string
         xpath: hex-string
         tf_name: hex_string
-        example: 0001.0000.0000.0000.000A
+        example: 00.00.00.00.00.00.01.01.01
+        exclude_test: true
       - yang_name: esi-type-choice/system-mac/system-mac
         xpath: system-mac
-        example: 00:11:22:33:44:55
+        example: 0011.2233.4455

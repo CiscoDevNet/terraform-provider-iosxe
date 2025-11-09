@@ -42,9 +42,8 @@ func TestAccIosxeEVPNEthernetSegment(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "df_election_wait_time", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "redundancy_all_active", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "redundancy_single_active", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.type", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.hex_string", "0001.0000.0000.0000.000A"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.system_mac", "00:11:22:33:44:55"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.type", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.system_mac", "0011.2233.4455"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -106,9 +105,8 @@ func testAccIosxeEVPNEthernetSegmentConfig_all() string {
 	config += `	redundancy_all_active = false` + "\n"
 	config += `	redundancy_single_active = true` + "\n"
 	config += `	identifier_types = [{` + "\n"
-	config += `		type = 0` + "\n"
-	config += `		hex_string = "0001.0000.0000.0000.000A"` + "\n"
-	config += `		system_mac = "00:11:22:33:44:55"` + "\n"
+	config += `		type = 3` + "\n"
+	config += `		system_mac = "0011.2233.4455"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config
