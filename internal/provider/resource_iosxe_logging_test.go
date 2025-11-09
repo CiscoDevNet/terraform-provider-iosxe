@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -71,8 +72,12 @@ func TestAccIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "logging_count", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "persistent_url", "flash:/local_logging"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "logging_count", "true"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "persistent_url", "flash:/local_logging"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "persistent_size", "1000000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "persistent_filesize", "500000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "rate_limit_all", "200"))
@@ -92,7 +97,7 @@ func TestAccIosxeLogging(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeLoggingImportStateIdFunc("iosxe_logging.test"),
-				ImportStateVerifyIgnore: []string{"persistent_immediate", "persistent_notify", "persistent_protected"},
+				ImportStateVerifyIgnore: []string{"logging_count", "persistent_immediate", "persistent_notify", "persistent_protected"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -231,8 +236,12 @@ func testAccIosxeLoggingConfig_all() string {
 	config += `			port_number = 10002` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	logging_count = true` + "\n"
-	config += `	persistent_url = "flash:/local_logging"` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	logging_count = true` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	persistent_url = "flash:/local_logging"` + "\n"
+	}
 	config += `	persistent_size = 1000000` + "\n"
 	config += `	persistent_filesize = 500000` + "\n"
 	config += `	rate_limit_all = 200` + "\n"

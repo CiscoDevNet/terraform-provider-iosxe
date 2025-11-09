@@ -75,6 +75,7 @@ Optional:
 
 - `ingress_replication` (Boolean) Ingress Replication control-plane (BGP) signaling
 - `ipv4_multicast_group` (String) Starting Multicast Group IPv4 Address
+- `local_routing` (Boolean) Enable vxlan centralized gateway forwarding for routed traffic
 
 ## Import
 

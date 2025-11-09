@@ -51,6 +51,8 @@ data "iosxe_system" "example" {
 - `hostname` (String) Set system's network name
 - `id` (String) The path of the retrieved object.
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
+- `ip_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
+- `ip_cef_load_sharing_algorithm_include_ports_source` (Boolean)
 - `ip_domain_list_names` (List of String)
 - `ip_domain_list_vrf` (String)
 - `ip_domain_list_vrf_domain` (String)
@@ -132,6 +134,8 @@ data "iosxe_system" "example" {
 - `ip_tacacs_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
 - `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
 - `ip_tacacs_source_interface_vrf` (String) VPN Routing/Forwarding parameters
+- `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
+- `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean)
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
 - `login_delay` (Number) Set delay between successive fail login
 - `login_on_failure` (Boolean) Set options for failed login attempt
@@ -144,6 +148,7 @@ data "iosxe_system" "example" {
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))
 - `multilink_ppp_bundle_name` (String) Select method for naming multilink bundles
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
+- `port_channel_load_balance` (String)
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
 - `security_passwords_min_length` (Number) Minimum length of passwords

@@ -37,6 +37,7 @@ func TestAccDataSourceIosxeBGP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "router_id_ip", "172.16.255.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "bgp_graceful_restart", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "bgp_update_delay", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "router_id_loopback", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -77,6 +78,7 @@ func testAccDataSourceIosxeBGPConfig() string {
 	config += `	router_id_ip = "172.16.255.1"` + "\n"
 	config += `	bgp_graceful_restart = true` + "\n"
 	config += `	bgp_update_delay = 200` + "\n"
+	config += `	router_id_loopback = 100` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

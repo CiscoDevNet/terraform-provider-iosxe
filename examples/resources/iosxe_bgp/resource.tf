@@ -5,4 +5,5 @@ resource "iosxe_bgp" "example" {
   router_id_ip         = "172.16.255.1"
   bgp_graceful_restart = true
   bgp_update_delay     = 200
+  router_id_loopback   = 100
 }

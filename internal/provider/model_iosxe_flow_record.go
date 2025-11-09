@@ -71,6 +71,12 @@ type FlowRecord struct {
 	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
 	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
 	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
+	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
+	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
+	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
+	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
+	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
+	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
 }
@@ -110,6 +116,12 @@ type FlowRecordData struct {
 	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
 	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
 	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
+	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
+	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
+	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
+	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
+	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
+	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
 }
@@ -297,6 +309,34 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.IsUnknown() {
 		if data.CollectConnectionServerCounterPacketsLong.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.connection.server.counter.packets.long", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.source.address.input", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.destination.address.input", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkVlan.IsNull() && !data.MatchDatalinkVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.vlan", data.MatchDatalinkVlan.ValueString())
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.IsUnknown() {
+		if data.MatchDatalinkSourceVlanId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.source-vlan-id", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.IsUnknown() {
+		if data.MatchDatalinkDestinationVlanId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.destination-vlan-id", map[string]string{})
+		}
+	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.IsUnknown() {
+		if data.MatchIpv4Ttl.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv4.ttl", map[string]string{})
 		}
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.IsUnknown() {
@@ -601,6 +641,56 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolNull()
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() && !data.MatchDatalinkVlan.IsNull() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	} else {
+		data.MatchDatalinkVlan = types.StringNull()
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); !data.MatchDatalinkSourceVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); !data.MatchDatalinkDestinationVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); !data.MatchIpv4Ttl.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Ttl = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Ttl = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Ttl = types.BoolNull()
+	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		if value.Exists() {
 			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
@@ -783,6 +873,34 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
 	} else {
@@ -957,6 +1075,34 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
 	} else {
@@ -980,6 +1126,24 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 	}
 	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", state.getPath()))
+	}
+	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/ttl", state.getPath()))
+	}
+	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/destination-vlan-id", state.getPath()))
+	}
+	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/source-vlan-id", state.getPath()))
+	}
+	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/vlan", state.getPath()))
+	}
+	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", state.getPath()))
+	}
+	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/source/address/input", state.getPath()))
 	}
 	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", state.getPath()))
@@ -1090,6 +1254,21 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
 	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
+	}
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
 	}
@@ -1195,6 +1374,24 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
+	}
+	if !data.MatchIpv4Ttl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/vlan", data.getPath()))
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
 	}
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))

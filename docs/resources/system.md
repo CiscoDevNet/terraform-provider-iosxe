@@ -18,7 +18,7 @@ resource "iosxe_system" "example" {
   ip_bgp_community_new_format = true
   ipv6_unicast_routing        = true
   ip_source_route             = false
-  ip_domain_lookup            = false
+  ip_domain_lookup            = true
   ip_domain_name              = "test.com"
   login_delay                 = 10
   login_on_failure            = true
@@ -45,20 +45,25 @@ resource "iosxe_system" "example" {
       source_interface_gigabit_ethernet = "1/0/1"
     }
   ]
-  diagnostic_bootup_level                            = "minimal"
-  memory_free_low_watermark_processor                = 203038
-  ip_ssh_time_out                                    = 120
-  ip_ssh_authentication_retries                      = 3
-  ip_ssh_bulk_mode                                   = true
-  ip_ssh_bulk_mode_window_size                       = 262144
-  call_home_contact_email                            = "email@test.com"
-  call_home_cisco_tac_1_profile_active               = true
-  call_home_cisco_tac_1_destination_transport_method = "email"
-  ip_nbar_classification_dns_classify_by_domain      = true
-  ip_multicast_route_limit                           = 200000
-  ip_domain_list_vrf_domain                          = "example.com"
-  ip_domain_list_vrf                                 = "VRF1"
-  ip_routing_protocol_purge_interface                = true
+  diagnostic_bootup_level                                   = "minimal"
+  memory_free_low_watermark_processor                       = 203038
+  ip_ssh_time_out                                           = 120
+  ip_ssh_authentication_retries                             = 3
+  ip_ssh_bulk_mode                                          = true
+  ip_ssh_bulk_mode_window_size                              = 262144
+  call_home_contact_email                                   = "email@test.com"
+  call_home_cisco_tac_1_profile_active                      = true
+  call_home_cisco_tac_1_destination_transport_method        = "email"
+  ip_nbar_classification_dns_classify_by_domain             = true
+  ip_multicast_route_limit                                  = 200000
+  ip_domain_list_vrf_domain                                 = "example.com"
+  ip_domain_list_vrf                                        = "VRF1"
+  ip_routing_protocol_purge_interface                       = true
+  ip_cef_load_sharing_algorithm_include_ports_source        = true
+  ip_cef_load_sharing_algorithm_include_ports_destination   = true
+  ipv6_cef_load_sharing_algorithm_include_ports_source      = true
+  ipv6_cef_load_sharing_algorithm_include_ports_destination = true
+  port_channel_load_balance                                 = "src-dst-mixed-ip-port"
 }
 ```
 
@@ -101,6 +106,8 @@ resource "iosxe_system" "example" {
   - Range: `2500`-`10000`
 - `hostname` (String) Set system's network name
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
+- `ip_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
+- `ip_cef_load_sharing_algorithm_include_ports_source` (Boolean)
 - `ip_domain_list_names` (List of String)
 - `ip_domain_list_vrf` (String)
 - `ip_domain_list_vrf_domain` (String)
@@ -199,6 +206,8 @@ resource "iosxe_system" "example" {
 - `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
   - Range: `0`-`65535`
 - `ip_tacacs_source_interface_vrf` (String) VPN Routing/Forwarding parameters
+- `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
+- `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean)
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
 - `login_delay` (Number) Set delay between successive fail login
   - Range: `1`-`10`
@@ -214,6 +223,7 @@ resource "iosxe_system" "example" {
 - `multilink_ppp_bundle_name` (String) Select method for naming multilink bundles
   - Choices: `authenticated`, `both`, `endpoint`, `rfc`
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
+- `port_channel_load_balance` (String) - Choices: `dst-ip`, `dst-mac`, `dst-mixed-ip-port`, `dst-port`, `mpls`, `src-dst-ip`, `src-dst-mac`, `src-dst-mixed-ip-port`, `src-dst-port`, `src-ip`, `src-mac`, `src-mixed-ip-port`, `src-port`, `vlan-dst-ip`, `vlan-dst-mixed-ip-port`, `vlan-src-dst-ip`, `vlan-src-dst-mixed-ip-port`, `vlan-src-ip`, `vlan-src-mixed-ip-port`
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
   - Choices: `none`, `rpr`, `rpr-plus`, `sso`
