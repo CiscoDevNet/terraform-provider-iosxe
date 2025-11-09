@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -53,6 +54,15 @@ func TestAccIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv6_hosts.0.ipv6_host", "2001::1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv6_vrf_hosts.0.ipv6_host", "2001::1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv6_vrf_hosts.0.vrf", "VRF1"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "logging_count", "true"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "persistent_url", "flash:/local_logging"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "persistent_size", "1000000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "persistent_filesize", "500000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "rate_limit_all", "200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -69,7 +79,7 @@ func TestAccIosxeLogging(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeLoggingImportStateIdFunc("iosxe_logging.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"logging_count", "persistent_immediate", "persistent_notify", "persistent_protected"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -158,6 +168,15 @@ func testAccIosxeLoggingConfig_all() string {
 	config += `		ipv6_host = "2001::1"` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	logging_count = true` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	persistent_url = "flash:/local_logging"` + "\n"
+	}
+	config += `	persistent_size = 1000000` + "\n"
+	config += `	persistent_filesize = 500000` + "\n"
+	config += `	rate_limit_all = 200` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config

@@ -38,4 +38,7 @@ resource "iosxe_logging" "example" {
       vrf       = "VRF1"
     }
   ]
+  persistent_size     = 1000000
+  persistent_filesize = 500000
+  rate_limit_all      = 200
 }

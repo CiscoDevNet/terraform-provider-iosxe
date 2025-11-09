@@ -41,65 +41,95 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type Logging struct {
-	Device                types.String                   `tfsdk:"device"`
-	Id                    types.String                   `tfsdk:"id"`
-	MonitorSeverity       types.String                   `tfsdk:"monitor_severity"`
-	BufferedSize          types.Int64                    `tfsdk:"buffered_size"`
-	BufferedSeverity      types.String                   `tfsdk:"buffered_severity"`
-	ConsoleSeverity       types.String                   `tfsdk:"console_severity"`
-	Facility              types.String                   `tfsdk:"facility"`
-	HistorySize           types.Int64                    `tfsdk:"history_size"`
-	HistorySeverity       types.String                   `tfsdk:"history_severity"`
-	Trap                  types.Bool                     `tfsdk:"trap"`
-	TrapSeverity          types.String                   `tfsdk:"trap_severity"`
-	OriginIdType          types.String                   `tfsdk:"origin_id_type"`
-	OriginIdName          types.String                   `tfsdk:"origin_id_name"`
-	FileName              types.String                   `tfsdk:"file_name"`
-	FileMaxSize           types.Int64                    `tfsdk:"file_max_size"`
-	FileMinSize           types.Int64                    `tfsdk:"file_min_size"`
-	FileSeverity          types.String                   `tfsdk:"file_severity"`
-	SourceInterface       types.String                   `tfsdk:"source_interface"`
-	Console               types.Bool                     `tfsdk:"console"`
-	SourceInterfacesVrf   []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
-	Ipv4Hosts             []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
-	Ipv4HostsTransport    []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
-	Ipv4VrfHosts          []LoggingIpv4VrfHosts          `tfsdk:"ipv4_vrf_hosts"`
-	Ipv4VrfHostsTransport []LoggingIpv4VrfHostsTransport `tfsdk:"ipv4_vrf_hosts_transport"`
-	Ipv6Hosts             []LoggingIpv6Hosts             `tfsdk:"ipv6_hosts"`
-	Ipv6HostsTransport    []LoggingIpv6HostsTransport    `tfsdk:"ipv6_hosts_transport"`
-	Ipv6VrfHosts          []LoggingIpv6VrfHosts          `tfsdk:"ipv6_vrf_hosts"`
-	Ipv6VrfHostsTransport []LoggingIpv6VrfHostsTransport `tfsdk:"ipv6_vrf_hosts_transport"`
+	Device                            types.String                   `tfsdk:"device"`
+	Id                                types.String                   `tfsdk:"id"`
+	MonitorSeverity                   types.String                   `tfsdk:"monitor_severity"`
+	BufferedSize                      types.Int64                    `tfsdk:"buffered_size"`
+	BufferedSeverity                  types.String                   `tfsdk:"buffered_severity"`
+	ConsoleSeverity                   types.String                   `tfsdk:"console_severity"`
+	Facility                          types.String                   `tfsdk:"facility"`
+	HistorySize                       types.Int64                    `tfsdk:"history_size"`
+	HistorySeverity                   types.String                   `tfsdk:"history_severity"`
+	Trap                              types.Bool                     `tfsdk:"trap"`
+	TrapSeverity                      types.String                   `tfsdk:"trap_severity"`
+	OriginIdType                      types.String                   `tfsdk:"origin_id_type"`
+	OriginIdName                      types.String                   `tfsdk:"origin_id_name"`
+	FileName                          types.String                   `tfsdk:"file_name"`
+	FileMaxSize                       types.Int64                    `tfsdk:"file_max_size"`
+	FileMinSize                       types.Int64                    `tfsdk:"file_min_size"`
+	FileSeverity                      types.String                   `tfsdk:"file_severity"`
+	SourceInterface                   types.String                   `tfsdk:"source_interface"`
+	Console                           types.Bool                     `tfsdk:"console"`
+	SourceInterfacesVrf               []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
+	Ipv4Hosts                         []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
+	Ipv4HostsTransport                []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
+	Ipv4VrfHosts                      []LoggingIpv4VrfHosts          `tfsdk:"ipv4_vrf_hosts"`
+	Ipv4VrfHostsTransport             []LoggingIpv4VrfHostsTransport `tfsdk:"ipv4_vrf_hosts_transport"`
+	Ipv6Hosts                         []LoggingIpv6Hosts             `tfsdk:"ipv6_hosts"`
+	Ipv6HostsTransport                []LoggingIpv6HostsTransport    `tfsdk:"ipv6_hosts_transport"`
+	Ipv6VrfHosts                      []LoggingIpv6VrfHosts          `tfsdk:"ipv6_vrf_hosts"`
+	Ipv6VrfHostsTransport             []LoggingIpv6VrfHostsTransport `tfsdk:"ipv6_vrf_hosts_transport"`
+	LoggingCount                      types.Bool                     `tfsdk:"logging_count"`
+	PersistentUrl                     types.String                   `tfsdk:"persistent_url"`
+	PersistentSize                    types.Int64                    `tfsdk:"persistent_size"`
+	PersistentFilesize                types.Int64                    `tfsdk:"persistent_filesize"`
+	PersistentBatch                   types.Int64                    `tfsdk:"persistent_batch"`
+	PersistentThreshold               types.Int64                    `tfsdk:"persistent_threshold"`
+	PersistentImmediate               types.Bool                     `tfsdk:"persistent_immediate"`
+	PersistentNotify                  types.Bool                     `tfsdk:"persistent_notify"`
+	PersistentProtected               types.Bool                     `tfsdk:"persistent_protected"`
+	RateLimitAll                      types.Int64                    `tfsdk:"rate_limit_all"`
+	RateLimitAllExceptSeverity        types.String                   `tfsdk:"rate_limit_all_except_severity"`
+	RateLimitConsole                  types.Int64                    `tfsdk:"rate_limit_console"`
+	RateLimitConsoleExceptSeverity    types.String                   `tfsdk:"rate_limit_console_except_severity"`
+	RateLimitConsoleAll               types.Int64                    `tfsdk:"rate_limit_console_all"`
+	RateLimitConsoleAllExceptSeverity types.String                   `tfsdk:"rate_limit_console_all_except_severity"`
 }
 
 type LoggingData struct {
-	Device                types.String                   `tfsdk:"device"`
-	Id                    types.String                   `tfsdk:"id"`
-	MonitorSeverity       types.String                   `tfsdk:"monitor_severity"`
-	BufferedSize          types.Int64                    `tfsdk:"buffered_size"`
-	BufferedSeverity      types.String                   `tfsdk:"buffered_severity"`
-	ConsoleSeverity       types.String                   `tfsdk:"console_severity"`
-	Facility              types.String                   `tfsdk:"facility"`
-	HistorySize           types.Int64                    `tfsdk:"history_size"`
-	HistorySeverity       types.String                   `tfsdk:"history_severity"`
-	Trap                  types.Bool                     `tfsdk:"trap"`
-	TrapSeverity          types.String                   `tfsdk:"trap_severity"`
-	OriginIdType          types.String                   `tfsdk:"origin_id_type"`
-	OriginIdName          types.String                   `tfsdk:"origin_id_name"`
-	FileName              types.String                   `tfsdk:"file_name"`
-	FileMaxSize           types.Int64                    `tfsdk:"file_max_size"`
-	FileMinSize           types.Int64                    `tfsdk:"file_min_size"`
-	FileSeverity          types.String                   `tfsdk:"file_severity"`
-	SourceInterface       types.String                   `tfsdk:"source_interface"`
-	Console               types.Bool                     `tfsdk:"console"`
-	SourceInterfacesVrf   []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
-	Ipv4Hosts             []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
-	Ipv4HostsTransport    []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
-	Ipv4VrfHosts          []LoggingIpv4VrfHosts          `tfsdk:"ipv4_vrf_hosts"`
-	Ipv4VrfHostsTransport []LoggingIpv4VrfHostsTransport `tfsdk:"ipv4_vrf_hosts_transport"`
-	Ipv6Hosts             []LoggingIpv6Hosts             `tfsdk:"ipv6_hosts"`
-	Ipv6HostsTransport    []LoggingIpv6HostsTransport    `tfsdk:"ipv6_hosts_transport"`
-	Ipv6VrfHosts          []LoggingIpv6VrfHosts          `tfsdk:"ipv6_vrf_hosts"`
-	Ipv6VrfHostsTransport []LoggingIpv6VrfHostsTransport `tfsdk:"ipv6_vrf_hosts_transport"`
+	Device                            types.String                   `tfsdk:"device"`
+	Id                                types.String                   `tfsdk:"id"`
+	MonitorSeverity                   types.String                   `tfsdk:"monitor_severity"`
+	BufferedSize                      types.Int64                    `tfsdk:"buffered_size"`
+	BufferedSeverity                  types.String                   `tfsdk:"buffered_severity"`
+	ConsoleSeverity                   types.String                   `tfsdk:"console_severity"`
+	Facility                          types.String                   `tfsdk:"facility"`
+	HistorySize                       types.Int64                    `tfsdk:"history_size"`
+	HistorySeverity                   types.String                   `tfsdk:"history_severity"`
+	Trap                              types.Bool                     `tfsdk:"trap"`
+	TrapSeverity                      types.String                   `tfsdk:"trap_severity"`
+	OriginIdType                      types.String                   `tfsdk:"origin_id_type"`
+	OriginIdName                      types.String                   `tfsdk:"origin_id_name"`
+	FileName                          types.String                   `tfsdk:"file_name"`
+	FileMaxSize                       types.Int64                    `tfsdk:"file_max_size"`
+	FileMinSize                       types.Int64                    `tfsdk:"file_min_size"`
+	FileSeverity                      types.String                   `tfsdk:"file_severity"`
+	SourceInterface                   types.String                   `tfsdk:"source_interface"`
+	Console                           types.Bool                     `tfsdk:"console"`
+	SourceInterfacesVrf               []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
+	Ipv4Hosts                         []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
+	Ipv4HostsTransport                []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
+	Ipv4VrfHosts                      []LoggingIpv4VrfHosts          `tfsdk:"ipv4_vrf_hosts"`
+	Ipv4VrfHostsTransport             []LoggingIpv4VrfHostsTransport `tfsdk:"ipv4_vrf_hosts_transport"`
+	Ipv6Hosts                         []LoggingIpv6Hosts             `tfsdk:"ipv6_hosts"`
+	Ipv6HostsTransport                []LoggingIpv6HostsTransport    `tfsdk:"ipv6_hosts_transport"`
+	Ipv6VrfHosts                      []LoggingIpv6VrfHosts          `tfsdk:"ipv6_vrf_hosts"`
+	Ipv6VrfHostsTransport             []LoggingIpv6VrfHostsTransport `tfsdk:"ipv6_vrf_hosts_transport"`
+	LoggingCount                      types.Bool                     `tfsdk:"logging_count"`
+	PersistentUrl                     types.String                   `tfsdk:"persistent_url"`
+	PersistentSize                    types.Int64                    `tfsdk:"persistent_size"`
+	PersistentFilesize                types.Int64                    `tfsdk:"persistent_filesize"`
+	PersistentBatch                   types.Int64                    `tfsdk:"persistent_batch"`
+	PersistentThreshold               types.Int64                    `tfsdk:"persistent_threshold"`
+	PersistentImmediate               types.Bool                     `tfsdk:"persistent_immediate"`
+	PersistentNotify                  types.Bool                     `tfsdk:"persistent_notify"`
+	PersistentProtected               types.Bool                     `tfsdk:"persistent_protected"`
+	RateLimitAll                      types.Int64                    `tfsdk:"rate_limit_all"`
+	RateLimitAllExceptSeverity        types.String                   `tfsdk:"rate_limit_all_except_severity"`
+	RateLimitConsole                  types.Int64                    `tfsdk:"rate_limit_console"`
+	RateLimitConsoleExceptSeverity    types.String                   `tfsdk:"rate_limit_console_except_severity"`
+	RateLimitConsoleAll               types.Int64                    `tfsdk:"rate_limit_console_all"`
+	RateLimitConsoleAllExceptSeverity types.String                   `tfsdk:"rate_limit_console_all_except_severity"`
 }
 type LoggingSourceInterfacesVrf struct {
 	Vrf           types.String `tfsdk:"vrf"`
@@ -278,6 +308,59 @@ func (data Logging) toBody(ctx context.Context) string {
 	}
 	if !data.Console.IsNull() && !data.Console.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console-config.console", data.Console.ValueBool())
+	}
+	if !data.LoggingCount.IsNull() && !data.LoggingCount.IsUnknown() {
+		if data.LoggingCount.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"count", map[string]string{})
+		}
+	}
+	if !data.PersistentUrl.IsNull() && !data.PersistentUrl.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.url", data.PersistentUrl.ValueString())
+	}
+	if !data.PersistentSize.IsNull() && !data.PersistentSize.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.size", strconv.FormatInt(data.PersistentSize.ValueInt64(), 10))
+	}
+	if !data.PersistentFilesize.IsNull() && !data.PersistentFilesize.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.filesize", strconv.FormatInt(data.PersistentFilesize.ValueInt64(), 10))
+	}
+	if !data.PersistentBatch.IsNull() && !data.PersistentBatch.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.batch", strconv.FormatInt(data.PersistentBatch.ValueInt64(), 10))
+	}
+	if !data.PersistentThreshold.IsNull() && !data.PersistentThreshold.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.threshold", strconv.FormatInt(data.PersistentThreshold.ValueInt64(), 10))
+	}
+	if !data.PersistentImmediate.IsNull() && !data.PersistentImmediate.IsUnknown() {
+		if data.PersistentImmediate.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.immediate", map[string]string{})
+		}
+	}
+	if !data.PersistentNotify.IsNull() && !data.PersistentNotify.IsUnknown() {
+		if data.PersistentNotify.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.notify", map[string]string{})
+		}
+	}
+	if !data.PersistentProtected.IsNull() && !data.PersistentProtected.IsUnknown() {
+		if data.PersistentProtected.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"persistent.protected", map[string]string{})
+		}
+	}
+	if !data.RateLimitAll.IsNull() && !data.RateLimitAll.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rate-limit-config.common-config.rate-limit.all.common-options.range", strconv.FormatInt(data.RateLimitAll.ValueInt64(), 10))
+	}
+	if !data.RateLimitAllExceptSeverity.IsNull() && !data.RateLimitAllExceptSeverity.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rate-limit-config.common-config.rate-limit.all.common-options.except.range", data.RateLimitAllExceptSeverity.ValueString())
+	}
+	if !data.RateLimitConsole.IsNull() && !data.RateLimitConsole.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rate-limit-config.common-config.rate-limit.console.common-options.range", strconv.FormatInt(data.RateLimitConsole.ValueInt64(), 10))
+	}
+	if !data.RateLimitConsoleExceptSeverity.IsNull() && !data.RateLimitConsoleExceptSeverity.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rate-limit-config.common-config.rate-limit.console.common-options.except.range", data.RateLimitConsoleExceptSeverity.ValueString())
+	}
+	if !data.RateLimitConsoleAll.IsNull() && !data.RateLimitConsoleAll.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rate-limit-config.common-config.rate-limit.console.all.common-options.range", strconv.FormatInt(data.RateLimitConsoleAll.ValueInt64(), 10))
+	}
+	if !data.RateLimitConsoleAllExceptSeverity.IsNull() && !data.RateLimitConsoleAllExceptSeverity.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rate-limit-config.common-config.rate-limit.console.all.common-options.except.range", data.RateLimitConsoleAllExceptSeverity.ValueString())
 	}
 	if len(data.SourceInterfacesVrf) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source-interface-conf.source-interface-vrf", []interface{}{})
@@ -753,6 +836,67 @@ func (data Logging) toBodyXML(ctx context.Context) string {
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list", cBody.Res())
 		}
+	}
+	if !data.LoggingCount.IsNull() && !data.LoggingCount.IsUnknown() {
+		if data.LoggingCount.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/count", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/count")
+		}
+	}
+	if !data.PersistentUrl.IsNull() && !data.PersistentUrl.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/url", data.PersistentUrl.ValueString())
+	}
+	if !data.PersistentSize.IsNull() && !data.PersistentSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/size", strconv.FormatInt(data.PersistentSize.ValueInt64(), 10))
+	}
+	if !data.PersistentFilesize.IsNull() && !data.PersistentFilesize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/filesize", strconv.FormatInt(data.PersistentFilesize.ValueInt64(), 10))
+	}
+	if !data.PersistentBatch.IsNull() && !data.PersistentBatch.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/batch", strconv.FormatInt(data.PersistentBatch.ValueInt64(), 10))
+	}
+	if !data.PersistentThreshold.IsNull() && !data.PersistentThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/threshold", strconv.FormatInt(data.PersistentThreshold.ValueInt64(), 10))
+	}
+	if !data.PersistentImmediate.IsNull() && !data.PersistentImmediate.IsUnknown() {
+		if data.PersistentImmediate.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/immediate", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/immediate")
+		}
+	}
+	if !data.PersistentNotify.IsNull() && !data.PersistentNotify.IsUnknown() {
+		if data.PersistentNotify.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/notify", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/notify")
+		}
+	}
+	if !data.PersistentProtected.IsNull() && !data.PersistentProtected.IsUnknown() {
+		if data.PersistentProtected.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/persistent/protected", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/persistent/protected")
+		}
+	}
+	if !data.RateLimitAll.IsNull() && !data.RateLimitAll.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range", strconv.FormatInt(data.RateLimitAll.ValueInt64(), 10))
+	}
+	if !data.RateLimitAllExceptSeverity.IsNull() && !data.RateLimitAllExceptSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range", data.RateLimitAllExceptSeverity.ValueString())
+	}
+	if !data.RateLimitConsole.IsNull() && !data.RateLimitConsole.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range", strconv.FormatInt(data.RateLimitConsole.ValueInt64(), 10))
+	}
+	if !data.RateLimitConsoleExceptSeverity.IsNull() && !data.RateLimitConsoleExceptSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range", data.RateLimitConsoleExceptSeverity.ValueString())
+	}
+	if !data.RateLimitConsoleAll.IsNull() && !data.RateLimitConsoleAll.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range", strconv.FormatInt(data.RateLimitConsoleAll.ValueInt64(), 10))
+	}
+	if !data.RateLimitConsoleAllExceptSeverity.IsNull() && !data.RateLimitConsoleAllExceptSeverity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range", data.RateLimitConsoleAllExceptSeverity.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1515,6 +1659,97 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 			}
 		}
 	}
+	if value := res.Get(prefix + "count"); !data.LoggingCount.IsNull() {
+		if value.Exists() {
+			data.LoggingCount = types.BoolValue(true)
+		} else {
+			data.LoggingCount = types.BoolValue(false)
+		}
+	} else {
+		data.LoggingCount = types.BoolNull()
+	}
+	if value := res.Get(prefix + "persistent.url"); value.Exists() && !data.PersistentUrl.IsNull() {
+		data.PersistentUrl = types.StringValue(value.String())
+	} else {
+		data.PersistentUrl = types.StringNull()
+	}
+	if value := res.Get(prefix + "persistent.size"); value.Exists() && !data.PersistentSize.IsNull() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	} else {
+		data.PersistentSize = types.Int64Null()
+	}
+	if value := res.Get(prefix + "persistent.filesize"); value.Exists() && !data.PersistentFilesize.IsNull() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	} else {
+		data.PersistentFilesize = types.Int64Null()
+	}
+	if value := res.Get(prefix + "persistent.batch"); value.Exists() && !data.PersistentBatch.IsNull() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	} else {
+		data.PersistentBatch = types.Int64Null()
+	}
+	if value := res.Get(prefix + "persistent.threshold"); value.Exists() && !data.PersistentThreshold.IsNull() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	} else {
+		data.PersistentThreshold = types.Int64Null()
+	}
+	if value := res.Get(prefix + "persistent.immediate"); !data.PersistentImmediate.IsNull() {
+		if value.Exists() {
+			data.PersistentImmediate = types.BoolValue(true)
+		} else {
+			data.PersistentImmediate = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentImmediate = types.BoolNull()
+	}
+	if value := res.Get(prefix + "persistent.notify"); !data.PersistentNotify.IsNull() {
+		if value.Exists() {
+			data.PersistentNotify = types.BoolValue(true)
+		} else {
+			data.PersistentNotify = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentNotify = types.BoolNull()
+	}
+	if value := res.Get(prefix + "persistent.protected"); !data.PersistentProtected.IsNull() {
+		if value.Exists() {
+			data.PersistentProtected = types.BoolValue(true)
+		} else {
+			data.PersistentProtected = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentProtected = types.BoolNull()
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.all.common-options.range"); value.Exists() && !data.RateLimitAll.IsNull() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitAll = types.Int64Null()
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.all.common-options.except.range"); value.Exists() && !data.RateLimitAllExceptSeverity.IsNull() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitAllExceptSeverity = types.StringNull()
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.common-options.range"); value.Exists() && !data.RateLimitConsole.IsNull() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitConsole = types.Int64Null()
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.common-options.except.range"); value.Exists() && !data.RateLimitConsoleExceptSeverity.IsNull() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitConsoleExceptSeverity = types.StringNull()
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.all.common-options.range"); value.Exists() && !data.RateLimitConsoleAll.IsNull() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitConsoleAll = types.Int64Null()
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.all.common-options.except.range"); value.Exists() && !data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitConsoleAllExceptSeverity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2267,6 +2502,97 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/count"); !data.LoggingCount.IsNull() {
+		if value.Exists() {
+			data.LoggingCount = types.BoolValue(true)
+		} else {
+			data.LoggingCount = types.BoolValue(false)
+		}
+	} else {
+		data.LoggingCount = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/url"); value.Exists() && !data.PersistentUrl.IsNull() {
+		data.PersistentUrl = types.StringValue(value.String())
+	} else {
+		data.PersistentUrl = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/size"); value.Exists() && !data.PersistentSize.IsNull() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	} else {
+		data.PersistentSize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/filesize"); value.Exists() && !data.PersistentFilesize.IsNull() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	} else {
+		data.PersistentFilesize = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/batch"); value.Exists() && !data.PersistentBatch.IsNull() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	} else {
+		data.PersistentBatch = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/threshold"); value.Exists() && !data.PersistentThreshold.IsNull() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	} else {
+		data.PersistentThreshold = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/immediate"); !data.PersistentImmediate.IsNull() {
+		if value.Exists() {
+			data.PersistentImmediate = types.BoolValue(true)
+		} else {
+			data.PersistentImmediate = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentImmediate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/notify"); !data.PersistentNotify.IsNull() {
+		if value.Exists() {
+			data.PersistentNotify = types.BoolValue(true)
+		} else {
+			data.PersistentNotify = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentNotify = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/protected"); !data.PersistentProtected.IsNull() {
+		if value.Exists() {
+			data.PersistentProtected = types.BoolValue(true)
+		} else {
+			data.PersistentProtected = types.BoolValue(false)
+		}
+	} else {
+		data.PersistentProtected = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range"); value.Exists() && !data.RateLimitAll.IsNull() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitAll = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range"); value.Exists() && !data.RateLimitAllExceptSeverity.IsNull() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitAllExceptSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range"); value.Exists() && !data.RateLimitConsole.IsNull() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitConsole = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range"); value.Exists() && !data.RateLimitConsoleExceptSeverity.IsNull() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitConsoleExceptSeverity = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range"); value.Exists() && !data.RateLimitConsoleAll.IsNull() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	} else {
+		data.RateLimitConsoleAll = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range"); value.Exists() && !data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
+	} else {
+		data.RateLimitConsoleAllExceptSeverity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -2590,6 +2916,59 @@ func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv6VrfHostsTransport = append(data.Ipv6VrfHostsTransport, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "count"); value.Exists() {
+		data.LoggingCount = types.BoolValue(true)
+	} else {
+		data.LoggingCount = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "persistent.url"); value.Exists() {
+		data.PersistentUrl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "persistent.size"); value.Exists() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.filesize"); value.Exists() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.batch"); value.Exists() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.threshold"); value.Exists() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.immediate"); value.Exists() {
+		data.PersistentImmediate = types.BoolValue(true)
+	} else {
+		data.PersistentImmediate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "persistent.notify"); value.Exists() {
+		data.PersistentNotify = types.BoolValue(true)
+	} else {
+		data.PersistentNotify = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "persistent.protected"); value.Exists() {
+		data.PersistentProtected = types.BoolValue(true)
+	} else {
+		data.PersistentProtected = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.all.common-options.range"); value.Exists() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.all.common-options.except.range"); value.Exists() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.common-options.range"); value.Exists() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.common-options.except.range"); value.Exists() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.all.common-options.range"); value.Exists() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.all.common-options.except.range"); value.Exists() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
 	}
 }
 
@@ -2915,6 +3294,59 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "count"); value.Exists() {
+		data.LoggingCount = types.BoolValue(true)
+	} else {
+		data.LoggingCount = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "persistent.url"); value.Exists() {
+		data.PersistentUrl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "persistent.size"); value.Exists() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.filesize"); value.Exists() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.batch"); value.Exists() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.threshold"); value.Exists() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "persistent.immediate"); value.Exists() {
+		data.PersistentImmediate = types.BoolValue(true)
+	} else {
+		data.PersistentImmediate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "persistent.notify"); value.Exists() {
+		data.PersistentNotify = types.BoolValue(true)
+	} else {
+		data.PersistentNotify = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "persistent.protected"); value.Exists() {
+		data.PersistentProtected = types.BoolValue(true)
+	} else {
+		data.PersistentProtected = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.all.common-options.range"); value.Exists() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.all.common-options.except.range"); value.Exists() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.common-options.range"); value.Exists() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.common-options.except.range"); value.Exists() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.all.common-options.range"); value.Exists() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "rate-limit-config.common-config.rate-limit.console.all.common-options.except.range"); value.Exists() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3234,6 +3666,59 @@ func (data *Logging) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv6VrfHostsTransport = append(data.Ipv6VrfHostsTransport, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/count"); value.Exists() {
+		data.LoggingCount = types.BoolValue(true)
+	} else {
+		data.LoggingCount = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/url"); value.Exists() {
+		data.PersistentUrl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/size"); value.Exists() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/filesize"); value.Exists() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/batch"); value.Exists() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/threshold"); value.Exists() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/immediate"); value.Exists() {
+		data.PersistentImmediate = types.BoolValue(true)
+	} else {
+		data.PersistentImmediate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/notify"); value.Exists() {
+		data.PersistentNotify = types.BoolValue(true)
+	} else {
+		data.PersistentNotify = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/protected"); value.Exists() {
+		data.PersistentProtected = types.BoolValue(true)
+	} else {
+		data.PersistentProtected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range"); value.Exists() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range"); value.Exists() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range"); value.Exists() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range"); value.Exists() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
 	}
 }
 
@@ -3555,6 +4040,59 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/count"); value.Exists() {
+		data.LoggingCount = types.BoolValue(true)
+	} else {
+		data.LoggingCount = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/url"); value.Exists() {
+		data.PersistentUrl = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/size"); value.Exists() {
+		data.PersistentSize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/filesize"); value.Exists() {
+		data.PersistentFilesize = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/batch"); value.Exists() {
+		data.PersistentBatch = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/threshold"); value.Exists() {
+		data.PersistentThreshold = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/immediate"); value.Exists() {
+		data.PersistentImmediate = types.BoolValue(true)
+	} else {
+		data.PersistentImmediate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/notify"); value.Exists() {
+		data.PersistentNotify = types.BoolValue(true)
+	} else {
+		data.PersistentNotify = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/persistent/protected"); value.Exists() {
+		data.PersistentProtected = types.BoolValue(true)
+	} else {
+		data.PersistentProtected = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range"); value.Exists() {
+		data.RateLimitAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range"); value.Exists() {
+		data.RateLimitAllExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range"); value.Exists() {
+		data.RateLimitConsole = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleExceptSeverity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range"); value.Exists() {
+		data.RateLimitConsoleAll = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range"); value.Exists() {
+		data.RateLimitConsoleAllExceptSeverity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -3563,6 +4101,51 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []string {
 	deletedItems := make([]string, 0)
+	if !state.RateLimitConsoleAllExceptSeverity.IsNull() && data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range", state.getPath()))
+	}
+	if !state.RateLimitConsoleAll.IsNull() && data.RateLimitConsoleAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/all/common-options/range", state.getPath()))
+	}
+	if !state.RateLimitConsoleExceptSeverity.IsNull() && data.RateLimitConsoleExceptSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/common-options/except/range", state.getPath()))
+	}
+	if !state.RateLimitConsole.IsNull() && data.RateLimitConsole.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/common-options/range", state.getPath()))
+	}
+	if !state.RateLimitAllExceptSeverity.IsNull() && data.RateLimitAllExceptSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/all/common-options/except/range", state.getPath()))
+	}
+	if !state.RateLimitAll.IsNull() && data.RateLimitAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/all/common-options/range", state.getPath()))
+	}
+	if !state.PersistentProtected.IsNull() && data.PersistentProtected.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/protected", state.getPath()))
+	}
+	if !state.PersistentNotify.IsNull() && data.PersistentNotify.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/notify", state.getPath()))
+	}
+	if !state.PersistentImmediate.IsNull() && data.PersistentImmediate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/immediate", state.getPath()))
+	}
+	if !state.PersistentThreshold.IsNull() && data.PersistentThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/threshold", state.getPath()))
+	}
+	if !state.PersistentBatch.IsNull() && data.PersistentBatch.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/batch", state.getPath()))
+	}
+	if !state.PersistentFilesize.IsNull() && data.PersistentFilesize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/filesize", state.getPath()))
+	}
+	if !state.PersistentSize.IsNull() && data.PersistentSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/size", state.getPath()))
+	}
+	if !state.PersistentUrl.IsNull() && data.PersistentUrl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/persistent/url", state.getPath()))
+	}
+	if !state.LoggingCount.IsNull() && data.LoggingCount.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/count", state.getPath()))
+	}
 	for i := range state.Ipv6VrfHostsTransport {
 		stateKeyValues := [...]string{state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), state.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
 
@@ -4188,6 +4771,51 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 
 func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body string) string {
 	b := netconf.NewBody(body)
+	if !state.RateLimitConsoleAllExceptSeverity.IsNull() && data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range")
+	}
+	if !state.RateLimitConsoleAll.IsNull() && data.RateLimitConsoleAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range")
+	}
+	if !state.RateLimitConsoleExceptSeverity.IsNull() && data.RateLimitConsoleExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range")
+	}
+	if !state.RateLimitConsole.IsNull() && data.RateLimitConsole.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range")
+	}
+	if !state.RateLimitAllExceptSeverity.IsNull() && data.RateLimitAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range")
+	}
+	if !state.RateLimitAll.IsNull() && data.RateLimitAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range")
+	}
+	if !state.PersistentProtected.IsNull() && data.PersistentProtected.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/protected")
+	}
+	if !state.PersistentNotify.IsNull() && data.PersistentNotify.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/notify")
+	}
+	if !state.PersistentImmediate.IsNull() && data.PersistentImmediate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/immediate")
+	}
+	if !state.PersistentThreshold.IsNull() && data.PersistentThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/threshold")
+	}
+	if !state.PersistentBatch.IsNull() && data.PersistentBatch.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/batch")
+	}
+	if !state.PersistentFilesize.IsNull() && data.PersistentFilesize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/filesize")
+	}
+	if !state.PersistentSize.IsNull() && data.PersistentSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/size")
+	}
+	if !state.PersistentUrl.IsNull() && data.PersistentUrl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/persistent/url")
+	}
+	if !state.LoggingCount.IsNull() && data.LoggingCount.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/count")
+	}
 	for i := range state.Ipv6VrfHostsTransport {
 		stateKeys := [...]string{"ipv6-host", "vrf"}
 		stateKeyValues := [...]string{state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), state.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
@@ -4919,6 +5547,18 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 
 func (data *Logging) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.PersistentProtected.IsNull() && !data.PersistentProtected.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/persistent/protected", data.getPath()))
+	}
+	if !data.PersistentNotify.IsNull() && !data.PersistentNotify.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/persistent/notify", data.getPath()))
+	}
+	if !data.PersistentImmediate.IsNull() && !data.PersistentImmediate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/persistent/immediate", data.getPath()))
+	}
+	if !data.LoggingCount.IsNull() && !data.LoggingCount.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/count", data.getPath()))
+	}
 
 	if !data.Trap.IsNull() && !data.Trap.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trap", data.getPath()))
@@ -4933,6 +5573,51 @@ func (data *Logging) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Logging) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range", data.getPath()))
+	}
+	if !data.RateLimitConsoleAll.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/all/common-options/range", data.getPath()))
+	}
+	if !data.RateLimitConsoleExceptSeverity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/common-options/except/range", data.getPath()))
+	}
+	if !data.RateLimitConsole.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/console/common-options/range", data.getPath()))
+	}
+	if !data.RateLimitAllExceptSeverity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/all/common-options/except/range", data.getPath()))
+	}
+	if !data.RateLimitAll.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rate-limit-config/common-config/rate-limit/all/common-options/range", data.getPath()))
+	}
+	if !data.PersistentProtected.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/protected", data.getPath()))
+	}
+	if !data.PersistentNotify.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/notify", data.getPath()))
+	}
+	if !data.PersistentImmediate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/immediate", data.getPath()))
+	}
+	if !data.PersistentThreshold.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/threshold", data.getPath()))
+	}
+	if !data.PersistentBatch.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/batch", data.getPath()))
+	}
+	if !data.PersistentFilesize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/filesize", data.getPath()))
+	}
+	if !data.PersistentSize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/size", data.getPath()))
+	}
+	if !data.PersistentUrl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/persistent/url", data.getPath()))
+	}
+	if !data.LoggingCount.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/count", data.getPath()))
+	}
 	for i := range data.Ipv6VrfHostsTransport {
 		keyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
 
@@ -5039,6 +5724,51 @@ func (data *Logging) getDeletePaths(ctx context.Context) []string {
 
 func (data *Logging) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.RateLimitConsoleAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range")
+	}
+	if !data.RateLimitConsoleAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/range")
+	}
+	if !data.RateLimitConsoleExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/except/range")
+	}
+	if !data.RateLimitConsole.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/common-options/range")
+	}
+	if !data.RateLimitAllExceptSeverity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/except/range")
+	}
+	if !data.RateLimitAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rate-limit-config/common-config/rate-limit/all/common-options/range")
+	}
+	if !data.PersistentProtected.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/protected")
+	}
+	if !data.PersistentNotify.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/notify")
+	}
+	if !data.PersistentImmediate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/immediate")
+	}
+	if !data.PersistentThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/threshold")
+	}
+	if !data.PersistentBatch.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/batch")
+	}
+	if !data.PersistentFilesize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/filesize")
+	}
+	if !data.PersistentSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/size")
+	}
+	if !data.PersistentUrl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/persistent/url")
+	}
+	if !data.LoggingCount.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/count")
+	}
 	for i := range data.Ipv6VrfHostsTransport {
 		keys := [...]string{"ipv6-host", "vrf"}
 		keyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}

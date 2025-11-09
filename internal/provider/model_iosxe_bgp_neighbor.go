@@ -71,9 +71,10 @@ type BGPNeighbor struct {
 	TimersHoldtime                      types.Int64  `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64  `tfsdk:"timers_minimum_neighbor_hold"`
 	TtlSecurityHops                     types.Int64  `tfsdk:"ttl_security_hops"`
-	UpdateSourceLoopback                types.Int64  `tfsdk:"update_source_loopback"`
+	UpdateSourceInterfaceLoopback       types.Int64  `tfsdk:"update_source_interface_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	InheritPeerSession                  types.String `tfsdk:"inherit_peer_session"`
 }
 
 type BGPNeighborData struct {
@@ -107,9 +108,10 @@ type BGPNeighborData struct {
 	TimersHoldtime                      types.Int64  `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64  `tfsdk:"timers_minimum_neighbor_hold"`
 	TtlSecurityHops                     types.Int64  `tfsdk:"ttl_security_hops"`
-	UpdateSourceLoopback                types.Int64  `tfsdk:"update_source_loopback"`
+	UpdateSourceInterfaceLoopback       types.Int64  `tfsdk:"update_source_interface_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	InheritPeerSession                  types.String `tfsdk:"inherit_peer_session"`
 }
 
 // End of section. //template:end types
@@ -259,8 +261,8 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 	if !data.TtlSecurityHops.IsNull() && !data.TtlSecurityHops.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ttl-security.hops", strconv.FormatInt(data.TtlSecurityHops.ValueInt64(), 10))
 	}
-	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
+	if !data.UpdateSourceInterfaceLoopback.IsNull() && !data.UpdateSourceInterfaceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
 		if data.EbgpMultihop.ValueBool() {
@@ -269,6 +271,9 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop.max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
+	}
+	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inherit.peer-session", data.InheritPeerSession.ValueString())
 	}
 	return body
 }
@@ -408,8 +413,8 @@ func (data BGPNeighbor) toBodyXML(ctx context.Context) string {
 	if !data.TtlSecurityHops.IsNull() && !data.TtlSecurityHops.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ttl-security/hops", strconv.FormatInt(data.TtlSecurityHops.ValueInt64(), 10))
 	}
-	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/update-source/interface/Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
+	if !data.UpdateSourceInterfaceLoopback.IsNull() && !data.UpdateSourceInterfaceLoopback.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/update-source/interface/Loopback", strconv.FormatInt(data.UpdateSourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
 		if data.EbgpMultihop.ValueBool() {
@@ -420,6 +425,9 @@ func (data BGPNeighbor) toBodyXML(ctx context.Context) string {
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ebgp-multihop/max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
+	}
+	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/inherit/peer-session", data.InheritPeerSession.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -610,10 +618,10 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.TtlSecurityHops = types.Int64Null()
 	}
-	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceInterfaceLoopback.IsNull() {
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.UpdateSourceLoopback = types.Int64Null()
+		data.UpdateSourceInterfaceLoopback = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ebgp-multihop"); !data.EbgpMultihop.IsNull() {
 		if value.Exists() {
@@ -628,6 +636,11 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	} else {
 		data.EbgpMultihopMaxHop = types.Int64Null()
+	}
+	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() && !data.InheritPeerSession.IsNull() {
+		data.InheritPeerSession = types.StringValue(value.String())
+	} else {
+		data.InheritPeerSession = types.StringNull()
 	}
 }
 
@@ -809,10 +822,10 @@ func (data *BGPNeighbor) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.TtlSecurityHops = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() && !data.UpdateSourceInterfaceLoopback.IsNull() {
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.UpdateSourceLoopback = types.Int64Null()
+		data.UpdateSourceInterfaceLoopback = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop"); !data.EbgpMultihop.IsNull() {
 		if value.Exists() {
@@ -827,6 +840,11 @@ func (data *BGPNeighbor) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	} else {
 		data.EbgpMultihopMaxHop = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() && !data.InheritPeerSession.IsNull() {
+		data.InheritPeerSession = types.StringValue(value.String())
+	} else {
+		data.InheritPeerSession = types.StringNull()
 	}
 }
 
@@ -942,7 +960,7 @@ func (data *BGPNeighbor) fromBody(ctx context.Context, res gjson.Result) {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
 		data.EbgpMultihop = types.BoolValue(true)
@@ -951,6 +969,9 @@ func (data *BGPNeighbor) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() {
+		data.InheritPeerSession = types.StringValue(value.String())
 	}
 }
 
@@ -1066,7 +1087,7 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
 		data.EbgpMultihop = types.BoolValue(true)
@@ -1075,6 +1096,9 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() {
+		data.InheritPeerSession = types.StringValue(value.String())
 	}
 }
 
@@ -1186,7 +1210,7 @@ func (data *BGPNeighbor) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop"); value.Exists() {
 		data.EbgpMultihop = types.BoolValue(true)
@@ -1195,6 +1219,9 @@ func (data *BGPNeighbor) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop/max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() {
+		data.InheritPeerSession = types.StringValue(value.String())
 	}
 }
 
@@ -1306,7 +1333,7 @@ func (data *BGPNeighborData) fromBodyXML(ctx context.Context, res xmldot.Result)
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop"); value.Exists() {
 		data.EbgpMultihop = types.BoolValue(true)
@@ -1316,6 +1343,9 @@ func (data *BGPNeighborData) fromBodyXML(ctx context.Context, res xmldot.Result)
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop/max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() {
+		data.InheritPeerSession = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1324,13 +1354,16 @@ func (data *BGPNeighborData) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor) []string {
 	deletedItems := make([]string, 0)
+	if !state.InheritPeerSession.IsNull() && data.InheritPeerSession.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inherit/peer-session", state.getPath()))
+	}
 	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop/max-hop", state.getPath()))
 	}
 	if !state.EbgpMultihop.IsNull() && data.EbgpMultihop.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop", state.getPath()))
 	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
+	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/interface/Loopback", state.getPath()))
 	}
 	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
@@ -1418,13 +1451,16 @@ func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor)
 
 func (data *BGPNeighbor) addDeletedItemsXML(ctx context.Context, state BGPNeighbor, body string) string {
 	b := netconf.NewBody(body)
+	if !state.InheritPeerSession.IsNull() && data.InheritPeerSession.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inherit/peer-session")
+	}
 	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ebgp-multihop/max-hop")
 	}
 	if !state.EbgpMultihop.IsNull() && data.EbgpMultihop.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ebgp-multihop")
 	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
+	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/interface/Loopback")
 	}
 	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
@@ -1562,13 +1598,16 @@ func (data *BGPNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.InheritPeerSession.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inherit/peer-session", data.getPath()))
+	}
 	if !data.EbgpMultihopMaxHop.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop/max-hop", data.getPath()))
 	}
 	if !data.EbgpMultihop.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
 	}
-	if !data.UpdateSourceLoopback.IsNull() {
+	if !data.UpdateSourceInterfaceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/interface/Loopback", data.getPath()))
 	}
 	if !data.TtlSecurityHops.IsNull() {
@@ -1656,13 +1695,16 @@ func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 
 func (data *BGPNeighbor) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.InheritPeerSession.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inherit/peer-session")
+	}
 	if !data.EbgpMultihopMaxHop.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ebgp-multihop/max-hop")
 	}
 	if !data.EbgpMultihop.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ebgp-multihop")
 	}
-	if !data.UpdateSourceLoopback.IsNull() {
+	if !data.UpdateSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/update-source/interface/Loopback")
 	}
 	if !data.TtlSecurityHops.IsNull() {

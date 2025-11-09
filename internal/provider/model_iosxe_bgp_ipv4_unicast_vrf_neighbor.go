@@ -72,7 +72,7 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	LocalAsNoPrepend                    types.Bool                           `tfsdk:"local_as_no_prepend"`
 	LocalAsReplaceAs                    types.Bool                           `tfsdk:"local_as_replace_as"`
 	LocalAsDualAs                       types.Bool                           `tfsdk:"local_as_dual_as"`
-	UpdateSourceLoopback                types.Int64                          `tfsdk:"update_source_loopback"`
+	UpdateSourceInterfaceLoopback       types.Int64                          `tfsdk:"update_source_interface_loopback"`
 	Activate                            types.Bool                           `tfsdk:"activate"`
 	SendCommunity                       types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient                types.Bool                           `tfsdk:"route_reflector_client"`
@@ -118,7 +118,7 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	LocalAsNoPrepend                    types.Bool                           `tfsdk:"local_as_no_prepend"`
 	LocalAsReplaceAs                    types.Bool                           `tfsdk:"local_as_replace_as"`
 	LocalAsDualAs                       types.Bool                           `tfsdk:"local_as_dual_as"`
-	UpdateSourceLoopback                types.Int64                          `tfsdk:"update_source_loopback"`
+	UpdateSourceInterfaceLoopback       types.Int64                          `tfsdk:"update_source_interface_loopback"`
 	Activate                            types.Bool                           `tfsdk:"activate"`
 	SendCommunity                       types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient                types.Bool                           `tfsdk:"route_reflector_client"`
@@ -277,8 +277,8 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"local-as.dual-as", map[string]string{})
 		}
 	}
-	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
+	if !data.UpdateSourceInterfaceLoopback.IsNull() && !data.UpdateSourceInterfaceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
 		if data.Activate.ValueBool() {
@@ -469,8 +469,8 @@ func (data BGPIPv4UnicastVRFNeighbor) toBodyXML(ctx context.Context) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/local-as/dual-as")
 		}
 	}
-	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/update-source/interface/Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
+	if !data.UpdateSourceInterfaceLoopback.IsNull() && !data.UpdateSourceInterfaceLoopback.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/update-source/interface/Loopback", strconv.FormatInt(data.UpdateSourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
 		if data.Activate.ValueBool() {
@@ -723,10 +723,10 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	} else {
 		data.LocalAsDualAs = types.BoolNull()
 	}
-	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceInterfaceLoopback.IsNull() {
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.UpdateSourceLoopback = types.Int64Null()
+		data.UpdateSourceInterfaceLoopback = types.Int64Null()
 	}
 	if value := res.Get(prefix + "activate"); !data.Activate.IsNull() {
 		if value.Exists() {
@@ -1016,10 +1016,10 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBodyXML(ctx context.Context, re
 	} else {
 		data.LocalAsDualAs = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() && !data.UpdateSourceInterfaceLoopback.IsNull() {
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.UpdateSourceLoopback = types.Int64Null()
+		data.UpdateSourceInterfaceLoopback = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/activate"); !data.Activate.IsNull() {
 		if value.Exists() {
@@ -1249,7 +1249,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) fromBody(ctx context.Context, res gjson.R
 		data.LocalAsDualAs = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
@@ -1421,7 +1421,7 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 		data.LocalAsDualAs = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
@@ -1589,7 +1589,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) fromBodyXML(ctx context.Context, res xmld
 		data.LocalAsDualAs = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
@@ -1757,7 +1757,7 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBodyXML(ctx context.Context, res 
 		data.LocalAsDualAs = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
@@ -1892,7 +1892,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, stat
 	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
 	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
+	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/interface/Loopback", state.getPath()))
 	}
 	if !state.LocalAsDualAs.IsNull() && data.LocalAsDualAs.IsNull() {
@@ -2040,7 +2040,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) addDeletedItemsXML(ctx context.Context, s
 	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
 	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
+	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update-source/interface/Loopback")
 	}
 	if !state.LocalAsDualAs.IsNull() && data.LocalAsDualAs.IsNull() {
@@ -2226,7 +2226,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 	if !data.SendCommunity.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
 	}
-	if !data.UpdateSourceLoopback.IsNull() {
+	if !data.UpdateSourceInterfaceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/interface/Loopback", data.getPath()))
 	}
 	if !data.LocalAsDualAs.IsNull() {
@@ -2351,7 +2351,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) addDeletePathsXML(ctx context.Context, bo
 	if !data.SendCommunity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/send-community/send-community-where")
 	}
-	if !data.UpdateSourceLoopback.IsNull() {
+	if !data.UpdateSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/update-source/interface/Loopback")
 	}
 	if !data.LocalAsDualAs.IsNull() {

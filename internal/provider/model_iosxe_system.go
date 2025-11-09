@@ -77,6 +77,9 @@ type System struct {
 	IpHttpActiveSessionModules                             types.String                                        `tfsdk:"ip_http_active_session_modules"`
 	IpNameServers                                          types.List                                          `tfsdk:"ip_name_servers"`
 	IpNameServersVrf                                       []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
+	IpDomainLookupNsap                                     types.Bool                                          `tfsdk:"ip_domain_lookup_nsap"`
+	IpDomainLookupRecursive                                types.Bool                                          `tfsdk:"ip_domain_lookup_recursive"`
+	IpDomainLookupVrfs                                     []SystemIpDomainLookupVrfs                          `tfsdk:"ip_domain_lookup_vrfs"`
 	IpDomainLookupSourceInterfaceLoopback                  types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_loopback"`
 	IpDomainLookupSourceInterfaceVlan                      types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_vlan"`
 	IpDomainLookupSourceInterfaceGigabitEthernet           types.String                                        `tfsdk:"ip_domain_lookup_source_interface_gigabit_ethernet"`
@@ -115,6 +118,8 @@ type System struct {
 	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                        `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
 	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                        `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
 	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
+	IpSshBulkMode                                          types.Bool                                          `tfsdk:"ip_ssh_bulk_mode"`
+	IpSshBulkModeWindowSize                                types.Int64                                         `tfsdk:"ip_ssh_bulk_mode_window_size"`
 	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
 	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
 	IpTacacsSourceInterfaceLoopback                        types.Int64                                         `tfsdk:"ip_tacacs_source_interface_loopback"`
@@ -172,6 +177,7 @@ type System struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
 }
 
 type SystemData struct {
@@ -211,6 +217,9 @@ type SystemData struct {
 	IpHttpActiveSessionModules                             types.String                                        `tfsdk:"ip_http_active_session_modules"`
 	IpNameServers                                          types.List                                          `tfsdk:"ip_name_servers"`
 	IpNameServersVrf                                       []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
+	IpDomainLookupNsap                                     types.Bool                                          `tfsdk:"ip_domain_lookup_nsap"`
+	IpDomainLookupRecursive                                types.Bool                                          `tfsdk:"ip_domain_lookup_recursive"`
+	IpDomainLookupVrfs                                     []SystemIpDomainLookupVrfs                          `tfsdk:"ip_domain_lookup_vrfs"`
 	IpDomainLookupSourceInterfaceLoopback                  types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_loopback"`
 	IpDomainLookupSourceInterfaceVlan                      types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_vlan"`
 	IpDomainLookupSourceInterfaceGigabitEthernet           types.String                                        `tfsdk:"ip_domain_lookup_source_interface_gigabit_ethernet"`
@@ -249,6 +258,8 @@ type SystemData struct {
 	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                        `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
 	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                        `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
 	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
+	IpSshBulkMode                                          types.Bool                                          `tfsdk:"ip_ssh_bulk_mode"`
+	IpSshBulkModeWindowSize                                types.Int64                                         `tfsdk:"ip_ssh_bulk_mode_window_size"`
 	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
 	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
 	IpTacacsSourceInterfaceLoopback                        types.Int64                                         `tfsdk:"ip_tacacs_source_interface_loopback"`
@@ -306,6 +317,7 @@ type SystemData struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -318,6 +330,18 @@ type SystemIpHttpAuthenticationAaaCommandAuthorization struct {
 type SystemIpNameServersVrf struct {
 	Vrf     types.String `tfsdk:"vrf"`
 	Servers types.List   `tfsdk:"servers"`
+}
+type SystemIpDomainLookupVrfs struct {
+	Vrf                                      types.String `tfsdk:"vrf"`
+	SourceInterfaceLoopback                  types.Int64  `tfsdk:"source_interface_loopback"`
+	SourceInterfaceVlan                      types.Int64  `tfsdk:"source_interface_vlan"`
+	SourceInterfaceGigabitEthernet           types.String `tfsdk:"source_interface_gigabit_ethernet"`
+	SourceInterfaceTwoGigabitEthernet        types.String `tfsdk:"source_interface_two_gigabit_ethernet"`
+	SourceInterfaceFiveGigabitEthernet       types.String `tfsdk:"source_interface_five_gigabit_ethernet"`
+	SourceInterfaceTenGigabitEthernet        types.String `tfsdk:"source_interface_ten_gigabit_ethernet"`
+	SourceInterfaceTwentyFiveGigabitEthernet types.String `tfsdk:"source_interface_twenty_five_gigabit_ethernet"`
+	SourceInterfaceFortyGigabitEthernet      types.String `tfsdk:"source_interface_forty_gigabit_ethernet"`
+	SourceInterfaceHundredGigabitEthernet    types.String `tfsdk:"source_interface_hundred_gigabit_ethernet"`
 }
 type SystemPnpProfiles struct {
 	Name                          types.String `tfsdk:"name"`
@@ -505,6 +529,16 @@ func (data System) toBody(ctx context.Context) string {
 		data.IpNameServers.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.no-vrf-ordered", values)
 	}
+	if !data.IpDomainLookupNsap.IsNull() && !data.IpDomainLookupNsap.IsUnknown() {
+		if data.IpDomainLookupNsap.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.nsap", map[string]string{})
+		}
+	}
+	if !data.IpDomainLookupRecursive.IsNull() && !data.IpDomainLookupRecursive.IsUnknown() {
+		if data.IpDomainLookupRecursive.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.recursive", map[string]string{})
+		}
+	}
 	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() && !data.IpDomainLookupSourceInterfaceLoopback.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.Loopback", strconv.FormatInt(data.IpDomainLookupSourceInterfaceLoopback.ValueInt64(), 10))
 	}
@@ -634,6 +668,14 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceHundredGigabitEthernet.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.HundredGigE", data.IpSshSourceInterfaceHundredGigabitEthernet.ValueString())
+	}
+	if !data.IpSshBulkMode.IsNull() && !data.IpSshBulkMode.IsUnknown() {
+		if data.IpSshBulkMode.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode", map[string]string{})
+		}
+	}
+	if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode.window-size", strconv.FormatInt(data.IpSshBulkModeWindowSize.ValueInt64(), 10))
 	}
 	if !data.ControlPlaneServicePolicyInput.IsNull() && !data.ControlPlaneServicePolicyInput.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"control-plane.Cisco-IOS-XE-policy:service-policy.input", data.ControlPlaneServicePolicyInput.ValueString())
@@ -792,6 +834,9 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.StandbyRedirectsEnableDisable.IsNull() && !data.StandbyRedirectsEnableDisable.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"standby.redirects-config.redirect-enable-disable.redirects", data.StandbyRedirectsEnableDisable.ValueString())
 	}
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() && !data.IpRoutingProtocolPurgeInterface.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.routing-new.routing.protocol.purge.interface", data.IpRoutingProtocolPurgeInterface.ValueBool())
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -826,6 +871,41 @@ func (data System) toBody(ctx context.Context) string {
 				var values []string
 				item.Servers.ElementsAs(ctx, &values, false)
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.vrf"+"."+strconv.Itoa(index)+"."+"server-ip-list-ordered", values)
+			}
+		}
+	}
+	if len(data.IpDomainLookupVrfs) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf", []interface{}{})
+		for index, item := range data.IpDomainLookupVrfs {
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"vrf-name", item.Vrf.ValueString())
+			}
+			if !item.SourceInterfaceLoopback.IsNull() && !item.SourceInterfaceLoopback.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.Loopback", strconv.FormatInt(item.SourceInterfaceLoopback.ValueInt64(), 10))
+			}
+			if !item.SourceInterfaceVlan.IsNull() && !item.SourceInterfaceVlan.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.Vlan", strconv.FormatInt(item.SourceInterfaceVlan.ValueInt64(), 10))
+			}
+			if !item.SourceInterfaceGigabitEthernet.IsNull() && !item.SourceInterfaceGigabitEthernet.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.GigabitEthernet", item.SourceInterfaceGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceTwoGigabitEthernet.IsNull() && !item.SourceInterfaceTwoGigabitEthernet.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.TwoGigabitEthernet", item.SourceInterfaceTwoGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceFiveGigabitEthernet.IsNull() && !item.SourceInterfaceFiveGigabitEthernet.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.FiveGigabitEthernet", item.SourceInterfaceFiveGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceTenGigabitEthernet.IsNull() && !item.SourceInterfaceTenGigabitEthernet.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.TenGigabitEthernet", item.SourceInterfaceTenGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceTwentyFiveGigabitEthernet.IsNull() && !item.SourceInterfaceTwentyFiveGigabitEthernet.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.TwentyFiveGigE", item.SourceInterfaceTwentyFiveGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceFortyGigabitEthernet.IsNull() && !item.SourceInterfaceFortyGigabitEthernet.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.FortyGigabitEthernet", item.SourceInterfaceFortyGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceHundredGigabitEthernet.IsNull() && !item.SourceInterfaceHundredGigabitEthernet.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.vrf"+"."+strconv.Itoa(index)+"."+"source-interface.HundredGigE", item.SourceInterfaceHundredGigabitEthernet.ValueString())
 			}
 		}
 	}
@@ -1103,6 +1183,56 @@ func (data System) toBodyXML(ctx context.Context) string {
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/name-server/vrf", cBody.Res())
 		}
 	}
+	if !data.IpDomainLookupNsap.IsNull() && !data.IpDomainLookupNsap.IsUnknown() {
+		if data.IpDomainLookupNsap.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap")
+		}
+	}
+	if !data.IpDomainLookupRecursive.IsNull() && !data.IpDomainLookupRecursive.IsUnknown() {
+		if data.IpDomainLookupRecursive.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive")
+		}
+	}
+	if len(data.IpDomainLookupVrfs) > 0 {
+		for _, item := range data.IpDomainLookupVrfs {
+			cBody := netconf.Body{}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf-name", item.Vrf.ValueString())
+			}
+			if !item.SourceInterfaceLoopback.IsNull() && !item.SourceInterfaceLoopback.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/Loopback", strconv.FormatInt(item.SourceInterfaceLoopback.ValueInt64(), 10))
+			}
+			if !item.SourceInterfaceVlan.IsNull() && !item.SourceInterfaceVlan.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/Vlan", strconv.FormatInt(item.SourceInterfaceVlan.ValueInt64(), 10))
+			}
+			if !item.SourceInterfaceGigabitEthernet.IsNull() && !item.SourceInterfaceGigabitEthernet.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/GigabitEthernet", item.SourceInterfaceGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceTwoGigabitEthernet.IsNull() && !item.SourceInterfaceTwoGigabitEthernet.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/TwoGigabitEthernet", item.SourceInterfaceTwoGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceFiveGigabitEthernet.IsNull() && !item.SourceInterfaceFiveGigabitEthernet.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/FiveGigabitEthernet", item.SourceInterfaceFiveGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceTenGigabitEthernet.IsNull() && !item.SourceInterfaceTenGigabitEthernet.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/TenGigabitEthernet", item.SourceInterfaceTenGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceTwentyFiveGigabitEthernet.IsNull() && !item.SourceInterfaceTwentyFiveGigabitEthernet.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/TwentyFiveGigE", item.SourceInterfaceTwentyFiveGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceFortyGigabitEthernet.IsNull() && !item.SourceInterfaceFortyGigabitEthernet.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/FortyGigabitEthernet", item.SourceInterfaceFortyGigabitEthernet.ValueString())
+			}
+			if !item.SourceInterfaceHundredGigabitEthernet.IsNull() && !item.SourceInterfaceHundredGigabitEthernet.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source-interface/HundredGigE", item.SourceInterfaceHundredGigabitEthernet.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf", cBody.Res())
+		}
+	}
 	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() && !data.IpDomainLookupSourceInterfaceLoopback.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/source-interface/Loopback", strconv.FormatInt(data.IpDomainLookupSourceInterfaceLoopback.ValueInt64(), 10))
 	}
@@ -1248,6 +1378,16 @@ func (data System) toBodyXML(ctx context.Context) string {
 	}
 	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceHundredGigabitEthernet.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/ssh/source-interface-config/HundredGigE", data.IpSshSourceInterfaceHundredGigabitEthernet.ValueString())
+	}
+	if !data.IpSshBulkMode.IsNull() && !data.IpSshBulkMode.IsUnknown() {
+		if data.IpSshBulkMode.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/ssh/bulk-mode", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/ssh/bulk-mode")
+		}
+	}
+	if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/ssh/bulk-mode/window-size", strconv.FormatInt(data.IpSshBulkModeWindowSize.ValueInt64(), 10))
 	}
 	if !data.ControlPlaneServicePolicyInput.IsNull() && !data.ControlPlaneServicePolicyInput.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.ControlPlaneServicePolicyInput.ValueString())
@@ -1502,6 +1642,9 @@ func (data System) toBodyXML(ctx context.Context) string {
 	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() && !data.StandbyRedirectsEnableDisable.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/standby/redirects-config/redirect-enable-disable/redirects", data.StandbyRedirectsEnableDisable.ValueString())
+	}
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() && !data.IpRoutingProtocolPurgeInterface.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/routing-new/routing/protocol/purge/interface", data.IpRoutingProtocolPurgeInterface.ValueBool())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1834,6 +1977,98 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.IpNameServersVrf[i].Servers = types.ListNull(types.StringType)
 		}
 	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.nsap"); !data.IpDomainLookupNsap.IsNull() {
+		if value.Exists() {
+			data.IpDomainLookupNsap = types.BoolValue(true)
+		} else {
+			data.IpDomainLookupNsap = types.BoolValue(false)
+		}
+	} else {
+		data.IpDomainLookupNsap = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.recursive"); !data.IpDomainLookupRecursive.IsNull() {
+		if value.Exists() {
+			data.IpDomainLookupRecursive = types.BoolValue(true)
+		} else {
+			data.IpDomainLookupRecursive = types.BoolValue(false)
+		}
+	} else {
+		data.IpDomainLookupRecursive = types.BoolNull()
+	}
+	for i := range data.IpDomainLookupVrfs {
+		keys := [...]string{"vrf-name"}
+		keyValues := [...]string{data.IpDomainLookupVrfs[i].Vrf.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ip.domain.lookup-settings.lookup.vrf").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("vrf-name"); value.Exists() && !data.IpDomainLookupVrfs[i].Vrf.IsNull() {
+			data.IpDomainLookupVrfs[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].Vrf = types.StringNull()
+		}
+		if value := r.Get("source-interface.Loopback"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceLoopback.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceLoopback = types.Int64Value(value.Int())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceLoopback = types.Int64Null()
+		}
+		if value := r.Get("source-interface.Vlan"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceVlan.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceVlan = types.Int64Value(value.Int())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceVlan = types.Int64Null()
+		}
+		if value := r.Get("source-interface.GigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet = types.StringNull()
+		}
+		if value := r.Get("source-interface.TwoGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet = types.StringNull()
+		}
+		if value := r.Get("source-interface.FiveGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet = types.StringNull()
+		}
+		if value := r.Get("source-interface.TenGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet = types.StringNull()
+		}
+		if value := r.Get("source-interface.TwentyFiveGigE"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet = types.StringNull()
+		}
+		if value := r.Get("source-interface.FortyGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet = types.StringNull()
+		}
+		if value := r.Get("source-interface.HundredGigE"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet = types.StringNull()
+		}
+	}
 	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Loopback"); value.Exists() && !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
 		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
@@ -2057,6 +2292,20 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
 	} else {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode"); !data.IpSshBulkMode.IsNull() {
+		if value.Exists() {
+			data.IpSshBulkMode = types.BoolValue(true)
+		} else {
+			data.IpSshBulkMode = types.BoolValue(false)
+		}
+	} else {
+		data.IpSshBulkMode = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode.window-size"); value.Exists() && !data.IpSshBulkModeWindowSize.IsNull() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
+	} else {
+		data.IpSshBulkModeWindowSize = types.Int64Null()
 	}
 	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() && !data.ControlPlaneServicePolicyInput.IsNull() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -2552,6 +2801,13 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.StandbyRedirectsEnableDisable = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		if value.Exists() {
+			data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2874,6 +3130,98 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.IpNameServersVrf[i].Servers = types.ListNull(types.StringType)
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap"); !data.IpDomainLookupNsap.IsNull() {
+		if value.Exists() {
+			data.IpDomainLookupNsap = types.BoolValue(true)
+		} else {
+			data.IpDomainLookupNsap = types.BoolValue(false)
+		}
+	} else {
+		data.IpDomainLookupNsap = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive"); !data.IpDomainLookupRecursive.IsNull() {
+		if value.Exists() {
+			data.IpDomainLookupRecursive = types.BoolValue(true)
+		} else {
+			data.IpDomainLookupRecursive = types.BoolValue(false)
+		}
+	} else {
+		data.IpDomainLookupRecursive = types.BoolNull()
+	}
+	for i := range data.IpDomainLookupVrfs {
+		keys := [...]string{"vrf-name"}
+		keyValues := [...]string{data.IpDomainLookupVrfs[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "vrf-name"); value.Exists() && !data.IpDomainLookupVrfs[i].Vrf.IsNull() {
+			data.IpDomainLookupVrfs[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].Vrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/Loopback"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceLoopback.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceLoopback = types.Int64Value(value.Int())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceLoopback = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/Vlan"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceVlan.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceVlan = types.Int64Value(value.Int())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceVlan = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/GigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/TwoGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/FiveGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/TenGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/TwentyFiveGigE"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/FortyGigabitEthernet"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source-interface/HundredGigE"); value.Exists() && !data.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet.IsNull() {
+			data.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+		} else {
+			data.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet = types.StringNull()
+		}
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/source-interface/Loopback"); value.Exists() && !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
 		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
@@ -3097,6 +3445,20 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
 	} else {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode"); !data.IpSshBulkMode.IsNull() {
+		if value.Exists() {
+			data.IpSshBulkMode = types.BoolValue(true)
+		} else {
+			data.IpSshBulkMode = types.BoolValue(false)
+		}
+	} else {
+		data.IpSshBulkMode = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode/window-size"); value.Exists() && !data.IpSshBulkModeWindowSize.IsNull() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
+	} else {
+		data.IpSshBulkModeWindowSize = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() && !data.ControlPlaneServicePolicyInput.IsNull() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -3592,6 +3954,13 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.StandbyRedirectsEnableDisable = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/routing-new/routing/protocol/purge/interface"); !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		if value.Exists() {
+			data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -3776,6 +4145,54 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.nsap"); value.Exists() {
+		data.IpDomainLookupNsap = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupNsap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.recursive"); value.Exists() {
+		data.IpDomainLookupRecursive = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupRecursive = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.vrf"); value.Exists() {
+		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemIpDomainLookupVrfs{}
+			if cValue := v.Get("vrf-name"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.Loopback"); cValue.Exists() {
+				item.SourceInterfaceLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("source-interface.Vlan"); cValue.Exists() {
+				item.SourceInterfaceVlan = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("source-interface.GigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.TwoGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTwoGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.FiveGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.TenGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTenGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.TwentyFiveGigE"); cValue.Exists() {
+				item.SourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.FortyGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFortyGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.HundredGigE"); cValue.Exists() {
+				item.SourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
+			}
+			data.IpDomainLookupVrfs = append(data.IpDomainLookupVrfs, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Loopback"); value.Exists() {
 		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
@@ -3907,6 +4324,14 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.ssh.source-interface-config.HundredGigE"); value.Exists() {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode"); value.Exists() {
+		data.IpSshBulkMode = types.BoolValue(true)
+	} else {
+		data.IpSshBulkMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode.window-size"); value.Exists() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -4173,6 +4598,11 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
 	}
 }
 
@@ -4358,6 +4788,54 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.nsap"); value.Exists() {
+		data.IpDomainLookupNsap = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupNsap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.recursive"); value.Exists() {
+		data.IpDomainLookupRecursive = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupRecursive = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.vrf"); value.Exists() {
+		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemIpDomainLookupVrfs{}
+			if cValue := v.Get("vrf-name"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.Loopback"); cValue.Exists() {
+				item.SourceInterfaceLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("source-interface.Vlan"); cValue.Exists() {
+				item.SourceInterfaceVlan = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("source-interface.GigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.TwoGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTwoGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.FiveGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.TenGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTenGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.TwentyFiveGigE"); cValue.Exists() {
+				item.SourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.FortyGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFortyGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("source-interface.HundredGigE"); cValue.Exists() {
+				item.SourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
+			}
+			data.IpDomainLookupVrfs = append(data.IpDomainLookupVrfs, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Loopback"); value.Exists() {
 		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
@@ -4489,6 +4967,14 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.ssh.source-interface-config.HundredGigE"); value.Exists() {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode"); value.Exists() {
+		data.IpSshBulkMode = types.BoolValue(true)
+	} else {
+		data.IpSshBulkMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode.window-size"); value.Exists() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -4756,6 +5242,11 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -4936,6 +5427,54 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap"); value.Exists() {
+		data.IpDomainLookupNsap = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupNsap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive"); value.Exists() {
+		data.IpDomainLookupRecursive = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupRecursive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf"); value.Exists() {
+		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SystemIpDomainLookupVrfs{}
+			if cValue := helpers.GetFromXPath(v, "vrf-name"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/Loopback"); cValue.Exists() {
+				item.SourceInterfaceLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/Vlan"); cValue.Exists() {
+				item.SourceInterfaceVlan = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/GigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/TwoGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTwoGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/FiveGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/TenGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTenGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/TwentyFiveGigE"); cValue.Exists() {
+				item.SourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/FortyGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFortyGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/HundredGigE"); cValue.Exists() {
+				item.SourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
+			}
+			data.IpDomainLookupVrfs = append(data.IpDomainLookupVrfs, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/source-interface/Loopback"); value.Exists() {
 		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
@@ -5067,6 +5606,14 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/source-interface-config/HundredGigE"); value.Exists() {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode"); value.Exists() {
+		data.IpSshBulkMode = types.BoolValue(true)
+	} else {
+		data.IpSshBulkMode = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode/window-size"); value.Exists() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -5333,6 +5880,11 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/standby/redirects-config/redirect-enable-disable/redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/routing-new/routing/protocol/purge/interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
 	}
 }
 
@@ -5514,6 +6066,54 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap"); value.Exists() {
+		data.IpDomainLookupNsap = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupNsap = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive"); value.Exists() {
+		data.IpDomainLookupRecursive = types.BoolValue(true)
+	} else {
+		data.IpDomainLookupRecursive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf"); value.Exists() {
+		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SystemIpDomainLookupVrfs{}
+			if cValue := helpers.GetFromXPath(v, "vrf-name"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/Loopback"); cValue.Exists() {
+				item.SourceInterfaceLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/Vlan"); cValue.Exists() {
+				item.SourceInterfaceVlan = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/GigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/TwoGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTwoGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/FiveGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/TenGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceTenGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/TwentyFiveGigE"); cValue.Exists() {
+				item.SourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/FortyGigabitEthernet"); cValue.Exists() {
+				item.SourceInterfaceFortyGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source-interface/HundredGigE"); cValue.Exists() {
+				item.SourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
+			}
+			data.IpDomainLookupVrfs = append(data.IpDomainLookupVrfs, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/source-interface/Loopback"); value.Exists() {
 		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
@@ -5645,6 +6245,14 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/source-interface-config/HundredGigE"); value.Exists() {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode"); value.Exists() {
+		data.IpSshBulkMode = types.BoolValue(true)
+	} else {
+		data.IpSshBulkMode = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/bulk-mode/window-size"); value.Exists() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
@@ -5912,6 +6520,11 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/standby/redirects-config/redirect-enable-disable/redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/routing-new/routing/protocol/purge/interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -5920,6 +6533,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpRoutingProtocolPurgeInterface.IsNull() && data.IpRoutingProtocolPurgeInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", state.getPath()))
+	}
 	if !state.StandbyRedirectsEnableDisable.IsNull() && data.StandbyRedirectsEnableDisable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", state.getPath()))
 	}
@@ -6320,6 +6936,12 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.ControlPlaneServicePolicyInput.IsNull() && data.ControlPlaneServicePolicyInput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
 	}
+	if !state.IpSshBulkModeWindowSize.IsNull() && data.IpSshBulkModeWindowSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/bulk-mode/window-size", state.getPath()))
+	}
+	if !state.IpSshBulkMode.IsNull() && data.IpSshBulkMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/bulk-mode", state.getPath()))
+	}
 	if !state.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", state.getPath()))
 	}
@@ -6433,6 +7055,64 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.IpDomainLookupSourceInterfaceLoopback.IsNull() && data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", state.getPath()))
+	}
+	for i := range state.IpDomainLookupVrfs {
+		stateKeyValues := [...]string{state.IpDomainLookupVrfs[i].Vrf.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpDomainLookupVrfs[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpDomainLookupVrfs {
+			found = true
+			if state.IpDomainLookupVrfs[i].Vrf.ValueString() != data.IpDomainLookupVrfs[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceHundredGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/HundredGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceFortyGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/FortyGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/TwentyFiveGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceTenGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/TenGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceFiveGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/FiveGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceTwoGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/TwoGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/GigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceVlan.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceVlan.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/Vlan", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceLoopback.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v/source-interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.IpDomainLookupRecursive.IsNull() && data.IpDomainLookupRecursive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/recursive", state.getPath()))
+	}
+	if !state.IpDomainLookupNsap.IsNull() && data.IpDomainLookupNsap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/nsap", state.getPath()))
 	}
 	for i := range state.IpNameServersVrf {
 		stateKeyValues := [...]string{state.IpNameServersVrf[i].Vrf.ValueString()}
@@ -6657,6 +7337,9 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) addDeletedItemsXML(ctx context.Context, state System, body string) string {
 	b := netconf.NewBody(body)
+	if !state.IpRoutingProtocolPurgeInterface.IsNull() && data.IpRoutingProtocolPurgeInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/routing-new/routing/protocol/purge/interface")
+	}
 	if !state.StandbyRedirectsEnableDisable.IsNull() && data.StandbyRedirectsEnableDisable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/standby/redirects-config/redirect-enable-disable/redirects")
 	}
@@ -7104,6 +7787,12 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	if !state.ControlPlaneServicePolicyInput.IsNull() && data.ControlPlaneServicePolicyInput.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input")
 	}
+	if !state.IpSshBulkModeWindowSize.IsNull() && data.IpSshBulkModeWindowSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/ssh/bulk-mode/window-size")
+	}
+	if !state.IpSshBulkMode.IsNull() && data.IpSshBulkMode.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/ssh/bulk-mode")
+	}
 	if !state.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/ssh/source-interface-config/HundredGigE")
 	}
@@ -7217,6 +7906,69 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	}
 	if !state.IpDomainLookupSourceInterfaceLoopback.IsNull() && data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/lookup-settings/lookup/source-interface/Loopback")
+	}
+	for i := range state.IpDomainLookupVrfs {
+		stateKeys := [...]string{"vrf-name"}
+		stateKeyValues := [...]string{state.IpDomainLookupVrfs[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpDomainLookupVrfs[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpDomainLookupVrfs {
+			found = true
+			if state.IpDomainLookupVrfs[i].Vrf.ValueString() != data.IpDomainLookupVrfs[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceHundredGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceHundredGigabitEthernet.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/HundredGigE", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceFortyGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceFortyGigabitEthernet.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/FortyGigabitEthernet", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/TwentyFiveGigE", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceTenGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceTenGigabitEthernet.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/TenGigabitEthernet", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceFiveGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceFiveGigabitEthernet.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/FiveGigabitEthernet", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceTwoGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceTwoGigabitEthernet.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/TwoGigabitEthernet", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceGigabitEthernet.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceGigabitEthernet.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/GigabitEthernet", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceVlan.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceVlan.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/Vlan", predicates))
+				}
+				if !state.IpDomainLookupVrfs[i].SourceInterfaceLoopback.IsNull() && data.IpDomainLookupVrfs[j].SourceInterfaceLoopback.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v/source-interface/Loopback", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v", predicates))
+		}
+	}
+	if !state.IpDomainLookupRecursive.IsNull() && data.IpDomainLookupRecursive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/lookup-settings/lookup/recursive")
+	}
+	if !state.IpDomainLookupNsap.IsNull() && data.IpDomainLookupNsap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/lookup-settings/lookup/nsap")
 	}
 	for i := range state.IpNameServersVrf {
 		stateKeys := [...]string{"word"}
@@ -7476,6 +8228,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber/templating", data.getPath()))
 	}
 
+	if !data.IpSshBulkMode.IsNull() && !data.IpSshBulkMode.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/ssh/bulk-mode", data.getPath()))
+	}
 	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
 	}
@@ -7499,6 +8254,13 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.CispEnable.IsNull() && !data.CispEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/cisp/enable", data.getPath()))
+	}
+
+	if !data.IpDomainLookupRecursive.IsNull() && !data.IpDomainLookupRecursive.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/recursive", data.getPath()))
+	}
+	if !data.IpDomainLookupNsap.IsNull() && !data.IpDomainLookupNsap.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/nsap", data.getPath()))
 	}
 
 	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.ValueBool() {
@@ -7552,6 +8314,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", data.getPath()))
+	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", data.getPath()))
 	}
@@ -7735,6 +8500,12 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	if !data.ControlPlaneServicePolicyInput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
 	}
+	if !data.IpSshBulkModeWindowSize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/bulk-mode/window-size", data.getPath()))
+	}
+	if !data.IpSshBulkMode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/bulk-mode", data.getPath()))
+	}
 	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", data.getPath()))
 	}
@@ -7848,6 +8619,17 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", data.getPath()))
+	}
+	for i := range data.IpDomainLookupVrfs {
+		keyValues := [...]string{data.IpDomainLookupVrfs[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpDomainLookupRecursive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/recursive", data.getPath()))
+	}
+	if !data.IpDomainLookupNsap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/nsap", data.getPath()))
 	}
 	for i := range data.IpNameServersVrf {
 		keyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
@@ -7967,6 +8749,9 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 
 func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/routing-new/routing/protocol/purge/interface")
+	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/standby/redirects-config/redirect-enable-disable/redirects")
 	}
@@ -8184,6 +8969,12 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	if !data.ControlPlaneServicePolicyInput.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input")
 	}
+	if !data.IpSshBulkModeWindowSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/ssh/bulk-mode/window-size")
+	}
+	if !data.IpSshBulkMode.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/ssh/bulk-mode")
+	}
 	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/ssh/source-interface-config/HundredGigE")
 	}
@@ -8297,6 +9088,22 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/domain/lookup-settings/lookup/source-interface/Loopback")
+	}
+	for i := range data.IpDomainLookupVrfs {
+		keys := [...]string{"vrf-name"}
+		keyValues := [...]string{data.IpDomainLookupVrfs[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf%v", predicates))
+	}
+	if !data.IpDomainLookupRecursive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/domain/lookup-settings/lookup/recursive")
+	}
+	if !data.IpDomainLookupNsap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/domain/lookup-settings/lookup/nsap")
 	}
 	for i := range data.IpNameServersVrf {
 		keys := [...]string{"word"}

@@ -524,7 +524,13 @@ attributes:
     tf_name: ip_nat_outside
     example: true
     exclude_test: true
-
+  - yang_name: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment
+    tf_name: evpn_ethernet_segments
+    type: List
+    attributes:
+      - yang_name: es-value
+        id: true
+        example: 1
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
@@ -557,3 +563,7 @@ test_prerequisites:
     attributes:
       - name: template_name
         value: TEMP1
+  - path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]
+    attributes:
+      - name: es-value
+        value: 1

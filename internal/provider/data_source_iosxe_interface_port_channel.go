@@ -336,6 +336,18 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Enable link autonegotiation",
 				Computed:            true,
 			},
+			"evpn_ethernet_segments": schema.ListNestedAttribute{
+				MarkdownDescription: "Ethernet segment local discriminator value",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"es_value": schema.Int64Attribute{
+							MarkdownDescription: "Ethernet segment local discriminator value",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

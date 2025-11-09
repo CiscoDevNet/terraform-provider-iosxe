@@ -239,6 +239,61 @@ attributes:
           - yang_name: profile
             example: PROF1
             exclude_test: true
+  - yang_name: count
+    tf_name: logging_count
+    example: true
+    test_tags: [IOSXE1715]
+  - yang_name: persistent/url
+    example: flash:/local_logging
+    test_tags: [IOSXE1712]
+  - yang_name: persistent/size
+    example: 1000000
+  - yang_name: persistent/filesize
+    example: 500000
+  - yang_name: persistent/batch
+    example: 4096
+    exclude_test: true
+  - yang_name: persistent/threshold
+    example: 50
+    exclude_test: true
+  - yang_name: persistent/immediate
+    example: true
+    exclude_test: true
+  - yang_name: persistent/notify
+    example: true
+    exclude_test: true
+  - yang_name: persistent/protected
+    example: true
+    exclude_test: true
+  - yang_name: rate-limit-config/config-options/common-case/common-config/rate-limit/all/common-options/range
+    xpath: rate-limit-config/common-config/rate-limit/all/common-options/range
+    tf_name: rate_limit_all
+    example: 200
+  - yang_name: rate-limit-config/config-options/common-case/common-config/rate-limit/all/common-options/except/range
+    xpath: rate-limit-config/common-config/rate-limit/all/common-options/except/range
+    tf_name: rate_limit_all_except_severity
+    example: warnings
+    exclude_test: true
+  - yang_name: rate-limit-config/config-options/common-case/common-config/rate-limit/console/common-options/range
+    xpath: rate-limit-config/common-config/rate-limit/console/common-options/range
+    tf_name: rate_limit_console
+    example: 100
+    exclude_test: true
+  - yang_name: rate-limit-config/config-options/common-case/common-config/rate-limit/console/common-options/except/range
+    xpath: rate-limit-config/common-config/rate-limit/console/common-options/except/range
+    tf_name: rate_limit_console_except_severity
+    example: errors
+    exclude_test: true
+  - yang_name: rate-limit-config/config-options/common-case/common-config/rate-limit/console/all/common-options/range
+    xpath: rate-limit-config/common-config/rate-limit/console/all/common-options/range
+    tf_name: rate_limit_console_all
+    example: 150
+    exclude_test: true
+  - yang_name: rate-limit-config/config-options/common-case/common-config/rate-limit/console/all/common-options/except/range
+    xpath: rate-limit-config/common-config/rate-limit/console/all/common-options/except/range
+    tf_name: rate_limit_console_all_except_severity
+    example: critical
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

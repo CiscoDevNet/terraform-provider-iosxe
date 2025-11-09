@@ -1,0 +1,40 @@
+---
+name: BGP Peer Session Template
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-session[name=%s]
+doc_category: BGP
+skip_minimum_test: true
+attributes:
+  - yang_name: id
+    tf_name: asn
+    example: 65000
+  - yang_name: name
+    yang_scope: peer-session
+    tf_name: template_name
+    example: PEER_SESSION_TEMPLATE_1
+  - yang_name: remote-as
+    example: 65001
+  - yang_name: description
+    example: Peer Session Template Description
+  - yang_name: disable-connected-check
+    example: true
+  - yang_name: ebgp-multihop
+    example: true
+  - yang_name: ebgp-multihop/max-hop
+    example: 10
+  - yang_name: update-source/interface/interface-choice/Loopback/Loopback
+    xpath: update-source/interface/Loopback
+    tf_name: update_source_interface_loopback
+    type: Int64
+    example: 100
+  - yang_name: inherit/peer-session
+    example: PEER_SESSION_PARENT
+    exclude_test: true
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
+    attributes:
+      - name: id
+        value: 65000
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
+    attributes:
+      - name: name
+        value: 100

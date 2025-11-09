@@ -55,6 +55,8 @@ data "iosxe_system" "example" {
 - `ip_domain_list_vrf` (String)
 - `ip_domain_list_vrf_domain` (String)
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
+- `ip_domain_lookup_nsap` (Boolean) Enable IP DNS queries for CLNS NSAP addresses
+- `ip_domain_lookup_recursive` (Boolean) Enable IP DNS recursive lookup
 - `ip_domain_lookup_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_domain_lookup_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_domain_lookup_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -64,6 +66,7 @@ data "iosxe_system" "example" {
 - `ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
 - `ip_domain_lookup_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
 - `ip_domain_lookup_source_interface_vlan` (Number) Iosxr Vlans
+- `ip_domain_lookup_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_domain_lookup_vrfs))
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
 - `ip_ftp_passive` (Boolean) Connect using passive mode
@@ -101,9 +104,12 @@ data "iosxe_system" "example" {
 - `ip_radius_source_interface_vlan` (Number) Iosxr Vlans
 - `ip_radius_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ip_routing` (Boolean) Enable or disable IP routing
+- `ip_routing_protocol_purge_interface` (Boolean) Perform IP routing protocol routes purge on link failures
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
+- `ip_ssh_bulk_mode` (Boolean) Enable optimizations for bulk data transfer procedures
+- `ip_ssh_bulk_mode_window_size` (Number) Window-size value
 - `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_ssh_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_ssh_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -171,6 +177,23 @@ Read-Only:
 Read-Only:
 
 - `path` (String)
+
+
+<a id="nestedatt--ip_domain_lookup_vrfs"></a>
+### Nested Schema for `ip_domain_lookup_vrfs`
+
+Read-Only:
+
+- `source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `source_interface_loopback` (Number) Loopback interface
+- `source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `source_interface_vlan` (Number) Iosxr Vlans
+- `vrf` (String) VRF name
 
 
 <a id="nestedatt--ip_hosts"></a>

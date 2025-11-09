@@ -52,7 +52,7 @@ func TestAccIosxeBGPNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "timers_keepalive_interval", "655"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "timers_holdtime", "866"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "timers_minimum_neighbor_hold", "222"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "update_source_loopback", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "update_source_interface_loopback", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -147,7 +147,7 @@ func testAccIosxeBGPNeighborConfig_all() string {
 	config += `	timers_keepalive_interval = 655` + "\n"
 	config += `	timers_holdtime = 866` + "\n"
 	config += `	timers_minimum_neighbor_hold = 222` + "\n"
-	config += `	update_source_loopback = 100` + "\n"
+	config += `	update_source_interface_loopback = 100` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config

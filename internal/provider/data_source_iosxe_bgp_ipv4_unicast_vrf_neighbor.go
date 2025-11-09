@@ -177,7 +177,7 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 				MarkdownDescription: "Accept either real AS or local AS from the ebgp peer",
 				Computed:            true,
 			},
-			"update_source_loopback": schema.Int64Attribute{
+			"update_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},

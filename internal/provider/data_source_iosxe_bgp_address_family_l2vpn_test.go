@@ -36,6 +36,8 @@ func TestAccDataSourceIosxeBGPAddressFamilyL2VPN(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_l2vpn.test", "rewrite_evpn_rt_asn", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_l2vpn.test", "bgp_nexthop_trigger_delay", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -70,6 +72,8 @@ func testAccDataSourceIosxeBGPAddressFamilyL2VPNConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "evpn"` + "\n"
+	config += `	rewrite_evpn_rt_asn = true` + "\n"
+	config += `	bgp_nexthop_trigger_delay = 10` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

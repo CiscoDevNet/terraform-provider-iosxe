@@ -2,6 +2,10 @@ resource "iosxe_interface_port_channel" "example" {
   name                           = 10
   description                    = "My Interface Description"
   shutdown                       = false
+  switchport                     = false
+  ip_proxy_arp                   = false
+  ip_redirects                   = false
+  ip_unreachables                = false
   vrf_forwarding                 = "VRF1"
   ipv4_address                   = "192.0.2.1"
   ipv4_address_mask              = "255.255.255.0"
@@ -35,7 +39,13 @@ resource "iosxe_interface_port_channel" "example" {
     }
   ]
   arp_timeout                      = 2147
+  ip_arp_inspection_trust          = true
+  ip_arp_inspection_limit_rate     = 1000
   load_interval                    = 30
-  snmp_trap_link_status            = true
   logging_event_link_status_enable = false
+  evpn_ethernet_segments = [
+    {
+      es_value = 1
+    }
+  ]
 }

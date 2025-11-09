@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -487,6 +488,100 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 							},
 						},
 					},
+				},
+			},
+			"logging_count": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Count every log message and timestamp last occurrence").String,
+				Optional:            true,
+			},
+			"persistent_url": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("URL to store logging messages").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(((bootflash:/)|(cns:/)|(flash:/)|(ftp:/)|(http:/)|(https:/)|(null:/)|(crashinfo:/)
+(nvram:/)|(pram:/)|(rcp:/)|(scp:/)|(sftp:/)|(system:/)|(tar:/)|(tftp:/)|(tmpsys:/)|(webui:/)).*)`), ""),
+				},
+			},
+			"persistent_size": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set disk space for writing log messages").AddIntegerRangeDescription(16384, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(16384, 2147483647),
+				},
+			},
+			"persistent_filesize": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set size of individual log files").AddIntegerRangeDescription(8192, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(8192, 2147483647),
+				},
+			},
+			"persistent_batch": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Batch size for writing to persistent storage").AddIntegerRangeDescription(4096, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(4096, 2147483647),
+				},
+			},
+			"persistent_threshold": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Setting threshold capacity. When setting circular logging is disabled").AddIntegerRangeDescription(1, 99).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 99),
+				},
+			},
+			"persistent_immediate": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Write log entry to storage immediately (no buffering).").String,
+				Optional:            true,
+			},
+			"persistent_notify": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Notify when show logging [persistent] is activated.").String,
+				Optional:            true,
+			},
+			"persistent_protected": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Eliminates manipulation on logging-persistent files").String,
+				Optional:            true,
+			},
+			"rate_limit_all": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Messages per second").AddIntegerRangeDescription(1, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000),
+				},
+			},
+			"rate_limit_all_except_severity": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Logging severity level").AddStringEnumDescription("alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings"),
+				},
+			},
+			"rate_limit_console": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Messages per second").AddIntegerRangeDescription(1, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000),
+				},
+			},
+			"rate_limit_console_except_severity": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Logging severity level").AddStringEnumDescription("alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings"),
+				},
+			},
+			"rate_limit_console_all": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Messages per second").AddIntegerRangeDescription(1, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000),
+				},
+			},
+			"rate_limit_console_all_except_severity": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Logging severity level").AddStringEnumDescription("alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings"),
 				},
 			},
 		},

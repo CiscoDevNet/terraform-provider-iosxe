@@ -338,6 +338,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							MarkdownDescription: helpers.NewAttributeDescription("Use self address (for BGP only)").String,
 							Optional:            true,
 						},
+						"set_ip_next_hop_unchanged": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Propagate next hop unchanged").String,
+							Optional:            true,
+						},
 						"set_ip_qos_group": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 99).String,
 							Optional:            true,
@@ -562,7 +566,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_communities": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("BGP community value - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)").String,
 							ElementType:         types.StringType,
 							Optional:            true,
 						},

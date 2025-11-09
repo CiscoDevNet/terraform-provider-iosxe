@@ -99,7 +99,7 @@ attributes:
     exclude_test: true
   - yang_name: update-source/interface/interface-choice/Loopback/Loopback
     xpath: update-source/interface/Loopback
-    tf_name: update_source_loopback
+    tf_name: update_source_interface_loopback
     type: Int64
     example: 100
   - yang_name: activate
