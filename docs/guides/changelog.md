@@ -20,6 +20,7 @@ description: |-
 - Add `ip_dhcp_relay_information_option_vpn_id` attribute to `iosxe_interface_ethernet` resource and `iosxe_interface_vlan` resource
 - Add `local_routing` attribute to `iosxe_interface_nve` resource and data source
 - Add `ipv4_unicast_maximum_paths_ebgp` and `ipv4_unicast_maximum_paths_ibgp` attributes to the `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources
+- Add `ip_cef_load_sharing_algorithm_include_ports_source`, `ip_cef_load_sharing_algorithm_include_ports_destination`, `ipv6_cef_load_sharing_algorithm_include_ports_source`, `ipv6_cef_load_sharing_algorithm_include_ports_destination`, and `port_channel_load_balance` attributes to `iosxe_system` resource and data source
 
 ## 0.9.3
 

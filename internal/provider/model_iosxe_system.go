@@ -175,6 +175,11 @@ type System struct {
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
 	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
+	IpCefLoadSharingAlgorithmIncludePortsSource            types.Bool                                          `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_source"`
+	IpCefLoadSharingAlgorithmIncludePortsDestination       types.Bool                                          `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_destination"`
+	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
+	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
+	PortChannelLoadBalance                                 types.String                                        `tfsdk:"port_channel_load_balance"`
 }
 
 type SystemData struct {
@@ -315,6 +320,11 @@ type SystemData struct {
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
 	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
+	IpCefLoadSharingAlgorithmIncludePortsSource            types.Bool                                          `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_source"`
+	IpCefLoadSharingAlgorithmIncludePortsDestination       types.Bool                                          `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_destination"`
+	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
+	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
+	PortChannelLoadBalance                                 types.String                                        `tfsdk:"port_channel_load_balance"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -822,6 +832,29 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpRoutingProtocolPurgeInterface.IsNull() && !data.IpRoutingProtocolPurgeInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.routing-new.routing.protocol.purge.interface", data.IpRoutingProtocolPurgeInterface.ValueBool())
+	}
+	if !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() && !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsUnknown() {
+		if data.IpCefLoadSharingAlgorithmIncludePortsSource.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source", map[string]string{})
+		}
+	}
+	if !data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsUnknown() {
+		if data.IpCefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination", map[string]string{})
+		}
+	}
+	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsUnknown() {
+		if data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source", map[string]string{})
+		}
+	}
+	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsUnknown() {
+		if data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination", map[string]string{})
+		}
+	}
+	if !data.PortChannelLoadBalance.IsNull() && !data.PortChannelLoadBalance.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance", data.PortChannelLoadBalance.ValueString())
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -2133,6 +2166,47 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source"); !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() {
+		if value.Exists() {
+			data.IpCefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(true)
+		} else {
+			data.IpCefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(false)
+		}
+	} else {
+		data.IpCefLoadSharingAlgorithmIncludePortsSource = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination"); !data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsNull() {
+		if value.Exists() {
+			data.IpCefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(true)
+		} else {
+			data.IpCefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(false)
+		}
+	} else {
+		data.IpCefLoadSharingAlgorithmIncludePortsDestination = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source"); !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsNull() {
+		if value.Exists() {
+			data.Ipv6CefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(true)
+		} else {
+			data.Ipv6CefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsSource = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination"); !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() {
+		if value.Exists() {
+			data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(true)
+		} else {
+			data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination = types.BoolNull()
+	}
+	if value := res.Get(prefix + "port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance"); value.Exists() && !data.PortChannelLoadBalance.IsNull() {
+		data.PortChannelLoadBalance = types.StringValue(value.String())
+	} else {
+		data.PortChannelLoadBalance = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2775,6 +2849,29 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
 	} else {
 		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source"); value.Exists() {
+		data.IpCefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(true)
+	} else {
+		data.IpCefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination"); value.Exists() {
+		data.IpCefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(true)
+	} else {
+		data.IpCefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source"); value.Exists() {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(true)
+	} else {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination"); value.Exists() {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(true)
+	} else {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance"); value.Exists() {
+		data.PortChannelLoadBalance = types.StringValue(value.String())
 	}
 }
 
@@ -3419,6 +3516,29 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source"); value.Exists() {
+		data.IpCefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(true)
+	} else {
+		data.IpCefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination"); value.Exists() {
+		data.IpCefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(true)
+	} else {
+		data.IpCefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.source"); value.Exists() {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(true)
+	} else {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsSource = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.cef-v2.Cisco-IOS-XE-cef:load-sharing-v2.algorithm-v2.include-ports-v2.destination"); value.Exists() {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(true)
+	} else {
+		data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance"); value.Exists() {
+		data.PortChannelLoadBalance = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3427,6 +3547,21 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.PortChannelLoadBalance.IsNull() && data.PortChannelLoadBalance.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", state.getPath()))
+	}
+	if !state.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() && data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", state.getPath()))
+	}
+	if !state.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsNull() && data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", state.getPath()))
+	}
+	if !state.IpCefLoadSharingAlgorithmIncludePortsDestination.IsNull() && data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", state.getPath()))
+	}
+	if !state.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() && data.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", state.getPath()))
+	}
 	if !state.IpRoutingProtocolPurgeInterface.IsNull() && data.IpRoutingProtocolPurgeInterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", state.getPath()))
 	}
@@ -4231,6 +4366,18 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", data.getPath()))
+	}
+	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", data.getPath()))
+	}
+	if !data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.IpCefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", data.getPath()))
+	}
+	if !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() && !data.IpCefLoadSharingAlgorithmIncludePortsSource.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", data.getPath()))
+	}
 
 	for i := range data.TrackObjects {
 		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
@@ -4328,6 +4475,21 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.PortChannelLoadBalance.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", data.getPath()))
+	}
+	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", data.getPath()))
+	}
+	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsSource.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", data.getPath()))
+	}
+	if !data.IpCefLoadSharingAlgorithmIncludePortsDestination.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", data.getPath()))
+	}
+	if !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", data.getPath()))
+	}
 	if !data.IpRoutingProtocolPurgeInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", data.getPath()))
 	}
