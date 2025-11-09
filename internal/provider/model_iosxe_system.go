@@ -115,6 +115,8 @@ type System struct {
 	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                        `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
 	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                        `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
 	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
+	IpSshBulkMode                                          types.Bool                                          `tfsdk:"ip_ssh_bulk_mode"`
+	IpSshBulkModeWindowSize                                types.Int64                                         `tfsdk:"ip_ssh_bulk_mode_window_size"`
 	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
 	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
 	IpTacacsSourceInterfaceLoopback                        types.Int64                                         `tfsdk:"ip_tacacs_source_interface_loopback"`
@@ -172,6 +174,7 @@ type System struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
 }
 
 type SystemData struct {
@@ -252,6 +255,8 @@ type SystemData struct {
 	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                        `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
 	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                        `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
 	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
+	IpSshBulkMode                                          types.Bool                                          `tfsdk:"ip_ssh_bulk_mode"`
+	IpSshBulkModeWindowSize                                types.Int64                                         `tfsdk:"ip_ssh_bulk_mode_window_size"`
 	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
 	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
 	IpTacacsSourceInterfaceLoopback                        types.Int64                                         `tfsdk:"ip_tacacs_source_interface_loopback"`
@@ -309,6 +314,7 @@ type SystemData struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -649,6 +655,14 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceHundredGigabitEthernet.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.HundredGigE", data.IpSshSourceInterfaceHundredGigabitEthernet.ValueString())
 	}
+	if !data.IpSshBulkMode.IsNull() && !data.IpSshBulkMode.IsUnknown() {
+		if data.IpSshBulkMode.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode", map[string]string{})
+		}
+	}
+	if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode.window-size", strconv.FormatInt(data.IpSshBulkModeWindowSize.ValueInt64(), 10))
+	}
 	if !data.ControlPlaneServicePolicyInput.IsNull() && !data.ControlPlaneServicePolicyInput.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"control-plane.Cisco-IOS-XE-policy:service-policy.input", data.ControlPlaneServicePolicyInput.ValueString())
 	}
@@ -805,6 +819,9 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() && !data.StandbyRedirectsEnableDisable.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"standby.redirects-config.redirect-enable-disable.redirects", data.StandbyRedirectsEnableDisable.ValueString())
+	}
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() && !data.IpRoutingProtocolPurgeInterface.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.routing-new.routing.protocol.purge.interface", data.IpRoutingProtocolPurgeInterface.ValueBool())
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1601,6 +1618,20 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode"); !data.IpSshBulkMode.IsNull() {
+		if value.Exists() {
+			data.IpSshBulkMode = types.BoolValue(true)
+		} else {
+			data.IpSshBulkMode = types.BoolValue(false)
+		}
+	} else {
+		data.IpSshBulkMode = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode.window-size"); value.Exists() && !data.IpSshBulkModeWindowSize.IsNull() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
+	} else {
+		data.IpSshBulkModeWindowSize = types.Int64Null()
+	}
 	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() && !data.ControlPlaneServicePolicyInput.IsNull() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
 	} else {
@@ -2095,6 +2126,13 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.StandbyRedirectsEnableDisable = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		if value.Exists() {
+			data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2459,6 +2497,14 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.ssh.source-interface-config.HundredGigE"); value.Exists() {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode"); value.Exists() {
+		data.IpSshBulkMode = types.BoolValue(true)
+	} else {
+		data.IpSshBulkMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode.window-size"); value.Exists() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
 	}
@@ -2724,6 +2770,11 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
 	}
 }
 
@@ -3089,6 +3140,14 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.ssh.source-interface-config.HundredGigE"); value.Exists() {
 		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode"); value.Exists() {
+		data.IpSshBulkMode = types.BoolValue(true)
+	} else {
+		data.IpSshBulkMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.ssh.bulk-mode.window-size"); value.Exists() {
+		data.IpSshBulkModeWindowSize = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
 	}
@@ -3355,6 +3414,11 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3363,6 +3427,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpRoutingProtocolPurgeInterface.IsNull() && data.IpRoutingProtocolPurgeInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", state.getPath()))
+	}
 	if !state.StandbyRedirectsEnableDisable.IsNull() && data.StandbyRedirectsEnableDisable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", state.getPath()))
 	}
@@ -3762,6 +3829,12 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.ControlPlaneServicePolicyInput.IsNull() && data.ControlPlaneServicePolicyInput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
+	}
+	if !state.IpSshBulkModeWindowSize.IsNull() && data.IpSshBulkModeWindowSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/bulk-mode/window-size", state.getPath()))
+	}
+	if !state.IpSshBulkMode.IsNull() && data.IpSshBulkMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/bulk-mode", state.getPath()))
 	}
 	if !state.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", state.getPath()))
@@ -4169,6 +4242,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber/templating", data.getPath()))
 	}
 
+	if !data.IpSshBulkMode.IsNull() && !data.IpSshBulkMode.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/ssh/bulk-mode", data.getPath()))
+	}
 	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
 	}
@@ -4252,6 +4328,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", data.getPath()))
+	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", data.getPath()))
 	}
@@ -4434,6 +4513,12 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.ControlPlaneServicePolicyInput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
+	}
+	if !data.IpSshBulkModeWindowSize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/bulk-mode/window-size", data.getPath()))
+	}
+	if !data.IpSshBulkMode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/bulk-mode", data.getPath()))
 	}
 	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", data.getPath()))
