@@ -80,6 +80,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_arp_inspection_limit_rate", "1000"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_snooping_trust", "true"))
 	}
@@ -223,6 +224,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	}
+	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}

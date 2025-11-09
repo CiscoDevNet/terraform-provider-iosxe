@@ -179,6 +179,14 @@ func (d *BGPAddressFamilyIPv4DataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"ipv4_unicast_maximum_paths_ebgp": schema.Int64Attribute{
+				MarkdownDescription: "eBGP-multipath",
+				Computed:            true,
+			},
+			"ipv4_unicast_maximum_paths_ibgp": schema.Int64Attribute{
+				MarkdownDescription: "iBGP-multipath",
+				Computed:            true,
+			},
 		},
 	}
 }
