@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -47,6 +48,15 @@ func TestAccDataSourceIosxeFlowRecord(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "collect_transport_tcp_flags", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "collect_timestamp_absolute_first", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "collect_timestamp_absolute_last", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "match_datalink_mac_source_address_input", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "match_datalink_mac_destination_address_input", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "match_datalink_vlan", "input"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "match_datalink_source_vlan_id", "true"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "match_ipv4_ttl", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -85,6 +95,15 @@ func testAccDataSourceIosxeFlowRecordConfig() string {
 	config += `	collect_transport_tcp_flags = true` + "\n"
 	config += `	collect_timestamp_absolute_first = true` + "\n"
 	config += `	collect_timestamp_absolute_last = true` + "\n"
+	config += `	match_datalink_mac_source_address_input = true` + "\n"
+	config += `	match_datalink_mac_destination_address_input = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	match_datalink_vlan = "input"` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	match_datalink_source_vlan_id = true` + "\n"
+	}
+	config += `	match_ipv4_ttl = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
