@@ -112,7 +112,7 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_tag_legacy", "true"))
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities_legacy.0", "1:2"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities_legacy.0", "no-export"))
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities_additive_legacy", "true"))
@@ -140,9 +140,7 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_as", "65001 65001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_last_as", "5"))
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities.0", "no-export"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities.0", "no-export"))
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_name", "COMML1"))
 	}
@@ -263,7 +261,7 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 		config += `		set_as_path_tag_legacy = true` + "\n"
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		config += `		set_communities_legacy = ["1:2"]` + "\n"
+		config += `		set_communities_legacy = ["no-export"]` + "\n"
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_communities_additive_legacy = true` + "\n"
@@ -291,9 +289,7 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	}
 	config += `		set_as_path_prepend_as = "65001 65001"` + "\n"
 	config += `		set_as_path_prepend_last_as = 5` + "\n"
-	if os.Getenv("IOSXE1715") != "" {
-		config += `		set_communities = ["no-export"]` + "\n"
-	}
+	config += `		set_communities = ["no-export"]` + "\n"
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_community_list_name = "COMML1"` + "\n"
 	}
