@@ -45,6 +45,8 @@ type BGP struct {
 	LogNeighborChanges types.Bool   `tfsdk:"log_neighbor_changes"`
 	RouterIdLoopback   types.Int64  `tfsdk:"router_id_loopback"`
 	RouterIdIp         types.String `tfsdk:"router_id_ip"`
+	BgpGracefulRestart types.Bool   `tfsdk:"bgp_graceful_restart"`
+	BgpUpdateDelay     types.Int64  `tfsdk:"bgp_update_delay"`
 }
 
 type BGPData struct {
@@ -55,6 +57,8 @@ type BGPData struct {
 	LogNeighborChanges types.Bool   `tfsdk:"log_neighbor_changes"`
 	RouterIdLoopback   types.Int64  `tfsdk:"router_id_loopback"`
 	RouterIdIp         types.String `tfsdk:"router_id_ip"`
+	BgpGracefulRestart types.Bool   `tfsdk:"bgp_graceful_restart"`
+	BgpUpdateDelay     types.Int64  `tfsdk:"bgp_update_delay"`
 }
 
 // End of section. //template:end types
@@ -101,6 +105,14 @@ func (data BGP) toBody(ctx context.Context) string {
 	if !data.RouterIdIp.IsNull() && !data.RouterIdIp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bgp.router-id.ip-id", data.RouterIdIp.ValueString())
 	}
+	if !data.BgpGracefulRestart.IsNull() && !data.BgpGracefulRestart.IsUnknown() {
+		if data.BgpGracefulRestart.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bgp.gr-options.graceful-restart", map[string]string{})
+		}
+	}
+	if !data.BgpUpdateDelay.IsNull() && !data.BgpUpdateDelay.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bgp.update-delay", strconv.FormatInt(data.BgpUpdateDelay.ValueInt64(), 10))
+	}
 	return body
 }
 
@@ -142,6 +154,20 @@ func (data *BGP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RouterIdIp = types.StringNull()
 	}
+	if value := res.Get(prefix + "bgp.gr-options.graceful-restart"); !data.BgpGracefulRestart.IsNull() {
+		if value.Exists() {
+			data.BgpGracefulRestart = types.BoolValue(true)
+		} else {
+			data.BgpGracefulRestart = types.BoolValue(false)
+		}
+	} else {
+		data.BgpGracefulRestart = types.BoolNull()
+	}
+	if value := res.Get(prefix + "bgp.update-delay"); value.Exists() && !data.BgpUpdateDelay.IsNull() {
+		data.BgpUpdateDelay = types.Int64Value(value.Int())
+	} else {
+		data.BgpUpdateDelay = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -168,6 +194,14 @@ func (data *BGP) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "bgp.router-id.ip-id"); value.Exists() {
 		data.RouterIdIp = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "bgp.gr-options.graceful-restart"); value.Exists() {
+		data.BgpGracefulRestart = types.BoolValue(true)
+	} else {
+		data.BgpGracefulRestart = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "bgp.update-delay"); value.Exists() {
+		data.BgpUpdateDelay = types.Int64Value(value.Int())
 	}
 }
 
@@ -196,6 +230,14 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bgp.router-id.ip-id"); value.Exists() {
 		data.RouterIdIp = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "bgp.gr-options.graceful-restart"); value.Exists() {
+		data.BgpGracefulRestart = types.BoolValue(true)
+	} else {
+		data.BgpGracefulRestart = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "bgp.update-delay"); value.Exists() {
+		data.BgpUpdateDelay = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -204,6 +246,12 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
 	deletedItems := make([]string, 0)
+	if !state.BgpUpdateDelay.IsNull() && data.BgpUpdateDelay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/update-delay", state.getPath()))
+	}
+	if !state.BgpGracefulRestart.IsNull() && data.BgpGracefulRestart.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/gr-options/graceful-restart", state.getPath()))
+	}
 	if !state.RouterIdIp.IsNull() && data.RouterIdIp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/router-id/ip-id", state.getPath()))
 	}
@@ -226,6 +274,9 @@ func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
 
 func (data *BGP) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.BgpGracefulRestart.IsNull() && !data.BgpGracefulRestart.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/bgp/gr-options/graceful-restart", data.getPath()))
+	}
 
 	return emptyLeafsDelete
 }
@@ -236,6 +287,12 @@ func (data *BGP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *BGP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.BgpUpdateDelay.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/update-delay", data.getPath()))
+	}
+	if !data.BgpGracefulRestart.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/gr-options/graceful-restart", data.getPath()))
+	}
 	if !data.RouterIdIp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/router-id/ip-id", data.getPath()))
 	}
