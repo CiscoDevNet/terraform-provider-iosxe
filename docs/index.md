@@ -8,14 +8,29 @@ description: |-
 
 # IOSXE Provider
 
-The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. There are a few [Terraform Modules](https://registry.terraform.io/browse/modules?provider=iosxe) for specific use cases available (e.g., managing a Catalyst 9000 EVPN fabric).
+The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. The provider supports both **RESTCONF** (HTTPS-based) and **NETCONF** (SSH-based) protocols for device communication.
 
-It communicates with IOS-XE devices via the RESTCONF API, which requires the following device configuration.
+## Device Configuration
+
+### RESTCONF (Default)
+
+RESTCONF is the default protocol and requires the following device configuration:
 
 ```
 ip http secure-server
 restconf
 ```
+
+### NETCONF
+
+NETCONF protocol provides additional capabilities including transactional commits with the candidate datastore:
+
+```
+netconf-yang
+netconf-yang feature candidate-datastore
+```
+
+See the **[NETCONF Guide](guides/netconf)** for detailed information on using NETCONF protocol, including configuration commit modes and transactional workflows.
 
 All resources and data sources have been tested with the following releases.
 
@@ -29,6 +44,7 @@ All resources and data sources have been tested with the following releases.
 
 The following guides are available to help you get started with the IOSXE provider:
 
+- **[NETCONF](guides/netconf)** - Learn how to use NETCONF protocol for transactional configuration management with candidate datastore support
 - **[Manage Multiple Devices](guides/manage_multiple_devices)** - Learn how to manage multiple IOS-XE devices using provider aliases or the single-provider approach with device-level management control
 - **[Selective Deploy](guides/selective_deploy)** - Deploy configurations to a subset of devices while keeping others in a "frozen" state for staged rollouts and maintenance scenarios
 - **[Importing Resources](guides/importing_resources)** - Import existing device configurations into Terraform state management
