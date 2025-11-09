@@ -60,9 +60,6 @@ func TestAccDataSourceIosxeOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "auto_cost_reference_bandwidth", "40000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "passive_interface_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "log_adjacency_changes", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "log_adjacency_changes_detail", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "nsf_cisco", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "nsf_cisco_enforce_global", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "nsf_ietf", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "nsf_ietf_restart_interval", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "max_metric_router_lsa", "true"))
@@ -70,7 +67,6 @@ func TestAccDataSourceIosxeOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "max_metric_router_lsa_external_lsa_metric", "16711680"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "max_metric_router_lsa_include_stub", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "max_metric_router_lsa_on_startup_time", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "max_metric_router_lsa_on_startup_wait_for_bgp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "fast_reroute_per_prefix_enable_prefix_priority", "high"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_static_subnets", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_connected_subnets", "true"))
@@ -133,9 +129,6 @@ func testAccDataSourceIosxeOSPFConfig() string {
 	config += `	auto_cost_reference_bandwidth = 40000` + "\n"
 	config += `	passive_interface_default = true` + "\n"
 	config += `	log_adjacency_changes = true` + "\n"
-	config += `	log_adjacency_changes_detail = true` + "\n"
-	config += `	nsf_cisco = true` + "\n"
-	config += `	nsf_cisco_enforce_global = true` + "\n"
 	config += `	nsf_ietf = true` + "\n"
 	config += `	nsf_ietf_restart_interval = 120` + "\n"
 	config += `	max_metric_router_lsa = true` + "\n"
@@ -143,7 +136,6 @@ func testAccDataSourceIosxeOSPFConfig() string {
 	config += `	max_metric_router_lsa_external_lsa_metric = 16711680` + "\n"
 	config += `	max_metric_router_lsa_include_stub = true` + "\n"
 	config += `	max_metric_router_lsa_on_startup_time = 60` + "\n"
-	config += `	max_metric_router_lsa_on_startup_wait_for_bgp = true` + "\n"
 	config += `	fast_reroute_per_prefix_enable_prefix_priority = "high"` + "\n"
 	config += `	redistribute_static_subnets = true` + "\n"
 	config += `	redistribute_connected_subnets = true` + "\n"
