@@ -64,8 +64,10 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_name_servers_vrf.0.servers.0", "2.3.4.5"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup_nsap", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup_recursive", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup_vrfs.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup_vrfs.0.source_interface_gigabit_ethernet", "1/0/1"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup_vrfs.0.vrf", "VRF1"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup_vrfs.0.source_interface_gigabit_ethernet", "1/0/1"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "diagnostic_bootup_level", "minimal"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "memory_free_low_watermark_processor", "203038"))
 	if os.Getenv("IOSXE1715") != "" {
@@ -91,7 +93,9 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_destination", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_source", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "port_channel_load_balance", "src-dst-mixed-ip-port"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "port_channel_load_balance", "src-dst-mixed-ip-port"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -191,10 +195,12 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	ip_domain_lookup_nsap = true` + "\n"
 	config += `	ip_domain_lookup_recursive = true` + "\n"
-	config += `	ip_domain_lookup_vrfs = [{` + "\n"
-	config += `		vrf = "VRF1"` + "\n"
-	config += `		source_interface_gigabit_ethernet = "1/0/1"` + "\n"
-	config += `	}]` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	ip_domain_lookup_vrfs = [{` + "\n"
+		config += `		vrf = "VRF1"` + "\n"
+		config += `		source_interface_gigabit_ethernet = "1/0/1"` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	diagnostic_bootup_level = "minimal"` + "\n"
 	config += `	memory_free_low_watermark_processor = 203038` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
@@ -222,7 +228,9 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	ip_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
 	config += `	ipv6_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
 	config += `	ipv6_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
-	config += `	port_channel_load_balance = "src-dst-mixed-ip-port"` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	port_channel_load_balance = "src-dst-mixed-ip-port"` + "\n"
+	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

@@ -37,14 +37,8 @@ resource "iosxe_system" "example" {
       servers = ["2.3.4.5"]
     }
   ]
-  ip_domain_lookup_nsap      = true
-  ip_domain_lookup_recursive = true
-  ip_domain_lookup_vrfs = [
-    {
-      vrf                               = "VRF1"
-      source_interface_gigabit_ethernet = "1/0/1"
-    }
-  ]
+  ip_domain_lookup_nsap                                     = true
+  ip_domain_lookup_recursive                                = true
   diagnostic_bootup_level                                   = "minimal"
   memory_free_low_watermark_processor                       = 203038
   ip_ssh_time_out                                           = 120
@@ -63,7 +57,6 @@ resource "iosxe_system" "example" {
   ip_cef_load_sharing_algorithm_include_ports_destination   = true
   ipv6_cef_load_sharing_algorithm_include_ports_source      = true
   ipv6_cef_load_sharing_algorithm_include_ports_destination = true
-  port_channel_load_balance                                 = "src-dst-mixed-ip-port"
 }
 ```
 
