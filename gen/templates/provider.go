@@ -67,6 +67,7 @@ type IosxeProviderModel struct {
 	Retries            types.Int64                `tfsdk:"retries"`
 	LockReleaseTimeout types.Int64                `tfsdk:"lock_release_timeout"`
 	ReuseConnection    types.Bool                 `tfsdk:"reuse_connection"`
+	AutoCommit         types.Bool                 `tfsdk:"auto_commit"`
 	SelectedDevices    types.List                 `tfsdk:"selected_devices"`
 	Devices            []IosxeProviderModelDevice `tfsdk:"devices"`
 }
@@ -88,6 +89,7 @@ type IosxeProviderDataDevice struct {
 	NetconfClient   *netconf.Client
 	Protocol        string
 	ReuseConnection bool
+	AutoCommit      bool
 	Managed         bool
 	NetconfOpMutex  sync.Mutex // Serializes NETCONF operations (all ops when reuse disabled, writes only when reuse enabled)
 }
@@ -145,6 +147,10 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 			},
 			"reuse_connection": schema.BoolAttribute{
 				MarkdownDescription: "Keep NETCONF connections open between operations for better performance. When disabled, connections are closed and reopened for each operation. Only applies to NETCONF protocol. This can also be set as the IOSXE_REUSE_CONNECTION environment variable. Defaults to `true`.",
+				Optional:            true,
+			},
+			"auto_commit": schema.BoolAttribute{
+				MarkdownDescription: "Automatically commit configuration changes after each resource operation. When `true` (default), each resource commits its changes immediately. When `false`, changes are left in the candidate datastore and must be explicitly committed using the `iosxe_commit` resource. Only applies to NETCONF protocol with candidate datastore support. This can also be set as the IOSXE_AUTO_COMMIT environment variable. Defaults to `true`.",
 				Optional:            true,
 			},
 			"selected_devices": schema.ListAttribute{
@@ -382,6 +388,26 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		reuseConnection = config.ReuseConnection.ValueBool()
 	}
 
+	var autoCommit bool
+	if config.AutoCommit.IsUnknown() {
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as autoCommit",
+		)
+		return
+	}
+
+	if config.AutoCommit.IsNull() {
+		autoCommitStr := os.Getenv("IOSXE_AUTO_COMMIT")
+		if autoCommitStr == "" {
+			autoCommit = true
+		} else {
+			autoCommit, _ = strconv.ParseBool(autoCommitStr)
+		}
+	} else {
+		autoCommit = config.AutoCommit.ValueBool()
+	}
+
 	var selectedDevices []string
 	if config.SelectedDevices.IsUnknown() {
 		// Cannot connect to client with an unknown value
@@ -445,7 +471,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, Managed: true}
+		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
 	} else {
 		// NETCONF
 		logger := helpers.NewTflogAdapter()
@@ -467,7 +493,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: true}
+		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
 	}
 
 	for _, device := range config.Devices {
@@ -514,7 +540,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, Managed: managed}
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 		} else {
 			// NETCONF
 			logger := helpers.NewTflogAdapter()
@@ -536,7 +562,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: managed}
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 		}
 	}
 

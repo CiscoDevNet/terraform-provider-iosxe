@@ -366,7 +366,7 @@ func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.C
 
 			body := plan.toBodyXML(ctx)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -548,7 +548,7 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -615,7 +615,7 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 				body := netconf.Body{}
 				body = helpers.RemoveFromXPath(body, state.getXPath())
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}
@@ -653,7 +653,7 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 
 				body := state.addDeletePathsXML(ctx, "")
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}

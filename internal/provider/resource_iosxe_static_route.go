@@ -258,7 +258,7 @@ func (r *StaticRouteResource) Create(ctx context.Context, req resource.CreateReq
 
 			body := plan.toBodyXML(ctx)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -440,7 +440,7 @@ func (r *StaticRouteResource) Update(ctx context.Context, req resource.UpdateReq
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -496,7 +496,7 @@ func (r *StaticRouteResource) Delete(ctx context.Context, req resource.DeleteReq
 				body := netconf.Body{}
 				body = helpers.RemoveFromXPath(body, state.getXPath())
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}
@@ -534,7 +534,7 @@ func (r *StaticRouteResource) Delete(ctx context.Context, req resource.DeleteReq
 
 				body := state.addDeletePathsXML(ctx, "")
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}

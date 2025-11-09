@@ -344,7 +344,7 @@ func (r *PolicyMapResource) Create(ctx context.Context, req resource.CreateReque
 
 			body := plan.toBodyXML(ctx)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -526,7 +526,7 @@ func (r *PolicyMapResource) Update(ctx context.Context, req resource.UpdateReque
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -582,7 +582,7 @@ func (r *PolicyMapResource) Delete(ctx context.Context, req resource.DeleteReque
 				body := netconf.Body{}
 				body = helpers.RemoveFromXPath(body, state.getXPath())
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}
@@ -620,7 +620,7 @@ func (r *PolicyMapResource) Delete(ctx context.Context, req resource.DeleteReque
 
 				body := state.addDeletePathsXML(ctx, "")
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}

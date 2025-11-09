@@ -486,7 +486,7 @@ func (r *AAAAccountingResource) Create(ctx context.Context, req resource.CreateR
 
 			body := plan.toBodyXML(ctx)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -668,7 +668,7 @@ func (r *AAAAccountingResource) Update(ctx context.Context, req resource.UpdateR
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -729,7 +729,7 @@ func (r *AAAAccountingResource) Delete(ctx context.Context, req resource.DeleteR
 				body := netconf.Body{}
 				body = helpers.RemoveFromXPath(body, state.getXPath())
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}
@@ -767,7 +767,7 @@ func (r *AAAAccountingResource) Delete(ctx context.Context, req resource.DeleteR
 
 				body := state.addDeletePathsXML(ctx, "")
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}

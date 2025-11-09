@@ -426,7 +426,7 @@ func (r *InterfaceTunnelResource) Create(ctx context.Context, req resource.Creat
 
 			body := plan.toBodyXML(ctx)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -608,7 +608,7 @@ func (r *InterfaceTunnelResource) Update(ctx context.Context, req resource.Updat
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -669,7 +669,7 @@ func (r *InterfaceTunnelResource) Delete(ctx context.Context, req resource.Delet
 				body := netconf.Body{}
 				body = helpers.RemoveFromXPath(body, state.getXPath())
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}
@@ -707,7 +707,7 @@ func (r *InterfaceTunnelResource) Delete(ctx context.Context, req resource.Delet
 
 				body := state.addDeletePathsXML(ctx, "")
 
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}

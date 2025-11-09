@@ -50,6 +50,7 @@ provider "iosxe" {
 
 ### Optional
 
+- `auto_commit` (Boolean) Automatically commit configuration changes after each resource operation. When `true` (default), each resource commits its changes immediately. When `false`, changes are left in the candidate datastore and must be explicitly committed using the `iosxe_commit` resource. Only applies to NETCONF protocol with candidate datastore support. This can also be set as the IOSXE_AUTO_COMMIT environment variable. Defaults to `true`.
 - `devices` (Attributes List) This can be used to manage a list of devices from a single provider. All devices must use the same credentials. Each resource and data source has an optional attribute named `device`, which can then select a device by its name from this list. (see [below for nested schema](#nestedatt--devices))
 - `host` (String) Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`. Default port is `443` for RESTCONF and `830` for NETCONF. This can also be set as the IOSXE_HOST environment variable.
 - `insecure` (Boolean) Allow insecure HTTPS client. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.
