@@ -41,6 +41,21 @@ resource "iosxe_ospf" "example" {
       nssa_no_redistribution                         = true
     }
   ]
-  auto_cost_reference_bandwidth = 40000
-  passive_interface_default     = true
+  auto_cost_reference_bandwidth                  = 40000
+  passive_interface_default                      = true
+  log_adjacency_changes                          = true
+  log_adjacency_changes_detail                   = true
+  nsf_cisco                                      = true
+  nsf_cisco_enforce_global                       = true
+  nsf_ietf                                       = true
+  nsf_ietf_restart_interval                      = 120
+  max_metric_router_lsa                          = true
+  max_metric_router_lsa_summary_lsa_metric       = 16711680
+  max_metric_router_lsa_external_lsa_metric      = 16711680
+  max_metric_router_lsa_include_stub             = true
+  max_metric_router_lsa_on_startup_time          = 60
+  max_metric_router_lsa_on_startup_wait_for_bgp  = true
+  fast_reroute_per_prefix_enable_prefix_priority = "high"
+  redistribute_static_subnets                    = true
+  redistribute_connected_subnets                 = true
 }

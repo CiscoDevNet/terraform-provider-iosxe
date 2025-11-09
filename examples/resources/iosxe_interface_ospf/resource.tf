@@ -21,6 +21,11 @@ resource "iosxe_interface_ospf" "example" {
       ]
     }
   ]
+  multi_area_ids = [
+    {
+      area_id = "10"
+    }
+  ]
   message_digest_keys = [
     {
       id            = 1

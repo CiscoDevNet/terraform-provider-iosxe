@@ -224,6 +224,66 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
+			"log_adjacency_changes": schema.BoolAttribute{
+				MarkdownDescription: "Log changes in adjacency state",
+				Computed:            true,
+			},
+			"log_adjacency_changes_detail": schema.BoolAttribute{
+				MarkdownDescription: "Log all state changes",
+				Computed:            true,
+			},
+			"nsf_cisco": schema.BoolAttribute{
+				MarkdownDescription: "Cisco Non-stop forwarding",
+				Computed:            true,
+			},
+			"nsf_cisco_enforce_global": schema.BoolAttribute{
+				MarkdownDescription: "For the whole OSPF process",
+				Computed:            true,
+			},
+			"nsf_ietf": schema.BoolAttribute{
+				MarkdownDescription: "IETF graceful restart",
+				Computed:            true,
+			},
+			"nsf_ietf_restart_interval": schema.Int64Attribute{
+				MarkdownDescription: "Graceful restart interval",
+				Computed:            true,
+			},
+			"max_metric_router_lsa": schema.BoolAttribute{
+				MarkdownDescription: "Maximum metric in self-originated router-LSAs",
+				Computed:            true,
+			},
+			"max_metric_router_lsa_summary_lsa_metric": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"max_metric_router_lsa_external_lsa_metric": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"max_metric_router_lsa_include_stub": schema.BoolAttribute{
+				MarkdownDescription: "Set maximum metric for stub links in router-LSAs",
+				Computed:            true,
+			},
+			"max_metric_router_lsa_on_startup_time": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"max_metric_router_lsa_on_startup_wait_for_bgp": schema.BoolAttribute{
+				MarkdownDescription: "Let BGP decide when to originate router-LSA with normal metric",
+				Computed:            true,
+			},
+			"fast_reroute_per_prefix_enable_prefix_priority": schema.StringAttribute{
+				MarkdownDescription: "Priority of prefixes to be protected",
+				Computed:            true,
+			},
+			"redistribute_static_subnets": schema.BoolAttribute{
+				MarkdownDescription: "Consider subnets for redistribution into OSPF (Will be removed in the future)",
+				Computed:            true,
+			},
+			"redistribute_connected_subnets": schema.BoolAttribute{
+				MarkdownDescription: "Consider subnets for redistribution into OSPF (Will be removed in the future)",
+				Computed:            true,
+			},
 			"passive_interface_disable_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
