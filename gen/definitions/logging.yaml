@@ -239,7 +239,7 @@ attributes:
     example: true
     test_tags: [IOSXE1715]
   - yang_name: persistent/url
-    example: flash:/local_logging
+    example: bootflash:/local_logging
     test_tags: [IOSXE1712]
   - yang_name: persistent/size
     example: 1000000
