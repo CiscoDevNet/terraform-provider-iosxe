@@ -161,17 +161,19 @@ func EditConfig(ctx context.Context, client *netconf.Client, body string, commit
 	candidate := client.ServerHasCapability("urn:ietf:params:netconf:capability:candidate:1.0")
 
 	if candidate {
-		// Lock running datastore
-		if _, err := client.Lock(ctx, "running"); err != nil {
-			return fmt.Errorf("failed to lock running datastore: %s", FormatNetconfError(err))
-		}
-		defer client.Unlock(ctx, "running")
+		if commit {
+			// Lock running datastore
+			if _, err := client.Lock(ctx, "running"); err != nil {
+				return fmt.Errorf("failed to lock running datastore: %s", FormatNetconfError(err))
+			}
+			defer client.Unlock(ctx, "running")
 
-		// Lock candidate datastore
-		if _, err := client.Lock(ctx, "candidate"); err != nil {
-			return fmt.Errorf("failed to lock candidate datastore: %s", FormatNetconfError(err))
+			// Lock candidate datastore
+			if _, err := client.Lock(ctx, "candidate"); err != nil {
+				return fmt.Errorf("failed to lock candidate datastore: %s", FormatNetconfError(err))
+			}
+			defer client.Unlock(ctx, "candidate")
 		}
-		defer client.Unlock(ctx, "candidate")
 
 		if _, err := client.EditConfig(ctx, "candidate", body); err != nil {
 			return fmt.Errorf("failed to edit config: %s", FormatNetconfError(err))
@@ -210,12 +212,6 @@ func Commit(ctx context.Context, client *netconf.Client) error {
 			return fmt.Errorf("failed to lock running datastore: %s", FormatNetconfError(err))
 		}
 		defer client.Unlock(ctx, "running")
-
-		// Lock candidate datastore
-		if _, err := client.Lock(ctx, "candidate"); err != nil {
-			return fmt.Errorf("failed to lock candidate datastore: %s", FormatNetconfError(err))
-		}
-		defer client.Unlock(ctx, "candidate")
 
 		if _, err := client.Commit(ctx); err != nil {
 			return fmt.Errorf("failed to commit config: %s", FormatNetconfError(err))

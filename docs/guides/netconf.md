@@ -227,7 +227,7 @@ resource "iosxe_commit" "example" {
 1. **No effect with auto_commit=true**: If `auto_commit` is enabled, the commit resource has no practical effect since changes are already committed automatically
 2. **No effect with RESTCONF**: The commit resource only works with NETCONF protocol
 3. **Use depends_on**: Always use `depends_on` to ensure resources are created/updated before committing
-4. **Lifecycle Management**: The commit resource's create and update operations trigger a commit; destroy is a no-op
+4. **Destroy Behavior**: When the `iosxe_commit` resource is destroyed (e.g., during `terraform destroy`), it automatically enables auto-commit mode for subsequent resource deletions. This ensures that deletion operations commit their changes and prevents uncommitted configuration from remaining in the candidate datastore
 
 ## Migration from RESTCONF to NETCONF
 

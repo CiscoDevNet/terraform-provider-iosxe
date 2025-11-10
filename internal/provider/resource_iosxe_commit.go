@@ -168,4 +168,26 @@ func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest,
 }
 
 func (r *CommitResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var device types.String
+
+	diags := req.State.GetAttribute(ctx, path.Root("device"), &device)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	tflog.Debug(ctx, "Beginning to delete commit resource")
+
+	d, ok := r.data.Devices[device.ValueString()]
+	if !ok {
+		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", device.ValueString()))
+		return
+	}
+
+	if d.Managed && d.Protocol == "netconf" {
+		tflog.Debug(ctx, "Enabling auto-commit for deletion operations (iosxe_commit resource destroyed)")
+		d.AutoCommit = true
+	}
+
+	tflog.Debug(ctx, "Delete commit resource finished successfully")
 }
