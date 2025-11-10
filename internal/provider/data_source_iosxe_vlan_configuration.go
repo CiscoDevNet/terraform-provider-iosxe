@@ -67,7 +67,7 @@ func (d *VLANConfigurationDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"vlan_id": schema.Int64Attribute{
+			"vlan_id": schema.StringAttribute{
 				MarkdownDescription: "VLAN ID List Eg. 1-10,15",
 				Required:            true,
 			},
@@ -79,12 +79,32 @@ func (d *VLANConfigurationDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Enter VFI name",
 				Computed:            true,
 			},
+			"evpn_instance_legacy": schema.Int64Attribute{
+				MarkdownDescription: "EVPN instance number (deprecated path). Use for IOS-XE < 17.15.",
+				Computed:            true,
+			},
+			"evpn_instance_vni_legacy": schema.Int64Attribute{
+				MarkdownDescription: "VNI for EVPN instance (deprecated path). Use for IOS-XE < 17.15.",
+				Computed:            true,
+			},
 			"evpn_instance": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "EVPN instance number (current path). Use for IOS-XE >= 17.15.",
 				Computed:            true,
 			},
 			"evpn_instance_vni": schema.Int64Attribute{
-				MarkdownDescription: "VxLAN VNI value",
+				MarkdownDescription: "VNI for EVPN instance (current path). Use for IOS-XE >= 17.15.",
+				Computed:            true,
+			},
+			"evpn_instance_protected": schema.BoolAttribute{
+				MarkdownDescription: "Enable local peer to peer blocking for EVI.",
+				Computed:            true,
+			},
+			"evpn_instance_profile": schema.StringAttribute{
+				MarkdownDescription: "EVPN instance profile name. Use for IOS-XE >= 17.15.",
+				Computed:            true,
+			},
+			"evpn_instance_profile_protected": schema.BoolAttribute{
+				MarkdownDescription: "Enable local peer to peer blocking for auto EVI with profile.",
 				Computed:            true,
 			},
 		},

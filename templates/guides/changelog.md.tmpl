@@ -16,6 +16,9 @@ description: |-
 - Add `ip_ssh_bulk_mode` and `ip_ssh_bulk_mode_window_size` attributes to `iosxe_system` resource and data source
 - Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
 - Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- **BREAKING**: Rename `evpn_instance` to `evpn_instance_legacy` and `evpn_instance_vni` to `evpn_instance_vni_legacy` in `iosxe_vlan_configuration` resource for IOS-XE < 17.15
+- Add `evpn_instance`, `evpn_instance_vni`, and `evpn_instance_protected` attributes to `iosxe_vlan_configuration` resource for IOS-XE >= 17.15
+- Add `evpn_instance_profile` and `evpn_instance_profile_protected` attributes to `iosxe_vlan_configuration` resource to support member evpn-instance profile configuration (IOS-XE >= 17.15)
 
 ## 0.9.3
 

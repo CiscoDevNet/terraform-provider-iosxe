@@ -1,6 +1,6 @@
 ---
 name: VLAN Configuration
-path: Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration=%v
+path: Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration-entry=%v
 no_delete_attributes: true
 test_tags: [C9000V]
 doc_category: Switching
@@ -16,8 +16,44 @@ attributes:
     exclude_test: true
     example: VFI123
   - yang_name: member/evpn-instance/evpn-instance
-    tf_name: evpn_instance
+    tf_name: evpn_instance_legacy
+    description: EVPN instance number (deprecated path). Use for IOS-XE < 17.15.
     example: 123
+    exclude_test: true
+    test_tags: [IOSXE1712]
   - yang_name: member/evpn-instance/vni
-    tf_name: evpn_instance_vni
+    tf_name: evpn_instance_vni_legacy
+    description: VNI for EVPN instance (deprecated path). Use for IOS-XE < 17.15.
     example: 10123
+    exclude_test: true
+    test_tags: [IOSXE1712]
+  - yang_name: member/evi-member/evpn-instance/evi-type-choice/manual-evi-case/manual-evi-config/evi
+    xpath: member/evi-member/evpn-instance/manual-evi-config/evi
+    tf_name: evpn_instance
+    description: EVPN instance number (current path). Use for IOS-XE >= 17.15.
+    example: 123
+    test_tags: [IOSXE1715]
+  - yang_name: member/evi-member/evpn-instance/evi-type-choice/manual-evi-case/manual-evi-config/vni
+    xpath: member/evi-member/evpn-instance/manual-evi-config/vni
+    tf_name: evpn_instance_vni
+    description: VNI for EVPN instance (current path). Use for IOS-XE >= 17.15.
+    example: 10123
+    test_tags: [IOSXE1715]
+  - yang_name: member/evi-member/evpn-instance/evi-type-choice/manual-evi-case/manual-evi-config/protected
+    xpath: member/evi-member/evpn-instance/manual-evi-config/protected
+    tf_name: evpn_instance_protected
+    description: Enable local peer to peer blocking for EVI.
+    example: true
+    test_tags: [IOSXE1715]
+  - yang_name: member/evi-member/evpn-instance/evi-type-choice/auto-evi-case/auto-evi-config/profile
+    xpath: member/evi-member/evpn-instance/auto-evi-config/profile
+    tf_name: evpn_instance_profile
+    description: EVPN instance profile name. Use for IOS-XE >= 17.15.
+    example: MY_EVPN_PROFILE
+    test_tags: [IOSXE1715]
+  - yang_name: member/evi-member/evpn-instance/evi-type-choice/auto-evi-case/auto-evi-config/protected
+    xpath: member/evi-member/evpn-instance/auto-evi-config/protected
+    tf_name: evpn_instance_profile_protected
+    description: Enable local peer to peer blocking for auto EVI with profile.
+    example: true
+    test_tags: [IOSXE1715]

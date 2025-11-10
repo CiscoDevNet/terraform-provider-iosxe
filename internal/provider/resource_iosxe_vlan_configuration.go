@@ -23,15 +23,15 @@ package provider
 import (
 	"context"
 	"fmt"
-	"strconv"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -79,14 +79,14 @@ func (r *VLANConfigurationResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"vlan_id": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("VLAN ID List Eg. 1-10,15").AddIntegerRangeDescription(1, 4094).String,
+			"vlan_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VLAN ID List Eg. 1-10,15").String,
 				Required:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 4094),
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?)(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)`), ""),
 				},
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplace(),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"vni": schema.Int64Attribute{
@@ -100,19 +100,45 @@ func (r *VLANConfigurationResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Enter VFI name").String,
 				Optional:            true,
 			},
+			"evpn_instance_legacy": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("EVPN instance number (deprecated path). Use for IOS-XE < 17.15.").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"evpn_instance_vni_legacy": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VNI for EVPN instance (deprecated path). Use for IOS-XE < 17.15.").AddIntegerRangeDescription(4096, 16777215).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(4096, 16777215),
+				},
+			},
 			"evpn_instance": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 65535).String,
+				MarkdownDescription: helpers.NewAttributeDescription("EVPN instance number (current path). Use for IOS-XE >= 17.15.").AddIntegerRangeDescription(1, 65535).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 65535),
 				},
 			},
 			"evpn_instance_vni": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("VxLAN VNI value").AddIntegerRangeDescription(4096, 16777215).String,
+				MarkdownDescription: helpers.NewAttributeDescription("VNI for EVPN instance (current path). Use for IOS-XE >= 17.15.").AddIntegerRangeDescription(4096, 16777215).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(4096, 16777215),
 				},
+			},
+			"evpn_instance_protected": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable local peer to peer blocking for EVI.").String,
+				Optional:            true,
+			},
+			"evpn_instance_profile": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("EVPN instance profile name. Use for IOS-XE >= 17.15.").String,
+				Optional:            true,
+			},
+			"evpn_instance_profile_protected": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable local peer to peer blocking for auto EVI with profile.").String,
+				Optional:            true,
 			},
 		},
 	}
@@ -410,7 +436,7 @@ func (r *VLANConfigurationResource) ImportState(ctx context.Context, req resourc
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("vlan_id"), helpers.Must(strconv.ParseInt(idParts[0], 10, 64)))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("vlan_id"), idParts[0])...)
 	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
