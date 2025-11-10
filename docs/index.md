@@ -57,7 +57,7 @@ The following guides are available to help you get started with the IOSXE provid
 provider "iosxe" {
   username = "admin"
   password = "password"
-  url      = "https://10.1.1.1"
+  host     = "10.1.1.1"
 }
 ```
 

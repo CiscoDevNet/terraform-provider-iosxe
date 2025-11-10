@@ -12,12 +12,12 @@ When it comes to managing multiple IOS-XE devices, one can create multiple provi
 ```terraform
 provider "iosxe" {
   alias    = "ROUTER-1"
-  url      = "https://10.1.1.1"
+  host     = "10.1.1.1"
 }
 
 provider "iosxe" {
   alias    = "ROUTER-2"
-  url      = "https://10.1.1.2"
+  host     = "10.1.1.2"
 }
 
 resource "iosxe_system" "ROUTER-1" {
@@ -40,11 +40,11 @@ locals {
   routers = [
     {
       name = "ROUTER-1"
-      url  = "https://10.1.1.1"
+      host = "10.1.1.1"
     },
     {
       name = "ROUTER-2"
-      url  = "https://10.1.1.2"
+      host = "10.1.1.2"
     },
   ]
 }
@@ -77,17 +77,17 @@ locals {
   devices = [
     {
       name    = "production-sw01"
-      url     = "https://10.1.1.10"
+      host    = "10.1.1.10"
       managed = true   # Actively managed
     },
     {
       name    = "maintenance-sw02"
-      url     = "https://10.1.1.20"
+      host    = "10.1.1.20"
       managed = false  # Temporarily frozen for maintenance
     },
     {
       name    = "active-sw03"
-      url     = "https://10.1.1.30"
+      host    = "10.1.1.30"
       # managed defaults to true when not specified
     }
   ]
@@ -120,9 +120,9 @@ resource "iosxe_banner" "login_banner" {
 provider "iosxe" {
   selected_devices = ["switch-01", "switch-03"]  # Only these devices managed
   devices = [
-    { name = "switch-01", url = "https://10.1.1.10", managed = false },  # Overridden to managed=true
-    { name = "switch-02", url = "https://10.1.1.20", managed = true },   # Overridden to managed=false
-    { name = "switch-03", url = "https://10.1.1.30", managed = true }    # Remains managed=true
+    { name = "switch-01", host = "10.1.1.10", managed = false },  # Overridden to managed=true
+    { name = "switch-02", host = "10.1.1.20", managed = true },   # Overridden to managed=false
+    { name = "switch-03", host = "10.1.1.30", managed = true }    # Remains managed=true
   ]
 }
 ```
