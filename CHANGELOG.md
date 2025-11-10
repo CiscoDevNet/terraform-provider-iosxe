@@ -1,3 +1,9 @@
+## 0.10.1
+
+- **BREAKING**: Rename `evpn_instance` to `evpn_instance_legacy` and `evpn_instance_vni` to `evpn_instance_vni_legacy` in `iosxe_vlan_configuration` resource for IOS-XE < 17.15
+- Add `evpn_instance`, `evpn_instance_vni`, and `evpn_instance_protected` attributes to `iosxe_vlan_configuration` resource for IOS-XE >= 17.15
+- Add `evpn_instance_profile` and `evpn_instance_profile_protected` attributes to `iosxe_vlan_configuration` resource to support member evpn-instance profile configuration (IOS-XE >= 17.15)
+
 ## 0.10.0
 
 - Add experimental support for [NETCONF](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/netconf) with `protocol` provider attribute, including support for applying changes to the candidate configuration and committing them as a single transaction
