@@ -29,7 +29,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/netascode/go-netconf"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces
@@ -114,12 +113,8 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 			}
 			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
-			body := netconf.Body{}
-			body = helpers.SetFromXPath(body, "/cisco-ia:save-config", "")
-			body = body.SetAttr("save-config", "xmlns", "http://cisco.com/yang/cisco-ia")
-
-			if _, err := d.NetconfClient.RPC(ctx, body.Res()); err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
+			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
 		}
@@ -176,12 +171,8 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 			}
 			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
-			body := netconf.Body{}
-			body = helpers.SetFromXPath(body, "/save-config", "")
-			body = body.SetAttr("save-config", "xmlns", "http://cisco.com/yang/cisco-ia")
-
-			if _, err := d.NetconfClient.RPC(ctx, body.Res()); err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
+			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
 		}

@@ -220,6 +220,28 @@ func Commit(ctx context.Context, client *netconf.Client) error {
 	return nil
 }
 
+// SaveConfig saves the running configuration to startup configuration.
+// This is equivalent to 'copy running-config startup-config' in the CLI.
+// Uses the cisco-ia:save-config RPC operation.
+func SaveConfig(ctx context.Context, client *netconf.Client) error {
+	// Ensure connection is open
+	if err := client.Open(); err != nil {
+		return fmt.Errorf("failed to open NETCONF connection: %w", err)
+	}
+
+	// Build NETCONF body for save-config RPC
+	body := netconf.Body{}
+	body = SetFromXPath(body, "/cisco-ia:save-config", "")
+	body = body.SetAttr("save-config", "xmlns", "http://cisco.com/yang/cisco-ia")
+
+	// Execute the save-config RPC
+	if _, err := client.RPC(ctx, body.Res()); err != nil {
+		return fmt.Errorf("failed to save config: %s", FormatNetconfError(err))
+	}
+
+	return nil
+}
+
 // GetXpathFilter creates a NETCONF XPath filter with namespace prefixes removed.
 // It processes the XPath expression to strip namespace prefixes from both element names
 // and predicate key names, preserving the path structure.
