@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -71,6 +74,12 @@ type FlowRecord struct {
 	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
 	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
 	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
+	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
+	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
+	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
+	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
+	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
+	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
 }
@@ -110,6 +119,12 @@ type FlowRecordData struct {
 	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
 	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
 	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
+	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
+	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
+	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
+	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
+	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
+	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
 }
@@ -135,6 +150,19 @@ func (data FlowRecord) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data FlowRecord) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data FlowRecordData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -299,6 +327,34 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.connection.server.counter.packets.long", map[string]string{})
 		}
 	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.source.address.input", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.destination.address.input", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkVlan.IsNull() && !data.MatchDatalinkVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.vlan", data.MatchDatalinkVlan.ValueString())
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.IsUnknown() {
+		if data.MatchDatalinkSourceVlanId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.source-vlan-id", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.IsUnknown() {
+		if data.MatchDatalinkDestinationVlanId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.destination-vlan-id", map[string]string{})
+		}
+	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.IsUnknown() {
+		if data.MatchIpv4Ttl.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv4.ttl", map[string]string{})
+		}
+	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.IsUnknown() {
 		if data.CollectDatalinkMacSourceAddressInput.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.datalink.mac.source.address.input", map[string]string{})
@@ -313,6 +369,287 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data FlowRecord) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.MatchIpv4SourceAddress.IsNull() && !data.MatchIpv4SourceAddress.IsUnknown() {
+		if data.MatchIpv4SourceAddress.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/source/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/source/address")
+		}
+	}
+	if !data.MatchIpv4DestinationAddress.IsNull() && !data.MatchIpv4DestinationAddress.IsUnknown() {
+		if data.MatchIpv4DestinationAddress.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/destination/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/destination/address")
+		}
+	}
+	if !data.MatchIpv4Protocol.IsNull() && !data.MatchIpv4Protocol.IsUnknown() {
+		if data.MatchIpv4Protocol.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/protocol", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/protocol")
+		}
+	}
+	if !data.MatchIpv4Tos.IsNull() && !data.MatchIpv4Tos.IsUnknown() {
+		if data.MatchIpv4Tos.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/tos", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/tos")
+		}
+	}
+	if !data.MatchIpv6SourceAddress.IsNull() && !data.MatchIpv6SourceAddress.IsUnknown() {
+		if data.MatchIpv6SourceAddress.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv6/source/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv6/source/address")
+		}
+	}
+	if !data.MatchIpv6DestinationAddress.IsNull() && !data.MatchIpv6DestinationAddress.IsUnknown() {
+		if data.MatchIpv6DestinationAddress.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv6/destination/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv6/destination/address")
+		}
+	}
+	if !data.MatchTransportSourcePort.IsNull() && !data.MatchTransportSourcePort.IsUnknown() {
+		if data.MatchTransportSourcePort.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/transport/source-port", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/transport/source-port")
+		}
+	}
+	if !data.MatchTransportDestinationPort.IsNull() && !data.MatchTransportDestinationPort.IsUnknown() {
+		if data.MatchTransportDestinationPort.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/transport/destination-port", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/transport/destination-port")
+		}
+	}
+	if !data.MatchInterfaceInput.IsNull() && !data.MatchInterfaceInput.IsUnknown() {
+		if data.MatchInterfaceInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/interface/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/interface/input")
+		}
+	}
+	if !data.MatchFlowDirection.IsNull() && !data.MatchFlowDirection.IsUnknown() {
+		if data.MatchFlowDirection.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/flow/direction", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/flow/direction")
+		}
+	}
+	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.IsUnknown() {
+		if data.MatchApplicationName.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/application/name", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/application/name")
+		}
+	}
+	if !data.MatchFlowObservationPoint.IsNull() && !data.MatchFlowObservationPoint.IsUnknown() {
+		if data.MatchFlowObservationPoint.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/flow/observation/point", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/flow/observation/point")
+		}
+	}
+	if !data.MatchIpv4Version.IsNull() && !data.MatchIpv4Version.IsUnknown() {
+		if data.MatchIpv4Version.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/version", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/version")
+		}
+	}
+	if !data.MatchIpv6Version.IsNull() && !data.MatchIpv6Version.IsUnknown() {
+		if data.MatchIpv6Version.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv6/version", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv6/version")
+		}
+	}
+	if !data.MatchIpv6Protocol.IsNull() && !data.MatchIpv6Protocol.IsUnknown() {
+		if data.MatchIpv6Protocol.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv6/protocol", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv6/protocol")
+		}
+	}
+	if !data.MatchConnectionClientIpv4Address.IsNull() && !data.MatchConnectionClientIpv4Address.IsUnknown() {
+		if data.MatchConnectionClientIpv4Address.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/connection/client/ipv4/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/connection/client/ipv4/address")
+		}
+	}
+	if !data.MatchConnectionServerIpv4Address.IsNull() && !data.MatchConnectionServerIpv4Address.IsUnknown() {
+		if data.MatchConnectionServerIpv4Address.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/connection/server/ipv4/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/connection/server/ipv4/address")
+		}
+	}
+	if !data.MatchConnectionClientIpv6Address.IsNull() && !data.MatchConnectionClientIpv6Address.IsUnknown() {
+		if data.MatchConnectionClientIpv6Address.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/connection/client/ipv6/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/connection/client/ipv6/address")
+		}
+	}
+	if !data.MatchConnectionServerIpv6Address.IsNull() && !data.MatchConnectionServerIpv6Address.IsUnknown() {
+		if data.MatchConnectionServerIpv6Address.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/connection/server/ipv6/address", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/connection/server/ipv6/address")
+		}
+	}
+	if !data.MatchConnectionServerTransportPort.IsNull() && !data.MatchConnectionServerTransportPort.IsUnknown() {
+		if data.MatchConnectionServerTransportPort.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/connection/server/transport/port", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/connection/server/transport/port")
+		}
+	}
+	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.IsUnknown() {
+		if data.CollectInterfaceOutput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/interface/output", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/interface/output")
+		}
+	}
+	if !data.CollectCounterBytesLong.IsNull() && !data.CollectCounterBytesLong.IsUnknown() {
+		if data.CollectCounterBytesLong.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/counter/bytes/long", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/counter/bytes/long")
+		}
+	}
+	if !data.CollectCounterPacketsLong.IsNull() && !data.CollectCounterPacketsLong.IsUnknown() {
+		if data.CollectCounterPacketsLong.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/counter/packets/long", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/counter/packets/long")
+		}
+	}
+	if !data.CollectTransportTcpFlags.IsNull() && !data.CollectTransportTcpFlags.IsUnknown() {
+		if data.CollectTransportTcpFlags.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/transport/tcp/flags", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/transport/tcp/flags")
+		}
+	}
+	if !data.CollectTimestampAbsoluteFirst.IsNull() && !data.CollectTimestampAbsoluteFirst.IsUnknown() {
+		if data.CollectTimestampAbsoluteFirst.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/timestamp/absolute/first", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/timestamp/absolute/first")
+		}
+	}
+	if !data.CollectTimestampAbsoluteLast.IsNull() && !data.CollectTimestampAbsoluteLast.IsUnknown() {
+		if data.CollectTimestampAbsoluteLast.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/timestamp/absolute/last", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/timestamp/absolute/last")
+		}
+	}
+	if !data.CollectConnectionInitiator.IsNull() && !data.CollectConnectionInitiator.IsUnknown() {
+		if data.CollectConnectionInitiator.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/connection/initiator", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/connection/initiator")
+		}
+	}
+	if !data.CollectConnectionNewConnections.IsNull() && !data.CollectConnectionNewConnections.IsUnknown() {
+		if data.CollectConnectionNewConnections.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/connection/new-connections", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/connection/new-connections")
+		}
+	}
+	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() && !data.CollectConnectionServerCounterBytesNetworkLong.IsUnknown() {
+		if data.CollectConnectionServerCounterBytesNetworkLong.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/connection/server/counter/bytes/network/long", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/connection/server/counter/bytes/network/long")
+		}
+	}
+	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.IsUnknown() {
+		if data.CollectConnectionServerCounterPacketsLong.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/connection/server/counter/packets/long", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/connection/server/counter/packets/long")
+		}
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/mac/source/address/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/mac/source/address/input")
+		}
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/mac/destination/address/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/mac/destination/address/input")
+		}
+	}
+	if !data.MatchDatalinkVlan.IsNull() && !data.MatchDatalinkVlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/vlan", data.MatchDatalinkVlan.ValueString())
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.IsUnknown() {
+		if data.MatchDatalinkSourceVlanId.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/source-vlan-id", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/source-vlan-id")
+		}
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.IsUnknown() {
+		if data.MatchDatalinkDestinationVlanId.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/destination-vlan-id", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/destination-vlan-id")
+		}
+	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.IsUnknown() {
+		if data.MatchIpv4Ttl.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/ttl", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/ttl")
+		}
+	}
+	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.IsUnknown() {
+		if data.CollectDatalinkMacSourceAddressInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/datalink/mac/source/address/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/datalink/mac/source/address/input")
+		}
+	}
+	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.IsUnknown() {
+		if data.CollectFlowDirection.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/flow/direction", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/flow/direction")
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -601,6 +938,56 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolNull()
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() && !data.MatchDatalinkVlan.IsNull() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	} else {
+		data.MatchDatalinkVlan = types.StringNull()
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); !data.MatchDatalinkSourceVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); !data.MatchDatalinkDestinationVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); !data.MatchIpv4Ttl.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Ttl = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Ttl = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Ttl = types.BoolNull()
+	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		if value.Exists() {
 			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
@@ -622,6 +1009,361 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *FlowRecord) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/source/address"); !data.MatchIpv4SourceAddress.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4SourceAddress = types.BoolValue(true)
+		} else {
+			data.MatchIpv4SourceAddress = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4SourceAddress = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/destination/address"); !data.MatchIpv4DestinationAddress.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4DestinationAddress = types.BoolValue(true)
+		} else {
+			data.MatchIpv4DestinationAddress = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4DestinationAddress = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/protocol"); !data.MatchIpv4Protocol.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Protocol = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Protocol = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Protocol = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/tos"); !data.MatchIpv4Tos.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Tos = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Tos = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Tos = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/source/address"); !data.MatchIpv6SourceAddress.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6SourceAddress = types.BoolValue(true)
+		} else {
+			data.MatchIpv6SourceAddress = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6SourceAddress = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/destination/address"); !data.MatchIpv6DestinationAddress.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6DestinationAddress = types.BoolValue(true)
+		} else {
+			data.MatchIpv6DestinationAddress = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6DestinationAddress = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/transport/source-port"); !data.MatchTransportSourcePort.IsNull() {
+		if value.Exists() {
+			data.MatchTransportSourcePort = types.BoolValue(true)
+		} else {
+			data.MatchTransportSourcePort = types.BoolValue(false)
+		}
+	} else {
+		data.MatchTransportSourcePort = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/transport/destination-port"); !data.MatchTransportDestinationPort.IsNull() {
+		if value.Exists() {
+			data.MatchTransportDestinationPort = types.BoolValue(true)
+		} else {
+			data.MatchTransportDestinationPort = types.BoolValue(false)
+		}
+	} else {
+		data.MatchTransportDestinationPort = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/interface/input"); !data.MatchInterfaceInput.IsNull() {
+		if value.Exists() {
+			data.MatchInterfaceInput = types.BoolValue(true)
+		} else {
+			data.MatchInterfaceInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchInterfaceInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/direction"); !data.MatchFlowDirection.IsNull() {
+		if value.Exists() {
+			data.MatchFlowDirection = types.BoolValue(true)
+		} else {
+			data.MatchFlowDirection = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFlowDirection = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/application/name"); !data.MatchApplicationName.IsNull() {
+		if value.Exists() {
+			data.MatchApplicationName = types.BoolValue(true)
+		} else {
+			data.MatchApplicationName = types.BoolValue(false)
+		}
+	} else {
+		data.MatchApplicationName = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/observation/point"); !data.MatchFlowObservationPoint.IsNull() {
+		if value.Exists() {
+			data.MatchFlowObservationPoint = types.BoolValue(true)
+		} else {
+			data.MatchFlowObservationPoint = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFlowObservationPoint = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/version"); !data.MatchIpv4Version.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Version = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Version = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Version = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/version"); !data.MatchIpv6Version.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6Version = types.BoolValue(true)
+		} else {
+			data.MatchIpv6Version = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6Version = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/protocol"); !data.MatchIpv6Protocol.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6Protocol = types.BoolValue(true)
+		} else {
+			data.MatchIpv6Protocol = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6Protocol = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/client/ipv4/address"); !data.MatchConnectionClientIpv4Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionClientIpv4Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionClientIpv4Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionClientIpv4Address = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/ipv4/address"); !data.MatchConnectionServerIpv4Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionServerIpv4Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionServerIpv4Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionServerIpv4Address = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/client/ipv6/address"); !data.MatchConnectionClientIpv6Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionClientIpv6Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionClientIpv6Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionClientIpv6Address = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/ipv6/address"); !data.MatchConnectionServerIpv6Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionServerIpv6Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionServerIpv6Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionServerIpv6Address = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/transport/port"); !data.MatchConnectionServerTransportPort.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionServerTransportPort = types.BoolValue(true)
+		} else {
+			data.MatchConnectionServerTransportPort = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionServerTransportPort = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/output"); !data.CollectInterfaceOutput.IsNull() {
+		if value.Exists() {
+			data.CollectInterfaceOutput = types.BoolValue(true)
+		} else {
+			data.CollectInterfaceOutput = types.BoolValue(false)
+		}
+	} else {
+		data.CollectInterfaceOutput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/counter/bytes/long"); !data.CollectCounterBytesLong.IsNull() {
+		if value.Exists() {
+			data.CollectCounterBytesLong = types.BoolValue(true)
+		} else {
+			data.CollectCounterBytesLong = types.BoolValue(false)
+		}
+	} else {
+		data.CollectCounterBytesLong = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/counter/packets/long"); !data.CollectCounterPacketsLong.IsNull() {
+		if value.Exists() {
+			data.CollectCounterPacketsLong = types.BoolValue(true)
+		} else {
+			data.CollectCounterPacketsLong = types.BoolValue(false)
+		}
+	} else {
+		data.CollectCounterPacketsLong = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/transport/tcp/flags"); !data.CollectTransportTcpFlags.IsNull() {
+		if value.Exists() {
+			data.CollectTransportTcpFlags = types.BoolValue(true)
+		} else {
+			data.CollectTransportTcpFlags = types.BoolValue(false)
+		}
+	} else {
+		data.CollectTransportTcpFlags = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/timestamp/absolute/first"); !data.CollectTimestampAbsoluteFirst.IsNull() {
+		if value.Exists() {
+			data.CollectTimestampAbsoluteFirst = types.BoolValue(true)
+		} else {
+			data.CollectTimestampAbsoluteFirst = types.BoolValue(false)
+		}
+	} else {
+		data.CollectTimestampAbsoluteFirst = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/timestamp/absolute/last"); !data.CollectTimestampAbsoluteLast.IsNull() {
+		if value.Exists() {
+			data.CollectTimestampAbsoluteLast = types.BoolValue(true)
+		} else {
+			data.CollectTimestampAbsoluteLast = types.BoolValue(false)
+		}
+	} else {
+		data.CollectTimestampAbsoluteLast = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/initiator"); !data.CollectConnectionInitiator.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionInitiator = types.BoolValue(true)
+		} else {
+			data.CollectConnectionInitiator = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionInitiator = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/new-connections"); !data.CollectConnectionNewConnections.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionNewConnections = types.BoolValue(true)
+		} else {
+			data.CollectConnectionNewConnections = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionNewConnections = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/server/counter/bytes/network/long"); !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(true)
+		} else {
+			data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/server/counter/packets/long"); !data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionServerCounterPacketsLong = types.BoolValue(true)
+		} else {
+			data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() && !data.MatchDatalinkVlan.IsNull() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	} else {
+		data.MatchDatalinkVlan = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); !data.MatchDatalinkSourceVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); !data.MatchDatalinkDestinationVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); !data.MatchIpv4Ttl.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Ttl = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Ttl = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Ttl = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/datalink/mac/source/address/input"); !data.CollectDatalinkMacSourceAddressInput.IsNull() {
+		if value.Exists() {
+			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
+		} else {
+			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/flow/direction"); !data.CollectFlowDirection.IsNull() {
+		if value.Exists() {
+			data.CollectFlowDirection = types.BoolValue(true)
+		} else {
+			data.CollectFlowDirection = types.BoolValue(false)
+		}
+	} else {
+		data.CollectFlowDirection = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -782,6 +1524,34 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(true)
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
@@ -957,6 +1727,34 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
 	} else {
@@ -971,6 +1769,402 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *FlowRecord) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/source/address"); value.Exists() {
+		data.MatchIpv4SourceAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv4SourceAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/destination/address"); value.Exists() {
+		data.MatchIpv4DestinationAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv4DestinationAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/protocol"); value.Exists() {
+		data.MatchIpv4Protocol = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Protocol = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/tos"); value.Exists() {
+		data.MatchIpv4Tos = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Tos = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/source/address"); value.Exists() {
+		data.MatchIpv6SourceAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6SourceAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/destination/address"); value.Exists() {
+		data.MatchIpv6DestinationAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6DestinationAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/transport/source-port"); value.Exists() {
+		data.MatchTransportSourcePort = types.BoolValue(true)
+	} else {
+		data.MatchTransportSourcePort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/transport/destination-port"); value.Exists() {
+		data.MatchTransportDestinationPort = types.BoolValue(true)
+	} else {
+		data.MatchTransportDestinationPort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/interface/input"); value.Exists() {
+		data.MatchInterfaceInput = types.BoolValue(true)
+	} else {
+		data.MatchInterfaceInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/direction"); value.Exists() {
+		data.MatchFlowDirection = types.BoolValue(true)
+	} else {
+		data.MatchFlowDirection = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/application/name"); value.Exists() {
+		data.MatchApplicationName = types.BoolValue(true)
+	} else {
+		data.MatchApplicationName = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/observation/point"); value.Exists() {
+		data.MatchFlowObservationPoint = types.BoolValue(true)
+	} else {
+		data.MatchFlowObservationPoint = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/version"); value.Exists() {
+		data.MatchIpv4Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Version = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/version"); value.Exists() {
+		data.MatchIpv6Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Version = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/protocol"); value.Exists() {
+		data.MatchIpv6Protocol = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Protocol = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/client/ipv4/address"); value.Exists() {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/ipv4/address"); value.Exists() {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/client/ipv6/address"); value.Exists() {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/ipv6/address"); value.Exists() {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/transport/port"); value.Exists() {
+		data.MatchConnectionServerTransportPort = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerTransportPort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/output"); value.Exists() {
+		data.CollectInterfaceOutput = types.BoolValue(true)
+	} else {
+		data.CollectInterfaceOutput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/counter/bytes/long"); value.Exists() {
+		data.CollectCounterBytesLong = types.BoolValue(true)
+	} else {
+		data.CollectCounterBytesLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/counter/packets/long"); value.Exists() {
+		data.CollectCounterPacketsLong = types.BoolValue(true)
+	} else {
+		data.CollectCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/transport/tcp/flags"); value.Exists() {
+		data.CollectTransportTcpFlags = types.BoolValue(true)
+	} else {
+		data.CollectTransportTcpFlags = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/timestamp/absolute/first"); value.Exists() {
+		data.CollectTimestampAbsoluteFirst = types.BoolValue(true)
+	} else {
+		data.CollectTimestampAbsoluteFirst = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/timestamp/absolute/last"); value.Exists() {
+		data.CollectTimestampAbsoluteLast = types.BoolValue(true)
+	} else {
+		data.CollectTimestampAbsoluteLast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/initiator"); value.Exists() {
+		data.CollectConnectionInitiator = types.BoolValue(true)
+	} else {
+		data.CollectConnectionInitiator = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/new-connections"); value.Exists() {
+		data.CollectConnectionNewConnections = types.BoolValue(true)
+	} else {
+		data.CollectConnectionNewConnections = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/server/counter/bytes/network/long"); value.Exists() {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/server/counter/packets/long"); value.Exists() {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/datalink/mac/source/address/input"); value.Exists() {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/flow/direction"); value.Exists() {
+		data.CollectFlowDirection = types.BoolValue(true)
+	} else {
+		data.CollectFlowDirection = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/source/address"); value.Exists() {
+		data.MatchIpv4SourceAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv4SourceAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/destination/address"); value.Exists() {
+		data.MatchIpv4DestinationAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv4DestinationAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/protocol"); value.Exists() {
+		data.MatchIpv4Protocol = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Protocol = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/tos"); value.Exists() {
+		data.MatchIpv4Tos = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Tos = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/source/address"); value.Exists() {
+		data.MatchIpv6SourceAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6SourceAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/destination/address"); value.Exists() {
+		data.MatchIpv6DestinationAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6DestinationAddress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/transport/source-port"); value.Exists() {
+		data.MatchTransportSourcePort = types.BoolValue(true)
+	} else {
+		data.MatchTransportSourcePort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/transport/destination-port"); value.Exists() {
+		data.MatchTransportDestinationPort = types.BoolValue(true)
+	} else {
+		data.MatchTransportDestinationPort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/interface/input"); value.Exists() {
+		data.MatchInterfaceInput = types.BoolValue(true)
+	} else {
+		data.MatchInterfaceInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/direction"); value.Exists() {
+		data.MatchFlowDirection = types.BoolValue(true)
+	} else {
+		data.MatchFlowDirection = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/application/name"); value.Exists() {
+		data.MatchApplicationName = types.BoolValue(true)
+	} else {
+		data.MatchApplicationName = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/observation/point"); value.Exists() {
+		data.MatchFlowObservationPoint = types.BoolValue(true)
+	} else {
+		data.MatchFlowObservationPoint = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/version"); value.Exists() {
+		data.MatchIpv4Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Version = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/version"); value.Exists() {
+		data.MatchIpv6Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Version = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/protocol"); value.Exists() {
+		data.MatchIpv6Protocol = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Protocol = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/client/ipv4/address"); value.Exists() {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/ipv4/address"); value.Exists() {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/client/ipv6/address"); value.Exists() {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/ipv6/address"); value.Exists() {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/connection/server/transport/port"); value.Exists() {
+		data.MatchConnectionServerTransportPort = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerTransportPort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/output"); value.Exists() {
+		data.CollectInterfaceOutput = types.BoolValue(true)
+	} else {
+		data.CollectInterfaceOutput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/counter/bytes/long"); value.Exists() {
+		data.CollectCounterBytesLong = types.BoolValue(true)
+	} else {
+		data.CollectCounterBytesLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/counter/packets/long"); value.Exists() {
+		data.CollectCounterPacketsLong = types.BoolValue(true)
+	} else {
+		data.CollectCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/transport/tcp/flags"); value.Exists() {
+		data.CollectTransportTcpFlags = types.BoolValue(true)
+	} else {
+		data.CollectTransportTcpFlags = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/timestamp/absolute/first"); value.Exists() {
+		data.CollectTimestampAbsoluteFirst = types.BoolValue(true)
+	} else {
+		data.CollectTimestampAbsoluteFirst = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/timestamp/absolute/last"); value.Exists() {
+		data.CollectTimestampAbsoluteLast = types.BoolValue(true)
+	} else {
+		data.CollectTimestampAbsoluteLast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/initiator"); value.Exists() {
+		data.CollectConnectionInitiator = types.BoolValue(true)
+	} else {
+		data.CollectConnectionInitiator = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/new-connections"); value.Exists() {
+		data.CollectConnectionNewConnections = types.BoolValue(true)
+	} else {
+		data.CollectConnectionNewConnections = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/server/counter/bytes/network/long"); value.Exists() {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/connection/server/counter/packets/long"); value.Exists() {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/datalink/mac/source/address/input"); value.Exists() {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/flow/direction"); value.Exists() {
+		data.CollectFlowDirection = types.BoolValue(true)
+	} else {
+		data.CollectFlowDirection = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) []string {
@@ -980,6 +2174,24 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 	}
 	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", state.getPath()))
+	}
+	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/ttl", state.getPath()))
+	}
+	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/destination-vlan-id", state.getPath()))
+	}
+	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/source-vlan-id", state.getPath()))
+	}
+	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/vlan", state.getPath()))
+	}
+	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", state.getPath()))
+	}
+	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/source/address/input", state.getPath()))
 	}
 	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", state.getPath()))
@@ -1080,6 +2292,134 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord, body string) string {
+	b := netconf.NewBody(body)
+	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/flow/direction")
+	}
+	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/datalink/mac/source/address/input")
+	}
+	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/ttl")
+	}
+	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/destination-vlan-id")
+	}
+	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/source-vlan-id")
+	}
+	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/vlan")
+	}
+	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/destination/address/input")
+	}
+	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/source/address/input")
+	}
+	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/server/counter/packets/long")
+	}
+	if !state.CollectConnectionServerCounterBytesNetworkLong.IsNull() && data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/server/counter/bytes/network/long")
+	}
+	if !state.CollectConnectionNewConnections.IsNull() && data.CollectConnectionNewConnections.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/new-connections")
+	}
+	if !state.CollectConnectionInitiator.IsNull() && data.CollectConnectionInitiator.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/initiator")
+	}
+	if !state.CollectTimestampAbsoluteLast.IsNull() && data.CollectTimestampAbsoluteLast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/timestamp/absolute/last")
+	}
+	if !state.CollectTimestampAbsoluteFirst.IsNull() && data.CollectTimestampAbsoluteFirst.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/timestamp/absolute/first")
+	}
+	if !state.CollectTransportTcpFlags.IsNull() && data.CollectTransportTcpFlags.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/transport/tcp/flags")
+	}
+	if !state.CollectCounterPacketsLong.IsNull() && data.CollectCounterPacketsLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/packets")
+	}
+	if !state.CollectCounterBytesLong.IsNull() && data.CollectCounterBytesLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/bytes")
+	}
+	if !state.CollectInterfaceOutput.IsNull() && data.CollectInterfaceOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/interface/output")
+	}
+	if !state.MatchConnectionServerTransportPort.IsNull() && data.MatchConnectionServerTransportPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/server/transport/port")
+	}
+	if !state.MatchConnectionServerIpv6Address.IsNull() && data.MatchConnectionServerIpv6Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/server/ipv6/address")
+	}
+	if !state.MatchConnectionClientIpv6Address.IsNull() && data.MatchConnectionClientIpv6Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/client/ipv6/address")
+	}
+	if !state.MatchConnectionServerIpv4Address.IsNull() && data.MatchConnectionServerIpv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/server/ipv4/address")
+	}
+	if !state.MatchConnectionClientIpv4Address.IsNull() && data.MatchConnectionClientIpv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/client/ipv4/address")
+	}
+	if !state.MatchIpv6Protocol.IsNull() && data.MatchIpv6Protocol.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/protocol")
+	}
+	if !state.MatchIpv6Version.IsNull() && data.MatchIpv6Version.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/version")
+	}
+	if !state.MatchIpv4Version.IsNull() && data.MatchIpv4Version.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/version")
+	}
+	if !state.MatchFlowObservationPoint.IsNull() && data.MatchFlowObservationPoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/observation/point")
+	}
+	if !state.MatchApplicationName.IsNull() && data.MatchApplicationName.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/application/name")
+	}
+	if !state.MatchFlowDirection.IsNull() && data.MatchFlowDirection.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/direction")
+	}
+	if !state.MatchInterfaceInput.IsNull() && data.MatchInterfaceInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/interface/input")
+	}
+	if !state.MatchTransportDestinationPort.IsNull() && data.MatchTransportDestinationPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/transport/destination-port")
+	}
+	if !state.MatchTransportSourcePort.IsNull() && data.MatchTransportSourcePort.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/transport/source-port")
+	}
+	if !state.MatchIpv6DestinationAddress.IsNull() && data.MatchIpv6DestinationAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/destination/address")
+	}
+	if !state.MatchIpv6SourceAddress.IsNull() && data.MatchIpv6SourceAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/source/address")
+	}
+	if !state.MatchIpv4Tos.IsNull() && data.MatchIpv4Tos.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/tos")
+	}
+	if !state.MatchIpv4Protocol.IsNull() && data.MatchIpv4Protocol.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/protocol")
+	}
+	if !state.MatchIpv4DestinationAddress.IsNull() && data.MatchIpv4DestinationAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/destination/address")
+	}
+	if !state.MatchIpv4SourceAddress.IsNull() && data.MatchIpv4SourceAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/source/address")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1089,6 +2429,21 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
+	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
 	}
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
@@ -1196,6 +2551,24 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
 	}
+	if !data.MatchIpv4Ttl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/vlan", data.getPath()))
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
+	}
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
 	}
@@ -1294,3 +2667,131 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *FlowRecord) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.CollectFlowDirection.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/flow/direction")
+	}
+	if !data.CollectDatalinkMacSourceAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/datalink/mac/source/address/input")
+	}
+	if !data.MatchIpv4Ttl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/ttl")
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/destination-vlan-id")
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/source-vlan-id")
+	}
+	if !data.MatchDatalinkVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/vlan")
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/mac/destination/address/input")
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/mac/source/address/input")
+	}
+	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/connection/server/counter/packets/long")
+	}
+	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/connection/server/counter/bytes/network/long")
+	}
+	if !data.CollectConnectionNewConnections.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/connection/new-connections")
+	}
+	if !data.CollectConnectionInitiator.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/connection/initiator")
+	}
+	if !data.CollectTimestampAbsoluteLast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/timestamp/absolute/last")
+	}
+	if !data.CollectTimestampAbsoluteFirst.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/timestamp/absolute/first")
+	}
+	if !data.CollectTransportTcpFlags.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/transport/tcp/flags")
+	}
+	if !data.CollectCounterPacketsLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/counter/packets")
+	}
+	if !data.CollectCounterBytesLong.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/counter/bytes")
+	}
+	if !data.CollectInterfaceOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/interface/output")
+	}
+	if !data.MatchConnectionServerTransportPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/connection/server/transport/port")
+	}
+	if !data.MatchConnectionServerIpv6Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/connection/server/ipv6/address")
+	}
+	if !data.MatchConnectionClientIpv6Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/connection/client/ipv6/address")
+	}
+	if !data.MatchConnectionServerIpv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/connection/server/ipv4/address")
+	}
+	if !data.MatchConnectionClientIpv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/connection/client/ipv4/address")
+	}
+	if !data.MatchIpv6Protocol.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv6/protocol")
+	}
+	if !data.MatchIpv6Version.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv6/version")
+	}
+	if !data.MatchIpv4Version.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/version")
+	}
+	if !data.MatchFlowObservationPoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/flow/observation/point")
+	}
+	if !data.MatchApplicationName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/application/name")
+	}
+	if !data.MatchFlowDirection.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/flow/direction")
+	}
+	if !data.MatchInterfaceInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/interface/input")
+	}
+	if !data.MatchTransportDestinationPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/transport/destination-port")
+	}
+	if !data.MatchTransportSourcePort.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/transport/source-port")
+	}
+	if !data.MatchIpv6DestinationAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv6/destination/address")
+	}
+	if !data.MatchIpv6SourceAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv6/source/address")
+	}
+	if !data.MatchIpv4Tos.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/tos")
+	}
+	if !data.MatchIpv4Protocol.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/protocol")
+	}
+	if !data.MatchIpv4DestinationAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/destination/address")
+	}
+	if !data.MatchIpv4SourceAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/source/address")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

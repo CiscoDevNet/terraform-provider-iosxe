@@ -1,7 +1,7 @@
 ---
 name: Interface OSPF
-path: Cisco-IOS-XE-native:native/interface/%s=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf
-augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/ip/Cisco-IOS-XE-ospf:router-ospf/ospf
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/ip/Cisco-IOS-XE-ospf:router-ospf/ospf
 doc_category: OSPF
 attributes:
   - yang_name: type
@@ -71,6 +71,14 @@ attributes:
           - yang_name: area-id
             id: true
             example: 0
+  - yang_name: multi-area/multi-area-id
+    tf_name: multi_area_ids
+    type: List
+    attributes:
+      - yang_name: area-id
+        id: true
+        type: String
+        example: "10"
   - yang_name: message-digest-key
     tf_name: message_digest_keys
     type: List
@@ -88,11 +96,11 @@ attributes:
         no_delete: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=1
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id[id=1]
     attributes:
       - name: id
         value: 1
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]
     attributes:
       - name: name
         value: 1

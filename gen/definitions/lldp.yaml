@@ -1,6 +1,6 @@
 ---
 name: LLDP
-path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp
 doc_category: System
 attributes:
   - yang_name: run

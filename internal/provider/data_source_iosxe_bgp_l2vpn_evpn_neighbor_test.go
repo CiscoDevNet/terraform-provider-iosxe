@@ -56,28 +56,28 @@ func TestAccDataSourceIosxeBGPL2VPNEVPNNeighbor(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPL2VPNEVPNNeighborPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/l2vpn=evpn"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/address-family/no-vrf/l2vpn[af-name=evpn]"
 	attributes = {
 		"af-name" = "evpn"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
-resource "iosxe_restconf" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3"
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/neighbor[id=3.3.3.3]"
 	attributes = {
 		"id" = "3.3.3.3"
 		"remote-as" = "65000"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
 `
@@ -95,7 +95,7 @@ func testAccDataSourceIosxeBGPL2VPNEVPNNeighborConfig() string {
 	config += `	send_community = "both"` + "\n"
 	config += `	route_reflector_client = false` + "\n"
 	config += `	soft_reconfiguration = "inbound"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

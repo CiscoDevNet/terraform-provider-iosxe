@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -106,6 +109,19 @@ func (data PolicyMap) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data PolicyMap) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data PolicyMapData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -214,6 +230,125 @@ func (data PolicyMap) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data PolicyMap) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.Type.IsNull() && !data.Type.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/type", data.Type.ValueString())
+	}
+	if !data.Subscriber.IsNull() && !data.Subscriber.IsUnknown() {
+		if data.Subscriber.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber")
+		}
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if len(data.Classes) > 0 {
+		for _, item := range data.Classes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if len(item.Actions) > 0 {
+				for _, citem := range item.Actions {
+					ccBody := netconf.Body{}
+					if !citem.Type.IsNull() && !citem.Type.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "action-type", citem.Type.ValueString())
+					}
+					if !citem.BandwidthBits.IsNull() && !citem.BandwidthBits.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "bandwidth/bits", strconv.FormatInt(citem.BandwidthBits.ValueInt64(), 10))
+					}
+					if !citem.BandwidthPercent.IsNull() && !citem.BandwidthPercent.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "bandwidth/percent", strconv.FormatInt(citem.BandwidthPercent.ValueInt64(), 10))
+					}
+					if !citem.BandwidthRemainingOption.IsNull() && !citem.BandwidthRemainingOption.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "bandwidth/remaining/rem-option", citem.BandwidthRemainingOption.ValueString())
+					}
+					if !citem.BandwidthRemainingPercent.IsNull() && !citem.BandwidthRemainingPercent.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "bandwidth/remaining/percent", strconv.FormatInt(citem.BandwidthRemainingPercent.ValueInt64(), 10))
+					}
+					if !citem.BandwidthRemainingRatio.IsNull() && !citem.BandwidthRemainingRatio.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "bandwidth/remaining/ratio", strconv.FormatInt(citem.BandwidthRemainingRatio.ValueInt64(), 10))
+					}
+					if !citem.PriorityLevel.IsNull() && !citem.PriorityLevel.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "priority/level", strconv.FormatInt(citem.PriorityLevel.ValueInt64(), 10))
+					}
+					if !citem.PriorityBurst.IsNull() && !citem.PriorityBurst.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "priority/burst", strconv.FormatInt(citem.PriorityBurst.ValueInt64(), 10))
+					}
+					if !citem.QueueLimit.IsNull() && !citem.QueueLimit.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "queue-limit/queue-limit-value", strconv.FormatInt(citem.QueueLimit.ValueInt64(), 10))
+					}
+					if !citem.QueueLimitType.IsNull() && !citem.QueueLimitType.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "queue-limit/queue-limit-type", citem.QueueLimitType.ValueString())
+					}
+					if !citem.ShapeAverageBitRate.IsNull() && !citem.ShapeAverageBitRate.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "shape/average/bit-rate", strconv.FormatInt(citem.ShapeAverageBitRate.ValueInt64(), 10))
+					}
+					if !citem.ShapeAverageBitsPerIntervalSustained.IsNull() && !citem.ShapeAverageBitsPerIntervalSustained.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "shape/average/bits-per-interval-sustained", strconv.FormatInt(citem.ShapeAverageBitsPerIntervalSustained.ValueInt64(), 10))
+					}
+					if !citem.ShapeAverageBitsPerIntervalExcess.IsNull() && !citem.ShapeAverageBitsPerIntervalExcess.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "shape/average/bits-per-interval-excess", strconv.FormatInt(citem.ShapeAverageBitsPerIntervalExcess.ValueInt64(), 10))
+					}
+					if !citem.ShapeAveragePercent.IsNull() && !citem.ShapeAveragePercent.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "shape/average/percent", strconv.FormatInt(citem.ShapeAveragePercent.ValueInt64(), 10))
+					}
+					if !citem.ShapeAverageBurstSizeSustained.IsNull() && !citem.ShapeAverageBurstSizeSustained.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "shape/average/burst-size-sustained", strconv.FormatInt(citem.ShapeAverageBurstSizeSustained.ValueInt64(), 10))
+					}
+					if !citem.ShapeAverageMs.IsNull() && !citem.ShapeAverageMs.IsUnknown() {
+						if citem.ShapeAverageMs.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "shape/average/ms", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "shape/average/ms")
+						}
+					}
+					if !citem.PoliceTargetBitrateConformTransmit.IsNull() && !citem.PoliceTargetBitrateConformTransmit.IsUnknown() {
+						if citem.PoliceTargetBitrateConformTransmit.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/actions/conform-transmit/conform-action/transmit", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "police-target-bitrate/police/actions/conform-transmit/conform-action/transmit")
+						}
+					}
+					if !citem.PoliceTargetBitrateExceedTransmit.IsNull() && !citem.PoliceTargetBitrateExceedTransmit.IsUnknown() {
+						if citem.PoliceTargetBitrateExceedTransmit.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit")
+						}
+					}
+					if !citem.PoliceTargetBitrate.IsNull() && !citem.PoliceTargetBitrate.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/bit-rate", strconv.FormatInt(citem.PoliceTargetBitrate.ValueInt64(), 10))
+					}
+					if !citem.PoliceTargetBitrateConformBurstByte.IsNull() && !citem.PoliceTargetBitrateConformBurstByte.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/confirm_burst-byte", strconv.FormatInt(citem.PoliceTargetBitrateConformBurstByte.ValueInt64(), 10))
+					}
+					if !citem.PoliceTargetBitrateExcessBurstByte.IsNull() && !citem.PoliceTargetBitrateExcessBurstByte.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "police-target-bitrate/police/excess_burst-byte", strconv.FormatInt(citem.PoliceTargetBitrateExcessBurstByte.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "action-list", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/class", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -419,6 +554,207 @@ func (data *PolicyMap) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *PolicyMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/type"); value.Exists() && !data.Type.IsNull() {
+		data.Type = types.StringValue(value.String())
+	} else {
+		data.Type = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber"); !data.Subscriber.IsNull() {
+		if value.Exists() {
+			data.Subscriber = types.BoolValue(true)
+		} else {
+			data.Subscriber = types.BoolValue(false)
+		}
+	} else {
+		data.Subscriber = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	for i := range data.Classes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Classes[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/class").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Classes[i].Name.IsNull() {
+			data.Classes[i].Name = types.StringValue(value.String())
+		} else {
+			data.Classes[i].Name = types.StringNull()
+		}
+		for ci := range data.Classes[i].Actions {
+			keys := [...]string{"action-type"}
+			keyValues := [...]string{data.Classes[i].Actions[ci].Type.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "action-list").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "action-type"); value.Exists() && !data.Classes[i].Actions[ci].Type.IsNull() {
+				data.Classes[i].Actions[ci].Type = types.StringValue(value.String())
+			} else {
+				data.Classes[i].Actions[ci].Type = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "bandwidth/bits"); value.Exists() && !data.Classes[i].Actions[ci].BandwidthBits.IsNull() {
+				data.Classes[i].Actions[ci].BandwidthBits = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].BandwidthBits = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "bandwidth/percent"); value.Exists() && !data.Classes[i].Actions[ci].BandwidthPercent.IsNull() {
+				data.Classes[i].Actions[ci].BandwidthPercent = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].BandwidthPercent = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "bandwidth/remaining/rem-option"); value.Exists() && !data.Classes[i].Actions[ci].BandwidthRemainingOption.IsNull() {
+				data.Classes[i].Actions[ci].BandwidthRemainingOption = types.StringValue(value.String())
+			} else {
+				data.Classes[i].Actions[ci].BandwidthRemainingOption = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "bandwidth/remaining/percent"); value.Exists() && !data.Classes[i].Actions[ci].BandwidthRemainingPercent.IsNull() {
+				data.Classes[i].Actions[ci].BandwidthRemainingPercent = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].BandwidthRemainingPercent = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "bandwidth/remaining/ratio"); value.Exists() && !data.Classes[i].Actions[ci].BandwidthRemainingRatio.IsNull() {
+				data.Classes[i].Actions[ci].BandwidthRemainingRatio = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].BandwidthRemainingRatio = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "priority/level"); value.Exists() && !data.Classes[i].Actions[ci].PriorityLevel.IsNull() {
+				data.Classes[i].Actions[ci].PriorityLevel = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PriorityLevel = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "priority/burst"); value.Exists() && !data.Classes[i].Actions[ci].PriorityBurst.IsNull() {
+				data.Classes[i].Actions[ci].PriorityBurst = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PriorityBurst = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "queue-limit/queue-limit-value"); value.Exists() && !data.Classes[i].Actions[ci].QueueLimit.IsNull() {
+				data.Classes[i].Actions[ci].QueueLimit = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].QueueLimit = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "queue-limit/queue-limit-type"); value.Exists() && !data.Classes[i].Actions[ci].QueueLimitType.IsNull() {
+				data.Classes[i].Actions[ci].QueueLimitType = types.StringValue(value.String())
+			} else {
+				data.Classes[i].Actions[ci].QueueLimitType = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "shape/average/bit-rate"); value.Exists() && !data.Classes[i].Actions[ci].ShapeAverageBitRate.IsNull() {
+				data.Classes[i].Actions[ci].ShapeAverageBitRate = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].ShapeAverageBitRate = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "shape/average/bits-per-interval-sustained"); value.Exists() && !data.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained.IsNull() {
+				data.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "shape/average/bits-per-interval-excess"); value.Exists() && !data.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess.IsNull() {
+				data.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "shape/average/percent"); value.Exists() && !data.Classes[i].Actions[ci].ShapeAveragePercent.IsNull() {
+				data.Classes[i].Actions[ci].ShapeAveragePercent = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].ShapeAveragePercent = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "shape/average/burst-size-sustained"); value.Exists() && !data.Classes[i].Actions[ci].ShapeAverageBurstSizeSustained.IsNull() {
+				data.Classes[i].Actions[ci].ShapeAverageBurstSizeSustained = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].ShapeAverageBurstSizeSustained = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "shape/average/ms"); !data.Classes[i].Actions[ci].ShapeAverageMs.IsNull() {
+				if value.Exists() {
+					data.Classes[i].Actions[ci].ShapeAverageMs = types.BoolValue(true)
+				} else {
+					data.Classes[i].Actions[ci].ShapeAverageMs = types.BoolValue(false)
+				}
+			} else {
+				data.Classes[i].Actions[ci].ShapeAverageMs = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "police-target-bitrate/police/actions/conform-transmit/conform-action/transmit"); !data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.IsNull() {
+				if value.Exists() {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit = types.BoolValue(true)
+				} else {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit = types.BoolValue(false)
+				}
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit"); !data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.IsNull() {
+				if value.Exists() {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit = types.BoolValue(true)
+				} else {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit = types.BoolValue(false)
+				}
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "police-target-bitrate/police/bit-rate"); value.Exists() && !data.Classes[i].Actions[ci].PoliceTargetBitrate.IsNull() {
+				data.Classes[i].Actions[ci].PoliceTargetBitrate = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrate = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "police-target-bitrate/police/confirm_burst-byte"); value.Exists() && !data.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte.IsNull() {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "police-target-bitrate/police/excess_burst-byte"); value.Exists() && !data.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte.IsNull() {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte = types.Int64Null()
+			}
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -640,6 +976,218 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *PolicyMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/type"); value.Exists() {
+		data.Type = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber"); value.Exists() {
+		data.Subscriber = types.BoolValue(true)
+	} else {
+		data.Subscriber = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/class"); value.Exists() {
+		data.Classes = make([]PolicyMapClasses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PolicyMapClasses{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "action-list"); cValue.Exists() {
+				item.Actions = make([]PolicyMapClassesActions, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PolicyMapClassesActions{}
+					if ccValue := helpers.GetFromXPath(cv, "action-type"); ccValue.Exists() {
+						cItem.Type = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/bits"); ccValue.Exists() {
+						cItem.BandwidthBits = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/percent"); ccValue.Exists() {
+						cItem.BandwidthPercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/remaining/rem-option"); ccValue.Exists() {
+						cItem.BandwidthRemainingOption = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/remaining/percent"); ccValue.Exists() {
+						cItem.BandwidthRemainingPercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/remaining/ratio"); ccValue.Exists() {
+						cItem.BandwidthRemainingRatio = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "priority/level"); ccValue.Exists() {
+						cItem.PriorityLevel = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "priority/burst"); ccValue.Exists() {
+						cItem.PriorityBurst = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "queue-limit/queue-limit-value"); ccValue.Exists() {
+						cItem.QueueLimit = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "queue-limit/queue-limit-type"); ccValue.Exists() {
+						cItem.QueueLimitType = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/bit-rate"); ccValue.Exists() {
+						cItem.ShapeAverageBitRate = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/bits-per-interval-sustained"); ccValue.Exists() {
+						cItem.ShapeAverageBitsPerIntervalSustained = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/bits-per-interval-excess"); ccValue.Exists() {
+						cItem.ShapeAverageBitsPerIntervalExcess = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/percent"); ccValue.Exists() {
+						cItem.ShapeAveragePercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/burst-size-sustained"); ccValue.Exists() {
+						cItem.ShapeAverageBurstSizeSustained = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/ms"); ccValue.Exists() {
+						cItem.ShapeAverageMs = types.BoolValue(true)
+					} else {
+						cItem.ShapeAverageMs = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/actions/conform-transmit/conform-action/transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/bit-rate"); ccValue.Exists() {
+						cItem.PoliceTargetBitrate = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/confirm_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformBurstByte = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/excess_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExcessBurstByte = types.Int64Value(ccValue.Int())
+					}
+					item.Actions = append(item.Actions, cItem)
+					return true
+				})
+			}
+			data.Classes = append(data.Classes, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *PolicyMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/type"); value.Exists() {
+		data.Type = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/subscriber"); value.Exists() {
+		data.Subscriber = types.BoolValue(true)
+	} else {
+		data.Subscriber = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/class"); value.Exists() {
+		data.Classes = make([]PolicyMapClasses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PolicyMapClasses{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "action-list"); cValue.Exists() {
+				item.Actions = make([]PolicyMapClassesActions, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PolicyMapClassesActions{}
+					if ccValue := helpers.GetFromXPath(cv, "action-type"); ccValue.Exists() {
+						cItem.Type = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/bits"); ccValue.Exists() {
+						cItem.BandwidthBits = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/percent"); ccValue.Exists() {
+						cItem.BandwidthPercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/remaining/rem-option"); ccValue.Exists() {
+						cItem.BandwidthRemainingOption = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/remaining/percent"); ccValue.Exists() {
+						cItem.BandwidthRemainingPercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bandwidth/remaining/ratio"); ccValue.Exists() {
+						cItem.BandwidthRemainingRatio = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "priority/level"); ccValue.Exists() {
+						cItem.PriorityLevel = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "priority/burst"); ccValue.Exists() {
+						cItem.PriorityBurst = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "queue-limit/queue-limit-value"); ccValue.Exists() {
+						cItem.QueueLimit = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "queue-limit/queue-limit-type"); ccValue.Exists() {
+						cItem.QueueLimitType = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/bit-rate"); ccValue.Exists() {
+						cItem.ShapeAverageBitRate = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/bits-per-interval-sustained"); ccValue.Exists() {
+						cItem.ShapeAverageBitsPerIntervalSustained = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/bits-per-interval-excess"); ccValue.Exists() {
+						cItem.ShapeAverageBitsPerIntervalExcess = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/percent"); ccValue.Exists() {
+						cItem.ShapeAveragePercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/burst-size-sustained"); ccValue.Exists() {
+						cItem.ShapeAverageBurstSizeSustained = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "shape/average/ms"); ccValue.Exists() {
+						cItem.ShapeAverageMs = types.BoolValue(true)
+					} else {
+						cItem.ShapeAverageMs = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/actions/conform-transmit/conform-action/transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/bit-rate"); ccValue.Exists() {
+						cItem.PoliceTargetBitrate = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/confirm_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformBurstByte = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "police-target-bitrate/police/excess_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExcessBurstByte = types.Int64Value(ccValue.Int())
+					}
+					item.Actions = append(item.Actions, cItem)
+					return true
+				})
+			}
+			data.Classes = append(data.Classes, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []string {
@@ -769,6 +1317,146 @@ func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []s
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *PolicyMap) addDeletedItemsXML(ctx context.Context, state PolicyMap, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Classes {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Classes[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Classes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Classes {
+			found = true
+			if state.Classes[i].Name.ValueString() != data.Classes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Classes[i].Actions {
+					cstateKeys := [...]string{"action-type"}
+					cstateKeyValues := [...]string{state.Classes[i].Actions[ci].Type.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Classes[i].Actions[ci].Type.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Classes[j].Actions {
+						found = true
+						if state.Classes[i].Actions[ci].Type.ValueString() != data.Classes[j].Actions[cj].Type.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateExcessBurstByte.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/excess_burst-byte", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateConformBurstByte.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/confirm_burst-byte", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrate.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/bit-rate", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateExceedTransmit.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateConformTransmit.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-target-bitrate/police/actions/conform-transmit/conform-action/transmit", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && data.Classes[j].Actions[cj].ShapeAverageMs.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/ms", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageBurstSizeSustained.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBurstSizeSustained.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/burst-size-sustained", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAveragePercent.IsNull() && data.Classes[j].Actions[cj].ShapeAveragePercent.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/percent", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalExcess.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/bits-per-interval-excess", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalSustained.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/bits-per-interval-sustained", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageBitRate.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitRate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/shape/average/bit-rate", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].QueueLimitType.IsNull() && data.Classes[j].Actions[cj].QueueLimitType.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/queue-limit/queue-limit-type", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].QueueLimit.IsNull() && data.Classes[j].Actions[cj].QueueLimit.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/queue-limit/queue-limit-value", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].PriorityBurst.IsNull() && data.Classes[j].Actions[cj].PriorityBurst.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/priority/burst", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].PriorityLevel.IsNull() && data.Classes[j].Actions[cj].PriorityLevel.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/priority/level", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthRemainingRatio.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingRatio.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/remaining/ratio", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthRemainingPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingPercent.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/remaining/percent", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthRemainingOption.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingOption.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/remaining/rem-option", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthPercent.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/percent", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthBits.IsNull() && data.Classes[j].Actions[cj].BandwidthBits.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/bandwidth/bits", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v", predicates))
+		}
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber")
+	}
+	if !state.Type.IsNull() && data.Type.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/type")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *PolicyMap) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -822,3 +1510,33 @@ func (data *PolicyMap) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *PolicyMap) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Classes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Classes[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/class%v", predicates))
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+	if !data.Subscriber.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/subscriber")
+	}
+	if !data.Type.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/type")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

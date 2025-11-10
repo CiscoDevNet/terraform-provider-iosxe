@@ -40,6 +40,7 @@ resource "iosxe_interface_vlan" "example" {
       eui_64 = true
     }
   ]
-  load_interval = 30
-  mac_address   = "0000.dead.beef"
+  load_interval                           = 30
+  mac_address                             = "0000.dead.beef"
+  ip_dhcp_relay_information_option_vpn_id = true
 }

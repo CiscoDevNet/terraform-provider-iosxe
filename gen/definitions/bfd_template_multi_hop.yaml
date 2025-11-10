@@ -1,6 +1,6 @@
 ---
 name: BFD Template Multi Hop
-path: Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=%s
+path: /Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop[name=%s]
 no_delete_attributes: true
 doc_category: BFD
 attributes:

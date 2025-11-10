@@ -1,7 +1,7 @@
 ---
 name: Interface Ethernet
-path: Cisco-IOS-XE-native:native/interface/%s=%v
-augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]
 wait: true
 test_tags: [C8000V]
 no_delete: true
@@ -260,6 +260,8 @@ attributes:
   - yang_name: ip/arp/inspection/limit/rate
     example: 1000
     test_tags: [C9000V]
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id
+    example: true
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
     test_tags: [C9000V]
@@ -527,24 +529,25 @@ attributes:
   - yang_name: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment
     tf_name: evpn_ethernet_segments
     type: List
+    test_tags: [C9000V]
     attributes:
       - yang_name: es-value
         id: true
         example: 1
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1
+  - path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=POLICY1]
     attributes:
       - name: name
         value: POLICY1
-  - path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=REC1
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC1]
     attributes:
       - name: name
         value: REC1
@@ -552,18 +555,18 @@ test_prerequisites:
         value: ""
       - name: collect/interface/output
         value: ""
-  - path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON1]
     attributes:
       - name: name
         value: MON1
       - name: record/type
         value: REC1
     dependencies: [2]
-  - path: Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=TEMP1
+  - path: /Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details[template_name=TEMP1]
     attributes:
       - name: template_name
         value: TEMP1
-  - path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1
+  - path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]
     attributes:
       - name: es-value
         value: 1

@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -84,6 +87,17 @@ func (data SLA) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data SLA) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-sla:sla"
+	return path
+}
+
+func (data SLAData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-sla:sla"
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -124,6 +138,53 @@ func (data SLA) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data SLA) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.Entries) > 0 {
+		for _, item := range data.Entries {
+			cBody := netconf.Body{}
+			if !item.Number.IsNull() && !item.Number.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "number", strconv.FormatInt(item.Number.ValueInt64(), 10))
+			}
+			if !item.IcmpEchoDestination.IsNull() && !item.IcmpEchoDestination.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "icmp-echo/destination", item.IcmpEchoDestination.ValueString())
+			}
+			if !item.IcmpEchoSourceIp.IsNull() && !item.IcmpEchoSourceIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "icmp-echo/source-ip", item.IcmpEchoSourceIp.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/entry", cBody.Res())
+		}
+	}
+	if len(data.Schedules) > 0 {
+		for _, item := range data.Schedules {
+			cBody := netconf.Body{}
+			if !item.EntryNumber.IsNull() && !item.EntryNumber.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "entry-number", strconv.FormatInt(item.EntryNumber.ValueInt64(), 10))
+			}
+			if !item.Life.IsNull() && !item.Life.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "life", strconv.FormatInt(item.Life.ValueInt64(), 10))
+			}
+			if !item.StartTimeNow.IsNull() && !item.StartTimeNow.IsUnknown() {
+				if item.StartTimeNow.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-time/now-config", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-time/now-config")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/schedule", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -217,6 +278,95 @@ func (data *SLA) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.Entries {
+		keys := [...]string{"number"}
+		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.Entries[i].Number.IsNull() {
+			data.Entries[i].Number = types.Int64Value(value.Int())
+		} else {
+			data.Entries[i].Number = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-echo/destination"); value.Exists() && !data.Entries[i].IcmpEchoDestination.IsNull() {
+			data.Entries[i].IcmpEchoDestination = types.StringValue(value.String())
+		} else {
+			data.Entries[i].IcmpEchoDestination = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-echo/source-ip"); value.Exists() && !data.Entries[i].IcmpEchoSourceIp.IsNull() {
+			data.Entries[i].IcmpEchoSourceIp = types.StringValue(value.String())
+		} else {
+			data.Entries[i].IcmpEchoSourceIp = types.StringNull()
+		}
+	}
+	for i := range data.Schedules {
+		keys := [...]string{"entry-number"}
+		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "entry-number"); value.Exists() && !data.Schedules[i].EntryNumber.IsNull() {
+			data.Schedules[i].EntryNumber = types.Int64Value(value.Int())
+		} else {
+			data.Schedules[i].EntryNumber = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "life"); value.Exists() && !data.Schedules[i].Life.IsNull() {
+			data.Schedules[i].Life = types.Int64Value(value.Int())
+		} else {
+			data.Schedules[i].Life = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "start-time/now-config"); !data.Schedules[i].StartTimeNow.IsNull() {
+			if value.Exists() {
+				data.Schedules[i].StartTimeNow = types.BoolValue(true)
+			} else {
+				data.Schedules[i].StartTimeNow = types.BoolValue(false)
+			}
+		} else {
+			data.Schedules[i].StartTimeNow = types.BoolNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -312,6 +462,92 @@ func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *SLA) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry"); value.Exists() {
+		data.Entries = make([]SLAEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SLAEntries{}
+			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
+				item.Number = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-echo/destination"); cValue.Exists() {
+				item.IcmpEchoDestination = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-echo/source-ip"); cValue.Exists() {
+				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule"); value.Exists() {
+		data.Schedules = make([]SLASchedules, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SLASchedules{}
+			if cValue := helpers.GetFromXPath(v, "entry-number"); cValue.Exists() {
+				item.EntryNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "life"); cValue.Exists() {
+				item.Life = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-time/now-config"); cValue.Exists() {
+				item.StartTimeNow = types.BoolValue(true)
+			} else {
+				item.StartTimeNow = types.BoolValue(false)
+			}
+			data.Schedules = append(data.Schedules, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *SLAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry"); value.Exists() {
+		data.Entries = make([]SLAEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SLAEntries{}
+			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
+				item.Number = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-echo/destination"); cValue.Exists() {
+				item.IcmpEchoDestination = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-echo/source-ip"); cValue.Exists() {
+				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule"); value.Exists() {
+		data.Schedules = make([]SLASchedules, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SLASchedules{}
+			if cValue := helpers.GetFromXPath(v, "entry-number"); cValue.Exists() {
+				item.EntryNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "life"); cValue.Exists() {
+				item.Life = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-time/now-config"); cValue.Exists() {
+				item.StartTimeNow = types.BoolValue(true)
+			} else {
+				item.StartTimeNow = types.BoolValue(false)
+			}
+			data.Schedules = append(data.Schedules, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *SLA) getDeletedItems(ctx context.Context, state SLA) []string {
@@ -384,6 +620,89 @@ func (data *SLA) getDeletedItems(ctx context.Context, state SLA) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Schedules {
+		stateKeys := [...]string{"entry-number"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.Schedules[i].EntryNumber.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Schedules[i].EntryNumber.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Schedules {
+			found = true
+			if state.Schedules[i].EntryNumber.ValueInt64() != data.Schedules[j].EntryNumber.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Schedules[i].StartTimeNow.IsNull() && data.Schedules[j].StartTimeNow.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v/start-time/now-config", predicates))
+				}
+				if !state.Schedules[i].Life.IsNull() && data.Schedules[j].Life.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v/life", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v", predicates))
+		}
+	}
+	for i := range state.Entries {
+		stateKeys := [...]string{"number"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.Entries[i].Number.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Entries[i].Number.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Entries {
+			found = true
+			if state.Entries[i].Number.ValueInt64() != data.Entries[j].Number.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Entries[i].IcmpEchoSourceIp.IsNull() && data.Entries[j].IcmpEchoSourceIp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/source-ip", predicates))
+				}
+				if !state.Entries[i].IcmpEchoDestination.IsNull() && data.Entries[j].IcmpEchoDestination.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/destination", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *SLA) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -420,3 +739,34 @@ func (data *SLA) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *SLA) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Schedules {
+		keys := [...]string{"entry-number"}
+		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/schedule%v", predicates))
+	}
+	for i := range data.Entries {
+		keys := [...]string{"number"}
+		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/entry%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

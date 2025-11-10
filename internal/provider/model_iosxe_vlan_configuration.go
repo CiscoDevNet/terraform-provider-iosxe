@@ -29,6 +29,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -89,6 +92,19 @@ func (data VLANConfiguration) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data VLANConfiguration) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration[vlan-id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
+	return path
+}
+
+func (data VLANConfigurationData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration[vlan-id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -133,6 +149,34 @@ func (data VLANConfiguration) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data VLANConfiguration) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.VlanId.IsNull() && !data.VlanId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-id", strconv.FormatInt(data.VlanId.ValueInt64(), 10))
+	}
+	if !data.Vni.IsNull() && !data.Vni.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/member/vni", strconv.FormatInt(data.Vni.ValueInt64(), 10))
+	}
+	if !data.AccessVfi.IsNull() && !data.AccessVfi.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/member/access-vfi", data.AccessVfi.ValueString())
+	}
+	if !data.EvpnInstance.IsNull() && !data.EvpnInstance.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/member/evpn-instance/evpn-instance", strconv.FormatInt(data.EvpnInstance.ValueInt64(), 10))
+	}
+	if !data.EvpnInstanceVni.IsNull() && !data.EvpnInstanceVni.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/member/evpn-instance/vni", strconv.FormatInt(data.EvpnInstanceVni.ValueInt64(), 10))
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -202,6 +246,38 @@ func (data *VLANConfiguration) updateFromBody(ctx context.Context, res gjson.Res
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *VLANConfiguration) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-id"); value.Exists() && !data.VlanId.IsNull() {
+		data.VlanId = types.Int64Value(value.Int())
+	} else {
+		data.VlanId = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni"); value.Exists() && !data.Vni.IsNull() {
+		data.Vni = types.Int64Value(value.Int())
+	} else {
+		data.Vni = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/access-vfi"); value.Exists() && !data.AccessVfi.IsNull() {
+		data.AccessVfi = types.StringValue(value.String())
+	} else {
+		data.AccessVfi = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/evpn-instance/evpn-instance"); value.Exists() && !data.EvpnInstance.IsNull() {
+		data.EvpnInstance = types.Int64Value(value.Int())
+	} else {
+		data.EvpnInstance = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/evpn-instance/vni"); value.Exists() && !data.EvpnInstanceVni.IsNull() {
+		data.EvpnInstanceVni = types.Int64Value(value.Int())
+	} else {
+		data.EvpnInstanceVni = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -287,6 +363,44 @@ func (data *VLANConfigurationData) fromBody(ctx context.Context, res gjson.Resul
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *VLANConfiguration) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni"); value.Exists() {
+		data.Vni = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/access-vfi"); value.Exists() {
+		data.AccessVfi = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/evpn-instance/evpn-instance"); value.Exists() {
+		data.EvpnInstance = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/evpn-instance/vni"); value.Exists() {
+		data.EvpnInstanceVni = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *VLANConfigurationData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni"); value.Exists() {
+		data.Vni = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/access-vfi"); value.Exists() {
+		data.AccessVfi = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/evpn-instance/evpn-instance"); value.Exists() {
+		data.EvpnInstance = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/evpn-instance/vni"); value.Exists() {
+		data.EvpnInstanceVni = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *VLANConfiguration) getDeletedItems(ctx context.Context, state VLANConfiguration) []string {
@@ -323,6 +437,29 @@ func (data *VLANConfiguration) getDeletedItems(ctx context.Context, state VLANCo
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *VLANConfiguration) addDeletedItemsXML(ctx context.Context, state VLANConfiguration, body string) string {
+	b := netconf.NewBody(body)
+	if !state.EvpnInstanceVni.IsNull() && data.EvpnInstanceVni.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evpn-instance/vni")
+	}
+	if !state.EvpnInstance.IsNull() && data.EvpnInstance.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/evpn-instance/evpn-instance")
+	}
+	if !state.AccessVfi.IsNull() && data.AccessVfi.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/access-vfi")
+	}
+	if !state.Vni.IsNull() && data.Vni.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/member/vni")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -376,3 +513,26 @@ func (data *VLANConfiguration) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *VLANConfiguration) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.EvpnInstanceVni.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/member/evpn-instance/vni")
+	}
+	if !data.EvpnInstance.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/member/evpn-instance/evpn-instance")
+	}
+	if !data.AccessVfi.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/member/access-vfi")
+	}
+	if !data.Vni.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/member/vni")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

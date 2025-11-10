@@ -39,10 +39,10 @@ Configure selective deployment using the `selected_devices` attribute in your pr
 provider "iosxe" {
   selected_devices = ["switch-01", "switch-02"]
   devices = [
-    { name = "switch-01", url = "https://10.1.1.10" },  # Managed
-    { name = "switch-02", url = "https://10.1.1.20" },  # Managed
-    { name = "switch-03", url = "https://10.1.1.30" },  # Skipped
-    { name = "switch-04", url = "https://10.1.1.40" }   # Skipped
+    { name = "switch-01", host = "10.1.1.10" },  # Managed
+    { name = "switch-02", host = "10.1.1.20" },  # Managed
+    { name = "switch-03", host = "10.1.1.30" },  # Skipped
+    { name = "switch-04", host = "10.1.1.40" }   # Skipped
   ]
 }
 
@@ -59,10 +59,10 @@ export IOSXE_SELECTED_DEVICES="switch-01,switch-02"
 ```hcl
 provider "iosxe" {
   devices = [
-    { name = "switch-01", url = "https://10.1.1.10" },
-    { name = "switch-02", url = "https://10.1.1.20" },
-    { name = "switch-03", url = "https://10.1.1.30" },
-    { name = "switch-04", url = "https://10.1.1.40" }
+    { name = "switch-01", host = "10.1.1.10" },
+    { name = "switch-02", host = "10.1.1.20" },
+    { name = "switch-03", host = "10.1.1.30" },
+    { name = "switch-04", host = "10.1.1.40" }
   ]
 }
 

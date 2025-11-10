@@ -1,6 +1,6 @@
 ---
 name: BGP Peer Session Template
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/template/peer-session=%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-session[name=%s]
 doc_category: BGP
 skip_minimum_test: true
 attributes:
@@ -30,11 +30,11 @@ attributes:
     example: PEER_SESSION_PARENT
     exclude_test: true
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
       - name: id
         value: 65000
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

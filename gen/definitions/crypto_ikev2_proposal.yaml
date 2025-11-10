@@ -1,6 +1,6 @@
 ---
 name: Crypto IKEv2 Proposal
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=%v
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal[name=%v]
 no_delete_attributes: true
 doc_category: Crypto
 attributes:

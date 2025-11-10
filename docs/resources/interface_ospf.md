@@ -36,6 +36,11 @@ resource "iosxe_interface_ospf" "example" {
       ]
     }
   ]
+  multi_area_ids = [
+    {
+      area_id = "10"
+    }
+  ]
   message_digest_keys = [
     {
       id            = 1
@@ -68,6 +73,7 @@ resource "iosxe_interface_ospf" "example" {
   - Range: `1`-`65535`
 - `message_digest_keys` (Attributes List) Message digest authentication password (key) (see [below for nested schema](#nestedatt--message_digest_keys))
 - `mtu_ignore` (Boolean) Ignores the MTU in DBD packets
+- `multi_area_ids` (Attributes List) Set the OSPF multi-area ID (see [below for nested schema](#nestedatt--multi_area_ids))
 - `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
 - `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
 - `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
@@ -95,6 +101,14 @@ Optional:
 - `md5_auth_key` (String, Sensitive) The OSPF password (key) (only the first 16 characters are used)
 - `md5_auth_type` (Number) Encryption type (0 for not yet encrypted, 7 for proprietary)
   - Range: `0`-`7`
+
+
+<a id="nestedatt--multi_area_ids"></a>
+### Nested Schema for `multi_area_ids`
+
+Required:
+
+- `area_id` (String) OSPF multi-area ID
 
 
 <a id="nestedatt--process_ids"></a>

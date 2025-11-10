@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -50,6 +53,20 @@ type OSPFVRF struct {
 	DefaultMetric                                      types.Int64                                                 `tfsdk:"default_metric"`
 	Distance                                           types.Int64                                                 `tfsdk:"distance"`
 	DomainTag                                          types.Int64                                                 `tfsdk:"domain_tag"`
+	LogAdjacencyChanges                                types.Bool                                                  `tfsdk:"log_adjacency_changes"`
+	LogAdjacencyChangesDetail                          types.Bool                                                  `tfsdk:"log_adjacency_changes_detail"`
+	NsfCisco                                           types.Bool                                                  `tfsdk:"nsf_cisco"`
+	NsfCiscoEnforceGlobal                              types.Bool                                                  `tfsdk:"nsf_cisco_enforce_global"`
+	NsfIetf                                            types.Bool                                                  `tfsdk:"nsf_ietf"`
+	NsfIetfRestartInterval                             types.Int64                                                 `tfsdk:"nsf_ietf_restart_interval"`
+	MaxMetricRouterLsa                                 types.Bool                                                  `tfsdk:"max_metric_router_lsa"`
+	MaxMetricRouterLsaSummaryLsaMetric                 types.Int64                                                 `tfsdk:"max_metric_router_lsa_summary_lsa_metric"`
+	MaxMetricRouterLsaExternalLsaMetric                types.Int64                                                 `tfsdk:"max_metric_router_lsa_external_lsa_metric"`
+	MaxMetricRouterLsaIncludeStub                      types.Bool                                                  `tfsdk:"max_metric_router_lsa_include_stub"`
+	MaxMetricRouterLsaOnStartupTime                    types.Int64                                                 `tfsdk:"max_metric_router_lsa_on_startup_time"`
+	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                                  `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
+	RedistributeStaticSubnets                          types.Bool                                                  `tfsdk:"redistribute_static_subnets"`
+	RedistributeConnectedSubnets                       types.Bool                                                  `tfsdk:"redistribute_connected_subnets"`
 	MplsLdpAutoconfig                                  types.Bool                                                  `tfsdk:"mpls_ldp_autoconfig"`
 	MplsLdpSync                                        types.Bool                                                  `tfsdk:"mpls_ldp_sync"`
 	Neighbor                                           []OSPFVRFNeighbor                                           `tfsdk:"neighbor"`
@@ -89,6 +106,20 @@ type OSPFVRFData struct {
 	DefaultMetric                                      types.Int64                                                 `tfsdk:"default_metric"`
 	Distance                                           types.Int64                                                 `tfsdk:"distance"`
 	DomainTag                                          types.Int64                                                 `tfsdk:"domain_tag"`
+	LogAdjacencyChanges                                types.Bool                                                  `tfsdk:"log_adjacency_changes"`
+	LogAdjacencyChangesDetail                          types.Bool                                                  `tfsdk:"log_adjacency_changes_detail"`
+	NsfCisco                                           types.Bool                                                  `tfsdk:"nsf_cisco"`
+	NsfCiscoEnforceGlobal                              types.Bool                                                  `tfsdk:"nsf_cisco_enforce_global"`
+	NsfIetf                                            types.Bool                                                  `tfsdk:"nsf_ietf"`
+	NsfIetfRestartInterval                             types.Int64                                                 `tfsdk:"nsf_ietf_restart_interval"`
+	MaxMetricRouterLsa                                 types.Bool                                                  `tfsdk:"max_metric_router_lsa"`
+	MaxMetricRouterLsaSummaryLsaMetric                 types.Int64                                                 `tfsdk:"max_metric_router_lsa_summary_lsa_metric"`
+	MaxMetricRouterLsaExternalLsaMetric                types.Int64                                                 `tfsdk:"max_metric_router_lsa_external_lsa_metric"`
+	MaxMetricRouterLsaIncludeStub                      types.Bool                                                  `tfsdk:"max_metric_router_lsa_include_stub"`
+	MaxMetricRouterLsaOnStartupTime                    types.Int64                                                 `tfsdk:"max_metric_router_lsa_on_startup_time"`
+	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                                  `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
+	RedistributeStaticSubnets                          types.Bool                                                  `tfsdk:"redistribute_static_subnets"`
+	RedistributeConnectedSubnets                       types.Bool                                                  `tfsdk:"redistribute_connected_subnets"`
 	MplsLdpAutoconfig                                  types.Bool                                                  `tfsdk:"mpls_ldp_autoconfig"`
 	MplsLdpSync                                        types.Bool                                                  `tfsdk:"mpls_ldp_sync"`
 	Neighbor                                           []OSPFVRFNeighbor                                           `tfsdk:"neighbor"`
@@ -206,6 +237,19 @@ func (data OSPFVRF) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data OSPFVRF) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf[id=%v][vrf=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.ProcessId.ValueInt64()), fmt.Sprintf("%v", data.Vrf.ValueString()))
+	return path
+}
+
+func (data OSPFVRFData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf[id=%v][vrf=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.ProcessId.ValueInt64()), fmt.Sprintf("%v", data.Vrf.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -241,6 +285,66 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 	}
 	if !data.DomainTag.IsNull() && !data.DomainTag.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"domain-tag", strconv.FormatInt(data.DomainTag.ValueInt64(), 10))
+	}
+	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes", data.LogAdjacencyChanges.ValueBool())
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
+		if data.LogAdjacencyChangesDetail.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes-detail.log-adjacency-changes.detail", map[string]string{})
+		}
+	}
+	if !data.NsfCisco.IsNull() && !data.NsfCisco.IsUnknown() {
+		if data.NsfCisco.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-cisco", map[string]string{})
+		}
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.IsUnknown() {
+		if data.NsfCiscoEnforceGlobal.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-cisco.enforce.global", map[string]string{})
+		}
+	}
+	if !data.NsfIetf.IsNull() && !data.NsfIetf.IsUnknown() {
+		if data.NsfIetf.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-ietf", map[string]string{})
+		}
+	}
+	if !data.NsfIetfRestartInterval.IsNull() && !data.NsfIetfRestartInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-ietf.restart-interval", strconv.FormatInt(data.NsfIetfRestartInterval.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.IsUnknown() {
+		if data.MaxMetricRouterLsa.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa", map[string]string{})
+		}
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.summary-lsa.metric", strconv.FormatInt(data.MaxMetricRouterLsaSummaryLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() && !data.MaxMetricRouterLsaExternalLsaMetric.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.external-lsa.metric", strconv.FormatInt(data.MaxMetricRouterLsaExternalLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.IsUnknown() {
+		if data.MaxMetricRouterLsaIncludeStub.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.include-stub", map[string]string{})
+		}
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() && !data.MaxMetricRouterLsaOnStartupTime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.on-startup.time", strconv.FormatInt(data.MaxMetricRouterLsaOnStartupTime.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsUnknown() {
+		if data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.on-startup.wait-for-bgp", map[string]string{})
+		}
+	}
+	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.IsUnknown() {
+		if data.RedistributeStaticSubnets.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redistribute.static.subnets", map[string]string{})
+		}
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.IsUnknown() {
+		if data.RedistributeConnectedSubnets.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redistribute.connected.subnets", map[string]string{})
+		}
 	}
 	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.IsUnknown() {
 		if data.MplsLdpAutoconfig.ValueBool() {
@@ -450,7 +554,7 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel", []interface{}{})
 		for index, item := range data.PassiveInterfaceDisablePortChannels {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel"+"."+strconv.Itoa(index)+"."+"", item.Name.ValueString())
 			}
 		}
 	}
@@ -466,6 +570,387 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data OSPFVRF) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.ProcessId.IsNull() && !data.ProcessId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.ProcessId.ValueInt64(), 10))
+	}
+	if !data.Vrf.IsNull() && !data.Vrf.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/vrf", data.Vrf.ValueString())
+	}
+	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
+		if data.BfdAllInterfaces.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/all-interfaces", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bfd/all-interfaces")
+		}
+	}
+	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.IsUnknown() {
+		if data.DefaultInformationOriginate.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate")
+		}
+	}
+	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.IsUnknown() {
+		if data.DefaultInformationOriginateAlways.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/always", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate/always")
+		}
+	}
+	if !data.DefaultMetric.IsNull() && !data.DefaultMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/default-metric", strconv.FormatInt(data.DefaultMetric.ValueInt64(), 10))
+	}
+	if !data.Distance.IsNull() && !data.Distance.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/distance/distance", strconv.FormatInt(data.Distance.ValueInt64(), 10))
+	}
+	if !data.DomainTag.IsNull() && !data.DomainTag.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/domain-tag", strconv.FormatInt(data.DomainTag.ValueInt64(), 10))
+	}
+	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes", data.LogAdjacencyChanges.ValueBool())
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
+		if data.LogAdjacencyChangesDetail.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
+		}
+	}
+	if !data.NsfCisco.IsNull() && !data.NsfCisco.IsUnknown() {
+		if data.NsfCisco.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-cisco", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-cisco")
+		}
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.IsUnknown() {
+		if data.NsfCiscoEnforceGlobal.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-cisco/enforce/global", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-cisco/enforce/global")
+		}
+	}
+	if !data.NsfIetf.IsNull() && !data.NsfIetf.IsUnknown() {
+		if data.NsfIetf.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-ietf", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-ietf")
+		}
+	}
+	if !data.NsfIetfRestartInterval.IsNull() && !data.NsfIetfRestartInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-ietf/restart-interval", strconv.FormatInt(data.NsfIetfRestartInterval.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.IsUnknown() {
+		if data.MaxMetricRouterLsa.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa")
+		}
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric", strconv.FormatInt(data.MaxMetricRouterLsaSummaryLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() && !data.MaxMetricRouterLsaExternalLsaMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/external-lsa/metric", strconv.FormatInt(data.MaxMetricRouterLsaExternalLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.IsUnknown() {
+		if data.MaxMetricRouterLsaIncludeStub.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/include-stub", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa/include-stub")
+		}
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() && !data.MaxMetricRouterLsaOnStartupTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/time", strconv.FormatInt(data.MaxMetricRouterLsaOnStartupTime.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsUnknown() {
+		if data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
+		}
+	}
+	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.IsUnknown() {
+		if data.RedistributeStaticSubnets.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/subnets", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/static/subnets")
+		}
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.IsUnknown() {
+		if data.RedistributeConnectedSubnets.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/subnets", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/connected/subnets")
+		}
+	}
+	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.IsUnknown() {
+		if data.MplsLdpAutoconfig.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/ldp/autoconfig", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/ldp/autoconfig")
+		}
+	}
+	if !data.MplsLdpSync.IsNull() && !data.MplsLdpSync.IsUnknown() {
+		if data.MplsLdpSync.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/ldp/sync", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/ldp/sync")
+		}
+	}
+	if len(data.Neighbor) > 0 {
+		for _, item := range data.Neighbor {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
+			}
+			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
+			}
+			if !item.Cost.IsNull() && !item.Cost.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "cost", strconv.FormatInt(item.Cost.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/neighbor", cBody.Res())
+		}
+	}
+	if len(data.Network) > 0 {
+		for _, item := range data.Network {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
+			}
+			if !item.Wildcard.IsNull() && !item.Wildcard.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wildcard", item.Wildcard.ValueString())
+			}
+			if !item.Area.IsNull() && !item.Area.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "area", item.Area.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/network", cBody.Res())
+		}
+	}
+	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
+	}
+	if !data.RouterId.IsNull() && !data.RouterId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/router-id", data.RouterId.ValueString())
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", data.Shutdown.ValueBool())
+	}
+	if len(data.SummaryAddress) > 0 {
+		for _, item := range data.SummaryAddress {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
+			}
+			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mask", item.Mask.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/summary-address", cBody.Res())
+		}
+	}
+	if len(data.Areas) > 0 {
+		for _, item := range data.Areas {
+			cBody := netconf.Body{}
+			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "area-id", item.AreaId.ValueString())
+			}
+			if !item.AuthenticationMessageDigest.IsNull() && !item.AuthenticationMessageDigest.IsUnknown() {
+				if item.AuthenticationMessageDigest.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "authentication/message-digest", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "authentication/message-digest")
+				}
+			}
+			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
+				if item.Nssa.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa")
+				}
+			}
+			if !item.NssaDefaultInformationOriginate.IsNull() && !item.NssaDefaultInformationOriginate.IsUnknown() {
+				if item.NssaDefaultInformationOriginate.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/default-information-originate", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/default-information-originate")
+				}
+			}
+			if !item.NssaDefaultInformationOriginateMetric.IsNull() && !item.NssaDefaultInformationOriginateMetric.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/default-information-originate/metric", strconv.FormatInt(item.NssaDefaultInformationOriginateMetric.ValueInt64(), 10))
+			}
+			if !item.NssaDefaultInformationOriginateMetricType.IsNull() && !item.NssaDefaultInformationOriginateMetricType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/default-information-originate/metric-type", strconv.FormatInt(item.NssaDefaultInformationOriginateMetricType.ValueInt64(), 10))
+			}
+			if !item.NssaNoSummary.IsNull() && !item.NssaNoSummary.IsUnknown() {
+				if item.NssaNoSummary.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/no-summary", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/no-summary")
+				}
+			}
+			if !item.NssaNoRedistribution.IsNull() && !item.NssaNoRedistribution.IsUnknown() {
+				if item.NssaNoRedistribution.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/no-redistribution", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/no-redistribution")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/area", cBody.Res())
+		}
+	}
+	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/auto-cost/reference-bandwidth", strconv.FormatInt(data.AutoCostReferenceBandwidth.ValueInt64(), 10))
+	}
+	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/passive-interface/default", data.PassiveInterfaceDefault.ValueBool())
+	}
+	if !data.PassiveInterface.IsNull() && !data.PassiveInterface.IsUnknown() {
+		var values []string
+		data.PassiveInterface.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/passive-interface/interface", v)
+		}
+	}
+	if len(data.PassiveInterfaceDisableGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwoGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableFiveGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTenGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTenGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableFortyGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableHundredGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwoHundredGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableFourHundredGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableLoopbacks) > 0 {
+		for _, item := range data.PassiveInterfaceDisableLoopbacks {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/Loopback", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableVlans) > 0 {
+		for _, item := range data.PassiveInterfaceDisableVlans {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/Vlan", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTunnels) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTunnels {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/Tunnel", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisablePortChannels) > 0 {
+		for _, item := range data.PassiveInterfaceDisablePortChannels {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/Port-channel", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisablePortChannelSubinterfaces) > 0 {
+		for _, item := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -526,6 +1011,114 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.DomainTag = types.Int64Null()
 	}
+	if value := res.Get(prefix + "log-adjacency-changes"); !data.LogAdjacencyChanges.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); !data.LogAdjacencyChangesDetail.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChangesDetail = types.BoolValue(true)
+		} else {
+			data.LogAdjacencyChangesDetail = types.BoolValue(false)
+		}
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco"); !data.NsfCisco.IsNull() {
+		if value.Exists() {
+			data.NsfCisco = types.BoolValue(true)
+		} else {
+			data.NsfCisco = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCisco = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); !data.NsfCiscoEnforceGlobal.IsNull() {
+		if value.Exists() {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+		} else {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf"); !data.NsfIetf.IsNull() {
+		if value.Exists() {
+			data.NsfIetf = types.BoolValue(true)
+		} else {
+			data.NsfIetf = types.BoolValue(false)
+		}
+	} else {
+		data.NsfIetf = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() && !data.NsfIetfRestartInterval.IsNull() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	} else {
+		data.NsfIetfRestartInterval = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa"); !data.MaxMetricRouterLsa.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsa = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsa = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsa = types.BoolNull()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() && !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolNull()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() && !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "redistribute.static.subnets"); !data.RedistributeStaticSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeStaticSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeStaticSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeStaticSubnets = types.BoolNull()
+	}
+	if value := res.Get(prefix + "redistribute.connected.subnets"); !data.RedistributeConnectedSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeConnectedSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeConnectedSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolNull()
+	}
 	if value := res.Get(prefix + "mpls.ldp.autoconfig"); !data.MplsLdpAutoconfig.IsNull() {
 		if value.Exists() {
 			data.MplsLdpAutoconfig = types.BoolValue(true)
@@ -584,8 +1177,8 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.Network {
-		keys := [...]string{"ip"}
-		keyValues := [...]string{data.Network[i].Ip.ValueString()}
+		keys := [...]string{"ip", "wildcard"}
+		keyValues := [...]string{data.Network[i].Ip.ValueString(), data.Network[i].Wildcard.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "network").ForEach(
@@ -640,8 +1233,8 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.Shutdown = types.BoolNull()
 	}
 	for i := range data.SummaryAddress {
-		keys := [...]string{"ip"}
-		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString()}
+		keys := [...]string{"ip", "mask"}
+		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString(), data.SummaryAddress[i].Mask.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "summary-address").ForEach(
@@ -1123,7 +1716,7 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisablePortChannels {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1145,7 +1738,7 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
+		if value := r.Get(""); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
 			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringValue(value.String())
 		} else {
 			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringNull()
@@ -1184,6 +1777,827 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/id"); value.Exists() && !data.ProcessId.IsNull() {
+		data.ProcessId = types.Int64Value(value.Int())
+	} else {
+		data.ProcessId = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() && !data.Vrf.IsNull() {
+		data.Vrf = types.StringValue(value.String())
+	} else {
+		data.Vrf = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/all-interfaces"); !data.BfdAllInterfaces.IsNull() {
+		if value.Exists() {
+			data.BfdAllInterfaces = types.BoolValue(true)
+		} else {
+			data.BfdAllInterfaces = types.BoolValue(false)
+		}
+	} else {
+		data.BfdAllInterfaces = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate"); !data.DefaultInformationOriginate.IsNull() {
+		if value.Exists() {
+			data.DefaultInformationOriginate = types.BoolValue(true)
+		} else {
+			data.DefaultInformationOriginate = types.BoolValue(false)
+		}
+	} else {
+		data.DefaultInformationOriginate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/always"); !data.DefaultInformationOriginateAlways.IsNull() {
+		if value.Exists() {
+			data.DefaultInformationOriginateAlways = types.BoolValue(true)
+		} else {
+			data.DefaultInformationOriginateAlways = types.BoolValue(false)
+		}
+	} else {
+		data.DefaultInformationOriginateAlways = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() && !data.DefaultMetric.IsNull() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	} else {
+		data.DefaultMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance/distance"); value.Exists() && !data.Distance.IsNull() {
+		data.Distance = types.Int64Value(value.Int())
+	} else {
+		data.Distance = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/domain-tag"); value.Exists() && !data.DomainTag.IsNull() {
+		data.DomainTag = types.Int64Value(value.Int())
+	} else {
+		data.DomainTag = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes"); !data.LogAdjacencyChanges.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail"); !data.LogAdjacencyChangesDetail.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChangesDetail = types.BoolValue(true)
+		} else {
+			data.LogAdjacencyChangesDetail = types.BoolValue(false)
+		}
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco"); !data.NsfCisco.IsNull() {
+		if value.Exists() {
+			data.NsfCisco = types.BoolValue(true)
+		} else {
+			data.NsfCisco = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCisco = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco/enforce/global"); !data.NsfCiscoEnforceGlobal.IsNull() {
+		if value.Exists() {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+		} else {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf"); !data.NsfIetf.IsNull() {
+		if value.Exists() {
+			data.NsfIetf = types.BoolValue(true)
+		} else {
+			data.NsfIetf = types.BoolValue(false)
+		}
+	} else {
+		data.NsfIetf = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf/restart-interval"); value.Exists() && !data.NsfIetfRestartInterval.IsNull() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	} else {
+		data.NsfIetfRestartInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa"); !data.MaxMetricRouterLsa.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsa = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsa = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsa = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric"); value.Exists() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/external-lsa/metric"); value.Exists() && !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/include-stub"); !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/time"); value.Exists() && !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp"); !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/subnets"); !data.RedistributeStaticSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeStaticSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeStaticSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeStaticSubnets = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); !data.RedistributeConnectedSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeConnectedSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeConnectedSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/autoconfig"); !data.MplsLdpAutoconfig.IsNull() {
+		if value.Exists() {
+			data.MplsLdpAutoconfig = types.BoolValue(true)
+		} else {
+			data.MplsLdpAutoconfig = types.BoolValue(false)
+		}
+	} else {
+		data.MplsLdpAutoconfig = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/sync"); !data.MplsLdpSync.IsNull() {
+		if value.Exists() {
+			data.MplsLdpSync = types.BoolValue(true)
+		} else {
+			data.MplsLdpSync = types.BoolValue(false)
+		}
+	} else {
+		data.MplsLdpSync = types.BoolNull()
+	}
+	for i := range data.Neighbor {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.Neighbor[i].Ip.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/neighbor").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.Neighbor[i].Ip.IsNull() {
+			data.Neighbor[i].Ip = types.StringValue(value.String())
+		} else {
+			data.Neighbor[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "priority"); value.Exists() && !data.Neighbor[i].Priority.IsNull() {
+			data.Neighbor[i].Priority = types.Int64Value(value.Int())
+		} else {
+			data.Neighbor[i].Priority = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "cost"); value.Exists() && !data.Neighbor[i].Cost.IsNull() {
+			data.Neighbor[i].Cost = types.Int64Value(value.Int())
+		} else {
+			data.Neighbor[i].Cost = types.Int64Null()
+		}
+	}
+	for i := range data.Network {
+		keys := [...]string{"ip", "wildcard"}
+		keyValues := [...]string{data.Network[i].Ip.ValueString(), data.Network[i].Wildcard.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/network").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.Network[i].Ip.IsNull() {
+			data.Network[i].Ip = types.StringValue(value.String())
+		} else {
+			data.Network[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wildcard"); value.Exists() && !data.Network[i].Wildcard.IsNull() {
+			data.Network[i].Wildcard = types.StringValue(value.String())
+		} else {
+			data.Network[i].Wildcard = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "area"); value.Exists() && !data.Network[i].Area.IsNull() {
+			data.Network[i].Area = types.StringValue(value.String())
+		} else {
+			data.Network[i].Area = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
+		data.Priority = types.Int64Value(value.Int())
+	} else {
+		data.Priority = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/router-id"); value.Exists() && !data.RouterId.IsNull() {
+		data.RouterId = types.StringValue(value.String())
+	} else {
+		data.RouterId = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
+		if value.Exists() {
+			data.Shutdown = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	for i := range data.SummaryAddress {
+		keys := [...]string{"ip", "mask"}
+		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString(), data.SummaryAddress[i].Mask.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/summary-address").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.SummaryAddress[i].Ip.IsNull() {
+			data.SummaryAddress[i].Ip = types.StringValue(value.String())
+		} else {
+			data.SummaryAddress[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mask"); value.Exists() && !data.SummaryAddress[i].Mask.IsNull() {
+			data.SummaryAddress[i].Mask = types.StringValue(value.String())
+		} else {
+			data.SummaryAddress[i].Mask = types.StringNull()
+		}
+	}
+	for i := range data.Areas {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/area").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "area-id"); value.Exists() && !data.Areas[i].AreaId.IsNull() {
+			data.Areas[i].AreaId = types.StringValue(value.String())
+		} else {
+			data.Areas[i].AreaId = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "authentication/message-digest"); !data.Areas[i].AuthenticationMessageDigest.IsNull() {
+			if value.Exists() {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].AuthenticationMessageDigest = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa"); !data.Areas[i].Nssa.IsNull() {
+			if value.Exists() {
+				data.Areas[i].Nssa = types.BoolValue(true)
+			} else {
+				data.Areas[i].Nssa = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].Nssa = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/default-information-originate"); !data.Areas[i].NssaDefaultInformationOriginate.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginate = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/default-information-originate/metric"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/default-information-originate/metric-type"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/no-summary"); !data.Areas[i].NssaNoSummary.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoSummary = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoSummary = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoSummary = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/no-redistribution"); !data.Areas[i].NssaNoRedistribution.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoRedistribution = types.BoolNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auto-cost/reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	} else {
+		data.AutoCostReferenceBandwidth = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface/default"); !data.PassiveInterfaceDefault.IsNull() {
+		if value.Exists() {
+			data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface/interface"); value.Exists() && !data.PassiveInterface.IsNull() {
+		data.PassiveInterface = helpers.GetStringListXML(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	for i := range data.PassiveInterfaceDisableGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableLoopbacks {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Loopback").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableLoopbacks[i].Name.IsNull() {
+			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableVlans {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Vlan").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableVlans[i].Name.IsNull() {
+			data.PassiveInterfaceDisableVlans[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableVlans[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTunnels {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Tunnel").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisableTunnels[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTunnels[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTunnels[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisablePortChannels {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
+			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.IsNull() {
+			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *OSPFVRF) fromBody(ctx context.Context, res gjson.Result) {
@@ -1214,6 +2628,68 @@ func (data *OSPFVRF) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "domain-tag"); value.Exists() {
 		data.DomainTag = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redistribute.static.subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redistribute.connected.subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "mpls.ldp.autoconfig"); value.Exists() {
 		data.MplsLdpAutoconfig = types.BoolValue(true)
@@ -1475,7 +2951,7 @@ func (data *OSPFVRF) fromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
-			if cValue := v.Get("name"); cValue.Exists() {
+			if cValue := v.Get(""); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
@@ -1528,6 +3004,68 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "domain-tag"); value.Exists() {
 		data.DomainTag = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redistribute.static.subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redistribute.connected.subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "mpls.ldp.autoconfig"); value.Exists() {
 		data.MplsLdpAutoconfig = types.BoolValue(true)
 	} else {
@@ -1788,7 +3326,7 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
-			if cValue := v.Get("name"); cValue.Exists() {
+			if cValue := v.Get(""); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
@@ -1809,6 +3347,748 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *OSPFVRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/all-interfaces"); value.Exists() {
+		data.BfdAllInterfaces = types.BoolValue(true)
+	} else {
+		data.BfdAllInterfaces = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate"); value.Exists() {
+		data.DefaultInformationOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/always"); value.Exists() {
+		data.DefaultInformationOriginateAlways = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginateAlways = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance/distance"); value.Exists() {
+		data.Distance = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/domain-tag"); value.Exists() {
+		data.DomainTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco/enforce/global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf/restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/external-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/autoconfig"); value.Exists() {
+		data.MplsLdpAutoconfig = types.BoolValue(true)
+	} else {
+		data.MplsLdpAutoconfig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/sync"); value.Exists() {
+		data.MplsLdpSync = types.BoolValue(true)
+	} else {
+		data.MplsLdpSync = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/neighbor"); value.Exists() {
+		data.Neighbor = make([]OSPFVRFNeighbor, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFNeighbor{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "cost"); cValue.Exists() {
+				item.Cost = types.Int64Value(cValue.Int())
+			}
+			data.Neighbor = append(data.Neighbor, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network"); value.Exists() {
+		data.Network = make([]OSPFVRFNetwork, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFNetwork{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "area"); cValue.Exists() {
+				item.Area = types.StringValue(cValue.String())
+			}
+			data.Network = append(data.Network, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
+		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/router-id"); value.Exists() {
+		data.RouterId = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(value.Bool())
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summary-address"); value.Exists() {
+		data.SummaryAddress = make([]OSPFVRFSummaryAddress, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFSummaryAddress{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			data.SummaryAddress = append(data.SummaryAddress, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/area"); value.Exists() {
+		data.Areas = make([]OSPFVRFAreas, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFAreas{}
+			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authentication/message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate"); cValue.Exists() {
+				item.NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				item.NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric-type"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-summary"); cValue.Exists() {
+				item.NssaNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNoSummary = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-redistribution"); cValue.Exists() {
+				item.NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNoRedistribution = types.BoolValue(false)
+			}
+			data.Areas = append(data.Areas, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auto-cost/reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface/default"); value.Exists() {
+		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface/interface"); value.Exists() {
+		data.PassiveInterface = helpers.GetStringListXML(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Loopback"); value.Exists() {
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableLoopbacks{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Vlan"); value.Exists() {
+		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlans, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableVlans{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Tunnel"); value.Exists() {
+		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTunnels{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/all-interfaces"); value.Exists() {
+		data.BfdAllInterfaces = types.BoolValue(true)
+	} else {
+		data.BfdAllInterfaces = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate"); value.Exists() {
+		data.DefaultInformationOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/always"); value.Exists() {
+		data.DefaultInformationOriginateAlways = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginateAlways = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance/distance"); value.Exists() {
+		data.Distance = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/domain-tag"); value.Exists() {
+		data.DomainTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco/enforce/global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf/restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/external-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/autoconfig"); value.Exists() {
+		data.MplsLdpAutoconfig = types.BoolValue(true)
+	} else {
+		data.MplsLdpAutoconfig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/sync"); value.Exists() {
+		data.MplsLdpSync = types.BoolValue(true)
+	} else {
+		data.MplsLdpSync = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/neighbor"); value.Exists() {
+		data.Neighbor = make([]OSPFVRFNeighbor, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFNeighbor{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "cost"); cValue.Exists() {
+				item.Cost = types.Int64Value(cValue.Int())
+			}
+			data.Neighbor = append(data.Neighbor, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network"); value.Exists() {
+		data.Network = make([]OSPFVRFNetwork, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFNetwork{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "area"); cValue.Exists() {
+				item.Area = types.StringValue(cValue.String())
+			}
+			data.Network = append(data.Network, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
+		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/router-id"); value.Exists() {
+		data.RouterId = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(value.Bool())
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summary-address"); value.Exists() {
+		data.SummaryAddress = make([]OSPFVRFSummaryAddress, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFSummaryAddress{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			data.SummaryAddress = append(data.SummaryAddress, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/area"); value.Exists() {
+		data.Areas = make([]OSPFVRFAreas, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFAreas{}
+			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authentication/message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate"); cValue.Exists() {
+				item.NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				item.NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric-type"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-summary"); cValue.Exists() {
+				item.NssaNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNoSummary = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-redistribution"); cValue.Exists() {
+				item.NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNoRedistribution = types.BoolValue(false)
+			}
+			data.Areas = append(data.Areas, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/auto-cost/reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface/default"); value.Exists() {
+		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface/interface"); value.Exists() {
+		data.PassiveInterface = helpers.GetStringListXML(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Loopback"); value.Exists() {
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableLoopbacks{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Vlan"); value.Exists() {
+		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlans, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableVlans{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Tunnel"); value.Exists() {
+		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisableTunnels{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
@@ -2238,10 +4518,13 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 		}
 	}
 	for i := range state.SummaryAddress {
-		stateKeyValues := [...]string{state.SummaryAddress[i].Ip.ValueString()}
+		stateKeyValues := [...]string{state.SummaryAddress[i].Ip.ValueString(), state.SummaryAddress[i].Mask.ValueString()}
 
 		emptyKeys := true
 		if !reflect.ValueOf(state.SummaryAddress[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.SummaryAddress[i].Mask.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2254,10 +4537,10 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 			if state.SummaryAddress[i].Ip.ValueString() != data.SummaryAddress[j].Ip.ValueString() {
 				found = false
 			}
+			if state.SummaryAddress[i].Mask.ValueString() != data.SummaryAddress[j].Mask.ValueString() {
+				found = false
+			}
 			if found {
-				if !state.SummaryAddress[i].Mask.IsNull() && data.SummaryAddress[j].Mask.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/summary-address=%v/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				break
 			}
 		}
@@ -2275,10 +4558,13 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
 	}
 	for i := range state.Network {
-		stateKeyValues := [...]string{state.Network[i].Ip.ValueString()}
+		stateKeyValues := [...]string{state.Network[i].Ip.ValueString(), state.Network[i].Wildcard.ValueString()}
 
 		emptyKeys := true
 		if !reflect.ValueOf(state.Network[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Network[i].Wildcard.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2291,12 +4577,12 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 			if state.Network[i].Ip.ValueString() != data.Network[j].Ip.ValueString() {
 				found = false
 			}
+			if state.Network[i].Wildcard.ValueString() != data.Network[j].Wildcard.ValueString() {
+				found = false
+			}
 			if found {
 				if !state.Network[i].Area.IsNull() && data.Network[j].Area.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/area", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Network[i].Wildcard.IsNull() && data.Network[j].Wildcard.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/wildcard", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -2342,6 +4628,48 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/autoconfig", state.getPath()))
 	}
+	if !state.RedistributeConnectedSubnets.IsNull() && data.RedistributeConnectedSubnets.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redistribute/connected/subnets", state.getPath()))
+	}
+	if !state.RedistributeStaticSubnets.IsNull() && data.RedistributeStaticSubnets.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redistribute/static/subnets", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaOnStartupTime.IsNull() && data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/time", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaIncludeStub.IsNull() && data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaExternalLsaMetric.IsNull() && data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/external-lsa/metric", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/summary-lsa/metric", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsa.IsNull() && data.MaxMetricRouterLsa.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa", state.getPath()))
+	}
+	if !state.NsfIetfRestartInterval.IsNull() && data.NsfIetfRestartInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-ietf/restart-interval", state.getPath()))
+	}
+	if !state.NsfIetf.IsNull() && data.NsfIetf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-ietf", state.getPath()))
+	}
+	if !state.NsfCiscoEnforceGlobal.IsNull() && data.NsfCiscoEnforceGlobal.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", state.getPath()))
+	}
+	if !state.NsfCisco.IsNull() && data.NsfCisco.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-cisco", state.getPath()))
+	}
+	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", state.getPath()))
+	}
+	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes", state.getPath()))
+	}
 	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/domain-tag", state.getPath()))
 	}
@@ -2365,6 +4693,705 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *OSPFVRF) addDeletedItemsXML(ctx context.Context, state OSPFVRF, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.PassiveInterfaceDisablePortChannelSubinterfaces {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+			found = true
+			if state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannelSubinterfaces[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisablePortChannels {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisablePortChannels {
+			found = true
+			if state.PassiveInterfaceDisablePortChannels[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannels[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Port-channel%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTunnels {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTunnels[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTunnels {
+			found = true
+			if state.PassiveInterfaceDisableTunnels[i].Name.ValueString() != data.PassiveInterfaceDisableTunnels[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Tunnel%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableVlans {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableVlans[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableVlans {
+			found = true
+			if state.PassiveInterfaceDisableVlans[i].Name.ValueString() != data.PassiveInterfaceDisableVlans[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Vlan%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableLoopbacks {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableLoopbacks {
+			found = true
+			if state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString() != data.PassiveInterfaceDisableLoopbacks[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Loopback%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFourHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableHundredGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFortyGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFortyGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTenGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTenGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTenGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFiveGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFiveGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwoGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableGigabitEthernets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet%v", predicates))
+		}
+	}
+	if !state.PassiveInterface.IsNull() {
+		if data.PassiveInterface.IsNull() {
+			var values []string
+			state.PassiveInterface.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface/interface[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.PassiveInterface.ElementsAs(ctx, &dataValues, false)
+			state.PassiveInterface.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface/interface[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/passive-interface/default")
+	}
+	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auto-cost/reference-bandwidth")
+	}
+	for i := range state.Areas {
+		stateKeys := [...]string{"area-id"}
+		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Areas[i].AreaId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Areas {
+			found = true
+			if state.Areas[i].AreaId.ValueString() != data.Areas[j].AreaId.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Areas[i].NssaNoRedistribution.IsNull() && data.Areas[j].NssaNoRedistribution.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/no-redistribution", predicates))
+				}
+				if !state.Areas[i].NssaNoSummary.IsNull() && data.Areas[j].NssaNoSummary.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/no-summary", predicates))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate/metric-type", predicates))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate/metric", predicates))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && data.Areas[j].NssaDefaultInformationOriginate.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate", predicates))
+				}
+				if !state.Areas[i].Nssa.IsNull() && data.Areas[j].Nssa.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa", predicates))
+				}
+				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && data.Areas[j].AuthenticationMessageDigest.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/authentication/message-digest", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v", predicates))
+		}
+	}
+	for i := range state.SummaryAddress {
+		stateKeys := [...]string{"ip", "mask"}
+		stateKeyValues := [...]string{state.SummaryAddress[i].Ip.ValueString(), state.SummaryAddress[i].Mask.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SummaryAddress[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.SummaryAddress[i].Mask.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SummaryAddress {
+			found = true
+			if state.SummaryAddress[i].Ip.ValueString() != data.SummaryAddress[j].Ip.ValueString() {
+				found = false
+			}
+			if state.SummaryAddress[i].Mask.ValueString() != data.SummaryAddress[j].Mask.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/summary-address%v", predicates))
+		}
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/router-id")
+	}
+	if !state.Priority.IsNull() && data.Priority.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
+	}
+	for i := range state.Network {
+		stateKeys := [...]string{"ip", "wildcard"}
+		stateKeyValues := [...]string{state.Network[i].Ip.ValueString(), state.Network[i].Wildcard.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Network[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Network[i].Wildcard.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Network {
+			found = true
+			if state.Network[i].Ip.ValueString() != data.Network[j].Ip.ValueString() {
+				found = false
+			}
+			if state.Network[i].Wildcard.ValueString() != data.Network[j].Wildcard.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Network[i].Area.IsNull() && data.Network[j].Area.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/area", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v", predicates))
+		}
+	}
+	for i := range state.Neighbor {
+		stateKeys := [...]string{"ip"}
+		stateKeyValues := [...]string{state.Neighbor[i].Ip.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Neighbor[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Neighbor {
+			found = true
+			if state.Neighbor[i].Ip.ValueString() != data.Neighbor[j].Ip.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Neighbor[i].Cost.IsNull() && data.Neighbor[j].Cost.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v/cost", predicates))
+				}
+				if !state.Neighbor[i].Priority.IsNull() && data.Neighbor[j].Priority.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v/priority", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v", predicates))
+		}
+	}
+	if !state.MplsLdpSync.IsNull() && data.MplsLdpSync.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/ldp/sync")
+	}
+	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/ldp/autoconfig")
+	}
+	if !state.RedistributeConnectedSubnets.IsNull() && data.RedistributeConnectedSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/subnets")
+	}
+	if !state.RedistributeStaticSubnets.IsNull() && data.RedistributeStaticSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/subnets")
+	}
+	if !state.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
+	}
+	if !state.MaxMetricRouterLsaOnStartupTime.IsNull() && data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/on-startup/time")
+	}
+	if !state.MaxMetricRouterLsaIncludeStub.IsNull() && data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/include-stub")
+	}
+	if !state.MaxMetricRouterLsaExternalLsaMetric.IsNull() && data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/external-lsa/metric")
+	}
+	if !state.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/summary-lsa/metric")
+	}
+	if !state.MaxMetricRouterLsa.IsNull() && data.MaxMetricRouterLsa.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa")
+	}
+	if !state.NsfIetfRestartInterval.IsNull() && data.NsfIetfRestartInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-ietf/restart-interval")
+	}
+	if !state.NsfIetf.IsNull() && data.NsfIetf.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-ietf")
+	}
+	if !state.NsfCiscoEnforceGlobal.IsNull() && data.NsfCiscoEnforceGlobal.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-cisco/enforce/global")
+	}
+	if !state.NsfCisco.IsNull() && data.NsfCisco.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-cisco")
+	}
+	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
+	}
+	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes")
+	}
+	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/domain-tag")
+	}
+	if !state.Distance.IsNull() && data.Distance.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/distance/distance")
+	}
+	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-metric")
+	}
+	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/always")
+	}
+	if !state.DefaultInformationOriginate.IsNull() && data.DefaultInformationOriginate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate")
+	}
+	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/all-interfaces")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -2395,6 +5422,33 @@ func (data *OSPFVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redistribute/connected/subnets", data.getPath()))
+	}
+	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redistribute/static/subnets", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa", data.getPath()))
+	}
+	if !data.NsfIetf.IsNull() && !data.NsfIetf.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-ietf", data.getPath()))
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", data.getPath()))
+	}
+	if !data.NsfCisco.IsNull() && !data.NsfCisco.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-cisco", data.getPath()))
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", data.getPath()))
 	}
 	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
@@ -2500,7 +5554,7 @@ func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/area=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.SummaryAddress {
-		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString()}
+		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString(), data.SummaryAddress[i].Mask.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
@@ -2514,7 +5568,7 @@ func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
 	}
 	for i := range data.Network {
-		keyValues := [...]string{data.Network[i].Ip.ValueString()}
+		keyValues := [...]string{data.Network[i].Ip.ValueString(), data.Network[i].Wildcard.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
@@ -2528,6 +5582,48 @@ func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.MplsLdpAutoconfig.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/subnets", data.getPath()))
+	}
+	if !data.RedistributeStaticSubnets.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/subnets", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/time", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/external-lsa/metric", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/summary-lsa/metric", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa", data.getPath()))
+	}
+	if !data.NsfIetfRestartInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf/restart-interval", data.getPath()))
+	}
+	if !data.NsfIetf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf", data.getPath()))
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", data.getPath()))
+	}
+	if !data.NsfCisco.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco", data.getPath()))
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", data.getPath()))
+	}
+	if !data.LogAdjacencyChanges.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes", data.getPath()))
 	}
 	if !data.DomainTag.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/domain-tag", data.getPath()))
@@ -2552,3 +5648,282 @@ func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *OSPFVRF) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisablePortChannels {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/Port-channel%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTunnels {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/Tunnel%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableVlans {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/Vlan%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableLoopbacks {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/Loopback%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet%v", predicates))
+	}
+	if !data.PassiveInterface.IsNull() {
+		var values []string
+		data.PassiveInterface.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface/interface[.=%v]", v))
+		}
+	}
+	if !data.PassiveInterfaceDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/passive-interface/default")
+	}
+	if !data.AutoCostReferenceBandwidth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/auto-cost/reference-bandwidth")
+	}
+	for i := range data.Areas {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/area%v", predicates))
+	}
+	for i := range data.SummaryAddress {
+		keys := [...]string{"ip", "mask"}
+		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString(), data.SummaryAddress[i].Mask.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/summary-address%v", predicates))
+	}
+	if !data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	if !data.RouterId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/router-id")
+	}
+	if !data.Priority.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/priority")
+	}
+	for i := range data.Network {
+		keys := [...]string{"ip", "wildcard"}
+		keyValues := [...]string{data.Network[i].Ip.ValueString(), data.Network[i].Wildcard.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/network%v", predicates))
+	}
+	for i := range data.Neighbor {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.Neighbor[i].Ip.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/neighbor%v", predicates))
+	}
+	if !data.MplsLdpSync.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mpls/ldp/sync")
+	}
+	if !data.MplsLdpAutoconfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mpls/ldp/autoconfig")
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/subnets")
+	}
+	if !data.RedistributeStaticSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/subnets")
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/on-startup/time")
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/include-stub")
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/external-lsa/metric")
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric")
+	}
+	if !data.MaxMetricRouterLsa.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa")
+	}
+	if !data.NsfIetfRestartInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-ietf/restart-interval")
+	}
+	if !data.NsfIetf.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-ietf")
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-cisco/enforce/global")
+	}
+	if !data.NsfCisco.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-cisco")
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
+	}
+	if !data.LogAdjacencyChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/log-adjacency-changes")
+	}
+	if !data.DomainTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/domain-tag")
+	}
+	if !data.Distance.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/distance/distance")
+	}
+	if !data.DefaultMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-metric")
+	}
+	if !data.DefaultInformationOriginateAlways.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/always")
+	}
+	if !data.DefaultInformationOriginate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate")
+	}
+	if !data.BfdAllInterfaces.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/all-interfaces")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

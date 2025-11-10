@@ -117,8 +117,8 @@ func TestAccDataSourceIosxeTemplate(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeTemplatePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=dot1x_policy]"
 	attributes = {
 		"name" = "dot1x_policy"
 		"type" = "control"
@@ -205,7 +205,7 @@ func testAccDataSourceIosxeTemplateConfig() string {
 	config += `	cts_manual_policy_static_trusted = false` + "\n"
 	config += `	cts_manual_propagate_sgt = false` + "\n"
 	config += `	cts_role_based_enforcement = false` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

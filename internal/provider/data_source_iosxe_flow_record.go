@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -195,6 +196,30 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "64 bits counter",
 				Computed:            true,
 			},
+			"match_datalink_mac_source_address_input": schema.BoolAttribute{
+				MarkdownDescription: "Source MAC address from packet at input",
+				Computed:            true,
+			},
+			"match_datalink_mac_destination_address_input": schema.BoolAttribute{
+				MarkdownDescription: "Destination MAC address from packet at input",
+				Computed:            true,
+			},
+			"match_datalink_vlan": schema.StringAttribute{
+				MarkdownDescription: "Match VLAN input/output, available on switch platforms (C9K)",
+				Computed:            true,
+			},
+			"match_datalink_source_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: "Match source VLAN ID, available on router platforms (C8K, CSR1K)",
+				Computed:            true,
+			},
+			"match_datalink_destination_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: "Match destination VLAN ID, available on router platforms (C8K, CSR1K)",
+				Computed:            true,
+			},
+			"match_ipv4_ttl": schema.BoolAttribute{
+				MarkdownDescription: "IPv4 TTL",
+				Computed:            true,
+			},
 			"collect_datalink_mac_source_address_input": schema.BoolAttribute{
 				MarkdownDescription: "Source MAC address from packet at input",
 				Computed:            true,
@@ -237,16 +262,34 @@ func (d *FlowRecordDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	res, err := device.Client.GetData(config.getPath())
-	if res.StatusCode == 404 {
-		config = FlowRecordData{Device: config.Device}
+	if device.Protocol == "restconf" {
+		res, err := device.RestconfClient.GetData(config.getPath())
+		if res.StatusCode == 404 {
+			config = FlowRecordData{Device: config.Device}
+		} else {
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+				return
+			}
+
+			config.fromBody(ctx, res.Res)
+		}
 	} else {
+		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+		filter := helpers.GetXpathFilter(config.getXPath())
+		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 
-		config.fromBody(ctx, res.Res)
+		config.fromBodyXML(ctx, res.Res)
 	}
 
 	config.Id = types.StringValue(config.getPath())

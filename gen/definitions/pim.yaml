@@ -1,6 +1,6 @@
 ---
 name: PIM
-path: Cisco-IOS-XE-native:native/ip/pim
+path: /Cisco-IOS-XE-native:native/ip/pim
 doc_category: Multicast
 attributes:
   - yang_name: Cisco-IOS-XE-multicast:autorp-container/autorp
@@ -142,14 +142,14 @@ attributes:
           - yang_name: bidir
             example: false
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=200
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=200]
     attributes:
       - name: name
         value: 200
@@ -160,7 +160,7 @@ test_prerequisites:
       - name: ip/address/primary/mask
         value: 255.255.255.255
     dependencies: [0]
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

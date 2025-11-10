@@ -29,6 +29,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -101,6 +104,19 @@ func (data BFDTemplateSingleHop) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data BFDTemplateSingleHop) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data BFDTemplateSingleHopData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -161,6 +177,71 @@ func (data BFDTemplateSingleHop) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data BFDTemplateSingleHop) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.AuthenticationMd5Keychain.IsNull() && !data.AuthenticationMd5Keychain.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/md5/keychain", data.AuthenticationMd5Keychain.ValueString())
+	}
+	if !data.AuthenticationMeticulousMd5Keychain.IsNull() && !data.AuthenticationMeticulousMd5Keychain.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/meticulous-md5/keychain", data.AuthenticationMeticulousMd5Keychain.ValueString())
+	}
+	if !data.AuthenticationMeticulousSha1Keychain.IsNull() && !data.AuthenticationMeticulousSha1Keychain.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/meticulous-sha-1/keychain", data.AuthenticationMeticulousSha1Keychain.ValueString())
+	}
+	if !data.AuthenticationSha1Keychain.IsNull() && !data.AuthenticationSha1Keychain.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/sha-1/keychain", data.AuthenticationSha1Keychain.ValueString())
+	}
+	if !data.IntervalMillisecondsMinTx.IsNull() && !data.IntervalMillisecondsMinTx.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-singlehop-v2/mill-unit/min-tx", strconv.FormatInt(data.IntervalMillisecondsMinTx.ValueInt64(), 10))
+	}
+	if !data.IntervalMillisecondsMinRx.IsNull() && !data.IntervalMillisecondsMinRx.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-singlehop-v2/mill-unit/min-rx", strconv.FormatInt(data.IntervalMillisecondsMinRx.ValueInt64(), 10))
+	}
+	if !data.IntervalMillisecondsBoth.IsNull() && !data.IntervalMillisecondsBoth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-singlehop-v2/mill-unit/both", strconv.FormatInt(data.IntervalMillisecondsBoth.ValueInt64(), 10))
+	}
+	if !data.IntervalMillisecondsMultiplier.IsNull() && !data.IntervalMillisecondsMultiplier.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-singlehop-v2/mill-unit/multiplier", strconv.FormatInt(data.IntervalMillisecondsMultiplier.ValueInt64(), 10))
+	}
+	if !data.IntervalMicrosecondsMinRx.IsNull() && !data.IntervalMicrosecondsMinRx.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-singlehop-v2/ms-unit/min-rx", strconv.FormatInt(data.IntervalMicrosecondsMinRx.ValueInt64(), 10))
+	}
+	if !data.IntervalMicrosecondsMinTx.IsNull() && !data.IntervalMicrosecondsMinTx.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-singlehop-v2/ms-unit/min-tx", strconv.FormatInt(data.IntervalMicrosecondsMinTx.ValueInt64(), 10))
+	}
+	if !data.Echo.IsNull() && !data.Echo.IsUnknown() {
+		if data.Echo.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/echo", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/echo")
+		}
+	}
+	if !data.DampeningHalfTime.IsNull() && !data.DampeningHalfTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dampening/half-time", strconv.FormatInt(data.DampeningHalfTime.ValueInt64(), 10))
+	}
+	if !data.DampeningUnsuppressTime.IsNull() && !data.DampeningUnsuppressTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dampening/unsuppress-time", strconv.FormatInt(data.DampeningUnsuppressTime.ValueInt64(), 10))
+	}
+	if !data.DampeningSuppressTime.IsNull() && !data.DampeningSuppressTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dampening/suppress-time", strconv.FormatInt(data.DampeningSuppressTime.ValueInt64(), 10))
+	}
+	if !data.DampeningMaxSuppressingTime.IsNull() && !data.DampeningMaxSuppressingTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dampening/max-suppressing-time", strconv.FormatInt(data.DampeningMaxSuppressingTime.ValueInt64(), 10))
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -256,6 +337,97 @@ func (data *BFDTemplateSingleHop) updateFromBody(ctx context.Context, res gjson.
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *BFDTemplateSingleHop) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/md5/keychain"); value.Exists() && !data.AuthenticationMd5Keychain.IsNull() {
+		data.AuthenticationMd5Keychain = types.StringValue(value.String())
+	} else {
+		data.AuthenticationMd5Keychain = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-md5/keychain"); value.Exists() && !data.AuthenticationMeticulousMd5Keychain.IsNull() {
+		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
+	} else {
+		data.AuthenticationMeticulousMd5Keychain = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1/keychain"); value.Exists() && !data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
+	} else {
+		data.AuthenticationMeticulousSha1Keychain = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/sha-1/keychain"); value.Exists() && !data.AuthenticationSha1Keychain.IsNull() {
+		data.AuthenticationSha1Keychain = types.StringValue(value.String())
+	} else {
+		data.AuthenticationSha1Keychain = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/min-tx"); value.Exists() && !data.IntervalMillisecondsMinTx.IsNull() {
+		data.IntervalMillisecondsMinTx = types.Int64Value(value.Int())
+	} else {
+		data.IntervalMillisecondsMinTx = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/min-rx"); value.Exists() && !data.IntervalMillisecondsMinRx.IsNull() {
+		data.IntervalMillisecondsMinRx = types.Int64Value(value.Int())
+	} else {
+		data.IntervalMillisecondsMinRx = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/both"); value.Exists() && !data.IntervalMillisecondsBoth.IsNull() {
+		data.IntervalMillisecondsBoth = types.Int64Value(value.Int())
+	} else {
+		data.IntervalMillisecondsBoth = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/multiplier"); value.Exists() && !data.IntervalMillisecondsMultiplier.IsNull() {
+		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
+	} else {
+		data.IntervalMillisecondsMultiplier = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/ms-unit/min-rx"); value.Exists() && !data.IntervalMicrosecondsMinRx.IsNull() {
+		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
+	} else {
+		data.IntervalMicrosecondsMinRx = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/ms-unit/min-tx"); value.Exists() && !data.IntervalMicrosecondsMinTx.IsNull() {
+		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
+	} else {
+		data.IntervalMicrosecondsMinTx = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/echo"); !data.Echo.IsNull() {
+		if value.Exists() {
+			data.Echo = types.BoolValue(true)
+		} else {
+			data.Echo = types.BoolValue(false)
+		}
+	} else {
+		data.Echo = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/half-time"); value.Exists() && !data.DampeningHalfTime.IsNull() {
+		data.DampeningHalfTime = types.Int64Value(value.Int())
+	} else {
+		data.DampeningHalfTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/unsuppress-time"); value.Exists() && !data.DampeningUnsuppressTime.IsNull() {
+		data.DampeningUnsuppressTime = types.Int64Value(value.Int())
+	} else {
+		data.DampeningUnsuppressTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/suppress-time"); value.Exists() && !data.DampeningSuppressTime.IsNull() {
+		data.DampeningSuppressTime = types.Int64Value(value.Int())
+	} else {
+		data.DampeningSuppressTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/max-suppressing-time"); value.Exists() && !data.DampeningMaxSuppressingTime.IsNull() {
+		data.DampeningMaxSuppressingTime = types.Int64Value(value.Int())
+	} else {
+		data.DampeningMaxSuppressingTime = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -373,6 +545,114 @@ func (data *BFDTemplateSingleHopData) fromBody(ctx context.Context, res gjson.Re
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *BFDTemplateSingleHop) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/md5/keychain"); value.Exists() {
+		data.AuthenticationMd5Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-md5/keychain"); value.Exists() {
+		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1/keychain"); value.Exists() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/sha-1/keychain"); value.Exists() {
+		data.AuthenticationSha1Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/min-tx"); value.Exists() {
+		data.IntervalMillisecondsMinTx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/min-rx"); value.Exists() {
+		data.IntervalMillisecondsMinRx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/both"); value.Exists() {
+		data.IntervalMillisecondsBoth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/multiplier"); value.Exists() {
+		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/ms-unit/min-rx"); value.Exists() {
+		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/ms-unit/min-tx"); value.Exists() {
+		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/echo"); value.Exists() {
+		data.Echo = types.BoolValue(true)
+	} else {
+		data.Echo = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/half-time"); value.Exists() {
+		data.DampeningHalfTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/unsuppress-time"); value.Exists() {
+		data.DampeningUnsuppressTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/suppress-time"); value.Exists() {
+		data.DampeningSuppressTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/max-suppressing-time"); value.Exists() {
+		data.DampeningMaxSuppressingTime = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *BFDTemplateSingleHopData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/md5/keychain"); value.Exists() {
+		data.AuthenticationMd5Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-md5/keychain"); value.Exists() {
+		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1/keychain"); value.Exists() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/sha-1/keychain"); value.Exists() {
+		data.AuthenticationSha1Keychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/min-tx"); value.Exists() {
+		data.IntervalMillisecondsMinTx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/min-rx"); value.Exists() {
+		data.IntervalMillisecondsMinRx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/both"); value.Exists() {
+		data.IntervalMillisecondsBoth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/mill-unit/multiplier"); value.Exists() {
+		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/ms-unit/min-rx"); value.Exists() {
+		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-singlehop-v2/ms-unit/min-tx"); value.Exists() {
+		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/echo"); value.Exists() {
+		data.Echo = types.BoolValue(true)
+	} else {
+		data.Echo = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/half-time"); value.Exists() {
+		data.DampeningHalfTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/unsuppress-time"); value.Exists() {
+		data.DampeningUnsuppressTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/suppress-time"); value.Exists() {
+		data.DampeningSuppressTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dampening/max-suppressing-time"); value.Exists() {
+		data.DampeningMaxSuppressingTime = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *BFDTemplateSingleHop) getDeletedItems(ctx context.Context, state BFDTemplateSingleHop) []string {
@@ -427,6 +707,62 @@ func (data *BFDTemplateSingleHop) getDeletedItems(ctx context.Context, state BFD
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *BFDTemplateSingleHop) addDeletedItemsXML(ctx context.Context, state BFDTemplateSingleHop, body string) string {
+	b := netconf.NewBody(body)
+	if !state.DampeningMaxSuppressingTime.IsNull() && data.DampeningMaxSuppressingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/max-suppressing-time")
+	}
+	if !state.DampeningSuppressTime.IsNull() && data.DampeningSuppressTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/suppress-time")
+	}
+	if !state.DampeningUnsuppressTime.IsNull() && data.DampeningUnsuppressTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/unsuppress-time")
+	}
+	if !state.DampeningHalfTime.IsNull() && data.DampeningHalfTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dampening/half-time")
+	}
+	if !state.Echo.IsNull() && data.Echo.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/echo")
+	}
+	if !state.IntervalMicrosecondsMinTx.IsNull() && data.IntervalMicrosecondsMinTx.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-singlehop-v2/ms-unit/min-tx")
+	}
+	if !state.IntervalMicrosecondsMinRx.IsNull() && data.IntervalMicrosecondsMinRx.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-singlehop-v2/ms-unit/min-rx")
+	}
+	if !state.IntervalMillisecondsMultiplier.IsNull() && data.IntervalMillisecondsMultiplier.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-singlehop-v2/mill-unit/multiplier")
+	}
+	if !state.IntervalMillisecondsBoth.IsNull() && data.IntervalMillisecondsBoth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-singlehop-v2/mill-unit/both")
+	}
+	if !state.IntervalMillisecondsMinRx.IsNull() && data.IntervalMillisecondsMinRx.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-singlehop-v2/mill-unit/min-rx")
+	}
+	if !state.IntervalMillisecondsMinTx.IsNull() && data.IntervalMillisecondsMinTx.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-singlehop-v2/mill-unit/min-tx")
+	}
+	if !state.AuthenticationSha1Keychain.IsNull() && data.AuthenticationSha1Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/sha-1/keychain")
+	}
+	if !state.AuthenticationMeticulousSha1Keychain.IsNull() && data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/meticulous-sha-1/keychain")
+	}
+	if !state.AuthenticationMeticulousMd5Keychain.IsNull() && data.AuthenticationMeticulousMd5Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/meticulous-md5/keychain")
+	}
+	if !state.AuthenticationMd5Keychain.IsNull() && data.AuthenticationMd5Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/md5/keychain")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -495,3 +831,59 @@ func (data *BFDTemplateSingleHop) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *BFDTemplateSingleHop) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.DampeningMaxSuppressingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dampening/max-suppressing-time")
+	}
+	if !data.DampeningSuppressTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dampening/suppress-time")
+	}
+	if !data.DampeningUnsuppressTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dampening/unsuppress-time")
+	}
+	if !data.DampeningHalfTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dampening/half-time")
+	}
+	if !data.Echo.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/echo")
+	}
+	if !data.IntervalMicrosecondsMinTx.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-singlehop-v2/ms-unit/min-tx")
+	}
+	if !data.IntervalMicrosecondsMinRx.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-singlehop-v2/ms-unit/min-rx")
+	}
+	if !data.IntervalMillisecondsMultiplier.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-singlehop-v2/mill-unit/multiplier")
+	}
+	if !data.IntervalMillisecondsBoth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-singlehop-v2/mill-unit/both")
+	}
+	if !data.IntervalMillisecondsMinRx.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-singlehop-v2/mill-unit/min-rx")
+	}
+	if !data.IntervalMillisecondsMinTx.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-singlehop-v2/mill-unit/min-tx")
+	}
+	if !data.AuthenticationSha1Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/sha-1/keychain")
+	}
+	if !data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/meticulous-sha-1/keychain")
+	}
+	if !data.AuthenticationMeticulousMd5Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/meticulous-md5/keychain")
+	}
+	if !data.AuthenticationMd5Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/md5/keychain")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

@@ -1,6 +1,6 @@
 ---
 name: TACACS Server
-path: Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=%v
+path: /Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server[name=%v]
 doc_category: AAA
 attributes:
   - yang_name: name

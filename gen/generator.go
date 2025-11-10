@@ -26,7 +26,6 @@ import (
 	"fmt"
 	"log"
 	"math"
-	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -34,6 +33,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/openconfig/goyang/pkg/yang"
 	"gopkg.in/yaml.v3"
 )
@@ -201,14 +201,6 @@ func ToGoName(s string) string {
 	return s
 }
 
-// Templating helper function to convert YANG name to GO name
-func ToJsonPath(yangPath, xPath string) string {
-	if xPath != "" {
-		return strings.ReplaceAll(xPath, "/", ".")
-	}
-	return strings.ReplaceAll(yangPath, "/", ".")
-}
-
 // Templating helper function to convert string to camel case
 func CamelCase(s string) string {
 	var g []string
@@ -243,42 +235,9 @@ func HasId(attributes []YamlConfigAttribute) bool {
 	return false
 }
 
-// Templating helper function to get example dn
-func GetExamplePath(path string, attributes []YamlConfigAttribute) string {
-	a := make([]interface{}, 0, len(attributes))
-	for _, attr := range attributes {
-		if attr.Id || attr.Reference {
-			a = append(a, url.QueryEscape(attr.Example))
-		}
-	}
-	return fmt.Sprintf(path, a...)
-}
-
-// Templating helper function to identify last element of list
-func IsLast(index int, len int) bool {
-	return index+1 == len
-}
-
 // Templating helper function to remove last element of path
 func RemoveLastPathElement(p string) string {
 	return path.Dir(p)
-}
-
-// Templating helper function to get xpath if available
-func GetXPath(yangPath, xPath string) string {
-	if xPath != "" {
-		return xPath
-	}
-	return yangPath
-}
-
-func contains(s []string, str string) bool {
-	for _, v := range s {
-		if v == str {
-			return true
-		}
-	}
-	return false
 }
 
 // Templating helper function to support arithmetic addition
@@ -316,7 +275,7 @@ func ImportAttributes(config YamlConfig) []YamlConfigAttribute {
 }
 
 func GetDeletePath(attribute YamlConfigAttribute) string {
-	path := GetXPath(attribute.YangName, attribute.XPath)
+	path := attribute.XPath
 	if attribute.DeleteParent {
 		return RemoveLastPathElement(path)
 	}
@@ -331,24 +290,27 @@ func ReverseAttributes(attributes []YamlConfigAttribute) []YamlConfigAttribute {
 	return reversed
 }
 
+func ToRestconfPath(path string) string {
+	return helpers.ConvertXPathToRestconfPath(path)
+}
+
+func ToDotPath(path string) string {
+	return strings.ReplaceAll(path, "/", ".")
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
-	"toGoName":              ToGoName,
-	"toJsonPath":            ToJsonPath,
-	"camelCase":             CamelCase,
-	"snakeCase":             SnakeCase,
-	"hasId":                 HasId,
-	"getExamplePath":        GetExamplePath,
-	"isLast":                IsLast,
-	"sprintf":               fmt.Sprintf,
-	"removeLastPathElement": RemoveLastPathElement,
-	"getXPath":              GetXPath,
-	"contains":              contains,
-	"add":                   Add,
-	"getImportExcludes":     GetImportExcludes,
-	"importAttributes":      ImportAttributes,
-	"getDeletePath":         GetDeletePath,
-	"reverseAttributes":     ReverseAttributes,
+	"toGoName":          ToGoName,
+	"camelCase":         CamelCase,
+	"snakeCase":         SnakeCase,
+	"hasId":             HasId,
+	"add":               Add,
+	"getImportExcludes": GetImportExcludes,
+	"importAttributes":  ImportAttributes,
+	"getDeletePath":     GetDeletePath,
+	"reverseAttributes": ReverseAttributes,
+	"toRestconfPath":    ToRestconfPath,
+	"toDotPath":         ToDotPath,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {
@@ -356,11 +318,11 @@ func resolvePath(e *yang.Entry, path string) *yang.Entry {
 
 	for _, pathElement := range pathElements {
 		if len(pathElement) > 0 {
-			// remove key
-			if strings.Contains(pathElement, "=") {
-				pathElement = pathElement[:strings.Index(pathElement, "=")]
+			// remove XPath predicate (e.g., [name=value] or [name=%v])
+			if strings.Contains(pathElement, "[") {
+				pathElement = pathElement[:strings.Index(pathElement, "[")]
 			}
-			// remove reference
+			// remove namespace prefix (e.g., Cisco-IOS-XE-bgp:bgp -> bgp)
 			if strings.Contains(pathElement, ":") {
 				pathElement = pathElement[strings.Index(pathElement, ":")+1:]
 			}
@@ -419,11 +381,11 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 	//fmt.Printf("%s, Kind: %+v, ListAttr: %+v, Type: %+v\n\n", leaf.Name, leaf.Kind, leaf.ListAttr, leaf.Type)
 	if leaf.Kind.String() == "Leaf" {
 		if leaf.ListAttr != nil {
-			if contains([]string{"string", "union", "leafref", "enumeration"}, leaf.Type.Kind.String()) {
+			if helpers.Contains([]string{"string", "union", "leafref", "enumeration"}, leaf.Type.Kind.String()) {
 				if attr.Type == "" {
 					attr.Type = "StringList"
 				}
-			} else if contains([]string{"uint8", "uint16", "uint32", "uint64"}, leaf.Type.Kind.String()) {
+			} else if helpers.Contains([]string{"uint8", "uint16", "uint32", "uint64"}, leaf.Type.Kind.String()) {
 				if attr.Type == "" {
 					attr.Type = "Int64List"
 				}
@@ -431,7 +393,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 				panic(fmt.Sprintf("Unknown leaf-list type, attribute: %s, type: %s", attr.YangName, leaf.Type.Kind.String()))
 			}
 			// TODO parse union type
-		} else if contains([]string{"string", "union", "leafref"}, leaf.Type.Kind.String()) {
+		} else if helpers.Contains([]string{"string", "union", "leafref"}, leaf.Type.Kind.String()) {
 			if attr.Type == "" {
 				attr.Type = "String"
 			}
@@ -453,7 +415,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 					attr.StringPatterns = leaf.Type.Pattern
 				}
 			}
-		} else if contains([]string{"uint8", "uint16", "uint32", "uint64", "int8", "int16", "int32", "int64"}, leaf.Type.Kind.String()) {
+		} else if helpers.Contains([]string{"uint8", "uint16", "uint32", "uint64", "int8", "int16", "int32", "int64"}, leaf.Type.Kind.String()) {
 			attr.Type = "Int64"
 			if leaf.Type.Range != nil {
 				if attr.MinInt == 0 {
@@ -471,7 +433,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 					attr.MaxInt = int64(max)
 				}
 			}
-		} else if contains([]string{"decimal8", "decimal16", "decimal32", "decimal64"}, leaf.Type.Kind.String()) {
+		} else if helpers.Contains([]string{"decimal8", "decimal16", "decimal32", "decimal64"}, leaf.Type.Kind.String()) {
 			if attr.Type == "" {
 				attr.Type = "Float64"
 			}
@@ -486,7 +448,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 					attr.MaxFloat = float64(leaf.Type.Range[0].Max.Value)
 				}
 			}
-		} else if contains([]string{"boolean", "empty"}, leaf.Type.Kind.String()) {
+		} else if helpers.Contains([]string{"boolean", "empty"}, leaf.Type.Kind.String()) {
 			if leaf.Type.Kind.String() == "boolean" {
 				if attr.TypeYangBool == "" {
 					attr.TypeYangBool = "boolean"
@@ -499,7 +461,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			if attr.Type == "" {
 				attr.Type = "Bool"
 			}
-		} else if contains([]string{"enumeration"}, leaf.Type.Kind.String()) {
+		} else if helpers.Contains([]string{"enumeration"}, leaf.Type.Kind.String()) {
 			if attr.Type == "" {
 				attr.Type = "String"
 			}
@@ -553,6 +515,7 @@ func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 		path = config.Path
 	}
 
+	path = strings.TrimPrefix(path, "/")
 	module := strings.Split(path, ":")[0]
 	e, errors := yangModules.GetModule(module)
 	if len(errors) > 0 {

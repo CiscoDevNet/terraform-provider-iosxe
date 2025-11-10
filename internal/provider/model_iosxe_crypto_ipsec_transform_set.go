@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -76,6 +79,19 @@ func (data CryptoIPSecTransformSet) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data CryptoIPSecTransformSet) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set[tag=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data CryptoIPSecTransformSetData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set[tag=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -100,6 +116,35 @@ func (data CryptoIPSecTransformSet) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CryptoIPSecTransformSet) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/tag", data.Name.ValueString())
+	}
+	if !data.Esp.IsNull() && !data.Esp.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/esp", data.Esp.ValueString())
+	}
+	if !data.EspHmac.IsNull() && !data.EspHmac.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/esp-hmac", data.EspHmac.ValueString())
+	}
+	if !data.ModeTunnel.IsNull() && !data.ModeTunnel.IsUnknown() {
+		if data.ModeTunnel.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mode/tunnel-choice", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mode/tunnel-choice")
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -135,6 +180,37 @@ func (data *CryptoIPSecTransformSet) updateFromBody(ctx context.Context, res gjs
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CryptoIPSecTransformSet) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp"); value.Exists() && !data.Esp.IsNull() {
+		data.Esp = types.StringValue(value.String())
+	} else {
+		data.Esp = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp-hmac"); value.Exists() && !data.EspHmac.IsNull() {
+		data.EspHmac = types.StringValue(value.String())
+	} else {
+		data.EspHmac = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mode/tunnel-choice"); !data.ModeTunnel.IsNull() {
+		if value.Exists() {
+			data.ModeTunnel = types.BoolValue(true)
+		} else {
+			data.ModeTunnel = types.BoolValue(false)
+		}
+	} else {
+		data.ModeTunnel = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -180,6 +256,42 @@ func (data *CryptoIPSecTransformSetData) fromBody(ctx context.Context, res gjson
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CryptoIPSecTransformSet) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp"); value.Exists() {
+		data.Esp = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp-hmac"); value.Exists() {
+		data.EspHmac = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mode/tunnel-choice"); value.Exists() {
+		data.ModeTunnel = types.BoolValue(true)
+	} else {
+		data.ModeTunnel = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CryptoIPSecTransformSetData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp"); value.Exists() {
+		data.Esp = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp-hmac"); value.Exists() {
+		data.EspHmac = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mode/tunnel-choice"); value.Exists() {
+		data.ModeTunnel = types.BoolValue(true)
+	} else {
+		data.ModeTunnel = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CryptoIPSecTransformSet) getDeletedItems(ctx context.Context, state CryptoIPSecTransformSet) []string {
@@ -198,6 +310,26 @@ func (data *CryptoIPSecTransformSet) getDeletedItems(ctx context.Context, state 
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CryptoIPSecTransformSet) addDeletedItemsXML(ctx context.Context, state CryptoIPSecTransformSet, body string) string {
+	b := netconf.NewBody(body)
+	if !state.ModeTunnel.IsNull() && data.ModeTunnel.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mode/tunnel-choice")
+	}
+	if !state.EspHmac.IsNull() && data.EspHmac.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/esp-hmac")
+	}
+	if !state.Esp.IsNull() && data.Esp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/esp")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -230,3 +362,23 @@ func (data *CryptoIPSecTransformSet) getDeletePaths(ctx context.Context) []strin
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CryptoIPSecTransformSet) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.ModeTunnel.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mode/tunnel-choice")
+	}
+	if !data.EspHmac.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/esp-hmac")
+	}
+	if !data.Esp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/esp")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

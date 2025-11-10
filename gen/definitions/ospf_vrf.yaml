@@ -1,6 +1,6 @@
 ---
 name: OSPF VRF
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf=%v,%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf[id=%v][vrf=%s]
 doc_category: OSPF
 attributes:
   - yang_name: id
@@ -21,6 +21,54 @@ attributes:
     example: 120
   - yang_name: domain-tag
     example: 10
+  - yang_name: log-adjacency-changes-choice/log-adjacency-changes/log-adjacency-changes
+    xpath: log-adjacency-changes
+    tf_name: log_adjacency_changes
+    example: true
+  - yang_name: log-adjacency-changes-choice/log-adjacency-changes-detail/log-adjacency-changes-detail/log-adjacency-changes/detail
+    xpath: log-adjacency-changes-detail/log-adjacency-changes/detail
+    tf_name: log_adjacency_changes_detail
+    example: true
+    exclude_test: true
+  - yang_name: nsf/nsf-cisco-ietf/nsf-cisco/nsf-cisco
+    xpath: nsf/nsf-cisco
+    tf_name: nsf_cisco
+    example: true
+    exclude_test: true
+  - yang_name: nsf/nsf-cisco-ietf/nsf-cisco/nsf-cisco/enforce/global
+    xpath: nsf/nsf-cisco/enforce/global
+    tf_name: nsf_cisco_enforce_global
+    example: true
+    exclude_test: true
+  - yang_name: nsf/nsf-cisco-ietf/nsf-ietf/nsf-ietf
+    xpath: nsf/nsf-ietf
+    tf_name: nsf_ietf
+    example: true
+  - yang_name: nsf/nsf-cisco-ietf/nsf-ietf/nsf-ietf/restart-interval
+    xpath: nsf/nsf-ietf/restart-interval
+    tf_name: nsf_ietf_restart_interval
+    example: 120
+  - yang_name: max-metric/router-lsa
+    example: true
+  - yang_name: max-metric/router-lsa/summary-lsa/metric
+    example: 16711680
+  - yang_name: max-metric/router-lsa/external-lsa/metric
+    example: 16711680
+  - yang_name: max-metric/router-lsa/include-stub
+    example: true
+  - yang_name: max-metric/router-lsa/on-startup/time-wait-for-bgp-choice/time/time
+    xpath: max-metric/router-lsa/on-startup/time
+    tf_name: max_metric_router_lsa_on_startup_time
+    example: 60
+  - yang_name: max-metric/router-lsa/on-startup/time-wait-for-bgp-choice/wait-for-bgp/wait-for-bgp
+    xpath: max-metric/router-lsa/on-startup/wait-for-bgp
+    tf_name: max_metric_router_lsa_on_startup_wait_for_bgp
+    example: true
+    exclude_test: true
+  - yang_name: redistribute/static/subnets
+    example: true
+  - yang_name: redistribute/connected/subnets
+    example: true
   - yang_name: mpls/ldp/autoconfig
     exclude_test: true
     example: true
@@ -44,6 +92,7 @@ attributes:
         example: 3.3.3.0
         id: true
       - yang_name: wildcard
+        id: true
         example: 0.0.0.255
       - yang_name: area
         example: 0
@@ -60,6 +109,7 @@ attributes:
         example: 3.3.3.0
         id: true
       - yang_name: mask
+        id: true
         example: 255.255.255.0
   - yang_name: area
     tf_name: areas
@@ -99,150 +149,175 @@ attributes:
     example: Loopback0
     exclude_test: true
   - yang_name: passive-interface-config/disable-interface/GigabitEthernet
+    xpath: passive-interface-config/disable-interface/GigabitEthernet
     tf_name: passive_interface_disable_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwoGigabitEthernet
+    xpath: passive-interface-config/disable-interface/TwoGigabitEthernet
     tf_name: passive_interface_disable_two_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/FiveGigabitEthernet
+    xpath: passive-interface-config/disable-interface/FiveGigabitEthernet
     tf_name: passive_interface_disable_five_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TenGigabitEthernet
+    xpath: passive-interface-config/disable-interface/TenGigabitEthernet
     tf_name: passive_interface_disable_ten_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwentyFiveGigabitE
+    xpath: passive-interface-config/disable-interface/TwentyFiveGigabitE
     tf_name: passive_interface_disable_twenty_five_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/FortyGigabitEthernet
+    xpath: passive-interface-config/disable-interface/FortyGigabitEthernet
     tf_name: passive_interface_disable_forty_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/HundredGigabitE
+    xpath: passive-interface-config/disable-interface/HundredGigabitE
     tf_name: passive_interface_disable_hundred_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwoHundredGigabitE
+    xpath: passive-interface-config/disable-interface/TwoHundredGigabitE
     tf_name: passive_interface_disable_two_hundred_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/FourHundredGigabitE
+    xpath: passive-interface-config/disable-interface/FourHundredGigabitE
     tf_name: passive_interface_disable_four_hundred_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Loopback
+    xpath: passive-interface-config/disable-interface/Loopback
     tf_name: passive_interface_disable_loopbacks
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Vlan
+    xpath: passive-interface-config/disable-interface/Vlan
     tf_name: passive_interface_disable_vlans
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Tunnel
+    xpath: passive-interface-config/disable-interface/Tunnel
     tf_name: passive_interface_disable_tunnels
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Port-channel
+    xpath: passive-interface-config/disable-interface/Port-channel
     tf_name: passive_interface_disable_port_channels
     type: Set
     no_augment_config: true
@@ -255,12 +330,14 @@ attributes:
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel
+    xpath: passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel
     tf_name: passive_interface_disable_port_channel_subinterfaces
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
@@ -268,7 +345,7 @@ attributes:
         example: 1
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

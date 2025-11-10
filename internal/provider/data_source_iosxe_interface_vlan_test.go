@@ -66,6 +66,7 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "mac_address", "0000.dead.beef"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -82,8 +83,8 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfaceVLANPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -138,7 +139,8 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `	}]` + "\n"
 	config += `	load_interval = 30` + "\n"
 	config += `	mac_address = "0000.dead.beef"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

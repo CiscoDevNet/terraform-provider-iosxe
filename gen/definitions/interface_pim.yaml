@@ -1,7 +1,7 @@
 ---
 name: Interface PIM
-path: Cisco-IOS-XE-native:native/interface/%s=%v/ip/pim
-augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/ip/pim
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/ip/pim
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/ip/pim
 no_delete: true
 doc_category: Multicast
 attributes:
@@ -54,7 +54,7 @@ attributes:
     example: 10
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

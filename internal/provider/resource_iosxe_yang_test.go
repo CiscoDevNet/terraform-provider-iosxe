@@ -24,59 +24,59 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccIosxeRestconf(t *testing.T) {
+func TestAccIosxeYang(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeRestconfConfig_empty(),
+				Config: testAccIosxeYangConfig_empty(),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("iosxe_restconf.test", "id", "Cisco-IOS-XE-native:native/banner/login"),
+					resource.TestCheckResourceAttr("iosxe_yang.test", "id", "/Cisco-IOS-XE-native:native/banner/login"),
 				),
 			},
 			{
-				Config: testAccIosxeRestconfConfig_banner("My Banner"),
+				Config: testAccIosxeYangConfig_banner("My Banner"),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("iosxe_restconf.test", "id", "Cisco-IOS-XE-native:native/banner/login"),
-					resource.TestCheckResourceAttr("iosxe_restconf.test", "attributes.banner", "My Banner"),
+					resource.TestCheckResourceAttr("iosxe_yang.test", "id", "/Cisco-IOS-XE-native:native/banner/login"),
+					resource.TestCheckResourceAttr("iosxe_yang.test", "attributes.banner", "My Banner"),
 				),
 			},
 			{
-				ResourceName:  "iosxe_restconf.test",
+				ResourceName:  "iosxe_yang.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/banner/login",
+				ImportStateId: "/Cisco-IOS-XE-native:native/banner/login",
 			},
 			{
-				Config: testAccIosxeRestconfConfig_banner("My New Banner"),
+				Config: testAccIosxeYangConfig_banner("My New Banner"),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("iosxe_restconf.test", "attributes.banner", "My New Banner"),
+					resource.TestCheckResourceAttr("iosxe_yang.test", "attributes.banner", "My New Banner"),
 				),
 			},
 			{
-				Config: testAccIosxeRestconfConfig_nested(),
+				Config: testAccIosxeYangConfig_nested(),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("iosxe_restconf.nested", "attributes.hostname", "R1"),
-					resource.TestCheckResourceAttr("iosxe_restconf.nested", "lists.0.name", "route-map"),
-					resource.TestCheckResourceAttr("iosxe_restconf.nested", "lists.0.items.0.name", "test123"),
+					resource.TestCheckResourceAttr("iosxe_yang.nested", "attributes.hostname", "R1"),
+					resource.TestCheckResourceAttr("iosxe_yang.nested", "lists.0.name", "route-map"),
+					resource.TestCheckResourceAttr("iosxe_yang.nested", "lists.0.items.0.name", "test123"),
 				),
 			},
 		},
 	})
 }
 
-func testAccIosxeRestconfConfig_empty() string {
+func testAccIosxeYangConfig_empty() string {
 	return `
-	resource "iosxe_restconf" "test" {
-		path = "Cisco-IOS-XE-native:native/banner/login"
+	resource "iosxe_yang" "test" {
+		path = "/Cisco-IOS-XE-native:native/banner/login"
 	}
 	`
 }
 
-func testAccIosxeRestconfConfig_banner(message string) string {
+func testAccIosxeYangConfig_banner(message string) string {
 	return fmt.Sprintf(`
-	resource "iosxe_restconf" "test" {
-		path = "Cisco-IOS-XE-native:native/banner/login"
+	resource "iosxe_yang" "test" {
+		path = "/Cisco-IOS-XE-native:native/banner/login"
 		attributes = {
 			banner = "%s"
 		}
@@ -84,10 +84,10 @@ func testAccIosxeRestconfConfig_banner(message string) string {
 	`, message)
 }
 
-func testAccIosxeRestconfConfig_nested() string {
+func testAccIosxeYangConfig_nested() string {
 	return `
-	resource "iosxe_restconf" "nested" {
-		path = "Cisco-IOS-XE-native:native"
+	resource "iosxe_yang" "nested" {
+		path = "/Cisco-IOS-XE-native:native"
 		delete = false
 		attributes = {
 			hostname = "R1"

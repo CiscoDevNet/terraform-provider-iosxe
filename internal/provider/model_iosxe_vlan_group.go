@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -72,6 +75,19 @@ func (data VLANGroup) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data VLANGroup) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data VLANGroupData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -90,6 +106,29 @@ func (data VLANGroup) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data VLANGroup) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.VlanLists.IsNull() && !data.VlanLists.IsUnknown() {
+		var values []int
+		data.VlanLists.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/vlan-lists", v)
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -111,6 +150,23 @@ func (data *VLANGroup) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *VLANGroup) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() && !data.VlanLists.IsNull() {
+		data.VlanLists = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.VlanLists = types.ListNull(types.Int64Type)
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -144,6 +200,30 @@ func (data *VLANGroupData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *VLANGroup) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() {
+		data.VlanLists = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.VlanLists = types.ListNull(types.Int64Type)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *VLANGroupData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() {
+		data.VlanLists = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.VlanLists = types.ListNull(types.Int64Type)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *VLANGroup) getDeletedItems(ctx context.Context, state VLANGroup) []string {
@@ -175,6 +255,42 @@ func (data *VLANGroup) getDeletedItems(ctx context.Context, state VLANGroup) []s
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *VLANGroup) addDeletedItemsXML(ctx context.Context, state VLANGroup, body string) string {
+	b := netconf.NewBody(body)
+	if !state.VlanLists.IsNull() {
+		if data.VlanLists.IsNull() {
+			var values []string
+			state.VlanLists.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vlan-lists[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []int
+			data.VlanLists.ElementsAs(ctx, &dataValues, false)
+			state.VlanLists.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vlan-lists[.=%v]", v))
+				}
+			}
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *VLANGroup) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -197,3 +313,21 @@ func (data *VLANGroup) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *VLANGroup) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.VlanLists.IsNull() {
+		var values []int64
+		data.VlanLists.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vlan-lists[.=%v]", v))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

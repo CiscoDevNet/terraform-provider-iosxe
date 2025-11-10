@@ -1,6 +1,6 @@
 ---
 name: Access List Standard
-path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=%v
+path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=%v]
 no_delete_attributes: true
 doc_category: System
 attributes:

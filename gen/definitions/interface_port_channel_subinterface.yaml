@@ -1,7 +1,7 @@
 ---
 name: Interface Port Channel Subinterface
-path: Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=%v
-test_tags: [C8000V]
+path: Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]
+test_tags: [C9000V]
 doc_category: Interface
 attributes:
   - yang_name: name
@@ -28,7 +28,7 @@ attributes:
     xpath: ip/address/primary/address
     tf_name: ipv4_address
     delete_parent: true
-    example: 192.0.2.2
+    example: 192.68.1.1
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
     xpath: ip/address/primary/mask
     tf_name: ipv4_address_mask
@@ -167,25 +167,48 @@ attributes:
     example: 2147
   - yang_name: ip/arp/inspection/trust
     example: true
-    test_tags: [C9000V]
+    # DAI is supported on main interfaces but not on subinterfaces
+    exclude_test: true
   - yang_name: ip/arp/inspection/limit/rate
     example: 1000
-    test_tags: [C9000V]
+    # DAI is supported on main interfaces but not on subinterfaces
+    exclude_test: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/interface/Port-channel=10
+      - name: address-family/ipv6
+        value: ""
+  - path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=10]
+    no_delete: true
     attributes:
       - name: name
         value: 10
-  - path: Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666
+      - name: switchport-conf/switchport
+        value: false
+  - path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]
     attributes:
       - name: name
-        value: "10.666"
-    dependencies: [1]
+        value: 1
+  - path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]/access-list-seq-rule[sequence=10]
+    attributes:
+      - name: sequence
+        value: 10
+      - name: permit/std-ace/any
+        value: ""
+    dependencies: [2]
+  - path: /Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=bfd_template1]
+    attributes:
+      - name: name
+        value: bfd_template1
+      - name: interval-singlehop-v2/mill-unit/min-tx
+        value: 200
+      - name: interval-singlehop-v2/mill-unit/min-rx
+        value: 200
+      - name: interval-singlehop-v2/mill-unit/multiplier
+        value: 4

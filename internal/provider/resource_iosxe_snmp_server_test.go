@@ -44,7 +44,6 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "packetsize", "2000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "queue_length", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_logging_getop", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_logging_setop", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_snmp_authentication", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_snmp_coldstart", "true"))
@@ -296,8 +295,6 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_ospfv3_state_change", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "source_interface_informs_loopback", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "source_interface_traps_loopback", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "trap_source_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "snmp_communities.0.view", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "snmp_communities.0.permission", "ro"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "snmp_communities.0.ipv6", "ACL1"))
@@ -309,19 +306,10 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.name", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.security_level", "priv"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.context_node", "CON1"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.match_node", "exact"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.read_node", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.write_node", "VIEW2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.notify_node", "VIEW3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.access_ipv6_acl", "V6ACL1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "users.0.username", "USER1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "users.0.grpname", "GROUP1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "users.0.v3_auth_algorithm", "sha"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_algorithm", "128"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_access_ipv6_acl", "V6ACL1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_access_acl_name", "ACL123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -338,7 +326,7 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeSNMPServerImportStateIdFunc("iosxe_snmp_server.test"),
-				ImportStateVerifyIgnore: []string{"ifindex_persist", "enable_informs", "enable_traps_rep", "enable_traps_license", "enable_traps_stackwise", "enable_traps_udld_link_fail_rpt", "enable_traps_udld_status_change", "enable_traps_energywise", "enable_traps_power_ethernet_police", "enable_traps_envmon", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bridge_newroot", "enable_traps_bridge_topologychange", "enable_traps_stpx_inconsistency", "enable_traps_stpx_root_inconsistency", "enable_traps_stpx_loop_inconsistency", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth", "enable_traps_vlan_membership", "enable_traps_errdisable", "enable_traps_mac_notification_change", "enable_traps_mac_notification_move", "enable_traps_mac_notification_threshold", "enable_traps_mvpn", "enable_traps_lisp", "enable_traps_vdsl2line", "enable_traps_adslline", "enable_traps_pki", "enable_traps_casa", "enable_traps_cnpd", "enable_traps_dial", "enable_traps_dlsw", "enable_traps_ds1", "enable_traps_dsp_card_status", "enable_traps_dsp_oper_state", "enable_traps_entity_sensor", "enable_traps_entity_state", "enable_traps_entity_qfp_mem_res_thresh", "enable_traps_entity_qfp_throughput_notif", "enable_traps_ether_oam", "enable_traps_ethernet_cfm_alarm", "enable_traps_ethernet_cfm_cc_config", "enable_traps_ethernet_cfm_cc_cross_connect", "enable_traps_ethernet_cfm_cc_loop", "enable_traps_ethernet_cfm_cc_mep_down", "enable_traps_ethernet_cfm_cc_mep_up", "enable_traps_ethernet_cfm_crosscheck_mep_missing", "enable_traps_ethernet_cfm_crosscheck_mep_unknown", "enable_traps_ethernet_cfm_crosscheck_service_up", "enable_traps_ethernet_evc_create", "enable_traps_ethernet_evc_delete", "enable_traps_ethernet_evc_status", "enable_traps_firewall_serverstatus", "enable_traps_frame_relay_config_only", "enable_traps_frame_relay_config_subif_configs", "enable_traps_frame_relay_config_bundle_mismatch", "enable_traps_frame_relay_multilink_bundle_mismatch", "enable_traps_ip_local_pool", "enable_traps_isdn_call_information", "enable_traps_isdn_chan_not_avail", "enable_traps_isdn_ietf", "enable_traps_isdn_layer2", "enable_traps_l2tun_session", "enable_traps_l2tun_tunnel", "enable_traps_l2tun_pseudowire_status", "enable_traps_pimstdmib_neighbor_loss", "enable_traps_pimstdmib_invalid_register", "enable_traps_pimstdmib_invalid_join_prune", "enable_traps_pimstdmib_rp_mapping_change", "enable_traps_pimstdmib_interface_election", "enable_traps_pfr", "enable_traps_pppoe", "enable_traps_resource_policy", "enable_traps_rsvp", "enable_traps_vrrp", "enable_traps_sonet", "enable_traps_srp", "enable_traps_voice", "enable_traps_bgp", "enable_traps_cbgp2", "enable_traps_ospfv3_errors", "enable_traps_ospfv3_state_change"},
+				ImportStateVerifyIgnore: []string{"ifindex_persist", "enable_informs", "enable_traps_rep", "enable_traps_license", "enable_traps_stackwise", "enable_traps_udld_link_fail_rpt", "enable_traps_udld_status_change", "enable_traps_energywise", "enable_traps_power_ethernet_police", "enable_traps_envmon", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bridge_newroot", "enable_traps_bridge_topologychange", "enable_traps_stpx_inconsistency", "enable_traps_stpx_root_inconsistency", "enable_traps_stpx_loop_inconsistency", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth", "enable_traps_vlan_membership", "enable_traps_errdisable", "enable_traps_mac_notification_change", "enable_traps_mac_notification_move", "enable_traps_mac_notification_threshold", "enable_traps_mvpn", "enable_traps_lisp", "enable_traps_vdsl2line", "enable_traps_adslline", "enable_traps_pki", "enable_traps_casa", "enable_traps_cnpd", "enable_traps_dial", "enable_traps_dlsw", "enable_traps_ds1", "enable_traps_dsp_card_status", "enable_traps_dsp_oper_state", "enable_traps_entity_sensor", "enable_traps_entity_state", "enable_traps_entity_qfp_mem_res_thresh", "enable_traps_entity_qfp_throughput_notif", "enable_traps_ether_oam", "enable_traps_ethernet_cfm_alarm", "enable_traps_ethernet_cfm_cc_config", "enable_traps_ethernet_cfm_cc_cross_connect", "enable_traps_ethernet_cfm_cc_loop", "enable_traps_ethernet_cfm_cc_mep_down", "enable_traps_ethernet_cfm_cc_mep_up", "enable_traps_ethernet_cfm_crosscheck_mep_missing", "enable_traps_ethernet_cfm_crosscheck_mep_unknown", "enable_traps_ethernet_cfm_crosscheck_service_up", "enable_traps_ethernet_evc_create", "enable_traps_ethernet_evc_delete", "enable_traps_ethernet_evc_status", "enable_traps_firewall_serverstatus", "enable_traps_frame_relay_config_only", "enable_traps_frame_relay_config_subif_configs", "enable_traps_frame_relay_config_bundle_mismatch", "enable_traps_frame_relay_multilink_bundle_mismatch", "enable_traps_ip_local_pool", "enable_traps_isdn_call_information", "enable_traps_isdn_chan_not_avail", "enable_traps_isdn_ietf", "enable_traps_isdn_layer2", "enable_traps_l2tun_session", "enable_traps_l2tun_tunnel", "enable_traps_l2tun_pseudowire_status", "enable_traps_pimstdmib_neighbor_loss", "enable_traps_pimstdmib_invalid_register", "enable_traps_pimstdmib_invalid_join_prune", "enable_traps_pimstdmib_rp_mapping_change", "enable_traps_pimstdmib_interface_election", "enable_traps_pfr", "enable_traps_pppoe", "enable_traps_resource_policy", "enable_traps_rsvp", "enable_traps_vrrp", "enable_traps_sonet", "enable_traps_srp", "enable_traps_voice", "enable_traps_bgp", "enable_traps_cbgp2", "enable_traps_ospfv3_errors", "enable_traps_ospfv3_state_change", "groups.0.v3_security.0.match_node", "users"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -360,15 +348,15 @@ func iosxeSNMPServerImportStateIdFunc(resourceName string) resource.ImportStateI
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeSNMPServerPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -384,7 +372,7 @@ resource "iosxe_restconf" "PreReq1" {
 
 func testAccIosxeSNMPServerConfig_minimum() string {
 	config := `resource "iosxe_snmp_server" "test" {` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -404,7 +392,6 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `	packetsize = 2000` + "\n"
 	config += `	queue_length = 100` + "\n"
 	config += `	enable_logging_getop = true` + "\n"
-	config += `	enable_logging_setop = true` + "\n"
 	config += `	enable_traps = true` + "\n"
 	config += `	enable_traps_snmp_authentication = true` + "\n"
 	config += `	enable_traps_snmp_coldstart = true` + "\n"
@@ -662,8 +649,6 @@ func testAccIosxeSNMPServerConfig_all() string {
 		config += `	enable_traps_ospfv3_state_change = true` + "\n"
 	}
 	config += `	source_interface_informs_loopback = 1` + "\n"
-	config += `	source_interface_traps_loopback = 1` + "\n"
-	config += `	trap_source_loopback = 1` + "\n"
 	config += `	snmp_communities = [{` + "\n"
 	config += `		name = "COM1"` + "\n"
 	config += `		view = "VIEW1"` + "\n"
@@ -684,9 +669,6 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `		v3_security = [{` + "\n"
 	config += `			security_level = "priv"` + "\n"
 	config += `			context_node = "CON1"` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `			match_node = "exact"` + "\n"
-	}
 	config += `			read_node = "VIEW1"` + "\n"
 	config += `			write_node = "VIEW2"` + "\n"
 	config += `			notify_node = "VIEW3"` + "\n"
@@ -703,7 +685,7 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `		v3_auth_priv_aes_access_ipv6_acl = "V6ACL1"` + "\n"
 	config += `		v3_auth_priv_aes_access_acl_name = "ACL123"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

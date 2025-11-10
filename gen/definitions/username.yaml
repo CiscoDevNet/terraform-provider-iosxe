@@ -1,6 +1,6 @@
 ---
 name: Username
-path: Cisco-IOS-XE-native:native/username=%s
+path: /Cisco-IOS-XE-native:native/username[name=%s]
 no_delete_attributes: true
 doc_category: System
 attributes:

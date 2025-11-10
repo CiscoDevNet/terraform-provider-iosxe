@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -54,6 +57,7 @@ type VRF struct {
 	Ipv4RouteTargetImportStitching []VRFIpv4RouteTargetImportStitching `tfsdk:"ipv4_route_target_import_stitching"`
 	Ipv4RouteTargetExport          []VRFIpv4RouteTargetExport          `tfsdk:"ipv4_route_target_export"`
 	Ipv4RouteTargetExportStitching []VRFIpv4RouteTargetExportStitching `tfsdk:"ipv4_route_target_export_stitching"`
+	Ipv4RouteReplicate             []VRFIpv4RouteReplicate             `tfsdk:"ipv4_route_replicate"`
 	Ipv6RouteTargetImport          []VRFIpv6RouteTargetImport          `tfsdk:"ipv6_route_target_import"`
 	Ipv6RouteTargetImportStitching []VRFIpv6RouteTargetImportStitching `tfsdk:"ipv6_route_target_import_stitching"`
 	Ipv6RouteTargetExport          []VRFIpv6RouteTargetExport          `tfsdk:"ipv6_route_target_export"`
@@ -75,6 +79,7 @@ type VRFData struct {
 	Ipv4RouteTargetImportStitching []VRFIpv4RouteTargetImportStitching `tfsdk:"ipv4_route_target_import_stitching"`
 	Ipv4RouteTargetExport          []VRFIpv4RouteTargetExport          `tfsdk:"ipv4_route_target_export"`
 	Ipv4RouteTargetExportStitching []VRFIpv4RouteTargetExportStitching `tfsdk:"ipv4_route_target_export_stitching"`
+	Ipv4RouteReplicate             []VRFIpv4RouteReplicate             `tfsdk:"ipv4_route_replicate"`
 	Ipv6RouteTargetImport          []VRFIpv6RouteTargetImport          `tfsdk:"ipv6_route_target_import"`
 	Ipv6RouteTargetImportStitching []VRFIpv6RouteTargetImportStitching `tfsdk:"ipv6_route_target_import_stitching"`
 	Ipv6RouteTargetExport          []VRFIpv6RouteTargetExport          `tfsdk:"ipv6_route_target_export"`
@@ -101,6 +106,11 @@ type VRFIpv4RouteTargetExport struct {
 type VRFIpv4RouteTargetExportStitching struct {
 	Value     types.String `tfsdk:"value"`
 	Stitching types.Bool   `tfsdk:"stitching"`
+}
+type VRFIpv4RouteReplicate struct {
+	Name               types.String `tfsdk:"name"`
+	UnicastAll         types.Bool   `tfsdk:"unicast_all"`
+	UnicastAllRouteMap types.String `tfsdk:"unicast_all_route_map"`
 }
 type VRFIpv6RouteTargetImport struct {
 	Value types.String `tfsdk:"value"`
@@ -138,6 +148,19 @@ func (data VRF) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data VRF) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vrf/definition[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data VRFData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vrf/definition[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -236,6 +259,22 @@ func (data VRF) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.Ipv4RouteReplicate) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.route-replicate.from.vrf", []interface{}{})
+		for index, item := range data.Ipv4RouteReplicate {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.route-replicate.from.vrf"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.UnicastAll.IsNull() && !item.UnicastAll.IsUnknown() {
+				if item.UnicastAll.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.route-replicate.from.vrf"+"."+strconv.Itoa(index)+"."+"unicast.source-proto-config.all", map[string]string{})
+				}
+			}
+			if !item.UnicastAllRouteMap.IsNull() && !item.UnicastAllRouteMap.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.route-replicate.from.vrf"+"."+strconv.Itoa(index)+"."+"unicast.source-proto-config.all.route-map", item.UnicastAllRouteMap.ValueString())
+			}
+		}
+	}
 	if len(data.Ipv6RouteTargetImport) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv6.route-target.import-route-target.without-stitching", []interface{}{})
 		for index, item := range data.Ipv6RouteTargetImport {
@@ -282,6 +321,196 @@ func (data VRF) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data VRF) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.Rd.IsNull() && !data.Rd.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/rd", data.Rd.ValueString())
+	}
+	if !data.AddressFamilyIpv4.IsNull() && !data.AddressFamilyIpv4.IsUnknown() {
+		if data.AddressFamilyIpv4.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4")
+		}
+	}
+	if !data.AddressFamilyIpv6.IsNull() && !data.AddressFamilyIpv6.IsUnknown() {
+		if data.AddressFamilyIpv6.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv6")
+		}
+	}
+	if !data.VpnId.IsNull() && !data.VpnId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/vpn/id", data.VpnId.ValueString())
+	}
+	if len(data.RouteTargetImport) > 0 {
+		for _, item := range data.RouteTargetImport {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
+				if item.Stitching.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stitching", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stitching")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-target/import", cBody.Res())
+		}
+	}
+	if len(data.RouteTargetExport) > 0 {
+		for _, item := range data.RouteTargetExport {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
+				if item.Stitching.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stitching", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stitching")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-target/export", cBody.Res())
+		}
+	}
+	if len(data.Ipv4RouteTargetImport) > 0 {
+		for _, item := range data.Ipv4RouteTargetImport {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching", cBody.Res())
+		}
+	}
+	if len(data.Ipv4RouteTargetImportStitching) > 0 {
+		for _, item := range data.Ipv4RouteTargetImportStitching {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
+				if item.Stitching.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stitching", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stitching")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching", cBody.Res())
+		}
+	}
+	if len(data.Ipv4RouteTargetExport) > 0 {
+		for _, item := range data.Ipv4RouteTargetExport {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching", cBody.Res())
+		}
+	}
+	if len(data.Ipv4RouteTargetExportStitching) > 0 {
+		for _, item := range data.Ipv4RouteTargetExportStitching {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
+				if item.Stitching.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stitching", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stitching")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching", cBody.Res())
+		}
+	}
+	if len(data.Ipv4RouteReplicate) > 0 {
+		for _, item := range data.Ipv4RouteReplicate {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.UnicastAll.IsNull() && !item.UnicastAll.IsUnknown() {
+				if item.UnicastAll.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "unicast/source-proto-config/all", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "unicast/source-proto-config/all")
+				}
+			}
+			if !item.UnicastAllRouteMap.IsNull() && !item.UnicastAllRouteMap.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "unicast/source-proto-config/all/route-map", item.UnicastAllRouteMap.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf", cBody.Res())
+		}
+	}
+	if len(data.Ipv6RouteTargetImport) > 0 {
+		for _, item := range data.Ipv6RouteTargetImport {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching", cBody.Res())
+		}
+	}
+	if len(data.Ipv6RouteTargetImportStitching) > 0 {
+		for _, item := range data.Ipv6RouteTargetImportStitching {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
+				if item.Stitching.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stitching", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stitching")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching", cBody.Res())
+		}
+	}
+	if len(data.Ipv6RouteTargetExport) > 0 {
+		for _, item := range data.Ipv6RouteTargetExport {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching", cBody.Res())
+		}
+	}
+	if len(data.Ipv6RouteTargetExportStitching) > 0 {
+		for _, item := range data.Ipv6RouteTargetExportStitching {
+			cBody := netconf.Body{}
+			if !item.Value.IsNull() && !item.Value.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "asn-ip", item.Value.ValueString())
+			}
+			if !item.Stitching.IsNull() && !item.Stitching.IsUnknown() {
+				if item.Stitching.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stitching", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stitching")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -538,6 +767,49 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv4RouteTargetExportStitching[i].Stitching = types.BoolNull()
 		}
 	}
+	for i := range data.Ipv4RouteReplicate {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Ipv4RouteReplicate[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "address-family.ipv4.route-replicate.from.vrf").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Ipv4RouteReplicate[i].Name.IsNull() {
+			data.Ipv4RouteReplicate[i].Name = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteReplicate[i].Name = types.StringNull()
+		}
+		if value := r.Get("unicast.source-proto-config.all"); !data.Ipv4RouteReplicate[i].UnicastAll.IsNull() {
+			if value.Exists() {
+				data.Ipv4RouteReplicate[i].UnicastAll = types.BoolValue(true)
+			} else {
+				data.Ipv4RouteReplicate[i].UnicastAll = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv4RouteReplicate[i].UnicastAll = types.BoolNull()
+		}
+		if value := r.Get("unicast.source-proto-config.all.route-map"); value.Exists() && !data.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() {
+			data.Ipv4RouteReplicate[i].UnicastAllRouteMap = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteReplicate[i].UnicastAllRouteMap = types.StringNull()
+		}
+	}
 	for i := range data.Ipv6RouteTargetImport {
 		keys := [...]string{"asn-ip"}
 		keyValues := [...]string{data.Ipv6RouteTargetImport[i].Value.ValueString()}
@@ -676,6 +948,438 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() && !data.Rd.IsNull() {
+		data.Rd = types.StringValue(value.String())
+	} else {
+		data.Rd = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4"); !data.AddressFamilyIpv4.IsNull() {
+		if value.Exists() {
+			data.AddressFamilyIpv4 = types.BoolValue(true)
+		} else {
+			data.AddressFamilyIpv4 = types.BoolValue(false)
+		}
+	} else {
+		data.AddressFamilyIpv4 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6"); !data.AddressFamilyIpv6.IsNull() {
+		if value.Exists() {
+			data.AddressFamilyIpv6 = types.BoolValue(true)
+		} else {
+			data.AddressFamilyIpv6 = types.BoolValue(false)
+		}
+	} else {
+		data.AddressFamilyIpv6 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vpn/id"); value.Exists() && !data.VpnId.IsNull() {
+		data.VpnId = types.StringValue(value.String())
+	} else {
+		data.VpnId = types.StringNull()
+	}
+	for i := range data.RouteTargetImport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.RouteTargetImport[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/import").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.RouteTargetImport[i].Value.IsNull() {
+			data.RouteTargetImport[i].Value = types.StringValue(value.String())
+		} else {
+			data.RouteTargetImport[i].Value = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stitching"); !data.RouteTargetImport[i].Stitching.IsNull() {
+			if value.Exists() {
+				data.RouteTargetImport[i].Stitching = types.BoolValue(true)
+			} else {
+				data.RouteTargetImport[i].Stitching = types.BoolValue(false)
+			}
+		} else {
+			data.RouteTargetImport[i].Stitching = types.BoolNull()
+		}
+	}
+	for i := range data.RouteTargetExport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.RouteTargetExport[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/export").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.RouteTargetExport[i].Value.IsNull() {
+			data.RouteTargetExport[i].Value = types.StringValue(value.String())
+		} else {
+			data.RouteTargetExport[i].Value = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stitching"); !data.RouteTargetExport[i].Stitching.IsNull() {
+			if value.Exists() {
+				data.RouteTargetExport[i].Stitching = types.BoolValue(true)
+			} else {
+				data.RouteTargetExport[i].Stitching = types.BoolValue(false)
+			}
+		} else {
+			data.RouteTargetExport[i].Stitching = types.BoolNull()
+		}
+	}
+	for i := range data.Ipv4RouteTargetImport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetImport[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetImport[i].Value.IsNull() {
+			data.Ipv4RouteTargetImport[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteTargetImport[i].Value = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4RouteTargetImportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetImportStitching[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetImportStitching[i].Value.IsNull() {
+			data.Ipv4RouteTargetImportStitching[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteTargetImportStitching[i].Value = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stitching"); !data.Ipv4RouteTargetImportStitching[i].Stitching.IsNull() {
+			if value.Exists() {
+				data.Ipv4RouteTargetImportStitching[i].Stitching = types.BoolValue(true)
+			} else {
+				data.Ipv4RouteTargetImportStitching[i].Stitching = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv4RouteTargetImportStitching[i].Stitching = types.BoolNull()
+		}
+	}
+	for i := range data.Ipv4RouteTargetExport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetExport[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetExport[i].Value.IsNull() {
+			data.Ipv4RouteTargetExport[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteTargetExport[i].Value = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4RouteTargetExportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetExportStitching[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv4RouteTargetExportStitching[i].Value.IsNull() {
+			data.Ipv4RouteTargetExportStitching[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteTargetExportStitching[i].Value = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stitching"); !data.Ipv4RouteTargetExportStitching[i].Stitching.IsNull() {
+			if value.Exists() {
+				data.Ipv4RouteTargetExportStitching[i].Stitching = types.BoolValue(true)
+			} else {
+				data.Ipv4RouteTargetExportStitching[i].Stitching = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv4RouteTargetExportStitching[i].Stitching = types.BoolNull()
+		}
+	}
+	for i := range data.Ipv4RouteReplicate {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Ipv4RouteReplicate[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv4RouteReplicate[i].Name.IsNull() {
+			data.Ipv4RouteReplicate[i].Name = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteReplicate[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "unicast/source-proto-config/all"); !data.Ipv4RouteReplicate[i].UnicastAll.IsNull() {
+			if value.Exists() {
+				data.Ipv4RouteReplicate[i].UnicastAll = types.BoolValue(true)
+			} else {
+				data.Ipv4RouteReplicate[i].UnicastAll = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv4RouteReplicate[i].UnicastAll = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "unicast/source-proto-config/all/route-map"); value.Exists() && !data.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() {
+			data.Ipv4RouteReplicate[i].UnicastAllRouteMap = types.StringValue(value.String())
+		} else {
+			data.Ipv4RouteReplicate[i].UnicastAllRouteMap = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6RouteTargetImport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetImport[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetImport[i].Value.IsNull() {
+			data.Ipv6RouteTargetImport[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv6RouteTargetImport[i].Value = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6RouteTargetImportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetImportStitching[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetImportStitching[i].Value.IsNull() {
+			data.Ipv6RouteTargetImportStitching[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv6RouteTargetImportStitching[i].Value = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stitching"); !data.Ipv6RouteTargetImportStitching[i].Stitching.IsNull() {
+			if value.Exists() {
+				data.Ipv6RouteTargetImportStitching[i].Stitching = types.BoolValue(true)
+			} else {
+				data.Ipv6RouteTargetImportStitching[i].Stitching = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6RouteTargetImportStitching[i].Stitching = types.BoolNull()
+		}
+	}
+	for i := range data.Ipv6RouteTargetExport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetExport[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetExport[i].Value.IsNull() {
+			data.Ipv6RouteTargetExport[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv6RouteTargetExport[i].Value = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6RouteTargetExportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "asn-ip"); value.Exists() && !data.Ipv6RouteTargetExportStitching[i].Value.IsNull() {
+			data.Ipv6RouteTargetExportStitching[i].Value = types.StringValue(value.String())
+		} else {
+			data.Ipv6RouteTargetExportStitching[i].Value = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stitching"); !data.Ipv6RouteTargetExportStitching[i].Stitching.IsNull() {
+			if value.Exists() {
+				data.Ipv6RouteTargetExportStitching[i].Stitching = types.BoolValue(true)
+			} else {
+				data.Ipv6RouteTargetExportStitching[i].Stitching = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6RouteTargetExportStitching[i].Stitching = types.BoolNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
@@ -785,6 +1489,25 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 				item.Stitching = types.BoolValue(false)
 			}
 			data.Ipv4RouteTargetExportStitching = append(data.Ipv4RouteTargetExportStitching, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.route-replicate.from.vrf"); value.Exists() {
+		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicate, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4RouteReplicate{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("unicast.source-proto-config.all"); cValue.Exists() {
+				item.UnicastAll = types.BoolValue(true)
+			} else {
+				item.UnicastAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("unicast.source-proto-config.all.route-map"); cValue.Exists() {
+				item.UnicastAllRouteMap = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteReplicate = append(data.Ipv4RouteReplicate, item)
 			return true
 		})
 	}
@@ -958,6 +1681,25 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "address-family.ipv4.route-replicate.from.vrf"); value.Exists() {
+		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicate, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4RouteReplicate{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("unicast.source-proto-config.all"); cValue.Exists() {
+				item.UnicastAll = types.BoolValue(true)
+			} else {
+				item.UnicastAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("unicast.source-proto-config.all.route-map"); cValue.Exists() {
+				item.UnicastAllRouteMap = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteReplicate = append(data.Ipv4RouteReplicate, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "address-family.ipv6.route-target.import-route-target.without-stitching"); value.Exists() {
 		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImport, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -1015,6 +1757,376 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() {
+		data.Rd = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4"); value.Exists() {
+		data.AddressFamilyIpv4 = types.BoolValue(true)
+	} else {
+		data.AddressFamilyIpv4 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6"); value.Exists() {
+		data.AddressFamilyIpv6 = types.BoolValue(true)
+	} else {
+		data.AddressFamilyIpv6 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vpn/id"); value.Exists() {
+		data.VpnId = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/import"); value.Exists() {
+		data.RouteTargetImport = make([]VRFRouteTargetImport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFRouteTargetImport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.RouteTargetImport = append(data.RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/export"); value.Exists() {
+		data.RouteTargetExport = make([]VRFRouteTargetExport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFRouteTargetExport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.RouteTargetExport = append(data.RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching"); value.Exists() {
+		data.Ipv4RouteTargetImport = make([]VRFIpv4RouteTargetImport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetImport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteTargetImport = append(data.Ipv4RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching"); value.Exists() {
+		data.Ipv4RouteTargetImportStitching = make([]VRFIpv4RouteTargetImportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetImportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv4RouteTargetImportStitching = append(data.Ipv4RouteTargetImportStitching, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching"); value.Exists() {
+		data.Ipv4RouteTargetExport = make([]VRFIpv4RouteTargetExport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetExport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteTargetExport = append(data.Ipv4RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching"); value.Exists() {
+		data.Ipv4RouteTargetExportStitching = make([]VRFIpv4RouteTargetExportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetExportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv4RouteTargetExportStitching = append(data.Ipv4RouteTargetExportStitching, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf"); value.Exists() {
+		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicate, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteReplicate{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "unicast/source-proto-config/all"); cValue.Exists() {
+				item.UnicastAll = types.BoolValue(true)
+			} else {
+				item.UnicastAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "unicast/source-proto-config/all/route-map"); cValue.Exists() {
+				item.UnicastAllRouteMap = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteReplicate = append(data.Ipv4RouteReplicate, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching"); value.Exists() {
+		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetImport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv6RouteTargetImport = append(data.Ipv6RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching"); value.Exists() {
+		data.Ipv6RouteTargetImportStitching = make([]VRFIpv6RouteTargetImportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetImportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv6RouteTargetImportStitching = append(data.Ipv6RouteTargetImportStitching, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching"); value.Exists() {
+		data.Ipv6RouteTargetExport = make([]VRFIpv6RouteTargetExport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetExport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv6RouteTargetExport = append(data.Ipv6RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching"); value.Exists() {
+		data.Ipv6RouteTargetExportStitching = make([]VRFIpv6RouteTargetExportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetExportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv6RouteTargetExportStitching = append(data.Ipv6RouteTargetExportStitching, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() {
+		data.Rd = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4"); value.Exists() {
+		data.AddressFamilyIpv4 = types.BoolValue(true)
+	} else {
+		data.AddressFamilyIpv4 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6"); value.Exists() {
+		data.AddressFamilyIpv6 = types.BoolValue(true)
+	} else {
+		data.AddressFamilyIpv6 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vpn/id"); value.Exists() {
+		data.VpnId = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/import"); value.Exists() {
+		data.RouteTargetImport = make([]VRFRouteTargetImport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFRouteTargetImport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.RouteTargetImport = append(data.RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/export"); value.Exists() {
+		data.RouteTargetExport = make([]VRFRouteTargetExport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFRouteTargetExport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.RouteTargetExport = append(data.RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching"); value.Exists() {
+		data.Ipv4RouteTargetImport = make([]VRFIpv4RouteTargetImport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetImport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteTargetImport = append(data.Ipv4RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching"); value.Exists() {
+		data.Ipv4RouteTargetImportStitching = make([]VRFIpv4RouteTargetImportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetImportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv4RouteTargetImportStitching = append(data.Ipv4RouteTargetImportStitching, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching"); value.Exists() {
+		data.Ipv4RouteTargetExport = make([]VRFIpv4RouteTargetExport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetExport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteTargetExport = append(data.Ipv4RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching"); value.Exists() {
+		data.Ipv4RouteTargetExportStitching = make([]VRFIpv4RouteTargetExportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteTargetExportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv4RouteTargetExportStitching = append(data.Ipv4RouteTargetExportStitching, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf"); value.Exists() {
+		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicate, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4RouteReplicate{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "unicast/source-proto-config/all"); cValue.Exists() {
+				item.UnicastAll = types.BoolValue(true)
+			} else {
+				item.UnicastAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "unicast/source-proto-config/all/route-map"); cValue.Exists() {
+				item.UnicastAllRouteMap = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteReplicate = append(data.Ipv4RouteReplicate, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching"); value.Exists() {
+		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetImport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv6RouteTargetImport = append(data.Ipv6RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching"); value.Exists() {
+		data.Ipv6RouteTargetImportStitching = make([]VRFIpv6RouteTargetImportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetImportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv6RouteTargetImportStitching = append(data.Ipv6RouteTargetImportStitching, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching"); value.Exists() {
+		data.Ipv6RouteTargetExport = make([]VRFIpv6RouteTargetExport, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetExport{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv6RouteTargetExport = append(data.Ipv6RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching"); value.Exists() {
+		data.Ipv6RouteTargetExportStitching = make([]VRFIpv6RouteTargetExportStitching, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv6RouteTargetExportStitching{}
+			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv6RouteTargetExportStitching = append(data.Ipv6RouteTargetExportStitching, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
@@ -1124,6 +2236,37 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/route-target/import-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Ipv4RouteReplicate {
+		stateKeyValues := [...]string{state.Ipv4RouteReplicate[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4RouteReplicate[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4RouteReplicate {
+			found = true
+			if state.Ipv4RouteReplicate[i].Name.ValueString() != data.Ipv4RouteReplicate[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() && data.Ipv4RouteReplicate[j].UnicastAllRouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-replicate/from/vrf=%v/unicast/source-proto-config/all/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Ipv4RouteReplicate[i].UnicastAll.IsNull() && data.Ipv4RouteReplicate[j].UnicastAll.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-replicate/from/vrf=%v/unicast/source-proto-config/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-replicate/from/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4RouteTargetExportStitching {
@@ -1309,6 +2452,386 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Ipv6RouteTargetExportStitching {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6RouteTargetExportStitching[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6RouteTargetExportStitching {
+			found = true
+			if state.Ipv6RouteTargetExportStitching[i].Value.ValueString() != data.Ipv6RouteTargetExportStitching[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6RouteTargetExportStitching[i].Stitching.IsNull() && data.Ipv6RouteTargetExportStitching[j].Stitching.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching%v/stitching", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching%v", predicates))
+		}
+	}
+	for i := range state.Ipv6RouteTargetExport {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv6RouteTargetExport[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6RouteTargetExport[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6RouteTargetExport {
+			found = true
+			if state.Ipv6RouteTargetExport[i].Value.ValueString() != data.Ipv6RouteTargetExport[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching%v", predicates))
+		}
+	}
+	for i := range state.Ipv6RouteTargetImportStitching {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv6RouteTargetImportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6RouteTargetImportStitching[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6RouteTargetImportStitching {
+			found = true
+			if state.Ipv6RouteTargetImportStitching[i].Value.ValueString() != data.Ipv6RouteTargetImportStitching[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6RouteTargetImportStitching[i].Stitching.IsNull() && data.Ipv6RouteTargetImportStitching[j].Stitching.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching%v/stitching", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching%v", predicates))
+		}
+	}
+	for i := range state.Ipv6RouteTargetImport {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv6RouteTargetImport[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6RouteTargetImport[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6RouteTargetImport {
+			found = true
+			if state.Ipv6RouteTargetImport[i].Value.ValueString() != data.Ipv6RouteTargetImport[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching%v", predicates))
+		}
+	}
+	for i := range state.Ipv4RouteReplicate {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Ipv4RouteReplicate[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4RouteReplicate[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4RouteReplicate {
+			found = true
+			if state.Ipv4RouteReplicate[i].Name.ValueString() != data.Ipv4RouteReplicate[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4RouteReplicate[i].UnicastAllRouteMap.IsNull() && data.Ipv4RouteReplicate[j].UnicastAllRouteMap.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-replicate/from/vrf%v/unicast/source-proto-config/all/route-map", predicates))
+				}
+				if !state.Ipv4RouteReplicate[i].UnicastAll.IsNull() && data.Ipv4RouteReplicate[j].UnicastAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-replicate/from/vrf%v/unicast/source-proto-config/all", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-replicate/from/vrf%v", predicates))
+		}
+	}
+	for i := range state.Ipv4RouteTargetExportStitching {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv4RouteTargetExportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4RouteTargetExportStitching[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4RouteTargetExportStitching {
+			found = true
+			if state.Ipv4RouteTargetExportStitching[i].Value.ValueString() != data.Ipv4RouteTargetExportStitching[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4RouteTargetExportStitching[i].Stitching.IsNull() && data.Ipv4RouteTargetExportStitching[j].Stitching.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching%v/stitching", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching%v", predicates))
+		}
+	}
+	for i := range state.Ipv4RouteTargetExport {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv4RouteTargetExport[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4RouteTargetExport[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4RouteTargetExport {
+			found = true
+			if state.Ipv4RouteTargetExport[i].Value.ValueString() != data.Ipv4RouteTargetExport[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching%v", predicates))
+		}
+	}
+	for i := range state.Ipv4RouteTargetImportStitching {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv4RouteTargetImportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4RouteTargetImportStitching[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4RouteTargetImportStitching {
+			found = true
+			if state.Ipv4RouteTargetImportStitching[i].Value.ValueString() != data.Ipv4RouteTargetImportStitching[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4RouteTargetImportStitching[i].Stitching.IsNull() && data.Ipv4RouteTargetImportStitching[j].Stitching.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching%v/stitching", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching%v", predicates))
+		}
+	}
+	for i := range state.Ipv4RouteTargetImport {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.Ipv4RouteTargetImport[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4RouteTargetImport[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4RouteTargetImport {
+			found = true
+			if state.Ipv4RouteTargetImport[i].Value.ValueString() != data.Ipv4RouteTargetImport[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching%v", predicates))
+		}
+	}
+	for i := range state.RouteTargetExport {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.RouteTargetExport[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RouteTargetExport[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RouteTargetExport {
+			found = true
+			if state.RouteTargetExport[i].Value.ValueString() != data.RouteTargetExport[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RouteTargetExport[i].Stitching.IsNull() && data.RouteTargetExport[j].Stitching.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-target/export%v/stitching", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-target/export%v", predicates))
+		}
+	}
+	for i := range state.RouteTargetImport {
+		stateKeys := [...]string{"asn-ip"}
+		stateKeyValues := [...]string{state.RouteTargetImport[i].Value.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RouteTargetImport[i].Value.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RouteTargetImport {
+			found = true
+			if state.RouteTargetImport[i].Value.ValueString() != data.RouteTargetImport[j].Value.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RouteTargetImport[i].Stitching.IsNull() && data.RouteTargetImport[j].Stitching.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-target/import%v/stitching", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-target/import%v", predicates))
+		}
+	}
+	if !state.VpnId.IsNull() && data.VpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vpn/id")
+	}
+	if !state.AddressFamilyIpv6.IsNull() && data.AddressFamilyIpv6.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6")
+	}
+	if !state.AddressFamilyIpv4.IsNull() && data.AddressFamilyIpv4.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4")
+	}
+	if !state.Rd.IsNull() && data.Rd.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rd")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1325,6 +2848,13 @@ func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {
 		keyValues := [...]string{data.Ipv6RouteTargetImportStitching[i].Value.ValueString()}
 		if !data.Ipv6RouteTargetImportStitching[i].Stitching.IsNull() && !data.Ipv6RouteTargetImportStitching[i].Stitching.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv6/route-target/import-route-target/with-stitching=%v/stitching", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
+	for i := range data.Ipv4RouteReplicate {
+		keyValues := [...]string{data.Ipv4RouteReplicate[i].Name.ValueString()}
+		if !data.Ipv4RouteReplicate[i].UnicastAll.IsNull() && !data.Ipv4RouteReplicate[i].UnicastAll.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4/route-replicate/from/vrf=%v/unicast/source-proto-config/all", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 
@@ -1391,6 +2921,11 @@ func (data *VRF) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv6/route-target/import-route-target/without-stitching=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.Ipv4RouteReplicate {
+		keyValues := [...]string{data.Ipv4RouteReplicate[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/route-replicate/from/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Ipv4RouteTargetExportStitching {
 		keyValues := [...]string{data.Ipv4RouteTargetExportStitching[i].Value.ValueString()}
 
@@ -1441,3 +2976,139 @@ func (data *VRF) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *VRF) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Ipv6RouteTargetExportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching%v", predicates))
+	}
+	for i := range data.Ipv6RouteTargetExport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetExport[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching%v", predicates))
+	}
+	for i := range data.Ipv6RouteTargetImportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetImportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching%v", predicates))
+	}
+	for i := range data.Ipv6RouteTargetImport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv6RouteTargetImport[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching%v", predicates))
+	}
+	for i := range data.Ipv4RouteReplicate {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Ipv4RouteReplicate[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf%v", predicates))
+	}
+	for i := range data.Ipv4RouteTargetExportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetExportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching%v", predicates))
+	}
+	for i := range data.Ipv4RouteTargetExport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetExport[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching%v", predicates))
+	}
+	for i := range data.Ipv4RouteTargetImportStitching {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetImportStitching[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching%v", predicates))
+	}
+	for i := range data.Ipv4RouteTargetImport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.Ipv4RouteTargetImport[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching%v", predicates))
+	}
+	for i := range data.RouteTargetExport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.RouteTargetExport[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/route-target/export%v", predicates))
+	}
+	for i := range data.RouteTargetImport {
+		keys := [...]string{"asn-ip"}
+		keyValues := [...]string{data.RouteTargetImport[i].Value.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/route-target/import%v", predicates))
+	}
+	if !data.VpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vpn/id")
+	}
+	if !data.AddressFamilyIpv6.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv6")
+	}
+	if !data.AddressFamilyIpv4.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4")
+	}
+	if !data.Rd.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rd")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

@@ -1,6 +1,6 @@
 ---
 name: License
-path: Cisco-IOS-XE-native:native/license
+path: /Cisco-IOS-XE-native:native/license
 doc_category: System
 test_tags: [LICENSE]
 attributes:

@@ -79,15 +79,15 @@ func iosxeBGPPeerSessionTemplateImportStateIdFunc(resourceName string) resource.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPPeerSessionTemplatePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 	}
@@ -103,7 +103,7 @@ func testAccIosxeBGPPeerSessionTemplateConfig_minimum() string {
 	config := `resource "iosxe_bgp_peer_session_template" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	template_name = "PEER_SESSION_TEMPLATE_1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -122,7 +122,7 @@ func testAccIosxeBGPPeerSessionTemplateConfig_all() string {
 	config += `	ebgp_multihop = true` + "\n"
 	config += `	ebgp_multihop_max_hop = 10` + "\n"
 	config += `	update_source_interface_loopback = 100` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

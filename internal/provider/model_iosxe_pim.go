@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -140,6 +143,17 @@ func (data PIM) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data PIM) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/pim"
+	return path
+}
+
+func (data PIMData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/pim"
+	return path
 }
 
 // End of section. //template:end getPath
@@ -333,6 +347,235 @@ func (data PIM) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data PIM) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Autorp.IsNull() && !data.Autorp.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp", data.Autorp.ValueBool())
+	}
+	if !data.AutorpListener.IsNull() && !data.AutorpListener.IsUnknown() {
+		if data.AutorpListener.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener")
+		}
+	}
+	if !data.BsrCandidateLoopback.IsNull() && !data.BsrCandidateLoopback.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/Loopback", strconv.FormatInt(data.BsrCandidateLoopback.ValueInt64(), 10))
+	}
+	if !data.BsrCandidateMask.IsNull() && !data.BsrCandidateMask.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/mask", strconv.FormatInt(data.BsrCandidateMask.ValueInt64(), 10))
+	}
+	if !data.BsrCandidatePriority.IsNull() && !data.BsrCandidatePriority.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/priority", strconv.FormatInt(data.BsrCandidatePriority.ValueInt64(), 10))
+	}
+	if !data.BsrCandidateAcceptRpCandidate.IsNull() && !data.BsrCandidateAcceptRpCandidate.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate", data.BsrCandidateAcceptRpCandidate.ValueString())
+	}
+	if !data.SsmRange.IsNull() && !data.SsmRange.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range", data.SsmRange.ValueString())
+	}
+	if !data.SsmDefault.IsNull() && !data.SsmDefault.IsUnknown() {
+		if data.SsmDefault.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default")
+		}
+	}
+	if !data.RpAddress.IsNull() && !data.RpAddress.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/address", data.RpAddress.ValueString())
+	}
+	if !data.RpAddressOverride.IsNull() && !data.RpAddressOverride.IsUnknown() {
+		if data.RpAddressOverride.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override")
+		}
+	}
+	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.IsUnknown() {
+		if data.RpAddressBidir.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir")
+		}
+	}
+	if len(data.RpAddresses) > 0 {
+		for _, item := range data.RpAddresses {
+			cBody := netconf.Body{}
+			if !item.AccessList.IsNull() && !item.AccessList.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "access-list", item.AccessList.ValueString())
+			}
+			if !item.RpAddress.IsNull() && !item.RpAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "rp-address", item.RpAddress.ValueString())
+			}
+			if !item.Override.IsNull() && !item.Override.IsUnknown() {
+				if item.Override.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "override", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "override")
+				}
+			}
+			if !item.Bidir.IsNull() && !item.Bidir.IsUnknown() {
+				if item.Bidir.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "bidir", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "bidir")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list", cBody.Res())
+		}
+	}
+	if len(data.RpCandidates) > 0 {
+		for _, item := range data.RpCandidates {
+			cBody := netconf.Body{}
+			if !item.Interface.IsNull() && !item.Interface.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "interface", item.Interface.ValueString())
+			}
+			if !item.GroupList.IsNull() && !item.GroupList.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "group-list", item.GroupList.ValueString())
+			}
+			if !item.Interval.IsNull() && !item.Interval.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "interval", strconv.FormatInt(item.Interval.ValueInt64(), 10))
+			}
+			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
+			}
+			if !item.Bidir.IsNull() && !item.Bidir.IsUnknown() {
+				if item.Bidir.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "bidir", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "bidir")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate", cBody.Res())
+		}
+	}
+	if len(data.Vrfs) > 0 {
+		for _, item := range data.Vrfs {
+			cBody := netconf.Body{}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "id", item.Vrf.ValueString())
+			}
+			if !item.Autorp.IsNull() && !item.Autorp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "autorp-container/autorp", item.Autorp.ValueBool())
+			}
+			if !item.AutorpListener.IsNull() && !item.AutorpListener.IsUnknown() {
+				if item.AutorpListener.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "autorp-container/listener", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "autorp-container/listener")
+				}
+			}
+			if !item.BsrCandidateLoopback.IsNull() && !item.BsrCandidateLoopback.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "bsr-candidate/Loopback", strconv.FormatInt(item.BsrCandidateLoopback.ValueInt64(), 10))
+			}
+			if !item.BsrCandidateMask.IsNull() && !item.BsrCandidateMask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "bsr-candidate/mask", strconv.FormatInt(item.BsrCandidateMask.ValueInt64(), 10))
+			}
+			if !item.BsrCandidatePriority.IsNull() && !item.BsrCandidatePriority.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "bsr-candidate/priority", strconv.FormatInt(item.BsrCandidatePriority.ValueInt64(), 10))
+			}
+			if !item.BsrCandidateAcceptRpCandidate.IsNull() && !item.BsrCandidateAcceptRpCandidate.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "bsr-candidate/accept-rp-candidate", item.BsrCandidateAcceptRpCandidate.ValueString())
+			}
+			if !item.SsmRange.IsNull() && !item.SsmRange.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ssm/range", item.SsmRange.ValueString())
+			}
+			if !item.SsmDefault.IsNull() && !item.SsmDefault.IsUnknown() {
+				if item.SsmDefault.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ssm/default", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ssm/default")
+				}
+			}
+			if !item.RpAddress.IsNull() && !item.RpAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "rp-address-conf/address", item.RpAddress.ValueString())
+			}
+			if !item.RpAddressOverride.IsNull() && !item.RpAddressOverride.IsUnknown() {
+				if item.RpAddressOverride.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "rp-address-conf/override", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "rp-address-conf/override")
+				}
+			}
+			if !item.RpAddressBidir.IsNull() && !item.RpAddressBidir.IsUnknown() {
+				if item.RpAddressBidir.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "rp-address-conf/bidir", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "rp-address-conf/bidir")
+				}
+			}
+			if !item.CacheRpfOif.IsNull() && !item.CacheRpfOif.IsUnknown() {
+				if item.CacheRpfOif.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "cache/rpf-oif", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "cache/rpf-oif")
+				}
+			}
+			if len(item.RpAddresses) > 0 {
+				for _, citem := range item.RpAddresses {
+					ccBody := netconf.Body{}
+					if !citem.AccessList.IsNull() && !citem.AccessList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "access-list", citem.AccessList.ValueString())
+					}
+					if !citem.RpAddress.IsNull() && !citem.RpAddress.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "rp-address", citem.RpAddress.ValueString())
+					}
+					if !citem.Override.IsNull() && !citem.Override.IsUnknown() {
+						if citem.Override.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "override", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "override")
+						}
+					}
+					if !citem.Bidir.IsNull() && !citem.Bidir.IsUnknown() {
+						if citem.Bidir.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "bidir", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "bidir")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "rp-address-list", ccBody.Res())
+				}
+			}
+			if len(item.RpCandidates) > 0 {
+				for _, citem := range item.RpCandidates {
+					ccBody := netconf.Body{}
+					if !citem.Interface.IsNull() && !citem.Interface.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "interface", citem.Interface.ValueString())
+					}
+					if !citem.GroupList.IsNull() && !citem.GroupList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "group-list", citem.GroupList.ValueString())
+					}
+					if !citem.Interval.IsNull() && !citem.Interval.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "interval", strconv.FormatInt(citem.Interval.ValueInt64(), 10))
+					}
+					if !citem.Priority.IsNull() && !citem.Priority.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "priority", strconv.FormatInt(citem.Priority.ValueInt64(), 10))
+					}
+					if !citem.Bidir.IsNull() && !citem.Bidir.IsUnknown() {
+						if citem.Bidir.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "bidir", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "bidir")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "rp-candidate", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -738,6 +981,407 @@ func (data *PIM) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp"); !data.Autorp.IsNull() {
+		if value.Exists() {
+			data.Autorp = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Autorp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener"); !data.AutorpListener.IsNull() {
+		if value.Exists() {
+			data.AutorpListener = types.BoolValue(true)
+		} else {
+			data.AutorpListener = types.BoolValue(false)
+		}
+	} else {
+		data.AutorpListener = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/Loopback"); value.Exists() && !data.BsrCandidateLoopback.IsNull() {
+		data.BsrCandidateLoopback = types.Int64Value(value.Int())
+	} else {
+		data.BsrCandidateLoopback = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/mask"); value.Exists() && !data.BsrCandidateMask.IsNull() {
+		data.BsrCandidateMask = types.Int64Value(value.Int())
+	} else {
+		data.BsrCandidateMask = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/priority"); value.Exists() && !data.BsrCandidatePriority.IsNull() {
+		data.BsrCandidatePriority = types.Int64Value(value.Int())
+	} else {
+		data.BsrCandidatePriority = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate"); value.Exists() && !data.BsrCandidateAcceptRpCandidate.IsNull() {
+		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
+	} else {
+		data.BsrCandidateAcceptRpCandidate = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range"); value.Exists() && !data.SsmRange.IsNull() {
+		data.SsmRange = types.StringValue(value.String())
+	} else {
+		data.SsmRange = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default"); !data.SsmDefault.IsNull() {
+		if value.Exists() {
+			data.SsmDefault = types.BoolValue(true)
+		} else {
+			data.SsmDefault = types.BoolValue(false)
+		}
+	} else {
+		data.SsmDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/address"); value.Exists() && !data.RpAddress.IsNull() {
+		data.RpAddress = types.StringValue(value.String())
+	} else {
+		data.RpAddress = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override"); !data.RpAddressOverride.IsNull() {
+		if value.Exists() {
+			data.RpAddressOverride = types.BoolValue(true)
+		} else {
+			data.RpAddressOverride = types.BoolValue(false)
+		}
+	} else {
+		data.RpAddressOverride = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir"); !data.RpAddressBidir.IsNull() {
+		if value.Exists() {
+			data.RpAddressBidir = types.BoolValue(true)
+		} else {
+			data.RpAddressBidir = types.BoolValue(false)
+		}
+	} else {
+		data.RpAddressBidir = types.BoolNull()
+	}
+	for i := range data.RpAddresses {
+		keys := [...]string{"access-list"}
+		keyValues := [...]string{data.RpAddresses[i].AccessList.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "access-list"); value.Exists() && !data.RpAddresses[i].AccessList.IsNull() {
+			data.RpAddresses[i].AccessList = types.StringValue(value.String())
+		} else {
+			data.RpAddresses[i].AccessList = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "rp-address"); value.Exists() && !data.RpAddresses[i].RpAddress.IsNull() {
+			data.RpAddresses[i].RpAddress = types.StringValue(value.String())
+		} else {
+			data.RpAddresses[i].RpAddress = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "override"); !data.RpAddresses[i].Override.IsNull() {
+			if value.Exists() {
+				data.RpAddresses[i].Override = types.BoolValue(true)
+			} else {
+				data.RpAddresses[i].Override = types.BoolValue(false)
+			}
+		} else {
+			data.RpAddresses[i].Override = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "bidir"); !data.RpAddresses[i].Bidir.IsNull() {
+			if value.Exists() {
+				data.RpAddresses[i].Bidir = types.BoolValue(true)
+			} else {
+				data.RpAddresses[i].Bidir = types.BoolValue(false)
+			}
+		} else {
+			data.RpAddresses[i].Bidir = types.BoolNull()
+		}
+	}
+	for i := range data.RpCandidates {
+		keys := [...]string{"interface"}
+		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "interface"); value.Exists() && !data.RpCandidates[i].Interface.IsNull() {
+			data.RpCandidates[i].Interface = types.StringValue(value.String())
+		} else {
+			data.RpCandidates[i].Interface = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "group-list"); value.Exists() && !data.RpCandidates[i].GroupList.IsNull() {
+			data.RpCandidates[i].GroupList = types.StringValue(value.String())
+		} else {
+			data.RpCandidates[i].GroupList = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "interval"); value.Exists() && !data.RpCandidates[i].Interval.IsNull() {
+			data.RpCandidates[i].Interval = types.Int64Value(value.Int())
+		} else {
+			data.RpCandidates[i].Interval = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "priority"); value.Exists() && !data.RpCandidates[i].Priority.IsNull() {
+			data.RpCandidates[i].Priority = types.Int64Value(value.Int())
+		} else {
+			data.RpCandidates[i].Priority = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "bidir"); !data.RpCandidates[i].Bidir.IsNull() {
+			if value.Exists() {
+				data.RpCandidates[i].Bidir = types.BoolValue(true)
+			} else {
+				data.RpCandidates[i].Bidir = types.BoolValue(false)
+			}
+		} else {
+			data.RpCandidates[i].Bidir = types.BoolNull()
+		}
+	}
+	for i := range data.Vrfs {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
+			data.Vrfs[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Vrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "autorp-container/autorp"); !data.Vrfs[i].Autorp.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].Autorp = types.BoolValue(value.Bool())
+			}
+		} else {
+			data.Vrfs[i].Autorp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "autorp-container/listener"); !data.Vrfs[i].AutorpListener.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].AutorpListener = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].AutorpListener = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].AutorpListener = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "bsr-candidate/Loopback"); value.Exists() && !data.Vrfs[i].BsrCandidateLoopback.IsNull() {
+			data.Vrfs[i].BsrCandidateLoopback = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].BsrCandidateLoopback = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "bsr-candidate/mask"); value.Exists() && !data.Vrfs[i].BsrCandidateMask.IsNull() {
+			data.Vrfs[i].BsrCandidateMask = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].BsrCandidateMask = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "bsr-candidate/priority"); value.Exists() && !data.Vrfs[i].BsrCandidatePriority.IsNull() {
+			data.Vrfs[i].BsrCandidatePriority = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].BsrCandidatePriority = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "bsr-candidate/accept-rp-candidate"); value.Exists() && !data.Vrfs[i].BsrCandidateAcceptRpCandidate.IsNull() {
+			data.Vrfs[i].BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].BsrCandidateAcceptRpCandidate = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ssm/range"); value.Exists() && !data.Vrfs[i].SsmRange.IsNull() {
+			data.Vrfs[i].SsmRange = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].SsmRange = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ssm/default"); !data.Vrfs[i].SsmDefault.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].SsmDefault = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].SsmDefault = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].SsmDefault = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "rp-address-conf/address"); value.Exists() && !data.Vrfs[i].RpAddress.IsNull() {
+			data.Vrfs[i].RpAddress = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].RpAddress = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "rp-address-conf/override"); !data.Vrfs[i].RpAddressOverride.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].RpAddressOverride = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].RpAddressOverride = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].RpAddressOverride = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "rp-address-conf/bidir"); !data.Vrfs[i].RpAddressBidir.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].RpAddressBidir = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].RpAddressBidir = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].RpAddressBidir = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "cache/rpf-oif"); !data.Vrfs[i].CacheRpfOif.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].CacheRpfOif = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].CacheRpfOif = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].CacheRpfOif = types.BoolNull()
+		}
+		for ci := range data.Vrfs[i].RpAddresses {
+			keys := [...]string{"access-list"}
+			keyValues := [...]string{data.Vrfs[i].RpAddresses[ci].AccessList.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "rp-address-list").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "access-list"); value.Exists() && !data.Vrfs[i].RpAddresses[ci].AccessList.IsNull() {
+				data.Vrfs[i].RpAddresses[ci].AccessList = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpAddresses[ci].AccessList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "rp-address"); value.Exists() && !data.Vrfs[i].RpAddresses[ci].RpAddress.IsNull() {
+				data.Vrfs[i].RpAddresses[ci].RpAddress = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpAddresses[ci].RpAddress = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "override"); !data.Vrfs[i].RpAddresses[ci].Override.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].RpAddresses[ci].Override = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].RpAddresses[ci].Override = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].RpAddresses[ci].Override = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "bidir"); !data.Vrfs[i].RpAddresses[ci].Bidir.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].RpAddresses[ci].Bidir = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].RpAddresses[ci].Bidir = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].RpAddresses[ci].Bidir = types.BoolNull()
+			}
+		}
+		for ci := range data.Vrfs[i].RpCandidates {
+			keys := [...]string{"interface"}
+			keyValues := [...]string{data.Vrfs[i].RpCandidates[ci].Interface.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "rp-candidate").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "interface"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].Interface.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].Interface = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Interface = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "group-list"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].GroupList.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].GroupList = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].GroupList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "interval"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].Interval.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].Interval = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Interval = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "priority"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].Priority.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].Priority = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Priority = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "bidir"); !data.Vrfs[i].RpCandidates[ci].Bidir.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].RpCandidates[ci].Bidir = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].RpCandidates[ci].Bidir = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Bidir = types.BoolNull()
+			}
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -1161,6 +1805,420 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *PIM) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp"); value.Exists() {
+		data.Autorp = types.BoolValue(value.Bool())
+	} else {
+		data.Autorp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener"); value.Exists() {
+		data.AutorpListener = types.BoolValue(true)
+	} else {
+		data.AutorpListener = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/Loopback"); value.Exists() {
+		data.BsrCandidateLoopback = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/mask"); value.Exists() {
+		data.BsrCandidateMask = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/priority"); value.Exists() {
+		data.BsrCandidatePriority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate"); value.Exists() {
+		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range"); value.Exists() {
+		data.SsmRange = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default"); value.Exists() {
+		data.SsmDefault = types.BoolValue(true)
+	} else {
+		data.SsmDefault = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/address"); value.Exists() {
+		data.RpAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override"); value.Exists() {
+		data.RpAddressOverride = types.BoolValue(true)
+	} else {
+		data.RpAddressOverride = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir"); value.Exists() {
+		data.RpAddressBidir = types.BoolValue(true)
+	} else {
+		data.RpAddressBidir = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list"); value.Exists() {
+		data.RpAddresses = make([]PIMRpAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PIMRpAddresses{}
+			if cValue := helpers.GetFromXPath(v, "access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address"); cValue.Exists() {
+				item.RpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "override"); cValue.Exists() {
+				item.Override = types.BoolValue(true)
+			} else {
+				item.Override = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "bidir"); cValue.Exists() {
+				item.Bidir = types.BoolValue(true)
+			} else {
+				item.Bidir = types.BoolValue(false)
+			}
+			data.RpAddresses = append(data.RpAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate"); value.Exists() {
+		data.RpCandidates = make([]PIMRpCandidates, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PIMRpCandidates{}
+			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
+				item.Interface = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "group-list"); cValue.Exists() {
+				item.GroupList = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interval"); cValue.Exists() {
+				item.Interval = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bidir"); cValue.Exists() {
+				item.Bidir = types.BoolValue(true)
+			} else {
+				item.Bidir = types.BoolValue(false)
+			}
+			data.RpCandidates = append(data.RpCandidates, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf"); value.Exists() {
+		data.Vrfs = make([]PIMVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PIMVrfs{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "autorp-container/autorp"); cValue.Exists() {
+				item.Autorp = types.BoolValue(cValue.Bool())
+			} else {
+				item.Autorp = types.BoolNull()
+			}
+			if cValue := helpers.GetFromXPath(v, "autorp-container/listener"); cValue.Exists() {
+				item.AutorpListener = types.BoolValue(true)
+			} else {
+				item.AutorpListener = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/Loopback"); cValue.Exists() {
+				item.BsrCandidateLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/mask"); cValue.Exists() {
+				item.BsrCandidateMask = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/priority"); cValue.Exists() {
+				item.BsrCandidatePriority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/accept-rp-candidate"); cValue.Exists() {
+				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ssm/range"); cValue.Exists() {
+				item.SsmRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ssm/default"); cValue.Exists() {
+				item.SsmDefault = types.BoolValue(true)
+			} else {
+				item.SsmDefault = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-conf/address"); cValue.Exists() {
+				item.RpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-conf/override"); cValue.Exists() {
+				item.RpAddressOverride = types.BoolValue(true)
+			} else {
+				item.RpAddressOverride = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-conf/bidir"); cValue.Exists() {
+				item.RpAddressBidir = types.BoolValue(true)
+			} else {
+				item.RpAddressBidir = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "cache/rpf-oif"); cValue.Exists() {
+				item.CacheRpfOif = types.BoolValue(true)
+			} else {
+				item.CacheRpfOif = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-list"); cValue.Exists() {
+				item.RpAddresses = make([]PIMVrfsRpAddresses, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PIMVrfsRpAddresses{}
+					if ccValue := helpers.GetFromXPath(cv, "access-list"); ccValue.Exists() {
+						cItem.AccessList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "rp-address"); ccValue.Exists() {
+						cItem.RpAddress = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "override"); ccValue.Exists() {
+						cItem.Override = types.BoolValue(true)
+					} else {
+						cItem.Override = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpAddresses = append(item.RpAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-candidate"); cValue.Exists() {
+				item.RpCandidates = make([]PIMVrfsRpCandidates, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PIMVrfsRpCandidates{}
+					if ccValue := helpers.GetFromXPath(cv, "interface"); ccValue.Exists() {
+						cItem.Interface = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "group-list"); ccValue.Exists() {
+						cItem.GroupList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "interval"); ccValue.Exists() {
+						cItem.Interval = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "priority"); ccValue.Exists() {
+						cItem.Priority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpCandidates = append(item.RpCandidates, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp"); value.Exists() {
+		data.Autorp = types.BoolValue(value.Bool())
+	} else {
+		data.Autorp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener"); value.Exists() {
+		data.AutorpListener = types.BoolValue(true)
+	} else {
+		data.AutorpListener = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/Loopback"); value.Exists() {
+		data.BsrCandidateLoopback = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/mask"); value.Exists() {
+		data.BsrCandidateMask = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/priority"); value.Exists() {
+		data.BsrCandidatePriority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate"); value.Exists() {
+		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range"); value.Exists() {
+		data.SsmRange = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default"); value.Exists() {
+		data.SsmDefault = types.BoolValue(true)
+	} else {
+		data.SsmDefault = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/address"); value.Exists() {
+		data.RpAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override"); value.Exists() {
+		data.RpAddressOverride = types.BoolValue(true)
+	} else {
+		data.RpAddressOverride = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir"); value.Exists() {
+		data.RpAddressBidir = types.BoolValue(true)
+	} else {
+		data.RpAddressBidir = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list"); value.Exists() {
+		data.RpAddresses = make([]PIMRpAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PIMRpAddresses{}
+			if cValue := helpers.GetFromXPath(v, "access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address"); cValue.Exists() {
+				item.RpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "override"); cValue.Exists() {
+				item.Override = types.BoolValue(true)
+			} else {
+				item.Override = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "bidir"); cValue.Exists() {
+				item.Bidir = types.BoolValue(true)
+			} else {
+				item.Bidir = types.BoolValue(false)
+			}
+			data.RpAddresses = append(data.RpAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate"); value.Exists() {
+		data.RpCandidates = make([]PIMRpCandidates, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PIMRpCandidates{}
+			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
+				item.Interface = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "group-list"); cValue.Exists() {
+				item.GroupList = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interval"); cValue.Exists() {
+				item.Interval = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bidir"); cValue.Exists() {
+				item.Bidir = types.BoolValue(true)
+			} else {
+				item.Bidir = types.BoolValue(false)
+			}
+			data.RpCandidates = append(data.RpCandidates, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf"); value.Exists() {
+		data.Vrfs = make([]PIMVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PIMVrfs{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "autorp-container/autorp"); cValue.Exists() {
+				item.Autorp = types.BoolValue(cValue.Bool())
+			} else {
+				item.Autorp = types.BoolNull()
+			}
+			if cValue := helpers.GetFromXPath(v, "autorp-container/listener"); cValue.Exists() {
+				item.AutorpListener = types.BoolValue(true)
+			} else {
+				item.AutorpListener = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/Loopback"); cValue.Exists() {
+				item.BsrCandidateLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/mask"); cValue.Exists() {
+				item.BsrCandidateMask = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/priority"); cValue.Exists() {
+				item.BsrCandidatePriority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "bsr-candidate/accept-rp-candidate"); cValue.Exists() {
+				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ssm/range"); cValue.Exists() {
+				item.SsmRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ssm/default"); cValue.Exists() {
+				item.SsmDefault = types.BoolValue(true)
+			} else {
+				item.SsmDefault = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-conf/address"); cValue.Exists() {
+				item.RpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-conf/override"); cValue.Exists() {
+				item.RpAddressOverride = types.BoolValue(true)
+			} else {
+				item.RpAddressOverride = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-conf/bidir"); cValue.Exists() {
+				item.RpAddressBidir = types.BoolValue(true)
+			} else {
+				item.RpAddressBidir = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "cache/rpf-oif"); cValue.Exists() {
+				item.CacheRpfOif = types.BoolValue(true)
+			} else {
+				item.CacheRpfOif = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-address-list"); cValue.Exists() {
+				item.RpAddresses = make([]PIMVrfsRpAddresses, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PIMVrfsRpAddresses{}
+					if ccValue := helpers.GetFromXPath(cv, "access-list"); ccValue.Exists() {
+						cItem.AccessList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "rp-address"); ccValue.Exists() {
+						cItem.RpAddress = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "override"); ccValue.Exists() {
+						cItem.Override = types.BoolValue(true)
+					} else {
+						cItem.Override = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpAddresses = append(item.RpAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "rp-candidate"); cValue.Exists() {
+				item.RpCandidates = make([]PIMVrfsRpCandidates, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := PIMVrfsRpCandidates{}
+					if ccValue := helpers.GetFromXPath(cv, "interface"); ccValue.Exists() {
+						cItem.Interface = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "group-list"); ccValue.Exists() {
+						cItem.GroupList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "interval"); ccValue.Exists() {
+						cItem.Interval = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "priority"); ccValue.Exists() {
+						cItem.Priority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpCandidates = append(item.RpCandidates, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
@@ -1404,6 +2462,275 @@ func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *PIM) addDeletedItemsXML(ctx context.Context, state PIM, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Vrfs {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{state.Vrfs[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vrfs[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vrfs {
+			found = true
+			if state.Vrfs[i].Vrf.ValueString() != data.Vrfs[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Vrfs[i].RpCandidates {
+					cstateKeys := [...]string{"interface"}
+					cstateKeyValues := [...]string{state.Vrfs[i].RpCandidates[ci].Interface.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].RpCandidates[ci].Interface.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].RpCandidates {
+						found = true
+						if state.Vrfs[i].RpCandidates[ci].Interface.ValueString() != data.Vrfs[j].RpCandidates[cj].Interface.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].RpCandidates[ci].Bidir.IsNull() && data.Vrfs[j].RpCandidates[cj].Bidir.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-candidate%v/bidir", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].RpCandidates[ci].Priority.IsNull() && data.Vrfs[j].RpCandidates[cj].Priority.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-candidate%v/priority", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].RpCandidates[ci].Interval.IsNull() && data.Vrfs[j].RpCandidates[cj].Interval.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-candidate%v/interval", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].RpCandidates[ci].GroupList.IsNull() && data.Vrfs[j].RpCandidates[cj].GroupList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-candidate%v/group-list", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-candidate%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Vrfs[i].RpAddresses {
+					cstateKeys := [...]string{"access-list"}
+					cstateKeyValues := [...]string{state.Vrfs[i].RpAddresses[ci].AccessList.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].RpAddresses[ci].AccessList.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].RpAddresses {
+						found = true
+						if state.Vrfs[i].RpAddresses[ci].AccessList.ValueString() != data.Vrfs[j].RpAddresses[cj].AccessList.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].RpAddresses[ci].Bidir.IsNull() && data.Vrfs[j].RpAddresses[cj].Bidir.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address-list%v/bidir", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].RpAddresses[ci].Override.IsNull() && data.Vrfs[j].RpAddresses[cj].Override.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address-list%v/override", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].RpAddresses[ci].RpAddress.IsNull() && data.Vrfs[j].RpAddresses[cj].RpAddress.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address-list%v/rp-address", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address-list%v", predicates, cpredicates))
+					}
+				}
+				if !state.Vrfs[i].RpAddressBidir.IsNull() && data.Vrfs[j].RpAddressBidir.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address-conf/bidir", predicates))
+				}
+				if !state.Vrfs[i].RpAddressOverride.IsNull() && data.Vrfs[j].RpAddressOverride.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address-conf/override", predicates))
+				}
+				if !state.Vrfs[i].RpAddress.IsNull() && data.Vrfs[j].RpAddress.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/rp-address-conf/address", predicates))
+				}
+				if !state.Vrfs[i].SsmDefault.IsNull() && data.Vrfs[j].SsmDefault.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/ssm/default", predicates))
+				}
+				if !state.Vrfs[i].SsmRange.IsNull() && data.Vrfs[j].SsmRange.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/ssm/range", predicates))
+				}
+				if !state.Vrfs[i].BsrCandidateAcceptRpCandidate.IsNull() && data.Vrfs[j].BsrCandidateAcceptRpCandidate.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
+				}
+				if !state.Vrfs[i].BsrCandidatePriority.IsNull() && data.Vrfs[j].BsrCandidatePriority.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
+				}
+				if !state.Vrfs[i].BsrCandidateMask.IsNull() && data.Vrfs[j].BsrCandidateMask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
+				}
+				if !state.Vrfs[i].BsrCandidateLoopback.IsNull() && data.Vrfs[j].BsrCandidateLoopback.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
+				}
+				if !state.Vrfs[i].AutorpListener.IsNull() && data.Vrfs[j].AutorpListener.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/autorp-container/listener", predicates))
+				}
+				if !state.Vrfs[i].Autorp.IsNull() && data.Vrfs[j].Autorp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/autorp-container/autorp", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v", predicates))
+		}
+	}
+	for i := range state.RpCandidates {
+		stateKeys := [...]string{"interface"}
+		stateKeyValues := [...]string{state.RpCandidates[i].Interface.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RpCandidates[i].Interface.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RpCandidates {
+			found = true
+			if state.RpCandidates[i].Interface.ValueString() != data.RpCandidates[j].Interface.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RpCandidates[i].Bidir.IsNull() && data.RpCandidates[j].Bidir.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate%v/bidir", predicates))
+				}
+				if !state.RpCandidates[i].Priority.IsNull() && data.RpCandidates[j].Priority.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate%v/priority", predicates))
+				}
+				if !state.RpCandidates[i].Interval.IsNull() && data.RpCandidates[j].Interval.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate%v/interval", predicates))
+				}
+				if !state.RpCandidates[i].GroupList.IsNull() && data.RpCandidates[j].GroupList.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate%v/group-list", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate%v", predicates))
+		}
+	}
+	for i := range state.RpAddresses {
+		stateKeys := [...]string{"access-list"}
+		stateKeyValues := [...]string{state.RpAddresses[i].AccessList.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RpAddresses[i].AccessList.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RpAddresses {
+			found = true
+			if state.RpAddresses[i].AccessList.ValueString() != data.RpAddresses[j].AccessList.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RpAddresses[i].Bidir.IsNull() && data.RpAddresses[j].Bidir.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list%v/bidir", predicates))
+				}
+				if !state.RpAddresses[i].Override.IsNull() && data.RpAddresses[j].Override.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list%v/override", predicates))
+				}
+				if !state.RpAddresses[i].RpAddress.IsNull() && data.RpAddresses[j].RpAddress.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list%v/rp-address", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list%v", predicates))
+		}
+	}
+	if !state.RpAddressBidir.IsNull() && data.RpAddressBidir.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir")
+	}
+	if !state.RpAddressOverride.IsNull() && data.RpAddressOverride.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override")
+	}
+	if !state.RpAddress.IsNull() && data.RpAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/address")
+	}
+	if !state.SsmDefault.IsNull() && data.SsmDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default")
+	}
+	if !state.SsmRange.IsNull() && data.SsmRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range")
+	}
+	if !state.BsrCandidateAcceptRpCandidate.IsNull() && data.BsrCandidateAcceptRpCandidate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !state.BsrCandidatePriority.IsNull() && data.BsrCandidatePriority.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !state.BsrCandidateMask.IsNull() && data.BsrCandidateMask.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !state.BsrCandidateLoopback.IsNull() && data.BsrCandidateLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !state.AutorpListener.IsNull() && data.AutorpListener.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener")
+	}
+	if !state.Autorp.IsNull() && data.Autorp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *PIM) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1536,3 +2863,77 @@ func (data *PIM) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *PIM) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Vrfs {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v", predicates))
+	}
+	for i := range data.RpCandidates {
+		keys := [...]string{"interface"}
+		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate%v", predicates))
+	}
+	for i := range data.RpAddresses {
+		keys := [...]string{"access-list"}
+		keyValues := [...]string{data.RpAddresses[i].AccessList.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list%v", predicates))
+	}
+	if !data.RpAddressBidir.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/bidir")
+	}
+	if !data.RpAddressOverride.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/override")
+	}
+	if !data.RpAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-conf/address")
+	}
+	if !data.SsmDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/default")
+	}
+	if !data.SsmRange.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range")
+	}
+	if !data.BsrCandidateAcceptRpCandidate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !data.BsrCandidatePriority.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !data.BsrCandidateMask.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !data.BsrCandidateLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
+	}
+	if !data.AutorpListener.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener")
+	}
+	if !data.Autorp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

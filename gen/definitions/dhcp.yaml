@@ -1,6 +1,6 @@
 ---
 name: DHCP
-path: Cisco-IOS-XE-native:native/ip/dhcp
+path: /Cisco-IOS-XE-native:native/ip/dhcp
 doc_category: System
 attributes:
   - yang_name: Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection

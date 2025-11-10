@@ -110,7 +110,7 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 {{- if .TestPrerequisites}}
 const testAccDataSourceIosxe{{camelCase .Name}}PrerequisitesConfig = `
 {{- range $index, $item := .TestPrerequisites}}
-resource "iosxe_restconf" "PreReq{{$index}}" {
+resource "iosxe_yang" "PreReq{{$index}}" {
 	path = "{{.Path}}"
 	{{- if .NoDelete}}
 	delete = false
@@ -140,7 +140,7 @@ resource "iosxe_restconf" "PreReq{{$index}}" {
 	]
 	{{- end}}
 	{{- if .Dependencies}}
-	depends_on = [{{range .Dependencies}}iosxe_restconf.PreReq{{.}}, {{end}}]
+	depends_on = [{{range .Dependencies}}iosxe_yang.PreReq{{.}}, {{end}}]
 	{{- end}}
 }
 {{ end}}
@@ -211,7 +211,7 @@ func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 	{{- end}}
 	{{- end}}
 	{{- if .TestPrerequisites}}
-	config += `	depends_on = [{{range $index, $item := .TestPrerequisites}}iosxe_restconf.PreReq{{$index}}, {{end}}]` + "\n"
+	config += `	depends_on = [{{range $index, $item := .TestPrerequisites}}iosxe_yang.PreReq{{$index}}, {{end}}]` + "\n"
 	{{- end}}
 	config += `}` + "\n"
 	

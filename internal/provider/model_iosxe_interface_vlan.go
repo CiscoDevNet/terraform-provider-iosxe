@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -39,80 +42,82 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceVLAN struct {
-	Device                       types.String                          `tfsdk:"device"`
-	Id                           types.String                          `tfsdk:"id"`
-	DeleteMode                   types.String                          `tfsdk:"delete_mode"`
-	Name                         types.Int64                           `tfsdk:"name"`
-	Autostate                    types.Bool                            `tfsdk:"autostate"`
-	Description                  types.String                          `tfsdk:"description"`
-	Shutdown                     types.Bool                            `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                            `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                            `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                            `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                          `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                          `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                          `tfsdk:"ipv4_address_mask"`
-	Unnumbered                   types.String                          `tfsdk:"unnumbered"`
-	IpDhcpRelaySourceInterface   types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupInEnable        types.Bool                            `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn              types.String                          `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable       types.Bool                            `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut             types.String                          `tfsdk:"ip_access_group_out"`
-	HelperAddresses              []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                  types.String                          `tfsdk:"bfd_template"`
-	BfdEnable                    types.Bool                            `tfsdk:"bfd_enable"`
-	BfdLocalAddress              types.String                          `tfsdk:"bfd_local_address"`
-	BfdInterval                  types.Int64                           `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx             types.Int64                           `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier        types.Int64                           `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                      types.Bool                            `tfsdk:"bfd_echo"`
-	Ipv6Enable                   types.Bool                            `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                           `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                            `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	LoadInterval                 types.Int64                           `tfsdk:"load_interval"`
-	MacAddress                   types.String                          `tfsdk:"mac_address"`
+	Device                            types.String                          `tfsdk:"device"`
+	Id                                types.String                          `tfsdk:"id"`
+	DeleteMode                        types.String                          `tfsdk:"delete_mode"`
+	Name                              types.Int64                           `tfsdk:"name"`
+	Autostate                         types.Bool                            `tfsdk:"autostate"`
+	Description                       types.String                          `tfsdk:"description"`
+	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
+	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
+	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
+	IpUnreachables                    types.Bool                            `tfsdk:"ip_unreachables"`
+	VrfForwarding                     types.String                          `tfsdk:"vrf_forwarding"`
+	Ipv4Address                       types.String                          `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                   types.String                          `tfsdk:"ipv4_address_mask"`
+	Unnumbered                        types.String                          `tfsdk:"unnumbered"`
+	IpDhcpRelaySourceInterface        types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupInEnable             types.Bool                            `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                   types.String                          `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable            types.Bool                            `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                  types.String                          `tfsdk:"ip_access_group_out"`
+	HelperAddresses                   []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
+	BfdTemplate                       types.String                          `tfsdk:"bfd_template"`
+	BfdEnable                         types.Bool                            `tfsdk:"bfd_enable"`
+	BfdLocalAddress                   types.String                          `tfsdk:"bfd_local_address"`
+	BfdInterval                       types.Int64                           `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                  types.Int64                           `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier             types.Int64                           `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                           types.Bool                            `tfsdk:"bfd_echo"`
+	Ipv6Enable                        types.Bool                            `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                           types.Int64                           `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll               types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault      types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                   types.Bool                            `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses            []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                     []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	LoadInterval                      types.Int64                           `tfsdk:"load_interval"`
+	MacAddress                        types.String                          `tfsdk:"mac_address"`
+	IpDhcpRelayInformationOptionVpnId types.Bool                            `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
 }
 
 type InterfaceVLANData struct {
-	Device                       types.String                          `tfsdk:"device"`
-	Id                           types.String                          `tfsdk:"id"`
-	Name                         types.Int64                           `tfsdk:"name"`
-	Autostate                    types.Bool                            `tfsdk:"autostate"`
-	Description                  types.String                          `tfsdk:"description"`
-	Shutdown                     types.Bool                            `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                            `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                            `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                            `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                          `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                          `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                          `tfsdk:"ipv4_address_mask"`
-	Unnumbered                   types.String                          `tfsdk:"unnumbered"`
-	IpDhcpRelaySourceInterface   types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupInEnable        types.Bool                            `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn              types.String                          `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable       types.Bool                            `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut             types.String                          `tfsdk:"ip_access_group_out"`
-	HelperAddresses              []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                  types.String                          `tfsdk:"bfd_template"`
-	BfdEnable                    types.Bool                            `tfsdk:"bfd_enable"`
-	BfdLocalAddress              types.String                          `tfsdk:"bfd_local_address"`
-	BfdInterval                  types.Int64                           `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx             types.Int64                           `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier        types.Int64                           `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                      types.Bool                            `tfsdk:"bfd_echo"`
-	Ipv6Enable                   types.Bool                            `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                           `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                            `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	LoadInterval                 types.Int64                           `tfsdk:"load_interval"`
-	MacAddress                   types.String                          `tfsdk:"mac_address"`
+	Device                            types.String                          `tfsdk:"device"`
+	Id                                types.String                          `tfsdk:"id"`
+	Name                              types.Int64                           `tfsdk:"name"`
+	Autostate                         types.Bool                            `tfsdk:"autostate"`
+	Description                       types.String                          `tfsdk:"description"`
+	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
+	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
+	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
+	IpUnreachables                    types.Bool                            `tfsdk:"ip_unreachables"`
+	VrfForwarding                     types.String                          `tfsdk:"vrf_forwarding"`
+	Ipv4Address                       types.String                          `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                   types.String                          `tfsdk:"ipv4_address_mask"`
+	Unnumbered                        types.String                          `tfsdk:"unnumbered"`
+	IpDhcpRelaySourceInterface        types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupInEnable             types.Bool                            `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                   types.String                          `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable            types.Bool                            `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                  types.String                          `tfsdk:"ip_access_group_out"`
+	HelperAddresses                   []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
+	BfdTemplate                       types.String                          `tfsdk:"bfd_template"`
+	BfdEnable                         types.Bool                            `tfsdk:"bfd_enable"`
+	BfdLocalAddress                   types.String                          `tfsdk:"bfd_local_address"`
+	BfdInterval                       types.Int64                           `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                  types.Int64                           `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier             types.Int64                           `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                           types.Bool                            `tfsdk:"bfd_echo"`
+	Ipv6Enable                        types.Bool                            `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                           types.Int64                           `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll               types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault      types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                   types.Bool                            `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses            []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                     []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	LoadInterval                      types.Int64                           `tfsdk:"load_interval"`
+	MacAddress                        types.String                          `tfsdk:"mac_address"`
+	IpDhcpRelayInformationOptionVpnId types.Bool                            `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
 }
 type InterfaceVLANHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -149,6 +154,19 @@ func (data InterfaceVLAN) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data InterfaceVLAN) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/interface/Vlan[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
+	return path
+}
+
+func (data InterfaceVLANData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/interface/Vlan[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -261,6 +279,11 @@ func (data InterfaceVLAN) toBody(ctx context.Context) string {
 	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mac-address", data.MacAddress.ValueString())
 	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.IsUnknown() {
+		if data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id", map[string]string{})
+		}
+	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
 		for index, item := range data.HelperAddresses {
@@ -307,6 +330,195 @@ func (data InterfaceVLAN) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data InterfaceVLAN) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", strconv.FormatInt(data.Name.ValueInt64(), 10))
+	}
+	if !data.Autostate.IsNull() && !data.Autostate.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/autostate", data.Autostate.ValueBool())
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
+		if data.Shutdown.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
+		}
+	}
+	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/proxy-arp", data.IpProxyArp.ValueBool())
+	}
+	if !data.IpRedirects.IsNull() && !data.IpRedirects.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/redirects", data.IpRedirects.ValueBool())
+	}
+	if !data.IpUnreachables.IsNull() && !data.IpUnreachables.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-icmp:unreachables", data.IpUnreachables.ValueBool())
+	}
+	if !data.VrfForwarding.IsNull() && !data.VrfForwarding.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/vrf/forwarding", data.VrfForwarding.ValueString())
+	}
+	if !data.Ipv4Address.IsNull() && !data.Ipv4Address.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/primary/address", data.Ipv4Address.ValueString())
+	}
+	if !data.Ipv4AddressMask.IsNull() && !data.Ipv4AddressMask.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/primary/mask", data.Ipv4AddressMask.ValueString())
+	}
+	if !data.Unnumbered.IsNull() && !data.Unnumbered.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/unnumbered", data.Unnumbered.ValueString())
+	}
+	if !data.IpDhcpRelaySourceInterface.IsNull() && !data.IpDhcpRelaySourceInterface.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.IpDhcpRelaySourceInterface.ValueString())
+	}
+	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
+		if data.IpAccessGroupInEnable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/in/acl/in", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/access-group/in/acl/in")
+		}
+	}
+	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/in/acl/acl-name", data.IpAccessGroupIn.ValueString())
+	}
+	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.IsUnknown() {
+		if data.IpAccessGroupOutEnable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/out", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/out")
+		}
+	}
+	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/access-group/out/acl/acl-name", data.IpAccessGroupOut.ValueString())
+	}
+	if len(data.HelperAddresses) > 0 {
+		for _, item := range data.HelperAddresses {
+			cBody := netconf.Body{}
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "address", item.Address.ValueString())
+			}
+			if !item.Global.IsNull() && !item.Global.IsUnknown() {
+				if item.Global.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "global", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "global")
+				}
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/helper-address", cBody.Res())
+		}
+	}
+	if !data.BfdTemplate.IsNull() && !data.BfdTemplate.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template", data.BfdTemplate.ValueString())
+	}
+	if !data.BfdEnable.IsNull() && !data.BfdEnable.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable", data.BfdEnable.ValueBool())
+	}
+	if !data.BfdLocalAddress.IsNull() && !data.BfdLocalAddress.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address", data.BfdLocalAddress.ValueString())
+	}
+	if !data.BfdInterval.IsNull() && !data.BfdInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs", strconv.FormatInt(data.BfdInterval.ValueInt64(), 10))
+	}
+	if !data.BfdIntervalMinRx.IsNull() && !data.BfdIntervalMinRx.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx", strconv.FormatInt(data.BfdIntervalMinRx.ValueInt64(), 10))
+	}
+	if !data.BfdIntervalMultiplier.IsNull() && !data.BfdIntervalMultiplier.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier", strconv.FormatInt(data.BfdIntervalMultiplier.ValueInt64(), 10))
+	}
+	if !data.BfdEcho.IsNull() && !data.BfdEcho.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo", data.BfdEcho.ValueBool())
+	}
+	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.IsUnknown() {
+		if data.Ipv6Enable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/enable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/enable")
+		}
+	}
+	if !data.Ipv6Mtu.IsNull() && !data.Ipv6Mtu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/mtu", strconv.FormatInt(data.Ipv6Mtu.ValueInt64(), 10))
+	}
+	if !data.Ipv6NdRaSuppressAll.IsNull() && !data.Ipv6NdRaSuppressAll.IsUnknown() {
+		if data.Ipv6NdRaSuppressAll.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all")
+		}
+	}
+	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.IsUnknown() {
+		if data.Ipv6AddressAutoconfigDefault.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/address/autoconfig/default", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/address/autoconfig/default")
+		}
+	}
+	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.IsUnknown() {
+		if data.Ipv6AddressDhcp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/address/dhcp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/address/dhcp")
+		}
+	}
+	if len(data.Ipv6LinkLocalAddresses) > 0 {
+		for _, item := range data.Ipv6LinkLocalAddresses {
+			cBody := netconf.Body{}
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "address", item.Address.ValueString())
+			}
+			if !item.LinkLocal.IsNull() && !item.LinkLocal.IsUnknown() {
+				if item.LinkLocal.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "link-local", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "link-local")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/link-local-address", cBody.Res())
+		}
+	}
+	if len(data.Ipv6Addresses) > 0 {
+		for _, item := range data.Ipv6Addresses {
+			cBody := netconf.Body{}
+			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "prefix", item.Prefix.ValueString())
+			}
+			if !item.Eui64.IsNull() && !item.Eui64.IsUnknown() {
+				if item.Eui64.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "eui-64", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "eui-64")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
+		}
+	}
+	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
+	}
+	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mac-address", data.MacAddress.ValueString())
+	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.IsUnknown() {
+		if data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -624,9 +836,343 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.MacAddress = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		if value.Exists() {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+		} else {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.Int64Value(value.Int())
+	} else {
+		data.Name = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/autostate"); !data.Autostate.IsNull() {
+		if value.Exists() {
+			data.Autostate = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Autostate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
+		if value.Exists() {
+			data.Shutdown = types.BoolValue(true)
+		} else {
+			data.Shutdown = types.BoolValue(false)
+		}
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); !data.IpProxyArp.IsNull() {
+		if value.Exists() {
+			data.IpProxyArp = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpProxyArp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/redirects"); !data.IpRedirects.IsNull() {
+		if value.Exists() {
+			data.IpRedirects = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpRedirects = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-icmp:unreachables"); !data.IpUnreachables.IsNull() {
+		if value.Exists() {
+			data.IpUnreachables = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpUnreachables = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf/forwarding"); value.Exists() && !data.VrfForwarding.IsNull() {
+		data.VrfForwarding = types.StringValue(value.String())
+	} else {
+		data.VrfForwarding = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/address"); value.Exists() && !data.Ipv4Address.IsNull() {
+		data.Ipv4Address = types.StringValue(value.String())
+	} else {
+		data.Ipv4Address = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/mask"); value.Exists() && !data.Ipv4AddressMask.IsNull() {
+		data.Ipv4AddressMask = types.StringValue(value.String())
+	} else {
+		data.Ipv4AddressMask = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/unnumbered"); value.Exists() && !data.Unnumbered.IsNull() {
+		data.Unnumbered = types.StringValue(value.String())
+	} else {
+		data.Unnumbered = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface"); value.Exists() && !data.IpDhcpRelaySourceInterface.IsNull() {
+		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
+	} else {
+		data.IpDhcpRelaySourceInterface = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); !data.IpAccessGroupInEnable.IsNull() {
+		if value.Exists() {
+			data.IpAccessGroupInEnable = types.BoolValue(true)
+		} else {
+			data.IpAccessGroupInEnable = types.BoolValue(false)
+		}
+	} else {
+		data.IpAccessGroupInEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/acl-name"); value.Exists() && !data.IpAccessGroupIn.IsNull() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
+	} else {
+		data.IpAccessGroupIn = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/out/acl/out"); !data.IpAccessGroupOutEnable.IsNull() {
+		if value.Exists() {
+			data.IpAccessGroupOutEnable = types.BoolValue(true)
+		} else {
+			data.IpAccessGroupOutEnable = types.BoolValue(false)
+		}
+	} else {
+		data.IpAccessGroupOutEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/out/acl/acl-name"); value.Exists() && !data.IpAccessGroupOut.IsNull() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
+	} else {
+		data.IpAccessGroupOut = types.StringNull()
+	}
+	for i := range data.HelperAddresses {
+		keys := [...]string{"address"}
+		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.HelperAddresses[i].Address.IsNull() {
+			data.HelperAddresses[i].Address = types.StringValue(value.String())
+		} else {
+			data.HelperAddresses[i].Address = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "global"); !data.HelperAddresses[i].Global.IsNull() {
+			if value.Exists() {
+				data.HelperAddresses[i].Global = types.BoolValue(true)
+			} else {
+				data.HelperAddresses[i].Global = types.BoolValue(false)
+			}
+		} else {
+			data.HelperAddresses[i].Global = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.HelperAddresses[i].Vrf.IsNull() {
+			data.HelperAddresses[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.HelperAddresses[i].Vrf = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template"); value.Exists() && !data.BfdTemplate.IsNull() {
+		data.BfdTemplate = types.StringValue(value.String())
+	} else {
+		data.BfdTemplate = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable"); !data.BfdEnable.IsNull() {
+		if value.Exists() {
+			data.BfdEnable = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.BfdEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address"); value.Exists() && !data.BfdLocalAddress.IsNull() {
+		data.BfdLocalAddress = types.StringValue(value.String())
+	} else {
+		data.BfdLocalAddress = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs"); value.Exists() && !data.BfdInterval.IsNull() {
+		data.BfdInterval = types.Int64Value(value.Int())
+	} else {
+		data.BfdInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx"); value.Exists() && !data.BfdIntervalMinRx.IsNull() {
+		data.BfdIntervalMinRx = types.Int64Value(value.Int())
+	} else {
+		data.BfdIntervalMinRx = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier"); value.Exists() && !data.BfdIntervalMultiplier.IsNull() {
+		data.BfdIntervalMultiplier = types.Int64Value(value.Int())
+	} else {
+		data.BfdIntervalMultiplier = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo"); !data.BfdEcho.IsNull() {
+		if value.Exists() {
+			data.BfdEcho = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.BfdEcho = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/enable"); !data.Ipv6Enable.IsNull() {
+		if value.Exists() {
+			data.Ipv6Enable = types.BoolValue(true)
+		} else {
+			data.Ipv6Enable = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6Enable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/mtu"); value.Exists() && !data.Ipv6Mtu.IsNull() {
+		data.Ipv6Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Ipv6Mtu = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all"); !data.Ipv6NdRaSuppressAll.IsNull() {
+		if value.Exists() {
+			data.Ipv6NdRaSuppressAll = types.BoolValue(true)
+		} else {
+			data.Ipv6NdRaSuppressAll = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6NdRaSuppressAll = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/autoconfig/default"); !data.Ipv6AddressAutoconfigDefault.IsNull() {
+		if value.Exists() {
+			data.Ipv6AddressAutoconfigDefault = types.BoolValue(true)
+		} else {
+			data.Ipv6AddressAutoconfigDefault = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6AddressAutoconfigDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/dhcp"); !data.Ipv6AddressDhcp.IsNull() {
+		if value.Exists() {
+			data.Ipv6AddressDhcp = types.BoolValue(true)
+		} else {
+			data.Ipv6AddressDhcp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6AddressDhcp = types.BoolNull()
+	}
+	for i := range data.Ipv6LinkLocalAddresses {
+		keys := [...]string{"address"}
+		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv6LinkLocalAddresses[i].Address.IsNull() {
+			data.Ipv6LinkLocalAddresses[i].Address = types.StringValue(value.String())
+		} else {
+			data.Ipv6LinkLocalAddresses[i].Address = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "link-local"); !data.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() {
+			if value.Exists() {
+				data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolValue(true)
+			} else {
+				data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolNull()
+		}
+	}
+	for i := range data.Ipv6Addresses {
+		keys := [...]string{"prefix"}
+		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "prefix"); value.Exists() && !data.Ipv6Addresses[i].Prefix.IsNull() {
+			data.Ipv6Addresses[i].Prefix = types.StringValue(value.String())
+		} else {
+			data.Ipv6Addresses[i].Prefix = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "eui-64"); !data.Ipv6Addresses[i].Eui64.IsNull() {
+			if value.Exists() {
+				data.Ipv6Addresses[i].Eui64 = types.BoolValue(true)
+			} else {
+				data.Ipv6Addresses[i].Eui64 = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	} else {
+		data.LoadInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() && !data.MacAddress.IsNull() {
+		data.MacAddress = types.StringValue(value.String())
+	} else {
+		data.MacAddress = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		if value.Exists() {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+		} else {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -798,6 +1344,11 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
 	}
 }
 
@@ -974,14 +1525,374 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/autostate"); value.Exists() {
+		data.Autostate = types.BoolValue(value.Bool())
+	} else {
+		data.Autostate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
+		data.IpProxyArp = types.BoolValue(value.Bool())
+	} else {
+		data.IpProxyArp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/redirects"); value.Exists() {
+		data.IpRedirects = types.BoolValue(value.Bool())
+	} else {
+		data.IpRedirects = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
+		data.IpUnreachables = types.BoolValue(value.Bool())
+	} else {
+		data.IpUnreachables = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf/forwarding"); value.Exists() {
+		data.VrfForwarding = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/address"); value.Exists() {
+		data.Ipv4Address = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/mask"); value.Exists() {
+		data.Ipv4AddressMask = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/unnumbered"); value.Exists() {
+		data.Unnumbered = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface"); value.Exists() {
+		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
+		data.IpAccessGroupInEnable = types.BoolValue(true)
+	} else {
+		data.IpAccessGroupInEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/out/acl/out"); value.Exists() {
+		data.IpAccessGroupOutEnable = types.BoolValue(true)
+	} else {
+		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/out/acl/acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address"); value.Exists() {
+		data.HelperAddresses = make([]InterfaceVLANHelperAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceVLANHelperAddresses{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "global"); cValue.Exists() {
+				item.Global = types.BoolValue(true)
+			} else {
+				item.Global = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.HelperAddresses = append(data.HelperAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template"); value.Exists() {
+		data.BfdTemplate = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable"); value.Exists() {
+		data.BfdEnable = types.BoolValue(value.Bool())
+	} else {
+		data.BfdEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address"); value.Exists() {
+		data.BfdLocalAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs"); value.Exists() {
+		data.BfdInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx"); value.Exists() {
+		data.BfdIntervalMinRx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier"); value.Exists() {
+		data.BfdIntervalMultiplier = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo"); value.Exists() {
+		data.BfdEcho = types.BoolValue(value.Bool())
+	} else {
+		data.BfdEcho = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/enable"); value.Exists() {
+		data.Ipv6Enable = types.BoolValue(true)
+	} else {
+		data.Ipv6Enable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/mtu"); value.Exists() {
+		data.Ipv6Mtu = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all"); value.Exists() {
+		data.Ipv6NdRaSuppressAll = types.BoolValue(true)
+	} else {
+		data.Ipv6NdRaSuppressAll = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/autoconfig/default"); value.Exists() {
+		data.Ipv6AddressAutoconfigDefault = types.BoolValue(true)
+	} else {
+		data.Ipv6AddressAutoconfigDefault = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/dhcp"); value.Exists() {
+		data.Ipv6AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv6AddressDhcp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address"); value.Exists() {
+		data.Ipv6LinkLocalAddresses = make([]InterfaceVLANIpv6LinkLocalAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceVLANIpv6LinkLocalAddresses{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "link-local"); cValue.Exists() {
+				item.LinkLocal = types.BoolValue(true)
+			} else {
+				item.LinkLocal = types.BoolValue(false)
+			}
+			data.Ipv6LinkLocalAddresses = append(data.Ipv6LinkLocalAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list"); value.Exists() {
+		data.Ipv6Addresses = make([]InterfaceVLANIpv6Addresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceVLANIpv6Addresses{}
+			if cValue := helpers.GetFromXPath(v, "prefix"); cValue.Exists() {
+				item.Prefix = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "eui-64"); cValue.Exists() {
+				item.Eui64 = types.BoolValue(true)
+			} else {
+				item.Eui64 = types.BoolValue(false)
+			}
+			data.Ipv6Addresses = append(data.Ipv6Addresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
+		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/autostate"); value.Exists() {
+		data.Autostate = types.BoolValue(value.Bool())
+	} else {
+		data.Autostate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
+		data.IpProxyArp = types.BoolValue(value.Bool())
+	} else {
+		data.IpProxyArp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/redirects"); value.Exists() {
+		data.IpRedirects = types.BoolValue(value.Bool())
+	} else {
+		data.IpRedirects = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
+		data.IpUnreachables = types.BoolValue(value.Bool())
+	} else {
+		data.IpUnreachables = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf/forwarding"); value.Exists() {
+		data.VrfForwarding = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/address"); value.Exists() {
+		data.Ipv4Address = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/mask"); value.Exists() {
+		data.Ipv4AddressMask = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/unnumbered"); value.Exists() {
+		data.Unnumbered = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface"); value.Exists() {
+		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
+		data.IpAccessGroupInEnable = types.BoolValue(true)
+	} else {
+		data.IpAccessGroupInEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/out/acl/out"); value.Exists() {
+		data.IpAccessGroupOutEnable = types.BoolValue(true)
+	} else {
+		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/out/acl/acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address"); value.Exists() {
+		data.HelperAddresses = make([]InterfaceVLANHelperAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceVLANHelperAddresses{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "global"); cValue.Exists() {
+				item.Global = types.BoolValue(true)
+			} else {
+				item.Global = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.HelperAddresses = append(data.HelperAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template"); value.Exists() {
+		data.BfdTemplate = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable"); value.Exists() {
+		data.BfdEnable = types.BoolValue(value.Bool())
+	} else {
+		data.BfdEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address"); value.Exists() {
+		data.BfdLocalAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs"); value.Exists() {
+		data.BfdInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx"); value.Exists() {
+		data.BfdIntervalMinRx = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier"); value.Exists() {
+		data.BfdIntervalMultiplier = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo"); value.Exists() {
+		data.BfdEcho = types.BoolValue(value.Bool())
+	} else {
+		data.BfdEcho = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/enable"); value.Exists() {
+		data.Ipv6Enable = types.BoolValue(true)
+	} else {
+		data.Ipv6Enable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/mtu"); value.Exists() {
+		data.Ipv6Mtu = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all"); value.Exists() {
+		data.Ipv6NdRaSuppressAll = types.BoolValue(true)
+	} else {
+		data.Ipv6NdRaSuppressAll = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/autoconfig/default"); value.Exists() {
+		data.Ipv6AddressAutoconfigDefault = types.BoolValue(true)
+	} else {
+		data.Ipv6AddressAutoconfigDefault = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/dhcp"); value.Exists() {
+		data.Ipv6AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv6AddressDhcp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address"); value.Exists() {
+		data.Ipv6LinkLocalAddresses = make([]InterfaceVLANIpv6LinkLocalAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceVLANIpv6LinkLocalAddresses{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "link-local"); cValue.Exists() {
+				item.LinkLocal = types.BoolValue(true)
+			} else {
+				item.LinkLocal = types.BoolValue(false)
+			}
+			data.Ipv6LinkLocalAddresses = append(data.Ipv6LinkLocalAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list"); value.Exists() {
+		data.Ipv6Addresses = make([]InterfaceVLANIpv6Addresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceVLANIpv6Addresses{}
+			if cValue := helpers.GetFromXPath(v, "prefix"); cValue.Exists() {
+				item.Prefix = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "eui-64"); cValue.Exists() {
+				item.Eui64 = types.BoolValue(true)
+			} else {
+				item.Eui64 = types.BoolValue(false)
+			}
+			data.Ipv6Addresses = append(data.Ipv6Addresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
+		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceVLAN) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", state.getPath()))
+	}
 	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac-address", state.getPath()))
 	}
@@ -1162,10 +2073,216 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state InterfaceVLAN, body string) string {
+	b := netconf.NewBody(body)
+	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+	}
+	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac-address")
+	}
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/load-interval")
+	}
+	for i := range state.Ipv6Addresses {
+		stateKeys := [...]string{"prefix"}
+		stateKeyValues := [...]string{state.Ipv6Addresses[i].Prefix.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6Addresses[i].Prefix.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6Addresses {
+			found = true
+			if state.Ipv6Addresses[i].Prefix.ValueString() != data.Ipv6Addresses[j].Prefix.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6Addresses[i].Eui64.IsNull() && data.Ipv6Addresses[j].Eui64.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/address/prefix-list%v/eui-64", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/address/prefix-list%v", predicates))
+		}
+	}
+	for i := range state.Ipv6LinkLocalAddresses {
+		stateKeys := [...]string{"address"}
+		stateKeyValues := [...]string{state.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6LinkLocalAddresses[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6LinkLocalAddresses {
+			found = true
+			if state.Ipv6LinkLocalAddresses[i].Address.ValueString() != data.Ipv6LinkLocalAddresses[j].Address.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() && data.Ipv6LinkLocalAddresses[j].LinkLocal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/address/link-local-address%v/link-local", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/address/link-local-address%v", predicates))
+		}
+	}
+	if !state.Ipv6AddressDhcp.IsNull() && data.Ipv6AddressDhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/address/dhcp")
+	}
+	if !state.Ipv6AddressAutoconfigDefault.IsNull() && data.Ipv6AddressAutoconfigDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/address/autoconfig/default")
+	}
+	if !state.Ipv6NdRaSuppressAll.IsNull() && data.Ipv6NdRaSuppressAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all")
+	}
+	if !state.Ipv6Mtu.IsNull() && data.Ipv6Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/mtu")
+	}
+	if !state.Ipv6Enable.IsNull() && data.Ipv6Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/enable")
+	}
+	if !state.BfdEcho.IsNull() && data.BfdEcho.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo")
+	}
+	if !state.BfdIntervalMultiplier.IsNull() && data.BfdIntervalMultiplier.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+	}
+	if !state.BfdIntervalMinRx.IsNull() && data.BfdIntervalMinRx.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+	}
+	if !state.BfdInterval.IsNull() && data.BfdInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+	}
+	if !state.BfdLocalAddress.IsNull() && data.BfdLocalAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address")
+	}
+	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
+	}
+	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
+	}
+	for i := range state.HelperAddresses {
+		stateKeys := [...]string{"address"}
+		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.HelperAddresses[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.HelperAddresses {
+			found = true
+			if state.HelperAddresses[i].Address.ValueString() != data.HelperAddresses[j].Address.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.HelperAddresses[i].Vrf.IsNull() && data.HelperAddresses[j].Vrf.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/helper-address%v/vrf", predicates))
+				}
+				if !state.HelperAddresses[i].Global.IsNull() && data.HelperAddresses[j].Global.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/helper-address%v/global", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/helper-address%v", predicates))
+		}
+	}
+	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl")
+	}
+	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl/out")
+	}
+	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl")
+	}
+	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/in")
+	}
+	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface")
+	}
+	if !state.Unnumbered.IsNull() && data.Unnumbered.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/unnumbered")
+	}
+	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
+	}
+	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
+	}
+	if !state.VrfForwarding.IsNull() && data.VrfForwarding.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vrf/forwarding")
+	}
+	if !state.IpUnreachables.IsNull() && data.IpUnreachables.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-icmp:unreachables")
+	}
+	if !state.IpRedirects.IsNull() && data.IpRedirects.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/redirects")
+	}
+	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/proxy-arp")
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+	if !state.Autostate.IsNull() && data.Autostate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/autostate")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", data.getPath()))
+	}
 
 	for i := range data.Ipv6Addresses {
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
@@ -1218,6 +2335,9 @@ func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", data.getPath()))
+	}
 	if !data.MacAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac-address", data.getPath()))
 	}
@@ -1325,3 +2445,134 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+	}
+	if !data.MacAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac-address")
+	}
+	if !data.LoadInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/load-interval")
+	}
+	for i := range data.Ipv6Addresses {
+		keys := [...]string{"prefix"}
+		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ipv6/address/prefix-list%v", predicates))
+	}
+	for i := range data.Ipv6LinkLocalAddresses {
+		keys := [...]string{"address"}
+		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ipv6/address/link-local-address%v", predicates))
+	}
+	if !data.Ipv6AddressDhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/address/dhcp")
+	}
+	if !data.Ipv6AddressAutoconfigDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/address/autoconfig/default")
+	}
+	if !data.Ipv6NdRaSuppressAll.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all")
+	}
+	if !data.Ipv6Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/mtu")
+	}
+	if !data.Ipv6Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/enable")
+	}
+	if !data.BfdEcho.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo")
+	}
+	if !data.BfdIntervalMultiplier.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+	}
+	if !data.BfdIntervalMinRx.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+	}
+	if !data.BfdInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+	}
+	if !data.BfdLocalAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address")
+	}
+	if !data.BfdEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
+	}
+	if !data.BfdTemplate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
+	}
+	for i := range data.HelperAddresses {
+		keys := [...]string{"address"}
+		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/helper-address%v", predicates))
+	}
+	if !data.IpAccessGroupOut.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl")
+	}
+	if !data.IpAccessGroupOutEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl/out")
+	}
+	if !data.IpAccessGroupIn.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl")
+	}
+	if !data.IpAccessGroupInEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/in")
+	}
+	if !data.IpDhcpRelaySourceInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface")
+	}
+	if !data.Unnumbered.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/unnumbered")
+	}
+	if !data.Ipv4AddressMask.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")
+	}
+	if !data.Ipv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")
+	}
+	if !data.VrfForwarding.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vrf/forwarding")
+	}
+	if !data.IpUnreachables.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-icmp:unreachables")
+	}
+	if !data.IpRedirects.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/redirects")
+	}
+	if !data.IpProxyArp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/proxy-arp")
+	}
+	if !data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+	if !data.Autostate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/autostate")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

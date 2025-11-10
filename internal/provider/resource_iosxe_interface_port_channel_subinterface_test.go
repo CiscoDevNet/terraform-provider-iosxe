@@ -34,8 +34,8 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
-	if os.Getenv("C8000V") == "" {
-		t.Skip("skipping test, set environment variable C8000V")
+	if os.Getenv("C9000V") == "" {
+		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "name", "10.666"))
@@ -46,7 +46,7 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_redirects", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "vrf_forwarding", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv4_address", "192.0.2.2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv4_address", "192.68.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv4_address_mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_access_group_in_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_access_group_in", "1"))
@@ -66,12 +66,6 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.prefix", "2003:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "arp_timeout", "2147"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_arp_inspection_trust", "true"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_arp_inspection_limit_rate", "1000"))
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -112,28 +106,49 @@ func iosxeInterfacePortChannelSubinterfaceImportStateIdFunc(resourceName string)
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelSubinterfacePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
 		"address-family/ipv4" = ""
+		"address-family/ipv6" = ""
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/interface/Port-channel=10"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/interface/Port-channel[name=10]"
+	delete = false
 	attributes = {
 		"name" = "10"
+		"switchport-conf/switchport" = "false"
 	}
 }
 
-resource "iosxe_restconf" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666"
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]"
 	attributes = {
-		"name" = "10.666"
+		"name" = "1"
 	}
-	depends_on = [iosxe_restconf.PreReq1, ]
+}
+
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]/access-list-seq-rule[sequence=10]"
+	attributes = {
+		"sequence" = "10"
+		"permit/std-ace/any" = ""
+	}
+	depends_on = [iosxe_yang.PreReq2, ]
+}
+
+resource "iosxe_yang" "PreReq4" {
+	path = "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=bfd_template1]"
+	attributes = {
+		"name" = "bfd_template1"
+		"interval-singlehop-v2/mill-unit/min-tx" = "200"
+		"interval-singlehop-v2/mill-unit/min-rx" = "200"
+		"interval-singlehop-v2/mill-unit/multiplier" = "4"
+	}
 }
 
 `
@@ -145,7 +160,7 @@ resource "iosxe_restconf" "PreReq2" {
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
 	config += `	name = "10.666"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -164,7 +179,7 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config += `	ip_redirects = false` + "\n"
 	config += `	ip_unreachables = false` + "\n"
 	config += `	vrf_forwarding = "VRF1"` + "\n"
-	config += `	ipv4_address = "192.0.2.2"` + "\n"
+	config += `	ipv4_address = "192.68.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"
 	config += `	ip_access_group_in = "1"` + "\n"
@@ -190,13 +205,7 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `	ip_arp_inspection_trust = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
-	}
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

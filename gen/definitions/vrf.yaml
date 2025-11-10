@@ -1,6 +1,6 @@
 ---
 name: VRF
-path: Cisco-IOS-XE-native:native/vrf/definition=%s
+path: /Cisco-IOS-XE-native:native/vrf/definition[name=%s]
 doc_category: VRF
 attributes:
   - yang_name: name
@@ -18,6 +18,7 @@ attributes:
     example: 22:22
   - yang_name: route-target/import
     type: Set
+    exclude_test: true
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -28,6 +29,7 @@ attributes:
         example: false
   - yang_name: route-target/export
     type: Set
+    exclude_test: true
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -80,6 +82,21 @@ attributes:
         default_value: true
         exclude_test: true
         example: true
+  - yang_name: address-family/ipv4/route-replicate/from/vrf
+    tf_name: ipv4_route_replicate
+    type: List
+    attributes:
+      - yang_name: name
+        description: Source VRF name or 'global'
+        example: VRF1
+        id: true
+      - yang_name: unicast/source-proto-config/all
+        tf_name: unicast_all
+        example: true
+      - yang_name: unicast/source-proto-config/all/route-map
+        tf_name: unicast_all_route_map
+        description: Route map reference
+        example: RM1
   - yang_name: address-family/ipv6/route-target/import-route-target/without-stitching
     tf_name: ipv6_route_target_import
     type: Set

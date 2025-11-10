@@ -1,6 +1,6 @@
 ---
 name: Class Map
-path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=%v
+path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=%v]
 no_delete_attributes: true
 doc_category: QoS
 attributes:

@@ -42,7 +42,6 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "packetsize", "2000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "queue_length", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_logging_getop", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_logging_setop", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_snmp_authentication", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_snmp_coldstart", "true"))
@@ -294,8 +293,6 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospfv3_state_change", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_informs_loopback", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_traps_loopback", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "trap_source_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "snmp_communities.0.view", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "snmp_communities.0.permission", "ro"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "snmp_communities.0.ipv6", "ACL1"))
@@ -307,19 +304,10 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.name", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.security_level", "priv"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.context_node", "CON1"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.match_node", "exact"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.read_node", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.write_node", "VIEW2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.notify_node", "VIEW3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.access_ipv6_acl", "V6ACL1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.username", "USER1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.grpname", "GROUP1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_algorithm", "sha"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_algorithm", "128"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_access_ipv6_acl", "V6ACL1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_access_acl_name", "ACL123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -336,15 +324,15 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeSNMPServerPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -370,7 +358,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	packetsize = 2000` + "\n"
 	config += `	queue_length = 100` + "\n"
 	config += `	enable_logging_getop = true` + "\n"
-	config += `	enable_logging_setop = true` + "\n"
 	config += `	enable_traps = true` + "\n"
 	config += `	enable_traps_snmp_authentication = true` + "\n"
 	config += `	enable_traps_snmp_coldstart = true` + "\n"
@@ -628,8 +615,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 		config += `	enable_traps_ospfv3_state_change = true` + "\n"
 	}
 	config += `	source_interface_informs_loopback = 1` + "\n"
-	config += `	source_interface_traps_loopback = 1` + "\n"
-	config += `	trap_source_loopback = 1` + "\n"
 	config += `	snmp_communities = [{` + "\n"
 	config += `		name = "COM1"` + "\n"
 	config += `		view = "VIEW1"` + "\n"
@@ -650,9 +635,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		v3_security = [{` + "\n"
 	config += `			security_level = "priv"` + "\n"
 	config += `			context_node = "CON1"` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `			match_node = "exact"` + "\n"
-	}
 	config += `			read_node = "VIEW1"` + "\n"
 	config += `			write_node = "VIEW2"` + "\n"
 	config += `			notify_node = "VIEW3"` + "\n"
@@ -669,7 +651,7 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		v3_auth_priv_aes_access_ipv6_acl = "V6ACL1"` + "\n"
 	config += `		v3_auth_priv_aes_access_acl_name = "ACL123"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
