@@ -1,4 +1,4 @@
-## 0.10.0 (unreleased)
+## 0.10.0
 
 - Add experimental support for [NETCONF](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/netconf) with `protocol` provider attribute, including support for applying changes to the candidate configuration and committing them as a single transaction
 - Add `iosxe_commit` resource
