@@ -9,9 +9,9 @@ description: |-
 
 ## 0.10.0 (unreleased)
 
-- Add experimental support for NETCONF with `protocol` provider attribute, including support for applying changes to the candidate configuration and committing them as a single transaction
+- Add experimental support for [NETCONF](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/netconf) with `protocol` provider attribute, including support for applying changes to the candidate configuration and committing them as a single transaction
 - Add `iosxe_commit` resource
-_ Introduce universal `host` provider attribute and deprecate `url` attribute
+- Introduce universal `host` provider attribute and deprecate `url` attribute
 - BREAKING CHANGE: Rename `iosxe_restconf` resource and data source to `iosxe_yang`
 - BREAKING CHANGE: Rename `update_source_loopback` attribute of `iosxe_bgp_neighbor` and `iosxe_bgp_ipv4_unicast_vrf_neighbor` resources and data sources to `update_source_interface_loopback`
 - Add `logging` and `vlans` attributes to `iosxe_spanning_tree` resource and data source
