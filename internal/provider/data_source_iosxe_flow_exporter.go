@@ -87,6 +87,10 @@ func (d *FlowExporterDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "UDP transport protocol",
 				Computed:            true,
 			},
+			"ttl": schema.Int64Attribute{
+				MarkdownDescription: "Optional TTL or hop limit",
+				Computed:            true,
+			},
 			"template_data_timeout": schema.Int64Attribute{
 				MarkdownDescription: "Resend data based on a timeout",
 				Computed:            true,

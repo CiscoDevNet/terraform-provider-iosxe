@@ -45,6 +45,7 @@ type FlowExporter struct {
 	DestinationIp                      types.String `tfsdk:"destination_ip"`
 	SourceLoopback                     types.Int64  `tfsdk:"source_loopback"`
 	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
+	Ttl                                types.Int64  `tfsdk:"ttl"`
 	TemplateDataTimeout                types.Int64  `tfsdk:"template_data_timeout"`
 	ExportProtocol                     types.String `tfsdk:"export_protocol"`
 	OptionInterfaceTableTimeout        types.Int64  `tfsdk:"option_interface_table_timeout"`
@@ -62,6 +63,7 @@ type FlowExporterData struct {
 	DestinationIp                      types.String `tfsdk:"destination_ip"`
 	SourceLoopback                     types.Int64  `tfsdk:"source_loopback"`
 	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
+	Ttl                                types.Int64  `tfsdk:"ttl"`
 	TemplateDataTimeout                types.Int64  `tfsdk:"template_data_timeout"`
 	ExportProtocol                     types.String `tfsdk:"export_protocol"`
 	OptionInterfaceTableTimeout        types.Int64  `tfsdk:"option_interface_table_timeout"`
@@ -114,6 +116,9 @@ func (data FlowExporter) toBody(ctx context.Context) string {
 	}
 	if !data.TransportUdp.IsNull() && !data.TransportUdp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"transport.udp", strconv.FormatInt(data.TransportUdp.ValueInt64(), 10))
+	}
+	if !data.Ttl.IsNull() && !data.Ttl.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ttl", strconv.FormatInt(data.Ttl.ValueInt64(), 10))
 	}
 	if !data.TemplateDataTimeout.IsNull() && !data.TemplateDataTimeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"template.data.timeout", strconv.FormatInt(data.TemplateDataTimeout.ValueInt64(), 10))
@@ -174,6 +179,11 @@ func (data *FlowExporter) updateFromBody(ctx context.Context, res gjson.Result) 
 		data.TransportUdp = types.Int64Value(value.Int())
 	} else {
 		data.TransportUdp = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ttl"); value.Exists() && !data.Ttl.IsNull() {
+		data.Ttl = types.Int64Value(value.Int())
+	} else {
+		data.Ttl = types.Int64Null()
 	}
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() && !data.TemplateDataTimeout.IsNull() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
@@ -237,6 +247,9 @@ func (data *FlowExporter) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "transport.udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ttl"); value.Exists() {
+		data.Ttl = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	}
@@ -282,6 +295,9 @@ func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "transport.udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ttl"); value.Exists() {
+		data.Ttl = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
@@ -334,6 +350,9 @@ func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporte
 	}
 	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/template/data/timeout", state.getPath()))
+	}
+	if !state.Ttl.IsNull() && data.Ttl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ttl", state.getPath()))
 	}
 	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/udp", state.getPath()))
@@ -390,6 +409,9 @@ func (data *FlowExporter) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.TemplateDataTimeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/template/data/timeout", data.getPath()))
+	}
+	if !data.Ttl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ttl", data.getPath()))
 	}
 	if !data.TransportUdp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/transport/udp", data.getPath()))
