@@ -107,6 +107,32 @@ If the device does not support the candidate datastore capability, the provider 
 2. **Edit** the running configuration directly
 3. **Unlock** the running datastore
 
+## Configuration Dependencies
+
+### Manual Commit Requires Connection Reuse
+
+When using manual commit mode (`auto_commit = false`), you **must** also enable connection reuse (`reuse_connection = true`, which is the default).
+
+**Why?** Manual commit mode stages configuration changes in the candidate datastore across multiple resource operations. Without connection reuse, each resource would open a new connection, losing access to previously staged changes.
+
+```terraform
+# ✅ Valid Configuration
+provider "iosxe" {
+  protocol         = "netconf"
+  auto_commit      = false
+  reuse_connection = true  # Required (or omit for default true)
+}
+
+# ❌ Invalid Configuration - Provider will return an error
+provider "iosxe" {
+  protocol         = "netconf"
+  auto_commit      = false
+  reuse_connection = false  # Error: manual commit requires reuse
+}
+```
+
+The provider will validate this configuration and return an error if you attempt to use manual commit mode without connection reuse.
+
 ## Configuration Commit Modes
 
 ### Auto-Commit Mode (Default)
