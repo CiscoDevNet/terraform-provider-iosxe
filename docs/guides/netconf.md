@@ -181,6 +181,7 @@ resource "iosxe_interface_loopback" "loopback101" {
 
 # Explicitly commit all staged changes as a single transaction
 resource "iosxe_commit" "commit_changes" {
+  save_config = true  # Optional: also save to startup-config
   depends_on = [
     iosxe_interface_loopback.loopback100,
     iosxe_interface_loopback.loopback101,
@@ -210,6 +211,9 @@ resource "iosxe_commit" "example" {
   # Optional: specify device name if using multi-device configuration
   # device = "device1"
 
+  # Optional: save to startup-config after commit
+  # save_config = true
+
   # The commit attribute is managed internally
   depends_on = [
     # List all resources that should be staged before committing
@@ -221,6 +225,34 @@ resource "iosxe_commit" "example" {
 
 - `device` (Optional): Device name from the provider's `devices` list (for multi-device scenarios)
 - `commit` (Computed): Internal attribute used to track commit state
+- `save_config` (Optional): Save running configuration to startup configuration after commit. Equivalent to 'copy running-config startup-config'. Defaults to `false`
+
+### Saving Configuration to Startup
+
+The `iosxe_commit` resource can optionally save the running configuration to startup configuration after committing, eliminating the need for a separate `iosxe_save_config` resource:
+
+```terraform
+resource "iosxe_interface_loopback" "loopback100" {
+  name        = "100"
+  description = "Loopback 100"
+}
+
+resource "iosxe_interface_loopback" "loopback101" {
+  name        = "101"
+  description = "Loopback 101"
+}
+
+# Commit and save in a single atomic operation
+resource "iosxe_commit" "commit_and_save" {
+  save_config = true  # Saves to startup-config after commit
+  depends_on = [
+    iosxe_interface_loopback.loopback100,
+    iosxe_interface_loopback.loopback101,
+  ]
+}
+```
+
+This combines commit and save operations in a single transaction, ensuring your committed changes persist across device reboots.
 
 ### Important Notes
 
@@ -228,6 +260,7 @@ resource "iosxe_commit" "example" {
 2. **No effect with RESTCONF**: The commit resource only works with NETCONF protocol
 3. **Use depends_on**: Always use `depends_on` to ensure resources are created/updated before committing
 4. **Destroy Behavior**: When the `iosxe_commit` resource is destroyed (e.g., during `terraform destroy`), it automatically enables auto-commit mode for subsequent resource deletions. This ensures that deletion operations commit their changes and prevents uncommitted configuration from remaining in the candidate datastore
+5. **Saving Configuration**: Set `save_config = true` to persist changes to startup-config in the same transaction, eliminating the need for a separate `iosxe_save_config` resource
 
 ## Migration from RESTCONF to NETCONF
 

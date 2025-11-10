@@ -61,6 +61,12 @@ func (r *CommitResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 				Default:             booldefault.StaticBool(true),
 			},
+			"save_config": schema.BoolAttribute{
+				MarkdownDescription: "Save running configuration to startup configuration after commit. Equivalent to 'copy running-config startup-config'. Only applies to NETCONF devices.",
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(false),
+			},
 		},
 	}
 }
@@ -76,6 +82,7 @@ func (r *CommitResource) Configure(_ context.Context, req resource.ConfigureRequ
 func (r *CommitResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var device types.String
 	var commit types.Bool
+	var saveConfig types.Bool
 
 	diags := req.Plan.GetAttribute(ctx, path.Root("device"), &device)
 	resp.Diagnostics.Append(diags...)
@@ -83,6 +90,11 @@ func (r *CommitResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 	diags = req.Plan.GetAttribute(ctx, path.Root("commit"), &commit)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	diags = req.Plan.GetAttribute(ctx, path.Root("save_config"), &saveConfig)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -104,9 +116,18 @@ func (r *CommitResource) Create(ctx context.Context, req resource.CreateRequest,
 		}
 		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
+		// Commit candidate to running
 		if err := helpers.Commit(ctx, d.NetconfClient); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
 			return
+		}
+
+		// Optionally save running to startup
+		if saveConfig.ValueBool() {
+			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Commit succeeded but save failed: %s", err.Error()))
+				return
+			}
 		}
 	}
 
@@ -115,16 +136,20 @@ func (r *CommitResource) Create(ctx context.Context, req resource.CreateRequest,
 	diags = resp.State.SetAttribute(ctx, path.Root("device"), device)
 	resp.Diagnostics.Append(diags...)
 	diags = resp.State.SetAttribute(ctx, path.Root("commit"), commit)
+	resp.Diagnostics.Append(diags...)
+	diags = resp.State.SetAttribute(ctx, path.Root("save_config"), saveConfig)
 	resp.Diagnostics.Append(diags...)
 }
 
 func (r *CommitResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	resp.State.SetAttribute(ctx, path.Root("commit"), false)
+	resp.State.SetAttribute(ctx, path.Root("save_config"), false)
 }
 
 func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var device types.String
 	var commit types.Bool
+	var saveConfig types.Bool
 
 	diags := req.Plan.GetAttribute(ctx, path.Root("device"), &device)
 	resp.Diagnostics.Append(diags...)
@@ -132,6 +157,11 @@ func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 	diags = req.Plan.GetAttribute(ctx, path.Root("commit"), &commit)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	diags = req.Plan.GetAttribute(ctx, path.Root("save_config"), &saveConfig)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -153,9 +183,18 @@ func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest,
 		}
 		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
+		// Commit candidate to running
 		if err := helpers.Commit(ctx, d.NetconfClient); err != nil {
 			resp.Diagnostics.AddError("Client Error", err.Error())
 			return
+		}
+
+		// Optionally save running to startup
+		if saveConfig.ValueBool() {
+			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Commit succeeded but save failed: %s", err.Error()))
+				return
+			}
 		}
 	}
 
@@ -164,6 +203,8 @@ func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest,
 	diags = resp.State.SetAttribute(ctx, path.Root("device"), device)
 	resp.Diagnostics.Append(diags...)
 	diags = resp.State.SetAttribute(ctx, path.Root("commit"), commit)
+	resp.Diagnostics.Append(diags...)
+	diags = resp.State.SetAttribute(ctx, path.Root("save_config"), saveConfig)
 	resp.Diagnostics.Append(diags...)
 }
 
