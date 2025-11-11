@@ -19,7 +19,7 @@ test:
 	TF_ACC=1 go test ./... -v -run $(NAME) -count 1 -timeout 60m
 
 # Test against 17.15.x Router (C8000V)
-# Usage: make test-1715-router [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
+# Usage: make test-1715-router [NAME=TestName] [DEBUG=1]
 .PHONY: test-1715-router
 test-1715-router:
 	@echo "========================================="
@@ -37,13 +37,12 @@ test-1715-router:
 		IOSXE_PASSWORD=$(or $(IOSXE_1715_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1715=1 \
 		C8000V=1 \
-		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-router.log); \
 	fi
 
 # Test against 17.15.x Switch (C9000V)
-# Usage: make test-1715-switch [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
+# Usage: make test-1715-switch [NAME=TestName] [DEBUG=1]
 .PHONY: test-1715-switch
 test-1715-switch:
 	@echo "========================================="
@@ -61,13 +60,12 @@ test-1715-switch:
 		IOSXE_PASSWORD=$(or $(IOSXE_1715_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1715=1 \
 		C9000V=1 \
-		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log); \
 	fi
 
 # Test against 17.12.x Router (C8000V)
-# Usage: make test-1712-router [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
+# Usage: make test-1712-router [NAME=TestName] [DEBUG=1]
 .PHONY: test-1712-router
 test-1712-router:
 	@echo "========================================="
@@ -85,13 +83,12 @@ test-1712-router:
 		IOSXE_PASSWORD=$(or $(IOSXE_1712_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1712=1 \
 		C8000V=1 \
-		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-router.log); \
 	fi
 
 # Test against 17.12.x Switch (C9000V)
-# Usage: make test-1712-switch [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
+# Usage: make test-1712-switch [NAME=TestName] [DEBUG=1]
 .PHONY: test-1712-switch
 test-1712-switch:
 	@echo "========================================="
@@ -109,7 +106,6 @@ test-1712-switch:
 		IOSXE_PASSWORD=$(or $(IOSXE_1712_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1712=1 \
 		C9000V=1 \
-		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log); \
 	fi

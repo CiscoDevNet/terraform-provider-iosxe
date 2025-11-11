@@ -142,11 +142,10 @@ make test NAME=Logging  # Legacy single-device test
 make test-1715-router NAME=TestAccResourceIosxeVlan  # Specific test on specific device
 ```
 
-**Debug and options:**
+**Debug mode:**
 
 ```shell
-DEBUG=1 make test-1715-switch           # Enable debug logging (writes to test-output-*.log)
-SKIP_DESTROY=1 make test-1712-router    # Preserve test resources after test completion
+DEBUG=1 make test-1715-switch    # Enable debug logging (writes to test-output-*.log)
 ```
 
 > **Note**: Acceptance tests create real resources on the target devices.
