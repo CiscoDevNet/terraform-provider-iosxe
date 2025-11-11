@@ -25,17 +25,22 @@ test-1715-router:
 	@echo "========================================="
 	@echo "Testing against 17.15.x Router..."
 	@echo "========================================="
-	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1715-router.log")
-	$(if $(NAME),@echo "Running tests matching: $(NAME)")
-	@TF_ACC=1 \
-	IOSXE_HOST=$(IOSXE_1715_ROUTER_HOST) \
-	IOSXE_USERNAME=$(or $(IOSXE_1715_ROUTER_USERNAME),$(IOSXE_USERNAME)) \
-	IOSXE_PASSWORD=$(or $(IOSXE_1715_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
-	IOSXE1715=1 \
-	C8000V=1 \
-	$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
-	$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-	go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-router.log)
+	@if [ -z "$(IOSXE_1715_ROUTER_HOST)" ]; then \
+		echo "SKIPPED: IOSXE_1715_ROUTER_HOST is not configured"; \
+		echo "To enable this test, configure IOSXE_1715_ROUTER_HOST in your .env file"; \
+	else \
+		$(if $(DEBUG),echo "Debug mode enabled - logs will be written to test-output-1715-router.log";) \
+		$(if $(NAME),echo "Running tests matching: $(NAME)";) \
+		TF_ACC=1 \
+		IOSXE_HOST=$(IOSXE_1715_ROUTER_HOST) \
+		IOSXE_USERNAME=$(or $(IOSXE_1715_ROUTER_USERNAME),$(IOSXE_USERNAME)) \
+		IOSXE_PASSWORD=$(or $(IOSXE_1715_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
+		IOSXE1715=1 \
+		C8000V=1 \
+		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
+		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-router.log); \
+	fi
 
 # Test against 17.15.x Switch (C9000V)
 # Usage: make test-1715-switch [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
@@ -44,17 +49,22 @@ test-1715-switch:
 	@echo "========================================="
 	@echo "Testing against 17.15.x Switch..."
 	@echo "========================================="
-	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1715-switch.log")
-	$(if $(NAME),@echo "Running tests matching: $(NAME)")
-	@TF_ACC=1 \
-	IOSXE_HOST=$(IOSXE_1715_SWITCH_HOST) \
-	IOSXE_USERNAME=$(or $(IOSXE_1715_SWITCH_USERNAME),$(IOSXE_USERNAME)) \
-	IOSXE_PASSWORD=$(or $(IOSXE_1715_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
-	IOSXE1715=1 \
-	C9000V=1 \
-	$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
-	$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-	go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log)
+	@if [ -z "$(IOSXE_1715_SWITCH_HOST)" ]; then \
+		echo "SKIPPED: IOSXE_1715_SWITCH_HOST is not configured"; \
+		echo "To enable this test, configure IOSXE_1715_SWITCH_HOST in your .env file"; \
+	else \
+		$(if $(DEBUG),echo "Debug mode enabled - logs will be written to test-output-1715-switch.log";) \
+		$(if $(NAME),echo "Running tests matching: $(NAME)";) \
+		TF_ACC=1 \
+		IOSXE_HOST=$(IOSXE_1715_SWITCH_HOST) \
+		IOSXE_USERNAME=$(or $(IOSXE_1715_SWITCH_USERNAME),$(IOSXE_USERNAME)) \
+		IOSXE_PASSWORD=$(or $(IOSXE_1715_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
+		IOSXE1715=1 \
+		C9000V=1 \
+		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
+		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log); \
+	fi
 
 # Test against 17.12.x Router (C8000V)
 # Usage: make test-1712-router [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
@@ -63,17 +73,22 @@ test-1712-router:
 	@echo "========================================="
 	@echo "Testing against 17.12.x Router..."
 	@echo "========================================="
-	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1712-router.log")
-	$(if $(NAME),@echo "Running tests matching: $(NAME)")
-	@TF_ACC=1 \
-	IOSXE_HOST=$(IOSXE_1712_ROUTER_HOST) \
-	IOSXE_USERNAME=$(or $(IOSXE_1712_ROUTER_USERNAME),$(IOSXE_USERNAME)) \
-	IOSXE_PASSWORD=$(or $(IOSXE_1712_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
-	IOSXE1712=1 \
-	C8000V=1 \
-	$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
-	$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-	go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-router.log)
+	@if [ -z "$(IOSXE_1712_ROUTER_HOST)" ]; then \
+		echo "SKIPPED: IOSXE_1712_ROUTER_HOST is not configured"; \
+		echo "To enable this test, configure IOSXE_1712_ROUTER_HOST in your .env file"; \
+	else \
+		$(if $(DEBUG),echo "Debug mode enabled - logs will be written to test-output-1712-router.log";) \
+		$(if $(NAME),echo "Running tests matching: $(NAME)";) \
+		TF_ACC=1 \
+		IOSXE_HOST=$(IOSXE_1712_ROUTER_HOST) \
+		IOSXE_USERNAME=$(or $(IOSXE_1712_ROUTER_USERNAME),$(IOSXE_USERNAME)) \
+		IOSXE_PASSWORD=$(or $(IOSXE_1712_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
+		IOSXE1712=1 \
+		C8000V=1 \
+		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
+		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-router.log); \
+	fi
 
 # Test against 17.12.x Switch (C9000V)
 # Usage: make test-1712-switch [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
@@ -82,17 +97,22 @@ test-1712-switch:
 	@echo "========================================="
 	@echo "Testing against 17.12.x Switch..."
 	@echo "========================================="
-	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1712-switch.log")
-	$(if $(NAME),@echo "Running tests matching: $(NAME)")
-	@TF_ACC=1 \
-	IOSXE_HOST=$(IOSXE_1712_SWITCH_HOST) \
-	IOSXE_USERNAME=$(or $(IOSXE_1712_SWITCH_USERNAME),$(IOSXE_USERNAME)) \
-	IOSXE_PASSWORD=$(or $(IOSXE_1712_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
-	IOSXE1712=1 \
-	C9000V=1 \
-	$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
-	$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-	go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log)
+	@if [ -z "$(IOSXE_1712_SWITCH_HOST)" ]; then \
+		echo "SKIPPED: IOSXE_1712_SWITCH_HOST is not configured"; \
+		echo "To enable this test, configure IOSXE_1712_SWITCH_HOST in your .env file"; \
+	else \
+		$(if $(DEBUG),echo "Debug mode enabled - logs will be written to test-output-1712-switch.log";) \
+		$(if $(NAME),echo "Running tests matching: $(NAME)";) \
+		TF_ACC=1 \
+		IOSXE_HOST=$(IOSXE_1712_SWITCH_HOST) \
+		IOSXE_USERNAME=$(or $(IOSXE_1712_SWITCH_USERNAME),$(IOSXE_USERNAME)) \
+		IOSXE_PASSWORD=$(or $(IOSXE_1712_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
+		IOSXE1712=1 \
+		C9000V=1 \
+		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
+		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log); \
+	fi
 
 # Test all 17.15.x devices (router and switch)
 .PHONY: test-1715
