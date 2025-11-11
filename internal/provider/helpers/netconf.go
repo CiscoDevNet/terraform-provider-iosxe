@@ -1064,3 +1064,58 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 	finalPath := strings.Join(pathSoFar, ".")
 	return xmldot.Get(xml, finalPath)
 }
+
+// IsGetConfigResponseEmpty checks if a GetConfig response has an empty <data> element.
+// Returns true if the response contains <data></data> with no child elements,
+// indicating that the requested configuration does not exist on the device.
+//
+// This is useful for determining if a resource exists before attempting to parse
+// its attributes, particularly during Read operations or import.
+//
+// Parameters:
+//   - res: The NETCONF response from GetConfig operation
+//
+// Returns:
+//   - true if the data element is empty (no child elements)
+//   - false if the data element contains configuration
+//
+// Example usage:
+//
+//	res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+//	if err != nil {
+//	    return err
+//	}
+//	if helpers.IsGetConfigResponseEmpty(res) {
+//	    // Resource does not exist
+//	    return nil
+//	}
+//	// Parse the configuration
+//	state.fromBodyXML(ctx, res.Res)
+func IsGetConfigResponseEmpty(res *netconf.Res) bool {
+	if res == nil {
+		return true
+	}
+
+	// Get the data element from the response
+	dataResult := res.Res.Get("data")
+
+	// If data element doesn't exist, consider it empty
+	if !dataResult.Exists() {
+		return true
+	}
+
+	// Check if data element has any children using Map()
+	// An empty <data></data> element will have an empty map
+	children := dataResult.Map()
+
+	// If the map is empty (no child elements), the response is empty
+	// The "%" key represents direct text content, which we also want to ignore
+	// since whitespace-only content is not meaningful configuration
+	for key := range children {
+		if key != "%" {
+			return false
+		}
+	}
+
+	return true
+}

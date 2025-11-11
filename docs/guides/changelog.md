@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Fix error when trying to delete resources via NETCONF which no longer exist
+
 ## 0.10.0
 
 - Add experimental support for [NETCONF](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/netconf) with `protocol` provider attribute, including support for applying changes to the candidate configuration and committing them as a single transaction

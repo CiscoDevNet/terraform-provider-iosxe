@@ -1876,3 +1876,111 @@ func TestNamespaceExceptions(t *testing.T) {
 		})
 	}
 }
+
+// TestIsGetConfigResponseEmpty tests the IsGetConfigResponseEmpty helper function
+func TestIsGetConfigResponseEmpty(t *testing.T) {
+	tests := []struct {
+		name     string
+		xml      string
+		expected bool
+	}{
+		{
+			name: "Empty data element",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data></data>
+			</rpc-reply>`,
+			expected: true,
+		},
+		{
+			name: "Data element with whitespace only",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data>
+
+				</data>
+			</rpc-reply>`,
+			expected: true,
+		},
+		{
+			name: "Data element with configuration",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data>
+					<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+						<hostname>test-device</hostname>
+					</native>
+				</data>
+			</rpc-reply>`,
+			expected: false,
+		},
+		{
+			name: "Data element with nested configuration",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data>
+					<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+						<interface>
+							<GigabitEthernet>
+								<name>1</name>
+								<description>Test Interface</description>
+							</GigabitEthernet>
+						</interface>
+					</native>
+				</data>
+			</rpc-reply>`,
+			expected: false,
+		},
+		{
+			name: "Data element with single attribute",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data>
+					<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+						<banner>
+							<login>
+								<banner>Welcome</banner>
+							</login>
+						</banner>
+					</native>
+				</data>
+			</rpc-reply>`,
+			expected: false,
+		},
+		{
+			name: "Empty self-closing data element",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data/>
+			</rpc-reply>`,
+			expected: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Parse the XML into a netconf.Res structure
+			result := xmldot.Get(tt.xml, "rpc-reply")
+			res := &netconf.Res{
+				Res:       result,
+				OK:        true,
+				MessageID: "1",
+			}
+
+			isEmpty := IsGetConfigResponseEmpty(res)
+			if isEmpty != tt.expected {
+				t.Errorf("IsGetConfigResponseEmpty() = %v, want %v", isEmpty, tt.expected)
+			} else {
+				if isEmpty {
+					t.Logf("✓ Correctly identified as empty response")
+				} else {
+					t.Logf("✓ Correctly identified as non-empty response")
+				}
+			}
+		})
+	}
+}
+
+// TestIsGetConfigResponseEmpty_NilInput tests nil input handling
+func TestIsGetConfigResponseEmpty_NilInput(t *testing.T) {
+	isEmpty := IsGetConfigResponseEmpty(nil)
+	if !isEmpty {
+		t.Errorf("IsGetConfigResponseEmpty(nil) = false, want true")
+	} else {
+		t.Logf("✓ Correctly handles nil input")
+	}
+}

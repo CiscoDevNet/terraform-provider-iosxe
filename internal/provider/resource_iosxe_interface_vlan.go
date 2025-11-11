@@ -463,6 +463,12 @@ func (r *InterfaceVLANResource) Read(ctx context.Context, req resource.ReadReque
 				return
 			}
 
+			if helpers.IsGetConfigResponseEmpty(&res) {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
+				resp.State.RemoveResource(ctx)
+				return
+			}
+
 			// After `terraform import` we switch to a full read.
 			if imp {
 				state.fromBodyXML(ctx, res.Res)
