@@ -16,7 +16,7 @@ testall: gen test-1715-router test-1715-switch test-1712-router test-1712-switch
 # Usage: make test NAME=IosxeLogging
 .PHONY: test
 test:
-	TF_ACC=1 go test ./... -v -run $(NAME) -timeout 60m
+	TF_ACC=1 go test ./... -v -run $(NAME) -count 1 -timeout 60m
 
 # Test against 17.15.x Router (C8000V)
 # Usage: make test-1715-router [NAME=TestName] [DEBUG=1] [SKIP_DESTROY=1]
@@ -39,7 +39,7 @@ test-1715-router:
 		C8000V=1 \
 		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-router.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-router.log); \
 	fi
 
 # Test against 17.15.x Switch (C9000V)
@@ -63,7 +63,7 @@ test-1715-switch:
 		C9000V=1 \
 		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log); \
 	fi
 
 # Test against 17.12.x Router (C8000V)
@@ -87,7 +87,7 @@ test-1712-router:
 		C8000V=1 \
 		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-router.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-router.log); \
 	fi
 
 # Test against 17.12.x Switch (C9000V)
@@ -111,7 +111,7 @@ test-1712-switch:
 		C9000V=1 \
 		$(if $(SKIP_DESTROY),SKIP_DESTROY=1) \
 		$(if $(DEBUG),TF_ACC_LOG=1 TF_LOG_SDK_FRAMEWORK=DEBUG) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log); \
 	fi
 
 # Test all 17.15.x devices (router and switch)
