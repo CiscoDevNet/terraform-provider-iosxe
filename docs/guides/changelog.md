@@ -42,6 +42,7 @@ description: |-
 - Add `router_id_ip`, `bgp_graceful_restart`, and `bgp_update_delay` to `iosxe_bgp` resource and data source
 - Add `multi_area_ids` attribute to `iosxe_interface_ospf` resource and data source
 - Add `log_adjacency_changes`, `log_adjacency_changes_detail`, `nsf_cisco`, `nsf_cisco_enforce_global`, `nsf_ietf`, `nsf_ietf_restart_interval`, `max_metric_router_lsa_*`, `fast_reroute_per_prefix_enable_prefix_priority`, `redistribute_static_subnets` and `redistribute_connected_subnets` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
+- Add `dot1x_timeout_quiet_period`, `dot1x_timeout_supp_timeout`, `dot1x_timeout_ratelimit_period`, and `dot1x_timeout_server_timeout` attributes to `iosxe_template` resource and data source
 
 ## 0.9.3
 

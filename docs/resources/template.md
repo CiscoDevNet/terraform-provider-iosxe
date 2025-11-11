@@ -19,6 +19,10 @@ resource "iosxe_template" "example" {
   dot1x_max_reauth_req                           = 3
   dot1x_max_req                                  = 3
   dot1x_timeout_tx_period                        = 2
+  dot1x_timeout_quiet_period                     = 4
+  dot1x_timeout_supp_timeout                     = 10
+  dot1x_timeout_ratelimit_period                 = 10
+  dot1x_timeout_server_timeout                   = 30
   service_policy_type_control_subscriber         = "dot1x_policy"
   service_policy_input                           = "SP1"
   service_policy_output                          = "SP2"
@@ -133,6 +137,14 @@ resource "iosxe_template" "example" {
   - Range: `1`-`10`
 - `dot1x_pae` (String) Set 802.1x interface pae type
   - Choices: `authenticator`, `both`, `supplicant`
+- `dot1x_timeout_quiet_period` (Number) QuietPeriod in Seconds
+  - Range: `1`-`65535`
+- `dot1x_timeout_ratelimit_period` (Number) Ratelimit Period in seconds
+  - Range: `1`-`65535`
+- `dot1x_timeout_server_timeout` (Number) Timeout for Radius Retries
+  - Range: `1`-`65535`
+- `dot1x_timeout_supp_timeout` (Number) Timeout for supplicant reply
+  - Range: `1`-`65535`
 - `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
   - Range: `1`-`65535`
 - `ip_access_group` (Attributes List) Access control list for IP packets (see [below for nested schema](#nestedatt--ip_access_group))

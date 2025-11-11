@@ -122,6 +122,34 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 					int64validator.Between(1, 65535),
 				},
 			},
+			"dot1x_timeout_quiet_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("QuietPeriod in Seconds").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_supp_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for supplicant reply").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_ratelimit_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ratelimit Period in seconds").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_server_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for Radius Retries").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
 			"service_policy_type_control_subscriber": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply a subscriber control policy to the interface").String,
 				Optional:            true,
