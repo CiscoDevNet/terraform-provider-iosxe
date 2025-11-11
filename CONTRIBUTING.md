@@ -79,23 +79,81 @@ make genall
 
 ### Acceptance Tests
 
-In order to run the full suite of Acceptance tests, run `make testacc`. Make sure the respective environment variables are set (e.g., `IOSXE_USERNAME`, `IOSXE_PASSWORD`, `IOSXE_URL`).
+#### Configuration
 
-Every resource and data source implemented has a corresponding acceptance test. To run a single acceptance test use the following command:
+Before running acceptance tests, configure your test environment by creating a `.env` file from the provided sample:
 
 ```shell
-make test NAME=Logging
+cp .env.sample .env
 ```
 
-Where `NAME` is the camelcase name of the resource or data source to test. Make sure the respective environment variables to configure the provider are set (e.g., `IOSXE_USERNAME`, `IOSXE_PASSWORD`, `IOSXE_URL`).
+Edit the `.env` file to set your device credentials and connection details. The configuration supports:
 
-In order to run the full suite of Acceptance tests, run `make testall`.
+- **Global credentials**: `IOSXE_USERNAME` and `IOSXE_PASSWORD` apply to all devices by default
+- **Device-specific overrides**: Optional `IOSXE_XXXX_DEVICE_USERNAME` and `IOSXE_XXXX_DEVICE_PASSWORD` for devices with different credentials
+- **Device URLs**: Separate URLs for each device and version combination
 
-Note: Acceptance tests create real resources.
+Example `.env` configuration:
+
+```shell
+# Global credentials (used for all devices unless overridden)
+IOSXE_USERNAME=admin
+IOSXE_PASSWORD=cisco!123
+
+# 17.15.x Router
+IOSXE_1715_ROUTER_URL=https://10.81.239.57
+IOSXE_1715_ROUTER_HOST=10.81.239.57
+
+# 17.15.x Switch
+IOSXE_1715_SWITCH_URL=https://10.81.239.61
+IOSXE_1715_SWITCH_HOST=10.81.239.61
+
+# 17.12.x devices (optional, for testing older versions)
+# IOSXE_1712_ROUTER_URL=https://192.168.1.1
+# IOSXE_1712_ROUTER_HOST=192.168.1.1
+```
+
+#### Running Tests
+
+**Run all tests across all devices:**
 
 ```shell
 make testall
 ```
+
+This will regenerate code and run tests against all configured devices (17.15.x and 17.12.x versions).
+
+**Run tests for a specific version:**
+
+```shell
+make test-1715  # Test all 17.15.x devices
+make test-1712  # Test all 17.12.x devices
+```
+
+**Run tests for a specific device:**
+
+```shell
+make test-1715-router   # Test 17.15.x router only
+make test-1715-switch   # Test 17.15.x switch only
+make test-1712-router   # Test 17.12.x router only
+make test-1712-switch   # Test 17.12.x switch only
+```
+
+**Run specific tests by name:**
+
+```shell
+make test NAME=Logging  # Legacy single-device test
+make test-1715-router NAME=TestAccResourceIosxeVlan  # Specific test on specific device
+```
+
+**Debug and options:**
+
+```shell
+DEBUG=1 make test-1715-switch           # Enable debug logging (writes to test-output-*.log)
+SKIP_DESTROY=1 make test-1712-router    # Preserve test resources after test completion
+```
+
+> **Note**: Acceptance tests create real resources on the target devices.
 
 ## Sending Pull Requests
 
