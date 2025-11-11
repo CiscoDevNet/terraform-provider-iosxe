@@ -74,12 +74,14 @@ More information about how the code generation works can be found in the [contri
 
 ## Acceptance tests
 
-In order to run the full suite of acceptance tests, run `make testall`. Make sure the respective environment variables are set (e.g., `MERAKI_API_KEY`).
-
-Note: Acceptance tests create real resources.
+In order to run the full suite of acceptance tests, set up a `.env` file with the appropriate environment variables. Copy the sample file at `.env.sample` to `.env`, then edit the file to set the appropriate environment variables.
 
 ```shell
-make testall
+cp .env.sample .env
 ```
+
+Then, run `make testall` to execute all acceptance tests across all devices and versions.
+
+> **Note**: Acceptance tests create real resources.
 
 More information about how the acceptance tests work can be found in the [contribution guide](https://github.com/CiscoDevNet/terraform-provider-iosxe/blob/main/CONTRIBUTING.md).
