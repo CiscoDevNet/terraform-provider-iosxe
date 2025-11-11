@@ -816,20 +816,20 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							Computed:            true,
 						},
 						"default": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "the default behavior for setting value not found in the table map",
 							Computed:            true,
 						},
 						"mappings": schema.ListNestedAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "map to-value from from-value",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"from": schema.Int64Attribute{
-										MarkdownDescription: "",
+										MarkdownDescription: "map from value",
 										Computed:            true,
 									},
 									"to": schema.Int64Attribute{
-										MarkdownDescription: "",
+										MarkdownDescription: "map to value",
 										Computed:            true,
 									},
 								},

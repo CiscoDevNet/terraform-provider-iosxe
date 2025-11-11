@@ -273,8 +273,8 @@ Read-Only:
 
 Read-Only:
 
-- `default` (String)
-- `mappings` (Attributes List) (see [below for nested schema](#nestedatt--table_maps--mappings))
+- `default` (String) the default behavior for setting value not found in the table map
+- `mappings` (Attributes List) map to-value from from-value (see [below for nested schema](#nestedatt--table_maps--mappings))
 - `name` (String)
 
 <a id="nestedatt--table_maps--mappings"></a>
@@ -282,8 +282,8 @@ Read-Only:
 
 Read-Only:
 
-- `from` (Number)
-- `to` (Number)
+- `from` (Number) map from value
+- `to` (Number) map to value
 
 
 

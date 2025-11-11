@@ -1052,16 +1052,16 @@ func (data System) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
 			if !item.Default.IsNull() && !item.Default.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"", item.Default.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:default", item.Default.ValueString())
 			}
 			if len(item.Mappings) > 0 {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"", []interface{}{})
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:map-list", []interface{}{})
 				for cindex, citem := range item.Mappings {
 					if !citem.From.IsNull() && !citem.From.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+""+"."+strconv.Itoa(cindex)+"."+"", strconv.FormatInt(citem.From.ValueInt64(), 10))
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:map-list"+"."+strconv.Itoa(cindex)+"."+"from", strconv.FormatInt(citem.From.ValueInt64(), 10))
 					}
 					if !citem.To.IsNull() && !citem.To.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+""+"."+strconv.Itoa(cindex)+"."+"", strconv.FormatInt(citem.To.ValueInt64(), 10))
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:map-list"+"."+strconv.Itoa(cindex)+"."+"to", strconv.FormatInt(citem.To.ValueInt64(), 10))
 					}
 				}
 			}
@@ -1772,18 +1772,18 @@ func (data System) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
 			if !item.Default.IsNull() && !item.Default.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "", item.Default.ValueString())
+				cBody = helpers.SetFromXPath(cBody, "Cisco-IOS-XE-qos:default", item.Default.ValueString())
 			}
 			if len(item.Mappings) > 0 {
 				for _, citem := range item.Mappings {
 					ccBody := netconf.Body{}
 					if !citem.From.IsNull() && !citem.From.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "", strconv.FormatInt(citem.From.ValueInt64(), 10))
+						ccBody = helpers.SetFromXPath(ccBody, "from", strconv.FormatInt(citem.From.ValueInt64(), 10))
 					}
 					if !citem.To.IsNull() && !citem.To.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "", strconv.FormatInt(citem.To.ValueInt64(), 10))
+						ccBody = helpers.SetFromXPath(ccBody, "to", strconv.FormatInt(citem.To.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "", ccBody.Res())
+					cBody = helpers.SetRawFromXPath(cBody, "Cisco-IOS-XE-qos:map-list", ccBody.Res())
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/table-map", cBody.Res())
@@ -3034,17 +3034,17 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.TableMaps[i].Name = types.StringNull()
 		}
-		if value := r.Get(""); value.Exists() && !data.TableMaps[i].Default.IsNull() {
+		if value := r.Get("Cisco-IOS-XE-qos:default"); value.Exists() && !data.TableMaps[i].Default.IsNull() {
 			data.TableMaps[i].Default = types.StringValue(value.String())
 		} else {
 			data.TableMaps[i].Default = types.StringNull()
 		}
 		for ci := range data.TableMaps[i].Mappings {
-			keys := [...]string{""}
+			keys := [...]string{"from"}
 			keyValues := [...]string{strconv.FormatInt(data.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
 
 			var cr gjson.Result
-			r.Get("").ForEach(
+			r.Get("Cisco-IOS-XE-qos:map-list").ForEach(
 				func(_, v gjson.Result) bool {
 					found := false
 					for ik := range keys {
@@ -3062,12 +3062,12 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 					return true
 				},
 			)
-			if value := cr.Get(""); value.Exists() && !data.TableMaps[i].Mappings[ci].From.IsNull() {
+			if value := cr.Get("from"); value.Exists() && !data.TableMaps[i].Mappings[ci].From.IsNull() {
 				data.TableMaps[i].Mappings[ci].From = types.Int64Value(value.Int())
 			} else {
 				data.TableMaps[i].Mappings[ci].From = types.Int64Null()
 			}
-			if value := cr.Get(""); value.Exists() && !data.TableMaps[i].Mappings[ci].To.IsNull() {
+			if value := cr.Get("to"); value.Exists() && !data.TableMaps[i].Mappings[ci].To.IsNull() {
 				data.TableMaps[i].Mappings[ci].To = types.Int64Value(value.Int())
 			} else {
 				data.TableMaps[i].Mappings[ci].To = types.Int64Null()
@@ -4310,17 +4310,17 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.TableMaps[i].Name = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.TableMaps[i].Default.IsNull() {
+		if value := helpers.GetFromXPath(r, "Cisco-IOS-XE-qos:default"); value.Exists() && !data.TableMaps[i].Default.IsNull() {
 			data.TableMaps[i].Default = types.StringValue(value.String())
 		} else {
 			data.TableMaps[i].Default = types.StringNull()
 		}
 		for ci := range data.TableMaps[i].Mappings {
-			keys := [...]string{""}
+			keys := [...]string{"from"}
 			keyValues := [...]string{strconv.FormatInt(data.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
 
 			var cr xmldot.Result
-			helpers.GetFromXPath(r, "").ForEach(
+			helpers.GetFromXPath(r, "Cisco-IOS-XE-qos:map-list").ForEach(
 				func(_ int, v xmldot.Result) bool {
 					found := false
 					for ik := range keys {
@@ -4338,12 +4338,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 					return true
 				},
 			)
-			if value := helpers.GetFromXPath(cr, ""); value.Exists() && !data.TableMaps[i].Mappings[ci].From.IsNull() {
+			if value := helpers.GetFromXPath(cr, "from"); value.Exists() && !data.TableMaps[i].Mappings[ci].From.IsNull() {
 				data.TableMaps[i].Mappings[ci].From = types.Int64Value(value.Int())
 			} else {
 				data.TableMaps[i].Mappings[ci].From = types.Int64Null()
 			}
-			if value := helpers.GetFromXPath(cr, ""); value.Exists() && !data.TableMaps[i].Mappings[ci].To.IsNull() {
+			if value := helpers.GetFromXPath(cr, "to"); value.Exists() && !data.TableMaps[i].Mappings[ci].To.IsNull() {
 				data.TableMaps[i].Mappings[ci].To = types.Int64Value(value.Int())
 			} else {
 				data.TableMaps[i].Mappings[ci].To = types.Int64Null()
@@ -5031,17 +5031,17 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("Cisco-IOS-XE-qos:default"); cValue.Exists() {
 				item.Default = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
 				item.Mappings = make([]SystemTableMapsMappings, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
 					cItem := SystemTableMapsMappings{}
-					if ccValue := cv.Get(""); ccValue.Exists() {
+					if ccValue := cv.Get("from"); ccValue.Exists() {
 						cItem.From = types.Int64Value(ccValue.Int())
 					}
-					if ccValue := cv.Get(""); ccValue.Exists() {
+					if ccValue := cv.Get("to"); ccValue.Exists() {
 						cItem.To = types.Int64Value(ccValue.Int())
 					}
 					item.Mappings = append(item.Mappings, cItem)
@@ -5733,17 +5733,17 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("Cisco-IOS-XE-qos:default"); cValue.Exists() {
 				item.Default = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
 				item.Mappings = make([]SystemTableMapsMappings, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
 					cItem := SystemTableMapsMappings{}
-					if ccValue := cv.Get(""); ccValue.Exists() {
+					if ccValue := cv.Get("from"); ccValue.Exists() {
 						cItem.From = types.Int64Value(ccValue.Int())
 					}
-					if ccValue := cv.Get(""); ccValue.Exists() {
+					if ccValue := cv.Get("to"); ccValue.Exists() {
 						cItem.To = types.Int64Value(ccValue.Int())
 					}
 					item.Mappings = append(item.Mappings, cItem)
@@ -6431,17 +6431,17 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:default"); cValue.Exists() {
 				item.Default = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
 				item.Mappings = make([]SystemTableMapsMappings, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
 					cItem := SystemTableMapsMappings{}
-					if ccValue := helpers.GetFromXPath(cv, ""); ccValue.Exists() {
+					if ccValue := helpers.GetFromXPath(cv, "from"); ccValue.Exists() {
 						cItem.From = types.Int64Value(ccValue.Int())
 					}
-					if ccValue := helpers.GetFromXPath(cv, ""); ccValue.Exists() {
+					if ccValue := helpers.GetFromXPath(cv, "to"); ccValue.Exists() {
 						cItem.To = types.Int64Value(ccValue.Int())
 					}
 					item.Mappings = append(item.Mappings, cItem)
@@ -7129,17 +7129,17 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:default"); cValue.Exists() {
 				item.Default = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
 				item.Mappings = make([]SystemTableMapsMappings, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
 					cItem := SystemTableMapsMappings{}
-					if ccValue := helpers.GetFromXPath(cv, ""); ccValue.Exists() {
+					if ccValue := helpers.GetFromXPath(cv, "from"); ccValue.Exists() {
 						cItem.From = types.Int64Value(ccValue.Int())
 					}
-					if ccValue := helpers.GetFromXPath(cv, ""); ccValue.Exists() {
+					if ccValue := helpers.GetFromXPath(cv, "to"); ccValue.Exists() {
 						cItem.To = types.Int64Value(ccValue.Int())
 					}
 					item.Mappings = append(item.Mappings, cItem)
@@ -7195,17 +7195,17 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 						}
 						if found {
 							if !state.TableMaps[i].Mappings[ci].To.IsNull() && data.TableMaps[j].Mappings[cj].To.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/=%v/", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/Cisco-IOS-XE-qos:map-list=%v/to", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
 						}
 					}
 					if !found {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/Cisco-IOS-XE-qos:map-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				if !state.TableMaps[i].Default.IsNull() && data.TableMaps[j].Default.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/Cisco-IOS-XE-qos:default", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -8063,7 +8063,7 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 			}
 			if found {
 				for ci := range state.TableMaps[i].Mappings {
-					cstateKeys := [...]string{""}
+					cstateKeys := [...]string{"from"}
 					cstateKeyValues := [...]string{strconv.FormatInt(state.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
 					cpredicates := ""
 					for i := range cstateKeys {
@@ -8086,17 +8086,17 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 						}
 						if found {
 							if !state.TableMaps[i].Mappings[ci].To.IsNull() && data.TableMaps[j].Mappings[cj].To.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/%v/", predicates, cpredicates))
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/Cisco-IOS-XE-qos:map-list%v/to", predicates, cpredicates))
 							}
 							break
 						}
 					}
 					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/%v", predicates, cpredicates))
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/Cisco-IOS-XE-qos:map-list%v", predicates, cpredicates))
 					}
 				}
 				if !state.TableMaps[i].Default.IsNull() && data.TableMaps[j].Default.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/Cisco-IOS-XE-qos:default", predicates))
 				}
 				break
 			}

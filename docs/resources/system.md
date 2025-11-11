@@ -381,19 +381,19 @@ Required:
 
 Optional:
 
-- `default` (String)
-- `mappings` (Attributes List) (see [below for nested schema](#nestedatt--table_maps--mappings))
+- `default` (String) the default behavior for setting value not found in the table map
+- `mappings` (Attributes List) map to-value from from-value (see [below for nested schema](#nestedatt--table_maps--mappings))
 
 <a id="nestedatt--table_maps--mappings"></a>
 ### Nested Schema for `table_maps.mappings`
 
 Required:
 
-- `from` (Number)
+- `from` (Number) map from value
 
 Optional:
 
-- `to` (Number)
+- `to` (Number) map to value
 
 
 

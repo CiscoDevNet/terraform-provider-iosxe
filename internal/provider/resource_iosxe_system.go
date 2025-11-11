@@ -973,20 +973,20 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							Required:            true,
 						},
 						"default": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("the default behavior for setting value not found in the table map").String,
 							Optional:            true,
 						},
 						"mappings": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("map to-value from from-value").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"from": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										MarkdownDescription: helpers.NewAttributeDescription("map from value").String,
 										Required:            true,
 									},
 									"to": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										MarkdownDescription: helpers.NewAttributeDescription("map to value").String,
 										Optional:            true,
 									},
 								},

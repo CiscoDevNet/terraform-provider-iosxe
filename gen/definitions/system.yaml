@@ -692,24 +692,32 @@ attributes:
         id: true
         example: TABLE-MAP-1
       - yang_name: Cisco-IOS-XE-qos:default
+        xpath: Cisco-IOS-XE-qos:default
         tf_name: default
         type: String
+        description: the default behavior for setting value not found in the table map
         example: copy
         no_augment_config: true
       - yang_name: Cisco-IOS-XE-qos:map-list
+        xpath: Cisco-IOS-XE-qos:map-list
         tf_name: mappings
         type: List
+        description: map to-value from from-value
         no_augment_config: true
         attributes:
           - yang_name: from
+            xpath: from
             tf_name: from
             id: true
             type: Int64
+            description: map from value
             example: 18
             no_augment_config: true
           - yang_name: to
+            xpath: to
             tf_name: to
             type: Int64
+            description: map to value
             example: 18
             no_augment_config: true
 
