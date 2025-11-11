@@ -1,6 +1,6 @@
 ---
 name: EVPN
-path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn
+path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn
 test_tags: [C9000V]
 doc_category: EVPN
 attributes:

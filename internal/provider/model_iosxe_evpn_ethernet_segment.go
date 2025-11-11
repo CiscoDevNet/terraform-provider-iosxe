@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -41,7 +44,6 @@ import (
 type EVPNEthernetSegment struct {
 	Device                 types.String                         `tfsdk:"device"`
 	Id                     types.String                         `tfsdk:"id"`
-	DeleteMode             types.String                         `tfsdk:"delete_mode"`
 	EsValue                types.Int64                          `tfsdk:"es_value"`
 	DfElectionWaitTime     types.Int64                          `tfsdk:"df_election_wait_time"`
 	RedundancyAllActive    types.Bool                           `tfsdk:"redundancy_all_active"`
@@ -87,6 +89,19 @@ func (data EVPNEthernetSegment) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data EVPNEthernetSegment) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.EsValue.ValueInt64()))
+	return path
+}
+
+func (data EVPNEthernetSegmentData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.EsValue.ValueInt64()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -127,6 +142,54 @@ func (data EVPNEthernetSegment) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data EVPNEthernetSegment) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.EsValue.IsNull() && !data.EsValue.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/es-value", strconv.FormatInt(data.EsValue.ValueInt64(), 10))
+	}
+	if !data.DfElectionWaitTime.IsNull() && !data.DfElectionWaitTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/df-election/wait-time", strconv.FormatInt(data.DfElectionWaitTime.ValueInt64(), 10))
+	}
+	if !data.RedundancyAllActive.IsNull() && !data.RedundancyAllActive.IsUnknown() {
+		if data.RedundancyAllActive.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/all-active", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redundancy/all-active")
+		}
+	}
+	if !data.RedundancySingleActive.IsNull() && !data.RedundancySingleActive.IsUnknown() {
+		if data.RedundancySingleActive.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redundancy/single-active", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redundancy/single-active")
+		}
+	}
+	if len(data.IdentifierTypes) > 0 {
+		for _, item := range data.IdentifierTypes {
+			cBody := netconf.Body{}
+			if !item.Type.IsNull() && !item.Type.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "identifier-type", strconv.FormatInt(item.Type.ValueInt64(), 10))
+			}
+			if !item.HexString.IsNull() && !item.HexString.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "hex-string", item.HexString.ValueString())
+			}
+			if !item.SystemMac.IsNull() && !item.SystemMac.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "system-mac", item.SystemMac.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/identifier/type", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -205,6 +268,80 @@ func (data *EVPNEthernetSegment) updateFromBody(ctx context.Context, res gjson.R
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *EVPNEthernetSegment) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/es-value"); value.Exists() && !data.EsValue.IsNull() {
+		data.EsValue = types.Int64Value(value.Int())
+	} else {
+		data.EsValue = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/df-election/wait-time"); value.Exists() && !data.DfElectionWaitTime.IsNull() {
+		data.DfElectionWaitTime = types.Int64Value(value.Int())
+	} else {
+		data.DfElectionWaitTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/all-active"); !data.RedundancyAllActive.IsNull() {
+		if value.Exists() {
+			data.RedundancyAllActive = types.BoolValue(true)
+		} else {
+			data.RedundancyAllActive = types.BoolValue(false)
+		}
+	} else {
+		data.RedundancyAllActive = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/single-active"); !data.RedundancySingleActive.IsNull() {
+		if value.Exists() {
+			data.RedundancySingleActive = types.BoolValue(true)
+		} else {
+			data.RedundancySingleActive = types.BoolValue(false)
+		}
+	} else {
+		data.RedundancySingleActive = types.BoolNull()
+	}
+	for i := range data.IdentifierTypes {
+		keys := [...]string{"identifier-type"}
+		keyValues := [...]string{strconv.FormatInt(data.IdentifierTypes[i].Type.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/identifier/type").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "identifier-type"); value.Exists() && !data.IdentifierTypes[i].Type.IsNull() {
+			data.IdentifierTypes[i].Type = types.Int64Value(value.Int())
+		} else {
+			data.IdentifierTypes[i].Type = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "hex-string"); value.Exists() && !data.IdentifierTypes[i].HexString.IsNull() {
+			data.IdentifierTypes[i].HexString = types.StringValue(value.String())
+		} else {
+			data.IdentifierTypes[i].HexString = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "system-mac"); value.Exists() && !data.IdentifierTypes[i].SystemMac.IsNull() {
+			data.IdentifierTypes[i].SystemMac = types.StringValue(value.String())
+		} else {
+			data.IdentifierTypes[i].SystemMac = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -288,6 +425,80 @@ func (data *EVPNEthernetSegmentData) fromBody(ctx context.Context, res gjson.Res
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *EVPNEthernetSegment) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/df-election/wait-time"); value.Exists() {
+		data.DfElectionWaitTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/all-active"); value.Exists() {
+		data.RedundancyAllActive = types.BoolValue(true)
+	} else {
+		data.RedundancyAllActive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/single-active"); value.Exists() {
+		data.RedundancySingleActive = types.BoolValue(true)
+	} else {
+		data.RedundancySingleActive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identifier/type"); value.Exists() {
+		data.IdentifierTypes = make([]EVPNEthernetSegmentIdentifierTypes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := EVPNEthernetSegmentIdentifierTypes{}
+			if cValue := helpers.GetFromXPath(v, "identifier-type"); cValue.Exists() {
+				item.Type = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "hex-string"); cValue.Exists() {
+				item.HexString = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "system-mac"); cValue.Exists() {
+				item.SystemMac = types.StringValue(cValue.String())
+			}
+			data.IdentifierTypes = append(data.IdentifierTypes, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *EVPNEthernetSegmentData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/df-election/wait-time"); value.Exists() {
+		data.DfElectionWaitTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/all-active"); value.Exists() {
+		data.RedundancyAllActive = types.BoolValue(true)
+	} else {
+		data.RedundancyAllActive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redundancy/single-active"); value.Exists() {
+		data.RedundancySingleActive = types.BoolValue(true)
+	} else {
+		data.RedundancySingleActive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identifier/type"); value.Exists() {
+		data.IdentifierTypes = make([]EVPNEthernetSegmentIdentifierTypes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := EVPNEthernetSegmentIdentifierTypes{}
+			if cValue := helpers.GetFromXPath(v, "identifier-type"); cValue.Exists() {
+				item.Type = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "hex-string"); cValue.Exists() {
+				item.HexString = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "system-mac"); cValue.Exists() {
+				item.SystemMac = types.StringValue(cValue.String())
+			}
+			data.IdentifierTypes = append(data.IdentifierTypes, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *EVPNEthernetSegment) getDeletedItems(ctx context.Context, state EVPNEthernetSegment) []string {
@@ -338,6 +549,62 @@ func (data *EVPNEthernetSegment) getDeletedItems(ctx context.Context, state EVPN
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *EVPNEthernetSegment) addDeletedItemsXML(ctx context.Context, state EVPNEthernetSegment, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.IdentifierTypes {
+		stateKeys := [...]string{"identifier-type"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.IdentifierTypes[i].Type.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IdentifierTypes[i].Type.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IdentifierTypes {
+			found = true
+			if state.IdentifierTypes[i].Type.ValueInt64() != data.IdentifierTypes[j].Type.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.IdentifierTypes[i].SystemMac.IsNull() && data.IdentifierTypes[j].SystemMac.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v/system-mac", predicates))
+				}
+				if !state.IdentifierTypes[i].HexString.IsNull() && data.IdentifierTypes[j].HexString.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v/hex-string", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identifier/type%v", predicates))
+		}
+	}
+	if !state.RedundancySingleActive.IsNull() && data.RedundancySingleActive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redundancy/single-active")
+	}
+	if !state.RedundancyAllActive.IsNull() && data.RedundancyAllActive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redundancy/all-active")
+	}
+	if !state.DfElectionWaitTime.IsNull() && data.DfElectionWaitTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/df-election/wait-time")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *EVPNEthernetSegment) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -378,3 +645,33 @@ func (data *EVPNEthernetSegment) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *EVPNEthernetSegment) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.IdentifierTypes {
+		keys := [...]string{"identifier-type"}
+		keyValues := [...]string{strconv.FormatInt(data.IdentifierTypes[i].Type.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/identifier/type%v", predicates))
+	}
+	if !data.RedundancySingleActive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redundancy/single-active")
+	}
+	if !data.RedundancyAllActive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redundancy/all-active")
+	}
+	if !data.DfElectionWaitTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/df-election/wait-time")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

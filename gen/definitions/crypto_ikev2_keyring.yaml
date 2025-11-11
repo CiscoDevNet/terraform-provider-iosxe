@@ -1,6 +1,6 @@
 ---
 name: Crypto IKEv2 Keyring
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=%v
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring[name=%v]
 no_delete_attributes: true
 doc_category: Crypto
 attributes:

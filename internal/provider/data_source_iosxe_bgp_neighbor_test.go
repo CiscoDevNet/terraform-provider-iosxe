@@ -66,15 +66,15 @@ func TestAccDataSourceIosxeBGPNeighbor(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPNeighborPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 	}
@@ -111,7 +111,7 @@ func testAccDataSourceIosxeBGPNeighborConfig() string {
 	config += `	timers_holdtime = 866` + "\n"
 	config += `	timers_minimum_neighbor_hold = 222` + "\n"
 	config += `	update_source_interface_loopback = 100` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

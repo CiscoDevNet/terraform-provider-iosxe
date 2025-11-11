@@ -29,6 +29,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -85,6 +88,19 @@ func (data VLAN) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data VLAN) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
+	return path
+}
+
+func (data VLANData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -129,6 +145,63 @@ func (data VLAN) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data VLAN) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.VlanId.IsNull() && !data.VlanId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.VlanId.ValueInt64(), 10))
+	}
+	if !data.RemoteSpan.IsNull() && !data.RemoteSpan.IsUnknown() {
+		if data.RemoteSpan.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/remote-span", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/remote-span")
+		}
+	}
+	if !data.PrivateVlanPrimary.IsNull() && !data.PrivateVlanPrimary.IsUnknown() {
+		if data.PrivateVlanPrimary.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/private-vlan/primary", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/private-vlan/primary")
+		}
+	}
+	if !data.PrivateVlanAssociation.IsNull() && !data.PrivateVlanAssociation.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/private-vlan/association", data.PrivateVlanAssociation.ValueString())
+	}
+	if !data.PrivateVlanCommunity.IsNull() && !data.PrivateVlanCommunity.IsUnknown() {
+		if data.PrivateVlanCommunity.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/private-vlan/community", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/private-vlan/community")
+		}
+	}
+	if !data.PrivateVlanIsolated.IsNull() && !data.PrivateVlanIsolated.IsUnknown() {
+		if data.PrivateVlanIsolated.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/private-vlan/isolated", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/private-vlan/isolated")
+		}
+	}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
+		if data.Shutdown.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -200,6 +273,73 @@ func (data *VLAN) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *VLAN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/id"); value.Exists() && !data.VlanId.IsNull() {
+		data.VlanId = types.Int64Value(value.Int())
+	} else {
+		data.VlanId = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/remote-span"); !data.RemoteSpan.IsNull() {
+		if value.Exists() {
+			data.RemoteSpan = types.BoolValue(true)
+		} else {
+			data.RemoteSpan = types.BoolValue(false)
+		}
+	} else {
+		data.RemoteSpan = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/primary"); !data.PrivateVlanPrimary.IsNull() {
+		if value.Exists() {
+			data.PrivateVlanPrimary = types.BoolValue(true)
+		} else {
+			data.PrivateVlanPrimary = types.BoolValue(false)
+		}
+	} else {
+		data.PrivateVlanPrimary = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/association"); value.Exists() && !data.PrivateVlanAssociation.IsNull() {
+		data.PrivateVlanAssociation = types.StringValue(value.String())
+	} else {
+		data.PrivateVlanAssociation = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/community"); !data.PrivateVlanCommunity.IsNull() {
+		if value.Exists() {
+			data.PrivateVlanCommunity = types.BoolValue(true)
+		} else {
+			data.PrivateVlanCommunity = types.BoolValue(false)
+		}
+	} else {
+		data.PrivateVlanCommunity = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/isolated"); !data.PrivateVlanIsolated.IsNull() {
+		if value.Exists() {
+			data.PrivateVlanIsolated = types.BoolValue(true)
+		} else {
+			data.PrivateVlanIsolated = types.BoolValue(false)
+		}
+	} else {
+		data.PrivateVlanIsolated = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
+		if value.Exists() {
+			data.Shutdown = types.BoolValue(true)
+		} else {
+			data.Shutdown = types.BoolValue(false)
+		}
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -285,6 +425,82 @@ func (data *VLANData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *VLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/remote-span"); value.Exists() {
+		data.RemoteSpan = types.BoolValue(true)
+	} else {
+		data.RemoteSpan = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/primary"); value.Exists() {
+		data.PrivateVlanPrimary = types.BoolValue(true)
+	} else {
+		data.PrivateVlanPrimary = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/association"); value.Exists() {
+		data.PrivateVlanAssociation = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/community"); value.Exists() {
+		data.PrivateVlanCommunity = types.BoolValue(true)
+	} else {
+		data.PrivateVlanCommunity = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/isolated"); value.Exists() {
+		data.PrivateVlanIsolated = types.BoolValue(true)
+	} else {
+		data.PrivateVlanIsolated = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() {
+		data.Name = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *VLANData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/remote-span"); value.Exists() {
+		data.RemoteSpan = types.BoolValue(true)
+	} else {
+		data.RemoteSpan = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/primary"); value.Exists() {
+		data.PrivateVlanPrimary = types.BoolValue(true)
+	} else {
+		data.PrivateVlanPrimary = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/association"); value.Exists() {
+		data.PrivateVlanAssociation = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/community"); value.Exists() {
+		data.PrivateVlanCommunity = types.BoolValue(true)
+	} else {
+		data.PrivateVlanCommunity = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/private-vlan/isolated"); value.Exists() {
+		data.PrivateVlanIsolated = types.BoolValue(true)
+	} else {
+		data.PrivateVlanIsolated = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() {
+		data.Name = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *VLAN) getDeletedItems(ctx context.Context, state VLAN) []string {
@@ -315,6 +531,38 @@ func (data *VLAN) getDeletedItems(ctx context.Context, state VLAN) []string {
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *VLAN) addDeletedItemsXML(ctx context.Context, state VLAN, body string) string {
+	b := netconf.NewBody(body)
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	if !state.Name.IsNull() && data.Name.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/name")
+	}
+	if !state.PrivateVlanIsolated.IsNull() && data.PrivateVlanIsolated.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/isolated")
+	}
+	if !state.PrivateVlanCommunity.IsNull() && data.PrivateVlanCommunity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/community")
+	}
+	if !state.PrivateVlanAssociation.IsNull() && data.PrivateVlanAssociation.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/association")
+	}
+	if !state.PrivateVlanPrimary.IsNull() && data.PrivateVlanPrimary.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/private-vlan/primary")
+	}
+	if !state.RemoteSpan.IsNull() && data.RemoteSpan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/remote-span")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -371,3 +619,35 @@ func (data *VLAN) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *VLAN) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	if !data.Name.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/name")
+	}
+	if !data.PrivateVlanIsolated.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/private-vlan/isolated")
+	}
+	if !data.PrivateVlanCommunity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/private-vlan/community")
+	}
+	if !data.PrivateVlanAssociation.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/private-vlan/association")
+	}
+	if !data.PrivateVlanPrimary.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/private-vlan/primary")
+	}
+	if !data.RemoteSpan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/remote-span")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

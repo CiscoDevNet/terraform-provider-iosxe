@@ -40,6 +40,10 @@ func TestAccDataSourceIosxeTemplate(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "dot1x_max_reauth_req", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "dot1x_max_req", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "dot1x_timeout_tx_period", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "dot1x_timeout_quiet_period", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "dot1x_timeout_supp_timeout", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "dot1x_timeout_ratelimit_period", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "dot1x_timeout_server_timeout", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "service_policy_type_control_subscriber", "dot1x_policy"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "service_policy_input", "SP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_template.test", "service_policy_output", "SP2"))
@@ -117,8 +121,8 @@ func TestAccDataSourceIosxeTemplate(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeTemplatePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=dot1x_policy]"
 	attributes = {
 		"name" = "dot1x_policy"
 		"type" = "control"
@@ -140,6 +144,10 @@ func testAccDataSourceIosxeTemplateConfig() string {
 	config += `	dot1x_max_reauth_req = 3` + "\n"
 	config += `	dot1x_max_req = 3` + "\n"
 	config += `	dot1x_timeout_tx_period = 2` + "\n"
+	config += `	dot1x_timeout_quiet_period = 4` + "\n"
+	config += `	dot1x_timeout_supp_timeout = 10` + "\n"
+	config += `	dot1x_timeout_ratelimit_period = 10` + "\n"
+	config += `	dot1x_timeout_server_timeout = 30` + "\n"
 	config += `	service_policy_type_control_subscriber = "dot1x_policy"` + "\n"
 	config += `	service_policy_input = "SP1"` + "\n"
 	config += `	service_policy_output = "SP2"` + "\n"
@@ -205,7 +213,7 @@ func testAccDataSourceIosxeTemplateConfig() string {
 	config += `	cts_manual_policy_static_trusted = false` + "\n"
 	config += `	cts_manual_propagate_sgt = false` + "\n"
 	config += `	cts_role_based_enforcement = false` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

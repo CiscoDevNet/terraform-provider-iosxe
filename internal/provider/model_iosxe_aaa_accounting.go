@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -163,6 +166,17 @@ func (data AAAAccounting) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data AAAAccounting) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting"
+	return path
+}
+
+func (data AAAAccountingData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting"
+	return path
 }
 
 // End of section. //template:end getPath
@@ -446,6 +460,337 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data AAAAccounting) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.UpdateNewinfoPeriodic.IsNull() && !data.UpdateNewinfoPeriodic.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/update/newinfo/periodic", strconv.FormatInt(data.UpdateNewinfoPeriodic.ValueInt64(), 10))
+	}
+	if len(data.Identities) > 0 {
+		for _, item := range data.Identities {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
+				if item.StartStopBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
+				}
+			}
+			if !item.StartStopGroupBroadcast.IsNull() && !item.StartStopGroupBroadcast.IsUnknown() {
+				if item.StartStopGroupBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/broadcast")
+				}
+			}
+			if !item.StartStopGroupLogger.IsNull() && !item.StartStopGroupLogger.IsUnknown() {
+				if item.StartStopGroupLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/logger")
+				}
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group1/group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group2/group", item.StartStopGroup2.ValueString())
+			}
+			if !item.StartStopGroup3.IsNull() && !item.StartStopGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group3/group", item.StartStopGroup3.ValueString())
+			}
+			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group4/group", item.StartStopGroup4.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/identity/accounting-list", cBody.Res())
+		}
+	}
+	if !data.IdentityDefaultStartStopGroup1.IsNull() && !data.IdentityDefaultStartStopGroup1.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/identity/default/start-stop/group-config/group1/group", data.IdentityDefaultStartStopGroup1.ValueString())
+	}
+	if !data.IdentityDefaultStartStopGroup2.IsNull() && !data.IdentityDefaultStartStopGroup2.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/identity/default/start-stop/group-config/group2/group", data.IdentityDefaultStartStopGroup2.ValueString())
+	}
+	if !data.IdentityDefaultStartStopGroup3.IsNull() && !data.IdentityDefaultStartStopGroup3.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/identity/default/start-stop/group-config/group3/group", data.IdentityDefaultStartStopGroup3.ValueString())
+	}
+	if !data.IdentityDefaultStartStopGroup4.IsNull() && !data.IdentityDefaultStartStopGroup4.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/identity/default/start-stop/group-config/group4/group", data.IdentityDefaultStartStopGroup4.ValueString())
+	}
+	if len(data.Networks) > 0 {
+		for _, item := range data.Networks {
+			cBody := netconf.Body{}
+			if !item.Id.IsNull() && !item.Id.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "id", item.Id.ValueString())
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group1/group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group2/group", item.StartStopGroup2.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/network", cBody.Res())
+		}
+	}
+	if !data.SystemGuaranteeFirst.IsNull() && !data.SystemGuaranteeFirst.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/system/guarantee-first", data.SystemGuaranteeFirst.ValueBool())
+	}
+	if len(data.Commands) > 0 {
+		for _, item := range data.Commands {
+			cBody := netconf.Body{}
+			if !item.Level.IsNull() && !item.Level.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "level", strconv.FormatInt(item.Level.ValueInt64(), 10))
+			}
+			if !item.ListName.IsNull() && !item.ListName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "list-name", item.ListName.ValueString())
+			}
+			if !item.ActionType.IsNull() && !item.ActionType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "commands-config/action-type", item.ActionType.ValueString())
+			}
+			if !item.Broadcast.IsNull() && !item.Broadcast.IsUnknown() {
+				if item.Broadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "commands-config/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "commands-config/broadcast")
+				}
+			}
+			if !item.GroupBroadcast.IsNull() && !item.GroupBroadcast.IsUnknown() {
+				if item.GroupBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "commands-config/group-config/broadcast")
+				}
+			}
+			if !item.GroupLogger.IsNull() && !item.GroupLogger.IsUnknown() {
+				if item.GroupLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "commands-config/group-config/logger")
+				}
+			}
+			if !item.Group1Group.IsNull() && !item.Group1Group.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/group1/group", item.Group1Group.ValueString())
+			}
+			if !item.Group2Group.IsNull() && !item.Group2Group.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/group2/group", item.Group2Group.ValueString())
+			}
+			if !item.Group3Group.IsNull() && !item.Group3Group.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/group3/group", item.Group3Group.ValueString())
+			}
+			if !item.Group4Group.IsNull() && !item.Group4Group.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "commands-config/group-config/group4/group", item.Group4Group.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/commands", cBody.Res())
+		}
+	}
+	if len(data.Connections) > 0 {
+		for _, item := range data.Connections {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Default.IsNull() && !item.Default.IsUnknown() {
+				if item.Default.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "default", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "default")
+				}
+			}
+			if !item.None.IsNull() && !item.None.IsUnknown() {
+				if item.None.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "none", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "none")
+				}
+			}
+			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
+				if item.StartStopBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
+				}
+			}
+			if !item.StartStopLogger.IsNull() && !item.StartStopLogger.IsUnknown() {
+				if item.StartStopLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/logger")
+				}
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group1/group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group2/group", item.StartStopGroup2.ValueString())
+			}
+			if !item.StartStopGroup3.IsNull() && !item.StartStopGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group3/group", item.StartStopGroup3.ValueString())
+			}
+			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group4/group", item.StartStopGroup4.ValueString())
+			}
+			if !item.StopOnlyBroadcast.IsNull() && !item.StopOnlyBroadcast.IsUnknown() {
+				if item.StopOnlyBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stop-only/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stop-only/broadcast")
+				}
+			}
+			if !item.StopOnlyLogger.IsNull() && !item.StopOnlyLogger.IsUnknown() {
+				if item.StopOnlyLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stop-only/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stop-only/logger")
+				}
+			}
+			if !item.StopOnlyGroup1.IsNull() && !item.StopOnlyGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group1/group", item.StopOnlyGroup1.ValueString())
+			}
+			if !item.StopOnlyGroup2.IsNull() && !item.StopOnlyGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group2/group", item.StopOnlyGroup2.ValueString())
+			}
+			if !item.StopOnlyGroup3.IsNull() && !item.StopOnlyGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group3/group", item.StopOnlyGroup3.ValueString())
+			}
+			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group4/group", item.StopOnlyGroup4.ValueString())
+			}
+			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
+				if item.WaitStartBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "wait-start/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "wait-start/broadcast")
+				}
+			}
+			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
+				if item.WaitStartLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "wait-start/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "wait-start/logger")
+				}
+			}
+			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group1/group", item.WaitStartGroup1.ValueString())
+			}
+			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group2/group", item.WaitStartGroup2.ValueString())
+			}
+			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group3/group", item.WaitStartGroup3.ValueString())
+			}
+			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group4/group", item.WaitStartGroup4.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/connection", cBody.Res())
+		}
+	}
+	if len(data.Execs) > 0 {
+		for _, item := range data.Execs {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.None.IsNull() && !item.None.IsUnknown() {
+				if item.None.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "none", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "none")
+				}
+			}
+			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
+				if item.StartStopBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
+				}
+			}
+			if !item.StartStopLogger.IsNull() && !item.StartStopLogger.IsUnknown() {
+				if item.StartStopLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/logger")
+				}
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group1/group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group2/group", item.StartStopGroup2.ValueString())
+			}
+			if !item.StartStopGroup3.IsNull() && !item.StartStopGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group3/group", item.StartStopGroup3.ValueString())
+			}
+			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group4/group", item.StartStopGroup4.ValueString())
+			}
+			if !item.StopOnlyBroadcast.IsNull() && !item.StopOnlyBroadcast.IsUnknown() {
+				if item.StopOnlyBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stop-only/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stop-only/broadcast")
+				}
+			}
+			if !item.StopOnlyLogger.IsNull() && !item.StopOnlyLogger.IsUnknown() {
+				if item.StopOnlyLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stop-only/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stop-only/logger")
+				}
+			}
+			if !item.StopOnlyGroup1.IsNull() && !item.StopOnlyGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group1/group", item.StopOnlyGroup1.ValueString())
+			}
+			if !item.StopOnlyGroup2.IsNull() && !item.StopOnlyGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group2/group", item.StopOnlyGroup2.ValueString())
+			}
+			if !item.StopOnlyGroup3.IsNull() && !item.StopOnlyGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group3/group", item.StopOnlyGroup3.ValueString())
+			}
+			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stop-only/group4/group", item.StopOnlyGroup4.ValueString())
+			}
+			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
+				if item.WaitStartBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "wait-start/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "wait-start/broadcast")
+				}
+			}
+			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
+				if item.WaitStartLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "wait-start/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "wait-start/logger")
+				}
+			}
+			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group1/group", item.WaitStartGroup1.ValueString())
+			}
+			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group2/group", item.WaitStartGroup2.ValueString())
+			}
+			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group3/group", item.WaitStartGroup3.ValueString())
+			}
+			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wait-start/group4/group", item.WaitStartGroup4.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exec", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -1003,6 +1348,559 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update/newinfo/periodic"); value.Exists() && !data.UpdateNewinfoPeriodic.IsNull() {
+		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
+	} else {
+		data.UpdateNewinfoPeriodic = types.Int64Null()
+	}
+	for i := range data.Identities {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Identities[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/accounting-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Identities[i].Name.IsNull() {
+			data.Identities[i].Name = types.StringValue(value.String())
+		} else {
+			data.Identities[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/broadcast"); !data.Identities[i].StartStopBroadcast.IsNull() {
+			if value.Exists() {
+				data.Identities[i].StartStopBroadcast = types.BoolValue(true)
+			} else {
+				data.Identities[i].StartStopBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Identities[i].StartStopBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/broadcast"); !data.Identities[i].StartStopGroupBroadcast.IsNull() {
+			if value.Exists() {
+				data.Identities[i].StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				data.Identities[i].StartStopGroupBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Identities[i].StartStopGroupBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/logger"); !data.Identities[i].StartStopGroupLogger.IsNull() {
+			if value.Exists() {
+				data.Identities[i].StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				data.Identities[i].StartStopGroupLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Identities[i].StartStopGroupLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group1/group"); value.Exists() && !data.Identities[i].StartStopGroup1.IsNull() {
+			data.Identities[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Identities[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group2/group"); value.Exists() && !data.Identities[i].StartStopGroup2.IsNull() {
+			data.Identities[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Identities[i].StartStopGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group3/group"); value.Exists() && !data.Identities[i].StartStopGroup3.IsNull() {
+			data.Identities[i].StartStopGroup3 = types.StringValue(value.String())
+		} else {
+			data.Identities[i].StartStopGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group4/group"); value.Exists() && !data.Identities[i].StartStopGroup4.IsNull() {
+			data.Identities[i].StartStopGroup4 = types.StringValue(value.String())
+		} else {
+			data.Identities[i].StartStopGroup4 = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group1/group"); value.Exists() && !data.IdentityDefaultStartStopGroup1.IsNull() {
+		data.IdentityDefaultStartStopGroup1 = types.StringValue(value.String())
+	} else {
+		data.IdentityDefaultStartStopGroup1 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group2/group"); value.Exists() && !data.IdentityDefaultStartStopGroup2.IsNull() {
+		data.IdentityDefaultStartStopGroup2 = types.StringValue(value.String())
+	} else {
+		data.IdentityDefaultStartStopGroup2 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group3/group"); value.Exists() && !data.IdentityDefaultStartStopGroup3.IsNull() {
+		data.IdentityDefaultStartStopGroup3 = types.StringValue(value.String())
+	} else {
+		data.IdentityDefaultStartStopGroup3 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group4/group"); value.Exists() && !data.IdentityDefaultStartStopGroup4.IsNull() {
+		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
+	} else {
+		data.IdentityDefaultStartStopGroup4 = types.StringNull()
+	}
+	for i := range data.Networks {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Networks[i].Id.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/network").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Networks[i].Id.IsNull() {
+			data.Networks[i].Id = types.StringValue(value.String())
+		} else {
+			data.Networks[i].Id = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group1/group"); value.Exists() && !data.Networks[i].StartStopGroup1.IsNull() {
+			data.Networks[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Networks[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group2/group"); value.Exists() && !data.Networks[i].StartStopGroup2.IsNull() {
+			data.Networks[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Networks[i].StartStopGroup2 = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system/guarantee-first"); !data.SystemGuaranteeFirst.IsNull() {
+		if value.Exists() {
+			data.SystemGuaranteeFirst = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SystemGuaranteeFirst = types.BoolNull()
+	}
+	for i := range data.Commands {
+		keys := [...]string{"level", "list-name"}
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/commands").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "level"); value.Exists() && !data.Commands[i].Level.IsNull() {
+			data.Commands[i].Level = types.Int64Value(value.Int())
+		} else {
+			data.Commands[i].Level = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "list-name"); value.Exists() && !data.Commands[i].ListName.IsNull() {
+			data.Commands[i].ListName = types.StringValue(value.String())
+		} else {
+			data.Commands[i].ListName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/action-type"); value.Exists() && !data.Commands[i].ActionType.IsNull() {
+			data.Commands[i].ActionType = types.StringValue(value.String())
+		} else {
+			data.Commands[i].ActionType = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/broadcast"); !data.Commands[i].Broadcast.IsNull() {
+			if value.Exists() {
+				data.Commands[i].Broadcast = types.BoolValue(true)
+			} else {
+				data.Commands[i].Broadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].Broadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/group-config/broadcast"); !data.Commands[i].GroupBroadcast.IsNull() {
+			if value.Exists() {
+				data.Commands[i].GroupBroadcast = types.BoolValue(true)
+			} else {
+				data.Commands[i].GroupBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].GroupBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/group-config/logger"); !data.Commands[i].GroupLogger.IsNull() {
+			if value.Exists() {
+				data.Commands[i].GroupLogger = types.BoolValue(true)
+			} else {
+				data.Commands[i].GroupLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].GroupLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/group-config/group1/group"); value.Exists() && !data.Commands[i].Group1Group.IsNull() {
+			data.Commands[i].Group1Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].Group1Group = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/group-config/group2/group"); value.Exists() && !data.Commands[i].Group2Group.IsNull() {
+			data.Commands[i].Group2Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].Group2Group = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/group-config/group3/group"); value.Exists() && !data.Commands[i].Group3Group.IsNull() {
+			data.Commands[i].Group3Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].Group3Group = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "commands-config/group-config/group4/group"); value.Exists() && !data.Commands[i].Group4Group.IsNull() {
+			data.Commands[i].Group4Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].Group4Group = types.StringNull()
+		}
+	}
+	for i := range data.Connections {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Connections[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Connections[i].Name.IsNull() {
+			data.Connections[i].Name = types.StringValue(value.String())
+		} else {
+			data.Connections[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "default"); !data.Connections[i].Default.IsNull() {
+			if value.Exists() {
+				data.Connections[i].Default = types.BoolValue(true)
+			} else {
+				data.Connections[i].Default = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].Default = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "none"); !data.Connections[i].None.IsNull() {
+			if value.Exists() {
+				data.Connections[i].None = types.BoolValue(true)
+			} else {
+				data.Connections[i].None = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].None = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/broadcast"); !data.Connections[i].StartStopBroadcast.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StartStopBroadcast = types.BoolValue(true)
+			} else {
+				data.Connections[i].StartStopBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StartStopBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/logger"); !data.Connections[i].StartStopLogger.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StartStopLogger = types.BoolValue(true)
+			} else {
+				data.Connections[i].StartStopLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StartStopLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group1/group"); value.Exists() && !data.Connections[i].StartStopGroup1.IsNull() {
+			data.Connections[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group2/group"); value.Exists() && !data.Connections[i].StartStopGroup2.IsNull() {
+			data.Connections[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group3/group"); value.Exists() && !data.Connections[i].StartStopGroup3.IsNull() {
+			data.Connections[i].StartStopGroup3 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group4/group"); value.Exists() && !data.Connections[i].StartStopGroup4.IsNull() {
+			data.Connections[i].StartStopGroup4 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup4 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/broadcast"); !data.Connections[i].StopOnlyBroadcast.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				data.Connections[i].StopOnlyBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StopOnlyBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/logger"); !data.Connections[i].StopOnlyLogger.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StopOnlyLogger = types.BoolValue(true)
+			} else {
+				data.Connections[i].StopOnlyLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StopOnlyLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group1/group"); value.Exists() && !data.Connections[i].StopOnlyGroup1.IsNull() {
+			data.Connections[i].StopOnlyGroup1 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group2/group"); value.Exists() && !data.Connections[i].StopOnlyGroup2.IsNull() {
+			data.Connections[i].StopOnlyGroup2 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group3/group"); value.Exists() && !data.Connections[i].StopOnlyGroup3.IsNull() {
+			data.Connections[i].StopOnlyGroup3 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group4/group"); value.Exists() && !data.Connections[i].StopOnlyGroup4.IsNull() {
+			data.Connections[i].StopOnlyGroup4 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup4 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/broadcast"); !data.Connections[i].WaitStartBroadcast.IsNull() {
+			if value.Exists() {
+				data.Connections[i].WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				data.Connections[i].WaitStartBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].WaitStartBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/logger"); !data.Connections[i].WaitStartLogger.IsNull() {
+			if value.Exists() {
+				data.Connections[i].WaitStartLogger = types.BoolValue(true)
+			} else {
+				data.Connections[i].WaitStartLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].WaitStartLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group1/group"); value.Exists() && !data.Connections[i].WaitStartGroup1.IsNull() {
+			data.Connections[i].WaitStartGroup1 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group2/group"); value.Exists() && !data.Connections[i].WaitStartGroup2.IsNull() {
+			data.Connections[i].WaitStartGroup2 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group3/group"); value.Exists() && !data.Connections[i].WaitStartGroup3.IsNull() {
+			data.Connections[i].WaitStartGroup3 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group4/group"); value.Exists() && !data.Connections[i].WaitStartGroup4.IsNull() {
+			data.Connections[i].WaitStartGroup4 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup4 = types.StringNull()
+		}
+	}
+	for i := range data.Execs {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Execs[i].Name.IsNull() {
+			data.Execs[i].Name = types.StringValue(value.String())
+		} else {
+			data.Execs[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "none"); !data.Execs[i].None.IsNull() {
+			if value.Exists() {
+				data.Execs[i].None = types.BoolValue(true)
+			} else {
+				data.Execs[i].None = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].None = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/broadcast"); !data.Execs[i].StartStopBroadcast.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StartStopBroadcast = types.BoolValue(true)
+			} else {
+				data.Execs[i].StartStopBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StartStopBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/logger"); !data.Execs[i].StartStopLogger.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StartStopLogger = types.BoolValue(true)
+			} else {
+				data.Execs[i].StartStopLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StartStopLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group1/group"); value.Exists() && !data.Execs[i].StartStopGroup1.IsNull() {
+			data.Execs[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group2/group"); value.Exists() && !data.Execs[i].StartStopGroup2.IsNull() {
+			data.Execs[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group3/group"); value.Exists() && !data.Execs[i].StartStopGroup3.IsNull() {
+			data.Execs[i].StartStopGroup3 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group4/group"); value.Exists() && !data.Execs[i].StartStopGroup4.IsNull() {
+			data.Execs[i].StartStopGroup4 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup4 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/broadcast"); !data.Execs[i].StopOnlyBroadcast.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				data.Execs[i].StopOnlyBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StopOnlyBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/logger"); !data.Execs[i].StopOnlyLogger.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StopOnlyLogger = types.BoolValue(true)
+			} else {
+				data.Execs[i].StopOnlyLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StopOnlyLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group1/group"); value.Exists() && !data.Execs[i].StopOnlyGroup1.IsNull() {
+			data.Execs[i].StopOnlyGroup1 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group2/group"); value.Exists() && !data.Execs[i].StopOnlyGroup2.IsNull() {
+			data.Execs[i].StopOnlyGroup2 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group3/group"); value.Exists() && !data.Execs[i].StopOnlyGroup3.IsNull() {
+			data.Execs[i].StopOnlyGroup3 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "stop-only/group4/group"); value.Exists() && !data.Execs[i].StopOnlyGroup4.IsNull() {
+			data.Execs[i].StopOnlyGroup4 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup4 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/broadcast"); !data.Execs[i].WaitStartBroadcast.IsNull() {
+			if value.Exists() {
+				data.Execs[i].WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				data.Execs[i].WaitStartBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].WaitStartBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/logger"); !data.Execs[i].WaitStartLogger.IsNull() {
+			if value.Exists() {
+				data.Execs[i].WaitStartLogger = types.BoolValue(true)
+			} else {
+				data.Execs[i].WaitStartLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].WaitStartLogger = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group1/group"); value.Exists() && !data.Execs[i].WaitStartGroup1.IsNull() {
+			data.Execs[i].WaitStartGroup1 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group2/group"); value.Exists() && !data.Execs[i].WaitStartGroup2.IsNull() {
+			data.Execs[i].WaitStartGroup2 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group3/group"); value.Exists() && !data.Execs[i].WaitStartGroup3.IsNull() {
+			data.Execs[i].WaitStartGroup3 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wait-start/group4/group"); value.Exists() && !data.Execs[i].WaitStartGroup4.IsNull() {
+			data.Execs[i].WaitStartGroup4 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup4 = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -1602,6 +2500,596 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *AAAAccounting) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update/newinfo/periodic"); value.Exists() {
+		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/accounting-list"); value.Exists() {
+		data.Identities = make([]AAAAccountingIdentities, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingIdentities{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/broadcast"); cValue.Exists() {
+				item.StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/logger"); cValue.Exists() {
+				item.StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				item.StartStopGroupLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			data.Identities = append(data.Identities, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group1/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group2/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group3/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group4/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network"); value.Exists() {
+		data.Networks = make([]AAAAccountingNetworks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingNetworks{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			data.Networks = append(data.Networks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system/guarantee-first"); value.Exists() {
+		data.SystemGuaranteeFirst = types.BoolValue(value.Bool())
+	} else {
+		data.SystemGuaranteeFirst = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/commands"); value.Exists() {
+		data.Commands = make([]AAAAccountingCommands, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingCommands{}
+			if cValue := helpers.GetFromXPath(v, "level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "list-name"); cValue.Exists() {
+				item.ListName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/action-type"); cValue.Exists() {
+				item.ActionType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/broadcast"); cValue.Exists() {
+				item.Broadcast = types.BoolValue(true)
+			} else {
+				item.Broadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/broadcast"); cValue.Exists() {
+				item.GroupBroadcast = types.BoolValue(true)
+			} else {
+				item.GroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/logger"); cValue.Exists() {
+				item.GroupLogger = types.BoolValue(true)
+			} else {
+				item.GroupLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group1/group"); cValue.Exists() {
+				item.Group1Group = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group2/group"); cValue.Exists() {
+				item.Group2Group = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group3/group"); cValue.Exists() {
+				item.Group3Group = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group4/group"); cValue.Exists() {
+				item.Group4Group = types.StringValue(cValue.String())
+			}
+			data.Commands = append(data.Commands, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection"); value.Exists() {
+		data.Connections = make([]AAAAccountingConnections, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingConnections{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "default"); cValue.Exists() {
+				item.Default = types.BoolValue(true)
+			} else {
+				item.Default = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group1/group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group2/group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group3/group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Connections = append(data.Connections, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec"); value.Exists() {
+		data.Execs = make([]AAAAccountingExecs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingExecs{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group1/group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group2/group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group3/group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Execs = append(data.Execs, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update/newinfo/periodic"); value.Exists() {
+		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/accounting-list"); value.Exists() {
+		data.Identities = make([]AAAAccountingIdentities, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingIdentities{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/broadcast"); cValue.Exists() {
+				item.StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/logger"); cValue.Exists() {
+				item.StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				item.StartStopGroupLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			data.Identities = append(data.Identities, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group1/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group2/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group3/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/default/start-stop/group-config/group4/group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network"); value.Exists() {
+		data.Networks = make([]AAAAccountingNetworks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingNetworks{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			data.Networks = append(data.Networks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system/guarantee-first"); value.Exists() {
+		data.SystemGuaranteeFirst = types.BoolValue(value.Bool())
+	} else {
+		data.SystemGuaranteeFirst = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/commands"); value.Exists() {
+		data.Commands = make([]AAAAccountingCommands, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingCommands{}
+			if cValue := helpers.GetFromXPath(v, "level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "list-name"); cValue.Exists() {
+				item.ListName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/action-type"); cValue.Exists() {
+				item.ActionType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/broadcast"); cValue.Exists() {
+				item.Broadcast = types.BoolValue(true)
+			} else {
+				item.Broadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/broadcast"); cValue.Exists() {
+				item.GroupBroadcast = types.BoolValue(true)
+			} else {
+				item.GroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/logger"); cValue.Exists() {
+				item.GroupLogger = types.BoolValue(true)
+			} else {
+				item.GroupLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group1/group"); cValue.Exists() {
+				item.Group1Group = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group2/group"); cValue.Exists() {
+				item.Group2Group = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group3/group"); cValue.Exists() {
+				item.Group3Group = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "commands-config/group-config/group4/group"); cValue.Exists() {
+				item.Group4Group = types.StringValue(cValue.String())
+			}
+			data.Commands = append(data.Commands, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection"); value.Exists() {
+		data.Connections = make([]AAAAccountingConnections, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingConnections{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "default"); cValue.Exists() {
+				item.Default = types.BoolValue(true)
+			} else {
+				item.Default = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group1/group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group2/group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group3/group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Connections = append(data.Connections, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec"); value.Exists() {
+		data.Execs = make([]AAAAccountingExecs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingExecs{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group1/group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group2/group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group3/group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Execs = append(data.Execs, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccounting) []string {
@@ -1929,6 +3417,359 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAccounting, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Execs {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Execs[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Execs {
+			found = true
+			if state.Execs[i].Name.ValueString() != data.Execs[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Execs[i].WaitStartGroup4.IsNull() && data.Execs[j].WaitStartGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group4/group", predicates))
+				}
+				if !state.Execs[i].WaitStartGroup3.IsNull() && data.Execs[j].WaitStartGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group3/group", predicates))
+				}
+				if !state.Execs[i].WaitStartGroup2.IsNull() && data.Execs[j].WaitStartGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group2/group", predicates))
+				}
+				if !state.Execs[i].WaitStartGroup1.IsNull() && data.Execs[j].WaitStartGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group1/group", predicates))
+				}
+				if !state.Execs[i].WaitStartLogger.IsNull() && data.Execs[j].WaitStartLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/logger", predicates))
+				}
+				if !state.Execs[i].WaitStartBroadcast.IsNull() && data.Execs[j].WaitStartBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/broadcast", predicates))
+				}
+				if !state.Execs[i].StopOnlyGroup4.IsNull() && data.Execs[j].StopOnlyGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group4/group", predicates))
+				}
+				if !state.Execs[i].StopOnlyGroup3.IsNull() && data.Execs[j].StopOnlyGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group3/group", predicates))
+				}
+				if !state.Execs[i].StopOnlyGroup2.IsNull() && data.Execs[j].StopOnlyGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group2/group", predicates))
+				}
+				if !state.Execs[i].StopOnlyGroup1.IsNull() && data.Execs[j].StopOnlyGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group1/group", predicates))
+				}
+				if !state.Execs[i].StopOnlyLogger.IsNull() && data.Execs[j].StopOnlyLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/logger", predicates))
+				}
+				if !state.Execs[i].StopOnlyBroadcast.IsNull() && data.Execs[j].StopOnlyBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/broadcast", predicates))
+				}
+				if !state.Execs[i].StartStopGroup4.IsNull() && data.Execs[j].StartStopGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group4/group", predicates))
+				}
+				if !state.Execs[i].StartStopGroup3.IsNull() && data.Execs[j].StartStopGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group3/group", predicates))
+				}
+				if !state.Execs[i].StartStopGroup2.IsNull() && data.Execs[j].StartStopGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group2/group", predicates))
+				}
+				if !state.Execs[i].StartStopGroup1.IsNull() && data.Execs[j].StartStopGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/group1/group", predicates))
+				}
+				if !state.Execs[i].StartStopLogger.IsNull() && data.Execs[j].StartStopLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/logger", predicates))
+				}
+				if !state.Execs[i].StartStopBroadcast.IsNull() && data.Execs[j].StartStopBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/start-stop/broadcast", predicates))
+				}
+				if !state.Execs[i].None.IsNull() && data.Execs[j].None.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/none", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v", predicates))
+		}
+	}
+	for i := range state.Connections {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Connections[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Connections[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Connections {
+			found = true
+			if state.Connections[i].Name.ValueString() != data.Connections[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Connections[i].WaitStartGroup4.IsNull() && data.Connections[j].WaitStartGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group4/group", predicates))
+				}
+				if !state.Connections[i].WaitStartGroup3.IsNull() && data.Connections[j].WaitStartGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group3/group", predicates))
+				}
+				if !state.Connections[i].WaitStartGroup2.IsNull() && data.Connections[j].WaitStartGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group2/group", predicates))
+				}
+				if !state.Connections[i].WaitStartGroup1.IsNull() && data.Connections[j].WaitStartGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group1/group", predicates))
+				}
+				if !state.Connections[i].WaitStartLogger.IsNull() && data.Connections[j].WaitStartLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/logger", predicates))
+				}
+				if !state.Connections[i].WaitStartBroadcast.IsNull() && data.Connections[j].WaitStartBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/broadcast", predicates))
+				}
+				if !state.Connections[i].StopOnlyGroup4.IsNull() && data.Connections[j].StopOnlyGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group4/group", predicates))
+				}
+				if !state.Connections[i].StopOnlyGroup3.IsNull() && data.Connections[j].StopOnlyGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group3/group", predicates))
+				}
+				if !state.Connections[i].StopOnlyGroup2.IsNull() && data.Connections[j].StopOnlyGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group2/group", predicates))
+				}
+				if !state.Connections[i].StopOnlyGroup1.IsNull() && data.Connections[j].StopOnlyGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group1/group", predicates))
+				}
+				if !state.Connections[i].StopOnlyLogger.IsNull() && data.Connections[j].StopOnlyLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/logger", predicates))
+				}
+				if !state.Connections[i].StopOnlyBroadcast.IsNull() && data.Connections[j].StopOnlyBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/broadcast", predicates))
+				}
+				if !state.Connections[i].StartStopGroup4.IsNull() && data.Connections[j].StartStopGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group4/group", predicates))
+				}
+				if !state.Connections[i].StartStopGroup3.IsNull() && data.Connections[j].StartStopGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group3/group", predicates))
+				}
+				if !state.Connections[i].StartStopGroup2.IsNull() && data.Connections[j].StartStopGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group2/group", predicates))
+				}
+				if !state.Connections[i].StartStopGroup1.IsNull() && data.Connections[j].StartStopGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/group1/group", predicates))
+				}
+				if !state.Connections[i].StartStopLogger.IsNull() && data.Connections[j].StartStopLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/logger", predicates))
+				}
+				if !state.Connections[i].StartStopBroadcast.IsNull() && data.Connections[j].StartStopBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/start-stop/broadcast", predicates))
+				}
+				if !state.Connections[i].None.IsNull() && data.Connections[j].None.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/none", predicates))
+				}
+				if !state.Connections[i].Default.IsNull() && data.Connections[j].Default.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/default", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v", predicates))
+		}
+	}
+	for i := range state.Commands {
+		stateKeys := [...]string{"level", "list-name"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.Commands[i].Level.ValueInt64(), 10), state.Commands[i].ListName.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Commands[i].Level.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Commands[i].ListName.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Commands {
+			found = true
+			if state.Commands[i].Level.ValueInt64() != data.Commands[j].Level.ValueInt64() {
+				found = false
+			}
+			if state.Commands[i].ListName.ValueString() != data.Commands[j].ListName.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Commands[i].Group4Group.IsNull() && data.Commands[j].Group4Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group4/group", predicates))
+				}
+				if !state.Commands[i].Group3Group.IsNull() && data.Commands[j].Group3Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group3/group", predicates))
+				}
+				if !state.Commands[i].Group2Group.IsNull() && data.Commands[j].Group2Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group2/group", predicates))
+				}
+				if !state.Commands[i].Group1Group.IsNull() && data.Commands[j].Group1Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/group1/group", predicates))
+				}
+				if !state.Commands[i].GroupLogger.IsNull() && data.Commands[j].GroupLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/logger", predicates))
+				}
+				if !state.Commands[i].GroupBroadcast.IsNull() && data.Commands[j].GroupBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/group-config/broadcast", predicates))
+				}
+				if !state.Commands[i].Broadcast.IsNull() && data.Commands[j].Broadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/broadcast", predicates))
+				}
+				if !state.Commands[i].ActionType.IsNull() && data.Commands[j].ActionType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v/commands-config/action-type", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/commands%v", predicates))
+		}
+	}
+	if !state.SystemGuaranteeFirst.IsNull() && data.SystemGuaranteeFirst.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/system/guarantee-first")
+	}
+	for i := range state.Networks {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{state.Networks[i].Id.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Networks[i].Id.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Networks {
+			found = true
+			if state.Networks[i].Id.ValueString() != data.Networks[j].Id.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Networks[i].StartStopGroup2.IsNull() && data.Networks[j].StartStopGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/start-stop/group-config/group2/group", predicates))
+				}
+				if !state.Networks[i].StartStopGroup1.IsNull() && data.Networks[j].StartStopGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/start-stop/group-config/group1/group", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v", predicates))
+		}
+	}
+	if !state.IdentityDefaultStartStopGroup4.IsNull() && data.IdentityDefaultStartStopGroup4.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group4/group")
+	}
+	if !state.IdentityDefaultStartStopGroup3.IsNull() && data.IdentityDefaultStartStopGroup3.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group3/group")
+	}
+	if !state.IdentityDefaultStartStopGroup2.IsNull() && data.IdentityDefaultStartStopGroup2.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group2/group")
+	}
+	if !state.IdentityDefaultStartStopGroup1.IsNull() && data.IdentityDefaultStartStopGroup1.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/identity/default/start-stop/group-config/group1/group")
+	}
+	for i := range state.Identities {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Identities[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Identities[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Identities {
+			found = true
+			if state.Identities[i].Name.ValueString() != data.Identities[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Identities[i].StartStopGroup4.IsNull() && data.Identities[j].StartStopGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group4/group", predicates))
+				}
+				if !state.Identities[i].StartStopGroup3.IsNull() && data.Identities[j].StartStopGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group3/group", predicates))
+				}
+				if !state.Identities[i].StartStopGroup2.IsNull() && data.Identities[j].StartStopGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group2/group", predicates))
+				}
+				if !state.Identities[i].StartStopGroup1.IsNull() && data.Identities[j].StartStopGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/group1/group", predicates))
+				}
+				if !state.Identities[i].StartStopGroupLogger.IsNull() && data.Identities[j].StartStopGroupLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/logger", predicates))
+				}
+				if !state.Identities[i].StartStopGroupBroadcast.IsNull() && data.Identities[j].StartStopGroupBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/group-config/broadcast", predicates))
+				}
+				if !state.Identities[i].StartStopBroadcast.IsNull() && data.Identities[j].StartStopBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v/start-stop/broadcast", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/identity/accounting-list%v", predicates))
+		}
+	}
+	if !state.UpdateNewinfoPeriodic.IsNull() && data.UpdateNewinfoPeriodic.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/update/newinfo/periodic")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -2070,3 +3911,82 @@ func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *AAAAccounting) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Execs {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/exec%v", predicates))
+	}
+	for i := range data.Connections {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Connections[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/connection%v", predicates))
+	}
+	for i := range data.Commands {
+		keys := [...]string{"level", "list-name"}
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/commands%v", predicates))
+	}
+	if !data.SystemGuaranteeFirst.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/system/guarantee-first")
+	}
+	for i := range data.Networks {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Networks[i].Id.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/network%v", predicates))
+	}
+	if !data.IdentityDefaultStartStopGroup4.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/identity/default/start-stop/group-config/group4/group")
+	}
+	if !data.IdentityDefaultStartStopGroup3.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/identity/default/start-stop/group-config/group3/group")
+	}
+	if !data.IdentityDefaultStartStopGroup2.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/identity/default/start-stop/group-config/group2/group")
+	}
+	if !data.IdentityDefaultStartStopGroup1.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/identity/default/start-stop/group-config/group1/group")
+	}
+	for i := range data.Identities {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Identities[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/identity/accounting-list%v", predicates))
+	}
+	if !data.UpdateNewinfoPeriodic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/update/newinfo/periodic")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

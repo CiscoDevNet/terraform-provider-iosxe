@@ -98,8 +98,8 @@ func iosxeCTSImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeCTSPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -116,7 +116,7 @@ resource "iosxe_restconf" "PreReq0" {
 
 func testAccIosxeCTSConfig_minimum() string {
 	config := `resource "iosxe_cts" "test" {` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -157,7 +157,7 @@ func testAccIosxeCTSConfig_all() string {
 	config += `	sxp_listener_hold_max_time = 300` + "\n"
 	config += `	role_based_enforcement = true` + "\n"
 	config += `	role_based_enforcement_logging_interval = 300` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

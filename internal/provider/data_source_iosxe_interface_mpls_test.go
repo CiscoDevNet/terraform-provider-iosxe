@@ -50,8 +50,8 @@ func TestAccDataSourceIosxeInterfaceMPLS(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfaceMPLSPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
 	}
@@ -70,7 +70,7 @@ func testAccDataSourceIosxeInterfaceMPLSConfig() string {
 	config += `	name = "1"` + "\n"
 	config += `	ip = true` + "\n"
 	config += `	mtu = "1200"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

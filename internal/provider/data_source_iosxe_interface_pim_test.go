@@ -56,8 +56,8 @@ func TestAccDataSourceIosxeInterfacePIM(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfacePIMPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 	}
@@ -81,7 +81,7 @@ func testAccDataSourceIosxeInterfacePIMConfig() string {
 	config += `	border = false` + "\n"
 	config += `	bsr_border = false` + "\n"
 	config += `	dr_priority = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

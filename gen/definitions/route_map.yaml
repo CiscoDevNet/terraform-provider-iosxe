@@ -1,6 +1,6 @@
 ---
 name: Route Map
-path: Cisco-IOS-XE-native:native/route-map=%v
+path: /Cisco-IOS-XE-native:native/route-map[name=%v]
 no_delete_attributes: true
 doc_category: System
 attributes:
@@ -233,7 +233,7 @@ attributes:
       - yang_name: set/community/community-well-known-choice/community-well-known/community-well-known/community-list
         xpath: set/community/community-well-known/community-list
         tf_name: set_communities_legacy
-        example: "1:2"
+        example: "no-export"
         test_tags: [IOSXE1712]
       - yang_name: set/community/community-well-known-choice/community-well-known/community-well-known/additive
         xpath: set/community/community-well-known/additive
@@ -358,7 +358,7 @@ attributes:
         example: 10000
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]
     attributes:
       - name: name
         value: 1

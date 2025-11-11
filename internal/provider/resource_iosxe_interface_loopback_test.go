@@ -95,8 +95,8 @@ func iosxeInterfaceLoopbackImportStateIdFunc(resourceName string) resource.Impor
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfaceLoopbackPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -113,7 +113,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeInterfaceLoopbackConfig_minimum() string {
 	config := `resource "iosxe_interface_loopback" "test" {` + "\n"
 	config += `	name = 100` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -149,7 +149,7 @@ func testAccIosxeInterfaceLoopbackConfig_all() string {
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

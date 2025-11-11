@@ -5,7 +5,6 @@ resource "iosxe_snmp_server" "example" {
   packetsize                       = 2000
   queue_length                     = 100
   enable_logging_getop             = true
-  enable_logging_setop             = true
   enable_traps                     = true
   enable_traps_snmp_authentication = true
   enable_traps_snmp_coldstart      = true
@@ -96,8 +95,6 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_vrfmib_vnet_trunk_down       = true
   enable_traps_aaa_server                   = true
   source_interface_informs_loopback         = 1
-  source_interface_traps_loopback           = 1
-  trap_source_loopback                      = 1
   snmp_communities = [
     {
       name             = "COM1"

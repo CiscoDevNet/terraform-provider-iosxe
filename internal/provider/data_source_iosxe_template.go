@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -85,6 +86,22 @@ func (d *TemplateDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			},
 			"dot1x_timeout_tx_period": schema.Int64Attribute{
 				MarkdownDescription: "Timeout for supplicant retries",
+				Computed:            true,
+			},
+			"dot1x_timeout_quiet_period": schema.Int64Attribute{
+				MarkdownDescription: "QuietPeriod in Seconds",
+				Computed:            true,
+			},
+			"dot1x_timeout_supp_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for supplicant reply",
+				Computed:            true,
+			},
+			"dot1x_timeout_ratelimit_period": schema.Int64Attribute{
+				MarkdownDescription: "Ratelimit Period in seconds",
+				Computed:            true,
+			},
+			"dot1x_timeout_server_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for Radius Retries",
 				Computed:            true,
 			},
 			"service_policy_type_control_subscriber": schema.StringAttribute{
@@ -429,16 +446,34 @@ func (d *TemplateDataSource) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	res, err := device.Client.GetData(config.getPath())
-	if res.StatusCode == 404 {
-		config = TemplateData{Device: config.Device}
+	if device.Protocol == "restconf" {
+		res, err := device.RestconfClient.GetData(config.getPath())
+		if res.StatusCode == 404 {
+			config = TemplateData{Device: config.Device}
+		} else {
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+				return
+			}
+
+			config.fromBody(ctx, res.Res)
+		}
 	} else {
+		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+		filter := helpers.GetXpathFilter(config.getXPath())
+		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 
-		config.fromBody(ctx, res.Res)
+		config.fromBodyXML(ctx, res.Res)
 	}
 
 	config.Id = types.StringValue(config.getPath())

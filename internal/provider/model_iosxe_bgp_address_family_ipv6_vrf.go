@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -91,6 +94,19 @@ func (data BGPAddressFamilyIPv6VRF) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data BGPAddressFamilyIPv6VRF) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv6[af-name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.AfName.ValueString()))
+	return path
+}
+
+func (data BGPAddressFamilyIPv6VRFData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv6[af-name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.AfName.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -148,6 +164,78 @@ func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data BGPAddressFamilyIPv6VRF) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/af-name", data.AfName.ValueString())
+	}
+	if len(data.Vrfs) > 0 {
+		for _, item := range data.Vrfs {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && !item.Ipv6UnicastAdvertiseL2vpnEvpn.IsUnknown() {
+				if item.Ipv6UnicastAdvertiseL2vpnEvpn.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/advertise/l2vpn/evpn", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/advertise/l2vpn/evpn")
+				}
+			}
+			if !item.Ipv6UnicastRedistributeConnected.IsNull() && !item.Ipv6UnicastRedistributeConnected.IsUnknown() {
+				if item.Ipv6UnicastRedistributeConnected.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/connected", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/redistribute-v6/connected")
+				}
+			}
+			if !item.Ipv6UnicastRedistributeStatic.IsNull() && !item.Ipv6UnicastRedistributeStatic.IsUnknown() {
+				if item.Ipv6UnicastRedistributeStatic.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/static", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/redistribute-v6/static")
+				}
+			}
+			if len(item.Ipv6UnicastNetworks) > 0 {
+				for _, citem := range item.Ipv6UnicastNetworks {
+					ccBody := netconf.Body{}
+					if !citem.Network.IsNull() && !citem.Network.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "number", citem.Network.ValueString())
+					}
+					if !citem.RouteMap.IsNull() && !citem.RouteMap.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "route-map", citem.RouteMap.ValueString())
+					}
+					if !citem.Backdoor.IsNull() && !citem.Backdoor.IsUnknown() {
+						if citem.Backdoor.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "backdoor", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "backdoor")
+						}
+					}
+					if !citem.Evpn.IsNull() && !citem.Evpn.IsUnknown() {
+						if citem.Evpn.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "evpn", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "evpn")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "ipv6-unicast/network", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vrf", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -273,6 +361,126 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBody(ctx context.Context, res gjs
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *BGPAddressFamilyIPv6VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/af-name"); value.Exists() && !data.AfName.IsNull() {
+		data.AfName = types.StringValue(value.String())
+	} else {
+		data.AfName = types.StringNull()
+	}
+	for i := range data.Vrfs {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Vrfs[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Vrfs[i].Name.IsNull() {
+			data.Vrfs[i].Name = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/advertise/l2vpn/evpn"); !data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/redistribute-v6/connected"); !data.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/redistribute-v6/static"); !data.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolNull()
+		}
+		for ci := range data.Vrfs[i].Ipv6UnicastNetworks {
+			keys := [...]string{"number"}
+			keyValues := [...]string{data.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "ipv6-unicast/network").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "number"); value.Exists() && !data.Vrfs[i].Ipv6UnicastNetworks[ci].Network.IsNull() {
+				data.Vrfs[i].Ipv6UnicastNetworks[ci].Network = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastNetworks[ci].Network = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "route-map"); value.Exists() && !data.Vrfs[i].Ipv6UnicastNetworks[ci].RouteMap.IsNull() {
+				data.Vrfs[i].Ipv6UnicastNetworks[ci].RouteMap = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastNetworks[ci].RouteMap = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "backdoor"); !data.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "evpn"); !data.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn = types.BoolNull()
+			}
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *BGPAddressFamilyIPv6VRF) fromBody(ctx context.Context, res gjson.Result) {
@@ -395,6 +603,120 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *BGPAddressFamilyIPv6VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() {
+		data.Vrfs = make([]BGPAddressFamilyIPv6VRFVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BGPAddressFamilyIPv6VRFVrfs{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/advertise/l2vpn/evpn"); cValue.Exists() {
+				item.Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
+			} else {
+				item.Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/connected"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnected = types.BoolValue(true)
+			} else {
+				item.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
+			} else {
+				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/network"); cValue.Exists() {
+				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks{}
+					if ccValue := helpers.GetFromXPath(cv, "number"); ccValue.Exists() {
+						cItem.Network = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "route-map"); ccValue.Exists() {
+						cItem.RouteMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "backdoor"); ccValue.Exists() {
+						cItem.Backdoor = types.BoolValue(true)
+					} else {
+						cItem.Backdoor = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "evpn"); ccValue.Exists() {
+						cItem.Evpn = types.BoolValue(true)
+					} else {
+						cItem.Evpn = types.BoolValue(false)
+					}
+					item.Ipv6UnicastNetworks = append(item.Ipv6UnicastNetworks, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *BGPAddressFamilyIPv6VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() {
+		data.Vrfs = make([]BGPAddressFamilyIPv6VRFVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BGPAddressFamilyIPv6VRFVrfs{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/advertise/l2vpn/evpn"); cValue.Exists() {
+				item.Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
+			} else {
+				item.Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/connected"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnected = types.BoolValue(true)
+			} else {
+				item.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
+			} else {
+				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/network"); cValue.Exists() {
+				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks{}
+					if ccValue := helpers.GetFromXPath(cv, "number"); ccValue.Exists() {
+						cItem.Network = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "route-map"); ccValue.Exists() {
+						cItem.RouteMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "backdoor"); ccValue.Exists() {
+						cItem.Backdoor = types.BoolValue(true)
+					} else {
+						cItem.Backdoor = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "evpn"); ccValue.Exists() {
+						cItem.Evpn = types.BoolValue(true)
+					} else {
+						cItem.Evpn = types.BoolValue(false)
+					}
+					item.Ipv6UnicastNetworks = append(item.Ipv6UnicastNetworks, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv6VRF) []string {
@@ -473,6 +795,95 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state 
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, state BGPAddressFamilyIPv6VRF, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Vrfs {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Vrfs[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vrfs[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vrfs {
+			found = true
+			if state.Vrfs[i].Name.ValueString() != data.Vrfs[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Vrfs[i].Ipv6UnicastNetworks {
+					cstateKeys := [...]string{"number"}
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv6UnicastNetworks {
+						found = true
+						if state.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString() != data.Vrfs[j].Ipv6UnicastNetworks[cj].Network.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].Evpn.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v/evpn", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].Backdoor.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v/backdoor", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].RouteMap.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v/route-map", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v", predicates, cpredicates))
+					}
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStatic.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnected.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/connected", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && data.Vrfs[j].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/advertise/l2vpn/evpn", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *BGPAddressFamilyIPv6VRF) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -520,3 +931,24 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletePaths(ctx context.Context) []strin
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *BGPAddressFamilyIPv6VRF) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Vrfs {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Vrfs[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vrf%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

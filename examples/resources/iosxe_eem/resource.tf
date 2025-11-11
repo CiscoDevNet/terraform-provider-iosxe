@@ -12,7 +12,6 @@ resource "iosxe_eem" "example" {
   directory_user_policy                 = "test/test_path"
   scheduler_applet_thread_class_default = true
   scheduler_applet_thread_class_number  = 1
-  detector_rpc_max_sessions             = 8
   detector_routing_bootup_delay         = 2
   applets = [
     {

@@ -1,6 +1,6 @@
 ---
 name: Crypto IPSec Transform Set
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=%s
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set[tag=%s]
 no_delete_attributes: true
 doc_category: Crypto
 attributes:

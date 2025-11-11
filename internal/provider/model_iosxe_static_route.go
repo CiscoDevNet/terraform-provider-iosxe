@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -93,6 +96,19 @@ func (data StaticRoute) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data StaticRoute) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list[prefix=%s][mask=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Prefix.ValueString()), fmt.Sprintf("%v", data.Mask.ValueString()))
+	return path
+}
+
+func (data StaticRouteData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list[prefix=%s][mask=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Prefix.ValueString()), fmt.Sprintf("%v", data.Mask.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -163,6 +179,85 @@ func (data StaticRoute) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data StaticRoute) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Prefix.IsNull() && !data.Prefix.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/prefix", data.Prefix.ValueString())
+	}
+	if !data.Mask.IsNull() && !data.Mask.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mask", data.Mask.ValueString())
+	}
+	if len(data.NextHops) > 0 {
+		for _, item := range data.NextHops {
+			cBody := netconf.Body{}
+			if !item.NextHop.IsNull() && !item.NextHop.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "fwd", item.NextHop.ValueString())
+			}
+			if !item.Distance.IsNull() && !item.Distance.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "metric", strconv.FormatInt(item.Distance.ValueInt64(), 10))
+			}
+			if !item.Global.IsNull() && !item.Global.IsUnknown() {
+				if item.Global.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "global", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "global")
+				}
+			}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Permanent.IsNull() && !item.Permanent.IsUnknown() {
+				if item.Permanent.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "permanent", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "permanent")
+				}
+			}
+			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "tag", strconv.FormatInt(item.Tag.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/fwd-list", cBody.Res())
+		}
+	}
+	if len(data.NextHopsWithTrack) > 0 {
+		for _, item := range data.NextHopsWithTrack {
+			cBody := netconf.Body{}
+			if !item.NextHop.IsNull() && !item.NextHop.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "fwd", item.NextHop.ValueString())
+			}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.TrackIdName.IsNull() && !item.TrackIdName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "track-id-name/id", strconv.FormatInt(item.TrackIdName.ValueInt64(), 10))
+			}
+			if !item.Distance.IsNull() && !item.Distance.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "metric", strconv.FormatInt(item.Distance.ValueInt64(), 10))
+			}
+			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "tag", strconv.FormatInt(item.Tag.ValueInt64(), 10))
+			}
+			if !item.Permanent.IsNull() && !item.Permanent.IsUnknown() {
+				if item.Permanent.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "permanent", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "permanent")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/fwd-list-with-track", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -305,6 +400,143 @@ func (data *StaticRoute) updateFromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *StaticRoute) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prefix"); value.Exists() && !data.Prefix.IsNull() {
+		data.Prefix = types.StringValue(value.String())
+	} else {
+		data.Prefix = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mask"); value.Exists() && !data.Mask.IsNull() {
+		data.Mask = types.StringValue(value.String())
+	} else {
+		data.Mask = types.StringNull()
+	}
+	for i := range data.NextHops {
+		keys := [...]string{"fwd"}
+		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "fwd"); value.Exists() && !data.NextHops[i].NextHop.IsNull() {
+			data.NextHops[i].NextHop = types.StringValue(value.String())
+		} else {
+			data.NextHops[i].NextHop = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "metric"); value.Exists() && !data.NextHops[i].Distance.IsNull() {
+			data.NextHops[i].Distance = types.Int64Value(value.Int())
+		} else {
+			data.NextHops[i].Distance = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "global"); !data.NextHops[i].Global.IsNull() {
+			if value.Exists() {
+				data.NextHops[i].Global = types.BoolValue(true)
+			} else {
+				data.NextHops[i].Global = types.BoolValue(false)
+			}
+		} else {
+			data.NextHops[i].Global = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.NextHops[i].Name.IsNull() {
+			data.NextHops[i].Name = types.StringValue(value.String())
+		} else {
+			data.NextHops[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "permanent"); !data.NextHops[i].Permanent.IsNull() {
+			if value.Exists() {
+				data.NextHops[i].Permanent = types.BoolValue(true)
+			} else {
+				data.NextHops[i].Permanent = types.BoolValue(false)
+			}
+		} else {
+			data.NextHops[i].Permanent = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tag"); value.Exists() && !data.NextHops[i].Tag.IsNull() {
+			data.NextHops[i].Tag = types.Int64Value(value.Int())
+		} else {
+			data.NextHops[i].Tag = types.Int64Null()
+		}
+	}
+	for i := range data.NextHopsWithTrack {
+		keys := [...]string{"fwd"}
+		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list-with-track").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "fwd"); value.Exists() && !data.NextHopsWithTrack[i].NextHop.IsNull() {
+			data.NextHopsWithTrack[i].NextHop = types.StringValue(value.String())
+		} else {
+			data.NextHopsWithTrack[i].NextHop = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.NextHopsWithTrack[i].Name.IsNull() {
+			data.NextHopsWithTrack[i].Name = types.StringValue(value.String())
+		} else {
+			data.NextHopsWithTrack[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "track-id-name/id"); value.Exists() && !data.NextHopsWithTrack[i].TrackIdName.IsNull() {
+			data.NextHopsWithTrack[i].TrackIdName = types.Int64Value(value.Int())
+		} else {
+			data.NextHopsWithTrack[i].TrackIdName = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "metric"); value.Exists() && !data.NextHopsWithTrack[i].Distance.IsNull() {
+			data.NextHopsWithTrack[i].Distance = types.Int64Value(value.Int())
+		} else {
+			data.NextHopsWithTrack[i].Distance = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "tag"); value.Exists() && !data.NextHopsWithTrack[i].Tag.IsNull() {
+			data.NextHopsWithTrack[i].Tag = types.Int64Value(value.Int())
+		} else {
+			data.NextHopsWithTrack[i].Tag = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "permanent"); !data.NextHopsWithTrack[i].Permanent.IsNull() {
+			if value.Exists() {
+				data.NextHopsWithTrack[i].Permanent = types.BoolValue(true)
+			} else {
+				data.NextHopsWithTrack[i].Permanent = types.BoolValue(false)
+			}
+		} else {
+			data.NextHopsWithTrack[i].Permanent = types.BoolNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *StaticRoute) fromBody(ctx context.Context, res gjson.Result) {
@@ -443,6 +675,136 @@ func (data *StaticRouteData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *StaticRoute) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list"); value.Exists() {
+		data.NextHops = make([]StaticRouteNextHops, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := StaticRouteNextHops{}
+			if cValue := helpers.GetFromXPath(v, "fwd"); cValue.Exists() {
+				item.NextHop = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric"); cValue.Exists() {
+				item.Distance = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "global"); cValue.Exists() {
+				item.Global = types.BoolValue(true)
+			} else {
+				item.Global = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "permanent"); cValue.Exists() {
+				item.Permanent = types.BoolValue(true)
+			} else {
+				item.Permanent = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			data.NextHops = append(data.NextHops, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list-with-track"); value.Exists() {
+		data.NextHopsWithTrack = make([]StaticRouteNextHopsWithTrack, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := StaticRouteNextHopsWithTrack{}
+			if cValue := helpers.GetFromXPath(v, "fwd"); cValue.Exists() {
+				item.NextHop = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "track-id-name/id"); cValue.Exists() {
+				item.TrackIdName = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric"); cValue.Exists() {
+				item.Distance = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "permanent"); cValue.Exists() {
+				item.Permanent = types.BoolValue(true)
+			} else {
+				item.Permanent = types.BoolValue(false)
+			}
+			data.NextHopsWithTrack = append(data.NextHopsWithTrack, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *StaticRouteData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list"); value.Exists() {
+		data.NextHops = make([]StaticRouteNextHops, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := StaticRouteNextHops{}
+			if cValue := helpers.GetFromXPath(v, "fwd"); cValue.Exists() {
+				item.NextHop = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric"); cValue.Exists() {
+				item.Distance = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "global"); cValue.Exists() {
+				item.Global = types.BoolValue(true)
+			} else {
+				item.Global = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "permanent"); cValue.Exists() {
+				item.Permanent = types.BoolValue(true)
+			} else {
+				item.Permanent = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			data.NextHops = append(data.NextHops, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list-with-track"); value.Exists() {
+		data.NextHopsWithTrack = make([]StaticRouteNextHopsWithTrack, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := StaticRouteNextHopsWithTrack{}
+			if cValue := helpers.GetFromXPath(v, "fwd"); cValue.Exists() {
+				item.NextHop = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "track-id-name/id"); cValue.Exists() {
+				item.TrackIdName = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric"); cValue.Exists() {
+				item.Distance = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "permanent"); cValue.Exists() {
+				item.Permanent = types.BoolValue(true)
+			} else {
+				item.Permanent = types.BoolValue(false)
+			}
+			data.NextHopsWithTrack = append(data.NextHopsWithTrack, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute) []string {
@@ -533,6 +895,107 @@ func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute)
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *StaticRoute) addDeletedItemsXML(ctx context.Context, state StaticRoute, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.NextHopsWithTrack {
+		stateKeys := [...]string{"fwd"}
+		stateKeyValues := [...]string{state.NextHopsWithTrack[i].NextHop.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.NextHopsWithTrack[i].NextHop.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.NextHopsWithTrack {
+			found = true
+			if state.NextHopsWithTrack[i].NextHop.ValueString() != data.NextHopsWithTrack[j].NextHop.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.NextHopsWithTrack[i].Permanent.IsNull() && data.NextHopsWithTrack[j].Permanent.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/permanent", predicates))
+				}
+				if !state.NextHopsWithTrack[i].Tag.IsNull() && data.NextHopsWithTrack[j].Tag.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/tag", predicates))
+				}
+				if !state.NextHopsWithTrack[i].Distance.IsNull() && data.NextHopsWithTrack[j].Distance.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/metric", predicates))
+				}
+				if !state.NextHopsWithTrack[i].TrackIdName.IsNull() && data.NextHopsWithTrack[j].TrackIdName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/track-id-name/id", predicates))
+				}
+				if !state.NextHopsWithTrack[i].Name.IsNull() && data.NextHopsWithTrack[j].Name.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v", predicates))
+		}
+	}
+	for i := range state.NextHops {
+		stateKeys := [...]string{"fwd"}
+		stateKeyValues := [...]string{state.NextHops[i].NextHop.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.NextHops[i].NextHop.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.NextHops {
+			found = true
+			if state.NextHops[i].NextHop.ValueString() != data.NextHops[j].NextHop.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.NextHops[i].Tag.IsNull() && data.NextHops[j].Tag.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/tag", predicates))
+				}
+				if !state.NextHops[i].Permanent.IsNull() && data.NextHops[j].Permanent.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/permanent", predicates))
+				}
+				if !state.NextHops[i].Name.IsNull() && data.NextHops[j].Name.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/name", predicates))
+				}
+				if !state.NextHops[i].Global.IsNull() && data.NextHops[j].Global.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/global", predicates))
+				}
+				if !state.NextHops[i].Distance.IsNull() && data.NextHops[j].Distance.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/metric", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *StaticRoute) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -579,3 +1042,34 @@ func (data *StaticRoute) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *StaticRoute) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.NextHopsWithTrack {
+		keys := [...]string{"fwd"}
+		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/fwd-list-with-track%v", predicates))
+	}
+	for i := range data.NextHops {
+		keys := [...]string{"fwd"}
+		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/fwd-list%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

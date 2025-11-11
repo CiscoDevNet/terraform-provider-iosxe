@@ -32,26 +32,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &RestconfDataSource{}
-	_ datasource.DataSourceWithConfigure = &RestconfDataSource{}
+	_ datasource.DataSource              = &YangDataSource{}
+	_ datasource.DataSourceWithConfigure = &YangDataSource{}
 )
 
-func NewRestconfDataSource() datasource.DataSource {
-	return &RestconfDataSource{}
+func NewYangDataSource() datasource.DataSource {
+	return &YangDataSource{}
 }
 
-type RestconfDataSource struct {
+type YangDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *RestconfDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_restconf"
+func (d *YangDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_yang"
 }
 
-func (d *RestconfDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *YangDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can retrieve one or more attributes via RESTCONF.",
+		MarkdownDescription: "This data source can retrieve one or more attributes via YANG paths.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -63,7 +63,7 @@ func (d *RestconfDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				Computed:            true,
 			},
 			"path": schema.StringAttribute{
-				MarkdownDescription: "A RESTCONF path, e.g. `openconfig-interfaces:interfaces`.",
+				MarkdownDescription: "A YANG path, e.g. `openconfig-interfaces:interfaces`.",
 				Required:            true,
 			},
 			"attributes": schema.MapAttribute{
@@ -75,7 +75,7 @@ func (d *RestconfDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 	}
 }
 
-func (d *RestconfDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *YangDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -83,8 +83,8 @@ func (d *RestconfDataSource) Configure(_ context.Context, req datasource.Configu
 	d.data = req.ProviderData.(*IosxeProviderData)
 }
 
-func (d *RestconfDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config, state RestconfDataSourceModel
+func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config, state YangDataSourceModel
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -93,7 +93,7 @@ func (d *RestconfDataSource) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.Id.ValueString()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.Path.ValueString()))
 
 	device, ok := d.data.Devices[config.Device.ValueString()]
 	if !ok {
@@ -101,10 +101,42 @@ func (d *RestconfDataSource) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	res, err := device.Client.GetData(config.Path.ValueString())
-	if res.StatusCode == 404 {
-		state.Attributes = types.MapValueMust(types.StringType, map[string]attr.Value{})
+	if device.Protocol == "restconf" {
+		res, err := device.RestconfClient.GetData(config.getPath())
+		if res.StatusCode == 404 {
+			state.Attributes = types.MapValueMust(types.StringType, map[string]attr.Value{})
+		} else {
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+				return
+			}
+
+			state.Path = config.Path
+			state.Id = config.Path
+
+			attributes := make(map[string]attr.Value)
+
+			for attr, value := range res.Res.Get(helpers.LastElement(config.getPath())).Map() {
+				// handle empty maps
+				if value.IsObject() && len(value.Map()) == 0 {
+					attributes[attr] = types.StringValue("")
+				} else if value.Raw == "[null]" {
+					attributes[attr] = types.StringValue("")
+				} else {
+					attributes[attr] = types.StringValue(value.String())
+				}
+			}
+			state.Attributes = types.MapValueMust(types.StringType, attributes)
+		}
 	} else {
+		// Serialize NETCONF operations (all ops when reuse disabled, reads concurrent when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+		res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(config.Path.ValueString()))
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
 			return
@@ -115,20 +147,16 @@ func (d *RestconfDataSource) Read(ctx context.Context, req datasource.ReadReques
 
 		attributes := make(map[string]attr.Value)
 
-		for attr, value := range res.Res.Get(helpers.LastElement(config.Path.ValueString())).Map() {
-			// handle empty maps
-			if value.IsObject() && len(value.Map()) == 0 {
-				attributes[attr] = types.StringValue("")
-			} else if value.Raw == "[null]" {
-				attributes[attr] = types.StringValue("")
-			} else {
-				attributes[attr] = types.StringValue(value.String())
+		for attr, value := range helpers.GetFromXPath(res.Res, "/data"+config.Path.ValueString()).Map() {
+			if value.IsArray() {
+				continue
 			}
+			attributes[attr] = types.StringValue(value.String())
 		}
 		state.Attributes = types.MapValueMust(types.StringType, attributes)
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", config.Id.ValueString()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", config.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

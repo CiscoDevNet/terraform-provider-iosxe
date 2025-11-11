@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -101,6 +104,17 @@ func (data ARP) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data ARP) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/arp"
+	return path
+}
+
+func (data ARPData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/arp"
+	return path
 }
 
 // End of section. //template:end getPath
@@ -177,6 +191,97 @@ func (data ARP) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data ARP) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.IncompleteEntries.IsNull() && !data.IncompleteEntries.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/incomplete/entries", strconv.FormatInt(data.IncompleteEntries.ValueInt64(), 10))
+	}
+	if !data.ProxyDisable.IsNull() && !data.ProxyDisable.IsUnknown() {
+		if data.ProxyDisable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/proxy/disable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/proxy/disable")
+		}
+	}
+	if !data.EntryLearn.IsNull() && !data.EntryLearn.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/entry/learn", strconv.FormatInt(data.EntryLearn.ValueInt64(), 10))
+	}
+	if len(data.InspectionFilters) > 0 {
+		for _, item := range data.InspectionFilters {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "arpacl", item.Name.ValueString())
+			}
+			if len(item.Vlans) > 0 {
+				for _, citem := range item.Vlans {
+					ccBody := netconf.Body{}
+					if !citem.VlanRange.IsNull() && !citem.VlanRange.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "vlan-range", citem.VlanRange.ValueString())
+					}
+					if !citem.Static.IsNull() && !citem.Static.IsUnknown() {
+						if citem.Static.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "static", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "static")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "vlan", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/inspection/filter", cBody.Res())
+		}
+	}
+	if !data.InspectionValidateSrcMac.IsNull() && !data.InspectionValidateSrcMac.IsUnknown() {
+		if data.InspectionValidateSrcMac.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/src-mac", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/src-mac")
+		}
+	}
+	if !data.InspectionValidateDstMac.IsNull() && !data.InspectionValidateDstMac.IsUnknown() {
+		if data.InspectionValidateDstMac.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/dst-mac", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/dst-mac")
+		}
+	}
+	if !data.InspectionValidateIp.IsNull() && !data.InspectionValidateIp.IsUnknown() {
+		if data.InspectionValidateIp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/ip", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/ip")
+		}
+	}
+	if !data.InspectionValidateAllowZeros.IsNull() && !data.InspectionValidateAllowZeros.IsUnknown() {
+		if data.InspectionValidateAllowZeros.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/validate/allow/zeros", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/inspection/validate/allow/zeros")
+		}
+	}
+	if !data.InspectionLogBufferEntries.IsNull() && !data.InspectionLogBufferEntries.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/log-buffer/entries", strconv.FormatInt(data.InspectionLogBufferEntries.ValueInt64(), 10))
+	}
+	if !data.InspectionLogBufferLogsEntries.IsNull() && !data.InspectionLogBufferLogsEntries.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/log-buffer/logs/entries", strconv.FormatInt(data.InspectionLogBufferLogsEntries.ValueInt64(), 10))
+	}
+	if !data.InspectionLogBufferLogsInterval.IsNull() && !data.InspectionLogBufferLogsInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/log-buffer/logs/interval", strconv.FormatInt(data.InspectionLogBufferLogsInterval.ValueInt64(), 10))
+	}
+	if !data.InspectionVlan.IsNull() && !data.InspectionVlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/inspection/vlan", data.InspectionVlan.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -330,6 +435,155 @@ func (data *ARP) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *ARP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incomplete/entries"); value.Exists() && !data.IncompleteEntries.IsNull() {
+		data.IncompleteEntries = types.Int64Value(value.Int())
+	} else {
+		data.IncompleteEntries = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/proxy/disable"); !data.ProxyDisable.IsNull() {
+		if value.Exists() {
+			data.ProxyDisable = types.BoolValue(true)
+		} else {
+			data.ProxyDisable = types.BoolValue(false)
+		}
+	} else {
+		data.ProxyDisable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry/learn"); value.Exists() && !data.EntryLearn.IsNull() {
+		data.EntryLearn = types.Int64Value(value.Int())
+	} else {
+		data.EntryLearn = types.Int64Null()
+	}
+	for i := range data.InspectionFilters {
+		keys := [...]string{"arpacl"}
+		keyValues := [...]string{data.InspectionFilters[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/filter").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "arpacl"); value.Exists() && !data.InspectionFilters[i].Name.IsNull() {
+			data.InspectionFilters[i].Name = types.StringValue(value.String())
+		} else {
+			data.InspectionFilters[i].Name = types.StringNull()
+		}
+		for ci := range data.InspectionFilters[i].Vlans {
+			keys := [...]string{"vlan-range"}
+			keyValues := [...]string{data.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "vlan").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "vlan-range"); value.Exists() && !data.InspectionFilters[i].Vlans[ci].VlanRange.IsNull() {
+				data.InspectionFilters[i].Vlans[ci].VlanRange = types.StringValue(value.String())
+			} else {
+				data.InspectionFilters[i].Vlans[ci].VlanRange = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "static"); !data.InspectionFilters[i].Vlans[ci].Static.IsNull() {
+				if value.Exists() {
+					data.InspectionFilters[i].Vlans[ci].Static = types.BoolValue(true)
+				} else {
+					data.InspectionFilters[i].Vlans[ci].Static = types.BoolValue(false)
+				}
+			} else {
+				data.InspectionFilters[i].Vlans[ci].Static = types.BoolNull()
+			}
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/src-mac"); !data.InspectionValidateSrcMac.IsNull() {
+		if value.Exists() {
+			data.InspectionValidateSrcMac = types.BoolValue(true)
+		} else {
+			data.InspectionValidateSrcMac = types.BoolValue(false)
+		}
+	} else {
+		data.InspectionValidateSrcMac = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/dst-mac"); !data.InspectionValidateDstMac.IsNull() {
+		if value.Exists() {
+			data.InspectionValidateDstMac = types.BoolValue(true)
+		} else {
+			data.InspectionValidateDstMac = types.BoolValue(false)
+		}
+	} else {
+		data.InspectionValidateDstMac = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/ip"); !data.InspectionValidateIp.IsNull() {
+		if value.Exists() {
+			data.InspectionValidateIp = types.BoolValue(true)
+		} else {
+			data.InspectionValidateIp = types.BoolValue(false)
+		}
+	} else {
+		data.InspectionValidateIp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/allow/zeros"); !data.InspectionValidateAllowZeros.IsNull() {
+		if value.Exists() {
+			data.InspectionValidateAllowZeros = types.BoolValue(true)
+		} else {
+			data.InspectionValidateAllowZeros = types.BoolValue(false)
+		}
+	} else {
+		data.InspectionValidateAllowZeros = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/entries"); value.Exists() && !data.InspectionLogBufferEntries.IsNull() {
+		data.InspectionLogBufferEntries = types.Int64Value(value.Int())
+	} else {
+		data.InspectionLogBufferEntries = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/logs/entries"); value.Exists() && !data.InspectionLogBufferLogsEntries.IsNull() {
+		data.InspectionLogBufferLogsEntries = types.Int64Value(value.Int())
+	} else {
+		data.InspectionLogBufferLogsEntries = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/logs/interval"); value.Exists() && !data.InspectionLogBufferLogsInterval.IsNull() {
+		data.InspectionLogBufferLogsInterval = types.Int64Value(value.Int())
+	} else {
+		data.InspectionLogBufferLogsInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/vlan"); value.Exists() && !data.InspectionVlan.IsNull() {
+		data.InspectionVlan = types.StringValue(value.String())
+	} else {
+		data.InspectionVlan = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -493,6 +747,160 @@ func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *ARP) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incomplete/entries"); value.Exists() {
+		data.IncompleteEntries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/proxy/disable"); value.Exists() {
+		data.ProxyDisable = types.BoolValue(true)
+	} else {
+		data.ProxyDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry/learn"); value.Exists() {
+		data.EntryLearn = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/filter"); value.Exists() {
+		data.InspectionFilters = make([]ARPInspectionFilters, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ARPInspectionFilters{}
+			if cValue := helpers.GetFromXPath(v, "arpacl"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan"); cValue.Exists() {
+				item.Vlans = make([]ARPInspectionFiltersVlans, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ARPInspectionFiltersVlans{}
+					if ccValue := helpers.GetFromXPath(cv, "vlan-range"); ccValue.Exists() {
+						cItem.VlanRange = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "static"); ccValue.Exists() {
+						cItem.Static = types.BoolValue(true)
+					} else {
+						cItem.Static = types.BoolValue(false)
+					}
+					item.Vlans = append(item.Vlans, cItem)
+					return true
+				})
+			}
+			data.InspectionFilters = append(data.InspectionFilters, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/src-mac"); value.Exists() {
+		data.InspectionValidateSrcMac = types.BoolValue(true)
+	} else {
+		data.InspectionValidateSrcMac = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/dst-mac"); value.Exists() {
+		data.InspectionValidateDstMac = types.BoolValue(true)
+	} else {
+		data.InspectionValidateDstMac = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/ip"); value.Exists() {
+		data.InspectionValidateIp = types.BoolValue(true)
+	} else {
+		data.InspectionValidateIp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/allow/zeros"); value.Exists() {
+		data.InspectionValidateAllowZeros = types.BoolValue(true)
+	} else {
+		data.InspectionValidateAllowZeros = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/entries"); value.Exists() {
+		data.InspectionLogBufferEntries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/logs/entries"); value.Exists() {
+		data.InspectionLogBufferLogsEntries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/logs/interval"); value.Exists() {
+		data.InspectionLogBufferLogsInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/vlan"); value.Exists() {
+		data.InspectionVlan = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *ARPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/incomplete/entries"); value.Exists() {
+		data.IncompleteEntries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/proxy/disable"); value.Exists() {
+		data.ProxyDisable = types.BoolValue(true)
+	} else {
+		data.ProxyDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry/learn"); value.Exists() {
+		data.EntryLearn = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/filter"); value.Exists() {
+		data.InspectionFilters = make([]ARPInspectionFilters, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ARPInspectionFilters{}
+			if cValue := helpers.GetFromXPath(v, "arpacl"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vlan"); cValue.Exists() {
+				item.Vlans = make([]ARPInspectionFiltersVlans, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ARPInspectionFiltersVlans{}
+					if ccValue := helpers.GetFromXPath(cv, "vlan-range"); ccValue.Exists() {
+						cItem.VlanRange = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "static"); ccValue.Exists() {
+						cItem.Static = types.BoolValue(true)
+					} else {
+						cItem.Static = types.BoolValue(false)
+					}
+					item.Vlans = append(item.Vlans, cItem)
+					return true
+				})
+			}
+			data.InspectionFilters = append(data.InspectionFilters, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/src-mac"); value.Exists() {
+		data.InspectionValidateSrcMac = types.BoolValue(true)
+	} else {
+		data.InspectionValidateSrcMac = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/dst-mac"); value.Exists() {
+		data.InspectionValidateDstMac = types.BoolValue(true)
+	} else {
+		data.InspectionValidateDstMac = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/ip"); value.Exists() {
+		data.InspectionValidateIp = types.BoolValue(true)
+	} else {
+		data.InspectionValidateIp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/validate/allow/zeros"); value.Exists() {
+		data.InspectionValidateAllowZeros = types.BoolValue(true)
+	} else {
+		data.InspectionValidateAllowZeros = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/entries"); value.Exists() {
+		data.InspectionLogBufferEntries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/logs/entries"); value.Exists() {
+		data.InspectionLogBufferLogsEntries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/log-buffer/logs/interval"); value.Exists() {
+		data.InspectionLogBufferLogsInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/vlan"); value.Exists() {
+		data.InspectionVlan = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
@@ -589,6 +997,113 @@ func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string) string {
+	b := netconf.NewBody(body)
+	if !state.InspectionVlan.IsNull() && data.InspectionVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/vlan")
+	}
+	if !state.InspectionLogBufferLogsInterval.IsNull() && data.InspectionLogBufferLogsInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
+	}
+	if !state.InspectionLogBufferLogsEntries.IsNull() && data.InspectionLogBufferLogsEntries.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
+	}
+	if !state.InspectionLogBufferEntries.IsNull() && data.InspectionLogBufferEntries.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/entries")
+	}
+	if !state.InspectionValidateAllowZeros.IsNull() && data.InspectionValidateAllowZeros.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/allow")
+	}
+	if !state.InspectionValidateIp.IsNull() && data.InspectionValidateIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
+	}
+	if !state.InspectionValidateDstMac.IsNull() && data.InspectionValidateDstMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
+	}
+	if !state.InspectionValidateSrcMac.IsNull() && data.InspectionValidateSrcMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
+	}
+	for i := range state.InspectionFilters {
+		stateKeys := [...]string{"arpacl"}
+		stateKeyValues := [...]string{state.InspectionFilters[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.InspectionFilters[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.InspectionFilters {
+			found = true
+			if state.InspectionFilters[i].Name.ValueString() != data.InspectionFilters[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.InspectionFilters[i].Vlans {
+					cstateKeys := [...]string{"vlan-range"}
+					cstateKeyValues := [...]string{state.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.InspectionFilters[j].Vlans {
+						found = true
+						if state.InspectionFilters[i].Vlans[ci].VlanRange.ValueString() != data.InspectionFilters[j].Vlans[cj].VlanRange.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.InspectionFilters[i].Vlans[ci].Static.IsNull() && data.InspectionFilters[j].Vlans[cj].Static.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inspection/filter%v/vlan%v/static", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inspection/filter%v/vlan%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inspection/filter%v", predicates))
+		}
+	}
+	if !state.EntryLearn.IsNull() && data.EntryLearn.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/entry/learn")
+	}
+	if !state.ProxyDisable.IsNull() && data.ProxyDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/proxy/disable")
+	}
+	if !state.IncompleteEntries.IsNull() && data.IncompleteEntries.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/incomplete/entries")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *ARP) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -672,3 +1187,57 @@ func (data *ARP) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *ARP) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.InspectionVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/vlan")
+	}
+	if !data.InspectionLogBufferLogsInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/logs")
+	}
+	if !data.InspectionLogBufferLogsEntries.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/logs")
+	}
+	if !data.InspectionLogBufferEntries.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/entries")
+	}
+	if !data.InspectionValidateAllowZeros.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate/allow")
+	}
+	if !data.InspectionValidateIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate")
+	}
+	if !data.InspectionValidateDstMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate")
+	}
+	if !data.InspectionValidateSrcMac.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate")
+	}
+	for i := range data.InspectionFilters {
+		keys := [...]string{"arpacl"}
+		keyValues := [...]string{data.InspectionFilters[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/inspection/filter%v", predicates))
+	}
+	if !data.EntryLearn.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/entry/learn")
+	}
+	if !data.ProxyDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/proxy/disable")
+	}
+	if !data.IncompleteEntries.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/incomplete/entries")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

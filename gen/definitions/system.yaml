@@ -1,6 +1,6 @@
 ---
 name: System
-path: Cisco-IOS-XE-native:native
+path: /Cisco-IOS-XE-native:native
 no_delete: true
 doc_category: System
 attributes:
@@ -22,7 +22,7 @@ attributes:
   - yang_name: ip/source-route
     example: false
   - yang_name: ip/domain/lookup
-    example: false
+    example: true
   - yang_name: ip/domain/name
     example: test.com
   - yang_name: login/delay
@@ -143,6 +143,7 @@ attributes:
   - yang_name: ip/domain/lookup-settings/lookup/vrf
     tf_name: ip_domain_lookup_vrfs
     type: List
+    test_tags: [C9000V]
     attributes:
       - yang_name: vrf-name
         tf_name: vrf
@@ -628,9 +629,11 @@ attributes:
     exclude_test: true
   - yang_name: ip/domain/list/vrf/domain-name
     tf_name: ip_domain_list_vrf_domain
+    delete_parent: true
     example: example.com
   - yang_name: ip/domain/list/vrf/vrf-name
     tf_name: ip_domain_list_vrf
+    delete_parent: true
     example: VRF1
   - yang_name: ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay
     example: 2600
@@ -651,9 +654,29 @@ attributes:
   - yang_name: ip/routing-new/routing/protocol/purge/interface
     tf_name: ip_routing_protocol_purge_interface
     example: true
+  - yang_name: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/source
+    xpath: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source
+    tf_name: ip_cef_load_sharing_algorithm_include_ports_source
+    example: true
+  - yang_name: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/destination
+    xpath: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination
+    tf_name: ip_cef_load_sharing_algorithm_include_ports_destination
+    example: true
+  - yang_name: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/source
+    xpath: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source
+    tf_name: ipv6_cef_load_sharing_algorithm_include_ports_source
+    example: true
+  - yang_name: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/destination
+    xpath: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination
+    tf_name: ipv6_cef_load_sharing_algorithm_include_ports_destination
+    example: true
+  - yang_name: port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance
+    tf_name: port_channel_load_balance
+    example: src-dst-mixed-ip-port
+    test_tags: [C9000V]
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

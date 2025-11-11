@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -97,11 +98,25 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	if d.Managed {
-		request := d.Client.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
-		_, err := d.Client.Do(request)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
-			return
+		if d.Protocol == "restconf" {
+			request := d.RestconfClient.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
+			_, err := d.RestconfClient.Do(request)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
+				return
+			}
+		} else {
+			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+			if locked {
+				defer d.NetconfOpMutex.Unlock()
+			}
+			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+
+			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
+			}
 		}
 	}
 
@@ -141,11 +156,25 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 
 	if d.Managed {
-		request := d.Client.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
-		_, err := d.Client.Do(request)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
-			return
+		if d.Protocol == "restconf" {
+			request := d.RestconfClient.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
+			_, err := d.RestconfClient.Do(request)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
+				return
+			}
+		} else {
+			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+			if locked {
+				defer d.NetconfOpMutex.Unlock()
+			}
+			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+
+			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
+			}
 		}
 	}
 

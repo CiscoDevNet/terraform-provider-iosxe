@@ -75,8 +75,8 @@ func TestAccDataSourceIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPIPv4UnicastVRFNeighborPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -85,15 +85,15 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
 }
 
-resource "iosxe_restconf" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/with-vrf/ipv4=unicast"
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/address-family/with-vrf/ipv4[af-name=unicast]"
 	attributes = {
 		"af-name" = "unicast"
 	}
@@ -108,11 +108,11 @@ resource "iosxe_restconf" "PreReq2" {
 			]
 		},
 	]
-	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]
+	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]
 }
 
-resource "iosxe_restconf" "PreReq3" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 	}
@@ -161,7 +161,7 @@ func testAccDataSourceIosxeBGPIPv4UnicastVRFNeighborConfig() string {
 	config += `	next_hop_self = true` + "\n"
 	config += `	next_hop_self_all = true` + "\n"
 	config += `	advertisement_interval = 300` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

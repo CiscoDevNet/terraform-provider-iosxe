@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -84,6 +87,17 @@ func (data CryptoPKI) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data CryptoPKI) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki"
+	return path
+}
+
+func (data CryptoPKIData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki"
+	return path
 }
 
 // End of section. //template:end getPath
@@ -144,6 +158,78 @@ func (data CryptoPKI) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CryptoPKI) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.Trustpoints) > 0 {
+		for _, item := range data.Trustpoints {
+			cBody := netconf.Body{}
+			if !item.Id.IsNull() && !item.Id.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "id", item.Id.ValueString())
+			}
+			if !item.EnrollmentPkcs12.IsNull() && !item.EnrollmentPkcs12.IsUnknown() {
+				if item.EnrollmentPkcs12.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "enrollment/enrollment-method/pkcs12", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "enrollment/enrollment-method/pkcs12")
+				}
+			}
+			if !item.EnrollmentSelfsigned.IsNull() && !item.EnrollmentSelfsigned.IsUnknown() {
+				if item.EnrollmentSelfsigned.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "enrollment/enrollment-method/selfsigned", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "enrollment/enrollment-method/selfsigned")
+				}
+			}
+			if !item.EnrollmentModeRa.IsNull() && !item.EnrollmentModeRa.IsUnknown() {
+				if item.EnrollmentModeRa.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "enrollment/mode/ra", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "enrollment/mode/ra")
+				}
+			}
+			if !item.EnrollmentTerminal.IsNull() && !item.EnrollmentTerminal.IsUnknown() {
+				if item.EnrollmentTerminal.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "enrollment/terminal", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "enrollment/terminal")
+				}
+			}
+			if !item.RevocationCheck.IsNull() && !item.RevocationCheck.IsUnknown() {
+				var values []string
+				item.RevocationCheck.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "revocation-check", v)
+				}
+			}
+			if !item.SubjectName.IsNull() && !item.SubjectName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "subject-name", item.SubjectName.ValueString())
+			}
+			if !item.Rsakeypair.IsNull() && !item.Rsakeypair.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "rsakeypair/key-label", item.Rsakeypair.ValueString())
+			}
+			if !item.Usage.IsNull() && !item.Usage.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "usage", item.Usage.ValueString())
+			}
+			if !item.SourceInterface.IsNull() && !item.SourceInterface.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source/interface", item.SourceInterface.ValueString())
+			}
+			if !item.Hash.IsNull() && !item.Hash.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "hash", item.Hash.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/trustpoint", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -250,6 +336,108 @@ func (data *CryptoPKI) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CryptoPKI) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.Trustpoints {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Trustpoints[i].Id.IsNull() {
+			data.Trustpoints[i].Id = types.StringValue(value.String())
+		} else {
+			data.Trustpoints[i].Id = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "enrollment/enrollment-method/pkcs12"); !data.Trustpoints[i].EnrollmentPkcs12.IsNull() {
+			if value.Exists() {
+				data.Trustpoints[i].EnrollmentPkcs12 = types.BoolValue(true)
+			} else {
+				data.Trustpoints[i].EnrollmentPkcs12 = types.BoolValue(false)
+			}
+		} else {
+			data.Trustpoints[i].EnrollmentPkcs12 = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "enrollment/enrollment-method/selfsigned"); !data.Trustpoints[i].EnrollmentSelfsigned.IsNull() {
+			if value.Exists() {
+				data.Trustpoints[i].EnrollmentSelfsigned = types.BoolValue(true)
+			} else {
+				data.Trustpoints[i].EnrollmentSelfsigned = types.BoolValue(false)
+			}
+		} else {
+			data.Trustpoints[i].EnrollmentSelfsigned = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "enrollment/mode/ra"); !data.Trustpoints[i].EnrollmentModeRa.IsNull() {
+			if value.Exists() {
+				data.Trustpoints[i].EnrollmentModeRa = types.BoolValue(true)
+			} else {
+				data.Trustpoints[i].EnrollmentModeRa = types.BoolValue(false)
+			}
+		} else {
+			data.Trustpoints[i].EnrollmentModeRa = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "enrollment/terminal"); !data.Trustpoints[i].EnrollmentTerminal.IsNull() {
+			if value.Exists() {
+				data.Trustpoints[i].EnrollmentTerminal = types.BoolValue(true)
+			} else {
+				data.Trustpoints[i].EnrollmentTerminal = types.BoolValue(false)
+			}
+		} else {
+			data.Trustpoints[i].EnrollmentTerminal = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "revocation-check"); value.Exists() && !data.Trustpoints[i].RevocationCheck.IsNull() {
+			data.Trustpoints[i].RevocationCheck = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Trustpoints[i].RevocationCheck = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "subject-name"); value.Exists() && !data.Trustpoints[i].SubjectName.IsNull() {
+			data.Trustpoints[i].SubjectName = types.StringValue(value.String())
+		} else {
+			data.Trustpoints[i].SubjectName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "rsakeypair/key-label"); value.Exists() && !data.Trustpoints[i].Rsakeypair.IsNull() {
+			data.Trustpoints[i].Rsakeypair = types.StringValue(value.String())
+		} else {
+			data.Trustpoints[i].Rsakeypair = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "usage"); value.Exists() && !data.Trustpoints[i].Usage.IsNull() {
+			data.Trustpoints[i].Usage = types.StringValue(value.String())
+		} else {
+			data.Trustpoints[i].Usage = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source/interface"); value.Exists() && !data.Trustpoints[i].SourceInterface.IsNull() {
+			data.Trustpoints[i].SourceInterface = types.StringValue(value.String())
+		} else {
+			data.Trustpoints[i].SourceInterface = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "hash"); value.Exists() && !data.Trustpoints[i].Hash.IsNull() {
+			data.Trustpoints[i].Hash = types.StringValue(value.String())
+		} else {
+			data.Trustpoints[i].Hash = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -375,6 +563,122 @@ func (data *CryptoPKIData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CryptoPKI) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint"); value.Exists() {
+		data.Trustpoints = make([]CryptoPKITrustpoints, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoPKITrustpoints{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/enrollment-method/pkcs12"); cValue.Exists() {
+				item.EnrollmentPkcs12 = types.BoolValue(true)
+			} else {
+				item.EnrollmentPkcs12 = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/enrollment-method/selfsigned"); cValue.Exists() {
+				item.EnrollmentSelfsigned = types.BoolValue(true)
+			} else {
+				item.EnrollmentSelfsigned = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/mode/ra"); cValue.Exists() {
+				item.EnrollmentModeRa = types.BoolValue(true)
+			} else {
+				item.EnrollmentModeRa = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/terminal"); cValue.Exists() {
+				item.EnrollmentTerminal = types.BoolValue(true)
+			} else {
+				item.EnrollmentTerminal = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "revocation-check"); cValue.Exists() {
+				item.RevocationCheck = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.RevocationCheck = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "subject-name"); cValue.Exists() {
+				item.SubjectName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "rsakeypair/key-label"); cValue.Exists() {
+				item.Rsakeypair = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "usage"); cValue.Exists() {
+				item.Usage = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source/interface"); cValue.Exists() {
+				item.SourceInterface = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hash"); cValue.Exists() {
+				item.Hash = types.StringValue(cValue.String())
+			}
+			data.Trustpoints = append(data.Trustpoints, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CryptoPKIData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint"); value.Exists() {
+		data.Trustpoints = make([]CryptoPKITrustpoints, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoPKITrustpoints{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/enrollment-method/pkcs12"); cValue.Exists() {
+				item.EnrollmentPkcs12 = types.BoolValue(true)
+			} else {
+				item.EnrollmentPkcs12 = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/enrollment-method/selfsigned"); cValue.Exists() {
+				item.EnrollmentSelfsigned = types.BoolValue(true)
+			} else {
+				item.EnrollmentSelfsigned = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/mode/ra"); cValue.Exists() {
+				item.EnrollmentModeRa = types.BoolValue(true)
+			} else {
+				item.EnrollmentModeRa = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "enrollment/terminal"); cValue.Exists() {
+				item.EnrollmentTerminal = types.BoolValue(true)
+			} else {
+				item.EnrollmentTerminal = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "revocation-check"); cValue.Exists() {
+				item.RevocationCheck = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.RevocationCheck = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "subject-name"); cValue.Exists() {
+				item.SubjectName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "rsakeypair/key-label"); cValue.Exists() {
+				item.Rsakeypair = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "usage"); cValue.Exists() {
+				item.Usage = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source/interface"); cValue.Exists() {
+				item.SourceInterface = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hash"); cValue.Exists() {
+				item.Hash = types.StringValue(cValue.String())
+			}
+			data.Trustpoints = append(data.Trustpoints, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []string {
@@ -458,6 +762,99 @@ func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []s
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Trustpoints {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{state.Trustpoints[i].Id.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Trustpoints[i].Id.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Trustpoints {
+			found = true
+			if state.Trustpoints[i].Id.ValueString() != data.Trustpoints[j].Id.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Trustpoints[i].Hash.IsNull() && data.Trustpoints[j].Hash.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/hash", predicates))
+				}
+				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/source/interface", predicates))
+				}
+				if !state.Trustpoints[i].Usage.IsNull() && data.Trustpoints[j].Usage.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/usage", predicates))
+				}
+				if !state.Trustpoints[i].Rsakeypair.IsNull() && data.Trustpoints[j].Rsakeypair.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/rsakeypair/key-label", predicates))
+				}
+				if !state.Trustpoints[i].SubjectName.IsNull() && data.Trustpoints[j].SubjectName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/subject-name", predicates))
+				}
+				if !state.Trustpoints[i].RevocationCheck.IsNull() {
+					if data.Trustpoints[j].RevocationCheck.IsNull() {
+						var values []string
+						state.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/revocation-check[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &dataValues, false)
+						state.Trustpoints[j].RevocationCheck.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/revocation-check[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && data.Trustpoints[j].EnrollmentTerminal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/terminal", predicates))
+				}
+				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/mode/ra", predicates))
+				}
+				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/selfsigned", predicates))
+				}
+				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && data.Trustpoints[j].EnrollmentPkcs12.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/pkcs12", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CryptoPKI) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -498,3 +895,24 @@ func (data *CryptoPKI) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CryptoPKI) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Trustpoints {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/trustpoint%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

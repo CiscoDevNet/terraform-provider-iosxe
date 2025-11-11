@@ -35,6 +35,7 @@ data "iosxe_vrf" "example" {
 - `address_family_ipv6` (Boolean) Address family
 - `description` (String) VRF specific description
 - `id` (String) The path of the retrieved object.
+- `ipv4_route_replicate` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_route_replicate))
 - `ipv4_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export))
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
 - `ipv4_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
@@ -47,6 +48,16 @@ data "iosxe_vrf" "example" {
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
+
+<a id="nestedatt--ipv4_route_replicate"></a>
+### Nested Schema for `ipv4_route_replicate`
+
+Read-Only:
+
+- `name` (String) Source VRF name or 'global'
+- `unicast_all` (Boolean) All routes
+- `unicast_all_route_map` (String) Route map reference
+
 
 <a id="nestedatt--ipv4_route_target_export"></a>
 ### Nested Schema for `ipv4_route_target_export`

@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -87,6 +90,19 @@ func (data FlowMonitor) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data FlowMonitor) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data FlowMonitorData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -120,6 +136,43 @@ func (data FlowMonitor) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data FlowMonitor) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if len(data.Exporters) > 0 {
+		for _, item := range data.Exporters {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exporter", cBody.Res())
+		}
+	}
+	if !data.CacheTimeoutActive.IsNull() && !data.CacheTimeoutActive.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/cache/timeout/active", strconv.FormatInt(data.CacheTimeoutActive.ValueInt64(), 10))
+	}
+	if !data.CacheTimeoutInactive.IsNull() && !data.CacheTimeoutInactive.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/cache/timeout/inactive", strconv.FormatInt(data.CacheTimeoutInactive.ValueInt64(), 10))
+	}
+	if !data.Record.IsNull() && !data.Record.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/record/type", data.Record.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -185,6 +238,67 @@ func (data *FlowMonitor) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *FlowMonitor) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	for i := range data.Exporters {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/exporter").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Exporters[i].Name.IsNull() {
+			data.Exporters[i].Name = types.StringValue(value.String())
+		} else {
+			data.Exporters[i].Name = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cache/timeout/active"); value.Exists() && !data.CacheTimeoutActive.IsNull() {
+		data.CacheTimeoutActive = types.Int64Value(value.Int())
+	} else {
+		data.CacheTimeoutActive = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cache/timeout/inactive"); value.Exists() && !data.CacheTimeoutInactive.IsNull() {
+		data.CacheTimeoutInactive = types.Int64Value(value.Int())
+	} else {
+		data.CacheTimeoutInactive = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/record/type"); value.Exists() && !data.Record.IsNull() {
+		data.Record = types.StringValue(value.String())
+	} else {
+		data.Record = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -254,6 +368,66 @@ func (data *FlowMonitorData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *FlowMonitor) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exporter"); value.Exists() {
+		data.Exporters = make([]FlowMonitorExporters, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := FlowMonitorExporters{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.Exporters = append(data.Exporters, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cache/timeout/active"); value.Exists() {
+		data.CacheTimeoutActive = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cache/timeout/inactive"); value.Exists() {
+		data.CacheTimeoutInactive = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/record/type"); value.Exists() {
+		data.Record = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *FlowMonitorData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exporter"); value.Exists() {
+		data.Exporters = make([]FlowMonitorExporters, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := FlowMonitorExporters{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.Exporters = append(data.Exporters, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cache/timeout/active"); value.Exists() {
+		data.CacheTimeoutActive = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cache/timeout/inactive"); value.Exists() {
+		data.CacheTimeoutInactive = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/record/type"); value.Exists() {
+		data.Record = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor) []string {
@@ -301,6 +475,59 @@ func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor)
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *FlowMonitor) addDeletedItemsXML(ctx context.Context, state FlowMonitor, body string) string {
+	b := netconf.NewBody(body)
+	if !state.Record.IsNull() && data.Record.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/record/type")
+	}
+	if !state.CacheTimeoutInactive.IsNull() && data.CacheTimeoutInactive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cache/timeout/inactive")
+	}
+	if !state.CacheTimeoutActive.IsNull() && data.CacheTimeoutActive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cache/timeout/active")
+	}
+	for i := range state.Exporters {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Exporters[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Exporters[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Exporters {
+			found = true
+			if state.Exporters[i].Name.ValueString() != data.Exporters[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exporter%v", predicates))
+		}
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *FlowMonitor) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -337,3 +564,36 @@ func (data *FlowMonitor) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *FlowMonitor) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.Record.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/record/type")
+	}
+	if !data.CacheTimeoutInactive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cache/timeout/inactive")
+	}
+	if !data.CacheTimeoutActive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cache/timeout/active")
+	}
+	for i := range data.Exporters {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/exporter%v", predicates))
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

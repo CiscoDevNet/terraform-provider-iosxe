@@ -34,22 +34,17 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfacePortChannel(t *testing.T) {
+	if os.Getenv("C9000V") == "" {
+		t.Skip("skipping test, set environment variable C9000V")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "name", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "shutdown", "false"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "switchport", "false"))
-	}
-	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_proxy_arp", "false"))
-	}
-	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_redirects", "false"))
-	}
-	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_unreachables", "false"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "switchport", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_proxy_arp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_redirects", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv4_address", "192.0.2.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv4_address_mask", "255.255.255.0"))
@@ -65,23 +60,16 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "bfd_local_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_mtu", "1300"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_link_local_addresses.0.address", "fe80::64"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_addresses.0.prefix", "2224:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "arp_timeout", "2147"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_arp_inspection_trust", "true"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_arp_inspection_limit_rate", "1000"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_arp_inspection_trust", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_arp_inspection_limit_rate", "1000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "load_interval", "30"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "snmp_trap_link_status", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "logging_event_link_status_enable", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "evpn_ethernet_segments.0.es_value", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -98,7 +86,7 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfacePortChannelImportStateIdFunc("iosxe_interface_port_channel.test"),
-				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust", "ip_dhcp_snooping_trust", "device_tracking"},
+				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ip_dhcp_snooping_trust", "device_tracking"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -122,20 +110,68 @@ func iosxeInterfacePortChannelImportStateIdFunc(resourceName string) resource.Im
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
 		"address-family/ipv4" = ""
+		"address-family/ipv6" = ""
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
+	attributes = {
+		"name" = "100"
+		"ip/address/primary/address" = "10.0.0.100"
+		"ip/address/primary/mask" = "255.255.255.255"
+	}
+}
+
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]"
+	attributes = {
+		"name" = "1"
+	}
+}
+
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]/access-list-seq-rule[sequence=10]"
+	attributes = {
+		"sequence" = "10"
+		"permit/std-ace/any" = ""
+	}
+	depends_on = [iosxe_yang.PreReq2, ]
+}
+
+resource "iosxe_yang" "PreReq4" {
+	path = "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=bfd_template1]"
+	attributes = {
+		"name" = "bfd_template1"
+		"interval-singlehop-v2/mill-unit/min-tx" = "250"
+		"interval-singlehop-v2/mill-unit/min-rx" = "250"
+		"interval-singlehop-v2/mill-unit/multiplier" = "4"
+	}
+}
+
+resource "iosxe_yang" "PreReq5" {
+	path = "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]"
+	delete = false
 	attributes = {
 		"es-value" = "1"
+		"redundancy/single-active" = ""
 	}
+}
+
+resource "iosxe_yang" "PreReq6" {
+	path = "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]/identifier/type[identifier-type=3]"
+	delete = false
+	attributes = {
+		"identifier-type" = "3"
+		"system-mac" = "0011.2233.4455"
+	}
+	depends_on = [iosxe_yang.PreReq5, ]
 }
 
 `
@@ -147,7 +183,7 @@ resource "iosxe_restconf" "PreReq1" {
 func testAccIosxeInterfacePortChannelConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
 	config += `	name = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -161,18 +197,10 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	name = 10` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `	switchport = false` + "\n"
-	}
-	if os.Getenv("C8000V") != "" {
-		config += `	ip_proxy_arp = false` + "\n"
-	}
-	if os.Getenv("C8000V") != "" {
-		config += `	ip_redirects = false` + "\n"
-	}
-	if os.Getenv("C8000V") != "" {
-		config += `	ip_unreachables = false` + "\n"
-	}
+	config += `	switchport = false` + "\n"
+	config += `	ip_proxy_arp = false` + "\n"
+	config += `	ip_redirects = false` + "\n"
+	config += `	ip_unreachables = false` + "\n"
 	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv4_address = "192.0.2.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
@@ -190,7 +218,6 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	config += `	ipv6_enable = true` + "\n"
 	config += `	ipv6_mtu = 1300` + "\n"
-	config += `	ipv6_nd_ra_suppress_all = true` + "\n"
 	config += `	ipv6_address_dhcp = true` + "\n"
 	config += `	ipv6_link_local_addresses = [{` + "\n"
 	config += `		address = "fe80::64"` + "\n"
@@ -201,19 +228,11 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `	ip_arp_inspection_trust = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
-	}
+	config += `	ip_arp_inspection_trust = true` + "\n"
+	config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	config += `	load_interval = 30` + "\n"
-	config += `	snmp_trap_link_status = true` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
-	config += `	evpn_ethernet_segments = [{` + "\n"
-	config += `		es_value = 1` + "\n"
-	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

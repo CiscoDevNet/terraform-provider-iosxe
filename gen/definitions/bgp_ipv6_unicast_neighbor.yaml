@@ -1,6 +1,6 @@
 ---
 name: BGP IPv6 Unicast Neighbor
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv6=unicast/ipv6-unicast/neighbor=%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv6[af-name=unicast]/ipv6-unicast/neighbor[id=%s]
 doc_category: BGP
 attributes:
   - yang_name: id
@@ -37,27 +37,27 @@ attributes:
       - yang_name: route-map-name
         example: RM1
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/ipv6
+  - path: /Cisco-IOS-XE-native:native/ipv6
     attributes:
       - name: unicast-routing
         value: ""
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
       - name: id
         value: 65000
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv6=unicast
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/address-family/no-vrf/ipv6[af-name=unicast]
     attributes:
       - name: af-name
         value: unicast
     dependencies: [0, 1]
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/neighbor[id=3.3.3.3]
     attributes:
       - name: id
         value: 3.3.3.3
       - name: remote-as
         value: 65000
     dependencies: [0, 1]
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

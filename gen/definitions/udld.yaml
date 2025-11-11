@@ -1,6 +1,6 @@
 ---
 name: UDLD
-path: Cisco-IOS-XE-native:native/udld
+path: /Cisco-IOS-XE-native:native/udld
 doc_category: System
 test_tags: [C9000V]
 attributes:

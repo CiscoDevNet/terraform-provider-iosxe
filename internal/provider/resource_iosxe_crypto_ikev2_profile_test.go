@@ -90,15 +90,15 @@ func iosxeCryptoIKEv2ProfileImportStateIdFunc(resourceName string) resource.Impo
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeCryptoIKEv2ProfilePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=test"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring[name=test]"
 	attributes = {
 		"name" = "test"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -115,7 +115,7 @@ resource "iosxe_restconf" "PreReq1" {
 func testAccIosxeCryptoIKEv2ProfileConfig_minimum() string {
 	config := `resource "iosxe_crypto_ikev2_profile" "test" {` + "\n"
 	config += `	name = "profile1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -144,7 +144,7 @@ func testAccIosxeCryptoIKEv2ProfileConfig_all() string {
 	config += `	dpd_retry = 2` + "\n"
 	config += `	dpd_query = "periodic"` + "\n"
 	config += `	config_exchange_request = false` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

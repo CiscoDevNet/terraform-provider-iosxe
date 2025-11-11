@@ -1,6 +1,6 @@
 ---
 name: Template
-path: Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=%v
+path: /Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details[template_name=%v]
 test_tags: [C9000V]
 doc_category: System
 attributes:
@@ -14,6 +14,14 @@ attributes:
     example: 3
   - yang_name: dot1x/timeout/tx-period
     example: 2
+  - yang_name: dot1x/timeout/quiet-period
+    example: 4
+  - yang_name: dot1x/timeout/supp-timeout
+    example: 10
+  - yang_name: dot1x/timeout/ratelimit-period
+    example: 10
+  - yang_name: dot1x/timeout/server-timeout
+    example: 30
   - yang_name: service-policy/type/control/subscriber
     example: dot1x_policy
   - yang_name: service-policy/input/policy-map-name
@@ -23,6 +31,7 @@ attributes:
     tf_name: service_policy_output
     example: SP2
   - yang_name: source/template
+    xpath: source/template
     tf_name: source_template
     type: String
     description: Get config from a template
@@ -207,7 +216,7 @@ attributes:
   - yang_name: cts/role-based/enforcement
     example: false
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy
+  - path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=dot1x_policy]
     attributes:
       - name: name
         value: dot1x_policy

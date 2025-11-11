@@ -54,8 +54,8 @@ func TestAccDataSourceIosxeBGPAddressFamilyL2VPN(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPAddressFamilyL2VPNPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
@@ -74,7 +74,7 @@ func testAccDataSourceIosxeBGPAddressFamilyL2VPNConfig() string {
 	config += `	af_name = "evpn"` + "\n"
 	config += `	rewrite_evpn_rt_asn = true` + "\n"
 	config += `	bgp_nexthop_trigger_delay = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

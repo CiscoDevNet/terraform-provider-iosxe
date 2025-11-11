@@ -80,6 +80,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_arp_inspection_limit_rate", "1000"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_snooping_trust", "true"))
 	}
@@ -96,7 +97,9 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_server_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_nat_inside", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -113,8 +116,8 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfaceEthernetPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -122,15 +125,15 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1"
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=POLICY1]"
 	attributes = {
 		"name" = "POLICY1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=REC1"
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC1]"
 	attributes = {
 		"name" = "REC1"
 		"match/ipv4/source/address" = ""
@@ -138,24 +141,24 @@ resource "iosxe_restconf" "PreReq2" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq3" {
-	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1"
+resource "iosxe_yang" "PreReq3" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON1]"
 	attributes = {
 		"name" = "MON1"
 		"record/type" = "REC1"
 	}
-	depends_on = [iosxe_restconf.PreReq2, ]
+	depends_on = [iosxe_yang.PreReq2, ]
 }
 
-resource "iosxe_restconf" "PreReq4" {
-	path = "Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=TEMP1"
+resource "iosxe_yang" "PreReq4" {
+	path = "/Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details[template_name=TEMP1]"
 	attributes = {
 		"template_name" = "TEMP1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq5" {
-	path = "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1"
+resource "iosxe_yang" "PreReq5" {
+	path = "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]"
 	attributes = {
 		"es-value" = "1"
 	}
@@ -223,6 +226,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	}
+	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}
@@ -241,10 +245,12 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	cdp_tlv_location = false` + "\n"
 	config += `	cdp_tlv_server_location = false` + "\n"
 	config += `	ip_nat_inside = true` + "\n"
-	config += `	evpn_ethernet_segments = [{` + "\n"
-	config += `		es_value = 1` + "\n"
-	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, iosxe_restconf.PreReq5, ]` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	evpn_ethernet_segments = [{` + "\n"
+		config += `		es_value = 1` + "\n"
+		config += `	}]` + "\n"
+	}
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -1,6 +1,6 @@
 ---
 name: VTP
-path: Cisco-IOS-XE-native:native/vtp
+path: /Cisco-IOS-XE-native:native/vtp
 doc_category: Switching
 test_tags: [VTP]
 attributes:

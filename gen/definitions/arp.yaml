@@ -1,6 +1,6 @@
 ---
 name: ARP
-path: Cisco-IOS-XE-native:native/ip/arp
+path: /Cisco-IOS-XE-native:native/ip/arp
 doc_category: System
 attributes:
   - yang_name: incomplete/entries

@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -77,6 +80,17 @@ func (data UDLD) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data UDLD) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/udld"
+	return path
+}
+
+func (data UDLDData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/udld"
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -103,6 +117,39 @@ func (data UDLD) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data UDLD) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Aggressive.IsNull() && !data.Aggressive.IsUnknown() {
+		if data.Aggressive.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
+		}
+	}
+	if !data.Enable.IsNull() && !data.Enable.IsUnknown() {
+		if data.Enable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:enable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:enable")
+		}
+	}
+	if !data.MessageTime.IsNull() && !data.MessageTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:message/time", strconv.FormatInt(data.MessageTime.ValueInt64(), 10))
+	}
+	if !data.RecoveryInterval.IsNull() && !data.RecoveryInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval", strconv.FormatInt(data.RecoveryInterval.ValueInt64(), 10))
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -142,6 +189,41 @@ func (data *UDLD) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *UDLD) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); !data.Aggressive.IsNull() {
+		if value.Exists() {
+			data.Aggressive = types.BoolValue(true)
+		} else {
+			data.Aggressive = types.BoolValue(false)
+		}
+	} else {
+		data.Aggressive = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); !data.Enable.IsNull() {
+		if value.Exists() {
+			data.Enable = types.BoolValue(true)
+		} else {
+			data.Enable = types.BoolValue(false)
+		}
+	} else {
+		data.Enable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() && !data.MessageTime.IsNull() {
+		data.MessageTime = types.Int64Value(value.Int())
+	} else {
+		data.MessageTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() && !data.RecoveryInterval.IsNull() {
+		data.RecoveryInterval = types.Int64Value(value.Int())
+	} else {
+		data.RecoveryInterval = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -197,6 +279,52 @@ func (data *UDLDData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *UDLD) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); value.Exists() {
+		data.Aggressive = types.BoolValue(true)
+	} else {
+		data.Aggressive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); value.Exists() {
+		data.Enable = types.BoolValue(true)
+	} else {
+		data.Enable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() {
+		data.MessageTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() {
+		data.RecoveryInterval = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *UDLDData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); value.Exists() {
+		data.Aggressive = types.BoolValue(true)
+	} else {
+		data.Aggressive = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); value.Exists() {
+		data.Enable = types.BoolValue(true)
+	} else {
+		data.Enable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() {
+		data.MessageTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() {
+		data.RecoveryInterval = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *UDLD) getDeletedItems(ctx context.Context, state UDLD) []string {
@@ -218,6 +346,29 @@ func (data *UDLD) getDeletedItems(ctx context.Context, state UDLD) []string {
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *UDLD) addDeletedItemsXML(ctx context.Context, state UDLD, body string) string {
+	b := netconf.NewBody(body)
+	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval")
+	}
+	if !state.MessageTime.IsNull() && data.MessageTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:message/time")
+	}
+	if !state.Enable.IsNull() && data.Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:enable")
+	}
+	if !state.Aggressive.IsNull() && data.Aggressive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -256,3 +407,26 @@ func (data *UDLD) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *UDLD) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.RecoveryInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval")
+	}
+	if !data.MessageTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:message/time")
+	}
+	if !data.Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:enable")
+	}
+	if !data.Aggressive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

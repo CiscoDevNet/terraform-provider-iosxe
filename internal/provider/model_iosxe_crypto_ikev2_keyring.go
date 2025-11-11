@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -93,6 +96,19 @@ func (data CryptoIKEv2Keyring) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data CryptoIKEv2Keyring) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
+}
+
+func (data CryptoIKEv2KeyringData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -167,6 +183,82 @@ func (data CryptoIKEv2Keyring) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CryptoIKEv2Keyring) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if len(data.Peers) > 0 {
+		for _, item := range data.Peers {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Description.IsNull() && !item.Description.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
+			}
+			if !item.Hostname.IsNull() && !item.Hostname.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "hostname", item.Hostname.ValueString())
+			}
+			if !item.Ipv4Address.IsNull() && !item.Ipv4Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "address/ipv4/ipv4-address", item.Ipv4Address.ValueString())
+			}
+			if !item.Ipv4Mask.IsNull() && !item.Ipv4Mask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "address/ipv4/ipv4-mask", item.Ipv4Mask.ValueString())
+			}
+			if !item.Ipv6Prefix.IsNull() && !item.Ipv6Prefix.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "address/ipv6-prefix", item.Ipv6Prefix.ValueString())
+			}
+			if !item.IdentityKeyId.IsNull() && !item.IdentityKeyId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "identity/key-id-number", item.IdentityKeyId.ValueString())
+			}
+			if !item.IdentityAddress.IsNull() && !item.IdentityAddress.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "identity/address-type", item.IdentityAddress.ValueString())
+			}
+			if !item.IdentityEmailName.IsNull() && !item.IdentityEmailName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "identity/email-option/name", item.IdentityEmailName.ValueString())
+			}
+			if !item.IdentityEmailDomain.IsNull() && !item.IdentityEmailDomain.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "identity/email-option/domain", item.IdentityEmailDomain.ValueString())
+			}
+			if !item.IdentityFqdnName.IsNull() && !item.IdentityFqdnName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "identity/fqdn-option/name", item.IdentityFqdnName.ValueString())
+			}
+			if !item.IdentityFqdnDomain.IsNull() && !item.IdentityFqdnDomain.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "identity/fqdn-option/domain", item.IdentityFqdnDomain.ValueString())
+			}
+			if !item.PreSharedKeyLocalEncryption.IsNull() && !item.PreSharedKeyLocalEncryption.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/local-option/encryption", item.PreSharedKeyLocalEncryption.ValueString())
+			}
+			if !item.PreSharedKeyLocal.IsNull() && !item.PreSharedKeyLocal.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/local-option/key", item.PreSharedKeyLocal.ValueString())
+			}
+			if !item.PreSharedKeyRemoteEncryption.IsNull() && !item.PreSharedKeyRemoteEncryption.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/remote-option/encryption", item.PreSharedKeyRemoteEncryption.ValueString())
+			}
+			if !item.PreSharedKeyRemote.IsNull() && !item.PreSharedKeyRemote.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/remote-option/key", item.PreSharedKeyRemote.ValueString())
+			}
+			if !item.PreSharedKeyEncryption.IsNull() && !item.PreSharedKeyEncryption.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/encryption", item.PreSharedKeyEncryption.ValueString())
+			}
+			if !item.PreSharedKey.IsNull() && !item.PreSharedKey.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/key", item.PreSharedKey.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/peer", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -267,6 +359,102 @@ func (data *CryptoIKEv2Keyring) updateFromBody(ctx context.Context, res gjson.Re
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CryptoIKEv2Keyring) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	for i := range data.Peers {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Peers[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Peers[i].Name.IsNull() {
+			data.Peers[i].Name = types.StringValue(value.String())
+		} else {
+			data.Peers[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "description"); value.Exists() && !data.Peers[i].Description.IsNull() {
+			data.Peers[i].Description = types.StringValue(value.String())
+		} else {
+			data.Peers[i].Description = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "hostname"); value.Exists() && !data.Peers[i].Hostname.IsNull() {
+			data.Peers[i].Hostname = types.StringValue(value.String())
+		} else {
+			data.Peers[i].Hostname = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "address/ipv4/ipv4-address"); value.Exists() && !data.Peers[i].Ipv4Address.IsNull() {
+			data.Peers[i].Ipv4Address = types.StringValue(value.String())
+		} else {
+			data.Peers[i].Ipv4Address = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "address/ipv4/ipv4-mask"); value.Exists() && !data.Peers[i].Ipv4Mask.IsNull() {
+			data.Peers[i].Ipv4Mask = types.StringValue(value.String())
+		} else {
+			data.Peers[i].Ipv4Mask = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "address/ipv6-prefix"); value.Exists() && !data.Peers[i].Ipv6Prefix.IsNull() {
+			data.Peers[i].Ipv6Prefix = types.StringValue(value.String())
+		} else {
+			data.Peers[i].Ipv6Prefix = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "identity/key-id-number"); value.Exists() && !data.Peers[i].IdentityKeyId.IsNull() {
+			data.Peers[i].IdentityKeyId = types.StringValue(value.String())
+		} else {
+			data.Peers[i].IdentityKeyId = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "identity/address-type"); value.Exists() && !data.Peers[i].IdentityAddress.IsNull() {
+			data.Peers[i].IdentityAddress = types.StringValue(value.String())
+		} else {
+			data.Peers[i].IdentityAddress = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "identity/email-option/name"); value.Exists() && !data.Peers[i].IdentityEmailName.IsNull() {
+			data.Peers[i].IdentityEmailName = types.StringValue(value.String())
+		} else {
+			data.Peers[i].IdentityEmailName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "identity/email-option/domain"); value.Exists() && !data.Peers[i].IdentityEmailDomain.IsNull() {
+			data.Peers[i].IdentityEmailDomain = types.StringValue(value.String())
+		} else {
+			data.Peers[i].IdentityEmailDomain = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "identity/fqdn-option/name"); value.Exists() && !data.Peers[i].IdentityFqdnName.IsNull() {
+			data.Peers[i].IdentityFqdnName = types.StringValue(value.String())
+		} else {
+			data.Peers[i].IdentityFqdnName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "identity/fqdn-option/domain"); value.Exists() && !data.Peers[i].IdentityFqdnDomain.IsNull() {
+			data.Peers[i].IdentityFqdnDomain = types.StringValue(value.String())
+		} else {
+			data.Peers[i].IdentityFqdnDomain = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -414,6 +602,144 @@ func (data *CryptoIKEv2KeyringData) fromBody(ctx context.Context, res gjson.Resu
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CryptoIKEv2Keyring) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer"); value.Exists() {
+		data.Peers = make([]CryptoIKEv2KeyringPeers, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2KeyringPeers{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hostname"); cValue.Exists() {
+				item.Hostname = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/ipv4/ipv4-address"); cValue.Exists() {
+				item.Ipv4Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/ipv4/ipv4-mask"); cValue.Exists() {
+				item.Ipv4Mask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/ipv6-prefix"); cValue.Exists() {
+				item.Ipv6Prefix = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/key-id-number"); cValue.Exists() {
+				item.IdentityKeyId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/address-type"); cValue.Exists() {
+				item.IdentityAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/email-option/name"); cValue.Exists() {
+				item.IdentityEmailName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/email-option/domain"); cValue.Exists() {
+				item.IdentityEmailDomain = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/fqdn-option/name"); cValue.Exists() {
+				item.IdentityFqdnName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/fqdn-option/domain"); cValue.Exists() {
+				item.IdentityFqdnDomain = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/local-option/encryption"); cValue.Exists() {
+				item.PreSharedKeyLocalEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/local-option/key"); cValue.Exists() {
+				item.PreSharedKeyLocal = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/remote-option/encryption"); cValue.Exists() {
+				item.PreSharedKeyRemoteEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/remote-option/key"); cValue.Exists() {
+				item.PreSharedKeyRemote = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/encryption"); cValue.Exists() {
+				item.PreSharedKeyEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/key"); cValue.Exists() {
+				item.PreSharedKey = types.StringValue(cValue.String())
+			}
+			data.Peers = append(data.Peers, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CryptoIKEv2KeyringData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer"); value.Exists() {
+		data.Peers = make([]CryptoIKEv2KeyringPeers, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2KeyringPeers{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hostname"); cValue.Exists() {
+				item.Hostname = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/ipv4/ipv4-address"); cValue.Exists() {
+				item.Ipv4Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/ipv4/ipv4-mask"); cValue.Exists() {
+				item.Ipv4Mask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/ipv6-prefix"); cValue.Exists() {
+				item.Ipv6Prefix = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/key-id-number"); cValue.Exists() {
+				item.IdentityKeyId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/address-type"); cValue.Exists() {
+				item.IdentityAddress = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/email-option/name"); cValue.Exists() {
+				item.IdentityEmailName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/email-option/domain"); cValue.Exists() {
+				item.IdentityEmailDomain = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/fqdn-option/name"); cValue.Exists() {
+				item.IdentityFqdnName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "identity/fqdn-option/domain"); cValue.Exists() {
+				item.IdentityFqdnDomain = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/local-option/encryption"); cValue.Exists() {
+				item.PreSharedKeyLocalEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/local-option/key"); cValue.Exists() {
+				item.PreSharedKeyLocal = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/remote-option/encryption"); cValue.Exists() {
+				item.PreSharedKeyRemoteEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/remote-option/key"); cValue.Exists() {
+				item.PreSharedKeyRemote = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/encryption"); cValue.Exists() {
+				item.PreSharedKeyEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "pre-shared-key/key"); cValue.Exists() {
+				item.PreSharedKey = types.StringValue(cValue.String())
+			}
+			data.Peers = append(data.Peers, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CryptoIKEv2Keyring) getDeletedItems(ctx context.Context, state CryptoIKEv2Keyring) []string {
@@ -500,6 +826,98 @@ func (data *CryptoIKEv2Keyring) getDeletedItems(ctx context.Context, state Crypt
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CryptoIKEv2Keyring) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2Keyring, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Peers {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Peers[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Peers[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Peers {
+			found = true
+			if state.Peers[i].Name.ValueString() != data.Peers[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Peers[i].PreSharedKey.IsNull() && data.Peers[j].PreSharedKey.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/key", predicates))
+				}
+				if !state.Peers[i].PreSharedKeyEncryption.IsNull() && data.Peers[j].PreSharedKeyEncryption.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/encryption", predicates))
+				}
+				if !state.Peers[i].PreSharedKeyRemote.IsNull() && data.Peers[j].PreSharedKeyRemote.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/remote-option/key", predicates))
+				}
+				if !state.Peers[i].PreSharedKeyRemoteEncryption.IsNull() && data.Peers[j].PreSharedKeyRemoteEncryption.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/remote-option/encryption", predicates))
+				}
+				if !state.Peers[i].PreSharedKeyLocal.IsNull() && data.Peers[j].PreSharedKeyLocal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/local-option/key", predicates))
+				}
+				if !state.Peers[i].PreSharedKeyLocalEncryption.IsNull() && data.Peers[j].PreSharedKeyLocalEncryption.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/pre-shared-key/local-option/encryption", predicates))
+				}
+				if !state.Peers[i].IdentityFqdnDomain.IsNull() && data.Peers[j].IdentityFqdnDomain.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/fqdn-option/domain", predicates))
+				}
+				if !state.Peers[i].IdentityFqdnName.IsNull() && data.Peers[j].IdentityFqdnName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/fqdn-option/name", predicates))
+				}
+				if !state.Peers[i].IdentityEmailDomain.IsNull() && data.Peers[j].IdentityEmailDomain.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/email-option/domain", predicates))
+				}
+				if !state.Peers[i].IdentityEmailName.IsNull() && data.Peers[j].IdentityEmailName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/email-option/name", predicates))
+				}
+				if !state.Peers[i].IdentityAddress.IsNull() && data.Peers[j].IdentityAddress.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/address-type", predicates))
+				}
+				if !state.Peers[i].IdentityKeyId.IsNull() && data.Peers[j].IdentityKeyId.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/identity/key-id-number", predicates))
+				}
+				if !state.Peers[i].Ipv6Prefix.IsNull() && data.Peers[j].Ipv6Prefix.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/address/ipv6-prefix", predicates))
+				}
+				if !state.Peers[i].Ipv4Mask.IsNull() && data.Peers[j].Ipv4Mask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/address/ipv4/ipv4-mask", predicates))
+				}
+				if !state.Peers[i].Ipv4Address.IsNull() && data.Peers[j].Ipv4Address.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/address/ipv4/ipv4-address", predicates))
+				}
+				if !state.Peers[i].Hostname.IsNull() && data.Peers[j].Hostname.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/hostname", predicates))
+				}
+				if !state.Peers[i].Description.IsNull() && data.Peers[j].Description.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/description", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CryptoIKEv2Keyring) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -524,3 +942,24 @@ func (data *CryptoIKEv2Keyring) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CryptoIKEv2Keyring) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Peers {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Peers[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/peer%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

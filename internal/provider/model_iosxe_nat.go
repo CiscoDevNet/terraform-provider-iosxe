@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -81,6 +84,17 @@ func (data NAT) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data NAT) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat"
+	return path
+}
+
+func (data NATData) getXPath() string {
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat"
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -112,6 +126,44 @@ func (data NAT) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data NAT) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.InsideSourceInterfaces) > 0 {
+		for _, item := range data.InsideSourceInterfaces {
+			cBody := netconf.Body{}
+			if !item.Id.IsNull() && !item.Id.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "id", item.Id.ValueString())
+			}
+			if len(item.Interfaces) > 0 {
+				for _, citem := range item.Interfaces {
+					ccBody := netconf.Body{}
+					if !citem.Interface.IsNull() && !citem.Interface.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "name", citem.Interface.ValueString())
+					}
+					if !citem.Overload.IsNull() && !citem.Overload.IsUnknown() {
+						if citem.Overload.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "overload-new", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "overload-new")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "interface", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/inside/source/list-interface/list", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -191,6 +243,80 @@ func (data *NAT) updateFromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *NAT) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.InsideSourceInterfaces {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.InsideSourceInterfaces[i].Id.IsNull() {
+			data.InsideSourceInterfaces[i].Id = types.StringValue(value.String())
+		} else {
+			data.InsideSourceInterfaces[i].Id = types.StringNull()
+		}
+		for ci := range data.InsideSourceInterfaces[i].Interfaces {
+			keys := [...]string{"name"}
+			keyValues := [...]string{data.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "interface").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "name"); value.Exists() && !data.InsideSourceInterfaces[i].Interfaces[ci].Interface.IsNull() {
+				data.InsideSourceInterfaces[i].Interfaces[ci].Interface = types.StringValue(value.String())
+			} else {
+				data.InsideSourceInterfaces[i].Interfaces[ci].Interface = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "overload-new"); !data.InsideSourceInterfaces[i].Interfaces[ci].Overload.IsNull() {
+				if value.Exists() {
+					data.InsideSourceInterfaces[i].Interfaces[ci].Overload = types.BoolValue(true)
+				} else {
+					data.InsideSourceInterfaces[i].Interfaces[ci].Overload = types.BoolValue(false)
+				}
+			} else {
+				data.InsideSourceInterfaces[i].Interfaces[ci].Overload = types.BoolNull()
+			}
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *NAT) fromBody(ctx context.Context, res gjson.Result) {
@@ -267,6 +393,74 @@ func (data *NATData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *NAT) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list"); value.Exists() {
+		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := NATInsideSourceInterfaces{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
+				item.Interfaces = make([]NATInsideSourceInterfacesInterfaces, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := NATInsideSourceInterfacesInterfaces{}
+					if ccValue := helpers.GetFromXPath(cv, "name"); ccValue.Exists() {
+						cItem.Interface = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "overload-new"); ccValue.Exists() {
+						cItem.Overload = types.BoolValue(true)
+					} else {
+						cItem.Overload = types.BoolValue(false)
+					}
+					item.Interfaces = append(item.Interfaces, cItem)
+					return true
+				})
+			}
+			data.InsideSourceInterfaces = append(data.InsideSourceInterfaces, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *NATData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list"); value.Exists() {
+		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := NATInsideSourceInterfaces{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
+				item.Interfaces = make([]NATInsideSourceInterfacesInterfaces, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := NATInsideSourceInterfacesInterfaces{}
+					if ccValue := helpers.GetFromXPath(cv, "name"); ccValue.Exists() {
+						cItem.Interface = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "overload-new"); ccValue.Exists() {
+						cItem.Overload = types.BoolValue(true)
+					} else {
+						cItem.Overload = types.BoolValue(false)
+					}
+					item.Interfaces = append(item.Interfaces, cItem)
+					return true
+				})
+			}
+			data.InsideSourceInterfaces = append(data.InsideSourceInterfaces, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
@@ -330,6 +524,80 @@ func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *NAT) addDeletedItemsXML(ctx context.Context, state NAT, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.InsideSourceInterfaces {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{state.InsideSourceInterfaces[i].Id.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.InsideSourceInterfaces[i].Id.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.InsideSourceInterfaces {
+			found = true
+			if state.InsideSourceInterfaces[i].Id.ValueString() != data.InsideSourceInterfaces[j].Id.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.InsideSourceInterfaces[i].Interfaces {
+					cstateKeys := [...]string{"name"}
+					cstateKeyValues := [...]string{state.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.InsideSourceInterfaces[j].Interfaces {
+						found = true
+						if state.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString() != data.InsideSourceInterfaces[j].Interfaces[cj].Interface.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.InsideSourceInterfaces[i].Interfaces[ci].Overload.IsNull() && data.InsideSourceInterfaces[j].Interfaces[cj].Overload.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/list-interface/list%v/interface%v/overload-new", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/list-interface/list%v/interface%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/list-interface/list%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *NAT) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -365,3 +633,24 @@ func (data *NAT) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *NAT) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.InsideSourceInterfaces {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/inside/source/list-interface/list%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

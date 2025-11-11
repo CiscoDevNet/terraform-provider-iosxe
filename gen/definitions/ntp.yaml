@@ -1,6 +1,6 @@
 ---
 name: NTP
-path: Cisco-IOS-XE-native:native/ntp
+path: /Cisco-IOS-XE-native:native/ntp
 doc_category: System
 attributes:
   - yang_name: Cisco-IOS-XE-ntp:authenticate
@@ -214,18 +214,18 @@ attributes:
         example: 1
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=SACL1
+  - path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=SACL1]
     attributes:
       - name: name
         value: SACL1
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]
     attributes:
       - name: name
         value: 1

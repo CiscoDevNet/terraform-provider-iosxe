@@ -43,7 +43,7 @@ func testAccPreCheck(t *testing.T) {
 	if v := os.Getenv("IOSXE_PASSWORD"); v == "" {
 		t.Fatal("IOSXE_PASSWORD env variable must be set for acceptance tests")
 	}
-	if v := os.Getenv("IOSXE_URL"); v == "" {
-		t.Fatal("IOSXE_URL env variable must be set for acceptance tests")
+	if v := os.Getenv("IOSXE_HOST"); v == "" {
+		t.Fatal("IOSXE_HOST env variable must be set for acceptance tests")
 	}
 }

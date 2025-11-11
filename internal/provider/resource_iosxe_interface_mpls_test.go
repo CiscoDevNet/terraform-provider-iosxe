@@ -77,8 +77,8 @@ func iosxeInterfaceMPLSImportStateIdFunc(resourceName string) resource.ImportSta
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfaceMPLSPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
 	}
@@ -94,7 +94,7 @@ func testAccIosxeInterfaceMPLSConfig_minimum() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -109,7 +109,7 @@ func testAccIosxeInterfaceMPLSConfig_all() string {
 	config += `	name = "1"` + "\n"
 	config += `	ip = true` + "\n"
 	config += `	mtu = "1200"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

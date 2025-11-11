@@ -1,6 +1,6 @@
 ---
 name: Crypto IKEv2 Policy
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy=%v
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy[name=%v]
 no_delete_attributes: true
 doc_category: Crypto
 attributes:
@@ -27,7 +27,7 @@ attributes:
         example: proposal123
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=proposal123
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal[name=proposal123]
     attributes:
       - name: name
         value: proposal123

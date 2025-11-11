@@ -37,7 +37,8 @@ func TestAccIosxeBGP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "asn", "65000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "default_ipv4_unicast", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "log_neighbor_changes", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "router_id_loopback", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "bgp_graceful_restart", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "bgp_update_delay", "200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -78,8 +79,8 @@ func iosxeBGPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 		"ip/address/primary/address" = "200.200.200.200"
@@ -96,7 +97,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeBGPConfig_minimum() string {
 	config := `resource "iosxe_bgp" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -110,8 +111,9 @@ func testAccIosxeBGPConfig_all() string {
 	config += `	asn = "65000"` + "\n"
 	config += `	default_ipv4_unicast = false` + "\n"
 	config += `	log_neighbor_changes = true` + "\n"
-	config += `	router_id_loopback = 100` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	bgp_graceful_restart = true` + "\n"
+	config += `	bgp_update_delay = 200` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

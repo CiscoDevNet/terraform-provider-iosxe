@@ -38,6 +38,16 @@ func TestAccDataSourceIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "default_metric", "21"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "distance", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "domain_tag", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "log_adjacency_changes", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "nsf_ietf", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "nsf_ietf_restart_interval", "120"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_summary_lsa_metric", "16711680"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_external_lsa_metric", "16711680"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_include_stub", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_on_startup_time", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_subnets", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_subnets", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "neighbor.0.ip", "2.2.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "neighbor.0.priority", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "neighbor.0.cost", "100"))
@@ -75,8 +85,8 @@ func TestAccDataSourceIosxeOSPFVRF(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeOSPFVRFPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -101,6 +111,16 @@ func testAccDataSourceIosxeOSPFVRFConfig() string {
 	config += `	default_metric = 21` + "\n"
 	config += `	distance = 120` + "\n"
 	config += `	domain_tag = 10` + "\n"
+	config += `	log_adjacency_changes = true` + "\n"
+	config += `	nsf_ietf = true` + "\n"
+	config += `	nsf_ietf_restart_interval = 120` + "\n"
+	config += `	max_metric_router_lsa = true` + "\n"
+	config += `	max_metric_router_lsa_summary_lsa_metric = 16711680` + "\n"
+	config += `	max_metric_router_lsa_external_lsa_metric = 16711680` + "\n"
+	config += `	max_metric_router_lsa_include_stub = true` + "\n"
+	config += `	max_metric_router_lsa_on_startup_time = 60` + "\n"
+	config += `	redistribute_static_subnets = true` + "\n"
+	config += `	redistribute_connected_subnets = true` + "\n"
 	config += `	neighbor = [{` + "\n"
 	config += `		ip = "2.2.2.2"` + "\n"
 	config += `		priority = 10` + "\n"
@@ -130,7 +150,7 @@ func testAccDataSourceIosxeOSPFVRFConfig() string {
 	config += `	}]` + "\n"
 	config += `	auto_cost_reference_bandwidth = 40000` + "\n"
 	config += `	passive_interface_default = true` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -51,6 +51,11 @@ data "iosxe_flow_record" "example" {
 - `match_connection_server_ipv4_address` (Boolean) IPv4 address of the flow responder
 - `match_connection_server_ipv6_address` (Boolean) IPv6 address of the flow responder
 - `match_connection_server_transport_port` (Boolean) Transport port of the flow responder
+- `match_datalink_destination_vlan_id` (Boolean) Match destination VLAN ID, available on router platforms (C8K, CSR1K)
+- `match_datalink_mac_destination_address_input` (Boolean) Destination MAC address from packet at input
+- `match_datalink_mac_source_address_input` (Boolean) Source MAC address from packet at input
+- `match_datalink_source_vlan_id` (Boolean) Match source VLAN ID, available on router platforms (C8K, CSR1K)
+- `match_datalink_vlan` (String) Match VLAN input/output, available on switch platforms (C9K)
 - `match_flow_direction` (Boolean) Direction the flow was monitored in
 - `match_flow_observation_point` (Boolean) Observation point ID
 - `match_interface_input` (Boolean) The input interface
@@ -58,6 +63,7 @@ data "iosxe_flow_record" "example" {
 - `match_ipv4_protocol` (Boolean) IPv4 protocol
 - `match_ipv4_source_address` (Boolean) IPv4 source address
 - `match_ipv4_tos` (Boolean) IPv4 type of service
+- `match_ipv4_ttl` (Boolean) IPv4 TTL
 - `match_ipv4_version` (Boolean) IP version from IPv4 header
 - `match_ipv6_destination_address` (Boolean) IPv6 destination address
 - `match_ipv6_protocol` (Boolean) IPv6 payload protocol

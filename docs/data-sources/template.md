@@ -52,6 +52,10 @@ data "iosxe_template" "example" {
 - `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
 - `dot1x_max_req` (Number) Max No. of Retries
 - `dot1x_pae` (String) Set 802.1x interface pae type
+- `dot1x_timeout_quiet_period` (Number) QuietPeriod in Seconds
+- `dot1x_timeout_ratelimit_period` (Number) Ratelimit Period in seconds
+- `dot1x_timeout_server_timeout` (Number) Timeout for Radius Retries
+- `dot1x_timeout_supp_timeout` (Number) Timeout for supplicant reply
 - `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
 - `id` (String) The path of the retrieved object.
 - `ip_access_group` (Attributes List) Access control list for IP packets (see [below for nested schema](#nestedatt--ip_access_group))

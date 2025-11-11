@@ -1,6 +1,6 @@
 ---
 name: Interface VLAN
-path: Cisco-IOS-XE-native:native/interface/Vlan=%v
+path: /Cisco-IOS-XE-native:native/interface/Vlan[name=%v]
 test_tags: [C9000V]
 doc_category: Interface
 attributes:
@@ -75,6 +75,7 @@ attributes:
         example: VRF1
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
     example: bfd_template1
+    no_delete: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
     example: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
@@ -133,9 +134,11 @@ attributes:
     example: 30
   - yang_name: mac-address
     example: 0000.dead.beef
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id
+    example: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

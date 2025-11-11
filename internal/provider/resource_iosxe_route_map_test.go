@@ -115,7 +115,7 @@ func TestAccIosxeRouteMap(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_as_path_tag_legacy", "true"))
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_communities_legacy.0", "1:2"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_communities_legacy.0", "no-export"))
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_communities_additive_legacy", "true"))
@@ -192,8 +192,8 @@ func iosxeRouteMapImportStateIdFunc(resourceName string) resource.ImportStateIdF
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeRouteMapPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
 	}
@@ -208,7 +208,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeRouteMapConfig_minimum() string {
 	config := `resource "iosxe_route_map" "test" {` + "\n"
 	config += `	name = "RM1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -300,7 +300,7 @@ func testAccIosxeRouteMapConfig_all() string {
 		config += `		set_as_path_tag_legacy = true` + "\n"
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		config += `		set_communities_legacy = ["1:2"]` + "\n"
+		config += `		set_communities_legacy = ["no-export"]` + "\n"
 	}
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_communities_additive_legacy = true` + "\n"
@@ -338,7 +338,7 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `		set_local_preference = 110` + "\n"
 	config += `		set_weight = 10000` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
