@@ -244,7 +244,7 @@ func (r *VLANGroupResource) Read(ctx context.Context, req resource.ReadRequest, 
 				return
 			}
 
-			if helpers.IsGetConfigResponseEmpty(&res) {
+			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
 				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
 				resp.State.RemoveResource(ctx)
 				return

@@ -351,7 +351,7 @@ func (r *CryptoIKEv2ProfileResource) Read(ctx context.Context, req resource.Read
 				return
 			}
 
-			if helpers.IsGetConfigResponseEmpty(&res) {
+			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
 				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
 				resp.State.RemoveResource(ctx)
 				return

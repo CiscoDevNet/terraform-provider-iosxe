@@ -1065,12 +1065,50 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 	return xmldot.Get(xml, finalPath)
 }
 
+// IsListPath checks if an XPath represents a list item (ends with a predicate).
+// List items have predicates like [name='value'] or [name=value] at the end of their XPath,
+// while containers/singletons don't end with predicates.
+//
+// This is useful for determining if an empty GetConfig response should be
+// interpreted as "resource not found" (for list items) vs other semantics.
+//
+// Parameters:
+//   - xPath: The XPath to check
+//
+// Returns:
+//   - true if the path ends with a predicate (is a list item)
+//   - false if the path does not end with a predicate (is a container/singleton)
+//
+// Examples:
+//   - "/native/interface/Vlan[name=10]" → true (ends with predicate)
+//   - "/native/interface/GigabitEthernet[name='1/0/1']" → true (ends with predicate)
+//   - "/native/router/bgp[id=65000]/neighbor" → false (has predicate but doesn't end with one)
+//   - "/native/clock" → false (container)
+//   - "/native/hostname" → false (singleton)
+func IsListPath(xPath string) bool {
+	// Trim whitespace
+	xPath = strings.TrimSpace(xPath)
+
+	// Check if the path ends with a closing bracket (predicate)
+	// A list path will end with something like [name='value']
+	return strings.HasSuffix(xPath, "]")
+}
+
 // IsGetConfigResponseEmpty checks if a GetConfig response has an empty <data> element.
 // Returns true if the response contains <data></data> with no child elements,
 // indicating that the requested configuration does not exist on the device.
 //
 // This is useful for determining if a resource exists before attempting to parse
 // its attributes, particularly during Read operations or import.
+//
+// IMPORTANT: This should typically be combined with IsListPath() to only treat
+// empty responses as "not found" for list items:
+//
+//	if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+//	    // List item does not exist
+//	    resp.State.RemoveResource(ctx)
+//	    return
+//	}
 //
 // Parameters:
 //   - res: The NETCONF response from GetConfig operation
@@ -1085,9 +1123,10 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 //	if err != nil {
 //	    return err
 //	}
-//	if helpers.IsGetConfigResponseEmpty(res) {
-//	    // Resource does not exist
-//	    return nil
+//	if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+//	    // Resource does not exist (list item)
+//	    resp.State.RemoveResource(ctx)
+//	    return
 //	}
 //	// Parse the configuration
 //	state.fromBodyXML(ctx, res.Res)

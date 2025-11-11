@@ -1984,3 +1984,197 @@ func TestIsGetConfigResponseEmpty_NilInput(t *testing.T) {
 		t.Logf("✓ Correctly handles nil input")
 	}
 }
+
+// TestIsListPath tests the IsListPath helper function
+func TestIsListPath(t *testing.T) {
+	tests := []struct {
+		name     string
+		xPath    string
+		expected bool
+	}{
+		{
+			name:     "List item with simple predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/interface/Vlan[name=10]",
+			expected: true,
+		},
+		{
+			name:     "List item with quoted predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/interface/GigabitEthernet[name='1/0/1']",
+			expected: true,
+		},
+		{
+			name:     "List item with multiple predicates",
+			xPath:    "/native/vrf[name='VRF1'][af-name='ipv4']",
+			expected: true,
+		},
+		{
+			name:     "List item with formatted predicate",
+			xPath:    "/native/router/bgp[id=65000]/neighbor[id='10.0.0.1']",
+			expected: true,
+		},
+		{
+			name:     "Container without predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/clock",
+			expected: false,
+		},
+		{
+			name:     "Singleton without predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/hostname",
+			expected: false,
+		},
+		{
+			name:     "Deep container path",
+			xPath:    "/native/interface/GigabitEthernet/ip/address",
+			expected: false,
+		},
+		{
+			name:     "Predicate in middle but not at end (container under list item)",
+			xPath:    "/native/router/bgp[id=65000]/neighbor",
+			expected: false,
+		},
+		{
+			name:     "Predicate in middle with more nesting",
+			xPath:    "/native/router/bgp[id=65000]/neighbor[id='10.0.0.1']/remote-as",
+			expected: false,
+		},
+		{
+			name:     "Empty path",
+			xPath:    "",
+			expected: false,
+		},
+		{
+			name:     "Path with only opening bracket (malformed)",
+			xPath:    "/native/interface[name",
+			expected: false,
+		},
+		{
+			name:     "Path with only closing bracket (malformed)",
+			xPath:    "/native/interface]name",
+			expected: false,
+		},
+		{
+			name:     "Complex list path with namespace",
+			xPath:    "/Cisco-IOS-XE-native:native/interface/Cisco-IOS-XE-ethernet:Port-channel[name=10]",
+			expected: true,
+		},
+		{
+			name:     "List path with trailing whitespace",
+			xPath:    "/native/interface/Vlan[name=10]  \n",
+			expected: true,
+		},
+		{
+			name:     "Container path with trailing whitespace",
+			xPath:    "/native/clock  ",
+			expected: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := IsListPath(tt.xPath)
+			if result != tt.expected {
+				t.Errorf("IsListPath(%q) = %v, want %v", tt.xPath, result, tt.expected)
+			} else {
+				if result {
+					t.Logf("✓ Correctly identified as list path")
+				} else {
+					t.Logf("✓ Correctly identified as container/singleton path")
+				}
+			}
+		})
+	}
+}
+
+// TestIsGetConfigResponseEmpty_WithIsListPath demonstrates combined usage
+func TestIsGetConfigResponseEmpty_WithIsListPath(t *testing.T) {
+	tests := []struct {
+		name                  string
+		xml                   string
+		xPath                 string
+		shouldRemoveFromState bool
+	}{
+		{
+			name: "Empty response for list item - should remove",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data></data>
+			</rpc-reply>`,
+			xPath:                 "/native/interface/Vlan[name=10]",
+			shouldRemoveFromState: true,
+		},
+		{
+			name: "Empty response for container - should NOT remove",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data></data>
+			</rpc-reply>`,
+			xPath:                 "/native/clock",
+			shouldRemoveFromState: false,
+		},
+		{
+			name: "Non-empty response for list item - should NOT remove",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data>
+					<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+						<interface>
+							<Vlan>
+								<name>10</name>
+								<description>Test VLAN</description>
+							</Vlan>
+						</interface>
+					</native>
+				</data>
+			</rpc-reply>`,
+			xPath:                 "/native/interface/Vlan[name=10]",
+			shouldRemoveFromState: false,
+		},
+		{
+			name: "Non-empty response for container - should NOT remove",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data>
+					<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+						<clock>
+							<timezone>PST -8 0</timezone>
+						</clock>
+					</native>
+				</data>
+			</rpc-reply>`,
+			xPath:                 "/native/clock",
+			shouldRemoveFromState: false,
+		},
+		{
+			name: "Empty response for container under list item - should NOT remove",
+			xml: `<rpc-reply xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" message-id="1">
+				<data></data>
+			</rpc-reply>`,
+			xPath:                 "/native/router/bgp[id=65000]/neighbor",
+			shouldRemoveFromState: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Parse the XML into a netconf.Res structure
+			result := xmldot.Get(tt.xml, "rpc-reply")
+			res := &netconf.Res{
+				Res:       result,
+				OK:        true,
+				MessageID: "1",
+			}
+
+			// This is the pattern used in the resource template
+			isEmpty := IsGetConfigResponseEmpty(res)
+			isListPath := IsListPath(tt.xPath)
+			shouldRemove := isEmpty && isListPath
+
+			if shouldRemove != tt.shouldRemoveFromState {
+				t.Errorf("Combined check = %v, want %v (isEmpty=%v, isListPath=%v)",
+					shouldRemove, tt.shouldRemoveFromState, isEmpty, isListPath)
+			} else {
+				if shouldRemove {
+					t.Logf("✓ Correctly determined should remove from state (empty list item)")
+				} else {
+					t.Logf("✓ Correctly determined should NOT remove from state")
+				}
+			}
+		})
+	}
+}
