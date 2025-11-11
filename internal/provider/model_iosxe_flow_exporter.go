@@ -57,6 +57,7 @@ type FlowExporter struct {
 	SourceVlan                         types.Int64  `tfsdk:"source_vlan"`
 	SourcePortChannel                  types.Int64  `tfsdk:"source_port_channel"`
 	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
+	Ttl                                types.Int64  `tfsdk:"ttl"`
 	TemplateDataTimeout                types.Int64  `tfsdk:"template_data_timeout"`
 	ExportProtocol                     types.String `tfsdk:"export_protocol"`
 	OptionInterfaceTableTimeout        types.Int64  `tfsdk:"option_interface_table_timeout"`
@@ -83,6 +84,7 @@ type FlowExporterData struct {
 	SourceVlan                         types.Int64  `tfsdk:"source_vlan"`
 	SourcePortChannel                  types.Int64  `tfsdk:"source_port_channel"`
 	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
+	Ttl                                types.Int64  `tfsdk:"ttl"`
 	TemplateDataTimeout                types.Int64  `tfsdk:"template_data_timeout"`
 	ExportProtocol                     types.String `tfsdk:"export_protocol"`
 	OptionInterfaceTableTimeout        types.Int64  `tfsdk:"option_interface_table_timeout"`
@@ -176,6 +178,9 @@ func (data FlowExporter) toBody(ctx context.Context) string {
 	if !data.TransportUdp.IsNull() && !data.TransportUdp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"transport.udp", strconv.FormatInt(data.TransportUdp.ValueInt64(), 10))
 	}
+	if !data.Ttl.IsNull() && !data.Ttl.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ttl", strconv.FormatInt(data.Ttl.ValueInt64(), 10))
+	}
 	if !data.TemplateDataTimeout.IsNull() && !data.TemplateDataTimeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"template.data.timeout", strconv.FormatInt(data.TemplateDataTimeout.ValueInt64(), 10))
 	}
@@ -249,6 +254,9 @@ func (data FlowExporter) toBodyXML(ctx context.Context) string {
 	}
 	if !data.TransportUdp.IsNull() && !data.TransportUdp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/transport/udp", strconv.FormatInt(data.TransportUdp.ValueInt64(), 10))
+	}
+	if !data.Ttl.IsNull() && !data.Ttl.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ttl", strconv.FormatInt(data.Ttl.ValueInt64(), 10))
 	}
 	if !data.TemplateDataTimeout.IsNull() && !data.TemplateDataTimeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/template/data/timeout", strconv.FormatInt(data.TemplateDataTimeout.ValueInt64(), 10))
@@ -360,6 +368,11 @@ func (data *FlowExporter) updateFromBody(ctx context.Context, res gjson.Result) 
 		data.TransportUdp = types.Int64Value(value.Int())
 	} else {
 		data.TransportUdp = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ttl"); value.Exists() && !data.Ttl.IsNull() {
+		data.Ttl = types.Int64Value(value.Int())
+	} else {
+		data.Ttl = types.Int64Null()
 	}
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() && !data.TemplateDataTimeout.IsNull() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
@@ -477,6 +490,11 @@ func (data *FlowExporter) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.TransportUdp = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl"); value.Exists() && !data.Ttl.IsNull() {
+		data.Ttl = types.Int64Value(value.Int())
+	} else {
+		data.Ttl = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template/data/timeout"); value.Exists() && !data.TemplateDataTimeout.IsNull() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	} else {
@@ -566,6 +584,9 @@ func (data *FlowExporter) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "transport.udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ttl"); value.Exists() {
+		data.Ttl = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	}
@@ -639,6 +660,9 @@ func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "transport.udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ttl"); value.Exists() {
+		data.Ttl = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	}
@@ -707,6 +731,9 @@ func (data *FlowExporter) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/transport/udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl"); value.Exists() {
+		data.Ttl = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template/data/timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
@@ -777,6 +804,9 @@ func (data *FlowExporterData) fromBodyXML(ctx context.Context, res xmldot.Result
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/transport/udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl"); value.Exists() {
+		data.Ttl = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template/data/timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	}
@@ -828,6 +858,9 @@ func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporte
 	}
 	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/template/data/timeout", state.getPath()))
+	}
+	if !state.Ttl.IsNull() && data.Ttl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ttl", state.getPath()))
 	}
 	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/udp", state.getPath()))
@@ -898,6 +931,9 @@ func (data *FlowExporter) addDeletedItemsXML(ctx context.Context, state FlowExpo
 	}
 	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/template/data/timeout")
+	}
+	if !state.Ttl.IsNull() && data.Ttl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ttl")
 	}
 	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/transport/udp")
@@ -983,6 +1019,9 @@ func (data *FlowExporter) getDeletePaths(ctx context.Context) []string {
 	if !data.TemplateDataTimeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/template/data/timeout", data.getPath()))
 	}
+	if !data.Ttl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ttl", data.getPath()))
+	}
 	if !data.TransportUdp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/transport/udp", data.getPath()))
 	}
@@ -1052,6 +1091,9 @@ func (data *FlowExporter) addDeletePathsXML(ctx context.Context, body string) st
 	}
 	if !data.TemplateDataTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/template/data/timeout")
+	}
+	if !data.Ttl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ttl")
 	}
 	if !data.TransportUdp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/transport/udp")

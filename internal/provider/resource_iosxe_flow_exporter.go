@@ -161,6 +161,13 @@ func (r *FlowExporterResource) Schema(ctx context.Context, req resource.SchemaRe
 					int64validator.Between(0, 65535),
 				},
 			},
+			"ttl": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Optional TTL or hop limit").AddIntegerRangeDescription(0, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 255),
+				},
+			},
 			"template_data_timeout": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Resend data based on a timeout").AddIntegerRangeDescription(1, 86400).String,
 				Optional:            true,

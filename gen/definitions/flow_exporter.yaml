@@ -62,6 +62,8 @@ attributes:
     example: 1
   - yang_name: transport/udp
     example: 655
+  - yang_name: ttl
+    example: 64
   - yang_name: template/data/timeout
     example: 60
   - yang_name: export-protocol

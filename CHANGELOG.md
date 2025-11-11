@@ -2,6 +2,8 @@
 
 - Fix error when trying to delete resources via NETCONF which no longer exist
 - Add `dot1x_timeout_quiet_period`, `dot1x_timeout_supp_timeout`, `dot1x_timeout_ratelimit_period`, and `dot1x_timeout_server_timeout` attributes to `iosxe_template` resource and data source
+- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- Add `ttl` attribute to `iosxe_flow_exporter` resource and data source
 
 ## 0.10.0
 

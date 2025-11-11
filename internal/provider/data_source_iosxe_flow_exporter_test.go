@@ -36,6 +36,7 @@ func TestAccDataSourceIosxeFlowExporter(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_exporter.test", "destination_ip", "1.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_exporter.test", "source_loopback", "123"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_exporter.test", "transport_udp", "655"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_exporter.test", "ttl", "64"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_exporter.test", "template_data_timeout", "60"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -64,6 +65,7 @@ func testAccDataSourceIosxeFlowExporterConfig() string {
 	config += `	destination_ip = "1.1.1.1"` + "\n"
 	config += `	source_loopback = 123` + "\n"
 	config += `	transport_udp = 655` + "\n"
+	config += `	ttl = 64` + "\n"
 	config += `	template_data_timeout = 60` + "\n"
 	config += `}` + "\n"
 
