@@ -1,6 +1,6 @@
 ---
 name: Interface Port Channel Subinterface
-path: Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]
+path: /Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]
 test_tags: [C9000V]
 doc_category: Interface
 attributes:
@@ -109,6 +109,7 @@ attributes:
         example: VRF1
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
     example: bfd_template1
+    no_delete: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
     example: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address

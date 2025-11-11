@@ -180,13 +180,13 @@ func (data InterfacePortChannelSubinterface) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfacePortChannelSubinterface) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data InterfacePortChannelSubinterfaceData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
@@ -2570,9 +2570,6 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", state.getPath()))
 	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", state.getPath()))
-	}
 	for i := range state.HelperAddresses {
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
 
@@ -2799,9 +2796,6 @@ func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Con
 	}
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
-	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
 	}
 	for i := range state.HelperAddresses {
 		stateKeys := [...]string{"address"}
@@ -3071,9 +3065,6 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	if !data.BfdEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
 	}
-	if !data.BfdTemplate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
-	}
 	for i := range data.HelperAddresses {
 		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
 
@@ -3228,9 +3219,6 @@ func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Cont
 	}
 	if !data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
-	}
-	if !data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
 	}
 	for i := range data.HelperAddresses {
 		keys := [...]string{"address"}

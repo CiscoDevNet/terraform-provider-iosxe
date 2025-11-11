@@ -55,7 +55,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "crypto_ipsec_df_bit", "clear"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "arp_timeout", "300"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address", "10.2.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address_mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_mtu", "1200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_dhcp_relay_source_interface", "Loopback100"))
@@ -170,7 +170,7 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 		config += `	crypto_ipsec_df_bit = "clear"` + "\n"
 	}
 	config += `	arp_timeout = 300` + "\n"
-	config += `	ipv4_address = "10.1.1.1"` + "\n"
+	config += `	ipv4_address = "10.2.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
 	config += `	ip_mtu = 1200` + "\n"
 	config += `	ip_dhcp_relay_source_interface = "Loopback100"` + "\n"

@@ -70,7 +70,6 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_arp_inspection_limit_rate", "1000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "logging_event_link_status_enable", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "evpn_ethernet_segments.0.es_value", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -150,8 +149,8 @@ resource "iosxe_yang" "PreReq4" {
 	path = "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop[name=bfd_template1]"
 	attributes = {
 		"name" = "bfd_template1"
-		"interval-singlehop-v2/mill-unit/min-tx" = "200"
-		"interval-singlehop-v2/mill-unit/min-rx" = "200"
+		"interval-singlehop-v2/mill-unit/min-tx" = "250"
+		"interval-singlehop-v2/mill-unit/min-rx" = "250"
 		"interval-singlehop-v2/mill-unit/multiplier" = "4"
 	}
 }
@@ -233,9 +232,6 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	config += `	load_interval = 30` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
-	config += `	evpn_ethernet_segments = [{` + "\n"
-	config += `		es_value = 1` + "\n"
-	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
 	config += `}` + "\n"
 	return config

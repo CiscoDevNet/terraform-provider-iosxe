@@ -62,7 +62,6 @@ func TestAccDataSourceIosxeEVPNEthernetSegment(t *testing.T) {
 
 func testAccDataSourceIosxeEVPNEthernetSegmentConfig() string {
 	config := `resource "iosxe_evpn_ethernet_segment" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	es_value = 1` + "\n"
 	config += `	df_election_wait_time = 3` + "\n"
 	config += `	redundancy_all_active = false` + "\n"

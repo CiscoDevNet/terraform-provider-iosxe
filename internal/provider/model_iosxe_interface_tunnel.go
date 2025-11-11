@@ -2142,9 +2142,6 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", state.getPath()))
 	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", state.getPath()))
-	}
 	if !state.TunnelModeIpsecIpv4.IsNull() && data.TunnelModeIpsecIpv4.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4", state.getPath()))
 	}
@@ -2349,9 +2346,6 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 	}
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
-	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
 	}
 	if !state.TunnelModeIpsecIpv4.IsNull() && data.TunnelModeIpsecIpv4.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4")
@@ -2629,9 +2623,6 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	if !data.BfdEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
 	}
-	if !data.BfdTemplate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
-	}
 	if !data.TunnelModeIpsecIpv4.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4", data.getPath()))
 	}
@@ -2764,9 +2755,6 @@ func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string)
 	}
 	if !data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
-	}
-	if !data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
 	}
 	if !data.TunnelModeIpsecIpv4.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4")

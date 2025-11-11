@@ -3251,9 +3251,6 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", state.getPath()))
 	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", state.getPath()))
-	}
 	for i := range state.HelperAddresses {
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
 
@@ -3568,9 +3565,6 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
 	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
-	}
 	for i := range state.HelperAddresses {
 		stateKeys := [...]string{"address"}
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
@@ -3883,9 +3877,6 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	if !data.BfdEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
 	}
-	if !data.BfdTemplate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
-	}
 	for i := range data.HelperAddresses {
 		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
 
@@ -4087,9 +4078,6 @@ func (data *InterfacePortChannel) addDeletePathsXML(ctx context.Context, body st
 	}
 	if !data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
-	}
-	if !data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
 	}
 	for i := range data.HelperAddresses {
 		keys := [...]string{"address"}

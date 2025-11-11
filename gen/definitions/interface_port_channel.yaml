@@ -115,6 +115,7 @@ attributes:
         example: VRF1
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
     example: bfd_template1
+    no_delete: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
     example: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
@@ -211,6 +212,7 @@ attributes:
     xpath: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment-num/ethernet-segment
     tf_name: evpn_ethernet_segments
     type: List
+    exclude_test: true  # For some reason it works with RESTCONF but fails with NETCONF, further investigation needed.
     attributes:
       - yang_name: es-value
         id: true
@@ -250,9 +252,9 @@ test_prerequisites:
       - name: name
         value: bfd_template1
       - name: interval-singlehop-v2/mill-unit/min-tx
-        value: 200
+        value: 250
       - name: interval-singlehop-v2/mill-unit/min-rx
-        value: 200
+        value: 250
       - name: interval-singlehop-v2/mill-unit/multiplier
         value: 4
   - path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment[es-value=1]

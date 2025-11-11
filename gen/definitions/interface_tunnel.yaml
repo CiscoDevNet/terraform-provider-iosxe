@@ -69,7 +69,7 @@ attributes:
     xpath: ip/address/primary/address
     tf_name: ipv4_address
     delete_parent: true
-    example: 10.1.1.1
+    example: 10.2.1.1
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
     xpath: ip/address/primary/mask
     tf_name: ipv4_address_mask
@@ -125,6 +125,7 @@ attributes:
     test_tags: [C8000V]
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
     example: bfd_template1
+    no_delete: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
     example: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
