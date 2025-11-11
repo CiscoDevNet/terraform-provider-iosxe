@@ -28,7 +28,6 @@ test-1715-router:
 	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1715-router.log")
 	$(if $(NAME),@echo "Running tests matching: $(NAME)")
 	@TF_ACC=1 \
-	IOSXE_URL=$(IOSXE_1715_ROUTER_URL) \
 	IOSXE_HOST=$(IOSXE_1715_ROUTER_HOST) \
 	IOSXE_USERNAME=$(or $(IOSXE_1715_ROUTER_USERNAME),$(IOSXE_USERNAME)) \
 	IOSXE_PASSWORD=$(or $(IOSXE_1715_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
@@ -48,7 +47,6 @@ test-1715-switch:
 	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1715-switch.log")
 	$(if $(NAME),@echo "Running tests matching: $(NAME)")
 	@TF_ACC=1 \
-	IOSXE_URL=$(IOSXE_1715_SWITCH_URL) \
 	IOSXE_HOST=$(IOSXE_1715_SWITCH_HOST) \
 	IOSXE_USERNAME=$(or $(IOSXE_1715_SWITCH_USERNAME),$(IOSXE_USERNAME)) \
 	IOSXE_PASSWORD=$(or $(IOSXE_1715_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
@@ -68,7 +66,6 @@ test-1712-router:
 	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1712-router.log")
 	$(if $(NAME),@echo "Running tests matching: $(NAME)")
 	@TF_ACC=1 \
-	IOSXE_URL=$(IOSXE_1712_ROUTER_URL) \
 	IOSXE_HOST=$(IOSXE_1712_ROUTER_HOST) \
 	IOSXE_USERNAME=$(or $(IOSXE_1712_ROUTER_USERNAME),$(IOSXE_USERNAME)) \
 	IOSXE_PASSWORD=$(or $(IOSXE_1712_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
@@ -88,7 +85,6 @@ test-1712-switch:
 	$(if $(DEBUG),@echo "Debug mode enabled - logs will be written to test-output-1712-switch.log")
 	$(if $(NAME),@echo "Running tests matching: $(NAME)")
 	@TF_ACC=1 \
-	IOSXE_URL=$(IOSXE_1712_SWITCH_URL) \
 	IOSXE_HOST=$(IOSXE_1712_SWITCH_HOST) \
 	IOSXE_USERNAME=$(or $(IOSXE_1712_SWITCH_USERNAME),$(IOSXE_USERNAME)) \
 	IOSXE_PASSWORD=$(or $(IOSXE_1712_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \

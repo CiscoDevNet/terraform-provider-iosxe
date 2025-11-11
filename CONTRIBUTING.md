@@ -91,26 +91,22 @@ Edit the `.env` file to set your device credentials and connection details. The 
 
 - **Global credentials**: `IOSXE_USERNAME` and `IOSXE_PASSWORD` apply to all devices by default
 - **Device-specific overrides**: Optional `IOSXE_XXXX_DEVICE_USERNAME` and `IOSXE_XXXX_DEVICE_PASSWORD` for devices with different credentials
-- **Device URLs**: Separate URLs for each device and version combination
+- **Device hosts**: Separate host addresses for each device and version combination
 
 Example `.env` configuration:
 
 ```shell
 # Global credentials (used for all devices unless overridden)
 IOSXE_USERNAME=admin
-IOSXE_PASSWORD=cisco!123
+IOSXE_PASSWORD=password
 
-# 17.15.x Router
-IOSXE_1715_ROUTER_URL=https://10.81.239.57
-IOSXE_1715_ROUTER_HOST=10.81.239.57
+# 17.15.x Router and Switch
+IOSXE_1715_ROUTER_HOST=192.0.2.10
+IOSXE_1715_SWITCH_HOST=192.0.2.11
 
-# 17.15.x Switch
-IOSXE_1715_SWITCH_URL=https://10.81.239.61
-IOSXE_1715_SWITCH_HOST=10.81.239.61
-
-# 17.12.x devices (optional, for testing older versions)
-# IOSXE_1712_ROUTER_URL=https://192.168.1.1
-# IOSXE_1712_ROUTER_HOST=192.168.1.1
+# 17.12.x Router and Switch
+IOSXE_1712_ROUTER_HOST=192.0.2.12
+IOSXE_1712_SWITCH_HOST=192.0.2.13
 ```
 
 #### Running Tests
