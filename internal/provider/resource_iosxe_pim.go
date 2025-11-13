@@ -120,6 +120,13 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("BSR RP candidate filter").String,
 				Optional:            true,
 			},
+			"register_source_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483647),
+				},
+			},
 			"ssm_range": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("ACL for group range to be used for SSM").String,
 				Optional:            true,
@@ -245,6 +252,13 @@ func (r *PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						"bsr_candidate_accept_rp_candidate": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("BSR RP candidate filter").String,
 							Optional:            true,
+						},
+						"register_source_loopback": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 2147483647),
+							},
 						},
 						"ssm_range": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("ACL for group range to be used for SSM").String,
