@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Fix error when trying to delete resources via NETCONF which no longer exist
+- Add `match_routing_vrf_input`, `match_vxlan_vnid`, `match_vxlan_vtep_input`, and `match_vxlan_vtep_output` attributes to `iosxe_flow_record` resource and data source for VXLAN-aware NetFlow support
 - Add `dot1x_timeout_quiet_period`, `dot1x_timeout_supp_timeout`, `dot1x_timeout_ratelimit_period`, and `dot1x_timeout_server_timeout` attributes to `iosxe_template` resource and data source
 
 ## 0.10.0
