@@ -1,4 +1,4 @@
-## Unreleased
+## 0.10.1
 
 - Fix error when trying to delete resources via NETCONF which no longer exist
 - Add `dot1x_timeout_quiet_period`, `dot1x_timeout_supp_timeout`, `dot1x_timeout_ratelimit_period`, and `dot1x_timeout_server_timeout` attributes to `iosxe_template` resource and data source
