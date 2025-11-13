@@ -11,6 +11,7 @@ description: |-
 
 - Fix error when trying to delete resources via NETCONF which no longer exist
 - Add `dot1x_timeout_quiet_period`, `dot1x_timeout_supp_timeout`, `dot1x_timeout_ratelimit_period`, and `dot1x_timeout_server_timeout` attributes to `iosxe_template` resource and data source
+- Fix `iosxe_commit` resource to also allow saving the configuration if RESTCONF is used
 
 ## 0.10.0
 
