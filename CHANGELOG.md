@@ -1,4 +1,4 @@
-## Unreleased
+## 0.10.2
 
 - Fix issue with incorrect reading of lists via NETCONF
 - Add lock polling for NETCONF honoring the `lock_release_timeout` provider configuration attribute
