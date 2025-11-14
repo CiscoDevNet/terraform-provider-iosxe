@@ -82,6 +82,10 @@ type FlowRecord struct {
 	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
+	MatchRoutingVrfInput                           types.Bool   `tfsdk:"match_routing_vrf_input"`
+	MatchVxlanVnid                                 types.Bool   `tfsdk:"match_vxlan_vnid"`
+	MatchVxlanVtepInput                            types.Bool   `tfsdk:"match_vxlan_vtep_input"`
+	MatchVxlanVtepOutput                           types.Bool   `tfsdk:"match_vxlan_vtep_output"`
 }
 
 type FlowRecordData struct {
@@ -127,6 +131,10 @@ type FlowRecordData struct {
 	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
+	MatchRoutingVrfInput                           types.Bool   `tfsdk:"match_routing_vrf_input"`
+	MatchVxlanVnid                                 types.Bool   `tfsdk:"match_vxlan_vnid"`
+	MatchVxlanVtepInput                            types.Bool   `tfsdk:"match_vxlan_vtep_input"`
+	MatchVxlanVtepOutput                           types.Bool   `tfsdk:"match_vxlan_vtep_output"`
 }
 
 // End of section. //template:end types
@@ -363,6 +371,26 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.IsUnknown() {
 		if data.CollectFlowDirection.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.flow.direction", map[string]string{})
+		}
+	}
+	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.IsUnknown() {
+		if data.MatchRoutingVrfInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.routing.vrf.input", map[string]string{})
+		}
+	}
+	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.IsUnknown() {
+		if data.MatchVxlanVnid.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vnid", map[string]string{})
+		}
+	}
+	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.IsUnknown() {
+		if data.MatchVxlanVtepInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vtep.input", map[string]string{})
+		}
+	}
+	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.IsUnknown() {
+		if data.MatchVxlanVtepOutput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vtep.output", map[string]string{})
 		}
 	}
 	return body
@@ -640,6 +668,34 @@ func (data FlowRecord) toBodyXML(ctx context.Context) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/flow/direction", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/flow/direction")
+		}
+	}
+	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.IsUnknown() {
+		if data.MatchRoutingVrfInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/routing/vrf/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/routing/vrf/input")
+		}
+	}
+	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.IsUnknown() {
+		if data.MatchVxlanVnid.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vnid", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vnid")
+		}
+	}
+	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.IsUnknown() {
+		if data.MatchVxlanVtepInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vtep/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vtep/input")
+		}
+	}
+	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.IsUnknown() {
+		if data.MatchVxlanVtepOutput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vtep/output", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vtep/output")
 		}
 	}
 	bodyString, err := body.String()
@@ -1006,6 +1062,42 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectFlowDirection = types.BoolNull()
 	}
+	if value := res.Get(prefix + "match.routing.vrf.input"); !data.MatchRoutingVrfInput.IsNull() {
+		if value.Exists() {
+			data.MatchRoutingVrfInput = types.BoolValue(true)
+		} else {
+			data.MatchRoutingVrfInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchRoutingVrfInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.vxlan.vnid"); !data.MatchVxlanVnid.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVnid = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVnid = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVnid = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.input"); !data.MatchVxlanVtepInput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepInput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.output"); !data.MatchVxlanVtepOutput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepOutput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepOutput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1361,6 +1453,42 @@ func (data *FlowRecord) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.CollectFlowDirection = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); !data.MatchRoutingVrfInput.IsNull() {
+		if value.Exists() {
+			data.MatchRoutingVrfInput = types.BoolValue(true)
+		} else {
+			data.MatchRoutingVrfInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchRoutingVrfInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); !data.MatchVxlanVnid.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVnid = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVnid = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVnid = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); !data.MatchVxlanVtepInput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepInput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); !data.MatchVxlanVtepOutput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepOutput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepOutput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1562,6 +1690,26 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 		data.CollectFlowDirection = types.BoolValue(true)
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.routing.vrf.input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
 	}
 }
 
@@ -1765,6 +1913,26 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.routing.vrf.input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1962,6 +2130,26 @@ func (data *FlowRecord) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.CollectFlowDirection = types.BoolValue(true)
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
 	}
 }
 
@@ -2161,6 +2349,26 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2169,6 +2377,18 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 
 func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) []string {
 	deletedItems := make([]string, 0)
+	if !state.MatchVxlanVtepOutput.IsNull() && data.MatchVxlanVtepOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vtep/output", state.getPath()))
+	}
+	if !state.MatchVxlanVtepInput.IsNull() && data.MatchVxlanVtepInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vtep/input", state.getPath()))
+	}
+	if !state.MatchVxlanVnid.IsNull() && data.MatchVxlanVnid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vnid", state.getPath()))
+	}
+	if !state.MatchRoutingVrfInput.IsNull() && data.MatchRoutingVrfInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/routing/vrf/input", state.getPath()))
+	}
 	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/flow/direction", state.getPath()))
 	}
@@ -2296,6 +2516,18 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 
 func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord, body string) string {
 	b := netconf.NewBody(body)
+	if !state.MatchVxlanVtepOutput.IsNull() && data.MatchVxlanVtepOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/output")
+	}
+	if !state.MatchVxlanVtepInput.IsNull() && data.MatchVxlanVtepInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/input")
+	}
+	if !state.MatchVxlanVnid.IsNull() && data.MatchVxlanVnid.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vnid")
+	}
+	if !state.MatchRoutingVrfInput.IsNull() && data.MatchRoutingVrfInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/routing/vrf/input")
+	}
 	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/flow/direction")
 	}
@@ -2424,6 +2656,18 @@ func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord
 
 func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vtep/output", data.getPath()))
+	}
+	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vtep/input", data.getPath()))
+	}
+	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vnid", data.getPath()))
+	}
+	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/routing/vrf/input", data.getPath()))
+	}
 	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
@@ -2545,6 +2789,18 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.MatchVxlanVtepOutput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vtep/output", data.getPath()))
+	}
+	if !data.MatchVxlanVtepInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vtep/input", data.getPath()))
+	}
+	if !data.MatchVxlanVnid.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vnid", data.getPath()))
+	}
+	if !data.MatchRoutingVrfInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/routing/vrf/input", data.getPath()))
+	}
 	if !data.CollectFlowDirection.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
@@ -2672,6 +2928,18 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 
 func (data *FlowRecord) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.MatchVxlanVtepOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vtep/output")
+	}
+	if !data.MatchVxlanVtepInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vtep/input")
+	}
+	if !data.MatchVxlanVnid.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vnid")
+	}
+	if !data.MatchRoutingVrfInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/routing/vrf/input")
+	}
 	if !data.CollectFlowDirection.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/flow/direction")
 	}

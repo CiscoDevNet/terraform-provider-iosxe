@@ -33,6 +33,8 @@ resource "iosxe_flow_record" "example" {
   match_datalink_mac_source_address_input      = true
   match_datalink_mac_destination_address_input = true
   match_ipv4_ttl                               = true
+  match_routing_vrf_input                      = true
+  match_vxlan_vnid                             = true
 }
 ```
 
@@ -86,8 +88,12 @@ resource "iosxe_flow_record" "example" {
 - `match_ipv6_protocol` (Boolean) IPv6 payload protocol
 - `match_ipv6_source_address` (Boolean) IPv6 source address
 - `match_ipv6_version` (Boolean) IP version from IPv6 header
+- `match_routing_vrf_input` (Boolean) Match VRF ID for incoming packet for VXLAN-aware NetFlow
 - `match_transport_destination_port` (Boolean) Transport destination port
 - `match_transport_source_port` (Boolean) Transport source port
+- `match_vxlan_vnid` (Boolean) Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow
+- `match_vxlan_vtep_input` (Boolean) Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow
+- `match_vxlan_vtep_output` (Boolean) Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow
 
 ### Read-Only
 

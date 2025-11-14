@@ -255,6 +255,22 @@ func (r *FlowRecordResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Direction the flow was monitored in").String,
 				Optional:            true,
 			},
+			"match_routing_vrf_input": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match VRF ID for incoming packet for VXLAN-aware NetFlow").String,
+				Optional:            true,
+			},
+			"match_vxlan_vnid": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow").String,
+				Optional:            true,
+			},
+			"match_vxlan_vtep_input": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow").String,
+				Optional:            true,
+			},
+			"match_vxlan_vtep_output": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow").String,
+				Optional:            true,
+			},
 		},
 	}
 }
