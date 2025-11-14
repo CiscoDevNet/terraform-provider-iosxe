@@ -1,3 +1,9 @@
+## Unreleased
+
+- Fix issue with incorrect reading of lists via NETCONF
+- Add lock polling for NETCONF honoring the `lock_release_timeout` provider configuration attribute
+- Fully serialize NETCONF operations
+
 ## 0.10.1
 
 - Fix error when trying to delete resources via NETCONF which no longer exist
