@@ -160,6 +160,10 @@ func (d *EVPNInstanceDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Re-originate route-type 5",
 				Computed:            true,
 			},
+			"vlan_based_multicast_advertise": schema.StringAttribute{
+				MarkdownDescription: "Advertise L2 multicast capability",
+				Computed:            true,
+			},
 		},
 	}
 }

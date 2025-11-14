@@ -26,8 +26,8 @@ resource "iosxe_evpn" "example" {
   default_gateway_advertise                       = true
   logging_peer_state                              = true
   route_target_auto_vni                           = true
-  anycast_gateway_mac_auto                        = true
   flooding_suppression_address_resolution_disable = true
+  multicast_advertise                             = true
 }
 ```
 
@@ -51,6 +51,7 @@ resource "iosxe_evpn" "example" {
   - Range: `2`-`1000`
 - `mac_duplication_time` (Number) MAC duplication timer
   - Range: `10`-`36000`
+- `multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
 - `replication_type_ingress` (Boolean) Ingress replication
 - `replication_type_mp2mp` (Boolean) mp2mp replication
 - `replication_type_p2mp` (Boolean) p2mp replication

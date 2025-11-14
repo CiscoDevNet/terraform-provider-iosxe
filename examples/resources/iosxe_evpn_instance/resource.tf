@@ -10,4 +10,5 @@ resource "iosxe_evpn_instance" "example" {
   vlan_based_ip_local_learning_enable  = true
   vlan_based_default_gateway_advertise = "enable"
   vlan_based_re_originate_route_type5  = true
+  vlan_based_multicast_advertise       = "enable"
 }

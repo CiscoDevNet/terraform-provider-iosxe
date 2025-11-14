@@ -192,6 +192,13 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				MarkdownDescription: helpers.NewAttributeDescription("Re-originate route-type 5").String,
 				Optional:            true,
 			},
+			"vlan_based_multicast_advertise": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Advertise L2 multicast capability").AddStringEnumDescription("disable", "enable", "sync-only").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("disable", "enable", "sync-only"),
+				},
+			},
 		},
 	}
 }

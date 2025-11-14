@@ -64,6 +64,7 @@ func TestAccIosxeEVPNInstance(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_ip_local_learning_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_default_gateway_advertise", "enable"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_re_originate_route_type5", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_multicast_advertise", "enable"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -147,6 +148,7 @@ func testAccIosxeEVPNInstanceConfig_all() string {
 	config += `	vlan_based_ip_local_learning_enable = true` + "\n"
 	config += `	vlan_based_default_gateway_advertise = "enable"` + "\n"
 	config += `	vlan_based_re_originate_route_type5 = true` + "\n"
+	config += `	vlan_based_multicast_advertise = "enable"` + "\n"
 	config += `}` + "\n"
 	return config
 }

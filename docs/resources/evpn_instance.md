@@ -25,6 +25,7 @@ resource "iosxe_evpn_instance" "example" {
   vlan_based_ip_local_learning_enable  = true
   vlan_based_default_gateway_advertise = "enable"
   vlan_based_re_originate_route_type5  = true
+  vlan_based_multicast_advertise       = "enable"
 }
 ```
 
@@ -47,6 +48,8 @@ resource "iosxe_evpn_instance" "example" {
   - Choices: `mpls`, `vxlan`
 - `vlan_based_ip_local_learning_disable` (Boolean) Disable IP local learning from dataplane
 - `vlan_based_ip_local_learning_enable` (Boolean) Enable IP local learning from dataplane
+- `vlan_based_multicast_advertise` (String) Advertise L2 multicast capability
+  - Choices: `disable`, `enable`, `sync-only`
 - `vlan_based_rd` (String) ASN:nn or IP-address:nn
 - `vlan_based_re_originate_route_type5` (Boolean) Re-originate route-type 5
 - `vlan_based_replication_type_ingress` (Boolean) Ingress replication
