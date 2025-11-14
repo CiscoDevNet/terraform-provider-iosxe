@@ -1062,6 +1062,23 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 
 	// Return the final result
 	finalPath := strings.Join(pathSoFar, ".")
+
+	// Check if the final path points to multiple elements (array)
+	// If so, use the #. syntax to return an array result that ForEach can iterate over
+	countPath := finalPath + ".#"
+	count := xmldot.Get(xml, countPath).Int()
+	if count > 1 {
+		// Multiple elements exist - use #. syntax to get array result
+		// Split the path to insert #. before the last segment
+		if len(pathSoFar) >= 2 {
+			// Build parent path and use #. syntax: parent.#.child
+			parentPath := strings.Join(pathSoFar[:len(pathSoFar)-1], ".")
+			childName := pathSoFar[len(pathSoFar)-1]
+			arrayPath := parentPath + ".#." + childName
+			return xmldot.Get(xml, arrayPath)
+		}
+	}
+
 	return xmldot.Get(xml, finalPath)
 }
 
