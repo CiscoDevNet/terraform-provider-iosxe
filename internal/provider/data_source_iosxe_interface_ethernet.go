@@ -692,6 +692,26 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"carrier_delay_msec": schema.Int64Attribute{
+				MarkdownDescription: "delay specified in milliseconds",
+				Computed:            true,
+			},
+			"hold_queue": schema.ListNestedAttribute{
+				MarkdownDescription: "Set hold queue depth",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"direction": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"queue_length": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

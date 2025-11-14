@@ -73,4 +73,11 @@ resource "iosxe_interface_ethernet" "example" {
   cdp_tlv_location                 = false
   cdp_tlv_server_location          = false
   ip_nat_inside                    = true
+  carrier_delay_msec               = 250
+  hold_queue = [
+    {
+      direction    = "in"
+      queue_length = 50
+    }
+  ]
 }

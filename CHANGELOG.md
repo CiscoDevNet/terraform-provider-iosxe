@@ -3,6 +3,7 @@
 - Fix issue with incorrect reading of lists via NETCONF
 - Add lock polling for NETCONF honoring the `lock_release_timeout` provider configuration attribute
 - Fully serialize NETCONF operations
+- Add `carrier_delay_msec` and `hold_queue` attributes to `iosxe_interface_ethernet` resource and data sources
 
 ## 0.10.1
 

@@ -177,6 +177,8 @@ type InterfaceEthernet struct {
 	IpNatInside                                         types.Bool                                        `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                        `tfsdk:"ip_nat_outside"`
 	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
+	CarrierDelayMsec                                    types.Int64                                       `tfsdk:"carrier_delay_msec"`
+	HoldQueue                                           []InterfaceEthernetHoldQueue                      `tfsdk:"hold_queue"`
 }
 
 type InterfaceEthernetData struct {
@@ -315,6 +317,8 @@ type InterfaceEthernetData struct {
 	IpNatInside                                         types.Bool                                        `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                        `tfsdk:"ip_nat_outside"`
 	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
+	CarrierDelayMsec                                    types.Int64                                       `tfsdk:"carrier_delay_msec"`
+	HoldQueue                                           []InterfaceEthernetHoldQueue                      `tfsdk:"hold_queue"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -346,6 +350,10 @@ type InterfaceEthernetDeviceTrackingAttachedPolicies struct {
 }
 type InterfaceEthernetEvpnEthernetSegments struct {
 	EsValue types.Int64 `tfsdk:"es_value"`
+}
+type InterfaceEthernetHoldQueue struct {
+	Direction   types.String `tfsdk:"direction"`
+	QueueLength types.Int64  `tfsdk:"queue_length"`
 }
 
 // End of section. //template:end types
@@ -890,6 +898,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
 		}
 	}
+	if !data.CarrierDelayMsec.IsNull() && !data.CarrierDelayMsec.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:carrier-delay.msec", strconv.FormatInt(data.CarrierDelayMsec.ValueInt64(), 10))
+	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
 		for index, item := range data.HelperAddresses {
@@ -980,6 +991,17 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 		for index, item := range data.EvpnEthernetSegments {
 			if !item.EsValue.IsNull() && !item.EsValue.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-l2vpn:evpn.ethernet-segment"+"."+strconv.Itoa(index)+"."+"es-value", strconv.FormatInt(item.EsValue.ValueInt64(), 10))
+			}
+		}
+	}
+	if len(data.HoldQueue) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hold-queue", []interface{}{})
+		for index, item := range data.HoldQueue {
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hold-queue"+"."+strconv.Itoa(index)+"."+"direction", item.Direction.ValueString())
+			}
+			if !item.QueueLength.IsNull() && !item.QueueLength.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hold-queue"+"."+strconv.Itoa(index)+"."+"queue-length", strconv.FormatInt(item.QueueLength.ValueInt64(), 10))
 			}
 		}
 	}
@@ -1727,6 +1749,21 @@ func (data InterfaceEthernet) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "es-value", strconv.FormatInt(item.EsValue.ValueInt64(), 10))
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment", cBody.Res())
+		}
+	}
+	if !data.CarrierDelayMsec.IsNull() && !data.CarrierDelayMsec.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ethernet:carrier-delay/msec", strconv.FormatInt(data.CarrierDelayMsec.ValueInt64(), 10))
+	}
+	if len(data.HoldQueue) > 0 {
+		for _, item := range data.HoldQueue {
+			cBody := netconf.Body{}
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
+			}
+			if !item.QueueLength.IsNull() && !item.QueueLength.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "queue-length", strconv.FormatInt(item.QueueLength.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/hold-queue", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -2930,6 +2967,45 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 			data.EvpnEthernetSegments[i].EsValue = types.Int64Null()
 		}
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:carrier-delay.msec"); value.Exists() && !data.CarrierDelayMsec.IsNull() {
+		data.CarrierDelayMsec = types.Int64Value(value.Int())
+	} else {
+		data.CarrierDelayMsec = types.Int64Null()
+	}
+	for i := range data.HoldQueue {
+		keys := [...]string{"direction"}
+		keyValues := [...]string{data.HoldQueue[i].Direction.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "hold-queue").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("direction"); value.Exists() && !data.HoldQueue[i].Direction.IsNull() {
+			data.HoldQueue[i].Direction = types.StringValue(value.String())
+		} else {
+			data.HoldQueue[i].Direction = types.StringNull()
+		}
+		if value := r.Get("queue-length"); value.Exists() && !data.HoldQueue[i].QueueLength.IsNull() {
+			data.HoldQueue[i].QueueLength = types.Int64Value(value.Int())
+		} else {
+			data.HoldQueue[i].QueueLength = types.Int64Null()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -4122,6 +4198,45 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 			data.EvpnEthernetSegments[i].EsValue = types.Int64Null()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ethernet:carrier-delay/msec"); value.Exists() && !data.CarrierDelayMsec.IsNull() {
+		data.CarrierDelayMsec = types.Int64Value(value.Int())
+	} else {
+		data.CarrierDelayMsec = types.Int64Null()
+	}
+	for i := range data.HoldQueue {
+		keys := [...]string{"direction"}
+		keyValues := [...]string{data.HoldQueue[i].Direction.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/hold-queue").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "direction"); value.Exists() && !data.HoldQueue[i].Direction.IsNull() {
+			data.HoldQueue[i].Direction = types.StringValue(value.String())
+		} else {
+			data.HoldQueue[i].Direction = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "queue-length"); value.Exists() && !data.HoldQueue[i].QueueLength.IsNull() {
+			data.HoldQueue[i].QueueLength = types.Int64Value(value.Int())
+		} else {
+			data.HoldQueue[i].QueueLength = types.Int64Null()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -4770,6 +4885,23 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 				item.EsValue = types.Int64Value(cValue.Int())
 			}
 			data.EvpnEthernetSegments = append(data.EvpnEthernetSegments, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:carrier-delay.msec"); value.Exists() {
+		data.CarrierDelayMsec = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "hold-queue"); value.Exists() {
+		data.HoldQueue = make([]InterfaceEthernetHoldQueue, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetHoldQueue{}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("queue-length"); cValue.Exists() {
+				item.QueueLength = types.Int64Value(cValue.Int())
+			}
+			data.HoldQueue = append(data.HoldQueue, item)
 			return true
 		})
 	}
@@ -5424,6 +5556,23 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:carrier-delay.msec"); value.Exists() {
+		data.CarrierDelayMsec = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "hold-queue"); value.Exists() {
+		data.HoldQueue = make([]InterfaceEthernetHoldQueue, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetHoldQueue{}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("queue-length"); cValue.Exists() {
+				item.QueueLength = types.Int64Value(cValue.Int())
+			}
+			data.HoldQueue = append(data.HoldQueue, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -6068,6 +6217,23 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 				item.EsValue = types.Int64Value(cValue.Int())
 			}
 			data.EvpnEthernetSegments = append(data.EvpnEthernetSegments, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ethernet:carrier-delay/msec"); value.Exists() {
+		data.CarrierDelayMsec = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hold-queue"); value.Exists() {
+		data.HoldQueue = make([]InterfaceEthernetHoldQueue, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceEthernetHoldQueue{}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "queue-length"); cValue.Exists() {
+				item.QueueLength = types.Int64Value(cValue.Int())
+			}
+			data.HoldQueue = append(data.HoldQueue, item)
 			return true
 		})
 	}
@@ -6718,6 +6884,23 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ethernet:carrier-delay/msec"); value.Exists() {
+		data.CarrierDelayMsec = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hold-queue"); value.Exists() {
+		data.HoldQueue = make([]InterfaceEthernetHoldQueue, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceEthernetHoldQueue{}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "queue-length"); cValue.Exists() {
+				item.QueueLength = types.Int64Value(cValue.Int())
+			}
+			data.HoldQueue = append(data.HoldQueue, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -6726,6 +6909,37 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.HoldQueue {
+		stateKeyValues := [...]string{state.HoldQueue[i].Direction.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.HoldQueue[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.HoldQueue {
+			found = true
+			if state.HoldQueue[i].Direction.ValueString() != data.HoldQueue[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.HoldQueue[i].QueueLength.IsNull() && data.HoldQueue[j].QueueLength.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/hold-queue=%v/queue-length", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/hold-queue=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.CarrierDelayMsec.IsNull() && data.CarrierDelayMsec.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:carrier-delay/msec", state.getPath()))
+	}
 	for i := range state.EvpnEthernetSegments {
 		stateKeyValues := [...]string{strconv.FormatInt(state.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
 
@@ -7332,6 +7546,42 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 
 func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state InterfaceEthernet, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.HoldQueue {
+		stateKeys := [...]string{"direction"}
+		stateKeyValues := [...]string{state.HoldQueue[i].Direction.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.HoldQueue[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.HoldQueue {
+			found = true
+			if state.HoldQueue[i].Direction.ValueString() != data.HoldQueue[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.HoldQueue[i].QueueLength.IsNull() && data.HoldQueue[j].QueueLength.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/hold-queue%v/queue-length", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/hold-queue%v", predicates))
+		}
+	}
+	if !state.CarrierDelayMsec.IsNull() && data.CarrierDelayMsec.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-ethernet:carrier-delay/msec")
+	}
 	for i := range state.EvpnEthernetSegments {
 		stateKeys := [...]string{"es-value"}
 		stateKeyValues := [...]string{strconv.FormatInt(state.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
@@ -8212,6 +8462,14 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.HoldQueue {
+		keyValues := [...]string{data.HoldQueue[i].Direction.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/hold-queue=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.CarrierDelayMsec.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:carrier-delay/msec", data.getPath()))
+	}
 	for i := range data.EvpnEthernetSegments {
 		keyValues := [...]string{strconv.FormatInt(data.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
 
@@ -8631,6 +8889,19 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.HoldQueue {
+		keys := [...]string{"direction"}
+		keyValues := [...]string{data.HoldQueue[i].Direction.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/hold-queue%v", predicates))
+	}
+	if !data.CarrierDelayMsec.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-ethernet:carrier-delay/msec")
+	}
 	for i := range data.EvpnEthernetSegments {
 		keys := [...]string{"es-value"}
 		keyValues := [...]string{strconv.FormatInt(data.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
