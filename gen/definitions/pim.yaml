@@ -24,6 +24,11 @@ attributes:
     delete_parent: true
     exclude_test: true
     example: 10
+  - yang_name: Cisco-IOS-XE-multicast:register-source/interface-choice/Loopback/Loopback
+    xpath: Cisco-IOS-XE-multicast:register-source/Loopback
+    tf_name: register_source_loopback
+    type: Int64
+    example: 100
   - yang_name: Cisco-IOS-XE-multicast:ssm/range
     example: 10
   - yang_name: Cisco-IOS-XE-multicast:ssm/default
@@ -95,6 +100,11 @@ attributes:
         delete_parent: true
         exclude_test: true
         example: 10
+      - yang_name: register-source/interface-choice/Loopback/Loopback
+        xpath: register-source/Loopback
+        tf_name: register_source_loopback
+        type: Int64
+        example: 200
       - yang_name: ssm/range
         example: 10
       - yang_name: ssm/default
