@@ -157,6 +157,10 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: helpers.NewAttributeDescription("Disable flooding suppression").String,
 				Optional:            true,
 			},
+			"multicast_advertise": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable and advertise L2 multicast capability").String,
+				Optional:            true,
+			},
 		},
 	}
 }

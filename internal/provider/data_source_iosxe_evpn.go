@@ -124,6 +124,10 @@ func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Disable flooding suppression",
 				Computed:            true,
 			},
+			"multicast_advertise": schema.BoolAttribute{
+				MarkdownDescription: "Enable and advertise L2 multicast capability",
+				Computed:            true,
+			},
 		},
 	}
 }
