@@ -848,6 +848,35 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
+			"carrier_delay_msec": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("delay specified in milliseconds").AddIntegerRangeDescription(0, 1000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 1000),
+				},
+			},
+			"hold_queue": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set hold queue depth").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"direction": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("in", "out").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("in", "out"),
+							},
+						},
+						"queue_length": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 240000).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 240000),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

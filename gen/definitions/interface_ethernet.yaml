@@ -534,7 +534,18 @@ attributes:
       - yang_name: es-value
         id: true
         example: 1
-
+  - yang_name: Cisco-IOS-XE-ethernet:carrier-delay/delay-choice/msec/msec
+    xpath: Cisco-IOS-XE-ethernet:carrier-delay/msec
+    tf_name: carrier_delay_msec
+    example: 250
+  - yang_name: hold-queue
+    type: List
+    attributes:
+      - yang_name: direction
+        id: true
+        example: in
+      - yang_name: queue-length
+        example: 50
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
