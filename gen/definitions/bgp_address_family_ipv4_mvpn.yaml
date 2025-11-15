@@ -1,0 +1,19 @@
+---
+name: BGP Address Family IPv4 MVPN
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=%s]
+doc_category: BGP
+test_tags: [IOSXE1715]
+attributes:
+  - yang_name: id
+    tf_name: asn
+    example: 65000
+    test_tags: [IOSXE1715]
+  - yang_name: af-name
+    example: mvpn
+    test_tags: [IOSXE1715]
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
+    attributes:
+      - name: id
+        value: 65000
+
