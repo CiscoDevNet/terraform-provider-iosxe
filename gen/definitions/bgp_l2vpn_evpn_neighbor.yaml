@@ -24,9 +24,11 @@ attributes:
   - yang_name: soft-reconfiguration
     example: inbound
   - yang_name: route-map
+    tf_name: route_maps
     type: List
     attributes:
       - yang_name: inout
+        tf_name: in_out
         id: true
         example: in
       - yang_name: route-map-name

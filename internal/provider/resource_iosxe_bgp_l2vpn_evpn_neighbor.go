@@ -124,12 +124,12 @@ func (r *BGPL2VPNEVPNNeighborResource) Schema(ctx context.Context, req resource.
 					stringvalidator.OneOf("inbound"),
 				},
 			},
-			"route_map": schema.ListNestedAttribute{
+			"route_maps": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply route map to neighbor").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"inout": schema.StringAttribute{
+						"in_out": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("in", "out").String,
 							Required:            true,
 							Validators: []validator.String{

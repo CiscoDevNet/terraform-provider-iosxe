@@ -92,12 +92,12 @@ func (d *BGPL2VPNEVPNNeighborDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Per neighbor soft reconfiguration",
 				Computed:            true,
 			},
-			"route_map": schema.ListNestedAttribute{
+			"route_maps": schema.ListNestedAttribute{
 				MarkdownDescription: "Apply route map to neighbor",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"inout": schema.StringAttribute{
+						"in_out": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
