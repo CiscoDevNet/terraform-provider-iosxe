@@ -319,6 +319,13 @@ func (data BGPAddressFamilyIPv4VRF) toBodyXML(ctx context.Context) string {
 					if !citem.Ipv4Mask.IsNull() && !citem.Ipv4Mask.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "ipv4-mask", citem.Ipv4Mask.ValueString())
 					}
+					if !citem.SummaryOnly.IsNull() && !citem.SummaryOnly.IsUnknown() {
+						if citem.SummaryOnly.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "summary-only", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "summary-only")
+						}
+					}
 					cBody = helpers.SetRawFromXPath(cBody, "ipv4-unicast/aggregate-address", ccBody.Res())
 				}
 			}
@@ -416,6 +423,13 @@ func (data BGPAddressFamilyIPv4VRF) toBodyXML(ctx context.Context) string {
 			}
 			if !item.Ipv4UnicastMaximumPathsIbgp.IsNull() && !item.Ipv4UnicastMaximumPathsIbgp.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv4-unicast/maximum-paths/ibgp/max", strconv.FormatInt(item.Ipv4UnicastMaximumPathsIbgp.ValueInt64(), 10))
+			}
+			if !item.Ipv4UnicastImportPathSelectionAll.IsNull() && !item.Ipv4UnicastImportPathSelectionAll.IsUnknown() {
+				if item.Ipv4UnicastImportPathSelectionAll.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ipv4-unicast/import/path/selection/all", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ipv4-unicast/import/path/selection/all")
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vrf", cBody.Res())
 		}
@@ -838,6 +852,15 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBodyXML(ctx context.Context, res 
 			} else {
 				data.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask = types.StringNull()
 			}
+			if value := helpers.GetFromXPath(cr, "summary-only"); !data.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].SummaryOnly.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].SummaryOnly = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].SummaryOnly = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].SummaryOnly = types.BoolNull()
+			}
 		}
 		if value := helpers.GetFromXPath(r, "ipv4-unicast/redistribute-vrf/static"); !data.Vrfs[i].Ipv4UnicastRedistributeStatic.IsNull() {
 			if value.Exists() {
@@ -1025,6 +1048,15 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBodyXML(ctx context.Context, res 
 			data.Vrfs[i].Ipv4UnicastMaximumPathsIbgp = types.Int64Value(value.Int())
 		} else {
 			data.Vrfs[i].Ipv4UnicastMaximumPathsIbgp = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "ipv4-unicast/import/path/selection/all"); !data.Vrfs[i].Ipv4UnicastImportPathSelectionAll.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].Ipv4UnicastImportPathSelectionAll = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].Ipv4UnicastImportPathSelectionAll = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].Ipv4UnicastImportPathSelectionAll = types.BoolNull()
 		}
 	}
 }
@@ -1373,6 +1405,11 @@ func (data *BGPAddressFamilyIPv4VRF) fromBodyXML(ctx context.Context, res xmldot
 					if ccValue := helpers.GetFromXPath(cv, "ipv4-mask"); ccValue.Exists() {
 						cItem.Ipv4Mask = types.StringValue(ccValue.String())
 					}
+					if ccValue := helpers.GetFromXPath(cv, "summary-only"); ccValue.Exists() {
+						cItem.SummaryOnly = types.BoolValue(true)
+					} else {
+						cItem.SummaryOnly = types.BoolValue(false)
+					}
 					item.Ipv4UnicastAggregateAddresses = append(item.Ipv4UnicastAggregateAddresses, cItem)
 					return true
 				})
@@ -1467,6 +1504,11 @@ func (data *BGPAddressFamilyIPv4VRF) fromBodyXML(ctx context.Context, res xmldot
 			}
 			if cValue := helpers.GetFromXPath(v, "ipv4-unicast/maximum-paths/ibgp/max"); cValue.Exists() {
 				item.Ipv4UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv4-unicast/import/path/selection/all"); cValue.Exists() {
+				item.Ipv4UnicastImportPathSelectionAll = types.BoolValue(true)
+			} else {
+				item.Ipv4UnicastImportPathSelectionAll = types.BoolValue(false)
 			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
@@ -1512,6 +1554,11 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBodyXML(ctx context.Context, res xm
 					if ccValue := helpers.GetFromXPath(cv, "ipv4-mask"); ccValue.Exists() {
 						cItem.Ipv4Mask = types.StringValue(ccValue.String())
 					}
+					if ccValue := helpers.GetFromXPath(cv, "summary-only"); ccValue.Exists() {
+						cItem.SummaryOnly = types.BoolValue(true)
+					} else {
+						cItem.SummaryOnly = types.BoolValue(false)
+					}
 					item.Ipv4UnicastAggregateAddresses = append(item.Ipv4UnicastAggregateAddresses, cItem)
 					return true
 				})
@@ -1607,6 +1654,11 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBodyXML(ctx context.Context, res xm
 			if cValue := helpers.GetFromXPath(v, "ipv4-unicast/maximum-paths/ibgp/max"); cValue.Exists() {
 				item.Ipv4UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
 			}
+			if cValue := helpers.GetFromXPath(v, "ipv4-unicast/import/path/selection/all"); cValue.Exists() {
+				item.Ipv4UnicastImportPathSelectionAll = types.BoolValue(true)
+			} else {
+				item.Ipv4UnicastImportPathSelectionAll = types.BoolValue(false)
+			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
 		})
@@ -1637,14 +1689,14 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedItems(ctx context.Context, state 
 				found = false
 			}
 			if found {
+				if !state.Vrfs[i].Ipv4UnicastImportPathSelectionAll.IsNull() && data.Vrfs[j].Ipv4UnicastImportPathSelectionAll.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/import/path/selection/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Vrfs[i].Ipv4UnicastMaximumPathsIbgp.IsNull() && data.Vrfs[j].Ipv4UnicastMaximumPathsIbgp.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/maximum-paths/ibgp/max", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Vrfs[i].Ipv4UnicastMaximumPathsEbgp.IsNull() && data.Vrfs[j].Ipv4UnicastMaximumPathsEbgp.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/maximum-paths/ebgp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vrfs[i].Ipv4UnicastImportPathSelectionAll.IsNull() && data.Vrfs[j].Ipv4UnicastImportPathSelectionAll.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/import/path/selection/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Vrfs[i].Ipv4UnicastDistanceBgpLocal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpLocal.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/distance/bgp/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -1858,6 +1910,9 @@ func (data *BGPAddressFamilyIPv4VRF) addDeletedItemsXML(ctx context.Context, sta
 				found = false
 			}
 			if found {
+				if !state.Vrfs[i].Ipv4UnicastImportPathSelectionAll.IsNull() && data.Vrfs[j].Ipv4UnicastImportPathSelectionAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/import/path/selection/all", predicates))
+				}
 				if !state.Vrfs[i].Ipv4UnicastMaximumPathsIbgp.IsNull() && data.Vrfs[j].Ipv4UnicastMaximumPathsIbgp.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/maximum-paths/ibgp/max", predicates))
 				}
@@ -2034,6 +2089,9 @@ func (data *BGPAddressFamilyIPv4VRF) addDeletedItemsXML(ctx context.Context, sta
 							found = false
 						}
 						if found {
+							if !state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].SummaryOnly.IsNull() && data.Vrfs[j].Ipv4UnicastAggregateAddresses[cj].SummaryOnly.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/aggregate-address%v/summary-only", predicates, cpredicates))
+							}
 							break
 						}
 					}

@@ -142,12 +142,9 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `		ipv4_unicast_distance_bgp_external = 20` + "\n"
 	config += `		ipv4_unicast_distance_bgp_internal = 200` + "\n"
 	config += `		ipv4_unicast_distance_bgp_local = 200` + "\n"
-<<<<<<< HEAD
 	config += `		ipv4_unicast_maximum_paths_ebgp = 2` + "\n"
 	config += `		ipv4_unicast_maximum_paths_ibgp = 2` + "\n"
-=======
 	config += `		ipv4_unicast_import_path_selection_all = true` + "\n"
->>>>>>> 4d83599c (feat: Implement VRF Advanced Support in Terraform Provider)
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
