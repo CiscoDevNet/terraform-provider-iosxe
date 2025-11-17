@@ -82,7 +82,7 @@ resource "iosxe_yang" "PreReq2" {
 	depends_on = [iosxe_yang.PreReq0, ]
 }
 
-resource "iosxe_restconf" "PreReq3" {
+resource "iosxe_yang" "PreReq3" {
 	path = "Cisco-IOS-XE-native:native/route-map=RM1"
 	attributes = {
 		"name" = "RM1"
@@ -108,7 +108,7 @@ func testAccDataSourceIosxeBGPL2VPNEVPNNeighborConfig() string {
 	config += `		in_out = "in"` + "\n"
 	config += `		route_map_name = "RM1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

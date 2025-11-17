@@ -174,6 +174,18 @@ func (data BGPL2VPNEVPNNeighbor) toBodyXML(ctx context.Context) string {
 	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/soft-reconfiguration", data.SoftReconfiguration.ValueString())
 	}
+	if len(data.RouteMaps) > 0 {
+		for _, item := range data.RouteMaps {
+			cBody := netconf.Body{}
+			if !item.InOut.IsNull() && !item.InOut.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "inout", item.InOut.ValueString())
+			}
+			if !item.RouteMapName.IsNull() && !item.RouteMapName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "route-map-name", item.RouteMapName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-map", cBody.Res())
+		}
+	}
 	bodyString, err := body.String()
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
@@ -297,6 +309,40 @@ func (data *BGPL2VPNEVPNNeighbor) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.SoftReconfiguration = types.StringNull()
 	}
+	for i := range data.RouteMaps {
+		keys := [...]string{"inout"}
+		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "inout"); value.Exists() && !data.RouteMaps[i].InOut.IsNull() {
+			data.RouteMaps[i].InOut = types.StringValue(value.String())
+		} else {
+			data.RouteMaps[i].InOut = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "route-map-name"); value.Exists() && !data.RouteMaps[i].RouteMapName.IsNull() {
+			data.RouteMaps[i].RouteMapName = types.StringValue(value.String())
+		} else {
+			data.RouteMaps[i].RouteMapName = types.StringNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -402,6 +448,20 @@ func (data *BGPL2VPNEVPNNeighbor) fromBodyXML(ctx context.Context, res xmldot.Re
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map"); value.Exists() {
+		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMaps, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BGPL2VPNEVPNNeighborRouteMaps{}
+			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
+				item.InOut = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMaps = append(data.RouteMaps, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyXML
@@ -424,6 +484,20 @@ func (data *BGPL2VPNEVPNNeighborData) fromBodyXML(ctx context.Context, res xmldo
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map"); value.Exists() {
+		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMaps, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BGPL2VPNEVPNNeighborRouteMaps{}
+			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
+				item.InOut = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMaps = append(data.RouteMaps, item)
+			return true
+		})
 	}
 }
 
@@ -480,6 +554,39 @@ func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGP
 
 func (data *BGPL2VPNEVPNNeighbor) addDeletedItemsXML(ctx context.Context, state BGPL2VPNEVPNNeighbor, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.RouteMaps {
+		stateKeys := [...]string{"inout"}
+		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RouteMaps[i].InOut.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RouteMaps {
+			found = true
+			if state.RouteMaps[i].InOut.ValueString() != data.RouteMaps[j].InOut.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v/route-map-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v", predicates))
+		}
+	}
 	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/soft-reconfiguration")
 	}
@@ -541,6 +648,16 @@ func (data *BGPL2VPNEVPNNeighbor) getDeletePaths(ctx context.Context) []string {
 
 func (data *BGPL2VPNEVPNNeighbor) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.RouteMaps {
+		keys := [...]string{"inout"}
+		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/route-map%v", predicates))
+	}
 	if !data.SoftReconfiguration.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/soft-reconfiguration")
 	}
