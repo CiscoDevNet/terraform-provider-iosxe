@@ -1,0 +1,55 @@
+---
+name: Interface IPv6 PIM
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/ipv6
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/ipv6
+no_delete: true
+doc_category: Multicast
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+      - Loopback
+      - Vlan
+      - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - Tunnel
+    example: Loopback
+  - yang_name: name
+    example: 100
+  - yang_name: Cisco-IOS-XE-multicast:pim-conf/pim
+    xpath: Cisco-IOS-XE-multicast:pim-conf/pim
+    tf_name: pim
+    example: true
+  - yang_name: Cisco-IOS-XE-multicast:pim-container/bfd
+    xpath: Cisco-IOS-XE-multicast:pim-container/bfd
+    tf_name: bfd
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:pim-container/bsr/border
+    xpath: Cisco-IOS-XE-multicast:pim-container/bsr/border
+    tf_name: bsr_border
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:pim-container/dr-priority
+    xpath: Cisco-IOS-XE-multicast:pim-container/dr-priority
+    tf_name: dr_priority
+    example: 10
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
+    attributes:
+      - name: name
+        value: 100
+      - name: ipv6/enable
+        value: ""
+
