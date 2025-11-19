@@ -674,7 +674,15 @@ attributes:
     tf_name: port_channel_load_balance
     example: src-dst-mixed-ip-port
     test_tags: [C9000V]
-
+  - yang_name: Cisco-IOS-XE-sanet:authentication/mac-move/permit
+    example: true
+    test_tags: [C8000V]
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled
+    example: true
+    test_tags: [C8000V]
+    exclude_test: true
+    
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true

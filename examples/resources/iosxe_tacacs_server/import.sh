@@ -1,1 +1,1 @@
-terraform import iosxe_tacacs_server.example "<name>"
+terraform import iosxe_tacacs_server.example ""

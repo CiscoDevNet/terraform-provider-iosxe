@@ -952,6 +952,14 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.OneOf("dst-ip", "dst-mac", "dst-mixed-ip-port", "dst-port", "mpls", "src-dst-ip", "src-dst-mac", "src-dst-mixed-ip-port", "src-dst-port", "src-ip", "src-mac", "src-mixed-ip-port", "src-port", "vlan-dst-ip", "vlan-dst-mixed-ip-port", "vlan-src-dst-ip", "vlan-src-dst-mixed-ip-port", "vlan-src-ip", "vlan-src-mixed-ip-port"),
 				},
 			},
+			"authentication_mac_move_permit": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("PERMIT MAC moves (clears existing session)").String,
+				Optional:            true,
+			},
+			"authentication_mac_move_deny_uncontrolled": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Deny MAC move to uncontrolled port").String,
+				Optional:            true,
+			},
 		},
 	}
 }

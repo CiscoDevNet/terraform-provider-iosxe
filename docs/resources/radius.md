@@ -21,8 +21,10 @@ resource "iosxe_radius" "example" {
   timeout                          = 4
   retransmit                       = 3
   key                              = "123"
+  key_encryption                   = "0"
   automate_tester_username         = "dummy"
   automate_tester_ignore_acct_port = true
+  automate_tester_ignore_auth_port = true
   automate_tester_probe_on_config  = true
 }
 ```
@@ -40,12 +42,16 @@ resource "iosxe_radius" "example" {
   - Range: `0`-`65534`
 - `authentication_port` (Number) UDP port for RADIUS authentication server (default is 1812)
   - Range: `0`-`65534`
+- `automate_tester_idle_time` (Number) Minutes of idle-time after which server state should be verified.
+  - Range: `1`-`35791`
 - `automate_tester_ignore_acct_port` (Boolean) Do not test accounting ports of the servers.
+- `automate_tester_ignore_auth_port` (Boolean) Do not test authentication port of the servers.
 - `automate_tester_probe_on_config` (Boolean) Send a packet to verify the server status
 - `automate_tester_username` (String)
 - `device` (String) A device name from the provider configuration.
 - `ipv4_address` (String) IPv4 address or Hostname for radius server
 - `key` (String, Sensitive)
+- `key_encryption` (String) - Choices: `0`, `5`, `6`, `7`
 - `pac_key` (String, Sensitive) The UNENCRYPTED (cleartext) server key
 - `pac_key_encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
   - Choices: `0`, `6`, `7`

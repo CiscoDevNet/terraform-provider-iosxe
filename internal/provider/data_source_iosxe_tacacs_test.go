@@ -30,19 +30,17 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeTACACSServer(t *testing.T) {
+func TestAccDataSourceIosxeTACACS(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "timeout", "5"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "directed_request", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "directed_request_restricted", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "directed_request_no_truncate", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "attribute_allow_unknown", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs.test", "address_ipv4", "10.10.15.13"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs.test", "timeout", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs.test", "port", "490"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeTACACSServerConfig(),
+				Config: testAccDataSourceIosxeTACACSConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -56,21 +54,21 @@ func TestAccDataSourceIosxeTACACSServer(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeTACACSServerConfig() string {
-	config := `resource "iosxe_tacacs_server" "test" {` + "\n"
+func testAccDataSourceIosxeTACACSConfig() string {
+	config := `resource "iosxe_tacacs" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	timeout = 5` + "\n"
-	config += `	directed_request = true` + "\n"
-	config += `	directed_request_restricted = true` + "\n"
-	config += `	directed_request_no_truncate = true` + "\n"
+	config += `	name = "tacacs_10.10.15.13"` + "\n"
+	config += `	address_ipv4 = "10.10.15.13"` + "\n"
+	config += `	timeout = 4` + "\n"
+	config += `	port = 490` + "\n"
 	config += `	encryption = "0"` + "\n"
 	config += `	key = "123"` + "\n"
-	config += `	attribute_allow_unknown = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_tacacs_server" "test" {
-			depends_on = [iosxe_tacacs_server.test]
+		data "iosxe_tacacs" "test" {
+			name = "tacacs_10.10.15.13"
+			depends_on = [iosxe_tacacs.test]
 		}
 	`
 	return config

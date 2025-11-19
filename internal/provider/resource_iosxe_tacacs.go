@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -46,26 +47,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &TACACSServerResource{}
-	_ resource.ResourceWithImportState = &TACACSServerResource{}
+	_ resource.Resource                = &TACACSResource{}
+	_ resource.ResourceWithImportState = &TACACSResource{}
 )
 
-func NewTACACSServerResource() resource.Resource {
-	return &TACACSServerResource{}
+func NewTACACSResource() resource.Resource {
+	return &TACACSResource{}
 }
 
-type TACACSServerResource struct {
+type TACACSResource struct {
 	data *IosxeProviderData
 }
 
-func (r *TACACSServerResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_tacacs_server"
+func (r *TACACSResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_tacacs"
 }
 
-func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *TACACSResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the TACACS Server configuration.",
+		MarkdownDescription: "This resource can manage the TACACS configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -86,24 +87,30 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
+			"name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Name for the tacacs server configuration").String,
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"address_ipv4": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address or Hostname for tacacs server").String,
+				Optional:            true,
+			},
 			"timeout": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Time to wait for a TACACS server to reply").AddIntegerRangeDescription(1, 1000).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Time to wait for this TACACS server to reply (overrides default)").AddIntegerRangeDescription(1, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 1000),
 				},
 			},
-			"directed_request": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow user to specify tacacs server to use with `@server'").String,
+			"port": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("TCP port for TACACS+ server (default is 49)").AddIntegerRangeDescription(1, 65535).String,
 				Optional:            true,
-			},
-			"directed_request_restricted": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("restrict queries to directed request servers only").String,
-				Optional:            true,
-			},
-			"directed_request_no_truncate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not truncate the @hostname from username.").String,
-				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
 			},
 			"encryption": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow").AddStringEnumDescription("0", "6", "7").String,
@@ -116,19 +123,18 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"key": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
 				Optional:            true,
 				Sensitive:           true,
-			},
-			"attribute_allow_unknown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Unknown Tacacs+ attributes").String,
-				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
 			},
 		},
 	}
 }
 
-func (r *TACACSServerResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *TACACSResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -140,8 +146,8 @@ func (r *TACACSServerResource) Configure(_ context.Context, req resource.Configu
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *TACACSServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan TACACSServer
+func (r *TACACSResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan TACACS
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -224,8 +230,8 @@ func (r *TACACSServerResource) Create(ctx context.Context, req resource.CreateRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *TACACSServerResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state TACACSServer
+func (r *TACACSResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state TACACS
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -251,7 +257,7 @@ func (r *TACACSServerResource) Read(ctx context.Context, req resource.ReadReques
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = TACACSServer{Device: state.Device, Id: state.Id}
+				state = TACACS{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -307,8 +313,8 @@ func (r *TACACSServerResource) Read(ctx context.Context, req resource.ReadReques
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *TACACSServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state TACACSServer
+func (r *TACACSResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state TACACS
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -408,8 +414,8 @@ func (r *TACACSServerResource) Update(ctx context.Context, req resource.UpdateRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *TACACSServerResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state TACACSServer
+func (r *TACACSResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state TACACS
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -507,25 +513,31 @@ func (r *TACACSServerResource) Delete(ctx context.Context, req resource.DeleteRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *TACACSServerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *TACACSResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 0 && len(idParts) != 1 {
-		expectedIdentifier := "Expected import identifier with format: ''"
-		expectedIdentifier += " or '<device>'"
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<name>'"
+		expectedIdentifier += " or '<name>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	if len(idParts) == 1 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
+	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state TACACSServer
+	var state TACACS
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

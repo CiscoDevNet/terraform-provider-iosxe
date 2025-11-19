@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &TACACSServerDataSource{}
-	_ datasource.DataSourceWithConfigure = &TACACSServerDataSource{}
+	_ datasource.DataSource              = &TACACSDataSource{}
+	_ datasource.DataSourceWithConfigure = &TACACSDataSource{}
 )
 
-func NewTACACSServerDataSource() datasource.DataSource {
-	return &TACACSServerDataSource{}
+func NewTACACSDataSource() datasource.DataSource {
+	return &TACACSDataSource{}
 }
 
-type TACACSServerDataSource struct {
+type TACACSDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *TACACSServerDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_tacacs_server"
+func (d *TACACSDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_tacacs"
 }
 
-func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *TACACSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the TACACS Server configuration.",
+		MarkdownDescription: "This data source can read the TACACS configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -68,20 +68,20 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
+			"name": schema.StringAttribute{
+				MarkdownDescription: "Name for the tacacs server configuration",
+				Required:            true,
+			},
+			"address_ipv4": schema.StringAttribute{
+				MarkdownDescription: "IPv4 address or Hostname for tacacs server",
+				Computed:            true,
+			},
 			"timeout": schema.Int64Attribute{
-				MarkdownDescription: "Time to wait for a TACACS server to reply",
+				MarkdownDescription: "Time to wait for this TACACS server to reply (overrides default)",
 				Computed:            true,
 			},
-			"directed_request": schema.BoolAttribute{
-				MarkdownDescription: "Allow user to specify tacacs server to use with `@server'",
-				Computed:            true,
-			},
-			"directed_request_restricted": schema.BoolAttribute{
-				MarkdownDescription: "restrict queries to directed request servers only",
-				Computed:            true,
-			},
-			"directed_request_no_truncate": schema.BoolAttribute{
-				MarkdownDescription: "Do not truncate the @hostname from username.",
+			"port": schema.Int64Attribute{
+				MarkdownDescription: "TCP port for TACACS+ server (default is 49)",
 				Computed:            true,
 			},
 			"encryption": schema.StringAttribute{
@@ -89,19 +89,15 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed:            true,
 			},
 			"key": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
 				Computed:            true,
 				Sensitive:           true,
-			},
-			"attribute_allow_unknown": schema.BoolAttribute{
-				MarkdownDescription: "Unknown Tacacs+ attributes",
-				Computed:            true,
 			},
 		},
 	}
 }
 
-func (d *TACACSServerDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *TACACSDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -113,8 +109,8 @@ func (d *TACACSServerDataSource) Configure(_ context.Context, req datasource.Con
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *TACACSServerDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config TACACSServerData
+func (d *TACACSDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config TACACSData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -134,7 +130,7 @@ func (d *TACACSServerDataSource) Read(ctx context.Context, req datasource.ReadRe
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = TACACSServerData{Device: config.Device}
+			config = TACACSData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

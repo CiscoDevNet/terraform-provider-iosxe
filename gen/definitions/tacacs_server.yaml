@@ -1,27 +1,28 @@
 ---
 name: TACACS Server
-path: /Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server[name=%v]
+path: /Cisco-IOS-XE-native:native/tacacs-server
 doc_category: AAA
 attributes:
-  - yang_name: name
-    id: true
-    example: tacacs_10.10.15.13
-  - yang_name: address/tacacs-host-address/ipv4/ipv4
-    xpath: address/ipv4
-    tf_name: address_ipv4
-    example: 10.10.15.13
-  - yang_name: timeout
-    example: 4
-  - yang_name: key/encryption
+  - yang_name: Cisco-IOS-XE-aaa:timeout
+    example: 5
+  - yang_name: Cisco-IOS-XE-aaa:directed-request
+    example: true
+  - yang_name: Cisco-IOS-XE-aaa:directed-request/restricted
+    example: true
+  - yang_name: Cisco-IOS-XE-aaa:directed-request/no-truncate
+    example: true
+  - yang_name: Cisco-IOS-XE-aaa:key/encryption
     tf_name: encryption
     write_only: true
     example: 0
     requires_replace: true
     delete_parent: true
-  - yang_name: key/key
+  - yang_name: Cisco-IOS-XE-aaa:key/key
     tf_name: key
     write_only: true
     sensitive: true
     example: 123
     allow_import_changes: true
     delete_parent: true
+  - yang_name: Cisco-IOS-XE-aaa:attribute/allow/unknown
+    example: true

@@ -52,6 +52,14 @@ resource "iosxe_aaa_accounting" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `dot1x_accounting_lists` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--dot1x_accounting_lists))
+- `dot1x_default_start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+- `dot1x_default_start_stop_group1` (String) Use Server-group
+- `dot1x_default_start_stop_group2` (String) Use Server-group
+- `dot1x_default_start_stop_group3` (String) Use Server-group
+- `dot1x_default_start_stop_group4` (String) Use Server-group
+- `dot1x_default_start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+- `dot1x_default_start_stop_group_logger` (Boolean) Use system logger for Accounting
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `identities` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--identities))
 - `identity_default_start_stop_group1` (String) Use Server-group
@@ -117,6 +125,24 @@ Optional:
 - `wait_start_group3` (String) Use Server-group
 - `wait_start_group4` (String) Use Server-group
 - `wait_start_logger` (Boolean) Use system logger for Accounting
+
+
+<a id="nestedatt--dot1x_accounting_lists"></a>
+### Nested Schema for `dot1x_accounting_lists`
+
+Required:
+
+- `name` (String)
+
+Optional:
+
+- `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
+- `start_stop_group3` (String) Use Server-group
+- `start_stop_group4` (String) Use Server-group
+- `start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--execs"></a>
