@@ -435,7 +435,7 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
 				Optional:            true,
 			},
-			"dot1x_accounting_lists": schema.ListNestedAttribute{
+			"dot1x": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Named Accounting list (max 31 characters, longer will be rejected).").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

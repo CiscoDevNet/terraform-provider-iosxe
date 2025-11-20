@@ -408,7 +408,7 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Use system logger for Accounting",
 				Computed:            true,
 			},
-			"dot1x_accounting_lists": schema.ListNestedAttribute{
+			"dot1x": schema.ListNestedAttribute{
 				MarkdownDescription: "Named Accounting list (max 31 characters, longer will be rejected).",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

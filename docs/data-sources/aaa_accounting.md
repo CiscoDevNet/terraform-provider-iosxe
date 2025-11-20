@@ -28,7 +28,7 @@ data "iosxe_aaa_accounting" "example" {
 
 - `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
 - `connections` (Attributes List) For outbound connections. (telnet, rlogin) (see [below for nested schema](#nestedatt--connections))
-- `dot1x_accounting_lists` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--dot1x_accounting_lists))
+- `dot1x` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--dot1x))
 - `dot1x_default_start_stop_broadcast` (Boolean) Use Broadcast for Accounting
 - `dot1x_default_start_stop_group1` (String) Use Server-group
 - `dot1x_default_start_stop_group2` (String) Use Server-group
@@ -92,8 +92,8 @@ Read-Only:
 - `wait_start_logger` (Boolean) Use system logger for Accounting
 
 
-<a id="nestedatt--dot1x_accounting_lists"></a>
-### Nested Schema for `dot1x_accounting_lists`
+<a id="nestedatt--dot1x"></a>
+### Nested Schema for `dot1x`
 
 Read-Only:
 

@@ -41,52 +41,52 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type AAAAccounting struct {
-	Device                              types.String                        `tfsdk:"device"`
-	Id                                  types.String                        `tfsdk:"id"`
-	DeleteMode                          types.String                        `tfsdk:"delete_mode"`
-	UpdateNewinfoPeriodic               types.Int64                         `tfsdk:"update_newinfo_periodic"`
-	Identities                          []AAAAccountingIdentities           `tfsdk:"identities"`
-	IdentityDefaultStartStopGroup1      types.String                        `tfsdk:"identity_default_start_stop_group1"`
-	IdentityDefaultStartStopGroup2      types.String                        `tfsdk:"identity_default_start_stop_group2"`
-	IdentityDefaultStartStopGroup3      types.String                        `tfsdk:"identity_default_start_stop_group3"`
-	IdentityDefaultStartStopGroup4      types.String                        `tfsdk:"identity_default_start_stop_group4"`
-	Networks                            []AAAAccountingNetworks             `tfsdk:"networks"`
-	SystemGuaranteeFirst                types.Bool                          `tfsdk:"system_guarantee_first"`
-	Commands                            []AAAAccountingCommands             `tfsdk:"commands"`
-	Connections                         []AAAAccountingConnections          `tfsdk:"connections"`
-	Execs                               []AAAAccountingExecs                `tfsdk:"execs"`
-	Dot1xDefaultStartStopGroup1         types.String                        `tfsdk:"dot1x_default_start_stop_group1"`
-	Dot1xDefaultStartStopGroup2         types.String                        `tfsdk:"dot1x_default_start_stop_group2"`
-	Dot1xDefaultStartStopGroup3         types.String                        `tfsdk:"dot1x_default_start_stop_group3"`
-	Dot1xDefaultStartStopGroup4         types.String                        `tfsdk:"dot1x_default_start_stop_group4"`
-	Dot1xDefaultStartStopBroadcast      types.Bool                          `tfsdk:"dot1x_default_start_stop_broadcast"`
-	Dot1xDefaultStartStopGroupBroadcast types.Bool                          `tfsdk:"dot1x_default_start_stop_group_broadcast"`
-	Dot1xDefaultStartStopGroupLogger    types.Bool                          `tfsdk:"dot1x_default_start_stop_group_logger"`
-	Dot1xAccountingLists                []AAAAccountingDot1xAccountingLists `tfsdk:"dot1x_accounting_lists"`
+	Device                              types.String               `tfsdk:"device"`
+	Id                                  types.String               `tfsdk:"id"`
+	DeleteMode                          types.String               `tfsdk:"delete_mode"`
+	UpdateNewinfoPeriodic               types.Int64                `tfsdk:"update_newinfo_periodic"`
+	Identities                          []AAAAccountingIdentities  `tfsdk:"identities"`
+	IdentityDefaultStartStopGroup1      types.String               `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2      types.String               `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3      types.String               `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4      types.String               `tfsdk:"identity_default_start_stop_group4"`
+	Networks                            []AAAAccountingNetworks    `tfsdk:"networks"`
+	SystemGuaranteeFirst                types.Bool                 `tfsdk:"system_guarantee_first"`
+	Commands                            []AAAAccountingCommands    `tfsdk:"commands"`
+	Connections                         []AAAAccountingConnections `tfsdk:"connections"`
+	Execs                               []AAAAccountingExecs       `tfsdk:"execs"`
+	Dot1xDefaultStartStopGroup1         types.String               `tfsdk:"dot1x_default_start_stop_group1"`
+	Dot1xDefaultStartStopGroup2         types.String               `tfsdk:"dot1x_default_start_stop_group2"`
+	Dot1xDefaultStartStopGroup3         types.String               `tfsdk:"dot1x_default_start_stop_group3"`
+	Dot1xDefaultStartStopGroup4         types.String               `tfsdk:"dot1x_default_start_stop_group4"`
+	Dot1xDefaultStartStopBroadcast      types.Bool                 `tfsdk:"dot1x_default_start_stop_broadcast"`
+	Dot1xDefaultStartStopGroupBroadcast types.Bool                 `tfsdk:"dot1x_default_start_stop_group_broadcast"`
+	Dot1xDefaultStartStopGroupLogger    types.Bool                 `tfsdk:"dot1x_default_start_stop_group_logger"`
+	Dot1x                               []AAAAccountingDot1x       `tfsdk:"dot1x"`
 }
 
 type AAAAccountingData struct {
-	Device                              types.String                        `tfsdk:"device"`
-	Id                                  types.String                        `tfsdk:"id"`
-	UpdateNewinfoPeriodic               types.Int64                         `tfsdk:"update_newinfo_periodic"`
-	Identities                          []AAAAccountingIdentities           `tfsdk:"identities"`
-	IdentityDefaultStartStopGroup1      types.String                        `tfsdk:"identity_default_start_stop_group1"`
-	IdentityDefaultStartStopGroup2      types.String                        `tfsdk:"identity_default_start_stop_group2"`
-	IdentityDefaultStartStopGroup3      types.String                        `tfsdk:"identity_default_start_stop_group3"`
-	IdentityDefaultStartStopGroup4      types.String                        `tfsdk:"identity_default_start_stop_group4"`
-	Networks                            []AAAAccountingNetworks             `tfsdk:"networks"`
-	SystemGuaranteeFirst                types.Bool                          `tfsdk:"system_guarantee_first"`
-	Commands                            []AAAAccountingCommands             `tfsdk:"commands"`
-	Connections                         []AAAAccountingConnections          `tfsdk:"connections"`
-	Execs                               []AAAAccountingExecs                `tfsdk:"execs"`
-	Dot1xDefaultStartStopGroup1         types.String                        `tfsdk:"dot1x_default_start_stop_group1"`
-	Dot1xDefaultStartStopGroup2         types.String                        `tfsdk:"dot1x_default_start_stop_group2"`
-	Dot1xDefaultStartStopGroup3         types.String                        `tfsdk:"dot1x_default_start_stop_group3"`
-	Dot1xDefaultStartStopGroup4         types.String                        `tfsdk:"dot1x_default_start_stop_group4"`
-	Dot1xDefaultStartStopBroadcast      types.Bool                          `tfsdk:"dot1x_default_start_stop_broadcast"`
-	Dot1xDefaultStartStopGroupBroadcast types.Bool                          `tfsdk:"dot1x_default_start_stop_group_broadcast"`
-	Dot1xDefaultStartStopGroupLogger    types.Bool                          `tfsdk:"dot1x_default_start_stop_group_logger"`
-	Dot1xAccountingLists                []AAAAccountingDot1xAccountingLists `tfsdk:"dot1x_accounting_lists"`
+	Device                              types.String               `tfsdk:"device"`
+	Id                                  types.String               `tfsdk:"id"`
+	UpdateNewinfoPeriodic               types.Int64                `tfsdk:"update_newinfo_periodic"`
+	Identities                          []AAAAccountingIdentities  `tfsdk:"identities"`
+	IdentityDefaultStartStopGroup1      types.String               `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2      types.String               `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3      types.String               `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4      types.String               `tfsdk:"identity_default_start_stop_group4"`
+	Networks                            []AAAAccountingNetworks    `tfsdk:"networks"`
+	SystemGuaranteeFirst                types.Bool                 `tfsdk:"system_guarantee_first"`
+	Commands                            []AAAAccountingCommands    `tfsdk:"commands"`
+	Connections                         []AAAAccountingConnections `tfsdk:"connections"`
+	Execs                               []AAAAccountingExecs       `tfsdk:"execs"`
+	Dot1xDefaultStartStopGroup1         types.String               `tfsdk:"dot1x_default_start_stop_group1"`
+	Dot1xDefaultStartStopGroup2         types.String               `tfsdk:"dot1x_default_start_stop_group2"`
+	Dot1xDefaultStartStopGroup3         types.String               `tfsdk:"dot1x_default_start_stop_group3"`
+	Dot1xDefaultStartStopGroup4         types.String               `tfsdk:"dot1x_default_start_stop_group4"`
+	Dot1xDefaultStartStopBroadcast      types.Bool                 `tfsdk:"dot1x_default_start_stop_broadcast"`
+	Dot1xDefaultStartStopGroupBroadcast types.Bool                 `tfsdk:"dot1x_default_start_stop_group_broadcast"`
+	Dot1xDefaultStartStopGroupLogger    types.Bool                 `tfsdk:"dot1x_default_start_stop_group_logger"`
+	Dot1x                               []AAAAccountingDot1x       `tfsdk:"dot1x"`
 }
 type AAAAccountingIdentities struct {
 	Name                    types.String `tfsdk:"name"`
@@ -160,7 +160,7 @@ type AAAAccountingExecs struct {
 	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
 	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
 }
-type AAAAccountingDot1xAccountingLists struct {
+type AAAAccountingDot1x struct {
 	Name                    types.String `tfsdk:"name"`
 	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
 	StartStopGroup2         types.String `tfsdk:"start_stop_group2"`
@@ -509,9 +509,9 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.Dot1xAccountingLists) > 0 {
+	if len(data.Dot1x) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list", []interface{}{})
-		for index, item := range data.Dot1xAccountingLists {
+		for index, item := range data.Dot1x {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
@@ -904,8 +904,8 @@ func (data AAAAccounting) toBodyXML(ctx context.Context) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/logger")
 		}
 	}
-	if len(data.Dot1xAccountingLists) > 0 {
-		for _, item := range data.Dot1xAccountingLists {
+	if len(data.Dot1x) > 0 {
+		for _, item := range data.Dot1x {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
@@ -1555,9 +1555,9 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolNull()
 	}
-	for i := range data.Dot1xAccountingLists {
+	for i := range data.Dot1x {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.Dot1xAccountingLists[i].Name.ValueString()}
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "dot1x.accounting-list").ForEach(
@@ -1578,57 +1578,57 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.Dot1xAccountingLists[i].Name.IsNull() {
-			data.Dot1xAccountingLists[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.Dot1x[i].Name.IsNull() {
+			data.Dot1x[i].Name = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].Name = types.StringNull()
+			data.Dot1x[i].Name = types.StringNull()
 		}
-		if value := r.Get("start-stop.group-config.group1.group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup1.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup1 = types.StringValue(value.String())
+		if value := r.Get("start-stop.group-config.group1.group"); value.Exists() && !data.Dot1x[i].StartStopGroup1.IsNull() {
+			data.Dot1x[i].StartStopGroup1 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup1 = types.StringNull()
+			data.Dot1x[i].StartStopGroup1 = types.StringNull()
 		}
-		if value := r.Get("start-stop.group-config.group2.group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup2.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup2 = types.StringValue(value.String())
+		if value := r.Get("start-stop.group-config.group2.group"); value.Exists() && !data.Dot1x[i].StartStopGroup2.IsNull() {
+			data.Dot1x[i].StartStopGroup2 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup2 = types.StringNull()
+			data.Dot1x[i].StartStopGroup2 = types.StringNull()
 		}
-		if value := r.Get("start-stop.group-config.group3.group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup3.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup3 = types.StringValue(value.String())
+		if value := r.Get("start-stop.group-config.group3.group"); value.Exists() && !data.Dot1x[i].StartStopGroup3.IsNull() {
+			data.Dot1x[i].StartStopGroup3 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup3 = types.StringNull()
+			data.Dot1x[i].StartStopGroup3 = types.StringNull()
 		}
-		if value := r.Get("start-stop.group-config.group4.group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup4.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup4 = types.StringValue(value.String())
+		if value := r.Get("start-stop.group-config.group4.group"); value.Exists() && !data.Dot1x[i].StartStopGroup4.IsNull() {
+			data.Dot1x[i].StartStopGroup4 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup4 = types.StringNull()
+			data.Dot1x[i].StartStopGroup4 = types.StringNull()
 		}
-		if value := r.Get("start-stop.broadcast"); !data.Dot1xAccountingLists[i].StartStopBroadcast.IsNull() {
+		if value := r.Get("start-stop.broadcast"); !data.Dot1x[i].StartStopBroadcast.IsNull() {
 			if value.Exists() {
-				data.Dot1xAccountingLists[i].StartStopBroadcast = types.BoolValue(true)
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(true)
 			} else {
-				data.Dot1xAccountingLists[i].StartStopBroadcast = types.BoolValue(false)
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(false)
 			}
 		} else {
-			data.Dot1xAccountingLists[i].StartStopBroadcast = types.BoolNull()
+			data.Dot1x[i].StartStopBroadcast = types.BoolNull()
 		}
-		if value := r.Get("start-stop.group-config.broadcast"); !data.Dot1xAccountingLists[i].StartStopGroupBroadcast.IsNull() {
+		if value := r.Get("start-stop.group-config.broadcast"); !data.Dot1x[i].StartStopGroupBroadcast.IsNull() {
 			if value.Exists() {
-				data.Dot1xAccountingLists[i].StartStopGroupBroadcast = types.BoolValue(true)
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(true)
 			} else {
-				data.Dot1xAccountingLists[i].StartStopGroupBroadcast = types.BoolValue(false)
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(false)
 			}
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroupBroadcast = types.BoolNull()
+			data.Dot1x[i].StartStopGroupBroadcast = types.BoolNull()
 		}
-		if value := r.Get("start-stop.group-config.logger"); !data.Dot1xAccountingLists[i].StartStopGroupLogger.IsNull() {
+		if value := r.Get("start-stop.group-config.logger"); !data.Dot1x[i].StartStopGroupLogger.IsNull() {
 			if value.Exists() {
-				data.Dot1xAccountingLists[i].StartStopGroupLogger = types.BoolValue(true)
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(true)
 			} else {
-				data.Dot1xAccountingLists[i].StartStopGroupLogger = types.BoolValue(false)
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(false)
 			}
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroupLogger = types.BoolNull()
+			data.Dot1x[i].StartStopGroupLogger = types.BoolNull()
 		}
 	}
 }
@@ -2231,9 +2231,9 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolNull()
 	}
-	for i := range data.Dot1xAccountingLists {
+	for i := range data.Dot1x {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.Dot1xAccountingLists[i].Name.ValueString()}
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
 
 		var r xmldot.Result
 		helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list").ForEach(
@@ -2254,57 +2254,57 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 				return true
 			},
 		)
-		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Dot1xAccountingLists[i].Name.IsNull() {
-			data.Dot1xAccountingLists[i].Name = types.StringValue(value.String())
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Dot1x[i].Name.IsNull() {
+			data.Dot1x[i].Name = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].Name = types.StringNull()
+			data.Dot1x[i].Name = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "start-stop/group-config/group1/group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup1.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup1 = types.StringValue(value.String())
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group1/group"); value.Exists() && !data.Dot1x[i].StartStopGroup1.IsNull() {
+			data.Dot1x[i].StartStopGroup1 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup1 = types.StringNull()
+			data.Dot1x[i].StartStopGroup1 = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "start-stop/group-config/group2/group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup2.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup2 = types.StringValue(value.String())
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group2/group"); value.Exists() && !data.Dot1x[i].StartStopGroup2.IsNull() {
+			data.Dot1x[i].StartStopGroup2 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup2 = types.StringNull()
+			data.Dot1x[i].StartStopGroup2 = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "start-stop/group-config/group3/group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup3.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup3 = types.StringValue(value.String())
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group3/group"); value.Exists() && !data.Dot1x[i].StartStopGroup3.IsNull() {
+			data.Dot1x[i].StartStopGroup3 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup3 = types.StringNull()
+			data.Dot1x[i].StartStopGroup3 = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "start-stop/group-config/group4/group"); value.Exists() && !data.Dot1xAccountingLists[i].StartStopGroup4.IsNull() {
-			data.Dot1xAccountingLists[i].StartStopGroup4 = types.StringValue(value.String())
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group4/group"); value.Exists() && !data.Dot1x[i].StartStopGroup4.IsNull() {
+			data.Dot1x[i].StartStopGroup4 = types.StringValue(value.String())
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroup4 = types.StringNull()
+			data.Dot1x[i].StartStopGroup4 = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "start-stop/broadcast"); !data.Dot1xAccountingLists[i].StartStopBroadcast.IsNull() {
+		if value := helpers.GetFromXPath(r, "start-stop/broadcast"); !data.Dot1x[i].StartStopBroadcast.IsNull() {
 			if value.Exists() {
-				data.Dot1xAccountingLists[i].StartStopBroadcast = types.BoolValue(true)
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(true)
 			} else {
-				data.Dot1xAccountingLists[i].StartStopBroadcast = types.BoolValue(false)
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(false)
 			}
 		} else {
-			data.Dot1xAccountingLists[i].StartStopBroadcast = types.BoolNull()
+			data.Dot1x[i].StartStopBroadcast = types.BoolNull()
 		}
-		if value := helpers.GetFromXPath(r, "start-stop/group-config/broadcast"); !data.Dot1xAccountingLists[i].StartStopGroupBroadcast.IsNull() {
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/broadcast"); !data.Dot1x[i].StartStopGroupBroadcast.IsNull() {
 			if value.Exists() {
-				data.Dot1xAccountingLists[i].StartStopGroupBroadcast = types.BoolValue(true)
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(true)
 			} else {
-				data.Dot1xAccountingLists[i].StartStopGroupBroadcast = types.BoolValue(false)
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(false)
 			}
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroupBroadcast = types.BoolNull()
+			data.Dot1x[i].StartStopGroupBroadcast = types.BoolNull()
 		}
-		if value := helpers.GetFromXPath(r, "start-stop/group-config/logger"); !data.Dot1xAccountingLists[i].StartStopGroupLogger.IsNull() {
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/logger"); !data.Dot1x[i].StartStopGroupLogger.IsNull() {
 			if value.Exists() {
-				data.Dot1xAccountingLists[i].StartStopGroupLogger = types.BoolValue(true)
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(true)
 			} else {
-				data.Dot1xAccountingLists[i].StartStopGroupLogger = types.BoolValue(false)
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(false)
 			}
 		} else {
-			data.Dot1xAccountingLists[i].StartStopGroupLogger = types.BoolNull()
+			data.Dot1x[i].StartStopGroupLogger = types.BoolNull()
 		}
 	}
 }
@@ -2634,9 +2634,9 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "dot1x.accounting-list"); value.Exists() {
-		data.Dot1xAccountingLists = make([]AAAAccountingDot1xAccountingLists, 0)
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingDot1xAccountingLists{}
+			item := AAAAccountingDot1x{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2667,7 +2667,7 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.StartStopGroupLogger = types.BoolValue(false)
 			}
-			data.Dot1xAccountingLists = append(data.Dot1xAccountingLists, item)
+			data.Dot1x = append(data.Dot1x, item)
 			return true
 		})
 	}
@@ -2998,9 +2998,9 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "dot1x.accounting-list"); value.Exists() {
-		data.Dot1xAccountingLists = make([]AAAAccountingDot1xAccountingLists, 0)
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingDot1xAccountingLists{}
+			item := AAAAccountingDot1x{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3031,7 +3031,7 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.StartStopGroupLogger = types.BoolValue(false)
 			}
-			data.Dot1xAccountingLists = append(data.Dot1xAccountingLists, item)
+			data.Dot1x = append(data.Dot1x, item)
 			return true
 		})
 	}
@@ -3358,9 +3358,9 @@ func (data *AAAAccounting) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list"); value.Exists() {
-		data.Dot1xAccountingLists = make([]AAAAccountingDot1xAccountingLists, 0)
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingDot1xAccountingLists{}
+			item := AAAAccountingDot1x{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3391,7 +3391,7 @@ func (data *AAAAccounting) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.StartStopGroupLogger = types.BoolValue(false)
 			}
-			data.Dot1xAccountingLists = append(data.Dot1xAccountingLists, item)
+			data.Dot1x = append(data.Dot1x, item)
 			return true
 		})
 	}
@@ -3718,9 +3718,9 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list"); value.Exists() {
-		data.Dot1xAccountingLists = make([]AAAAccountingDot1xAccountingLists, 0)
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingDot1xAccountingLists{}
+			item := AAAAccountingDot1x{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3751,7 +3751,7 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 			} else {
 				item.StartStopGroupLogger = types.BoolValue(false)
 			}
-			data.Dot1xAccountingLists = append(data.Dot1xAccountingLists, item)
+			data.Dot1x = append(data.Dot1x, item)
 			return true
 		})
 	}
@@ -3763,11 +3763,11 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccounting) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.Dot1xAccountingLists {
-		stateKeyValues := [...]string{state.Dot1xAccountingLists[i].Name.ValueString()}
+	for i := range state.Dot1x {
+		stateKeyValues := [...]string{state.Dot1x[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Dot1xAccountingLists[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Dot1x[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -3775,31 +3775,31 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 		}
 
 		found := false
-		for j := range data.Dot1xAccountingLists {
+		for j := range data.Dot1x {
 			found = true
-			if state.Dot1xAccountingLists[i].Name.ValueString() != data.Dot1xAccountingLists[j].Name.ValueString() {
+			if state.Dot1x[i].Name.ValueString() != data.Dot1x[j].Name.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Dot1xAccountingLists[i].StartStopGroupLogger.IsNull() && data.Dot1xAccountingLists[j].StartStopGroupLogger.IsNull() {
+				if !state.Dot1x[i].StartStopGroupLogger.IsNull() && data.Dot1x[j].StartStopGroupLogger.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroupBroadcast.IsNull() && data.Dot1xAccountingLists[j].StartStopGroupBroadcast.IsNull() {
+				if !state.Dot1x[i].StartStopGroupBroadcast.IsNull() && data.Dot1x[j].StartStopGroupBroadcast.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopBroadcast.IsNull() && data.Dot1xAccountingLists[j].StartStopBroadcast.IsNull() {
+				if !state.Dot1x[i].StartStopBroadcast.IsNull() && data.Dot1x[j].StartStopBroadcast.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup4.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup4.IsNull() {
+				if !state.Dot1x[i].StartStopGroup4.IsNull() && data.Dot1x[j].StartStopGroup4.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup3.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup3.IsNull() {
+				if !state.Dot1x[i].StartStopGroup3.IsNull() && data.Dot1x[j].StartStopGroup3.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup2.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup2.IsNull() {
+				if !state.Dot1x[i].StartStopGroup2.IsNull() && data.Dot1x[j].StartStopGroup2.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup1.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup1.IsNull() {
+				if !state.Dot1x[i].StartStopGroup1.IsNull() && data.Dot1x[j].StartStopGroup1.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -4157,16 +4157,16 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 
 func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAccounting, body string) string {
 	b := netconf.NewBody(body)
-	for i := range state.Dot1xAccountingLists {
+	for i := range state.Dot1x {
 		stateKeys := [...]string{"name"}
-		stateKeyValues := [...]string{state.Dot1xAccountingLists[i].Name.ValueString()}
+		stateKeyValues := [...]string{state.Dot1x[i].Name.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Dot1xAccountingLists[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Dot1x[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -4174,31 +4174,31 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 		}
 
 		found := false
-		for j := range data.Dot1xAccountingLists {
+		for j := range data.Dot1x {
 			found = true
-			if state.Dot1xAccountingLists[i].Name.ValueString() != data.Dot1xAccountingLists[j].Name.ValueString() {
+			if state.Dot1x[i].Name.ValueString() != data.Dot1x[j].Name.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Dot1xAccountingLists[i].StartStopGroupLogger.IsNull() && data.Dot1xAccountingLists[j].StartStopGroupLogger.IsNull() {
+				if !state.Dot1x[i].StartStopGroupLogger.IsNull() && data.Dot1x[j].StartStopGroupLogger.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/logger", predicates))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroupBroadcast.IsNull() && data.Dot1xAccountingLists[j].StartStopGroupBroadcast.IsNull() {
+				if !state.Dot1x[i].StartStopGroupBroadcast.IsNull() && data.Dot1x[j].StartStopGroupBroadcast.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/broadcast", predicates))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopBroadcast.IsNull() && data.Dot1xAccountingLists[j].StartStopBroadcast.IsNull() {
+				if !state.Dot1x[i].StartStopBroadcast.IsNull() && data.Dot1x[j].StartStopBroadcast.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/broadcast", predicates))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup4.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup4.IsNull() {
+				if !state.Dot1x[i].StartStopGroup4.IsNull() && data.Dot1x[j].StartStopGroup4.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group4/group", predicates))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup3.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup3.IsNull() {
+				if !state.Dot1x[i].StartStopGroup3.IsNull() && data.Dot1x[j].StartStopGroup3.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group3/group", predicates))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup2.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup2.IsNull() {
+				if !state.Dot1x[i].StartStopGroup2.IsNull() && data.Dot1x[j].StartStopGroup2.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group2/group", predicates))
 				}
-				if !state.Dot1xAccountingLists[i].StartStopGroup1.IsNull() && data.Dot1xAccountingLists[j].StartStopGroup1.IsNull() {
+				if !state.Dot1x[i].StartStopGroup1.IsNull() && data.Dot1x[j].StartStopGroup1.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group1/group", predicates))
 				}
 				break
@@ -4583,15 +4583,15 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	for i := range data.Dot1xAccountingLists {
-		keyValues := [...]string{data.Dot1xAccountingLists[i].Name.ValueString()}
-		if !data.Dot1xAccountingLists[i].StartStopGroupLogger.IsNull() && !data.Dot1xAccountingLists[i].StartStopGroupLogger.ValueBool() {
+	for i := range data.Dot1x {
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+		if !data.Dot1x[i].StartStopGroupLogger.IsNull() && !data.Dot1x[i].StartStopGroupLogger.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/logger", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Dot1xAccountingLists[i].StartStopGroupBroadcast.IsNull() && !data.Dot1xAccountingLists[i].StartStopGroupBroadcast.ValueBool() {
+		if !data.Dot1x[i].StartStopGroupBroadcast.IsNull() && !data.Dot1x[i].StartStopGroupBroadcast.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Dot1xAccountingLists[i].StartStopBroadcast.IsNull() && !data.Dot1xAccountingLists[i].StartStopBroadcast.ValueBool() {
+		if !data.Dot1x[i].StartStopBroadcast.IsNull() && !data.Dot1x[i].StartStopBroadcast.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
@@ -4693,8 +4693,8 @@ func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Dot1xAccountingLists {
-		keyValues := [...]string{data.Dot1xAccountingLists[i].Name.ValueString()}
+	for i := range data.Dot1x {
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/accounting-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
@@ -4772,9 +4772,9 @@ func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 
 func (data *AAAAccounting) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	for i := range data.Dot1xAccountingLists {
+	for i := range data.Dot1x {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.Dot1xAccountingLists[i].Name.ValueString()}
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
 		predicates := ""
 		for i := range keys {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])

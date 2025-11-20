@@ -294,7 +294,7 @@ attributes:
     example: true
     exclude_test: true
   - yang_name: dot1x/accounting-list
-    tf_name: dot1x_accounting_lists
+    tf_name: dot1x
     type: List
     exclude_test: true
     attributes:

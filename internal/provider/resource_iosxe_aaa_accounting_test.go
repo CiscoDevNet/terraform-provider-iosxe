@@ -67,7 +67,7 @@ func TestAccIosxeAAAAccounting(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeAAAAccountingImportStateIdFunc("iosxe_aaa_accounting.test"),
-				ImportStateVerifyIgnore: []string{"commands.0.broadcast", "commands.0.group_broadcast", "commands.0.group_logger", "dot1x_default_start_stop_broadcast", "dot1x_default_start_stop_group_broadcast", "dot1x_default_start_stop_group_logger", "dot1x_accounting_lists.0.start_stop_broadcast", "dot1x_accounting_lists.0.start_stop_group_broadcast", "dot1x_accounting_lists.0.start_stop_group_logger"},
+				ImportStateVerifyIgnore: []string{"commands.0.broadcast", "commands.0.group_broadcast", "commands.0.group_logger", "dot1x_default_start_stop_broadcast", "dot1x_default_start_stop_group_broadcast", "dot1x_default_start_stop_group_logger", "dot1x.0.start_stop_broadcast", "dot1x.0.start_stop_group_broadcast", "dot1x.0.start_stop_group_logger"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
