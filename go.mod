@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.29.0
 	github.com/hashicorp/terraform-plugin-log v0.10.0
 	github.com/hashicorp/terraform-plugin-testing v1.13.3
-	github.com/netascode/go-netconf v0.5.1-0.20251120094743-1a02ab3c62b7
+	github.com/netascode/go-netconf v0.5.1-0.20251120220345-f02372e5b6a8
 	github.com/netascode/go-restconf v0.1.18
 	github.com/netascode/xmldot v0.5.0
 	github.com/openconfig/goyang v1.6.3
