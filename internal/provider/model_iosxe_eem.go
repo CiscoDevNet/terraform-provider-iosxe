@@ -92,6 +92,11 @@ type EEMApplets struct {
 	EventTimerCronName          types.String        `tfsdk:"event_timer_cron_name"`
 	EventTimerCronMaxrun        types.Float64       `tfsdk:"event_timer_cron_maxrun"`
 	EventTimerCronRatelimit     types.Float64       `tfsdk:"event_timer_cron_ratelimit"`
+	EventSyslogPattern          types.String        `tfsdk:"event_syslog_pattern"`
+	EventSyslogOccurs           types.Int64         `tfsdk:"event_syslog_occurs"`
+	EventSyslogMaxrun           types.Float64       `tfsdk:"event_syslog_maxrun"`
+	EventSyslogRatelimit        types.Float64       `tfsdk:"event_syslog_ratelimit"`
+	EventSyslogPeriod           types.Float64       `tfsdk:"event_syslog_period"`
 }
 type EEMAppletsActions struct {
 	Name                            types.String `tfsdk:"name"`
@@ -292,6 +297,21 @@ func (data EEM) toBody(ctx context.Context) string {
 			}
 			if !item.EventTimerCronRatelimit.IsNull() && !item.EventTimerCronRatelimit.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.cron.ratelimit-set", strconv.FormatFloat(item.EventTimerCronRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPattern.IsNull() && !item.EventSyslogPattern.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.pattern", item.EventSyslogPattern.ValueString())
+			}
+			if !item.EventSyslogOccurs.IsNull() && !item.EventSyslogOccurs.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.occurs", strconv.FormatInt(item.EventSyslogOccurs.ValueInt64(), 10))
+			}
+			if !item.EventSyslogMaxrun.IsNull() && !item.EventSyslogMaxrun.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.maxrun-set", strconv.FormatFloat(item.EventSyslogMaxrun.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogRatelimit.IsNull() && !item.EventSyslogRatelimit.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.ratelimit-set", strconv.FormatFloat(item.EventSyslogRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPeriod.IsNull() && !item.EventSyslogPeriod.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.period-set", strconv.FormatFloat(item.EventSyslogPeriod.ValueFloat64(), 'f', 1, 64))
 			}
 			if len(item.Actions) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action", []interface{}{})
@@ -879,6 +899,21 @@ func (data EEM) toBodyXML(ctx context.Context) string {
 			}
 			if !item.EventTimerCronRatelimit.IsNull() && !item.EventTimerCronRatelimit.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "event/timer-choice/cron/ratelimit-set", strconv.FormatFloat(item.EventTimerCronRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPattern.IsNull() && !item.EventSyslogPattern.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/pattern", item.EventSyslogPattern.ValueString())
+			}
+			if !item.EventSyslogOccurs.IsNull() && !item.EventSyslogOccurs.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/occurs", strconv.FormatInt(item.EventSyslogOccurs.ValueInt64(), 10))
+			}
+			if !item.EventSyslogMaxrun.IsNull() && !item.EventSyslogMaxrun.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/maxrun-set", strconv.FormatFloat(item.EventSyslogMaxrun.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogRatelimit.IsNull() && !item.EventSyslogRatelimit.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/ratelimit-set", strconv.FormatFloat(item.EventSyslogRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPeriod.IsNull() && !item.EventSyslogPeriod.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/period-set", strconv.FormatFloat(item.EventSyslogPeriod.ValueFloat64(), 'f', 1, 64))
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/applet", cBody.Res())
 		}
@@ -1489,6 +1524,31 @@ func (data *EEM) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Applets[i].EventTimerCronRatelimit = types.Float64Null()
 		}
+		if value := r.Get("event.syslog-choice.pattern"); value.Exists() && !data.Applets[i].EventSyslogPattern.IsNull() {
+			data.Applets[i].EventSyslogPattern = types.StringValue(value.String())
+		} else {
+			data.Applets[i].EventSyslogPattern = types.StringNull()
+		}
+		if value := r.Get("event.syslog-choice.occurs"); value.Exists() && !data.Applets[i].EventSyslogOccurs.IsNull() {
+			data.Applets[i].EventSyslogOccurs = types.Int64Value(value.Int())
+		} else {
+			data.Applets[i].EventSyslogOccurs = types.Int64Null()
+		}
+		if value := r.Get("event.syslog-choice.maxrun-set"); value.Exists() && !data.Applets[i].EventSyslogMaxrun.IsNull() {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Null()
+		}
+		if value := r.Get("event.syslog-choice.ratelimit-set"); value.Exists() && !data.Applets[i].EventSyslogRatelimit.IsNull() {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Null()
+		}
+		if value := r.Get("event.syslog-choice.period-set"); value.Exists() && !data.Applets[i].EventSyslogPeriod.IsNull() {
+			data.Applets[i].EventSyslogPeriod = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogPeriod = types.Float64Null()
+		}
 	}
 }
 
@@ -2087,6 +2147,31 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Applets[i].EventTimerCronRatelimit = types.Float64Null()
 		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/pattern"); value.Exists() && !data.Applets[i].EventSyslogPattern.IsNull() {
+			data.Applets[i].EventSyslogPattern = types.StringValue(value.String())
+		} else {
+			data.Applets[i].EventSyslogPattern = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/occurs"); value.Exists() && !data.Applets[i].EventSyslogOccurs.IsNull() {
+			data.Applets[i].EventSyslogOccurs = types.Int64Value(value.Int())
+		} else {
+			data.Applets[i].EventSyslogOccurs = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/maxrun-set"); value.Exists() && !data.Applets[i].EventSyslogMaxrun.IsNull() {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Null()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/ratelimit-set"); value.Exists() && !data.Applets[i].EventSyslogRatelimit.IsNull() {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Null()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/period-set"); value.Exists() && !data.Applets[i].EventSyslogPeriod.IsNull() {
+			data.Applets[i].EventSyslogPeriod = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogPeriod = types.Float64Null()
+		}
 	}
 }
 
@@ -2425,6 +2510,21 @@ func (data *EEM) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("event.timer-choice.cron.ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.syslog-choice.occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("event.syslog-choice.maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -2768,6 +2868,21 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("event.timer-choice.cron.ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
 			}
+			if cValue := v.Get("event.syslog-choice.pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.syslog-choice.occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("event.syslog-choice.maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
+			}
 			data.Applets = append(data.Applets, item)
 			return true
 		})
@@ -3105,6 +3220,21 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "event/timer-choice/cron/ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -3444,6 +3574,21 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "event/timer-choice/cron/ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
 			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
+			}
 			data.Applets = append(data.Applets, item)
 			return true
 		})
@@ -3474,6 +3619,21 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 				found = false
 			}
 			if found {
+				if !state.Applets[i].EventSyslogPeriod.IsNull() && data.Applets[j].EventSyslogPeriod.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/period-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogRatelimit.IsNull() && data.Applets[j].EventSyslogRatelimit.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/ratelimit-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogMaxrun.IsNull() && data.Applets[j].EventSyslogMaxrun.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/maxrun-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogOccurs.IsNull() && data.Applets[j].EventSyslogOccurs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/occurs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogPattern.IsNull() && data.Applets[j].EventSyslogPattern.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/pattern", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Applets[i].EventTimerCronRatelimit.IsNull() && data.Applets[j].EventTimerCronRatelimit.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/cron/ratelimit-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -3840,6 +4000,21 @@ func (data *EEM) addDeletedItemsXML(ctx context.Context, state EEM, body string)
 				found = false
 			}
 			if found {
+				if !state.Applets[i].EventSyslogPeriod.IsNull() && data.Applets[j].EventSyslogPeriod.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/period-set", predicates))
+				}
+				if !state.Applets[i].EventSyslogRatelimit.IsNull() && data.Applets[j].EventSyslogRatelimit.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/ratelimit-set", predicates))
+				}
+				if !state.Applets[i].EventSyslogMaxrun.IsNull() && data.Applets[j].EventSyslogMaxrun.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/maxrun-set", predicates))
+				}
+				if !state.Applets[i].EventSyslogOccurs.IsNull() && data.Applets[j].EventSyslogOccurs.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/occurs", predicates))
+				}
+				if !state.Applets[i].EventSyslogPattern.IsNull() && data.Applets[j].EventSyslogPattern.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/pattern", predicates))
+				}
 				if !state.Applets[i].EventTimerCronRatelimit.IsNull() && data.Applets[j].EventTimerCronRatelimit.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/ratelimit-set", predicates))
 				}

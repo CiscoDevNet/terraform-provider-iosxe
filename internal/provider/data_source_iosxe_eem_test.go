@@ -63,6 +63,11 @@ func TestAccDataSourceIosxeEEM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_cron_name", "test_time"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_cron_maxrun", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_cron_ratelimit", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_syslog_pattern", "%EXAMPLE-5-TEST: Example syslog for testing purposes"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_syslog_occurs", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_syslog_maxrun", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_syslog_ratelimit", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_syslog_period", "60.0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -116,6 +121,11 @@ func testAccDataSourceIosxeEEMConfig() string {
 	config += `		event_timer_cron_name = "test_time"` + "\n"
 	config += `		event_timer_cron_maxrun = 10` + "\n"
 	config += `		event_timer_cron_ratelimit = 10` + "\n"
+	config += `		event_syslog_pattern = "%EXAMPLE-5-TEST: Example syslog for testing purposes"` + "\n"
+	config += `		event_syslog_occurs = 1` + "\n"
+	config += `		event_syslog_maxrun = 30` + "\n"
+	config += `		event_syslog_ratelimit = 10` + "\n"
+	config += `		event_syslog_period = 60.0` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 

@@ -375,3 +375,23 @@ attributes:
         xpath: event/timer-choice/cron/ratelimit-set
         tf_name: event_timer_cron_ratelimit
         example: 10
+      - yang_name: event/event-option/syslog-choice/syslog-choice/pattern
+        xpath: event/syslog-choice/pattern
+        tf_name: event_syslog_pattern
+        example: "%EXAMPLE-5-TEST: Example syslog for testing purposes"
+      - yang_name: event/event-option/syslog-choice/syslog-choice/occurs
+        xpath: event/syslog-choice/occurs
+        tf_name: event_syslog_occurs
+        example: 1
+      - yang_name: event/event-option/syslog-choice/syslog-choice/maxrun-set
+        xpath: event/syslog-choice/maxrun-set
+        tf_name: event_syslog_maxrun
+        example: 30
+      - yang_name: event/event-option/syslog-choice/syslog-choice/ratelimit-set
+        xpath: event/syslog-choice/ratelimit-set
+        tf_name: event_syslog_ratelimit
+        example: 10
+      - yang_name: event/event-option/syslog-choice/syslog-choice/period-set
+        xpath: event/syslog-choice/period-set
+        tf_name: event_syslog_period
+        example: 60.0

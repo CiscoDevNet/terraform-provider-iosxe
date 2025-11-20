@@ -51,6 +51,11 @@ Read-Only:
 - `event_cli_pattern` (String) CLI command pattern match
 - `event_cli_skip` (String) describes whether to skip CLI command execution
 - `event_cli_sync` (String) CLI and EEM policy execution sync or async
+- `event_syslog_maxrun` (Number) Maximum runtime of applet
+- `event_syslog_occurs` (Number) Number of occurrences before raising event
+- `event_syslog_pattern` (String) Pattern match string for the entire message
+- `event_syslog_period` (Number) Occurrence period
+- `event_syslog_ratelimit` (Number) seconds[.milliseconds] value
 - `event_timer_cron_entry` (String) Cron entry for cron timer
 - `event_timer_cron_maxrun` (Number) Maximum runtime of applet
 - `event_timer_cron_name` (String) Timer name string

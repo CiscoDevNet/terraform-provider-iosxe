@@ -51,6 +51,11 @@ resource "iosxe_eem" "example" {
       event_timer_cron_name          = "test_time"
       event_timer_cron_maxrun        = 10
       event_timer_cron_ratelimit     = 10
+      event_syslog_pattern           = "%EXAMPLE-5-TEST: Example syslog for testing purposes"
+      event_syslog_occurs            = 1
+      event_syslog_maxrun            = 30
+      event_syslog_ratelimit         = 10
+      event_syslog_period            = 60.0
     }
   ]
 }
@@ -102,6 +107,15 @@ Optional:
   - Choices: `no`, `yes`
 - `event_cli_sync` (String) CLI and EEM policy execution sync or async
   - Choices: `no`, `yes`
+- `event_syslog_maxrun` (Number) Maximum runtime of applet
+  - Range: `0`-`3.1536000999e+10`
+- `event_syslog_occurs` (Number) Number of occurrences before raising event
+  - Range: `1`-`32`
+- `event_syslog_pattern` (String) Pattern match string for the entire message
+- `event_syslog_period` (Number) Occurrence period
+  - Range: `0`-`4.294967295999e+12`
+- `event_syslog_ratelimit` (Number) seconds[.milliseconds] value
+  - Range: `0`-`3.1536000999e+10`
 - `event_timer_cron_entry` (String) Cron entry for cron timer
 - `event_timer_cron_maxrun` (Number) Maximum runtime of applet
   - Range: `0`-`3.1536000999e+10`

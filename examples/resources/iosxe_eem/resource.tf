@@ -36,6 +36,11 @@ resource "iosxe_eem" "example" {
       event_timer_cron_name          = "test_time"
       event_timer_cron_maxrun        = 10
       event_timer_cron_ratelimit     = 10
+      event_syslog_pattern           = "%EXAMPLE-5-TEST: Example syslog for testing purposes"
+      event_syslog_occurs            = 1
+      event_syslog_maxrun            = 30
+      event_syslog_ratelimit         = 10
+      event_syslog_period            = 60.0
     }
   ]
 }
