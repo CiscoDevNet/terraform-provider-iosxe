@@ -1,5 +1,5 @@
 resource "iosxe_interface_loopback" "example" {
-  name                       = 100
+  name                       = 201
   description                = "My Interface Description"
   shutdown                   = false
   ip_proxy_arp               = false

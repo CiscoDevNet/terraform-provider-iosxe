@@ -86,7 +86,7 @@ resource "iosxe_yang" "PreReq0" {
 func testAccDataSourceIosxeInterfaceLoopbackConfig() string {
 	config := `resource "iosxe_interface_loopback" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	name = 100` + "\n"
+	config += `	name = 201` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
@@ -116,7 +116,7 @@ func testAccDataSourceIosxeInterfaceLoopbackConfig() string {
 
 	config += `
 		data "iosxe_interface_loopback" "test" {
-			name = 100
+			name = 201
 			depends_on = [iosxe_interface_loopback.test]
 		}
 	`

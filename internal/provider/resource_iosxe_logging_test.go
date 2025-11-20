@@ -47,7 +47,7 @@ func TestAccIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "source_interface", "Loopback0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "console", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "source_interfaces_vrf.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "source_interfaces_vrf.0.interface_name", "Loopback100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "source_interfaces_vrf.0.interface_name", "Loopback200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv4_hosts.0.ipv4_host", "1.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv4_vrf_hosts.0.ipv4_host", "1.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv4_vrf_hosts.0.vrf", "VRF1"))
@@ -112,9 +112,9 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=200]"
 	attributes = {
-		"name" = "100"
+		"name" = "200"
 		"vrf/forwarding" = "VRF1"
 	}
 	depends_on = [iosxe_yang.PreReq0, ]
@@ -152,7 +152,7 @@ func testAccIosxeLoggingConfig_all() string {
 	config += `	console = true` + "\n"
 	config += `	source_interfaces_vrf = [{` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
-	config += `		interface_name = "Loopback100"` + "\n"
+	config += `		interface_name = "Loopback200"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_hosts = [{` + "\n"
 	config += `		ipv4_host = "1.1.1.1"` + "\n"
