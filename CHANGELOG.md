@@ -11,6 +11,7 @@
 - BREAKING CHANGE: Rename `evpn_instance` to `evpn_instance_legacy` and `evpn_instance_vni` to `evpn_instance_vni_legacy` in `iosxe_vlan_configuration` resource and data source
 - Add `evpn_instance`, `evpn_instance_vni`, and `evpn_instance_protected` attributes to `iosxe_vlan_configuration` resource and data source
 - Add `evpn_instance_profile` and `evpn_instance_profile_protected` attributes to `iosxe_vlan_configuration` resource and data source
+- Add `ttl` attribute to `iosxe_flow_exporter` resource and data source
 
 ## 0.10.2
 
