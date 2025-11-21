@@ -37,6 +37,7 @@ func TestAccDataSourceIosxePIM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "bsr_candidate_loopback", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "bsr_candidate_mask", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "bsr_candidate_priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "register_source_loopback", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "ssm_range", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "ssm_default", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "rp_address", "9.9.9.9"))
@@ -56,6 +57,7 @@ func TestAccDataSourceIosxePIM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.bsr_candidate_loopback", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.bsr_candidate_mask", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.bsr_candidate_priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.register_source_loopback", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.ssm_range", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.ssm_default", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_address", "19.19.19.19"))
@@ -130,6 +132,7 @@ func testAccDataSourceIosxePIMConfig() string {
 	config += `	bsr_candidate_loopback = 100` + "\n"
 	config += `	bsr_candidate_mask = 30` + "\n"
 	config += `	bsr_candidate_priority = 10` + "\n"
+	config += `	register_source_loopback = 100` + "\n"
 	config += `	ssm_range = "10"` + "\n"
 	config += `	ssm_default = false` + "\n"
 	config += `	rp_address = "9.9.9.9"` + "\n"
@@ -154,6 +157,7 @@ func testAccDataSourceIosxePIMConfig() string {
 	config += `		bsr_candidate_loopback = 200` + "\n"
 	config += `		bsr_candidate_mask = 30` + "\n"
 	config += `		bsr_candidate_priority = 10` + "\n"
+	config += `		register_source_loopback = 200` + "\n"
 	config += `		ssm_range = "10"` + "\n"
 	config += `		ssm_default = false` + "\n"
 	config += `		rp_address = "19.19.19.19"` + "\n"
