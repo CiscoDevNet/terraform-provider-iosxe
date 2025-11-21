@@ -52,7 +52,13 @@ func (r *CliResource) Metadata(ctx context.Context, req resource.MetadataRequest
 func (r *CliResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resources is used to configure arbitrary CLI commands. This should be considered a last resort in case YANG models are not available, as it cannot read the state and therefore cannot reconcile changes.",
+		MarkdownDescription: "This resources is used to configure arbitrary CLI commands. This should be considered a last resort in case YANG models are not available, as it cannot read the state and therefore cannot reconcile changes.\n\n" +
+			"The resource uses different Cisco IOS-XE RPC methods depending on the `raw` parameter:\n\n" +
+			"- **Transactional mode (`raw = false`, default)**: Uses `config-ios-cli-trans` RPC which provides transactional semantics with automatic rollback on failure. " +
+			"However, it only supports native IOS configuration CLIs that have corresponding IOS-XE YANG model support. " +
+			"This mode does not support non-native IOS config CLIs for features such as wireless, app-hosting, telemetry, etc.\n\n" +
+			"- **Raw mode (`raw = true`)**: Uses `config-ios-cli-rpc` RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. " +
+			"However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF/RESTCONF is used as a transport mechanism only.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -64,10 +70,12 @@ func (r *CliResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Required:            true,
 			},
 			"raw": schema.BoolAttribute{
-				MarkdownDescription: "If true, the CLI commands will be sent as raw CLI.",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(false),
+				MarkdownDescription: "Determines which RPC method is used to send CLI commands. " +
+					"When `false` (default), uses the transactional `config-ios-cli-trans` RPC which provides automatic rollback on failure but only supports native IOS CLIs with YANG model support. " +
+					"When `true`, uses the `config-ios-cli-rpc` RPC which supports all IOS native and non-native CLIs but without transactional guarantees or automatic rollback.",
+				Optional: true,
+				Computed: true,
+				Default:  booldefault.StaticBool(false),
 			},
 		},
 	}
