@@ -28,6 +28,9 @@
 - Fix error when trying to delete resources via NETCONF which no longer exist
 - Add `dot1x_timeout_quiet_period`, `dot1x_timeout_supp_timeout`, `dot1x_timeout_ratelimit_period`, and `dot1x_timeout_server_timeout` attributes to `iosxe_template` resource and data source
 - Fix `iosxe_commit` resource to also allow saving the configuration if RESTCONF is used
+- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- Add `vlan_based_multicast_advertise` attrbite to `iosxe_evpn_instance` resource and data sources.
+- Add `multicast_advertise` attribute to `iosxe_evpn` resource and data sources.
 
 ## 0.10.0
 
