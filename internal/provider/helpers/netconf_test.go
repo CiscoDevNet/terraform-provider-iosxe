@@ -709,6 +709,67 @@ func TestGetFromXPath(t *testing.T) {
 			t.Logf("XPath: %s -> Value: %q (Exists: %v)", tt.xPath, result.String(), result.Exists())
 		})
 	}
+
+	// Additional test for multiple elements (array behavior)
+	t.Run("multiple elements without predicates returns array", func(t *testing.T) {
+		xml := `<native>
+			<interface>
+				<nve>
+					<member-in-one-line>
+						<member>
+							<vni>
+								<vni-range>201000</vni-range>
+								<vrf>GREEN</vrf>
+							</vni>
+							<vni>
+								<vni-range>201010</vni-range>
+								<vrf>BLUE</vrf>
+							</vni>
+						</member>
+					</member-in-one-line>
+				</nve>
+			</interface>
+		</native>`
+
+		wrappedXML := "<root>" + xml + "</root>"
+		res := xmldot.Get(wrappedXML, "root")
+		result := GetFromXPath(res, "/native/interface/nve/member-in-one-line/member/vni")
+
+		// Should return an array result
+		if !result.IsArray() {
+			t.Errorf("GetFromXPath() IsArray() = false, want true for multiple elements")
+		}
+
+		// Should iterate over both elements
+		count := 0
+		vniRanges := []string{}
+		vrfs := []string{}
+
+		result.ForEach(func(i int, v xmldot.Result) bool {
+			count++
+			vniRanges = append(vniRanges, v.Get("vni-range").String())
+			vrfs = append(vrfs, v.Get("vrf").String())
+			return true
+		})
+
+		if count != 2 {
+			t.Errorf("GetFromXPath() ForEach count = %d, want 2", count)
+		}
+
+		expectedVniRanges := []string{"201000", "201010"}
+		expectedVrfs := []string{"GREEN", "BLUE"}
+
+		for i := 0; i < len(expectedVniRanges); i++ {
+			if i >= len(vniRanges) || vniRanges[i] != expectedVniRanges[i] {
+				t.Errorf("GetFromXPath() vni-range[%d] = %q, want %q", i, vniRanges[i], expectedVniRanges[i])
+			}
+			if i >= len(vrfs) || vrfs[i] != expectedVrfs[i] {
+				t.Errorf("GetFromXPath() vrf[%d] = %q, want %q", i, vrfs[i], expectedVrfs[i])
+			}
+		}
+
+		t.Logf("XPath returned array with %d elements", count)
+	})
 }
 
 // TestSetWithNamespaces_SpecialChars tests if SetWithNamespaces handles special characters like "/"

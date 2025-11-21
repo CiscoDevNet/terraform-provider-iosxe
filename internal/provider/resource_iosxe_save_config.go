@@ -20,7 +20,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -99,9 +98,7 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 
 	if d.Managed {
 		if d.Protocol == "restconf" {
-			request := d.RestconfClient.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
-			_, err := d.RestconfClient.Do(request)
-			if err != nil {
+			if err := helpers.SaveConfigRestconf(d.RestconfClient); err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
 				return
 			}
@@ -157,9 +154,7 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 
 	if d.Managed {
 		if d.Protocol == "restconf" {
-			request := d.RestconfClient.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
-			_, err := d.RestconfClient.Do(request)
-			if err != nil {
+			if err := helpers.SaveConfigRestconf(d.RestconfClient); err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
 				return
 			}

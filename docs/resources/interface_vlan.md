@@ -58,6 +58,7 @@ resource "iosxe_interface_vlan" "example" {
   load_interval                           = 30
   mac_address                             = "0000.dead.beef"
   ip_dhcp_relay_information_option_vpn_id = true
+  ip_igmp_version                         = 3
 }
 ```
 
@@ -91,6 +92,8 @@ resource "iosxe_interface_vlan" "example" {
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_dhcp_relay_information_option_vpn_id` (Boolean) Enable vpn-id support on this interface
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_igmp_version` (Number) IGMP version
+  - Range: `1`-`3`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages

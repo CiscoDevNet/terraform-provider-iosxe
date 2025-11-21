@@ -485,7 +485,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
 	} else {
 		// NETCONF
-		logger := helpers.NewTflogAdapter()
+		logger := helpers.NewTflogAdapter(host)
 		opts := []func(*netconf.Client){
 			netconf.Username(username),
 			netconf.Password(password),
@@ -554,7 +554,9 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 		} else {
 			// NETCONF
-			logger := helpers.NewTflogAdapter()
+			// Use device name as identifier for better log correlation
+			deviceID := device.Name.ValueString()
+			logger := helpers.NewTflogAdapter(deviceID)
 			opts := []func(*netconf.Client){
 				netconf.Username(username),
 				netconf.Password(password),

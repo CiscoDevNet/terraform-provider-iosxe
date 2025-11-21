@@ -534,6 +534,8 @@ attributes:
       - yang_name: es-value
         id: true
         example: 1
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/version
+    example: 3
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

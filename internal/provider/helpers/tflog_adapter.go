@@ -33,12 +33,15 @@ import (
 // The adapter automatically creates the "netconf" subsystem on first use, eliminating
 // the need for manual subsystem creation in provider code.
 //
+// The adapter stores a device identifier (host or device name) that is included in all
+// log messages, making it easy to correlate logs when operating on multiple devices in parallel.
+//
 // Thread-safety: This adapter is safe for concurrent use. Context is passed per
-// log call via the Logger interface, eliminating the need for internal state.
+// log call via the Logger interface, and the device identifier is immutable after creation.
 //
 // Usage in provider initialization:
 //
-//	logger := helpers.NewTflogAdapter()
+//	logger := helpers.NewTflogAdapter("192.168.1.1")
 //	client, err := netconf.NewClient(host,
 //	    netconf.Username(username),
 //	    netconf.Password(password),
@@ -49,17 +52,31 @@ import (
 //
 //	// Context is automatically propagated through go-netconf's Logger interface
 //	_, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-//	// Logs will automatically use the correct context and netconf subsystem
-type TflogAdapter struct{}
+//	// Logs will automatically include device identifier and use the correct context and netconf subsystem
+type TflogAdapter struct {
+	deviceID string // Device identifier (host or device name) for log correlation
+}
 
 var _ netconf.Logger = (*TflogAdapter)(nil)
 
-// NewTflogAdapter creates a new Terraform logging adapter.
+// NewTflogAdapter creates a new Terraform logging adapter with device identification.
 //
 // The adapter automatically receives context from go-netconf's Logger interface
 // on each logging call, ensuring proper context propagation without manual management.
-func NewTflogAdapter() *TflogAdapter {
-	return &TflogAdapter{}
+//
+// The deviceID parameter should be a unique identifier for the device (e.g., hostname,
+// IP address, or device name from configuration). This identifier is included in all
+// log messages to enable correlation when operating on multiple devices in parallel.
+//
+// Parameters:
+//   - deviceID: Unique identifier for the device (e.g., "192.168.1.1" or "core-switch-1")
+//
+// Returns:
+//   - *TflogAdapter: A new adapter configured for the specified device
+func NewTflogAdapter(deviceID string) *TflogAdapter {
+	return &TflogAdapter{
+		deviceID: deviceID,
+	}
 }
 
 // Debug logs a debug message with structured key-value pairs to tflog.SubsystemDebug.
@@ -72,6 +89,8 @@ func NewTflogAdapter() *TflogAdapter {
 //
 // Logs are written to the "netconf" subsystem for proper organization and filtering.
 // The subsystem is automatically created if it doesn't exist.
+//
+// The device identifier is automatically included in the log fields for correlation.
 func (t *TflogAdapter) Debug(ctx context.Context, msg string, keysAndValues ...any) {
 	if ctx == nil {
 		return
@@ -80,11 +99,13 @@ func (t *TflogAdapter) Debug(ctx context.Context, msg string, keysAndValues ...a
 	ctx = tflog.NewSubsystem(ctx, "netconf")
 
 	fields := keysAndValuesToMap(keysAndValues)
-	if fields != nil {
-		tflog.SubsystemDebug(ctx, "netconf", msg, fields)
-	} else {
-		tflog.SubsystemDebug(ctx, "netconf", msg)
+	if fields == nil {
+		fields = make(map[string]any)
 	}
+	// Always include device identifier
+	fields["device"] = t.deviceID
+
+	tflog.SubsystemDebug(ctx, "netconf", msg, fields)
 }
 
 // Info logs an informational message with structured key-value pairs to tflog.SubsystemInfo.
@@ -97,6 +118,8 @@ func (t *TflogAdapter) Debug(ctx context.Context, msg string, keysAndValues ...a
 //
 // Logs are written to the "netconf" subsystem for proper organization and filtering.
 // The subsystem is automatically created if it doesn't exist.
+//
+// The device identifier is automatically included in the log fields for correlation.
 func (t *TflogAdapter) Info(ctx context.Context, msg string, keysAndValues ...any) {
 	if ctx == nil {
 		return
@@ -105,11 +128,13 @@ func (t *TflogAdapter) Info(ctx context.Context, msg string, keysAndValues ...an
 	ctx = tflog.NewSubsystem(ctx, "netconf")
 
 	fields := keysAndValuesToMap(keysAndValues)
-	if fields != nil {
-		tflog.SubsystemInfo(ctx, "netconf", msg, fields)
-	} else {
-		tflog.SubsystemInfo(ctx, "netconf", msg)
+	if fields == nil {
+		fields = make(map[string]any)
 	}
+	// Always include device identifier
+	fields["device"] = t.deviceID
+
+	tflog.SubsystemInfo(ctx, "netconf", msg, fields)
 }
 
 // Warn logs a warning message with structured key-value pairs to tflog.SubsystemWarn.
@@ -122,6 +147,8 @@ func (t *TflogAdapter) Info(ctx context.Context, msg string, keysAndValues ...an
 //
 // Logs are written to the "netconf" subsystem for proper organization and filtering.
 // The subsystem is automatically created if it doesn't exist.
+//
+// The device identifier is automatically included in the log fields for correlation.
 func (t *TflogAdapter) Warn(ctx context.Context, msg string, keysAndValues ...any) {
 	if ctx == nil {
 		return
@@ -130,11 +157,13 @@ func (t *TflogAdapter) Warn(ctx context.Context, msg string, keysAndValues ...an
 	ctx = tflog.NewSubsystem(ctx, "netconf")
 
 	fields := keysAndValuesToMap(keysAndValues)
-	if fields != nil {
-		tflog.SubsystemWarn(ctx, "netconf", msg, fields)
-	} else {
-		tflog.SubsystemWarn(ctx, "netconf", msg)
+	if fields == nil {
+		fields = make(map[string]any)
 	}
+	// Always include device identifier
+	fields["device"] = t.deviceID
+
+	tflog.SubsystemWarn(ctx, "netconf", msg, fields)
 }
 
 // Error logs an error message with structured key-value pairs to tflog.SubsystemError.
@@ -146,6 +175,8 @@ func (t *TflogAdapter) Warn(ctx context.Context, msg string, keysAndValues ...an
 //
 // Logs are written to the "netconf" subsystem for proper organization and filtering.
 // The subsystem is automatically created if it doesn't exist.
+//
+// The device identifier is automatically included in the log fields for correlation.
 func (t *TflogAdapter) Error(ctx context.Context, msg string, keysAndValues ...any) {
 	if ctx == nil {
 		return
@@ -154,11 +185,13 @@ func (t *TflogAdapter) Error(ctx context.Context, msg string, keysAndValues ...a
 	ctx = tflog.NewSubsystem(ctx, "netconf")
 
 	fields := keysAndValuesToMap(keysAndValues)
-	if fields != nil {
-		tflog.SubsystemError(ctx, "netconf", msg, fields)
-	} else {
-		tflog.SubsystemError(ctx, "netconf", msg)
+	if fields == nil {
+		fields = make(map[string]any)
 	}
+	// Always include device identifier
+	fields["device"] = t.deviceID
+
+	tflog.SubsystemError(ctx, "netconf", msg, fields)
 }
 
 // keysAndValuesToMap converts variadic key-value pairs to a map for tflog.

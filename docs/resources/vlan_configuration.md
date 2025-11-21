@@ -14,9 +14,7 @@ This resource can manage the VLAN Configuration configuration.
 
 ```terraform
 resource "iosxe_vlan_configuration" "example" {
-  vlan_id           = 123
-  evpn_instance     = 123
-  evpn_instance_vni = 10123
+  vlan_id = "123"
 }
 ```
 
@@ -25,15 +23,22 @@ resource "iosxe_vlan_configuration" "example" {
 
 ### Required
 
-- `vlan_id` (Number) VLAN ID List Eg. 1-10,15
-  - Range: `1`-`4094`
+- `vlan_id` (String) VLAN ID List Eg. 1-10,15
 
 ### Optional
 
 - `access_vfi` (String) Enter VFI name
 - `device` (String) A device name from the provider configuration.
-- `evpn_instance` (Number) - Range: `1`-`65535`
-- `evpn_instance_vni` (Number) VxLAN VNI value
+- `evpn_instance` (Number) EVPN instance number (current path). Use for IOS-XE >= 17.15.
+  - Range: `1`-`65535`
+- `evpn_instance_legacy` (Number) EVPN instance number (deprecated path). Use for IOS-XE < 17.15.
+  - Range: `1`-`65535`
+- `evpn_instance_profile` (String) EVPN instance profile name. Use for IOS-XE >= 17.15.
+- `evpn_instance_profile_protected` (Boolean) Enable local peer to peer blocking for auto EVI with profile.
+- `evpn_instance_protected` (Boolean) Enable local peer to peer blocking for EVI.
+- `evpn_instance_vni` (Number) VNI for EVPN instance (current path). Use for IOS-XE >= 17.15.
+  - Range: `4096`-`16777215`
+- `evpn_instance_vni_legacy` (Number) VNI for EVPN instance (deprecated path). Use for IOS-XE < 17.15.
   - Range: `4096`-`16777215`
 - `vni` (Number) VxLAN VNI value
   - Range: `4096`-`16777215`

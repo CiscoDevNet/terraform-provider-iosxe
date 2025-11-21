@@ -18,9 +18,12 @@
 package helpers
 
 import (
+	"fmt"
 	"net/url"
 	"regexp"
 	"strings"
+
+	"github.com/netascode/go-restconf"
 )
 
 // ConvertXPathToRestconfPath converts an XPath-style path to RESTCONF-style path.
@@ -180,4 +183,37 @@ func LastElement(path string) string {
 		}
 	}
 	return prefix + ":" + element
+}
+
+// SaveConfigRestconf saves the running configuration to startup configuration via RESTCONF.
+// This is equivalent to 'copy running-config startup-config' in the CLI.
+// Uses the cisco-ia:save-config RPC operation via RESTCONF POST.
+//
+// Parameters:
+//   - client: The RESTCONF client to use for the operation
+//
+// Returns:
+//   - error if the save operation fails, nil otherwise
+//
+// Example usage:
+//
+//	if err := helpers.SaveConfigRestconf(device.RestconfClient); err != nil {
+//	    return fmt.Errorf("failed to save config: %s", err)
+//	}
+func SaveConfigRestconf(client *restconf.Client) error {
+	request := client.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
+	res, err := client.Do(request)
+	if err != nil {
+		return err
+	}
+
+	// Check for non-2xx status codes
+	if res.StatusCode < 200 || res.StatusCode >= 300 {
+		if len(res.Errors.Error) > 0 {
+			return fmt.Errorf("save-config operation failed with status %d: %s", res.StatusCode, res.Errors.Error[0].ErrorMessage)
+		}
+		return fmt.Errorf("save-config operation failed with status %d", res.StatusCode)
+	}
+
+	return nil
 }
