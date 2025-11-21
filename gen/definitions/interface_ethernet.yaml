@@ -539,6 +539,7 @@ attributes:
     tf_name: carrier_delay_msec
     example: 250
   - yang_name: hold-queue
+    tf_name: hold_queues
     type: List
     attributes:
       - yang_name: direction

@@ -27,6 +27,7 @@ description: |-
 - Add `iosxe_bgp_ipv4_mvpn_neighbor` resource and data source
 - Add `vlan_based_multicast_advertise` attribute to `iosxe_evpn_instance` resource and data source
 - Add `multicast_advertise` attribute to `iosxe_evpn` resource and data source
+- Add `carrier_delay_msec` and `hold_queues` attributes to `iosxe_interface_ethernet` resource and data source
 
 ## 0.10.2
 

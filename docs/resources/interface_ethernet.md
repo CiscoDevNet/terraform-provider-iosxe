@@ -88,7 +88,14 @@ resource "iosxe_interface_ethernet" "example" {
   cdp_tlv_location                 = false
   cdp_tlv_server_location          = false
   ip_nat_inside                    = true
-  ip_igmp_version                  = 3
+  carrier_delay_msec               = 250
+  hold_queues = [
+    {
+      direction    = "in"
+      queue_length = 50
+    }
+  ]
+  ip_igmp_version = 3
 }
 ```
 
@@ -202,7 +209,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `encapsulation_dot1q_vlan_id` (Number) - Range: `1`-`4094`
 - `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
-- `hold_queue` (Attributes List) Set hold queue depth (see [below for nested schema](#nestedatt--hold_queue))
+- `hold_queues` (Attributes List) Set hold queue depth (see [below for nested schema](#nestedatt--hold_queues))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
@@ -305,8 +312,8 @@ Optional:
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
-<a id="nestedatt--hold_queue"></a>
-### Nested Schema for `hold_queue`
+<a id="nestedatt--hold_queues"></a>
+### Nested Schema for `hold_queues`
 
 Required:
 

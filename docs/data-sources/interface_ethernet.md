@@ -108,7 +108,7 @@ data "iosxe_interface_ethernet" "example" {
 - `encapsulation_dot1q_vlan_id` (Number)
 - `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
-- `hold_queue` (Attributes List) Set hold queue depth (see [below for nested schema](#nestedatt--hold_queue))
+- `hold_queues` (Attributes List) Set hold queue depth (see [below for nested schema](#nestedatt--hold_queues))
 - `id` (String) The path of the retrieved object.
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -195,8 +195,8 @@ Read-Only:
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
-<a id="nestedatt--hold_queue"></a>
-### Nested Schema for `hold_queue`
+<a id="nestedatt--hold_queues"></a>
+### Nested Schema for `hold_queues`
 
 Read-Only:
 
