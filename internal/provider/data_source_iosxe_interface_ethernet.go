@@ -692,6 +692,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: "IGMP version",
+				Computed:            true,
+			},
 		},
 	}
 }

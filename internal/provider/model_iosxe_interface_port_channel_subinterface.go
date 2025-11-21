@@ -90,6 +90,7 @@ type InterfacePortChannelSubinterface struct {
 	ArpTimeout                   types.Int64                                              `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
+	IpIgmpVersion                types.Int64                                              `tfsdk:"ip_igmp_version"`
 }
 
 type InterfacePortChannelSubinterfaceData struct {
@@ -140,6 +141,7 @@ type InterfacePortChannelSubinterfaceData struct {
 	ArpTimeout                   types.Int64                                              `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
+	IpIgmpVersion                types.Int64                                              `tfsdk:"ip_igmp_version"`
 }
 type InterfacePortChannelSubinterfaceHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -180,13 +182,13 @@ func (data InterfacePortChannelSubinterface) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfacePortChannelSubinterface) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data InterfacePortChannelSubinterfaceData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
@@ -362,6 +364,9 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.limit.rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
+	}
+	if !data.IpIgmpVersion.IsNull() && !data.IpIgmpVersion.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-igmp:igmp.version", strconv.FormatInt(data.IpIgmpVersion.ValueInt64(), 10))
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -670,6 +675,9 @@ func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context) stri
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/arp/inspection/limit/rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
+	}
+	if !data.IpIgmpVersion.IsNull() && !data.IpIgmpVersion.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version", strconv.FormatInt(data.IpIgmpVersion.ValueInt64(), 10))
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1106,6 +1114,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 	} else {
 		data.IpArpInspectionLimitRate = types.Int64Null()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() && !data.IpIgmpVersion.IsNull() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	} else {
+		data.IpIgmpVersion = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1532,6 +1545,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	} else {
 		data.IpArpInspectionLimitRate = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() && !data.IpIgmpVersion.IsNull() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	} else {
+		data.IpIgmpVersion = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1766,6 +1784,9 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 	}
 	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
 	}
 }
 
@@ -2002,6 +2023,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2232,6 +2256,9 @@ func (data *InterfacePortChannelSubinterface) fromBodyXML(ctx context.Context, r
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/arp/inspection/limit/rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
 	}
 }
 
@@ -2464,6 +2491,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/arp/inspection/limit/rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2472,6 +2502,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 
 func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Context, state InterfacePortChannelSubinterface) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", state.getPath()))
+	}
 	if !state.IpArpInspectionLimitRate.IsNull() && data.IpArpInspectionLimitRate.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", state.getPath()))
 	}
@@ -2569,9 +2602,6 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	}
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", state.getPath()))
-	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", state.getPath()))
 	}
 	for i := range state.HelperAddresses {
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
@@ -2692,6 +2722,9 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 
 func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Context, state InterfacePortChannelSubinterface, body string) string {
 	b := netconf.NewBody(body)
+	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")
+	}
 	if !state.IpArpInspectionLimitRate.IsNull() && data.IpArpInspectionLimitRate.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/arp/inspection/limit/rate")
 	}
@@ -2799,9 +2832,6 @@ func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Con
 	}
 	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
-	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
 	}
 	for i := range state.HelperAddresses {
 		stateKeys := [...]string{"address"}
@@ -3019,6 +3049,9 @@ func (data *InterfacePortChannelSubinterface) getEmptyLeafsDelete(ctx context.Co
 
 func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpIgmpVersion.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", data.getPath()))
+	}
 	if !data.IpArpInspectionLimitRate.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
 	}
@@ -3070,9 +3103,6 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	}
 	if !data.BfdEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
-	}
-	if !data.BfdTemplate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
 	}
 	for i := range data.HelperAddresses {
 		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
@@ -3167,6 +3197,9 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 
 func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.IpIgmpVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")
+	}
 	if !data.IpArpInspectionLimitRate.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/arp/inspection/limit/rate")
 	}
@@ -3228,9 +3261,6 @@ func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Cont
 	}
 	if !data.BfdEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:enable")
-	}
-	if !data.BfdTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:template")
 	}
 	for i := range data.HelperAddresses {
 		keys := [...]string{"address"}

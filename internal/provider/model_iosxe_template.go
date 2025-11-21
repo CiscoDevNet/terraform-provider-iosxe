@@ -50,6 +50,10 @@ type Template struct {
 	Dot1xMaxReauthReq                                  types.Int64                                  `tfsdk:"dot1x_max_reauth_req"`
 	Dot1xMaxReq                                        types.Int64                                  `tfsdk:"dot1x_max_req"`
 	Dot1xTimeoutTxPeriod                               types.Int64                                  `tfsdk:"dot1x_timeout_tx_period"`
+	Dot1xTimeoutQuietPeriod                            types.Int64                                  `tfsdk:"dot1x_timeout_quiet_period"`
+	Dot1xTimeoutSuppTimeout                            types.Int64                                  `tfsdk:"dot1x_timeout_supp_timeout"`
+	Dot1xTimeoutRatelimitPeriod                        types.Int64                                  `tfsdk:"dot1x_timeout_ratelimit_period"`
+	Dot1xTimeoutServerTimeout                          types.Int64                                  `tfsdk:"dot1x_timeout_server_timeout"`
 	ServicePolicyTypeControlSubscriber                 types.String                                 `tfsdk:"service_policy_type_control_subscriber"`
 	ServicePolicyInput                                 types.String                                 `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                                types.String                                 `tfsdk:"service_policy_output"`
@@ -127,6 +131,10 @@ type TemplateData struct {
 	Dot1xMaxReauthReq                                  types.Int64                                  `tfsdk:"dot1x_max_reauth_req"`
 	Dot1xMaxReq                                        types.Int64                                  `tfsdk:"dot1x_max_req"`
 	Dot1xTimeoutTxPeriod                               types.Int64                                  `tfsdk:"dot1x_timeout_tx_period"`
+	Dot1xTimeoutQuietPeriod                            types.Int64                                  `tfsdk:"dot1x_timeout_quiet_period"`
+	Dot1xTimeoutSuppTimeout                            types.Int64                                  `tfsdk:"dot1x_timeout_supp_timeout"`
+	Dot1xTimeoutRatelimitPeriod                        types.Int64                                  `tfsdk:"dot1x_timeout_ratelimit_period"`
+	Dot1xTimeoutServerTimeout                          types.Int64                                  `tfsdk:"dot1x_timeout_server_timeout"`
 	ServicePolicyTypeControlSubscriber                 types.String                                 `tfsdk:"service_policy_type_control_subscriber"`
 	ServicePolicyInput                                 types.String                                 `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                                types.String                                 `tfsdk:"service_policy_output"`
@@ -265,6 +273,18 @@ func (data Template) toBody(ctx context.Context) string {
 	}
 	if !data.Dot1xTimeoutTxPeriod.IsNull() && !data.Dot1xTimeoutTxPeriod.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.timeout.tx-period", strconv.FormatInt(data.Dot1xTimeoutTxPeriod.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutQuietPeriod.IsNull() && !data.Dot1xTimeoutQuietPeriod.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.timeout.quiet-period", strconv.FormatInt(data.Dot1xTimeoutQuietPeriod.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutSuppTimeout.IsNull() && !data.Dot1xTimeoutSuppTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.timeout.supp-timeout", strconv.FormatInt(data.Dot1xTimeoutSuppTimeout.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutRatelimitPeriod.IsNull() && !data.Dot1xTimeoutRatelimitPeriod.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.timeout.ratelimit-period", strconv.FormatInt(data.Dot1xTimeoutRatelimitPeriod.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutServerTimeout.IsNull() && !data.Dot1xTimeoutServerTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.timeout.server-timeout", strconv.FormatInt(data.Dot1xTimeoutServerTimeout.ValueInt64(), 10))
 	}
 	if !data.ServicePolicyTypeControlSubscriber.IsNull() && !data.ServicePolicyTypeControlSubscriber.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"service-policy.type.control.subscriber", data.ServicePolicyTypeControlSubscriber.ValueString())
@@ -587,6 +607,18 @@ func (data Template) toBodyXML(ctx context.Context) string {
 	}
 	if !data.Dot1xTimeoutTxPeriod.IsNull() && !data.Dot1xTimeoutTxPeriod.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/timeout/tx-period", strconv.FormatInt(data.Dot1xTimeoutTxPeriod.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutQuietPeriod.IsNull() && !data.Dot1xTimeoutQuietPeriod.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/timeout/quiet-period", strconv.FormatInt(data.Dot1xTimeoutQuietPeriod.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutSuppTimeout.IsNull() && !data.Dot1xTimeoutSuppTimeout.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/timeout/supp-timeout", strconv.FormatInt(data.Dot1xTimeoutSuppTimeout.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutRatelimitPeriod.IsNull() && !data.Dot1xTimeoutRatelimitPeriod.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/timeout/ratelimit-period", strconv.FormatInt(data.Dot1xTimeoutRatelimitPeriod.ValueInt64(), 10))
+	}
+	if !data.Dot1xTimeoutServerTimeout.IsNull() && !data.Dot1xTimeoutServerTimeout.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/timeout/server-timeout", strconv.FormatInt(data.Dot1xTimeoutServerTimeout.ValueInt64(), 10))
 	}
 	if !data.ServicePolicyTypeControlSubscriber.IsNull() && !data.ServicePolicyTypeControlSubscriber.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/service-policy/type/control/subscriber", data.ServicePolicyTypeControlSubscriber.ValueString())
@@ -999,6 +1031,26 @@ func (data *Template) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
 	} else {
 		data.Dot1xTimeoutTxPeriod = types.Int64Null()
+	}
+	if value := res.Get(prefix + "dot1x.timeout.quiet-period"); value.Exists() && !data.Dot1xTimeoutQuietPeriod.IsNull() {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Null()
+	}
+	if value := res.Get(prefix + "dot1x.timeout.supp-timeout"); value.Exists() && !data.Dot1xTimeoutSuppTimeout.IsNull() {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Null()
+	}
+	if value := res.Get(prefix + "dot1x.timeout.ratelimit-period"); value.Exists() && !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Null()
+	}
+	if value := res.Get(prefix + "dot1x.timeout.server-timeout"); value.Exists() && !data.Dot1xTimeoutServerTimeout.IsNull() {
+		data.Dot1xTimeoutServerTimeout = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutServerTimeout = types.Int64Null()
 	}
 	if value := res.Get(prefix + "service-policy.type.control.subscriber"); value.Exists() && !data.ServicePolicyTypeControlSubscriber.IsNull() {
 		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
@@ -1607,6 +1659,26 @@ func (data *Template) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.Dot1xTimeoutTxPeriod = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/quiet-period"); value.Exists() && !data.Dot1xTimeoutQuietPeriod.IsNull() {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/supp-timeout"); value.Exists() && !data.Dot1xTimeoutSuppTimeout.IsNull() {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/ratelimit-period"); value.Exists() && !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/server-timeout"); value.Exists() && !data.Dot1xTimeoutServerTimeout.IsNull() {
+		data.Dot1xTimeoutServerTimeout = types.Int64Value(value.Int())
+	} else {
+		data.Dot1xTimeoutServerTimeout = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/type/control/subscriber"); value.Exists() && !data.ServicePolicyTypeControlSubscriber.IsNull() {
 		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
 	} else {
@@ -2205,6 +2277,18 @@ func (data *Template) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "dot1x.timeout.tx-period"); value.Exists() {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "dot1x.timeout.quiet-period"); value.Exists() {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dot1x.timeout.supp-timeout"); value.Exists() {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dot1x.timeout.ratelimit-period"); value.Exists() {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dot1x.timeout.server-timeout"); value.Exists() {
+		data.Dot1xTimeoutServerTimeout = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "service-policy.type.control.subscriber"); value.Exists() {
 		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
 	}
@@ -2543,6 +2627,18 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "dot1x.timeout.tx-period"); value.Exists() {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "dot1x.timeout.quiet-period"); value.Exists() {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dot1x.timeout.supp-timeout"); value.Exists() {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dot1x.timeout.ratelimit-period"); value.Exists() {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dot1x.timeout.server-timeout"); value.Exists() {
+		data.Dot1xTimeoutServerTimeout = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "service-policy.type.control.subscriber"); value.Exists() {
 		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
 	}
@@ -2877,6 +2973,18 @@ func (data *Template) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/tx-period"); value.Exists() {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/quiet-period"); value.Exists() {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/supp-timeout"); value.Exists() {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/ratelimit-period"); value.Exists() {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/server-timeout"); value.Exists() {
+		data.Dot1xTimeoutServerTimeout = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/type/control/subscriber"); value.Exists() {
 		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
 	}
@@ -3210,6 +3318,18 @@ func (data *TemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/tx-period"); value.Exists() {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/quiet-period"); value.Exists() {
+		data.Dot1xTimeoutQuietPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/supp-timeout"); value.Exists() {
+		data.Dot1xTimeoutSuppTimeout = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/ratelimit-period"); value.Exists() {
+		data.Dot1xTimeoutRatelimitPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/timeout/server-timeout"); value.Exists() {
+		data.Dot1xTimeoutServerTimeout = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/service-policy/type/control/subscriber"); value.Exists() {
 		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
@@ -3810,6 +3930,18 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 	if !state.ServicePolicyTypeControlSubscriber.IsNull() && data.ServicePolicyTypeControlSubscriber.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/type/control/subscriber", state.getPath()))
 	}
+	if !state.Dot1xTimeoutServerTimeout.IsNull() && data.Dot1xTimeoutServerTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/timeout/server-timeout", state.getPath()))
+	}
+	if !state.Dot1xTimeoutRatelimitPeriod.IsNull() && data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/timeout/ratelimit-period", state.getPath()))
+	}
+	if !state.Dot1xTimeoutSuppTimeout.IsNull() && data.Dot1xTimeoutSuppTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/timeout/supp-timeout", state.getPath()))
+	}
+	if !state.Dot1xTimeoutQuietPeriod.IsNull() && data.Dot1xTimeoutQuietPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/timeout/quiet-period", state.getPath()))
+	}
 	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/timeout/tx-period", state.getPath()))
 	}
@@ -4122,6 +4254,18 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 	}
 	if !state.ServicePolicyTypeControlSubscriber.IsNull() && data.ServicePolicyTypeControlSubscriber.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/type/control/subscriber")
+	}
+	if !state.Dot1xTimeoutServerTimeout.IsNull() && data.Dot1xTimeoutServerTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/server-timeout")
+	}
+	if !state.Dot1xTimeoutRatelimitPeriod.IsNull() && data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/ratelimit-period")
+	}
+	if !state.Dot1xTimeoutSuppTimeout.IsNull() && data.Dot1xTimeoutSuppTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/supp-timeout")
+	}
+	if !state.Dot1xTimeoutQuietPeriod.IsNull() && data.Dot1xTimeoutQuietPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/quiet-period")
 	}
 	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/timeout/tx-period")
@@ -4471,6 +4615,18 @@ func (data *Template) getDeletePaths(ctx context.Context) []string {
 	if !data.ServicePolicyTypeControlSubscriber.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/type/control/subscriber", data.getPath()))
 	}
+	if !data.Dot1xTimeoutServerTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/timeout/server-timeout", data.getPath()))
+	}
+	if !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/timeout/ratelimit-period", data.getPath()))
+	}
+	if !data.Dot1xTimeoutSuppTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/timeout/supp-timeout", data.getPath()))
+	}
+	if !data.Dot1xTimeoutQuietPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/timeout/quiet-period", data.getPath()))
+	}
 	if !data.Dot1xTimeoutTxPeriod.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/timeout/tx-period", data.getPath()))
 	}
@@ -4711,6 +4867,18 @@ func (data *Template) addDeletePathsXML(ctx context.Context, body string) string
 	}
 	if !data.ServicePolicyTypeControlSubscriber.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/service-policy/type/control/subscriber")
+	}
+	if !data.Dot1xTimeoutServerTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/timeout/server-timeout")
+	}
+	if !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/timeout/ratelimit-period")
+	}
+	if !data.Dot1xTimeoutSuppTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/timeout/supp-timeout")
+	}
+	if !data.Dot1xTimeoutQuietPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/timeout/quiet-period")
 	}
 	if !data.Dot1xTimeoutTxPeriod.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/timeout/tx-period")

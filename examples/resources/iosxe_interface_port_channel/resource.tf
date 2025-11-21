@@ -43,9 +43,5 @@ resource "iosxe_interface_port_channel" "example" {
   ip_arp_inspection_limit_rate     = 1000
   load_interval                    = 30
   logging_event_link_status_enable = false
-  evpn_ethernet_segments = [
-    {
-      es_value = 1
-    }
-  ]
+  ip_igmp_version                  = 3
 }

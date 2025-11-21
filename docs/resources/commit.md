@@ -3,17 +3,23 @@
 page_title: "iosxe_commit Resource - terraform-provider-iosxe"
 subcategory: ""
 description: |-
-  This resources is used to commit the candidate config to the running config. It is only supported for NETCONF devices.
+  This resource is used to commit the candidate config to the running config (NETCONF only) and optionally save the running config to startup config (both NETCONF and RESTCONF).
 ---
 
 # iosxe_commit (Resource)
 
-This resources is used to commit the candidate config to the running config. It is only supported for NETCONF devices.
+This resource is used to commit the candidate config to the running config (NETCONF only) and optionally save the running config to startup config (both NETCONF and RESTCONF).
 
 ## Example Usage
 
 ```terraform
 resource "iosxe_commit" "example" {
+}
+
+# Example with save_config enabled for transactional workflows
+resource "iosxe_commit" "with_save" {
+  device      = "router1"
+  save_config = true # Saves to startup-config after commit
 }
 ```
 
@@ -24,3 +30,4 @@ resource "iosxe_commit" "example" {
 
 - `commit` (Boolean) This attribute is only used internally.
 - `device` (String) A device name from the provider configuration.
+- `save_config` (Boolean) Save running configuration to startup configuration. Equivalent to 'copy running-config startup-config'. For NETCONF devices, this saves after commit. For RESTCONF devices, this saves the current running configuration (RESTCONF is stateless, no commit needed).

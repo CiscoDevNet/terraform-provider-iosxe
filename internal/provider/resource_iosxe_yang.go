@@ -186,7 +186,7 @@ func (r *YangResource) Create(ctx context.Context, req resource.CreateRequest, r
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
 			body := plan.toBodyXML(ctx)
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -318,7 +318,7 @@ func (r *YangResource) Update(ctx context.Context, req resource.UpdateRequest, r
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
 			body := plan.toBodyXML(ctx)
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
@@ -370,7 +370,7 @@ func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 
 			body := netconf.Body{}
 			body = helpers.RemoveFromXPath(body, state.Path.ValueString())
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}

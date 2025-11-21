@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &BGPTemplatePeerPolicyDataSource{}
-	_ datasource.DataSourceWithConfigure = &BGPTemplatePeerPolicyDataSource{}
+	_ datasource.DataSource              = &BGPPeerPolicyTemplateDataSource{}
+	_ datasource.DataSourceWithConfigure = &BGPPeerPolicyTemplateDataSource{}
 )
 
-func NewBGPTemplatePeerPolicyDataSource() datasource.DataSource {
-	return &BGPTemplatePeerPolicyDataSource{}
+func NewBGPPeerPolicyTemplateDataSource() datasource.DataSource {
+	return &BGPPeerPolicyTemplateDataSource{}
 }
 
-type BGPTemplatePeerPolicyDataSource struct {
+type BGPPeerPolicyTemplateDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *BGPTemplatePeerPolicyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_bgp_template_peer_policy"
+func (d *BGPPeerPolicyTemplateDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_bgp_peer_policy_template"
 }
 
-func (d *BGPTemplatePeerPolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *BGPPeerPolicyTemplateDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the BGP Template Peer Policy configuration.",
+		MarkdownDescription: "This data source can read the BGP Peer Policy Template configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -112,7 +112,7 @@ func (d *BGPTemplatePeerPolicyDataSource) Schema(ctx context.Context, req dataso
 	}
 }
 
-func (d *BGPTemplatePeerPolicyDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *BGPPeerPolicyTemplateDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -124,8 +124,8 @@ func (d *BGPTemplatePeerPolicyDataSource) Configure(_ context.Context, req datas
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *BGPTemplatePeerPolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config BGPTemplatePeerPolicyData
+func (d *BGPPeerPolicyTemplateDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config BGPPeerPolicyTemplateData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -145,7 +145,7 @@ func (d *BGPTemplatePeerPolicyDataSource) Read(ctx context.Context, req datasour
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = BGPTemplatePeerPolicyData{Device: config.Device}
+			config = BGPPeerPolicyTemplateData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

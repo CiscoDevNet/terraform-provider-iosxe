@@ -1,4 +1,4 @@
-resource "iosxe_bgp_template_peer_policy" "example" {
+resource "iosxe_bgp_peer_policy_template" "example" {
   asn                    = "65000"
   name                   = "PEERPOLICY_1"
   route_reflector_client = true
