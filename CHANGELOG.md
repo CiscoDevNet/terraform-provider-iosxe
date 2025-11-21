@@ -2,6 +2,9 @@
 
 - Fix `iosxe_yang` resource payload ordering with NETCONF, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/372)
 - Add `ip_igmp_version` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, `iosxe_interface_tunnel`, and `iosxe_interface_vlan` resources and data sources
+- Add `ip_default_gateway` attribute to `iosxe_system` resource and data source for default gateway configuration on non-routing devices
+- Add `device_classifier` attribute to `iosxe_system` resource and data source for endpoint device classification
+- Add `table_maps` attribute to `iosxe_system` resource and data source for QoS table map configuration with DSCP/CoS value translation
 
 ## 0.10.2
 
