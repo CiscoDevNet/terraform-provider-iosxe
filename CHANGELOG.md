@@ -8,6 +8,9 @@
 - Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
 - Add `route_map` attribute to `iosxe_bgp_l2vpn_evpn_neighbor` resource and data source
 - Add `import_path_selection_all` and `ipv4_unicast_aggregate_addresses.summary_only` attributes to `iosxe_bgp_address_family_ipv4_vrf` resource and data source
+- BREAKING CHANGE: Rename `evpn_instance` to `evpn_instance_legacy` and `evpn_instance_vni` to `evpn_instance_vni_legacy` in `iosxe_vlan_configuration` resource and data source
+- Add `evpn_instance`, `evpn_instance_vni`, and `evpn_instance_protected` attributes to `iosxe_vlan_configuration` resource and data source
+- Add `evpn_instance_profile` and `evpn_instance_profile_protected` attributes to `iosxe_vlan_configuration` resource and data source
 
 ## 0.10.2
 
