@@ -227,6 +227,13 @@ func (r *InterfaceLoopbackResource) Schema(ctx context.Context, req resource.Sch
 					int64validator.Between(0, 2147483),
 				},
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3),
+				},
+			},
 		},
 	}
 }

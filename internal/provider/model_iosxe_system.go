@@ -183,6 +183,9 @@ type System struct {
 	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
 	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
 	PortChannelLoadBalance                                 types.String                                        `tfsdk:"port_channel_load_balance"`
+	IpDefaultGateway                                       types.String                                        `tfsdk:"ip_default_gateway"`
+	DeviceClassifier                                       types.Bool                                          `tfsdk:"device_classifier"`
+	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
 }
 
 type SystemData struct {
@@ -328,6 +331,9 @@ type SystemData struct {
 	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
 	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
 	PortChannelLoadBalance                                 types.String                                        `tfsdk:"port_channel_load_balance"`
+	IpDefaultGateway                                       types.String                                        `tfsdk:"ip_default_gateway"`
+	DeviceClassifier                                       types.Bool                                          `tfsdk:"device_classifier"`
+	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -377,9 +383,18 @@ type SystemTrackObjects struct {
 	IpSlaNumber       types.Int64  `tfsdk:"ip_sla_number"`
 	IpSlaReachability types.Bool   `tfsdk:"ip_sla_reachability"`
 }
+type SystemTableMaps struct {
+	Name     types.String              `tfsdk:"name"`
+	Default  types.String              `tfsdk:"default"`
+	Mappings []SystemTableMapsMappings `tfsdk:"mappings"`
+}
 type SystemIpHostsVrfHosts struct {
 	Name types.String `tfsdk:"name"`
 	Ips  types.List   `tfsdk:"ips"`
+}
+type SystemTableMapsMappings struct {
+	From types.Int64 `tfsdk:"from"`
+	To   types.Int64 `tfsdk:"to"`
 }
 
 // End of section. //template:end types
@@ -870,6 +885,14 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.PortChannelLoadBalance.IsNull() && !data.PortChannelLoadBalance.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance", data.PortChannelLoadBalance.ValueString())
 	}
+	if !data.IpDefaultGateway.IsNull() && !data.IpDefaultGateway.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.default-gateway", data.IpDefaultGateway.ValueString())
+	}
+	if !data.DeviceClassifier.IsNull() && !data.DeviceClassifier.IsUnknown() {
+		if data.DeviceClassifier.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device.classifier-enable.classifier", map[string]string{})
+		}
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -1018,6 +1041,28 @@ func (data System) toBody(ctx context.Context) string {
 			if !item.IpSlaReachability.IsNull() && !item.IpSlaReachability.IsUnknown() {
 				if item.IpSlaReachability.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2"+"."+strconv.Itoa(index)+"."+"ip.sla.reachability", map[string]string{})
+				}
+			}
+		}
+	}
+	if len(data.TableMaps) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map", []interface{}{})
+		for index, item := range data.TableMaps {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Default.IsNull() && !item.Default.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:default", item.Default.ValueString())
+			}
+			if len(item.Mappings) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:map-list", []interface{}{})
+				for cindex, citem := range item.Mappings {
+					if !citem.From.IsNull() && !citem.From.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:map-list"+"."+strconv.Itoa(cindex)+"."+"from", strconv.FormatInt(citem.From.ValueInt64(), 10))
+					}
+					if !citem.To.IsNull() && !citem.To.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"table-map"+"."+strconv.Itoa(index)+"."+"Cisco-IOS-XE-qos:map-list"+"."+strconv.Itoa(cindex)+"."+"to", strconv.FormatInt(citem.To.ValueInt64(), 10))
+					}
 				}
 			}
 		}
@@ -1709,6 +1754,40 @@ func (data System) toBodyXML(ctx context.Context) string {
 	}
 	if !data.PortChannelLoadBalance.IsNull() && !data.PortChannelLoadBalance.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", data.PortChannelLoadBalance.ValueString())
+	}
+	if !data.IpDefaultGateway.IsNull() && !data.IpDefaultGateway.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/default-gateway", data.IpDefaultGateway.ValueString())
+	}
+	if !data.DeviceClassifier.IsNull() && !data.DeviceClassifier.IsUnknown() {
+		if data.DeviceClassifier.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier")
+		}
+	}
+	if len(data.TableMaps) > 0 {
+		for _, item := range data.TableMaps {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Default.IsNull() && !item.Default.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "Cisco-IOS-XE-qos:default", item.Default.ValueString())
+			}
+			if len(item.Mappings) > 0 {
+				for _, citem := range item.Mappings {
+					ccBody := netconf.Body{}
+					if !citem.From.IsNull() && !citem.From.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "from", strconv.FormatInt(citem.From.ValueInt64(), 10))
+					}
+					if !citem.To.IsNull() && !citem.To.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "to", strconv.FormatInt(citem.To.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "Cisco-IOS-XE-qos:map-list", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/table-map", cBody.Res())
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -2913,6 +2992,88 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PortChannelLoadBalance = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.default-gateway"); value.Exists() && !data.IpDefaultGateway.IsNull() {
+		data.IpDefaultGateway = types.StringValue(value.String())
+	} else {
+		data.IpDefaultGateway = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device.classifier-enable.classifier"); !data.DeviceClassifier.IsNull() {
+		if value.Exists() {
+			data.DeviceClassifier = types.BoolValue(true)
+		} else {
+			data.DeviceClassifier = types.BoolValue(false)
+		}
+	} else {
+		data.DeviceClassifier = types.BoolNull()
+	}
+	for i := range data.TableMaps {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.TableMaps[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "table-map").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.TableMaps[i].Name.IsNull() {
+			data.TableMaps[i].Name = types.StringValue(value.String())
+		} else {
+			data.TableMaps[i].Name = types.StringNull()
+		}
+		if value := r.Get("Cisco-IOS-XE-qos:default"); value.Exists() && !data.TableMaps[i].Default.IsNull() {
+			data.TableMaps[i].Default = types.StringValue(value.String())
+		} else {
+			data.TableMaps[i].Default = types.StringNull()
+		}
+		for ci := range data.TableMaps[i].Mappings {
+			keys := [...]string{"from"}
+			keyValues := [...]string{strconv.FormatInt(data.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("Cisco-IOS-XE-qos:map-list").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("from"); value.Exists() && !data.TableMaps[i].Mappings[ci].From.IsNull() {
+				data.TableMaps[i].Mappings[ci].From = types.Int64Value(value.Int())
+			} else {
+				data.TableMaps[i].Mappings[ci].From = types.Int64Null()
+			}
+			if value := cr.Get("to"); value.Exists() && !data.TableMaps[i].Mappings[ci].To.IsNull() {
+				data.TableMaps[i].Mappings[ci].To = types.Int64Value(value.Int())
+			} else {
+				data.TableMaps[i].Mappings[ci].To = types.Int64Null()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -4107,6 +4268,88 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.PortChannelLoadBalance = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/default-gateway"); value.Exists() && !data.IpDefaultGateway.IsNull() {
+		data.IpDefaultGateway = types.StringValue(value.String())
+	} else {
+		data.IpDefaultGateway = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier"); !data.DeviceClassifier.IsNull() {
+		if value.Exists() {
+			data.DeviceClassifier = types.BoolValue(true)
+		} else {
+			data.DeviceClassifier = types.BoolValue(false)
+		}
+	} else {
+		data.DeviceClassifier = types.BoolNull()
+	}
+	for i := range data.TableMaps {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.TableMaps[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/table-map").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.TableMaps[i].Name.IsNull() {
+			data.TableMaps[i].Name = types.StringValue(value.String())
+		} else {
+			data.TableMaps[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "Cisco-IOS-XE-qos:default"); value.Exists() && !data.TableMaps[i].Default.IsNull() {
+			data.TableMaps[i].Default = types.StringValue(value.String())
+		} else {
+			data.TableMaps[i].Default = types.StringNull()
+		}
+		for ci := range data.TableMaps[i].Mappings {
+			keys := [...]string{"from"}
+			keyValues := [...]string{strconv.FormatInt(data.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "Cisco-IOS-XE-qos:map-list").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "from"); value.Exists() && !data.TableMaps[i].Mappings[ci].From.IsNull() {
+				data.TableMaps[i].Mappings[ci].From = types.Int64Value(value.Int())
+			} else {
+				data.TableMaps[i].Mappings[ci].From = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "to"); value.Exists() && !data.TableMaps[i].Mappings[ci].To.IsNull() {
+				data.TableMaps[i].Mappings[ci].To = types.Int64Value(value.Int())
+			} else {
+				data.TableMaps[i].Mappings[ci].To = types.Int64Null()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -4772,6 +5015,42 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.default-gateway"); value.Exists() {
+		data.IpDefaultGateway = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device.classifier-enable.classifier"); value.Exists() {
+		data.DeviceClassifier = types.BoolValue(true)
+	} else {
+		data.DeviceClassifier = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "table-map"); value.Exists() {
+		data.TableMaps = make([]SystemTableMaps, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemTableMaps{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("Cisco-IOS-XE-qos:default"); cValue.Exists() {
+				item.Default = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
+				item.Mappings = make([]SystemTableMapsMappings, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := SystemTableMapsMappings{}
+					if ccValue := cv.Get("from"); ccValue.Exists() {
+						cItem.From = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("to"); ccValue.Exists() {
+						cItem.To = types.Int64Value(ccValue.Int())
+					}
+					item.Mappings = append(item.Mappings, cItem)
+					return true
+				})
+			}
+			data.TableMaps = append(data.TableMaps, item)
+			return true
+		})
 	}
 }
 
@@ -5439,6 +5718,42 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.default-gateway"); value.Exists() {
+		data.IpDefaultGateway = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device.classifier-enable.classifier"); value.Exists() {
+		data.DeviceClassifier = types.BoolValue(true)
+	} else {
+		data.DeviceClassifier = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "table-map"); value.Exists() {
+		data.TableMaps = make([]SystemTableMaps, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemTableMaps{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("Cisco-IOS-XE-qos:default"); cValue.Exists() {
+				item.Default = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
+				item.Mappings = make([]SystemTableMapsMappings, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := SystemTableMapsMappings{}
+					if ccValue := cv.Get("from"); ccValue.Exists() {
+						cItem.From = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("to"); ccValue.Exists() {
+						cItem.To = types.Int64Value(ccValue.Int())
+					}
+					item.Mappings = append(item.Mappings, cItem)
+					return true
+				})
+			}
+			data.TableMaps = append(data.TableMaps, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -6100,6 +6415,42 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/default-gateway"); value.Exists() {
+		data.IpDefaultGateway = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier"); value.Exists() {
+		data.DeviceClassifier = types.BoolValue(true)
+	} else {
+		data.DeviceClassifier = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/table-map"); value.Exists() {
+		data.TableMaps = make([]SystemTableMaps, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SystemTableMaps{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:default"); cValue.Exists() {
+				item.Default = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
+				item.Mappings = make([]SystemTableMapsMappings, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := SystemTableMapsMappings{}
+					if ccValue := helpers.GetFromXPath(cv, "from"); ccValue.Exists() {
+						cItem.From = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "to"); ccValue.Exists() {
+						cItem.To = types.Int64Value(ccValue.Int())
+					}
+					item.Mappings = append(item.Mappings, cItem)
+					return true
+				})
+			}
+			data.TableMaps = append(data.TableMaps, item)
+			return true
+		})
 	}
 }
 
@@ -6763,6 +7114,42 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/default-gateway"); value.Exists() {
+		data.IpDefaultGateway = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier"); value.Exists() {
+		data.DeviceClassifier = types.BoolValue(true)
+	} else {
+		data.DeviceClassifier = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/table-map"); value.Exists() {
+		data.TableMaps = make([]SystemTableMaps, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := SystemTableMaps{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:default"); cValue.Exists() {
+				item.Default = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
+				item.Mappings = make([]SystemTableMapsMappings, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := SystemTableMapsMappings{}
+					if ccValue := helpers.GetFromXPath(cv, "from"); ccValue.Exists() {
+						cItem.From = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "to"); ccValue.Exists() {
+						cItem.To = types.Int64Value(ccValue.Int())
+					}
+					item.Mappings = append(item.Mappings, cItem)
+					return true
+				})
+			}
+			data.TableMaps = append(data.TableMaps, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -6771,6 +7158,68 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.TableMaps {
+		stateKeyValues := [...]string{state.TableMaps[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.TableMaps[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.TableMaps {
+			found = true
+			if state.TableMaps[i].Name.ValueString() != data.TableMaps[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.TableMaps[i].Mappings {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.TableMaps[i].Mappings[ci].From.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.TableMaps[j].Mappings {
+						found = true
+						if state.TableMaps[i].Mappings[ci].From.ValueInt64() != data.TableMaps[j].Mappings[cj].From.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.TableMaps[i].Mappings[ci].To.IsNull() && data.TableMaps[j].Mappings[cj].To.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/Cisco-IOS-XE-qos:map-list=%v/to", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/Cisco-IOS-XE-qos:map-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.TableMaps[i].Default.IsNull() && data.TableMaps[j].Default.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v/Cisco-IOS-XE-qos:default", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/table-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.DeviceClassifier.IsNull() && data.DeviceClassifier.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device/classifier-enable/classifier", state.getPath()))
+	}
+	if !state.IpDefaultGateway.IsNull() && data.IpDefaultGateway.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/default-gateway", state.getPath()))
+	}
 	if !state.PortChannelLoadBalance.IsNull() && data.PortChannelLoadBalance.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", state.getPath()))
 	}
@@ -7590,6 +8039,78 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) addDeletedItemsXML(ctx context.Context, state System, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.TableMaps {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.TableMaps[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.TableMaps[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.TableMaps {
+			found = true
+			if state.TableMaps[i].Name.ValueString() != data.TableMaps[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.TableMaps[i].Mappings {
+					cstateKeys := [...]string{"from"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.TableMaps[i].Mappings[ci].From.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.TableMaps[j].Mappings {
+						found = true
+						if state.TableMaps[i].Mappings[ci].From.ValueInt64() != data.TableMaps[j].Mappings[cj].From.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.TableMaps[i].Mappings[ci].To.IsNull() && data.TableMaps[j].Mappings[cj].To.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/Cisco-IOS-XE-qos:map-list%v/to", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/Cisco-IOS-XE-qos:map-list%v", predicates, cpredicates))
+					}
+				}
+				if !state.TableMaps[i].Default.IsNull() && data.TableMaps[j].Default.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v/Cisco-IOS-XE-qos:default", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/table-map%v", predicates))
+		}
+	}
+	if !state.DeviceClassifier.IsNull() && data.DeviceClassifier.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier")
+	}
+	if !state.IpDefaultGateway.IsNull() && data.IpDefaultGateway.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/default-gateway")
+	}
 	if !state.PortChannelLoadBalance.IsNull() && data.PortChannelLoadBalance.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance")
 	}
@@ -8485,6 +9006,10 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
+	if !data.DeviceClassifier.IsNull() && !data.DeviceClassifier.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device/classifier-enable/classifier", data.getPath()))
+	}
 	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", data.getPath()))
 	}
@@ -8594,6 +9119,17 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.TableMaps {
+		keyValues := [...]string{data.TableMaps[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/table-map=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.DeviceClassifier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device/classifier-enable/classifier", data.getPath()))
+	}
+	if !data.IpDefaultGateway.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/default-gateway", data.getPath()))
+	}
 	if !data.PortChannelLoadBalance.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", data.getPath()))
 	}
@@ -9044,6 +9580,22 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 
 func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.TableMaps {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.TableMaps[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/table-map%v", predicates))
+	}
+	if !data.DeviceClassifier.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:device/classifier-enable/classifier")
+	}
+	if !data.IpDefaultGateway.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/default-gateway")
+	}
 	if !data.PortChannelLoadBalance.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance")
 	}

@@ -61,6 +61,7 @@ resource "iosxe_interface_tunnel" "example" {
   snmp_trap_link_status            = false
   logging_event_link_status_enable = true
   tunnel_vrf                       = "VRF1"
+  ip_igmp_version                  = 3
 }
 ```
 
@@ -96,6 +97,8 @@ resource "iosxe_interface_tunnel" "example" {
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_igmp_version` (Number) IGMP version
+  - Range: `1`-`3`
 - `ip_mtu` (Number) Set IP Maximum Transmission Unit
   - Range: `68`-`18000`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP

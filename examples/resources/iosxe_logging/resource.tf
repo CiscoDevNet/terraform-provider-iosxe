@@ -13,7 +13,7 @@ resource "iosxe_logging" "example" {
   source_interfaces_vrf = [
     {
       vrf            = "VRF1"
-      interface_name = "Loopback100"
+      interface_name = "Loopback200"
     }
   ]
   ipv4_hosts = [

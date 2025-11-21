@@ -120,6 +120,7 @@ data "iosxe_interface_ethernet" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
+- `ip_igmp_version` (Number) IGMP version
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_nbar_protocol_discovery` (Boolean) Enable protocol discovery for both ipv4 and ipv6

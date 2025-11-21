@@ -546,6 +546,9 @@ attributes:
         example: in
       - yang_name: queue-length
         example: 50
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/version
+    example: 3
+
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true

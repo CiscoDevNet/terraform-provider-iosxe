@@ -4,7 +4,7 @@ path: /Cisco-IOS-XE-native:native/interface/Loopback[name=%v]
 doc_category: Interface
 attributes:
   - yang_name: name
-    example: 100
+    example: 201
   - yang_name: description
     example: My Interface Description
   - yang_name: shutdown
@@ -79,6 +79,8 @@ attributes:
         example: true
   - yang_name: arp/timeout
     example: 2147
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/version
+    example: 3
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
