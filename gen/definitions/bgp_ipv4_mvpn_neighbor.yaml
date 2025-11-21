@@ -1,0 +1,43 @@
+---
+name: BGP IPv4 MVPN Neighbor
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=mvpn]/ipv4-mvpn/neighbor[id=%s]
+doc_category: BGP
+test_tags: [IOSXE1715]
+attributes:
+  - yang_name: id
+    yang_scope: bgp
+    tf_name: asn
+    example: 65000
+    test_tags: [IOSXE1715]
+  - yang_name: id
+    yang_scope: neighbor
+    tf_name: ip
+    example: 172.16.255.4
+    test_tags: [IOSXE1715]
+  - yang_name: activate
+    default_value: true
+    example: true
+    no_delete: true
+    test_tags: [IOSXE1715]
+  - yang_name: send-community/send-community-where
+    tf_name: send_community
+    example: extended
+    test_tags: [IOSXE1715]
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
+    attributes:
+      - name: id
+        value: 65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/address-family/no-vrf/ipv4[af-name=mvpn]
+    attributes:
+      - name: af-name
+        value: mvpn
+    dependencies: [0]
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/neighbor[id=172.16.255.4]
+    attributes:
+      - name: id
+        value: 172.16.255.4
+      - name: remote-as
+        value: 65000
+    dependencies: [0]
+
