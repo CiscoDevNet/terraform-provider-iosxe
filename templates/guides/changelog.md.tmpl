@@ -31,13 +31,14 @@ description: |-
 - Add `iosxe_pim_ipv6` resource and data source
 - Add `iosxe_interface_pim_ipv6` resource and data source
 - Add `iosxe_multicast` resource and data source
-- Add `deadtime` attribute to aaa group server radius in `iosxe_aaa` resource and data source
+- Add `deadtime` attribute to AAA group server radius in `iosxe_aaa` resource and data source
 - Add `key_encryption`, `automate_tester_ignore_auth_port`, and `automate_tester_idle_time` attributes to `iosxe_radius` resource and data source
 - Add `authentication_mac_move_permit` and `authentication_mac_move_deny_uncontrolled` attributes to `iosxe_system` resource and data source
-- Add `dot1x_accounting_lists*` and `dot1x_default_*`  attributes to `iosxe_aaa_accounting` resource and data source
+- Add `dot1x` and `dot1x_default_*`  attributes to `iosxe_aaa_accounting` resource and data source
 - BREAKING CHANGE: Rename `iosxe_tacacs_server` resource and data source to `iosxe_tacacs`
 - Add `port` attribute to `iosxe_tacacs` resource and data source
-- BREAKING CHANGE: Add new `iosxe_tacacs_server` resource and data source that is in line with yang model for tacacs-server
+- BREAKING CHANGE: Add new `iosxe_tacacs_server` resource and data source
+- Add `enable_default_group_legacy`, `enable_default_enable_legacy`, `enable_default_line_legacy` and `enable_default_none_legacy` attributes to `iosxe_aaa_authentication` resource and data source
 
 ## 0.10.2
 

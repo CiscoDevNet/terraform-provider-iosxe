@@ -798,6 +798,14 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"authentication_mac_move_permit": schema.BoolAttribute{
+				MarkdownDescription: "PERMIT MAC moves (clears existing session)",
+				Computed:            true,
+			},
+			"authentication_mac_move_deny_uncontrolled": schema.BoolAttribute{
+				MarkdownDescription: "Deny MAC move to uncontrolled port",
+				Computed:            true,
+			},
 			"ip_default_gateway": schema.StringAttribute{
 				MarkdownDescription: "Specify default gateway (if not routing IP)",
 				Computed:            true,

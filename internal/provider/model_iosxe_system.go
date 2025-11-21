@@ -183,6 +183,8 @@ type System struct {
 	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
 	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
 	PortChannelLoadBalance                                 types.String                                        `tfsdk:"port_channel_load_balance"`
+	AuthenticationMacMovePermit                            types.Bool                                          `tfsdk:"authentication_mac_move_permit"`
+	AuthenticationMacMoveDenyUncontrolled                  types.Bool                                          `tfsdk:"authentication_mac_move_deny_uncontrolled"`
 	IpDefaultGateway                                       types.String                                        `tfsdk:"ip_default_gateway"`
 	DeviceClassifier                                       types.Bool                                          `tfsdk:"device_classifier"`
 	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
@@ -331,6 +333,8 @@ type SystemData struct {
 	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
 	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
 	PortChannelLoadBalance                                 types.String                                        `tfsdk:"port_channel_load_balance"`
+	AuthenticationMacMovePermit                            types.Bool                                          `tfsdk:"authentication_mac_move_permit"`
+	AuthenticationMacMoveDenyUncontrolled                  types.Bool                                          `tfsdk:"authentication_mac_move_deny_uncontrolled"`
 	IpDefaultGateway                                       types.String                                        `tfsdk:"ip_default_gateway"`
 	DeviceClassifier                                       types.Bool                                          `tfsdk:"device_classifier"`
 	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
@@ -884,6 +888,16 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.PortChannelLoadBalance.IsNull() && !data.PortChannelLoadBalance.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance", data.PortChannelLoadBalance.ValueString())
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() && !data.AuthenticationMacMovePermit.IsUnknown() {
+		if data.AuthenticationMacMovePermit.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.mac-move.permit", map[string]string{})
+		}
+	}
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() && !data.AuthenticationMacMoveDenyUncontrolled.IsUnknown() {
+		if data.AuthenticationMacMoveDenyUncontrolled.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled", map[string]string{})
+		}
 	}
 	if !data.IpDefaultGateway.IsNull() && !data.IpDefaultGateway.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.default-gateway", data.IpDefaultGateway.ValueString())
@@ -1754,6 +1768,20 @@ func (data System) toBodyXML(ctx context.Context) string {
 	}
 	if !data.PortChannelLoadBalance.IsNull() && !data.PortChannelLoadBalance.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", data.PortChannelLoadBalance.ValueString())
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() && !data.AuthenticationMacMovePermit.IsUnknown() {
+		if data.AuthenticationMacMovePermit.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit")
+		}
+	}
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() && !data.AuthenticationMacMoveDenyUncontrolled.IsUnknown() {
+		if data.AuthenticationMacMoveDenyUncontrolled.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled")
+		}
 	}
 	if !data.IpDefaultGateway.IsNull() && !data.IpDefaultGateway.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/default-gateway", data.IpDefaultGateway.ValueString())
@@ -2991,6 +3019,24 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
 	} else {
 		data.PortChannelLoadBalance = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.permit"); !data.AuthenticationMacMovePermit.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMacMovePermit = types.BoolValue(true)
+		} else {
+			data.AuthenticationMacMovePermit = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled"); !data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+		} else {
+			data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.default-gateway"); value.Exists() && !data.IpDefaultGateway.IsNull() {
 		data.IpDefaultGateway = types.StringValue(value.String())
@@ -4268,6 +4314,24 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.PortChannelLoadBalance = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit"); !data.AuthenticationMacMovePermit.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMacMovePermit = types.BoolValue(true)
+		} else {
+			data.AuthenticationMacMovePermit = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled"); !data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+		} else {
+			data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/default-gateway"); value.Exists() && !data.IpDefaultGateway.IsNull() {
 		data.IpDefaultGateway = types.StringValue(value.String())
 	} else {
@@ -5016,6 +5080,16 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.permit"); value.Exists() {
+		data.AuthenticationMacMovePermit = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled"); value.Exists() {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.default-gateway"); value.Exists() {
 		data.IpDefaultGateway = types.StringValue(value.String())
 	}
@@ -5718,6 +5792,16 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "port-channel.Cisco-IOS-XE-ethernet:load-balance.load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.permit"); value.Exists() {
+		data.AuthenticationMacMovePermit = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled"); value.Exists() {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.default-gateway"); value.Exists() {
 		data.IpDefaultGateway = types.StringValue(value.String())
 	}
@@ -6415,6 +6499,16 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit"); value.Exists() {
+		data.AuthenticationMacMovePermit = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled"); value.Exists() {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/default-gateway"); value.Exists() {
 		data.IpDefaultGateway = types.StringValue(value.String())
@@ -7114,6 +7208,16 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance"); value.Exists() {
 		data.PortChannelLoadBalance = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit"); value.Exists() {
+		data.AuthenticationMacMovePermit = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled"); value.Exists() {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/default-gateway"); value.Exists() {
 		data.IpDefaultGateway = types.StringValue(value.String())
 	}
@@ -7219,6 +7323,12 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.IpDefaultGateway.IsNull() && data.IpDefaultGateway.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/default-gateway", state.getPath()))
+	}
+	if !state.AuthenticationMacMoveDenyUncontrolled.IsNull() && data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", state.getPath()))
+	}
+	if !state.AuthenticationMacMovePermit.IsNull() && data.AuthenticationMacMovePermit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/permit", state.getPath()))
 	}
 	if !state.PortChannelLoadBalance.IsNull() && data.PortChannelLoadBalance.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", state.getPath()))
@@ -8110,6 +8220,12 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	}
 	if !state.IpDefaultGateway.IsNull() && data.IpDefaultGateway.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/default-gateway")
+	}
+	if !state.AuthenticationMacMoveDenyUncontrolled.IsNull() && data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled")
+	}
+	if !state.AuthenticationMacMovePermit.IsNull() && data.AuthenticationMacMovePermit.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit")
 	}
 	if !state.PortChannelLoadBalance.IsNull() && data.PortChannelLoadBalance.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance")
@@ -9010,6 +9126,12 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.DeviceClassifier.IsNull() && !data.DeviceClassifier.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device/classifier-enable/classifier", data.getPath()))
 	}
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() && !data.AuthenticationMacMoveDenyUncontrolled.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", data.getPath()))
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() && !data.AuthenticationMacMovePermit.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/permit", data.getPath()))
+	}
 	if !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.IsNull() && !data.Ipv6CefLoadSharingAlgorithmIncludePortsDestination.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination", data.getPath()))
 	}
@@ -9129,6 +9251,12 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpDefaultGateway.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/default-gateway", data.getPath()))
+	}
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", data.getPath()))
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/permit", data.getPath()))
 	}
 	if !data.PortChannelLoadBalance.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance", data.getPath()))
@@ -9595,6 +9723,12 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.IpDefaultGateway.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/default-gateway")
+	}
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled")
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/mac-move/permit")
 	}
 	if !data.PortChannelLoadBalance.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance")
