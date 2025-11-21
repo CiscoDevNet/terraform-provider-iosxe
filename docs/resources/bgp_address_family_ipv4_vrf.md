@@ -26,6 +26,7 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
         {
           ipv4_address = "50.0.0.0"
           ipv4_mask    = "255.255.0.0"
+          summary_only = true
         }
       ]
       ipv4_unicast_redistribute_static = true
@@ -51,11 +52,12 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
           wildcard  = "0.0.0.0"
         }
       ]
-      ipv4_unicast_distance_bgp_external = 20
-      ipv4_unicast_distance_bgp_internal = 200
-      ipv4_unicast_distance_bgp_local    = 200
-      ipv4_unicast_maximum_paths_ebgp    = 2
-      ipv4_unicast_maximum_paths_ibgp    = 2
+      ipv4_unicast_distance_bgp_external     = 20
+      ipv4_unicast_distance_bgp_internal     = 200
+      ipv4_unicast_distance_bgp_local        = 200
+      ipv4_unicast_maximum_paths_ebgp        = 2
+      ipv4_unicast_maximum_paths_ibgp        = 2
+      ipv4_unicast_import_path_selection_all = true
     }
   ]
 }
@@ -95,6 +97,7 @@ Optional:
 - `ipv4_unicast_distance_bgp_external` (Number) - Range: `1`-`255`
 - `ipv4_unicast_distance_bgp_internal` (Number) - Range: `1`-`255`
 - `ipv4_unicast_distance_bgp_local` (Number) - Range: `1`-`255`
+- `ipv4_unicast_import_path_selection_all` (Boolean) Import all available paths
 - `ipv4_unicast_maximum_paths_ebgp` (Number) eBGP-multipath
   - Range: `1`-`32`
 - `ipv4_unicast_maximum_paths_ibgp` (Number) - Range: `1`-`32`
@@ -127,6 +130,10 @@ Required:
 
 - `ipv4_address` (String)
 - `ipv4_mask` (String)
+
+Optional:
+
+- `summary_only` (Boolean) Filter more specific routes from updates
 
 
 <a id="nestedatt--vrfs--ipv4_unicast_networks"></a>
