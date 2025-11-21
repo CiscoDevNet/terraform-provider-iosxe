@@ -42,6 +42,7 @@ data "iosxe_system" "example" {
 - `call_home_contact_email` (String) Use email address
 - `cisp_enable` (Boolean) Enable CISP
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
+- `device_classifier` (Boolean) Enable/Disable classification of attached devices
 - `diagnostic_bootup_level` (String) Select diagnostic level
 - `diagnostic_event_log_size` (Number) Configure event log size Number of entries <1-10000>
 - `enable_secret` (String, Sensitive)
@@ -55,6 +56,7 @@ data "iosxe_system" "example" {
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
 - `ip_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
 - `ip_cef_load_sharing_algorithm_include_ports_source` (Boolean)
+- `ip_default_gateway` (String) Specify default gateway (if not routing IP)
 - `ip_domain_list_names` (List of String)
 - `ip_domain_list_vrf` (String)
 - `ip_domain_list_vrf_domain` (String)
@@ -157,6 +159,7 @@ data "iosxe_system" "example" {
 - `standby_redirects` (Boolean)
 - `standby_redirects_enable_disable` (String)
 - `subscriber_templating` (Boolean) Configure subscriber templating
+- `table_maps` (Attributes List) Configure Table Map (see [below for nested schema](#nestedatt--table_maps))
 - `tftp_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `tftp_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -265,6 +268,25 @@ Read-Only:
 - `name` (String)
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
+
+
+<a id="nestedatt--table_maps"></a>
+### Nested Schema for `table_maps`
+
+Read-Only:
+
+- `default` (String) the default behavior for setting value not found in the table map
+- `mappings` (Attributes List) map to-value from from-value (see [below for nested schema](#nestedatt--table_maps--mappings))
+- `name` (String)
+
+<a id="nestedatt--table_maps--mappings"></a>
+### Nested Schema for `table_maps.mappings`
+
+Read-Only:
+
+- `from` (Number) map from value
+- `to` (Number) map to value
+
 
 
 <a id="nestedatt--track_objects"></a>

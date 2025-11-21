@@ -56,6 +56,7 @@ type EVPN struct {
 	RouteTargetAutoVni                          types.Bool   `tfsdk:"route_target_auto_vni"`
 	AnycastGatewayMacAuto                       types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
 	FloodingSuppressionAddressResolutionDisable types.Bool   `tfsdk:"flooding_suppression_address_resolution_disable"`
+	MulticastAdvertise                          types.Bool   `tfsdk:"multicast_advertise"`
 }
 
 type EVPNData struct {
@@ -75,6 +76,7 @@ type EVPNData struct {
 	RouteTargetAutoVni                          types.Bool   `tfsdk:"route_target_auto_vni"`
 	AnycastGatewayMacAuto                       types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
 	FloodingSuppressionAddressResolutionDisable types.Bool   `tfsdk:"flooding_suppression_address_resolution_disable"`
+	MulticastAdvertise                          types.Bool   `tfsdk:"multicast_advertise"`
 }
 
 // End of section. //template:end types
@@ -177,6 +179,11 @@ func (data EVPN) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"flooding-suppression.address-resolution.disable", map[string]string{})
 		}
 	}
+	if !data.MulticastAdvertise.IsNull() && !data.MulticastAdvertise.IsUnknown() {
+		if data.MulticastAdvertise.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"multicast.advertise", map[string]string{})
+		}
+	}
 	return body
 }
 
@@ -262,6 +269,13 @@ func (data EVPN) toBodyXML(ctx context.Context) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/flooding-suppression/address-resolution/disable", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/flooding-suppression/address-resolution/disable")
+		}
+	}
+	if !data.MulticastAdvertise.IsNull() && !data.MulticastAdvertise.IsUnknown() {
+		if data.MulticastAdvertise.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/multicast/advertise", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/multicast/advertise")
 		}
 	}
 	bodyString, err := body.String()
@@ -386,6 +400,15 @@ func (data *EVPN) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "multicast.advertise"); !data.MulticastAdvertise.IsNull() {
+		if value.Exists() {
+			data.MulticastAdvertise = types.BoolValue(true)
+		} else {
+			data.MulticastAdvertise = types.BoolValue(false)
+		}
+	} else {
+		data.MulticastAdvertise = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -499,6 +522,15 @@ func (data *EVPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/multicast/advertise"); !data.MulticastAdvertise.IsNull() {
+		if value.Exists() {
+			data.MulticastAdvertise = types.BoolValue(true)
+		} else {
+			data.MulticastAdvertise = types.BoolValue(false)
+		}
+	} else {
+		data.MulticastAdvertise = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -569,6 +601,11 @@ func (data *EVPN) fromBody(ctx context.Context, res gjson.Result) {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
 	} else {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "multicast.advertise"); value.Exists() {
+		data.MulticastAdvertise = types.BoolValue(true)
+	} else {
+		data.MulticastAdvertise = types.BoolValue(false)
 	}
 }
 
@@ -641,6 +678,11 @@ func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "multicast.advertise"); value.Exists() {
+		data.MulticastAdvertise = types.BoolValue(true)
+	} else {
+		data.MulticastAdvertise = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -707,6 +749,11 @@ func (data *EVPN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
 	} else {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/multicast/advertise"); value.Exists() {
+		data.MulticastAdvertise = types.BoolValue(true)
+	} else {
+		data.MulticastAdvertise = types.BoolValue(false)
 	}
 }
 
@@ -775,6 +822,11 @@ func (data *EVPNData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/multicast/advertise"); value.Exists() {
+		data.MulticastAdvertise = types.BoolValue(true)
+	} else {
+		data.MulticastAdvertise = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -783,6 +835,9 @@ func (data *EVPNData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 	deletedItems := make([]string, 0)
+	if !state.MulticastAdvertise.IsNull() && data.MulticastAdvertise.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/multicast/advertise", state.getPath()))
+	}
 	if !state.FloodingSuppressionAddressResolutionDisable.IsNull() && data.FloodingSuppressionAddressResolutionDisable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/flooding-suppression/address-resolution/disable", state.getPath()))
 	}
@@ -835,6 +890,9 @@ func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 
 func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body string) string {
 	b := netconf.NewBody(body)
+	if !state.MulticastAdvertise.IsNull() && data.MulticastAdvertise.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/multicast/advertise")
+	}
 	if !state.FloodingSuppressionAddressResolutionDisable.IsNull() && data.FloodingSuppressionAddressResolutionDisable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flooding-suppression/address-resolution/disable")
 	}
@@ -888,6 +946,9 @@ func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body strin
 
 func (data *EVPN) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.MulticastAdvertise.IsNull() && !data.MulticastAdvertise.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/multicast/advertise", data.getPath()))
+	}
 	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() && !data.FloodingSuppressionAddressResolutionDisable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/flooding-suppression/address-resolution/disable", data.getPath()))
 	}
@@ -925,6 +986,9 @@ func (data *EVPN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *EVPN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.MulticastAdvertise.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/multicast/advertise", data.getPath()))
+	}
 	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/flooding-suppression/address-resolution/disable", data.getPath()))
 	}
@@ -977,6 +1041,9 @@ func (data *EVPN) getDeletePaths(ctx context.Context) []string {
 
 func (data *EVPN) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.MulticastAdvertise.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/multicast/advertise")
+	}
 	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flooding-suppression/address-resolution/disable")
 	}

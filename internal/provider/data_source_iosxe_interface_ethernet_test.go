@@ -100,6 +100,10 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "carrier_delay_msec", "250"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "hold_queues.0.direction", "in"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "hold_queues.0.queue_length", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_igmp_version", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -250,6 +254,12 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 		config += `		es_value = 1` + "\n"
 		config += `	}]` + "\n"
 	}
+	config += `	carrier_delay_msec = 250` + "\n"
+	config += `	hold_queues = [{` + "\n"
+	config += `		direction = "in"` + "\n"
+	config += `		queue_length = 50` + "\n"
+	config += `	}]` + "\n"
+	config += `	ip_igmp_version = 3` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 

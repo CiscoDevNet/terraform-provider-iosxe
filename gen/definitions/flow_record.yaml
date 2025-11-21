@@ -110,3 +110,17 @@ attributes:
   - yang_name: collect/flow/direction
     example: true
     exclude_test: true
+  - yang_name: match/routing/vrf/input
+    description: Match VRF ID for incoming packet for VXLAN-aware NetFlow
+    example: true
+  - yang_name: match/vxlan/vnid
+    description: Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow
+    example: true
+  - yang_name: match/vxlan/vtep/input
+    description: Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow
+    example: true
+    test_tags: [IOSXE1715]
+  - yang_name: match/vxlan/vtep/output
+    description: Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow
+    example: true
+    test_tags: [IOSXE1715]

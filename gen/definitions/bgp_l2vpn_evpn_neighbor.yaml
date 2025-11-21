@@ -23,6 +23,16 @@ attributes:
     example: false
   - yang_name: soft-reconfiguration
     example: inbound
+  - yang_name: route-map
+    tf_name: route_maps
+    type: List
+    attributes:
+      - yang_name: inout
+        tf_name: in_out
+        id: true
+        example: in
+      - yang_name: route-map-name
+        example: RM1
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
@@ -40,3 +50,8 @@ test_prerequisites:
       - name: remote-as
         value: 65000
     dependencies: [0]
+  - path: Cisco-IOS-XE-native:native/route-map=[name=RM1]
+    attributes:
+      - name: name
+        value: RM1
+

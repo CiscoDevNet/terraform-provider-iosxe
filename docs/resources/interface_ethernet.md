@@ -88,6 +88,14 @@ resource "iosxe_interface_ethernet" "example" {
   cdp_tlv_location                 = false
   cdp_tlv_server_location          = false
   ip_nat_inside                    = true
+  carrier_delay_msec               = 250
+  hold_queues = [
+    {
+      direction    = "in"
+      queue_length = 50
+    }
+  ]
+  ip_igmp_version = 3
 }
 ```
 
@@ -163,6 +171,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `bfd_template` (String) BFD template
 - `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
 - `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+- `carrier_delay_msec` (Number) delay specified in milliseconds
+  - Range: `0`-`1000`
 - `cdp_enable` (Boolean) Enable CDP on interface
 - `cdp_tlv_app` (Boolean) Enable/Configure Application TLV
 - `cdp_tlv_location` (Boolean) Exchange location information
@@ -199,6 +209,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `encapsulation_dot1q_vlan_id` (Number) - Range: `1`-`4094`
 - `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
+- `hold_queues` (Attributes List) Set hold queue depth (see [below for nested schema](#nestedatt--hold_queues))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
@@ -210,6 +221,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
+- `ip_igmp_version` (Number) IGMP version
+  - Range: `1`-`3`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_nbar_protocol_discovery` (Boolean) Enable protocol discovery for both ipv4 and ipv6
@@ -297,6 +310,18 @@ Optional:
 
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
+
+
+<a id="nestedatt--hold_queues"></a>
+### Nested Schema for `hold_queues`
+
+Required:
+
+- `direction` (String) - Choices: `in`, `out`
+
+Optional:
+
+- `queue_length` (Number) - Range: `0`-`240000`
 
 
 <a id="nestedatt--ip_flow_monitors"></a>

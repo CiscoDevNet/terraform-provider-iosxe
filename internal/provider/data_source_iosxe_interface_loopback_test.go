@@ -52,6 +52,7 @@ func TestAccDataSourceIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ipv6_addresses.0.prefix", "2002:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "arp_timeout", "2147"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_igmp_version", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -86,7 +87,7 @@ resource "iosxe_yang" "PreReq0" {
 func testAccDataSourceIosxeInterfaceLoopbackConfig() string {
 	config := `resource "iosxe_interface_loopback" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	name = 100` + "\n"
+	config += `	name = 201` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
@@ -111,12 +112,13 @@ func testAccDataSourceIosxeInterfaceLoopbackConfig() string {
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
+	config += `	ip_igmp_version = 3` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_interface_loopback" "test" {
-			name = 100
+			name = 201
 			depends_on = [iosxe_interface_loopback.test]
 		}
 	`
