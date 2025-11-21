@@ -19,14 +19,10 @@ attributes:
     tf_name: evpn_instance_legacy
     description: EVPN instance number (deprecated path). Use for IOS-XE < 17.15.
     example: 123
-    exclude_test: true
-    test_tags: [IOSXE1712]
   - yang_name: member/evpn-instance/vni
     tf_name: evpn_instance_vni_legacy
     description: VNI for EVPN instance (deprecated path). Use for IOS-XE < 17.15.
     example: 10123
-    exclude_test: true
-    test_tags: [IOSXE1712]
   - yang_name: member/evi-member/evpn-instance/evi-type-choice/manual-evi-case/manual-evi-config/evi
     xpath: member/evi-member/evpn-instance/manual-evi-config/evi
     tf_name: evpn_instance
@@ -51,9 +47,11 @@ attributes:
     description: EVPN instance profile name. Use for IOS-XE >= 17.15.
     example: MY_EVPN_PROFILE
     test_tags: [IOSXE1715]
+    exclude_test: true
   - yang_name: member/evi-member/evpn-instance/evi-type-choice/auto-evi-case/auto-evi-config/protected
     xpath: member/evi-member/evpn-instance/auto-evi-config/protected
     tf_name: evpn_instance_profile_protected
     description: Enable local peer to peer blocking for auto EVI with profile.
     example: true
     test_tags: [IOSXE1715]
+    exclude_test: true

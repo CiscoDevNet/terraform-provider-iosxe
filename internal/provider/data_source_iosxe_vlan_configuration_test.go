@@ -36,6 +36,8 @@ func TestAccDataSourceIosxeVLANConfiguration(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vlan_configuration.test", "evpn_instance_legacy", "123"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vlan_configuration.test", "evpn_instance_vni_legacy", "10123"))
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vlan_configuration.test", "evpn_instance", "123"))
 	}
@@ -44,12 +46,6 @@ func TestAccDataSourceIosxeVLANConfiguration(t *testing.T) {
 	}
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vlan_configuration.test", "evpn_instance_protected", "true"))
-	}
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vlan_configuration.test", "evpn_instance_profile", "MY_EVPN_PROFILE"))
-	}
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vlan_configuration.test", "evpn_instance_profile_protected", "true"))
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -73,6 +69,8 @@ func TestAccDataSourceIosxeVLANConfiguration(t *testing.T) {
 func testAccDataSourceIosxeVLANConfigurationConfig() string {
 	config := `resource "iosxe_vlan_configuration" "test" {` + "\n"
 	config += `	vlan_id = "123"` + "\n"
+	config += `	evpn_instance_legacy = 123` + "\n"
+	config += `	evpn_instance_vni_legacy = 10123` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	evpn_instance = 123` + "\n"
 	}
@@ -81,12 +79,6 @@ func testAccDataSourceIosxeVLANConfigurationConfig() string {
 	}
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	evpn_instance_protected = true` + "\n"
-	}
-	if os.Getenv("IOSXE1715") != "" {
-		config += `	evpn_instance_profile = "MY_EVPN_PROFILE"` + "\n"
-	}
-	if os.Getenv("IOSXE1715") != "" {
-		config += `	evpn_instance_profile_protected = true` + "\n"
 	}
 	config += `}` + "\n"
 
