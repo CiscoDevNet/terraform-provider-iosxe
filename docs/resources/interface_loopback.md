@@ -42,7 +42,8 @@ resource "iosxe_interface_loopback" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout = 2147
+  arp_timeout     = 2147
+  ip_igmp_version = 3
 }
 ```
 
@@ -65,6 +66,8 @@ resource "iosxe_interface_loopback" "example" {
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_igmp_version` (Number) IGMP version
+  - Range: `1`-`3`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages

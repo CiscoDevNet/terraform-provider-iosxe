@@ -61,6 +61,7 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+- `ip_igmp_version` (Number) IGMP version
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages

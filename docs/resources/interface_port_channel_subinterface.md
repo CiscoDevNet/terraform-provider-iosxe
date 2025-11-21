@@ -53,7 +53,8 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout = 2147
+  arp_timeout     = 2147
+  ip_igmp_version = 3
 }
 ```
 
@@ -102,6 +103,8 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
   - Range: `0`-`4294967295`
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+- `ip_igmp_version` (Number) IGMP version
+  - Range: `1`-`3`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages

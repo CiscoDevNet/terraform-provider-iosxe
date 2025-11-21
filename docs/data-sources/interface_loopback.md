@@ -38,6 +38,7 @@ data "iosxe_interface_loopback" "example" {
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_igmp_version` (Number) IGMP version
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages

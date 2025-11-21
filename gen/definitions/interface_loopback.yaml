@@ -79,6 +79,8 @@ attributes:
         example: true
   - yang_name: arp/timeout
     example: 2147
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/version
+    example: 3
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
