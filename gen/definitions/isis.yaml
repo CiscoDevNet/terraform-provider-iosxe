@@ -1,0 +1,52 @@
+---
+name: ISIS
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=%v]
+doc_category: Routing
+attributes:
+  - yang_name: area-tag
+    tf_name: area_tag
+    type: String
+    id: true
+    description: IS-IS area tag
+    example: TEST
+  - yang_name: net
+    tf_name: nets
+    type: Set
+    description: Network Entity Titles for this IS-IS process
+    attributes:
+      - yang_name: tag
+        type: String
+        id: true
+        description: NET value
+        example: 49.0001.1920.0000.2001.00
+  - yang_name: metric-style/metric-style-choice/wide/wide
+    xpath: metric-style/wide
+    tf_name: metric_style_wide
+    description: Use new style of TLVs to carry wider metric
+    example: true
+  - yang_name: metric-style/metric-style-choice/narrow/narrow
+    xpath: metric-style/narrow
+    tf_name: metric_style_narrow
+    description: Use old style of TLVs with narrow metric
+    example: false
+    exclude_test: true
+  - yang_name: metric-style/metric-style-choice/transition/transition
+    xpath: metric-style/transition
+    tf_name: metric_style_transition
+    description: Send and accept both styles of TLVs during transition
+    example: false
+    exclude_test: true
+  - yang_name: log-adj-changes/log-adjacency-changes
+    tf_name: log_adjacency_changes
+    description: Log changes in adjacency state
+    example: true
+  - yang_name: log-adj-changes/all
+    tf_name: log_adjacency_changes_all
+    description: Log all adjacency changes including non-IIH events
+    example: true
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=TEST]
+    attributes:
+      - name: area-tag
+        value: TEST
+test_tags: [ALL]
