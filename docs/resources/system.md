@@ -75,6 +75,8 @@ resource "iosxe_system" "example" {
 - `archive_time_period` (Number) Period of time in minutes to automatically archive the running-config
   - Range: `1`-`525600`
 - `archive_write_memory` (Boolean) Enable automatic backup generation during write memory
+- `authentication_mac_move_deny_uncontrolled` (Boolean) Deny MAC move to uncontrolled port
+- `authentication_mac_move_permit` (Boolean) PERMIT MAC moves (clears existing session)
 - `boot_system_bootfiles` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_bootfiles))
 - `boot_system_flash_files` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_flash_files))
 - `call_home_cisco_tac_1_destination_transport_method` (String) To specify transport method for this profile

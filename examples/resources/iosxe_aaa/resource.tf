@@ -11,7 +11,8 @@ resource "iosxe_aaa" "example" {
   ]
   group_server_radius = [
     {
-      name = "T-Group"
+      name     = "T-Group"
+      deadtime = 5
       server_names = [
         {
           name = "TESTRADIUS"

@@ -131,6 +131,13 @@ func (r *AAAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							MarkdownDescription: helpers.NewAttributeDescription("Radius Server-group name with max string length 32").String,
 							Required:            true,
 						},
+						"deadtime": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in minutes to ignore an unresponsive server").AddIntegerRangeDescription(0, 1440).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 1440),
+							},
+						},
 						"server_names": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Name of radius server").String,
 							Optional:            true,

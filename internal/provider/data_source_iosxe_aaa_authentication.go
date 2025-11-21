@@ -348,6 +348,22 @@ func (d *AAAAuthenticationDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "No authentication for Privileged command level(enable)",
 				Computed:            true,
 			},
+			"enable_default_group_legacy": schema.StringAttribute{
+				MarkdownDescription: "Use Server-group",
+				Computed:            true,
+			},
+			"enable_default_enable_legacy": schema.BoolAttribute{
+				MarkdownDescription: "Use enable password for authentication.",
+				Computed:            true,
+			},
+			"enable_default_line_legacy": schema.BoolAttribute{
+				MarkdownDescription: "Use line password for authentication.",
+				Computed:            true,
+			},
+			"enable_default_none_legacy": schema.BoolAttribute{
+				MarkdownDescription: "No authentication.",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -310,3 +310,23 @@ attributes:
     xpath: enable/default/group4/none
     example: true
     exclude_test: true
+  - yang_name: enable/default/group
+    example: ISE_group
+    tf_name: enable_default_group_legacy
+    test_tags: [IOSXE1712]
+    exclude_test: true
+  - yang_name: enable/default/enable
+    example: true
+    tf_name: enable_default_enable_legacy
+    test_tags: [IOSXE1712]
+    exclude_test: true
+  - yang_name: enable/default/line
+    example: true
+    tf_name: enable_default_line_legacy
+    exclude_test: true
+    test_tags: [IOSXE1712]
+  - yang_name: enable/default/none
+    example: true
+    tf_name: enable_default_none_legacy
+    exclude_test: true
+    test_tags: [IOSXE1712]

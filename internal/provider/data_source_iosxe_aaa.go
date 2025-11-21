@@ -110,6 +110,10 @@ func (d *AAADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "Radius Server-group name with max string length 32",
 							Computed:            true,
 						},
+						"deadtime": schema.Int64Attribute{
+							MarkdownDescription: "Specify time in minutes to ignore an unresponsive server",
+							Computed:            true,
+						},
 						"server_names": schema.ListNestedAttribute{
 							MarkdownDescription: "Name of radius server",
 							Computed:            true,
