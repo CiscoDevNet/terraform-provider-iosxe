@@ -21,6 +21,7 @@
 - Add `carrier_delay_msec` and `hold_queues` attributes to `iosxe_interface_ethernet` resource and data source
 - Add `iosxe_pim_ipv6` resource and data source
 - Add `iosxe_interface_pim_ipv6` resource and data source
+- Add `iosxe_multicast` resource and data source
 
 ## 0.10.2
 
