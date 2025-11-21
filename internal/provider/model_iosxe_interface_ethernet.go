@@ -349,6 +349,10 @@ type InterfaceEthernetDeviceTrackingAttachedPolicies struct {
 type InterfaceEthernetEvpnEthernetSegments struct {
 	EsValue types.Int64 `tfsdk:"es_value"`
 }
+type InterfaceEthernetHoldQueue struct {
+	Direction   types.String `tfsdk:"direction"`
+	QueueLength types.Int64  `tfsdk:"queue_length"`
+}
 
 // End of section. //template:end types
 
@@ -985,6 +989,17 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 		for index, item := range data.EvpnEthernetSegments {
 			if !item.EsValue.IsNull() && !item.EsValue.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-l2vpn:evpn.ethernet-segment"+"."+strconv.Itoa(index)+"."+"es-value", strconv.FormatInt(item.EsValue.ValueInt64(), 10))
+			}
+		}
+	}
+	if len(data.HoldQueue) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hold-queue", []interface{}{})
+		for index, item := range data.HoldQueue {
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hold-queue"+"."+strconv.Itoa(index)+"."+"direction", item.Direction.ValueString())
+			}
+			if !item.QueueLength.IsNull() && !item.QueueLength.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hold-queue"+"."+strconv.Itoa(index)+"."+"queue-length", strconv.FormatInt(item.QueueLength.ValueInt64(), 10))
 			}
 		}
 	}

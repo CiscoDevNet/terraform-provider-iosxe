@@ -84,6 +84,7 @@ data "iosxe_interface_ethernet" "example" {
 - `bfd_template` (String) BFD template
 - `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
 - `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+- `carrier_delay_msec` (Number) delay specified in milliseconds
 - `cdp_enable` (Boolean) Enable CDP on interface
 - `cdp_tlv_app` (Boolean) Enable/Configure Application TLV
 - `cdp_tlv_location` (Boolean) Exchange location information
@@ -107,6 +108,7 @@ data "iosxe_interface_ethernet" "example" {
 - `encapsulation_dot1q_vlan_id` (Number)
 - `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
+- `hold_queue` (Attributes List) Set hold queue depth (see [below for nested schema](#nestedatt--hold_queue))
 - `id` (String) The path of the retrieved object.
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -191,6 +193,15 @@ Read-Only:
 - `address` (String) IP destination address
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
+
+
+<a id="nestedatt--hold_queue"></a>
+### Nested Schema for `hold_queue`
+
+Read-Only:
+
+- `direction` (String)
+- `queue_length` (Number)
 
 
 <a id="nestedatt--ip_flow_monitors"></a>
