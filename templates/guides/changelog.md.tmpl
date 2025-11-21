@@ -25,6 +25,8 @@ description: |-
 - Add `register_source_interface_loopback` attributes to `iosxe_pim` resource and data source
 - Add `iosxe_bgp_address_family_ipv4_mvpn` resource and data source
 - Add `iosxe_bgp_ipv4_mvpn_neighbor` resource and data source
+- Add `vlan_based_multicast_advertise` attribute to `iosxe_evpn_instance` resource and data source
+- Add `multicast_advertise` attribute to `iosxe_evpn` resource and data source
 
 ## 0.10.2
 
