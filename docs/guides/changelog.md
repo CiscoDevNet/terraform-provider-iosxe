@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Fix `iosxe_yang` resource payload ordering with NETCONF, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/372)
+
 ## 0.10.2
 
 - Fix issue with incorrect reading of lists via NETCONF
