@@ -14,6 +14,9 @@ description: |-
 - Add `ip_default_gateway` attribute to `iosxe_system` resource and data source for default gateway configuration on non-routing devices
 - Add `device_classifier` attribute to `iosxe_system` resource and data source for endpoint device classification
 - Add `table_maps` attribute to `iosxe_system` resource and data source for QoS table map configuration with DSCP/CoS value translation
+- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- Add `route_map` attribute to `iosxe_bgp_l2vpn_evpn_neighbor` resource and data source
+- Add `import_path_selection_all` and `ipv4_unicast_aggregate_addresses.summary_only` attributes to `iosxe_bgp_address_family_ipv4_vrf` resource and data source
 
 ## 0.10.2
 
@@ -58,9 +61,6 @@ description: |-
 - Add `router_id_ip`, `bgp_graceful_restart`, and `bgp_update_delay` to `iosxe_bgp` resource and data source
 - Add `multi_area_ids` attribute to `iosxe_interface_ospf` resource and data source
 - Add `log_adjacency_changes`, `log_adjacency_changes_detail`, `nsf_cisco`, `nsf_cisco_enforce_global`, `nsf_ietf`, `nsf_ietf_restart_interval`, `max_metric_router_lsa_*`, `fast_reroute_per_prefix_enable_prefix_priority`, `redistribute_static_subnets` and `redistribute_connected_subnets` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
-- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
-- Add `route_map` attribute with required subattributes to `iosxe_bgp_l2vpn_evpn_neighbor` resource and data source
-- Add `import_path_selection_all` and `ipv4_unicast_aggregate_addresses.summary_only` attributes to `iosxe_bgp_address_family_ipv4_vrf` resoutces and data sources
 
 ## 0.9.3
 

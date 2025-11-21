@@ -111,7 +111,7 @@ resource "iosxe_yang" "PreReq2" {
 }
 
 resource "iosxe_yang" "PreReq3" {
-	path = "Cisco-IOS-XE-native:native/route-map=RM1"
+	path = "Cisco-IOS-XE-native:native/route-map=[name=RM1]"
 	attributes = {
 		"name" = "RM1"
 	}
