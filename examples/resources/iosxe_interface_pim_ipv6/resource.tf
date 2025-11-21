@@ -1,4 +1,4 @@
-resource "iosxe_interface_ipv6_pim" "example" {
+resource "iosxe_interface_pim_ipv6" "example" {
   type        = "Loopback"
   name        = "100"
   pim         = true

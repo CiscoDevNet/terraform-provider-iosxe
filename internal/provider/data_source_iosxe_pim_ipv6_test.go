@@ -30,18 +30,21 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeInterfaceIPv6PIM(t *testing.T) {
+func TestAccDataSourceIosxePIMIPv6(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ipv6_pim.test", "pim", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ipv6_pim.test", "bfd", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ipv6_pim.test", "bsr_border", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ipv6_pim.test", "dr_priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim_ipv6.test", "rp_address", "2001:db8::100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim_ipv6.test", "rp_address_access_list", "ipv6_acl_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim_ipv6.test", "rp_address_bidir", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim_ipv6.test", "vrfs.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim_ipv6.test", "vrfs.0.rp_address", "2001:db8::100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim_ipv6.test", "vrfs.0.rp_address_access_list", "ipv6_acl_2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim_ipv6.test", "vrfs.0.rp_address_bidir", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeInterfaceIPv6PIMPrerequisitesConfig + testAccDataSourceIosxeInterfaceIPv6PIMConfig(),
+				Config: testAccDataSourceIosxePIMIPv6PrerequisitesConfig + testAccDataSourceIosxePIMIPv6Config(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -51,12 +54,13 @@ func TestAccDataSourceIosxeInterfaceIPv6PIM(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccDataSourceIosxeInterfaceIPv6PIMPrerequisitesConfig = `
+const testAccDataSourceIosxePIMIPv6PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	delete = false
 	attributes = {
-		"name" = "100"
-		"ipv6/enable" = ""
+		"name" = "VRF1"
+		"address-family/ipv6" = ""
 	}
 }
 
@@ -66,22 +70,24 @@ resource "iosxe_yang" "PreReq0" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeInterfaceIPv6PIMConfig() string {
-	config := `resource "iosxe_interface_ipv6_pim" "test" {` + "\n"
-	config += `	type = "Loopback"` + "\n"
-	config += `	name = "100"` + "\n"
-	config += `	pim = true` + "\n"
-	config += `	bfd = false` + "\n"
-	config += `	bsr_border = false` + "\n"
-	config += `	dr_priority = 10` + "\n"
+func testAccDataSourceIosxePIMIPv6Config() string {
+	config := `resource "iosxe_pim_ipv6" "test" {` + "\n"
+	config += `	delete_mode = "attributes"` + "\n"
+	config += `	rp_address = "2001:db8::100"` + "\n"
+	config += `	rp_address_access_list = "ipv6_acl_1"` + "\n"
+	config += `	rp_address_bidir = false` + "\n"
+	config += `	vrfs = [{` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		rp_address = "2001:db8::100"` + "\n"
+	config += `		rp_address_access_list = "ipv6_acl_2"` + "\n"
+	config += `		rp_address_bidir = false` + "\n"
+	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_interface_ipv6_pim" "test" {
-			type = "Loopback"
-			name = "100"
-			depends_on = [iosxe_interface_ipv6_pim.test]
+		data "iosxe_pim_ipv6" "test" {
+			depends_on = [iosxe_pim_ipv6.test]
 		}
 	`
 	return config

@@ -1,5 +1,5 @@
 ---
-name: IPv6 PIM
+name: PIM IPv6
 path: /Cisco-IOS-XE-native:native/ipv6/pim
 doc_category: Multicast
 attributes:

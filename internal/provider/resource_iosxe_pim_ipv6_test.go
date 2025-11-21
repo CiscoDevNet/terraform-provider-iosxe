@@ -32,31 +32,31 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeIPv6PIM(t *testing.T) {
+func TestAccIosxePIMIPv6(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_pim.test", "rp_address", "2001:db8::100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_pim.test", "rp_address_access_list", "ipv6_acl_1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_pim.test", "rp_address_bidir", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_pim.test", "vrfs.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_pim.test", "vrfs.0.rp_address", "2001:db8::100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_pim.test", "vrfs.0.rp_address_access_list", "ipv6_acl_2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ipv6_pim.test", "vrfs.0.rp_address_bidir", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_pim_ipv6.test", "rp_address", "2001:db8::100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_pim_ipv6.test", "rp_address_access_list", "ipv6_acl_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_pim_ipv6.test", "rp_address_bidir", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_pim_ipv6.test", "vrfs.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_pim_ipv6.test", "vrfs.0.rp_address", "2001:db8::100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_pim_ipv6.test", "vrfs.0.rp_address_access_list", "ipv6_acl_2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_pim_ipv6.test", "vrfs.0.rp_address_bidir", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeIPv6PIMPrerequisitesConfig + testAccIosxeIPv6PIMConfig_minimum(),
+				Config: testAccIosxePIMIPv6PrerequisitesConfig + testAccIosxePIMIPv6Config_minimum(),
 			},
 			{
-				Config: testAccIosxeIPv6PIMPrerequisitesConfig + testAccIosxeIPv6PIMConfig_all(),
+				Config: testAccIosxePIMIPv6PrerequisitesConfig + testAccIosxePIMIPv6Config_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_ipv6_pim.test",
+				ResourceName:            "iosxe_pim_ipv6.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeIPv6PIMImportStateIdFunc("iosxe_ipv6_pim.test"),
+				ImportStateIdFunc:       iosxePIMIPv6ImportStateIdFunc("iosxe_pim_ipv6.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -68,7 +68,7 @@ func TestAccIosxeIPv6PIM(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeIPv6PIMImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxePIMIPv6ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 
 		return fmt.Sprintf(""), nil
@@ -78,7 +78,7 @@ func iosxeIPv6PIMImportStateIdFunc(resourceName string) resource.ImportStateIdFu
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccIosxeIPv6PIMPrerequisitesConfig = `
+const testAccIosxePIMIPv6PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
@@ -94,8 +94,8 @@ resource "iosxe_yang" "PreReq0" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeIPv6PIMConfig_minimum() string {
-	config := `resource "iosxe_ipv6_pim" "test" {` + "\n"
+func testAccIosxePIMIPv6Config_minimum() string {
+	config := `resource "iosxe_pim_ipv6" "test" {` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
@@ -105,8 +105,8 @@ func testAccIosxeIPv6PIMConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeIPv6PIMConfig_all() string {
-	config := `resource "iosxe_ipv6_pim" "test" {` + "\n"
+func testAccIosxePIMIPv6Config_all() string {
+	config := `resource "iosxe_pim_ipv6" "test" {` + "\n"
 	config += `	rp_address = "2001:db8::100"` + "\n"
 	config += `	rp_address_access_list = "ipv6_acl_1"` + "\n"
 	config += `	rp_address_bidir = false` + "\n"

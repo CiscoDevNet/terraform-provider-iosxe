@@ -39,7 +39,7 @@ import (
 // End of section. //template:end imports
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
-type InterfaceIPv6PIM struct {
+type InterfacePIMIPv6 struct {
 	Device     types.String `tfsdk:"device"`
 	Id         types.String `tfsdk:"id"`
 	Type       types.String `tfsdk:"type"`
@@ -50,7 +50,7 @@ type InterfaceIPv6PIM struct {
 	DrPriority types.Int64  `tfsdk:"dr_priority"`
 }
 
-type InterfaceIPv6PIMData struct {
+type InterfacePIMIPv6Data struct {
 	Device     types.String `tfsdk:"device"`
 	Id         types.String `tfsdk:"id"`
 	Type       types.String `tfsdk:"type"`
@@ -65,16 +65,16 @@ type InterfaceIPv6PIMData struct {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
-func (data InterfaceIPv6PIM) getPath() string {
+func (data InterfacePIMIPv6) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/ipv6", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-func (data InterfaceIPv6PIMData) getPath() string {
+func (data InterfacePIMIPv6Data) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/ipv6", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it
-func (data InterfaceIPv6PIM) getPathShort() string {
+func (data InterfacePIMIPv6) getPathShort() string {
 	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
@@ -85,13 +85,13 @@ func (data InterfaceIPv6PIM) getPathShort() string {
 }
 
 // getXPath returns the XPath for NETCONF operations
-func (data InterfaceIPv6PIM) getXPath() string {
+func (data InterfacePIMIPv6) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/ipv6"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
-func (data InterfaceIPv6PIMData) getXPath() string {
+func (data InterfacePIMIPv6Data) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/ipv6"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
@@ -101,7 +101,7 @@ func (data InterfaceIPv6PIMData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceIPv6PIM) toBody(ctx context.Context) string {
+func (data InterfacePIMIPv6) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Pim.IsNull() && !data.Pim.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:pim-conf.pim", data.Pim.ValueBool())
@@ -126,7 +126,7 @@ func (data InterfaceIPv6PIM) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceIPv6PIM) toBodyXML(ctx context.Context) string {
+func (data InterfacePIMIPv6) toBodyXML(ctx context.Context) string {
 	body := netconf.Body{}
 	if !data.Pim.IsNull() && !data.Pim.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-conf/pim", data.Pim.ValueBool())
@@ -159,7 +159,7 @@ func (data InterfaceIPv6PIM) toBodyXML(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
-func (data *InterfaceIPv6PIM) updateFromBody(ctx context.Context, res gjson.Result) {
+func (data *InterfacePIMIPv6) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -200,7 +200,7 @@ func (data *InterfaceIPv6PIM) updateFromBody(ctx context.Context, res gjson.Resu
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
-func (data *InterfaceIPv6PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *InterfacePIMIPv6) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:pim-conf/pim"); !data.Pim.IsNull() {
 		if value.Exists() {
 			data.Pim = types.BoolValue(value.Bool())
@@ -237,7 +237,7 @@ func (data *InterfaceIPv6PIM) updateFromBodyXML(ctx context.Context, res xmldot.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
-func (data *InterfaceIPv6PIM) fromBody(ctx context.Context, res gjson.Result) {
+func (data *InterfacePIMIPv6) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -266,7 +266,7 @@ func (data *InterfaceIPv6PIM) fromBody(ctx context.Context, res gjson.Result) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
-func (data *InterfaceIPv6PIMData) fromBody(ctx context.Context, res gjson.Result) {
+func (data *InterfacePIMIPv6Data) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -295,7 +295,7 @@ func (data *InterfaceIPv6PIMData) fromBody(ctx context.Context, res gjson.Result
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
-func (data *InterfaceIPv6PIM) fromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *InterfacePIMIPv6) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:pim-conf/pim"); value.Exists() {
 		data.Pim = types.BoolValue(value.Bool())
 	} else {
@@ -320,7 +320,7 @@ func (data *InterfaceIPv6PIM) fromBodyXML(ctx context.Context, res xmldot.Result
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
-func (data *InterfaceIPv6PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *InterfacePIMIPv6Data) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:pim-conf/pim"); value.Exists() {
 		data.Pim = types.BoolValue(value.Bool())
 	} else {
@@ -345,7 +345,7 @@ func (data *InterfaceIPv6PIMData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
-func (data *InterfaceIPv6PIM) getDeletedItems(ctx context.Context, state InterfaceIPv6PIM) []string {
+func (data *InterfacePIMIPv6) getDeletedItems(ctx context.Context, state InterfacePIMIPv6) []string {
 	deletedItems := make([]string, 0)
 	if !state.DrPriority.IsNull() && data.DrPriority.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:pim-container/dr-priority", state.getPath()))
@@ -367,7 +367,7 @@ func (data *InterfaceIPv6PIM) getDeletedItems(ctx context.Context, state Interfa
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
-func (data *InterfaceIPv6PIM) addDeletedItemsXML(ctx context.Context, state InterfaceIPv6PIM, body string) string {
+func (data *InterfacePIMIPv6) addDeletedItemsXML(ctx context.Context, state InterfacePIMIPv6, body string) string {
 	b := netconf.NewBody(body)
 	if !state.DrPriority.IsNull() && data.DrPriority.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/dr-priority")
@@ -390,7 +390,7 @@ func (data *InterfaceIPv6PIM) addDeletedItemsXML(ctx context.Context, state Inte
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
-func (data *InterfaceIPv6PIM) getEmptyLeafsDelete(ctx context.Context) []string {
+func (data *InterfacePIMIPv6) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.BsrBorder.IsNull() && !data.BsrBorder.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:pim-container/bsr/border", data.getPath()))
@@ -406,7 +406,7 @@ func (data *InterfaceIPv6PIM) getEmptyLeafsDelete(ctx context.Context) []string 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
-func (data *InterfaceIPv6PIM) getDeletePaths(ctx context.Context) []string {
+func (data *InterfacePIMIPv6) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.DrPriority.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:pim-container/dr-priority", data.getPath()))
@@ -428,7 +428,7 @@ func (data *InterfaceIPv6PIM) getDeletePaths(ctx context.Context) []string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
-func (data *InterfaceIPv6PIM) addDeletePathsXML(ctx context.Context, body string) string {
+func (data *InterfacePIMIPv6) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.DrPriority.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-container/dr-priority")

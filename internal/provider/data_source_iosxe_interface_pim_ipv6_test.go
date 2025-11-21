@@ -30,21 +30,18 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeIPv6PIM(t *testing.T) {
+func TestAccDataSourceIosxeInterfacePIMIPv6(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_pim.test", "rp_address", "2001:db8::100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_pim.test", "rp_address_access_list", "ipv6_acl_1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_pim.test", "rp_address_bidir", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_pim.test", "vrfs.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_pim.test", "vrfs.0.rp_address", "2001:db8::100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_pim.test", "vrfs.0.rp_address_access_list", "ipv6_acl_2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_pim.test", "vrfs.0.rp_address_bidir", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_pim_ipv6.test", "pim", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_pim_ipv6.test", "bfd", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_pim_ipv6.test", "bsr_border", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_pim_ipv6.test", "dr_priority", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeIPv6PIMPrerequisitesConfig + testAccDataSourceIosxeIPv6PIMConfig(),
+				Config: testAccDataSourceIosxeInterfacePIMIPv6PrerequisitesConfig + testAccDataSourceIosxeInterfacePIMIPv6Config(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -54,13 +51,12 @@ func TestAccDataSourceIosxeIPv6PIM(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccDataSourceIosxeIPv6PIMPrerequisitesConfig = `
+const testAccDataSourceIosxeInterfacePIMIPv6PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
-	delete = false
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
-		"name" = "VRF1"
-		"address-family/ipv6" = ""
+		"name" = "100"
+		"ipv6/enable" = ""
 	}
 }
 
@@ -70,24 +66,22 @@ resource "iosxe_yang" "PreReq0" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeIPv6PIMConfig() string {
-	config := `resource "iosxe_ipv6_pim" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
-	config += `	rp_address = "2001:db8::100"` + "\n"
-	config += `	rp_address_access_list = "ipv6_acl_1"` + "\n"
-	config += `	rp_address_bidir = false` + "\n"
-	config += `	vrfs = [{` + "\n"
-	config += `		vrf = "VRF1"` + "\n"
-	config += `		rp_address = "2001:db8::100"` + "\n"
-	config += `		rp_address_access_list = "ipv6_acl_2"` + "\n"
-	config += `		rp_address_bidir = false` + "\n"
-	config += `	}]` + "\n"
+func testAccDataSourceIosxeInterfacePIMIPv6Config() string {
+	config := `resource "iosxe_interface_pim_ipv6" "test" {` + "\n"
+	config += `	type = "Loopback"` + "\n"
+	config += `	name = "100"` + "\n"
+	config += `	pim = true` + "\n"
+	config += `	bfd = false` + "\n"
+	config += `	bsr_border = false` + "\n"
+	config += `	dr_priority = 10` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_ipv6_pim" "test" {
-			depends_on = [iosxe_ipv6_pim.test]
+		data "iosxe_interface_pim_ipv6" "test" {
+			type = "Loopback"
+			name = "100"
+			depends_on = [iosxe_interface_pim_ipv6.test]
 		}
 	`
 	return config

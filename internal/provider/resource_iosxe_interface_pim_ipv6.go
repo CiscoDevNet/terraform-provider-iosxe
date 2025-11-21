@@ -23,9 +23,11 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -45,26 +47,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &IPv6PIMResource{}
-	_ resource.ResourceWithImportState = &IPv6PIMResource{}
+	_ resource.Resource                = &InterfacePIMIPv6Resource{}
+	_ resource.ResourceWithImportState = &InterfacePIMIPv6Resource{}
 )
 
-func NewIPv6PIMResource() resource.Resource {
-	return &IPv6PIMResource{}
+func NewInterfacePIMIPv6Resource() resource.Resource {
+	return &InterfacePIMIPv6Resource{}
 }
 
-type IPv6PIMResource struct {
+type InterfacePIMIPv6Resource struct {
 	data *IosxeProviderData
 }
 
-func (r *IPv6PIMResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_ipv6_pim"
+func (r *InterfacePIMIPv6Resource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_interface_pim_ipv6"
 }
 
-func (r *IPv6PIMResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *InterfacePIMIPv6Resource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the IPv6 PIM configuration.",
+		MarkdownDescription: "This resource can manage the Interface PIM IPv6 configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -78,54 +80,50 @@ func (r *IPv6PIMResource) Schema(ctx context.Context, req resource.SchemaRequest
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
+			"type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel").String,
+				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
+					stringvalidator.OneOf("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel"),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"rp_address": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(0|[1-9][0-9]*)(/(0|[1-9][0-9]*))*(\.[0-9]*)?`), ""),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"pim": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("PIM interface commands").String,
 				Optional:            true,
 			},
-			"rp_address_access_list": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"bfd": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure BFD").String,
 				Optional:            true,
 			},
-			"rp_address_bidir": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify keyword bidir to configure a bidir RP").String,
+			"bsr_border": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Border of PIM BSR domain").String,
 				Optional:            true,
 			},
-			"vrfs": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Select VPN Routing/Forwarding instance").String,
+			"dr_priority": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("PIM Hello DR priority").AddIntegerRangeDescription(0, 4294967295).String,
 				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"vrf": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-						},
-						"rp_address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"rp_address_access_list": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"rp_address_bidir": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify keyword bidir to configure a bidir RP").String,
-							Optional:            true,
-						},
-					},
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
 				},
 			},
 		},
 	}
 }
 
-func (r *IPv6PIMResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *InterfacePIMIPv6Resource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -137,8 +135,8 @@ func (r *IPv6PIMResource) Configure(_ context.Context, req resource.ConfigureReq
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *IPv6PIMResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan IPv6PIM
+func (r *InterfacePIMIPv6Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan InterfacePIMIPv6
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -221,8 +219,8 @@ func (r *IPv6PIMResource) Create(ctx context.Context, req resource.CreateRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *IPv6PIMResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state IPv6PIM
+func (r *InterfacePIMIPv6Resource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state InterfacePIMIPv6
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -248,7 +246,7 @@ func (r *IPv6PIMResource) Read(ctx context.Context, req resource.ReadRequest, re
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = IPv6PIM{Device: state.Device, Id: state.Id}
+				state = InterfacePIMIPv6{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -304,8 +302,8 @@ func (r *IPv6PIMResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *IPv6PIMResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state IPv6PIM
+func (r *InterfacePIMIPv6Resource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state InterfacePIMIPv6
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -405,8 +403,8 @@ func (r *IPv6PIMResource) Update(ctx context.Context, req resource.UpdateRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *IPv6PIMResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state IPv6PIM
+func (r *InterfacePIMIPv6Resource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state InterfacePIMIPv6
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -424,12 +422,7 @@ func (r *IPv6PIMResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	if device.Managed {
-		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
+		deleteMode := "attributes"
 
 		if deleteMode == "all" {
 			if device.Protocol == "restconf" {
@@ -504,25 +497,32 @@ func (r *IPv6PIMResource) Delete(ctx context.Context, req resource.DeleteRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *IPv6PIMResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *InterfacePIMIPv6Resource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 0 && len(idParts) != 1 {
-		expectedIdentifier := "Expected import identifier with format: ''"
-		expectedIdentifier += " or '<device>'"
+	if len(idParts) != 2 && len(idParts) != 3 {
+		expectedIdentifier := "Expected import identifier with format: '<type>,<name>'"
+		expectedIdentifier += " or '<type>,<name>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	if len(idParts) == 1 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("type"), idParts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[1])...)
+	if len(idParts) == 3 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state IPv6PIM
+	var state InterfacePIMIPv6
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

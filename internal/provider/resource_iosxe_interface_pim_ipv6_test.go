@@ -32,28 +32,28 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeInterfaceIPv6PIM(t *testing.T) {
+func TestAccIosxeInterfacePIMIPv6(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ipv6_pim.test", "pim", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ipv6_pim.test", "bfd", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ipv6_pim.test", "bsr_border", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ipv6_pim.test", "dr_priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_pim_ipv6.test", "pim", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_pim_ipv6.test", "bfd", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_pim_ipv6.test", "bsr_border", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_pim_ipv6.test", "dr_priority", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeInterfaceIPv6PIMPrerequisitesConfig + testAccIosxeInterfaceIPv6PIMConfig_minimum(),
+				Config: testAccIosxeInterfacePIMIPv6PrerequisitesConfig + testAccIosxeInterfacePIMIPv6Config_minimum(),
 			},
 			{
-				Config: testAccIosxeInterfaceIPv6PIMPrerequisitesConfig + testAccIosxeInterfaceIPv6PIMConfig_all(),
+				Config: testAccIosxeInterfacePIMIPv6PrerequisitesConfig + testAccIosxeInterfacePIMIPv6Config_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_interface_ipv6_pim.test",
+				ResourceName:            "iosxe_interface_pim_ipv6.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeInterfaceIPv6PIMImportStateIdFunc("iosxe_interface_ipv6_pim.test"),
+				ImportStateIdFunc:       iosxeInterfacePIMIPv6ImportStateIdFunc("iosxe_interface_pim_ipv6.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -65,7 +65,7 @@ func TestAccIosxeInterfaceIPv6PIM(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeInterfaceIPv6PIMImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeInterfacePIMIPv6ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
 		Type := primary.Attributes["type"]
@@ -78,7 +78,7 @@ func iosxeInterfaceIPv6PIMImportStateIdFunc(resourceName string) resource.Import
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccIosxeInterfaceIPv6PIMPrerequisitesConfig = `
+const testAccIosxeInterfacePIMIPv6PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
@@ -93,8 +93,8 @@ resource "iosxe_yang" "PreReq0" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeInterfaceIPv6PIMConfig_minimum() string {
-	config := `resource "iosxe_interface_ipv6_pim" "test" {` + "\n"
+func testAccIosxeInterfacePIMIPv6Config_minimum() string {
+	config := `resource "iosxe_interface_pim_ipv6" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
@@ -106,8 +106,8 @@ func testAccIosxeInterfaceIPv6PIMConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeInterfaceIPv6PIMConfig_all() string {
-	config := `resource "iosxe_interface_ipv6_pim" "test" {` + "\n"
+func testAccIosxeInterfacePIMIPv6Config_all() string {
+	config := `resource "iosxe_interface_pim_ipv6" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	pim = true` + "\n"

@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &InterfaceIPv6PIMDataSource{}
-	_ datasource.DataSourceWithConfigure = &InterfaceIPv6PIMDataSource{}
+	_ datasource.DataSource              = &PIMIPv6DataSource{}
+	_ datasource.DataSourceWithConfigure = &PIMIPv6DataSource{}
 )
 
-func NewInterfaceIPv6PIMDataSource() datasource.DataSource {
-	return &InterfaceIPv6PIMDataSource{}
+func NewPIMIPv6DataSource() datasource.DataSource {
+	return &PIMIPv6DataSource{}
 }
 
-type InterfaceIPv6PIMDataSource struct {
+type PIMIPv6DataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *InterfaceIPv6PIMDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_ipv6_pim"
+func (d *PIMIPv6DataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_pim_ipv6"
 }
 
-func (d *InterfaceIPv6PIMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *PIMIPv6DataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Interface IPv6 PIM configuration.",
+		MarkdownDescription: "This data source can read the PIM IPv6 configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -68,35 +68,47 @@ func (d *InterfaceIPv6PIMDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: "Interface type",
-				Required:            true,
-			},
-			"name": schema.StringAttribute{
+			"rp_address": schema.StringAttribute{
 				MarkdownDescription: "",
-				Required:            true,
-			},
-			"pim": schema.BoolAttribute{
-				MarkdownDescription: "PIM interface commands",
 				Computed:            true,
 			},
-			"bfd": schema.BoolAttribute{
-				MarkdownDescription: "Configure BFD",
+			"rp_address_access_list": schema.StringAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"bsr_border": schema.BoolAttribute{
-				MarkdownDescription: "Border of PIM BSR domain",
+			"rp_address_bidir": schema.BoolAttribute{
+				MarkdownDescription: "Specify keyword bidir to configure a bidir RP",
 				Computed:            true,
 			},
-			"dr_priority": schema.Int64Attribute{
-				MarkdownDescription: "PIM Hello DR priority",
+			"vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: "Select VPN Routing/Forwarding instance",
 				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"rp_address": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"rp_address_access_list": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"rp_address_bidir": schema.BoolAttribute{
+							MarkdownDescription: "Specify keyword bidir to configure a bidir RP",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}
 }
 
-func (d *InterfaceIPv6PIMDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *PIMIPv6DataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -108,8 +120,8 @@ func (d *InterfaceIPv6PIMDataSource) Configure(_ context.Context, req datasource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *InterfaceIPv6PIMDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config InterfaceIPv6PIMData
+func (d *PIMIPv6DataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config PIMIPv6Data
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -129,7 +141,7 @@ func (d *InterfaceIPv6PIMDataSource) Read(ctx context.Context, req datasource.Re
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = InterfaceIPv6PIMData{Device: config.Device}
+			config = PIMIPv6Data{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

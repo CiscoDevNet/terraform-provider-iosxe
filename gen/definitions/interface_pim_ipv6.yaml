@@ -1,5 +1,5 @@
 ---
-name: Interface IPv6 PIM
+name: Interface PIM IPv6
 path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/ipv6
 augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/ipv6
 no_delete: true
