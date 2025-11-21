@@ -13,6 +13,7 @@
 - Add `evpn_instance_profile` and `evpn_instance_profile_protected` attributes to `iosxe_vlan_configuration` resource and data source
 - Add `ttl` attribute to `iosxe_flow_exporter` resource and data source
 - Add `match_routing_vrf_input`, `match_vxlan_vnid`, `match_vxlan_vtep_input`, and `match_vxlan_vtep_output` attributes to `iosxe_flow_record` resource and data source
+- Add `register_source_interface_loopback` attributes to `iosxe_pim` resource and data source
 
 ## 0.10.2
 
