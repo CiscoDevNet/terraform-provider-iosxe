@@ -1062,5 +1062,116 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 
 	// Return the final result
 	finalPath := strings.Join(pathSoFar, ".")
+
+	// Check if the final path points to multiple elements (array)
+	// If so, use the #. syntax to return an array result that ForEach can iterate over
+	countPath := finalPath + ".#"
+	count := xmldot.Get(xml, countPath).Int()
+	if count > 1 {
+		// Multiple elements exist - use #. syntax to get array result
+		// Split the path to insert #. before the last segment
+		if len(pathSoFar) >= 2 {
+			// Build parent path and use #. syntax: parent.#.child
+			parentPath := strings.Join(pathSoFar[:len(pathSoFar)-1], ".")
+			childName := pathSoFar[len(pathSoFar)-1]
+			arrayPath := parentPath + ".#." + childName
+			return xmldot.Get(xml, arrayPath)
+		}
+	}
+
 	return xmldot.Get(xml, finalPath)
+}
+
+// IsListPath checks if an XPath represents a list item (ends with a predicate).
+// List items have predicates like [name='value'] or [name=value] at the end of their XPath,
+// while containers/singletons don't end with predicates.
+//
+// This is useful for determining if an empty GetConfig response should be
+// interpreted as "resource not found" (for list items) vs other semantics.
+//
+// Parameters:
+//   - xPath: The XPath to check
+//
+// Returns:
+//   - true if the path ends with a predicate (is a list item)
+//   - false if the path does not end with a predicate (is a container/singleton)
+//
+// Examples:
+//   - "/native/interface/Vlan[name=10]" → true (ends with predicate)
+//   - "/native/interface/GigabitEthernet[name='1/0/1']" → true (ends with predicate)
+//   - "/native/router/bgp[id=65000]/neighbor" → false (has predicate but doesn't end with one)
+//   - "/native/clock" → false (container)
+//   - "/native/hostname" → false (singleton)
+func IsListPath(xPath string) bool {
+	// Trim whitespace
+	xPath = strings.TrimSpace(xPath)
+
+	// Check if the path ends with a closing bracket (predicate)
+	// A list path will end with something like [name='value']
+	return strings.HasSuffix(xPath, "]")
+}
+
+// IsGetConfigResponseEmpty checks if a GetConfig response has an empty <data> element.
+// Returns true if the response contains <data></data> with no child elements,
+// indicating that the requested configuration does not exist on the device.
+//
+// This is useful for determining if a resource exists before attempting to parse
+// its attributes, particularly during Read operations or import.
+//
+// IMPORTANT: This should typically be combined with IsListPath() to only treat
+// empty responses as "not found" for list items:
+//
+//	if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+//	    // List item does not exist
+//	    resp.State.RemoveResource(ctx)
+//	    return
+//	}
+//
+// Parameters:
+//   - res: The NETCONF response from GetConfig operation
+//
+// Returns:
+//   - true if the data element is empty (no child elements)
+//   - false if the data element contains configuration
+//
+// Example usage:
+//
+//	res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+//	if err != nil {
+//	    return err
+//	}
+//	if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+//	    // Resource does not exist (list item)
+//	    resp.State.RemoveResource(ctx)
+//	    return
+//	}
+//	// Parse the configuration
+//	state.fromBodyXML(ctx, res.Res)
+func IsGetConfigResponseEmpty(res *netconf.Res) bool {
+	if res == nil {
+		return true
+	}
+
+	// Get the data element from the response
+	dataResult := res.Res.Get("data")
+
+	// If data element doesn't exist, consider it empty
+	if !dataResult.Exists() {
+		return true
+	}
+
+	// Check if data element has any children using Map()
+	// An empty <data></data> element will have an empty map
+	children := dataResult.Map()
+
+	// If the map is empty (no child elements), the response is empty
+	// The "%" key represents direct text content, which we also want to ignore
+	// since whitespace-only content is not meaningful configuration
+	for key := range children {
+		if key != "%" {
+			return false
+		}
+	}
+
+	return true
 }

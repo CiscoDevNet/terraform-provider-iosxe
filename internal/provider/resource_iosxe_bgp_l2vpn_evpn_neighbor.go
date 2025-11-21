@@ -124,6 +124,25 @@ func (r *BGPL2VPNEVPNNeighborResource) Schema(ctx context.Context, req resource.
 					stringvalidator.OneOf("inbound"),
 				},
 			},
+			"route_maps": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Apply route map to neighbor").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"in_out": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("in", "out").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("in", "out"),
+							},
+						},
+						"route_map_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -277,6 +296,12 @@ func (r *BGPL2VPNEVPNNeighborResource) Read(ctx context.Context, req resource.Re
 			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
+				return
+			}
+
+			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
+				resp.State.RemoveResource(ctx)
 				return
 			}
 

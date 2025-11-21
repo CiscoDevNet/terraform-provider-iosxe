@@ -73,4 +73,5 @@ resource "iosxe_interface_ethernet" "example" {
   cdp_tlv_location                 = false
   cdp_tlv_server_location          = false
   ip_nat_inside                    = true
+  ip_igmp_version                  = 3
 }

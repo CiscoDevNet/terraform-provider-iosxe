@@ -429,6 +429,13 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 					},
 				},
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3),
+				},
+			},
 		},
 	}
 }
@@ -582,6 +589,12 @@ func (r *InterfacePortChannelResource) Read(ctx context.Context, req resource.Re
 			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
+				return
+			}
+
+			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
+				resp.State.RemoveResource(ctx)
 				return
 			}
 

@@ -43,6 +43,8 @@ func TestAccIosxeBGPL2VPNEVPNNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "send_community", "both"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "route_reflector_client", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "soft_reconfiguration", "inbound"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "route_maps.0.in_out", "in"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "route_maps.0.route_map_name", "RM1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -108,6 +110,13 @@ resource "iosxe_yang" "PreReq2" {
 	depends_on = [iosxe_yang.PreReq0, ]
 }
 
+resource "iosxe_yang" "PreReq3" {
+	path = "Cisco-IOS-XE-native:native/route-map=[name=RM1]"
+	attributes = {
+		"name" = "RM1"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -118,7 +127,7 @@ func testAccIosxeBGPL2VPNEVPNNeighborConfig_minimum() string {
 	config := `resource "iosxe_bgp_l2vpn_evpn_neighbor" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	ip = "3.3.3.3"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -135,7 +144,11 @@ func testAccIosxeBGPL2VPNEVPNNeighborConfig_all() string {
 	config += `	send_community = "both"` + "\n"
 	config += `	route_reflector_client = false` + "\n"
 	config += `	soft_reconfiguration = "inbound"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	route_maps = [{` + "\n"
+	config += `		in_out = "in"` + "\n"
+	config += `		route_map_name = "RM1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

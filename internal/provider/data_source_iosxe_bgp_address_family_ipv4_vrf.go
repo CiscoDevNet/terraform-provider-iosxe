@@ -114,6 +114,10 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 										MarkdownDescription: "",
 										Computed:            true,
 									},
+									"summary_only": schema.BoolAttribute{
+										MarkdownDescription: "Filter more specific routes from updates",
+										Computed:            true,
+									},
 								},
 							},
 						},
@@ -215,6 +219,10 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 						},
 						"ipv4_unicast_maximum_paths_ibgp": schema.Int64Attribute{
 							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"ipv4_unicast_import_path_selection_all": schema.BoolAttribute{
+							MarkdownDescription: "Import all available paths",
 							Computed:            true,
 						},
 					},

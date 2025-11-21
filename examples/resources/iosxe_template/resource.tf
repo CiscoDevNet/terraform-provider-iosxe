@@ -4,6 +4,10 @@ resource "iosxe_template" "example" {
   dot1x_max_reauth_req                           = 3
   dot1x_max_req                                  = 3
   dot1x_timeout_tx_period                        = 2
+  dot1x_timeout_quiet_period                     = 4
+  dot1x_timeout_supp_timeout                     = 10
+  dot1x_timeout_ratelimit_period                 = 10
+  dot1x_timeout_server_timeout                   = 30
   service_policy_type_control_subscriber         = "dot1x_policy"
   service_policy_input                           = "SP1"
   service_policy_output                          = "SP2"

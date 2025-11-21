@@ -44,7 +44,6 @@ import (
 type EVPNEthernetSegment struct {
 	Device                 types.String                         `tfsdk:"device"`
 	Id                     types.String                         `tfsdk:"id"`
-	DeleteMode             types.String                         `tfsdk:"delete_mode"`
 	EsValue                types.Int64                          `tfsdk:"es_value"`
 	DfElectionWaitTime     types.Int64                          `tfsdk:"df_election_wait_time"`
 	RedundancyAllActive    types.Bool                           `tfsdk:"redundancy_all_active"`

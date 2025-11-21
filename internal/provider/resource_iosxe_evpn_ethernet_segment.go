@@ -82,13 +82,6 @@ func (r *EVPNEthernetSegmentResource) Schema(ctx context.Context, req resource.S
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
 			"es_value": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Ethernet segment local discriminator value").AddIntegerRangeDescription(1, 65535).String,
 				Required:            true,
@@ -296,6 +289,12 @@ func (r *EVPNEthernetSegmentResource) Read(ctx context.Context, req resource.Rea
 				return
 			}
 
+			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
+				resp.State.RemoveResource(ctx)
+				return
+			}
+
 			// After `terraform import` we switch to a full read.
 			if imp {
 				state.fromBodyXML(ctx, res.Res)
@@ -438,11 +437,6 @@ func (r *EVPNEthernetSegmentResource) Delete(ctx context.Context, req resource.D
 
 	if device.Managed {
 		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
 
 		if deleteMode == "all" {
 			if device.Protocol == "restconf" {

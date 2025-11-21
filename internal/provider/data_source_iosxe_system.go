@@ -798,6 +798,46 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"ip_default_gateway": schema.StringAttribute{
+				MarkdownDescription: "Specify default gateway (if not routing IP)",
+				Computed:            true,
+			},
+			"device_classifier": schema.BoolAttribute{
+				MarkdownDescription: "Enable/Disable classification of attached devices",
+				Computed:            true,
+			},
+			"table_maps": schema.ListNestedAttribute{
+				MarkdownDescription: "Configure Table Map",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"default": schema.StringAttribute{
+							MarkdownDescription: "the default behavior for setting value not found in the table map",
+							Computed:            true,
+						},
+						"mappings": schema.ListNestedAttribute{
+							MarkdownDescription: "map to-value from from-value",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"from": schema.Int64Attribute{
+										MarkdownDescription: "map from value",
+										Computed:            true,
+									},
+									"to": schema.Int64Attribute{
+										MarkdownDescription: "map to value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

@@ -70,7 +70,7 @@ attributes:
         example: VRF1
         id: true
       - yang_name: interface-name
-        example: Loopback100
+        example: Loopback200
   - yang_name: host/ipv4-host-list
     tf_name: ipv4_hosts
     type: List
@@ -305,10 +305,10 @@ test_prerequisites:
         value: ""
       - name: address-family/ipv6
         value: ""
-  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=200]
     attributes:
       - name: name
-        value: 100
+        value: 200
       - name: vrf/forwarding
         value: VRF1
     dependencies: [0]

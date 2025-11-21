@@ -288,6 +288,10 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				MarkdownDescription: "Rate Limit",
 				Computed:            true,
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: "IGMP version",
+				Computed:            true,
+			},
 		},
 	}
 }
