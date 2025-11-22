@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## Unreleased
+## 0.11.0
 
 - Fix `iosxe_yang` resource payload ordering with NETCONF, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/372)
 - Add `ip_igmp_version` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, `iosxe_interface_tunnel`, and `iosxe_interface_vlan` resources and data sources
