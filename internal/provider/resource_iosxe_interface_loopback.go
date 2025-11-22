@@ -234,6 +234,10 @@ func (r *InterfaceLoopbackResource) Schema(ctx context.Context, req resource.Sch
 					int64validator.Between(1, 3),
 				},
 			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 		},
 	}
 }

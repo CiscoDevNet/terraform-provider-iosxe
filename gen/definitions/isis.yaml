@@ -1,7 +1,7 @@
 ---
 name: ISIS
 path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=%v]
-doc_category: Routing
+doc_category: IS-IS
 attributes:
   - yang_name: area-tag
     tf_name: area_tag
@@ -44,9 +44,3 @@ attributes:
     tf_name: log_adjacency_changes_all
     description: Log all adjacency changes including non-IIH events
     example: true
-test_prerequisites:
-  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=TEST]
-    attributes:
-      - name: area-tag
-        value: TEST
-test_tags: [ALL]

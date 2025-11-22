@@ -180,6 +180,10 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "IGMP version",
 				Computed:            true,
 			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -21,7 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -32,9 +31,6 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeISIS(t *testing.T) {
-	if os.Getenv("ALL") == "" {
-		t.Skip("skipping test, set environment variable ALL")
-	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_isis.test", "nets.0.tag", "49.0001.1920.0000.2001.00"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_isis.test", "metric_style_wide", "true"))
@@ -45,7 +41,7 @@ func TestAccDataSourceIosxeISIS(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeISISPrerequisitesConfig + testAccDataSourceIosxeISISConfig(),
+				Config: testAccDataSourceIosxeISISConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -55,16 +51,6 @@ func TestAccDataSourceIosxeISIS(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccDataSourceIosxeISISPrerequisitesConfig = `
-resource "iosxe_yang" "PreReq0" {
-	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=TEST]"
-	attributes = {
-		"area-tag" = "TEST"
-	}
-}
-
-`
-
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -79,7 +65,6 @@ func testAccDataSourceIosxeISISConfig() string {
 	config += `	metric_style_wide = true` + "\n"
 	config += `	log_adjacency_changes = true` + "\n"
 	config += `	log_adjacency_changes_all = true` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

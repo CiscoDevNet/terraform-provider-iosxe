@@ -21,7 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -32,9 +31,6 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeInterfaceISIS(t *testing.T) {
-	if os.Getenv("ALL") == "" {
-		t.Skip("skipping test, set environment variable ALL")
-	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_isis.test", "ipv4_metric_levels.0.level", "level-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_isis.test", "ipv4_metric_levels.0.value", "100"))
@@ -66,15 +62,13 @@ resource "iosxe_yang" "PreReq1" {
 	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
-		"ip/address/primary/address" = "192.0.2.100"
-		"ip/address/primary/mask" = "255.255.255.255"
 	}
 }
 
 resource "iosxe_yang" "PreReq2" {
 	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]/ip/router/Cisco-IOS-XE-isis:isis"
 	attributes = {
-		"Cisco-IOS-XE-isis:tag" = "TEST"
+		"tag" = "TEST"
 	}
 }
 

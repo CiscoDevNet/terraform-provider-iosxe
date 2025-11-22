@@ -354,6 +354,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					int64validator.Between(1, 3),
 				},
 			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 		},
 	}
 }

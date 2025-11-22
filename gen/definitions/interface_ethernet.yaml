@@ -549,6 +549,10 @@ attributes:
         example: 50
   - yang_name: ip/Cisco-IOS-XE-igmp:igmp/version
     example: 3
+  - yang_name: ip/router/Cisco-IOS-XE-isis:isis/tag
+    tf_name: ip_router_isis
+    example: TEST
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

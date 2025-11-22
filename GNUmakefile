@@ -37,7 +37,7 @@ test-1715-router:
 		IOSXE_PASSWORD=$(or $(IOSXE_1715_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1715=1 \
 		C8000V=1 \
-		$(if $(DEBUG),TF_LOG_PROVIDER_IOSXE=Trace) \
+		$(if $(DEBUG),TF_LOG=Trace) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-router.log); \
 	fi
 
@@ -60,7 +60,7 @@ test-1715-switch:
 		IOSXE_PASSWORD=$(or $(IOSXE_1715_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1715=1 \
 		C9000V=1 \
-		$(if $(DEBUG),TF_LOG_PROVIDER_IOSXE=Trace) \
+		$(if $(DEBUG),TF_LOG=Trace) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log); \
 	fi
 
@@ -83,7 +83,7 @@ test-1712-router:
 		IOSXE_PASSWORD=$(or $(IOSXE_1712_ROUTER_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1712=1 \
 		C8000V=1 \
-		$(if $(DEBUG),TF_LOG_PROVIDER_IOSXE=Trace) \
+		$(if $(DEBUG),TF_LOG=Trace) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-router.log); \
 	fi
 
@@ -106,7 +106,7 @@ test-1712-switch:
 		IOSXE_PASSWORD=$(or $(IOSXE_1712_SWITCH_PASSWORD),$(IOSXE_PASSWORD)) \
 		IOSXE1712=1 \
 		C9000V=1 \
-		$(if $(DEBUG),TF_LOG_PROVIDER_IOSXE=Trace) \
+		$(if $(DEBUG),TF_LOG=Trace) \
 		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log); \
 	fi
 

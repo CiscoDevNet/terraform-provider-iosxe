@@ -91,6 +91,7 @@ type InterfacePortChannelSubinterface struct {
 	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
 	IpIgmpVersion                types.Int64                                              `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                 types.String                                             `tfsdk:"ip_router_isis"`
 }
 
 type InterfacePortChannelSubinterfaceData struct {
@@ -142,6 +143,7 @@ type InterfacePortChannelSubinterfaceData struct {
 	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
 	IpIgmpVersion                types.Int64                                              `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                 types.String                                             `tfsdk:"ip_router_isis"`
 }
 type InterfacePortChannelSubinterfaceHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -367,6 +369,9 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 	}
 	if !data.IpIgmpVersion.IsNull() && !data.IpIgmpVersion.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-igmp:igmp.version", strconv.FormatInt(data.IpIgmpVersion.ValueInt64(), 10))
+	}
+	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.router.Cisco-IOS-XE-isis:isis.tag", data.IpRouterIsis.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -678,6 +683,9 @@ func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context) stri
 	}
 	if !data.IpIgmpVersion.IsNull() && !data.IpIgmpVersion.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version", strconv.FormatInt(data.IpIgmpVersion.ValueInt64(), 10))
+	}
+	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag", data.IpRouterIsis.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1119,6 +1127,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 	} else {
 		data.IpIgmpVersion = types.Int64Null()
 	}
+	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() && !data.IpRouterIsis.IsNull() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	} else {
+		data.IpRouterIsis = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1550,6 +1563,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	} else {
 		data.IpIgmpVersion = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() && !data.IpRouterIsis.IsNull() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	} else {
+		data.IpRouterIsis = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1787,6 +1805,9 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() {
 		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
 	}
 }
 
@@ -2026,6 +2047,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() {
 		data.IpIgmpVersion = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2259,6 +2283,9 @@ func (data *InterfacePortChannelSubinterface) fromBodyXML(ctx context.Context, r
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() {
 		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
 	}
 }
 
@@ -2494,6 +2521,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() {
 		data.IpIgmpVersion = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2502,6 +2532,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 
 func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Context, state InterfacePortChannelSubinterface) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", state.getPath()))
+	}
 	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", state.getPath()))
 	}
@@ -2722,6 +2755,9 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 
 func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Context, state InterfacePortChannelSubinterface, body string) string {
 	b := netconf.NewBody(body)
+	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
+	}
 	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")
 	}
@@ -3049,6 +3085,9 @@ func (data *InterfacePortChannelSubinterface) getEmptyLeafsDelete(ctx context.Co
 
 func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpRouterIsis.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", data.getPath()))
+	}
 	if !data.IpIgmpVersion.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", data.getPath()))
 	}
@@ -3197,6 +3236,9 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 
 func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.IpRouterIsis.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
+	}
 	if !data.IpIgmpVersion.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")
 	}

@@ -2,7 +2,7 @@
 name: Interface ISIS
 path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/isis
 augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/isis
-doc_category: Routing
+doc_category: IS-IS
 attributes:
   - yang_name: type
     tf_name: type
@@ -57,13 +57,7 @@ test_prerequisites:
     attributes:
       - name: name
         value: 100
-      - name: ip/address/primary/address
-        value: 192.0.2.100
-      - name: ip/address/primary/mask
-        value: 255.255.255.255
   - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]/ip/router/Cisco-IOS-XE-isis:isis
     attributes:
-      - name: Cisco-IOS-XE-isis:tag
+      - name: tag
         value: TEST
-test_tags: [ALL]
-

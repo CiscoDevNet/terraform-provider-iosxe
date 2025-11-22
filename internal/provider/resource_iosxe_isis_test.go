@@ -22,7 +22,6 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -34,9 +33,6 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeISIS(t *testing.T) {
-	if os.Getenv("ALL") == "" {
-		t.Skip("skipping test, set environment variable ALL")
-	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_isis.test", "area_tag", "TEST"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_isis.test", "nets.0.tag", "49.0001.1920.0000.2001.00"))
@@ -48,10 +44,10 @@ func TestAccIosxeISIS(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeISISPrerequisitesConfig + testAccIosxeISISConfig_minimum(),
+				Config: testAccIosxeISISConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeISISPrerequisitesConfig + testAccIosxeISISConfig_all(),
+				Config: testAccIosxeISISConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -82,16 +78,6 @@ func iosxeISISImportStateIdFunc(resourceName string) resource.ImportStateIdFunc 
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccIosxeISISPrerequisitesConfig = `
-resource "iosxe_yang" "PreReq0" {
-	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=TEST]"
-	attributes = {
-		"area-tag" = "TEST"
-	}
-}
-
-`
-
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
@@ -99,7 +85,6 @@ resource "iosxe_yang" "PreReq0" {
 func testAccIosxeISISConfig_minimum() string {
 	config := `resource "iosxe_isis" "test" {` + "\n"
 	config += `	area_tag = "TEST"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -117,7 +102,6 @@ func testAccIosxeISISConfig_all() string {
 	config += `	metric_style_wide = true` + "\n"
 	config += `	log_adjacency_changes = true` + "\n"
 	config += `	log_adjacency_changes_all = true` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

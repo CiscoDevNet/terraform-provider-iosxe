@@ -68,6 +68,7 @@ data "iosxe_interface_port_channel" "example" {
 - `ip_igmp_version` (Number) IGMP version
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
 - `ipv4_address_mask` (String) Ip subnet mask

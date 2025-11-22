@@ -30,6 +30,9 @@
 - Add `port` attribute to `iosxe_tacacs` resource and data source
 - BREAKING CHANGE: Add new `iosxe_tacacs_server` resource and data source
 - Add `enable_default_group_legacy`, `enable_default_enable_legacy`, `enable_default_line_legacy` and `enable_default_none_legacy` attributes to `iosxe_aaa_authentication` resource and data source
+- Add `iosxe_isis` resource and data source
+- Add `iosxe_interface_isis` resource and data source
+- Add `ip_router_isis` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_port_channel_subinterface`, `iosxe_interface_port_channel`, `iosxe_interface_tunnel` and `iosxe_interface_vlan` resources and data sources
 
 ## 0.10.2
 
