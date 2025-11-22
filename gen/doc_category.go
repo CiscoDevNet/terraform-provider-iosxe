@@ -29,7 +29,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var generalResources = []string{"save_config", "cli", "commit"}
+var generalResources = []string{"save_config", "cli", "commit", "yang"}
 
 const (
 	definitionsPath = "./gen/definitions/"
@@ -87,29 +87,21 @@ func main() {
 		}
 	}
 
-	// update iosxe_yang resource and data source
-	for _, path := range docPaths {
-		filename := path + "yang.md"
-		content, err := os.ReadFile(filename)
-		if err != nil {
-			log.Fatalf("Error opening documentation: %v", err)
-		}
-
-		s := string(content)
-		s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
-
-		os.WriteFile(filename, []byte(s), 0644)
-	}
-
 	// Update general resources with "General" subcategory
 	for _, resource := range generalResources {
-		filename := fmt.Sprintf("./docs/resources/%s.md", resource)
-		content, err := os.ReadFile(filename)
-		if err != nil {
-			log.Fatalf("Error opening documentation: %v", err)
+		for _, path := range docPaths {
+			filename := fmt.Sprintf("%s%s.md", path, resource)
+			content, err := os.ReadFile(filename)
+			if err != nil {
+				// Skip if file doesn't exist (e.g., data source may not exist for all resources)
+				if os.IsNotExist(err) {
+					continue
+				}
+				log.Fatalf("Error opening documentation: %v", err)
+			}
+			s := string(content)
+			s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
+			os.WriteFile(filename, []byte(s), 0644)
 		}
-		s := string(content)
-		s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
-		os.WriteFile(filename, []byte(s), 0644)
 	}
 }
