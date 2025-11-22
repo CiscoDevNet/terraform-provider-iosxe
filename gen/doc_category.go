@@ -20,6 +20,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -27,6 +28,8 @@ import (
 
 	"gopkg.in/yaml.v3"
 )
+
+var generalResources = []string{"save_config", "cli", "commit"}
 
 const (
 	definitionsPath = "./gen/definitions/"
@@ -98,23 +101,15 @@ func main() {
 		os.WriteFile(filename, []byte(s), 0644)
 	}
 
-	// update iosxe_save_config resource
-	filename := "./docs/resources/save_config.md"
-	content, err := os.ReadFile(filename)
-	if err != nil {
-		log.Fatalf("Error opening documentation: %v", err)
+	// Update general resources with "General" subcategory
+	for _, resource := range generalResources {
+		filename := fmt.Sprintf("./docs/resources/%s.md", resource)
+		content, err := os.ReadFile(filename)
+		if err != nil {
+			log.Fatalf("Error opening documentation: %v", err)
+		}
+		s := string(content)
+		s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
+		os.WriteFile(filename, []byte(s), 0644)
 	}
-	s := string(content)
-	s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
-	os.WriteFile(filename, []byte(s), 0644)
-
-	// update iosxe_cli resource
-	filename = "./docs/resources/cli.md"
-	content, err = os.ReadFile(filename)
-	if err != nil {
-		log.Fatalf("Error opening documentation: %v", err)
-	}
-	s = string(content)
-	s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
-	os.WriteFile(filename, []byte(s), 0644)
 }
