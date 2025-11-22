@@ -4,11 +4,21 @@ page_title: "iosxe_cli Resource - terraform-provider-iosxe"
 subcategory: "General"
 description: |-
   This resources is used to configure arbitrary CLI commands. This should be considered a last resort in case YANG models are not available, as it cannot read the state and therefore cannot reconcile changes.
+  The resource uses different Cisco IOS-XE RPC methods depending on the raw parameter:
+  
+  Transactional mode (raw = false, default): Uses config-ios-cli-trans RPC which provides transactional semantics with automatic rollback on failure. However, it only supports native IOS configuration CLIs that have corresponding IOS-XE YANG model support. This mode does not support non-native IOS config CLIs for features such as wireless, app-hosting, telemetry, etc.
+  Raw mode (raw = true): Uses config-ios-cli-rpc RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF/RESTCONF is used as a transport mechanism only.
 ---
 
 # iosxe_cli (Resource)
 
 This resources is used to configure arbitrary CLI commands. This should be considered a last resort in case YANG models are not available, as it cannot read the state and therefore cannot reconcile changes.
+
+The resource uses different Cisco IOS-XE RPC methods depending on the `raw` parameter:
+
+- **Transactional mode (`raw = false`, default)**: Uses `config-ios-cli-trans` RPC which provides transactional semantics with automatic rollback on failure. However, it only supports native IOS configuration CLIs that have corresponding IOS-XE YANG model support. This mode does not support non-native IOS config CLIs for features such as wireless, app-hosting, telemetry, etc.
+
+- **Raw mode (`raw = true`)**: Uses `config-ios-cli-rpc` RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF/RESTCONF is used as a transport mechanism only.
 
 ## Example Usage
 
@@ -16,7 +26,7 @@ This resources is used to configure arbitrary CLI commands. This should be consi
 resource "iosxe_cli" "example" {
   cli = <<-EOT
   interface Loopback123
-  description configured-via-restconf-cli
+  description configured-via-cli
   EOT
 }
 ```
@@ -31,4 +41,4 @@ resource "iosxe_cli" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `raw` (Boolean) If true, the CLI commands will be sent as raw CLI.
+- `raw` (Boolean) Determines which RPC method is used to send CLI commands. When `false` (default), uses the transactional `config-ios-cli-trans` RPC which provides automatic rollback on failure but only supports native IOS CLIs with YANG model support. When `true`, uses the `config-ios-cli-rpc` RPC which supports all IOS native and non-native CLIs but without transactional guarantees or automatic rollback.

@@ -35,6 +35,7 @@ data "iosxe_aaa_authentication" "example" {
 - `dot1x_default_a3_local` (Boolean) Use local username authentication
 - `dot1x_default_a4_group` (String) Use Server-group
 - `dot1x_default_a4_local` (Boolean) Use local username authentication
+- `enable_default_enable_legacy` (Boolean) Use enable password for authentication.
 - `enable_default_group1_cache` (String) Privileged command level(enable) authentication using cached group
 - `enable_default_group1_enable` (Boolean) Privileged command level(enable) authentication using enable password
 - `enable_default_group1_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
@@ -55,6 +56,9 @@ data "iosxe_aaa_authentication" "example" {
 - `enable_default_group4_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
 - `enable_default_group4_line` (Boolean) Privileged command level(enable) authentication using line password
 - `enable_default_group4_none` (Boolean) No authentication for Privileged command level(enable)
+- `enable_default_group_legacy` (String) Use Server-group
+- `enable_default_line_legacy` (Boolean) Use line password for authentication.
+- `enable_default_none_legacy` (Boolean) No authentication.
 - `id` (String) The path of the retrieved object.
 - `logins` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--logins))
 

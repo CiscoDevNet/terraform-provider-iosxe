@@ -35,6 +35,7 @@ data "iosxe_evpn" "example" {
 - `logging_peer_state` (Boolean) Peer state transition logging
 - `mac_duplication_limit` (Number) Number of MAC moves within specified time interval
 - `mac_duplication_time` (Number) MAC duplication timer
+- `multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
 - `replication_type_ingress` (Boolean) Ingress replication
 - `replication_type_mp2mp` (Boolean) mp2mp replication
 - `replication_type_p2mp` (Boolean) p2mp replication

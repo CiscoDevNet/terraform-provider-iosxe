@@ -1,0 +1,41 @@
+---
+name: PIM IPv6
+path: /Cisco-IOS-XE-native:native/ipv6/pim
+doc_category: Multicast
+attributes:
+  - yang_name: Cisco-IOS-XE-multicast:rp-address/address
+    tf_name: rp_address
+    example: 2001:db8::100
+  - yang_name: Cisco-IOS-XE-multicast:rp-address/access-list
+    tf_name: rp_address_access_list
+    example: ipv6_acl_1
+  - yang_name: Cisco-IOS-XE-multicast:rp-address/bidir
+    tf_name: rp_address_bidir
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:vrf
+    tf_name: vrfs
+    type: List
+    attributes:
+      - yang_name: id
+        tf_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: rp-address/address
+        tf_name: rp_address
+        example: 2001:db8::100
+      - yang_name: rp-address/access-list
+        tf_name: rp_address_access_list
+        example: ipv6_acl_2
+      - yang_name: rp-address/bidir
+        tf_name: rp_address_bidir
+        example: false
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv6
+        value: ""
+

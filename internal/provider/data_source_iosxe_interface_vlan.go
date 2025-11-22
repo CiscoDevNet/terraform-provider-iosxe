@@ -244,6 +244,14 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Enable vpn-id support on this interface",
 				Computed:            true,
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: "IGMP version",
+				Computed:            true,
+			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

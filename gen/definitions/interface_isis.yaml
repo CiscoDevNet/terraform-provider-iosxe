@@ -1,0 +1,71 @@
+---
+name: Interface ISIS
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/isis
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/isis
+doc_category: IS-IS
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+      - Loopback
+      - Vlan
+      - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - Tunnel
+    example: Loopback
+  - yang_name: name
+    example: 100
+  - yang_name: Cisco-IOS-XE-isis:metric/metric-list
+    tf_name: ipv4_metric_levels
+    type: List
+    description: Configure IS-IS metric for interface
+    attributes:
+      - yang_name: levels
+        tf_name: level
+        type: String
+        id: true
+        description: IS-IS level (level-1 or level-2)
+        example: level-1
+        enum_values: [level-1, level-2]
+      - yang_name: value
+        type: Int64
+        mandatory: true
+        description: Metric value (1-16777214)
+        example: 100
+        min_int: 1
+        max_int: 16777214
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=TEST]
+    attributes:
+      - name: area-tag
+        value: TEST
+    lists:
+      - name: net
+        key: tag
+        items:
+          - attributes:
+              - name: tag
+                value: 49.0001.1920.0000.2001.00
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
+    attributes:
+      - name: name
+        value: 100
+      - name: ip/address/primary/address
+        value: 192.0.2.100
+      - name: ip/address/primary/mask
+        value: 255.255.255.255
+      - name: ip/router/Cisco-IOS-XE-isis:isis/tag
+        value: TEST
+    dependencies: [0]

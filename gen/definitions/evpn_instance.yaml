@@ -100,3 +100,6 @@ attributes:
     xpath: vlan-based/re-originate/route-type5
     tf_name: vlan_based_re_originate_route_type5
     example: true
+  - yang_name: evpn-service-type/vlan-based/vlan-based/multicast/advertise
+    xpath: vlan-based/multicast/advertise
+    example: enable

@@ -32,8 +32,11 @@ import (
 
 func TestAccDataSourceIosxeTACACSServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "address_ipv4", "10.10.15.13"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "timeout", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "timeout", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "directed_request", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "directed_request_restricted", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "directed_request_no_truncate", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "attribute_allow_unknown", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -56,16 +59,17 @@ func TestAccDataSourceIosxeTACACSServer(t *testing.T) {
 func testAccDataSourceIosxeTACACSServerConfig() string {
 	config := `resource "iosxe_tacacs_server" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	name = "tacacs_10.10.15.13"` + "\n"
-	config += `	address_ipv4 = "10.10.15.13"` + "\n"
-	config += `	timeout = 4` + "\n"
+	config += `	timeout = 5` + "\n"
+	config += `	directed_request = true` + "\n"
+	config += `	directed_request_restricted = true` + "\n"
+	config += `	directed_request_no_truncate = true` + "\n"
 	config += `	encryption = "0"` + "\n"
 	config += `	key = "123"` + "\n"
+	config += `	attribute_allow_unknown = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_tacacs_server" "test" {
-			name = "tacacs_10.10.15.13"
 			depends_on = [iosxe_tacacs_server.test]
 		}
 	`

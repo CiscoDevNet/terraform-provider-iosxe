@@ -43,6 +43,7 @@ func TestAccIosxeRadius(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "retransmit", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_username", "dummy"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_ignore_acct_port", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_ignore_auth_port", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_probe_on_config", "true"))
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key_encryption", "0"))
@@ -110,8 +111,10 @@ func testAccIosxeRadiusConfig_all() string {
 	config += `	timeout = 4` + "\n"
 	config += `	retransmit = 3` + "\n"
 	config += `	key = "123"` + "\n"
+	config += `	key_encryption = "0"` + "\n"
 	config += `	automate_tester_username = "dummy"` + "\n"
 	config += `	automate_tester_ignore_acct_port = true` + "\n"
+	config += `	automate_tester_ignore_auth_port = true` + "\n"
 	config += `	automate_tester_probe_on_config = true` + "\n"
 	if os.Getenv("IOSXE1712") != "" {
 		config += `	pac_key = "123"` + "\n"
