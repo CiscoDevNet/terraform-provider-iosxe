@@ -54,22 +54,29 @@ resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-isis:isis-container/isis[area-tag=TEST]"
 	attributes = {
 		"area-tag" = "TEST"
-		"net/tag" = "49.0001.1920.0000.2001.00"
 	}
+	lists = [
+		{
+			name = "net"
+			key = "tag"
+			items = [
+				{
+					"tag" = "49.0001.1920.0000.2001.00"
+				},
+			]
+		},
+	]
 }
 
 resource "iosxe_yang" "PreReq1" {
 	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
+		"ip/address/primary/address" = "192.0.2.100"
+		"ip/address/primary/mask" = "255.255.255.255"
+		"ip/router/Cisco-IOS-XE-isis:isis/tag" = "TEST"
 	}
-}
-
-resource "iosxe_yang" "PreReq2" {
-	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]/ip/router/Cisco-IOS-XE-isis:isis"
-	attributes = {
-		"tag" = "TEST"
-	}
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
 `
@@ -87,7 +94,7 @@ func testAccDataSourceIosxeInterfaceISISConfig() string {
 	config += `		level = "level-1"` + "\n"
 	config += `		value = 100` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

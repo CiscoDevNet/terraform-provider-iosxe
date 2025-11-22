@@ -51,13 +51,21 @@ test_prerequisites:
     attributes:
       - name: area-tag
         value: TEST
-      - name: net/tag
-        value: 49.0001.1920.0000.2001.00
+    lists:
+      - name: net
+        key: tag
+        items:
+          - attributes:
+              - name: tag
+                value: 49.0001.1920.0000.2001.00
   - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100
-  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]/ip/router/Cisco-IOS-XE-isis:isis
-    attributes:
-      - name: tag
+      - name: ip/address/primary/address
+        value: 192.0.2.100
+      - name: ip/address/primary/mask
+        value: 255.255.255.255
+      - name: ip/router/Cisco-IOS-XE-isis:isis/tag
         value: TEST
+    dependencies: [0]
