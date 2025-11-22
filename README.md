@@ -80,7 +80,7 @@ In order to run the full suite of acceptance tests, set up a `.env` file with th
 cp .env.sample .env
 ```
 
-Then, run `make testall` to execute all acceptance tests across all devices and versions.
+Then, run `make test` to execute all acceptance tests across all devices and versions.
 
 > **Note**: Acceptance tests create real resources.
 
