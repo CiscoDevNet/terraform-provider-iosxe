@@ -74,7 +74,7 @@ As long as those markers remain in the code, the code will continue to be update
 To regenerate and/or update the complete codebase for all resources and data sources, run the following command:
 
 ```shell
-make genall
+make gen
 ```
 
 ### Acceptance Tests
@@ -114,10 +114,10 @@ IOSXE_1712_SWITCH_HOST=192.0.2.13
 **Run all tests across all devices:**
 
 ```shell
-make testall
+make test
 ```
 
-This will regenerate code and run tests against all configured devices (17.15.x and 17.12.x versions).
+This will run tests against all configured devices (17.15.x and 17.12.x versions).
 
 **Run tests for a specific version:**
 
@@ -145,7 +145,7 @@ make test-1715-router NAME=TestAccResourceIosxeVlan  # Specific test on specific
 **Debug mode:**
 
 ```shell
-DEBUG=1 make test-1715-switch    # Enable debug logging (writes to test-output-*.log)
+make test-1715-switch DEBUG=1  # Enable debug logging (writes to test-output-*.log)
 ```
 
 > **Note**: Acceptance tests create real resources on the target devices.

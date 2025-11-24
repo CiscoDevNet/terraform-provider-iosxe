@@ -41,36 +41,52 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type AAAAccounting struct {
-	Device                         types.String               `tfsdk:"device"`
-	Id                             types.String               `tfsdk:"id"`
-	DeleteMode                     types.String               `tfsdk:"delete_mode"`
-	UpdateNewinfoPeriodic          types.Int64                `tfsdk:"update_newinfo_periodic"`
-	Identities                     []AAAAccountingIdentities  `tfsdk:"identities"`
-	IdentityDefaultStartStopGroup1 types.String               `tfsdk:"identity_default_start_stop_group1"`
-	IdentityDefaultStartStopGroup2 types.String               `tfsdk:"identity_default_start_stop_group2"`
-	IdentityDefaultStartStopGroup3 types.String               `tfsdk:"identity_default_start_stop_group3"`
-	IdentityDefaultStartStopGroup4 types.String               `tfsdk:"identity_default_start_stop_group4"`
-	Networks                       []AAAAccountingNetworks    `tfsdk:"networks"`
-	SystemGuaranteeFirst           types.Bool                 `tfsdk:"system_guarantee_first"`
-	Commands                       []AAAAccountingCommands    `tfsdk:"commands"`
-	Connections                    []AAAAccountingConnections `tfsdk:"connections"`
-	Execs                          []AAAAccountingExecs       `tfsdk:"execs"`
+	Device                              types.String               `tfsdk:"device"`
+	Id                                  types.String               `tfsdk:"id"`
+	DeleteMode                          types.String               `tfsdk:"delete_mode"`
+	UpdateNewinfoPeriodic               types.Int64                `tfsdk:"update_newinfo_periodic"`
+	Identities                          []AAAAccountingIdentities  `tfsdk:"identities"`
+	IdentityDefaultStartStopGroup1      types.String               `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2      types.String               `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3      types.String               `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4      types.String               `tfsdk:"identity_default_start_stop_group4"`
+	Networks                            []AAAAccountingNetworks    `tfsdk:"networks"`
+	SystemGuaranteeFirst                types.Bool                 `tfsdk:"system_guarantee_first"`
+	Commands                            []AAAAccountingCommands    `tfsdk:"commands"`
+	Connections                         []AAAAccountingConnections `tfsdk:"connections"`
+	Execs                               []AAAAccountingExecs       `tfsdk:"execs"`
+	Dot1xDefaultStartStopGroup1         types.String               `tfsdk:"dot1x_default_start_stop_group1"`
+	Dot1xDefaultStartStopGroup2         types.String               `tfsdk:"dot1x_default_start_stop_group2"`
+	Dot1xDefaultStartStopGroup3         types.String               `tfsdk:"dot1x_default_start_stop_group3"`
+	Dot1xDefaultStartStopGroup4         types.String               `tfsdk:"dot1x_default_start_stop_group4"`
+	Dot1xDefaultStartStopBroadcast      types.Bool                 `tfsdk:"dot1x_default_start_stop_broadcast"`
+	Dot1xDefaultStartStopGroupBroadcast types.Bool                 `tfsdk:"dot1x_default_start_stop_group_broadcast"`
+	Dot1xDefaultStartStopGroupLogger    types.Bool                 `tfsdk:"dot1x_default_start_stop_group_logger"`
+	Dot1x                               []AAAAccountingDot1x       `tfsdk:"dot1x"`
 }
 
 type AAAAccountingData struct {
-	Device                         types.String               `tfsdk:"device"`
-	Id                             types.String               `tfsdk:"id"`
-	UpdateNewinfoPeriodic          types.Int64                `tfsdk:"update_newinfo_periodic"`
-	Identities                     []AAAAccountingIdentities  `tfsdk:"identities"`
-	IdentityDefaultStartStopGroup1 types.String               `tfsdk:"identity_default_start_stop_group1"`
-	IdentityDefaultStartStopGroup2 types.String               `tfsdk:"identity_default_start_stop_group2"`
-	IdentityDefaultStartStopGroup3 types.String               `tfsdk:"identity_default_start_stop_group3"`
-	IdentityDefaultStartStopGroup4 types.String               `tfsdk:"identity_default_start_stop_group4"`
-	Networks                       []AAAAccountingNetworks    `tfsdk:"networks"`
-	SystemGuaranteeFirst           types.Bool                 `tfsdk:"system_guarantee_first"`
-	Commands                       []AAAAccountingCommands    `tfsdk:"commands"`
-	Connections                    []AAAAccountingConnections `tfsdk:"connections"`
-	Execs                          []AAAAccountingExecs       `tfsdk:"execs"`
+	Device                              types.String               `tfsdk:"device"`
+	Id                                  types.String               `tfsdk:"id"`
+	UpdateNewinfoPeriodic               types.Int64                `tfsdk:"update_newinfo_periodic"`
+	Identities                          []AAAAccountingIdentities  `tfsdk:"identities"`
+	IdentityDefaultStartStopGroup1      types.String               `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2      types.String               `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3      types.String               `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4      types.String               `tfsdk:"identity_default_start_stop_group4"`
+	Networks                            []AAAAccountingNetworks    `tfsdk:"networks"`
+	SystemGuaranteeFirst                types.Bool                 `tfsdk:"system_guarantee_first"`
+	Commands                            []AAAAccountingCommands    `tfsdk:"commands"`
+	Connections                         []AAAAccountingConnections `tfsdk:"connections"`
+	Execs                               []AAAAccountingExecs       `tfsdk:"execs"`
+	Dot1xDefaultStartStopGroup1         types.String               `tfsdk:"dot1x_default_start_stop_group1"`
+	Dot1xDefaultStartStopGroup2         types.String               `tfsdk:"dot1x_default_start_stop_group2"`
+	Dot1xDefaultStartStopGroup3         types.String               `tfsdk:"dot1x_default_start_stop_group3"`
+	Dot1xDefaultStartStopGroup4         types.String               `tfsdk:"dot1x_default_start_stop_group4"`
+	Dot1xDefaultStartStopBroadcast      types.Bool                 `tfsdk:"dot1x_default_start_stop_broadcast"`
+	Dot1xDefaultStartStopGroupBroadcast types.Bool                 `tfsdk:"dot1x_default_start_stop_group_broadcast"`
+	Dot1xDefaultStartStopGroupLogger    types.Bool                 `tfsdk:"dot1x_default_start_stop_group_logger"`
+	Dot1x                               []AAAAccountingDot1x       `tfsdk:"dot1x"`
 }
 type AAAAccountingIdentities struct {
 	Name                    types.String `tfsdk:"name"`
@@ -144,6 +160,16 @@ type AAAAccountingExecs struct {
 	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
 	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
 }
+type AAAAccountingDot1x struct {
+	Name                    types.String `tfsdk:"name"`
+	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2         types.String `tfsdk:"start_stop_group2"`
+	StartStopGroup3         types.String `tfsdk:"start_stop_group3"`
+	StartStopGroup4         types.String `tfsdk:"start_stop_group4"`
+	StartStopBroadcast      types.Bool   `tfsdk:"start_stop_broadcast"`
+	StartStopGroupBroadcast types.Bool   `tfsdk:"start_stop_group_broadcast"`
+	StartStopGroupLogger    types.Bool   `tfsdk:"start_stop_group_logger"`
+}
 
 // End of section. //template:end types
 
@@ -202,6 +228,33 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 	}
 	if !data.SystemGuaranteeFirst.IsNull() && !data.SystemGuaranteeFirst.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"system.guarantee-first", data.SystemGuaranteeFirst.ValueBool())
+	}
+	if !data.Dot1xDefaultStartStopGroup1.IsNull() && !data.Dot1xDefaultStartStopGroup1.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.start-stop.group-config.group1.group", data.Dot1xDefaultStartStopGroup1.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopGroup2.IsNull() && !data.Dot1xDefaultStartStopGroup2.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.start-stop.group-config.group2.group", data.Dot1xDefaultStartStopGroup2.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopGroup3.IsNull() && !data.Dot1xDefaultStartStopGroup3.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.start-stop.group-config.group3.group", data.Dot1xDefaultStartStopGroup3.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopGroup4.IsNull() && !data.Dot1xDefaultStartStopGroup4.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.start-stop.group-config.group4.group", data.Dot1xDefaultStartStopGroup4.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopBroadcast.IsNull() && !data.Dot1xDefaultStartStopBroadcast.IsUnknown() {
+		if data.Dot1xDefaultStartStopBroadcast.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.start-stop.broadcast", map[string]string{})
+		}
+	}
+	if !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() && !data.Dot1xDefaultStartStopGroupBroadcast.IsUnknown() {
+		if data.Dot1xDefaultStartStopGroupBroadcast.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.start-stop.group-config.broadcast", map[string]string{})
+		}
+	}
+	if !data.Dot1xDefaultStartStopGroupLogger.IsNull() && !data.Dot1xDefaultStartStopGroupLogger.IsUnknown() {
+		if data.Dot1xDefaultStartStopGroupLogger.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.start-stop.group-config.logger", map[string]string{})
+		}
 	}
 	if len(data.Identities) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.accounting-list", []interface{}{})
@@ -453,6 +506,41 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 			}
 			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group4.group", item.WaitStartGroup4.ValueString())
+			}
+		}
+	}
+	if len(data.Dot1x) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list", []interface{}{})
+		for index, item := range data.Dot1x {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group1.group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group2.group", item.StartStopGroup2.ValueString())
+			}
+			if !item.StartStopGroup3.IsNull() && !item.StartStopGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group3.group", item.StartStopGroup3.ValueString())
+			}
+			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group4.group", item.StartStopGroup4.ValueString())
+			}
+			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
+				if item.StartStopBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"start-stop.broadcast", map[string]string{})
+				}
+			}
+			if !item.StartStopGroupBroadcast.IsNull() && !item.StartStopGroupBroadcast.IsUnknown() {
+				if item.StartStopGroupBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.broadcast", map[string]string{})
+				}
+			}
+			if !item.StartStopGroupLogger.IsNull() && !item.StartStopGroupLogger.IsUnknown() {
+				if item.StartStopGroupLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.accounting-list"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.logger", map[string]string{})
+				}
 			}
 		}
 	}
@@ -781,6 +869,81 @@ func (data AAAAccounting) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "wait-start/group4/group", item.WaitStartGroup4.ValueString())
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exec", cBody.Res())
+		}
+	}
+	if !data.Dot1xDefaultStartStopGroup1.IsNull() && !data.Dot1xDefaultStartStopGroup1.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/group1/group", data.Dot1xDefaultStartStopGroup1.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopGroup2.IsNull() && !data.Dot1xDefaultStartStopGroup2.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/group2/group", data.Dot1xDefaultStartStopGroup2.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopGroup3.IsNull() && !data.Dot1xDefaultStartStopGroup3.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/group3/group", data.Dot1xDefaultStartStopGroup3.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopGroup4.IsNull() && !data.Dot1xDefaultStartStopGroup4.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/group4/group", data.Dot1xDefaultStartStopGroup4.ValueString())
+	}
+	if !data.Dot1xDefaultStartStopBroadcast.IsNull() && !data.Dot1xDefaultStartStopBroadcast.IsUnknown() {
+		if data.Dot1xDefaultStartStopBroadcast.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/broadcast", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/broadcast")
+		}
+	}
+	if !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() && !data.Dot1xDefaultStartStopGroupBroadcast.IsUnknown() {
+		if data.Dot1xDefaultStartStopGroupBroadcast.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast")
+		}
+	}
+	if !data.Dot1xDefaultStartStopGroupLogger.IsNull() && !data.Dot1xDefaultStartStopGroupLogger.IsUnknown() {
+		if data.Dot1xDefaultStartStopGroupLogger.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/logger", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dot1x/default/start-stop/group-config/logger")
+		}
+	}
+	if len(data.Dot1x) > 0 {
+		for _, item := range data.Dot1x {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group1/group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group2/group", item.StartStopGroup2.ValueString())
+			}
+			if !item.StartStopGroup3.IsNull() && !item.StartStopGroup3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group3/group", item.StartStopGroup3.ValueString())
+			}
+			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/group4/group", item.StartStopGroup4.ValueString())
+			}
+			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
+				if item.StartStopBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/broadcast")
+				}
+			}
+			if !item.StartStopGroupBroadcast.IsNull() && !item.StartStopGroupBroadcast.IsUnknown() {
+				if item.StartStopGroupBroadcast.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/broadcast", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/broadcast")
+				}
+			}
+			if !item.StartStopGroupLogger.IsNull() && !item.StartStopGroupLogger.IsUnknown() {
+				if item.StartStopGroupLogger.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "start-stop/group-config/logger", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "start-stop/group-config/logger")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/dot1x/accounting-list", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -1345,6 +1508,129 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 			data.Execs[i].WaitStartGroup4 = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group1.group"); value.Exists() && !data.Dot1xDefaultStartStopGroup1.IsNull() {
+		data.Dot1xDefaultStartStopGroup1 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup1 = types.StringNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group2.group"); value.Exists() && !data.Dot1xDefaultStartStopGroup2.IsNull() {
+		data.Dot1xDefaultStartStopGroup2 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup2 = types.StringNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group3.group"); value.Exists() && !data.Dot1xDefaultStartStopGroup3.IsNull() {
+		data.Dot1xDefaultStartStopGroup3 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup3 = types.StringNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group4.group"); value.Exists() && !data.Dot1xDefaultStartStopGroup4.IsNull() {
+		data.Dot1xDefaultStartStopGroup4 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup4 = types.StringNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.broadcast"); !data.Dot1xDefaultStartStopBroadcast.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultStartStopBroadcast = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultStartStopBroadcast = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.broadcast"); !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.logger"); !data.Dot1xDefaultStartStopGroupLogger.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolNull()
+	}
+	for i := range data.Dot1x {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "dot1x.accounting-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Dot1x[i].Name.IsNull() {
+			data.Dot1x[i].Name = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].Name = types.StringNull()
+		}
+		if value := r.Get("start-stop.group-config.group1.group"); value.Exists() && !data.Dot1x[i].StartStopGroup1.IsNull() {
+			data.Dot1x[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group-config.group2.group"); value.Exists() && !data.Dot1x[i].StartStopGroup2.IsNull() {
+			data.Dot1x[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup2 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group-config.group3.group"); value.Exists() && !data.Dot1x[i].StartStopGroup3.IsNull() {
+			data.Dot1x[i].StartStopGroup3 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup3 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group-config.group4.group"); value.Exists() && !data.Dot1x[i].StartStopGroup4.IsNull() {
+			data.Dot1x[i].StartStopGroup4 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup4 = types.StringNull()
+		}
+		if value := r.Get("start-stop.broadcast"); !data.Dot1x[i].StartStopBroadcast.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].StartStopBroadcast = types.BoolNull()
+		}
+		if value := r.Get("start-stop.group-config.broadcast"); !data.Dot1x[i].StartStopGroupBroadcast.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].StartStopGroupBroadcast = types.BoolNull()
+		}
+		if value := r.Get("start-stop.group-config.logger"); !data.Dot1x[i].StartStopGroupLogger.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].StartStopGroupLogger = types.BoolNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1898,6 +2184,129 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			data.Execs[i].WaitStartGroup4 = types.StringNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group1/group"); value.Exists() && !data.Dot1xDefaultStartStopGroup1.IsNull() {
+		data.Dot1xDefaultStartStopGroup1 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup1 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group2/group"); value.Exists() && !data.Dot1xDefaultStartStopGroup2.IsNull() {
+		data.Dot1xDefaultStartStopGroup2 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup2 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group3/group"); value.Exists() && !data.Dot1xDefaultStartStopGroup3.IsNull() {
+		data.Dot1xDefaultStartStopGroup3 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup3 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group4/group"); value.Exists() && !data.Dot1xDefaultStartStopGroup4.IsNull() {
+		data.Dot1xDefaultStartStopGroup4 = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultStartStopGroup4 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/broadcast"); !data.Dot1xDefaultStartStopBroadcast.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultStartStopBroadcast = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultStartStopBroadcast = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast"); !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/logger"); !data.Dot1xDefaultStartStopGroupLogger.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolNull()
+	}
+	for i := range data.Dot1x {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Dot1x[i].Name.IsNull() {
+			data.Dot1x[i].Name = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group1/group"); value.Exists() && !data.Dot1x[i].StartStopGroup1.IsNull() {
+			data.Dot1x[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group2/group"); value.Exists() && !data.Dot1x[i].StartStopGroup2.IsNull() {
+			data.Dot1x[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group3/group"); value.Exists() && !data.Dot1x[i].StartStopGroup3.IsNull() {
+			data.Dot1x[i].StartStopGroup3 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/group4/group"); value.Exists() && !data.Dot1x[i].StartStopGroup4.IsNull() {
+			data.Dot1x[i].StartStopGroup4 = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].StartStopGroup4 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/broadcast"); !data.Dot1x[i].StartStopBroadcast.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].StartStopBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].StartStopBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/broadcast"); !data.Dot1x[i].StartStopGroupBroadcast.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].StartStopGroupBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].StartStopGroupBroadcast = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "start-stop/group-config/logger"); !data.Dot1x[i].StartStopGroupLogger.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].StartStopGroupLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].StartStopGroupLogger = types.BoolNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -2194,6 +2603,71 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 				item.WaitStartGroup4 = types.StringValue(cValue.String())
 			}
 			data.Execs = append(data.Execs, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group1.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group2.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group3.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group4.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup4 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.logger"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.accounting-list"); value.Exists() {
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingDot1x{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group3.group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group4.group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group-config.broadcast"); cValue.Exists() {
+				item.StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group-config.logger"); cValue.Exists() {
+				item.StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				item.StartStopGroupLogger = types.BoolValue(false)
+			}
+			data.Dot1x = append(data.Dot1x, item)
 			return true
 		})
 	}
@@ -2496,6 +2970,71 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group1.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group2.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group3.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group4.group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup4 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.logger"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.accounting-list"); value.Exists() {
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingDot1x{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group3.group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group4.group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group-config.broadcast"); cValue.Exists() {
+				item.StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group-config.logger"); cValue.Exists() {
+				item.StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				item.StartStopGroupLogger = types.BoolValue(false)
+			}
+			data.Dot1x = append(data.Dot1x, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2788,6 +3327,71 @@ func (data *AAAAccounting) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.WaitStartGroup4 = types.StringValue(cValue.String())
 			}
 			data.Execs = append(data.Execs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group1/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group2/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group3/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group4/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup4 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/logger"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list"); value.Exists() {
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingDot1x{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/broadcast"); cValue.Exists() {
+				item.StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/logger"); cValue.Exists() {
+				item.StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				item.StartStopGroupLogger = types.BoolValue(false)
+			}
+			data.Dot1x = append(data.Dot1x, item)
 			return true
 		})
 	}
@@ -3086,6 +3690,71 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group1/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group2/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group3/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group4/group"); value.Exists() {
+		data.Dot1xDefaultStartStopGroup4 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopBroadcast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupBroadcast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/logger"); value.Exists() {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list"); value.Exists() {
+		data.Dot1x = make([]AAAAccountingDot1x, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AAAAccountingDot1x{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group1/group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group2/group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group3/group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/group4/group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/broadcast"); cValue.Exists() {
+				item.StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "start-stop/group-config/logger"); cValue.Exists() {
+				item.StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				item.StartStopGroupLogger = types.BoolValue(false)
+			}
+			data.Dot1x = append(data.Dot1x, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -3094,6 +3763,73 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccounting) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Dot1x {
+		stateKeyValues := [...]string{state.Dot1x[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Dot1x[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Dot1x {
+			found = true
+			if state.Dot1x[i].Name.ValueString() != data.Dot1x[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Dot1x[i].StartStopGroupLogger.IsNull() && data.Dot1x[j].StartStopGroupLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].StartStopGroupBroadcast.IsNull() && data.Dot1x[j].StartStopGroupBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].StartStopBroadcast.IsNull() && data.Dot1x[j].StartStopBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].StartStopGroup4.IsNull() && data.Dot1x[j].StartStopGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].StartStopGroup3.IsNull() && data.Dot1x[j].StartStopGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].StartStopGroup2.IsNull() && data.Dot1x[j].StartStopGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].StartStopGroup1.IsNull() && data.Dot1x[j].StartStopGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/accounting-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.Dot1xDefaultStartStopGroupLogger.IsNull() && data.Dot1xDefaultStartStopGroupLogger.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/logger", state.getPath()))
+	}
+	if !state.Dot1xDefaultStartStopGroupBroadcast.IsNull() && data.Dot1xDefaultStartStopGroupBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/broadcast", state.getPath()))
+	}
+	if !state.Dot1xDefaultStartStopBroadcast.IsNull() && data.Dot1xDefaultStartStopBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/start-stop/broadcast", state.getPath()))
+	}
+	if !state.Dot1xDefaultStartStopGroup4.IsNull() && data.Dot1xDefaultStartStopGroup4.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group4/group", state.getPath()))
+	}
+	if !state.Dot1xDefaultStartStopGroup3.IsNull() && data.Dot1xDefaultStartStopGroup3.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group3/group", state.getPath()))
+	}
+	if !state.Dot1xDefaultStartStopGroup2.IsNull() && data.Dot1xDefaultStartStopGroup2.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group2/group", state.getPath()))
+	}
+	if !state.Dot1xDefaultStartStopGroup1.IsNull() && data.Dot1xDefaultStartStopGroup1.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group1/group", state.getPath()))
+	}
 	for i := range state.Execs {
 		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
 
@@ -3421,6 +4157,78 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 
 func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAccounting, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.Dot1x {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Dot1x[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Dot1x[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Dot1x {
+			found = true
+			if state.Dot1x[i].Name.ValueString() != data.Dot1x[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Dot1x[i].StartStopGroupLogger.IsNull() && data.Dot1x[j].StartStopGroupLogger.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/logger", predicates))
+				}
+				if !state.Dot1x[i].StartStopGroupBroadcast.IsNull() && data.Dot1x[j].StartStopGroupBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/broadcast", predicates))
+				}
+				if !state.Dot1x[i].StartStopBroadcast.IsNull() && data.Dot1x[j].StartStopBroadcast.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/broadcast", predicates))
+				}
+				if !state.Dot1x[i].StartStopGroup4.IsNull() && data.Dot1x[j].StartStopGroup4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group4/group", predicates))
+				}
+				if !state.Dot1x[i].StartStopGroup3.IsNull() && data.Dot1x[j].StartStopGroup3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group3/group", predicates))
+				}
+				if !state.Dot1x[i].StartStopGroup2.IsNull() && data.Dot1x[j].StartStopGroup2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group2/group", predicates))
+				}
+				if !state.Dot1x[i].StartStopGroup1.IsNull() && data.Dot1x[j].StartStopGroup1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v/start-stop/group-config/group1/group", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/accounting-list%v", predicates))
+		}
+	}
+	if !state.Dot1xDefaultStartStopGroupLogger.IsNull() && data.Dot1xDefaultStartStopGroupLogger.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/logger")
+	}
+	if !state.Dot1xDefaultStartStopGroupBroadcast.IsNull() && data.Dot1xDefaultStartStopGroupBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/broadcast")
+	}
+	if !state.Dot1xDefaultStartStopBroadcast.IsNull() && data.Dot1xDefaultStartStopBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/broadcast")
+	}
+	if !state.Dot1xDefaultStartStopGroup4.IsNull() && data.Dot1xDefaultStartStopGroup4.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group4/group")
+	}
+	if !state.Dot1xDefaultStartStopGroup3.IsNull() && data.Dot1xDefaultStartStopGroup3.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group3/group")
+	}
+	if !state.Dot1xDefaultStartStopGroup2.IsNull() && data.Dot1xDefaultStartStopGroup2.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group2/group")
+	}
+	if !state.Dot1xDefaultStartStopGroup1.IsNull() && data.Dot1xDefaultStartStopGroup1.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/start-stop/group-config/group1/group")
+	}
 	for i := range state.Execs {
 		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
@@ -3775,6 +4583,28 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.Dot1x {
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+		if !data.Dot1x[i].StartStopGroupLogger.IsNull() && !data.Dot1x[i].StartStopGroupLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].StartStopGroupBroadcast.IsNull() && !data.Dot1x[i].StartStopGroupBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/group-config/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].StartStopBroadcast.IsNull() && !data.Dot1x[i].StartStopBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/accounting-list=%v/start-stop/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+	if !data.Dot1xDefaultStartStopGroupLogger.IsNull() && !data.Dot1xDefaultStartStopGroupLogger.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/logger", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() && !data.Dot1xDefaultStartStopGroupBroadcast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/broadcast", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopBroadcast.IsNull() && !data.Dot1xDefaultStartStopBroadcast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/start-stop/broadcast", data.getPath()))
+	}
+
 	for i := range data.Execs {
 		keyValues := [...]string{data.Execs[i].Name.ValueString()}
 		if !data.Execs[i].WaitStartLogger.IsNull() && !data.Execs[i].WaitStartLogger.ValueBool() {
@@ -3863,6 +4693,32 @@ func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Dot1x {
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/accounting-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.Dot1xDefaultStartStopGroupLogger.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/logger", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/broadcast", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopBroadcast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/start-stop/broadcast", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopGroup4.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group4/group", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopGroup3.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group3/group", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopGroup2.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group2/group", data.getPath()))
+	}
+	if !data.Dot1xDefaultStartStopGroup1.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/start-stop/group-config/group1/group", data.getPath()))
+	}
 	for i := range data.Execs {
 		keyValues := [...]string{data.Execs[i].Name.ValueString()}
 
@@ -3916,6 +4772,37 @@ func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 
 func (data *AAAAccounting) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.Dot1x {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/dot1x/accounting-list%v", predicates))
+	}
+	if !data.Dot1xDefaultStartStopGroupLogger.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/start-stop/group-config/logger")
+	}
+	if !data.Dot1xDefaultStartStopGroupBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/start-stop/group-config/broadcast")
+	}
+	if !data.Dot1xDefaultStartStopBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/start-stop/broadcast")
+	}
+	if !data.Dot1xDefaultStartStopGroup4.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/start-stop/group-config/group4/group")
+	}
+	if !data.Dot1xDefaultStartStopGroup3.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/start-stop/group-config/group3/group")
+	}
+	if !data.Dot1xDefaultStartStopGroup2.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/start-stop/group-config/group2/group")
+	}
+	if !data.Dot1xDefaultStartStopGroup1.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/start-stop/group-config/group1/group")
+	}
 	for i := range data.Execs {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.Execs[i].Name.ValueString()}

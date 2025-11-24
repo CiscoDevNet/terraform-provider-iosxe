@@ -1,14 +1,15 @@
 resource "iosxe_pim" "example" {
-  autorp                 = false
-  autorp_listener        = false
-  bsr_candidate_loopback = 100
-  bsr_candidate_mask     = 30
-  bsr_candidate_priority = 10
-  ssm_range              = "10"
-  ssm_default            = false
-  rp_address             = "9.9.9.9"
-  rp_address_override    = false
-  rp_address_bidir       = false
+  autorp                             = false
+  autorp_listener                    = false
+  bsr_candidate_loopback             = 100
+  bsr_candidate_mask                 = 30
+  bsr_candidate_priority             = 10
+  register_source_interface_loopback = 100
+  ssm_range                          = "10"
+  ssm_default                        = false
+  rp_address                         = "9.9.9.9"
+  rp_address_override                = false
+  rp_address_bidir                   = false
   rp_addresses = [
     {
       access_list = "10"
@@ -27,17 +28,18 @@ resource "iosxe_pim" "example" {
   ]
   vrfs = [
     {
-      vrf                    = "VRF1"
-      autorp                 = false
-      autorp_listener        = false
-      bsr_candidate_loopback = 200
-      bsr_candidate_mask     = 30
-      bsr_candidate_priority = 10
-      ssm_range              = "10"
-      ssm_default            = false
-      rp_address             = "19.19.19.19"
-      rp_address_override    = false
-      rp_address_bidir       = false
+      vrf                                = "VRF1"
+      autorp                             = false
+      autorp_listener                    = false
+      bsr_candidate_loopback             = 200
+      bsr_candidate_mask                 = 30
+      bsr_candidate_priority             = 10
+      register_source_interface_loopback = 200
+      ssm_range                          = "10"
+      ssm_default                        = false
+      rp_address                         = "19.19.19.19"
+      rp_address_override                = false
+      rp_address_bidir                   = false
       rp_addresses = [
         {
           access_list = "10"

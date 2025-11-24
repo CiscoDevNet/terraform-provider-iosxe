@@ -46,4 +46,5 @@ resource "iosxe_interface_tunnel" "example" {
   snmp_trap_link_status            = false
   logging_event_link_status_enable = true
   tunnel_vrf                       = "VRF1"
+  ip_igmp_version                  = 3
 }

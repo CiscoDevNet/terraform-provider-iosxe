@@ -348,6 +348,14 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: "IGMP version",
+				Computed:            true,
+			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

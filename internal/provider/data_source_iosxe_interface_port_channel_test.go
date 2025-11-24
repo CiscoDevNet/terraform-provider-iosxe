@@ -67,6 +67,7 @@ func TestAccDataSourceIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ip_arp_inspection_limit_rate", "1000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "logging_event_link_status_enable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ip_igmp_version", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -194,6 +195,7 @@ func testAccDataSourceIosxeInterfacePortChannelConfig() string {
 	config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	config += `	load_interval = 30` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
+	config += `	ip_igmp_version = 3` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
 	config += `}` + "\n"
 

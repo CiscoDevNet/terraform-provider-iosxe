@@ -65,8 +65,10 @@ data "iosxe_interface_port_channel" "example" {
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
+- `ip_igmp_version` (Number) IGMP version
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
 - `ipv4_address_mask` (String) Ip subnet mask

@@ -307,6 +307,17 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Enable vpn-id support on this interface").String,
 				Optional:            true,
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3),
+				},
+			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 		},
 	}
 }

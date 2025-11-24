@@ -358,6 +358,17 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 					int64validator.Between(0, 4294967295),
 				},
 			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3),
+				},
+			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 		},
 	}
 }

@@ -58,6 +58,7 @@ resource "iosxe_interface_port_channel" "example" {
   ip_arp_inspection_limit_rate     = 1000
   load_interval                    = 30
   logging_event_link_status_enable = false
+  ip_igmp_version                  = 3
 }
 ```
 
@@ -110,8 +111,11 @@ resource "iosxe_interface_port_channel" "example" {
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
+- `ip_igmp_version` (Number) IGMP version
+  - Range: `1`-`3`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
 - `ipv4_address_mask` (String) Ip subnet mask
