@@ -1,3 +1,7 @@
+## 0.11.0
+
+- Add `iosxe_crypto_engine` resource and data source for crypto engine compliance shield disable configuration
+
 ## 0.10.2
 
 - Fix issue with incorrect reading of lists via NETCONF
