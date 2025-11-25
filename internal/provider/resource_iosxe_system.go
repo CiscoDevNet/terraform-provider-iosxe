@@ -100,6 +100,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Enable unicast routing").String,
 				Optional:            true,
 			},
+			"ipv6_multicast_routing": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IPV6 multicast forwarding").String,
+				Optional:            true,
+			},
 			"mtu": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1500, 9198).String,
 				Optional:            true,
