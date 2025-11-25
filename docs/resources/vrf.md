@@ -16,7 +16,7 @@ This resource can manage the VRF configuration.
 resource "iosxe_vrf" "example" {
   name                = "VRF22"
   description         = "VRF22 description"
-  rd                  = "22:22"
+  rd_auto             = true
   address_family_ipv4 = true
   address_family_ipv6 = true
   vpn_id              = "22:22"
@@ -95,6 +95,7 @@ resource "iosxe_vrf" "example" {
 - `ipv6_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import))
 - `ipv6_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import_stitching))
 - `rd` (String) Specify Route Distinguisher
+- `rd_auto` (Boolean) Specify to enable auto Route Distinguisher
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
