@@ -37,3 +37,4 @@ website/vendor
 *.winfile eol=crlf
 
 gen/full_definitions
+test-epic-*.tf
