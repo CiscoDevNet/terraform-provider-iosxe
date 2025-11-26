@@ -505,11 +505,11 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
-									"string_trim_first_string_op_1": schema.StringAttribute{
+									"string_first_string_op_1": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
-									"string_trim_first_string_op_2": schema.StringAttribute{
+									"string_first_string_op_2": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},

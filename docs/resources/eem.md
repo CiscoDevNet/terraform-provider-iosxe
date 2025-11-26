@@ -30,32 +30,21 @@ resource "iosxe_eem" "example" {
   detector_routing_bootup_delay         = 2
   applets = [
     {
-      name              = "test_applet_10"
-      authorization     = "bypass"
-      class             = "A"
-      description       = "test describing applet"
-      event_cli_pattern = "shutdown"
-      event_cli_sync    = "no"
-      event_cli_skip    = "no"
+      name          = "test_applet_10"
+      authorization = "bypass"
+      class         = "A"
+      description   = "test describing applet"
       actions = [
         {
           name        = "10"
           cli_command = "enable"
         }
       ]
-      event_timer_watchdog_time      = 1800
-      event_timer_watchdog_name      = "test_time"
-      event_timer_watchdog_maxrun    = 10
-      event_timer_watchdog_ratelimit = 10
-      event_timer_cron_entry         = "0 12 * * 1-5"
-      event_timer_cron_name          = "test_time"
-      event_timer_cron_maxrun        = 10
-      event_timer_cron_ratelimit     = 10
-      event_syslog_pattern           = "%EXAMPLE-5-TEST: Example syslog for testing purposes"
-      event_syslog_occurs            = 1
-      event_syslog_maxrun            = 30
-      event_syslog_ratelimit         = 10
-      event_syslog_period            = 60.0
+      event_syslog_pattern   = "%EXAMPLE-5-TEST: Example syslog for testing purposes"
+      event_syslog_occurs    = 1
+      event_syslog_maxrun    = 30
+      event_syslog_ratelimit = 10
+      event_syslog_period    = 60
     }
   ]
 }
@@ -204,9 +193,9 @@ Optional:
 - `snmp_trap_intdata2` (Number) SNMP integer data2
   - Range: `-2147483648`-`2147483647`
 - `snmp_trap_strdata` (String) SNMP trap string
+- `string_first_string_op_1` (String)
+- `string_first_string_op_2` (String)
 - `string_trim` (String) trim characters from both ends of string
-- `string_trim_first_string_op_1` (String)
-- `string_trim_first_string_op_2` (String)
 - `syslog_facility` (String) Facility string
 - `syslog_msg` (String) Syslog message
 - `syslog_priority` (String) Priority of syslog message

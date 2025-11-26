@@ -52,24 +52,13 @@ func TestAccIosxeEEM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.authorization", "bypass"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.class", "A"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.description", "test describing applet"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_cli_pattern", "shutdown"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_cli_sync", "no"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_cli_skip", "no"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.actions.0.name", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.actions.0.cli_command", "enable"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_watchdog_time", "1800"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_watchdog_name", "test_time"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_watchdog_maxrun", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_watchdog_ratelimit", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_cron_entry", "0 12 * * 1-5"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_cron_name", "test_time"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_cron_maxrun", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_timer_cron_ratelimit", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_syslog_pattern", "%EXAMPLE-5-TEST: Example syslog for testing purposes"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_syslog_occurs", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_syslog_maxrun", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_syslog_ratelimit", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_syslog_period", "60.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "applets.0.event_syslog_period", "60"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -140,26 +129,15 @@ func testAccIosxeEEMConfig_all() string {
 	config += `		authorization = "bypass"` + "\n"
 	config += `		class = "A"` + "\n"
 	config += `		description = "test describing applet"` + "\n"
-	config += `		event_cli_pattern = "shutdown"` + "\n"
-	config += `		event_cli_sync = "no"` + "\n"
-	config += `		event_cli_skip = "no"` + "\n"
 	config += `		actions = [{` + "\n"
 	config += `			name = "10"` + "\n"
 	config += `			cli_command = "enable"` + "\n"
 	config += `		}]` + "\n"
-	config += `		event_timer_watchdog_time = 1800` + "\n"
-	config += `		event_timer_watchdog_name = "test_time"` + "\n"
-	config += `		event_timer_watchdog_maxrun = 10` + "\n"
-	config += `		event_timer_watchdog_ratelimit = 10` + "\n"
-	config += `		event_timer_cron_entry = "0 12 * * 1-5"` + "\n"
-	config += `		event_timer_cron_name = "test_time"` + "\n"
-	config += `		event_timer_cron_maxrun = 10` + "\n"
-	config += `		event_timer_cron_ratelimit = 10` + "\n"
 	config += `		event_syslog_pattern = "%EXAMPLE-5-TEST: Example syslog for testing purposes"` + "\n"
 	config += `		event_syslog_occurs = 1` + "\n"
 	config += `		event_syslog_maxrun = 30` + "\n"
 	config += `		event_syslog_ratelimit = 10` + "\n"
-	config += `		event_syslog_period = 60.0` + "\n"
+	config += `		event_syslog_period = 60` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

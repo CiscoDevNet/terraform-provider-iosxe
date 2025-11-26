@@ -166,8 +166,8 @@ type EEMAppletsActions struct {
 	InfoTypeSnmpVarOid              types.String `tfsdk:"info_type_snmp_var_oid"`
 	InfoTypeSnmpVarOidType          types.String `tfsdk:"info_type_snmp_var_oid_type"`
 	InfoTypeSnmpVarOidTypeValue     types.String `tfsdk:"info_type_snmp_var_oid_type_value"`
-	StringTrimFirstStringOp1        types.String `tfsdk:"string_trim_first_string_op_1"`
-	StringTrimFirstStringOp2        types.String `tfsdk:"string_trim_first_string_op_2"`
+	StringFirstStringOp1            types.String `tfsdk:"string_first_string_op_1"`
+	StringFirstStringOp2            types.String `tfsdk:"string_first_string_op_2"`
 }
 
 // End of section. //template:end types
@@ -537,11 +537,11 @@ func (data EEM) toBody(ctx context.Context) string {
 					if !citem.InfoTypeSnmpVarOidTypeValue.IsNull() && !citem.InfoTypeSnmpVarOidTypeValue.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.var.oid-type-value", citem.InfoTypeSnmpVarOidTypeValue.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp1.IsNull() && !citem.StringTrimFirstStringOp1.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.trim.first.string-op-1", citem.StringTrimFirstStringOp1.ValueString())
+					if !citem.StringFirstStringOp1.IsNull() && !citem.StringFirstStringOp1.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.first.string-op-1", citem.StringFirstStringOp1.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp2.IsNull() && !citem.StringTrimFirstStringOp2.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.trim.first.string-op-2", citem.StringTrimFirstStringOp2.ValueString())
+					if !citem.StringFirstStringOp2.IsNull() && !citem.StringFirstStringOp2.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.first.string-op-2", citem.StringFirstStringOp2.ValueString())
 					}
 				}
 			}
@@ -867,11 +867,11 @@ func (data EEM) toBodyXML(ctx context.Context) string {
 					if !citem.InfoTypeSnmpVarOidTypeValue.IsNull() && !citem.InfoTypeSnmpVarOidTypeValue.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "info/type/snmp/var/oid-type-value", citem.InfoTypeSnmpVarOidTypeValue.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp1.IsNull() && !citem.StringTrimFirstStringOp1.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "string/trim/first/string-op-1", citem.StringTrimFirstStringOp1.ValueString())
+					if !citem.StringFirstStringOp1.IsNull() && !citem.StringFirstStringOp1.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "string/first/string-op-1", citem.StringFirstStringOp1.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp2.IsNull() && !citem.StringTrimFirstStringOp2.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "string/trim/first/string-op-2", citem.StringTrimFirstStringOp2.ValueString())
+					if !citem.StringFirstStringOp2.IsNull() && !citem.StringFirstStringOp2.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "string/first/string-op-2", citem.StringFirstStringOp2.ValueString())
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "action-config/action", ccBody.Res())
 				}
@@ -1473,15 +1473,15 @@ func (data *EEM) updateFromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue = types.StringNull()
 			}
-			if value := cr.Get("string.trim.first.string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringValue(value.String())
+			if value := cr.Get("string.first.string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringNull()
 			}
-			if value := cr.Get("string.trim.first.string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringValue(value.String())
+			if value := cr.Get("string.first.string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringNull()
 			}
 		}
 		if value := r.Get("event.timer-choice.watchdog.time-set"); value.Exists() && !data.Applets[i].EventTimerWatchdogTime.IsNull() {
@@ -2096,15 +2096,15 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue = types.StringNull()
 			}
-			if value := helpers.GetFromXPath(cr, "string/trim/first/string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringValue(value.String())
+			if value := helpers.GetFromXPath(cr, "string/first/string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringNull()
 			}
-			if value := helpers.GetFromXPath(cr, "string/trim/first/string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringValue(value.String())
+			if value := helpers.GetFromXPath(cr, "string/first/string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringNull()
 			}
 		}
 		if value := helpers.GetFromXPath(r, "event/timer-choice/watchdog/time-set"); value.Exists() && !data.Applets[i].EventTimerWatchdogTime.IsNull() {
@@ -2477,11 +2477,11 @@ func (data *EEM) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("info.type.snmp.var.oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -2834,11 +2834,11 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("info.type.snmp.var.oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -3187,11 +3187,11 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					if ccValue := helpers.GetFromXPath(cv, "info/type/snmp/var/oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -3540,11 +3540,11 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					if ccValue := helpers.GetFromXPath(cv, "info/type/snmp/var/oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -3676,11 +3676,11 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 							found = false
 						}
 						if found {
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp2.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/trim/first/string-op-2", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp2.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/first", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp1.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/trim/first/string-op-1", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp1.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/first", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidTypeValue.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/var/oid-type-value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
@@ -4062,11 +4062,11 @@ func (data *EEM) addDeletedItemsXML(ctx context.Context, state EEM, body string)
 							found = false
 						}
 						if found {
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-2", predicates, cpredicates))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/first", predicates, cpredicates))
 							}
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-1", predicates, cpredicates))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/first", predicates, cpredicates))
 							}
 							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidTypeValue.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid-type-value", predicates, cpredicates))

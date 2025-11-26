@@ -426,11 +426,11 @@ func (d *EEMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 										MarkdownDescription: "",
 										Computed:            true,
 									},
-									"string_trim_first_string_op_1": schema.StringAttribute{
+									"string_first_string_op_1": schema.StringAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},
-									"string_trim_first_string_op_2": schema.StringAttribute{
+									"string_first_string_op_2": schema.StringAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},

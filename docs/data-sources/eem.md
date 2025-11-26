@@ -130,9 +130,9 @@ Read-Only:
 - `snmp_trap_intdata1` (Number) SNMP integer data1
 - `snmp_trap_intdata2` (Number) SNMP integer data2
 - `snmp_trap_strdata` (String) SNMP trap string
+- `string_first_string_op_1` (String)
+- `string_first_string_op_2` (String)
 - `string_trim` (String) trim characters from both ends of string
-- `string_trim_first_string_op_1` (String)
-- `string_trim_first_string_op_2` (String)
 - `syslog_facility` (String) Facility string
 - `syslog_msg` (String) Syslog message
 - `syslog_priority` (String) Priority of syslog message

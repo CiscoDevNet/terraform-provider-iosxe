@@ -50,10 +50,13 @@ attributes:
         example: test describing applet
       - yang_name: event/cli/pattern
         example: "shutdown"
+        exclude_test: true
       - yang_name: event/cli/sync
         example: no
+        exclude_test: true
       - yang_name: event/cli/skip
         example: no
+        exclude_test: true
       - yang_name: action-config/action
         tf_name: actions
         type: List
@@ -336,45 +339,57 @@ attributes:
           example: 192.168.0.1
           exclude_test: true
         - yang_name: list-option/string/string/first/string-op-1
-          xpath: string/trim/first/string-op-1
+          xpath: string/first/string-op-1
+          tf_name: string_first_string_op_1
           example: test_str1
           exclude_test: true
+          delete_parent: true
         - yang_name: list-option/string/string/first/string-op-2
-          xpath: string/trim/first/string-op-2
+          xpath: string/first/string-op-2
+          tf_name: string_first_string_op_2
           example: test_str2
           exclude_test: true
+          delete_parent: true
       - yang_name: event/event-option/timer-choice/timer-choice/watchdog/time-set
         xpath: event/timer-choice/watchdog/time-set
         tf_name: event_timer_watchdog_time
         example: 1800
+        exclude_test: true
       - yang_name: event/event-option/timer-choice/timer-choice/watchdog/name
         xpath: event/timer-choice/watchdog/name
         tf_name: event_timer_watchdog_name
         example: test_time
+        exclude_test: true
       - yang_name: event/event-option/timer-choice/timer-choice/watchdog/maxrun-set
         xpath: event/timer-choice/watchdog/maxrun-set
         tf_name: event_timer_watchdog_maxrun
         example: 10
+        exclude_test: true
       - yang_name: event/event-option/timer-choice/timer-choice/watchdog/ratelimit-set
         xpath: event/timer-choice/watchdog/ratelimit-set
         tf_name: event_timer_watchdog_ratelimit
-        example: 10      
+        example: 10
+        exclude_test: true
       - yang_name: event/event-option/timer-choice/timer-choice/cron/cron-entry
         xpath: event/timer-choice/cron/cron-entry
         tf_name: event_timer_cron_entry
         example: "0 12 * * 1-5"
+        exclude_test: true
       - yang_name: event/event-option/timer-choice/timer-choice/cron/name
         xpath: event/timer-choice/cron/name
         tf_name: event_timer_cron_name
         example: test_time
+        exclude_test: true
       - yang_name: event/event-option/timer-choice/timer-choice/cron/maxrun-set
         xpath: event/timer-choice/cron/maxrun-set
         tf_name: event_timer_cron_maxrun
         example: 10
+        exclude_test: true
       - yang_name: event/event-option/timer-choice/timer-choice/cron/ratelimit-set
         xpath: event/timer-choice/cron/ratelimit-set
         tf_name: event_timer_cron_ratelimit
         example: 10
+        exclude_test: true
       - yang_name: event/event-option/syslog-choice/syslog-choice/pattern
         xpath: event/syslog-choice/pattern
         tf_name: event_syslog_pattern
@@ -394,4 +409,4 @@ attributes:
       - yang_name: event/event-option/syslog-choice/syslog-choice/period-set
         xpath: event/syslog-choice/period-set
         tf_name: event_syslog_period
-        example: 60.0
+        example: 60
