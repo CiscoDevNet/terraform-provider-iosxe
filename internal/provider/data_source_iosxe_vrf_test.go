@@ -48,6 +48,14 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_import_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_default_address", "239.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan_inter_as", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp_spt_only", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_multicast.0.address", "239.1.2.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_multicast.0.wildcard", "0.0.0.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_threshold", "50"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -105,6 +113,16 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	ipv6_route_target_export_stitching = [{` + "\n"
 	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv4_mdt_default_address = "239.1.1.1"` + "\n"
+	config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"
+	config += `	ipv4_mdt_auto_discovery_vxlan_inter_as = true` + "\n"
+	config += `	ipv4_mdt_overlay_use_bgp = true` + "\n"
+	config += `	ipv4_mdt_overlay_use_bgp_spt_only = true` + "\n"
+	config += `	ipv4_mdt_data_multicast = [{` + "\n"
+	config += `		address = "239.1.2.0"` + "\n"
+	config += `		wildcard = "0.0.0.255"` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv4_mdt_data_threshold = 50` + "\n"
 	config += `}` + "\n"
 
 	config += `
