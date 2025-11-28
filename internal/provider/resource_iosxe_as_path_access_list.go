@@ -177,7 +177,7 @@ func (r *ASPathAccessListResource) Create(ctx context.Context, req resource.Crea
 				}
 				for _, i := range emptyLeafsDelete {
 					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
+					if err != nil && res.StatusCode != 404 {
 						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
@@ -364,7 +364,7 @@ func (r *ASPathAccessListResource) Update(ctx context.Context, req resource.Upda
 				}
 				for _, i := range emptyLeafsDelete {
 					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
+					if err != nil && res.StatusCode != 404 {
 						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
