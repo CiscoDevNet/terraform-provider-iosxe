@@ -36,7 +36,7 @@ func TestAccDataSourceIosxeMPLS(t *testing.T) {
 		t.Skip("skipping test, set environment variable IOSXE1715")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_mpls.test", "label_mode_all_vrfs_protocol_all_afs_per_vrf", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_mpls.test", "label_mode_all_vrfs_all_afs_per_vrf", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -59,7 +59,7 @@ func TestAccDataSourceIosxeMPLS(t *testing.T) {
 func testAccDataSourceIosxeMPLSConfig() string {
 	config := `resource "iosxe_mpls" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	label_mode_all_vrfs_protocol_all_afs_per_vrf = true` + "\n"
+	config += `	label_mode_all_vrfs_all_afs_per_vrf = true` + "\n"
 	config += `}` + "\n"
 
 	config += `

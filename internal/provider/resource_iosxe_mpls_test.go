@@ -38,7 +38,7 @@ func TestAccIosxeMPLS(t *testing.T) {
 		t.Skip("skipping test, set environment variable IOSXE1715")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_mpls.test", "label_mode_all_vrfs_protocol_all_afs_per_vrf", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_mpls.test", "label_mode_all_vrfs_all_afs_per_vrf", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -55,7 +55,7 @@ func TestAccIosxeMPLS(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeMPLSImportStateIdFunc("iosxe_mpls.test"),
-				ImportStateVerifyIgnore: []string{"label_mode_all_vrfs_protocol_all_afs_per_prefix", "label_mode_all_vrfs_protocol_all_afs_per_ce", "label_mode_all_vrfs_protocol_all_afs_vrf_conn_aggr", "label_mode_all_vrfs_protocol_bgp_vpnv4_per_vrf", "label_mode_all_vrfs_protocol_bgp_vpnv4_per_prefix", "label_mode_all_vrfs_protocol_bgp_vpnv4_per_ce", "label_mode_all_vrfs_protocol_bgp_vpnv4_vrf_conn_aggr", "label_mode_all_vrfs_protocol_bgp_vpnv6_per_vrf", "label_mode_all_vrfs_protocol_bgp_vpnv6_per_prefix", "label_mode_all_vrfs_protocol_bgp_vpnv6_per_ce", "label_mode_all_vrfs_protocol_bgp_vpnv6_vrf_conn_aggr"},
+				ImportStateVerifyIgnore: []string{"label_mode_all_vrfs_all_afs_per_prefix", "label_mode_all_vrfs_all_afs_per_ce", "label_mode_all_vrfs_all_afs_vrf_conn_aggr", "label_mode_all_vrfs_bgp_vpnv4_per_vrf", "label_mode_all_vrfs_bgp_vpnv4_per_prefix", "label_mode_all_vrfs_bgp_vpnv4_per_ce", "label_mode_all_vrfs_bgp_vpnv4_vrf_conn_aggr", "label_mode_all_vrfs_bgp_vpnv6_per_vrf", "label_mode_all_vrfs_bgp_vpnv6_per_prefix", "label_mode_all_vrfs_bgp_vpnv6_per_ce", "label_mode_all_vrfs_bgp_vpnv6_vrf_conn_aggr"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -92,7 +92,7 @@ func testAccIosxeMPLSConfig_minimum() string {
 
 func testAccIosxeMPLSConfig_all() string {
 	config := `resource "iosxe_mpls" "test" {` + "\n"
-	config += `	label_mode_all_vrfs_protocol_all_afs_per_vrf = true` + "\n"
+	config += `	label_mode_all_vrfs_all_afs_per_vrf = true` + "\n"
 	config += `}` + "\n"
 	return config
 }

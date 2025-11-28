@@ -27,16 +27,16 @@ data "iosxe_mpls" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
-- `label_mode_all_vrfs_protocol_all_afs_per_ce` (Boolean) Per CE label
-- `label_mode_all_vrfs_protocol_all_afs_per_prefix` (Boolean) Per prefix label (default)
-- `label_mode_all_vrfs_protocol_all_afs_per_vrf` (Boolean) Per VRF label for entire VRF
-- `label_mode_all_vrfs_protocol_all_afs_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_per_ce` (Boolean) Per CE label
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_per_prefix` (Boolean) Per prefix label (default)
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_per_vrf` (Boolean) Per VRF label for entire VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_per_ce` (Boolean) Per CE label
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_per_prefix` (Boolean) Per prefix label (default)
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_per_vrf` (Boolean) Per VRF label for entire VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+- `label_mode_all_vrfs_all_afs_per_ce` (Boolean) Per CE label
+- `label_mode_all_vrfs_all_afs_per_prefix` (Boolean) Per prefix label (default)
+- `label_mode_all_vrfs_all_afs_per_vrf` (Boolean) Per VRF label for entire VRF
+- `label_mode_all_vrfs_all_afs_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+- `label_mode_all_vrfs_bgp_vpnv4_per_ce` (Boolean) Per CE label
+- `label_mode_all_vrfs_bgp_vpnv4_per_prefix` (Boolean) Per prefix label (default)
+- `label_mode_all_vrfs_bgp_vpnv4_per_vrf` (Boolean) Per VRF label for entire VRF
+- `label_mode_all_vrfs_bgp_vpnv4_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+- `label_mode_all_vrfs_bgp_vpnv6_per_ce` (Boolean) Per CE label
+- `label_mode_all_vrfs_bgp_vpnv6_per_prefix` (Boolean) Per prefix label (default)
+- `label_mode_all_vrfs_bgp_vpnv6_per_vrf` (Boolean) Per VRF label for entire VRF
+- `label_mode_all_vrfs_bgp_vpnv6_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
 - `label_protocol` (String) Set platform default label distribution protocol

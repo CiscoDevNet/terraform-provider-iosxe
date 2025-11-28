@@ -92,51 +92,51 @@ func (r *MPLSResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					stringvalidator.OneOf("ldp", "tdp"),
 				},
 			},
-			"label_mode_all_vrfs_protocol_all_afs_per_vrf": schema.BoolAttribute{
+			"label_mode_all_vrfs_all_afs_per_vrf": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_all_afs_per_prefix": schema.BoolAttribute{
+			"label_mode_all_vrfs_all_afs_per_prefix": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_all_afs_per_ce": schema.BoolAttribute{
+			"label_mode_all_vrfs_all_afs_per_ce": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_all_afs_vrf_conn_aggr": schema.BoolAttribute{
+			"label_mode_all_vrfs_all_afs_vrf_conn_aggr": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv4_per_vrf": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv4_per_vrf": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv4_per_prefix": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv4_per_prefix": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv4_per_ce": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv4_per_ce": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv4_vrf_conn_aggr": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv4_vrf_conn_aggr": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv6_per_vrf": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv6_per_vrf": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for entire VRF").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv6_per_prefix": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv6_per_prefix": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per prefix label (default)").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv6_per_ce": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv6_per_ce": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per CE label").String,
 				Optional:            true,
 			},
-			"label_mode_all_vrfs_protocol_bgp_vpnv6_vrf_conn_aggr": schema.BoolAttribute{
+			"label_mode_all_vrfs_bgp_vpnv6_vrf_conn_aggr": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Per VRF label for connected and BGP aggregates in VRF").String,
 				Optional:            true,
 			},

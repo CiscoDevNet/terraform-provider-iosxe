@@ -14,7 +14,7 @@ This resource can manage the MPLS configuration.
 
 ```terraform
 resource "iosxe_mpls" "example" {
-  label_mode_all_vrfs_protocol_all_afs_per_vrf = true
+  label_mode_all_vrfs_all_afs_per_vrf = true
 }
 ```
 
@@ -26,18 +26,18 @@ resource "iosxe_mpls" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `label_mode_all_vrfs_protocol_all_afs_per_ce` (Boolean) Per CE label
-- `label_mode_all_vrfs_protocol_all_afs_per_prefix` (Boolean) Per prefix label (default)
-- `label_mode_all_vrfs_protocol_all_afs_per_vrf` (Boolean) Per VRF label for entire VRF
-- `label_mode_all_vrfs_protocol_all_afs_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_per_ce` (Boolean) Per CE label
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_per_prefix` (Boolean) Per prefix label (default)
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_per_vrf` (Boolean) Per VRF label for entire VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv4_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_per_ce` (Boolean) Per CE label
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_per_prefix` (Boolean) Per prefix label (default)
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_per_vrf` (Boolean) Per VRF label for entire VRF
-- `label_mode_all_vrfs_protocol_bgp_vpnv6_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+- `label_mode_all_vrfs_all_afs_per_ce` (Boolean) Per CE label
+- `label_mode_all_vrfs_all_afs_per_prefix` (Boolean) Per prefix label (default)
+- `label_mode_all_vrfs_all_afs_per_vrf` (Boolean) Per VRF label for entire VRF
+- `label_mode_all_vrfs_all_afs_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+- `label_mode_all_vrfs_bgp_vpnv4_per_ce` (Boolean) Per CE label
+- `label_mode_all_vrfs_bgp_vpnv4_per_prefix` (Boolean) Per prefix label (default)
+- `label_mode_all_vrfs_bgp_vpnv4_per_vrf` (Boolean) Per VRF label for entire VRF
+- `label_mode_all_vrfs_bgp_vpnv4_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
+- `label_mode_all_vrfs_bgp_vpnv6_per_ce` (Boolean) Per CE label
+- `label_mode_all_vrfs_bgp_vpnv6_per_prefix` (Boolean) Per prefix label (default)
+- `label_mode_all_vrfs_bgp_vpnv6_per_vrf` (Boolean) Per VRF label for entire VRF
+- `label_mode_all_vrfs_bgp_vpnv6_vrf_conn_aggr` (Boolean) Per VRF label for connected and BGP aggregates in VRF
 - `label_protocol` (String) Set platform default label distribution protocol
   - Choices: `ldp`, `tdp`
 
