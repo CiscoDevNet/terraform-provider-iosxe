@@ -159,7 +159,7 @@ func (r *CryptoIPSecProfileResource) Create(ctx context.Context, req resource.Cr
 				}
 				for _, i := range emptyLeafsDelete {
 					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
+					if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
 						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
@@ -346,7 +346,7 @@ func (r *CryptoIPSecProfileResource) Update(ctx context.Context, req resource.Up
 				}
 				for _, i := range emptyLeafsDelete {
 					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
+					if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
 						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}

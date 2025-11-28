@@ -699,7 +699,7 @@ func (r *RouteMapResource) Create(ctx context.Context, req resource.CreateReques
 				}
 				for _, i := range emptyLeafsDelete {
 					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
+					if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
 						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
@@ -886,7 +886,7 @@ func (r *RouteMapResource) Update(ctx context.Context, req resource.UpdateReques
 				}
 				for _, i := range emptyLeafsDelete {
 					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
+					if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
 						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
