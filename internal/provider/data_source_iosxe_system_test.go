@@ -36,6 +36,7 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "hostname", "ROUTER-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_bgp_community_new_format", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ipv6_unicast_routing", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ipv6_multicast_routing", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_source_route", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_lookup", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_name", "test.com"))
@@ -130,6 +131,7 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	hostname = "ROUTER-1"` + "\n"
 	config += `	ip_bgp_community_new_format = true` + "\n"
 	config += `	ipv6_unicast_routing = true` + "\n"
+	config += `	ipv6_multicast_routing = true` + "\n"
 	config += `	ip_source_route = false` + "\n"
 	config += `	ip_domain_lookup = true` + "\n"
 	config += `	ip_domain_name = "test.com"` + "\n"

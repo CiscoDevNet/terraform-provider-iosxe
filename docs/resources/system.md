@@ -17,6 +17,7 @@ resource "iosxe_system" "example" {
   hostname                    = "ROUTER-1"
   ip_bgp_community_new_format = true
   ipv6_unicast_routing        = true
+  ipv6_multicast_routing      = true
   ip_source_route             = false
   ip_domain_lookup            = true
   ip_domain_name              = "test.com"
@@ -205,6 +206,7 @@ resource "iosxe_system" "example" {
 - `ip_tacacs_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
 - `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean)
+- `ipv6_multicast_routing` (Boolean) Enable IPV6 multicast forwarding
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
 - `login_delay` (Number) Set delay between successive fail login
   - Range: `1`-`10`
