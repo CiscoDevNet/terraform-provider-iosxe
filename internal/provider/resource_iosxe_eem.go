@@ -505,11 +505,11 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
-									"string_trim_first_string_op_1": schema.StringAttribute{
+									"string_first_string_op_1": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
-									"string_trim_first_string_op_2": schema.StringAttribute{
+									"string_first_string_op_2": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
@@ -546,6 +546,29 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						},
 						"event_timer_cron_ratelimit": schema.Float64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("seconds[.milliseconds] value").AddFloatRangeDescription(0, 3.1536000999e+10).String,
+							Optional:            true,
+						},
+						"event_syslog_pattern": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Pattern match string for the entire message").String,
+							Optional:            true,
+						},
+						"event_syslog_occurs": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Number of occurrences before raising event").AddIntegerRangeDescription(1, 32).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 32),
+							},
+						},
+						"event_syslog_maxrun": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Maximum runtime of applet").AddFloatRangeDescription(0, 3.1536000999e+10).String,
+							Optional:            true,
+						},
+						"event_syslog_ratelimit": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("seconds[.milliseconds] value").AddFloatRangeDescription(0, 3.1536000999e+10).String,
+							Optional:            true,
+						},
+						"event_syslog_period": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Occurrence period").AddFloatRangeDescription(0, 4.294967295999e+12).String,
 							Optional:            true,
 						},
 					},

@@ -92,6 +92,11 @@ type EEMApplets struct {
 	EventTimerCronName          types.String        `tfsdk:"event_timer_cron_name"`
 	EventTimerCronMaxrun        types.Float64       `tfsdk:"event_timer_cron_maxrun"`
 	EventTimerCronRatelimit     types.Float64       `tfsdk:"event_timer_cron_ratelimit"`
+	EventSyslogPattern          types.String        `tfsdk:"event_syslog_pattern"`
+	EventSyslogOccurs           types.Int64         `tfsdk:"event_syslog_occurs"`
+	EventSyslogMaxrun           types.Float64       `tfsdk:"event_syslog_maxrun"`
+	EventSyslogRatelimit        types.Float64       `tfsdk:"event_syslog_ratelimit"`
+	EventSyslogPeriod           types.Float64       `tfsdk:"event_syslog_period"`
 }
 type EEMAppletsActions struct {
 	Name                            types.String `tfsdk:"name"`
@@ -161,8 +166,8 @@ type EEMAppletsActions struct {
 	InfoTypeSnmpVarOid              types.String `tfsdk:"info_type_snmp_var_oid"`
 	InfoTypeSnmpVarOidType          types.String `tfsdk:"info_type_snmp_var_oid_type"`
 	InfoTypeSnmpVarOidTypeValue     types.String `tfsdk:"info_type_snmp_var_oid_type_value"`
-	StringTrimFirstStringOp1        types.String `tfsdk:"string_trim_first_string_op_1"`
-	StringTrimFirstStringOp2        types.String `tfsdk:"string_trim_first_string_op_2"`
+	StringFirstStringOp1            types.String `tfsdk:"string_first_string_op_1"`
+	StringFirstStringOp2            types.String `tfsdk:"string_first_string_op_2"`
 }
 
 // End of section. //template:end types
@@ -292,6 +297,21 @@ func (data EEM) toBody(ctx context.Context) string {
 			}
 			if !item.EventTimerCronRatelimit.IsNull() && !item.EventTimerCronRatelimit.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.cron.ratelimit-set", strconv.FormatFloat(item.EventTimerCronRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPattern.IsNull() && !item.EventSyslogPattern.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.pattern", item.EventSyslogPattern.ValueString())
+			}
+			if !item.EventSyslogOccurs.IsNull() && !item.EventSyslogOccurs.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.occurs", strconv.FormatInt(item.EventSyslogOccurs.ValueInt64(), 10))
+			}
+			if !item.EventSyslogMaxrun.IsNull() && !item.EventSyslogMaxrun.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.maxrun-set", strconv.FormatFloat(item.EventSyslogMaxrun.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogRatelimit.IsNull() && !item.EventSyslogRatelimit.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.ratelimit-set", strconv.FormatFloat(item.EventSyslogRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPeriod.IsNull() && !item.EventSyslogPeriod.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.syslog-choice.period-set", strconv.FormatFloat(item.EventSyslogPeriod.ValueFloat64(), 'f', 1, 64))
 			}
 			if len(item.Actions) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action", []interface{}{})
@@ -517,11 +537,11 @@ func (data EEM) toBody(ctx context.Context) string {
 					if !citem.InfoTypeSnmpVarOidTypeValue.IsNull() && !citem.InfoTypeSnmpVarOidTypeValue.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.var.oid-type-value", citem.InfoTypeSnmpVarOidTypeValue.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp1.IsNull() && !citem.StringTrimFirstStringOp1.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.trim.first.string-op-1", citem.StringTrimFirstStringOp1.ValueString())
+					if !citem.StringFirstStringOp1.IsNull() && !citem.StringFirstStringOp1.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.first.string-op-1", citem.StringFirstStringOp1.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp2.IsNull() && !citem.StringTrimFirstStringOp2.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.trim.first.string-op-2", citem.StringTrimFirstStringOp2.ValueString())
+					if !citem.StringFirstStringOp2.IsNull() && !citem.StringFirstStringOp2.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.first.string-op-2", citem.StringFirstStringOp2.ValueString())
 					}
 				}
 			}
@@ -847,11 +867,11 @@ func (data EEM) toBodyXML(ctx context.Context) string {
 					if !citem.InfoTypeSnmpVarOidTypeValue.IsNull() && !citem.InfoTypeSnmpVarOidTypeValue.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "info/type/snmp/var/oid-type-value", citem.InfoTypeSnmpVarOidTypeValue.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp1.IsNull() && !citem.StringTrimFirstStringOp1.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "string/trim/first/string-op-1", citem.StringTrimFirstStringOp1.ValueString())
+					if !citem.StringFirstStringOp1.IsNull() && !citem.StringFirstStringOp1.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "string/first/string-op-1", citem.StringFirstStringOp1.ValueString())
 					}
-					if !citem.StringTrimFirstStringOp2.IsNull() && !citem.StringTrimFirstStringOp2.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "string/trim/first/string-op-2", citem.StringTrimFirstStringOp2.ValueString())
+					if !citem.StringFirstStringOp2.IsNull() && !citem.StringFirstStringOp2.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "string/first/string-op-2", citem.StringFirstStringOp2.ValueString())
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "action-config/action", ccBody.Res())
 				}
@@ -879,6 +899,21 @@ func (data EEM) toBodyXML(ctx context.Context) string {
 			}
 			if !item.EventTimerCronRatelimit.IsNull() && !item.EventTimerCronRatelimit.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "event/timer-choice/cron/ratelimit-set", strconv.FormatFloat(item.EventTimerCronRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPattern.IsNull() && !item.EventSyslogPattern.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/pattern", item.EventSyslogPattern.ValueString())
+			}
+			if !item.EventSyslogOccurs.IsNull() && !item.EventSyslogOccurs.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/occurs", strconv.FormatInt(item.EventSyslogOccurs.ValueInt64(), 10))
+			}
+			if !item.EventSyslogMaxrun.IsNull() && !item.EventSyslogMaxrun.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/maxrun-set", strconv.FormatFloat(item.EventSyslogMaxrun.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogRatelimit.IsNull() && !item.EventSyslogRatelimit.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/ratelimit-set", strconv.FormatFloat(item.EventSyslogRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventSyslogPeriod.IsNull() && !item.EventSyslogPeriod.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "event/syslog-choice/period-set", strconv.FormatFloat(item.EventSyslogPeriod.ValueFloat64(), 'f', 1, 64))
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/applet", cBody.Res())
 		}
@@ -1438,15 +1473,15 @@ func (data *EEM) updateFromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue = types.StringNull()
 			}
-			if value := cr.Get("string.trim.first.string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringValue(value.String())
+			if value := cr.Get("string.first.string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringNull()
 			}
-			if value := cr.Get("string.trim.first.string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringValue(value.String())
+			if value := cr.Get("string.first.string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringNull()
 			}
 		}
 		if value := r.Get("event.timer-choice.watchdog.time-set"); value.Exists() && !data.Applets[i].EventTimerWatchdogTime.IsNull() {
@@ -1488,6 +1523,31 @@ func (data *EEM) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Applets[i].EventTimerCronRatelimit = types.Float64Value(value.Float())
 		} else {
 			data.Applets[i].EventTimerCronRatelimit = types.Float64Null()
+		}
+		if value := r.Get("event.syslog-choice.pattern"); value.Exists() && !data.Applets[i].EventSyslogPattern.IsNull() {
+			data.Applets[i].EventSyslogPattern = types.StringValue(value.String())
+		} else {
+			data.Applets[i].EventSyslogPattern = types.StringNull()
+		}
+		if value := r.Get("event.syslog-choice.occurs"); value.Exists() && !data.Applets[i].EventSyslogOccurs.IsNull() {
+			data.Applets[i].EventSyslogOccurs = types.Int64Value(value.Int())
+		} else {
+			data.Applets[i].EventSyslogOccurs = types.Int64Null()
+		}
+		if value := r.Get("event.syslog-choice.maxrun-set"); value.Exists() && !data.Applets[i].EventSyslogMaxrun.IsNull() {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Null()
+		}
+		if value := r.Get("event.syslog-choice.ratelimit-set"); value.Exists() && !data.Applets[i].EventSyslogRatelimit.IsNull() {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Null()
+		}
+		if value := r.Get("event.syslog-choice.period-set"); value.Exists() && !data.Applets[i].EventSyslogPeriod.IsNull() {
+			data.Applets[i].EventSyslogPeriod = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogPeriod = types.Float64Null()
 		}
 	}
 }
@@ -2036,15 +2096,15 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue = types.StringNull()
 			}
-			if value := helpers.GetFromXPath(cr, "string/trim/first/string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringValue(value.String())
+			if value := helpers.GetFromXPath(cr, "string/first/string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp1 = types.StringNull()
 			}
-			if value := helpers.GetFromXPath(cr, "string/trim/first/string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringValue(value.String())
+			if value := helpers.GetFromXPath(cr, "string/first/string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() {
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringValue(value.String())
 			} else {
-				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringNull()
+				data.Applets[i].Actions[ci].StringFirstStringOp2 = types.StringNull()
 			}
 		}
 		if value := helpers.GetFromXPath(r, "event/timer-choice/watchdog/time-set"); value.Exists() && !data.Applets[i].EventTimerWatchdogTime.IsNull() {
@@ -2086,6 +2146,31 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Applets[i].EventTimerCronRatelimit = types.Float64Value(value.Float())
 		} else {
 			data.Applets[i].EventTimerCronRatelimit = types.Float64Null()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/pattern"); value.Exists() && !data.Applets[i].EventSyslogPattern.IsNull() {
+			data.Applets[i].EventSyslogPattern = types.StringValue(value.String())
+		} else {
+			data.Applets[i].EventSyslogPattern = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/occurs"); value.Exists() && !data.Applets[i].EventSyslogOccurs.IsNull() {
+			data.Applets[i].EventSyslogOccurs = types.Int64Value(value.Int())
+		} else {
+			data.Applets[i].EventSyslogOccurs = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/maxrun-set"); value.Exists() && !data.Applets[i].EventSyslogMaxrun.IsNull() {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogMaxrun = types.Float64Null()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/ratelimit-set"); value.Exists() && !data.Applets[i].EventSyslogRatelimit.IsNull() {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogRatelimit = types.Float64Null()
+		}
+		if value := helpers.GetFromXPath(r, "event/syslog-choice/period-set"); value.Exists() && !data.Applets[i].EventSyslogPeriod.IsNull() {
+			data.Applets[i].EventSyslogPeriod = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventSyslogPeriod = types.Float64Null()
 		}
 	}
 }
@@ -2392,11 +2477,11 @@ func (data *EEM) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("info.type.snmp.var.oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -2425,6 +2510,21 @@ func (data *EEM) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("event.timer-choice.cron.ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.syslog-choice.occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("event.syslog-choice.maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -2734,11 +2834,11 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("info.type.snmp.var.oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := cv.Get("string.trim.first.string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := cv.Get("string.first.string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -2767,6 +2867,21 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("event.timer-choice.cron.ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.syslog-choice.occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("event.syslog-choice.maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.syslog-choice.period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -3072,11 +3187,11 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					if ccValue := helpers.GetFromXPath(cv, "info/type/snmp/var/oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -3105,6 +3220,21 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "event/timer-choice/cron/ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -3410,11 +3540,11 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					if ccValue := helpers.GetFromXPath(cv, "info/type/snmp/var/oid-type-value"); ccValue.Exists() {
 						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-1"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-1"); ccValue.Exists() {
+						cItem.StringFirstStringOp1 = types.StringValue(ccValue.String())
 					}
-					if ccValue := helpers.GetFromXPath(cv, "string/trim/first/string-op-2"); ccValue.Exists() {
-						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					if ccValue := helpers.GetFromXPath(cv, "string/first/string-op-2"); ccValue.Exists() {
+						cItem.StringFirstStringOp2 = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -3443,6 +3573,21 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "event/timer-choice/cron/ratelimit-set"); cValue.Exists() {
 				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/pattern"); cValue.Exists() {
+				item.EventSyslogPattern = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/occurs"); cValue.Exists() {
+				item.EventSyslogOccurs = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/maxrun-set"); cValue.Exists() {
+				item.EventSyslogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/ratelimit-set"); cValue.Exists() {
+				item.EventSyslogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := helpers.GetFromXPath(v, "event/syslog-choice/period-set"); cValue.Exists() {
+				item.EventSyslogPeriod = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -3474,6 +3619,21 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 				found = false
 			}
 			if found {
+				if !state.Applets[i].EventSyslogPeriod.IsNull() && data.Applets[j].EventSyslogPeriod.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/period-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogRatelimit.IsNull() && data.Applets[j].EventSyslogRatelimit.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/ratelimit-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogMaxrun.IsNull() && data.Applets[j].EventSyslogMaxrun.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/maxrun-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogOccurs.IsNull() && data.Applets[j].EventSyslogOccurs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/occurs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventSyslogPattern.IsNull() && data.Applets[j].EventSyslogPattern.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/syslog-choice/pattern", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Applets[i].EventTimerCronRatelimit.IsNull() && data.Applets[j].EventTimerCronRatelimit.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/cron/ratelimit-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -3516,11 +3676,11 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 							found = false
 						}
 						if found {
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp2.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/trim/first/string-op-2", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp2.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/first", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp1.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/trim/first/string-op-1", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp1.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/first", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidTypeValue.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/var/oid-type-value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
@@ -3840,6 +4000,21 @@ func (data *EEM) addDeletedItemsXML(ctx context.Context, state EEM, body string)
 				found = false
 			}
 			if found {
+				if !state.Applets[i].EventSyslogPeriod.IsNull() && data.Applets[j].EventSyslogPeriod.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/period-set", predicates))
+				}
+				if !state.Applets[i].EventSyslogRatelimit.IsNull() && data.Applets[j].EventSyslogRatelimit.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/ratelimit-set", predicates))
+				}
+				if !state.Applets[i].EventSyslogMaxrun.IsNull() && data.Applets[j].EventSyslogMaxrun.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/maxrun-set", predicates))
+				}
+				if !state.Applets[i].EventSyslogOccurs.IsNull() && data.Applets[j].EventSyslogOccurs.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/occurs", predicates))
+				}
+				if !state.Applets[i].EventSyslogPattern.IsNull() && data.Applets[j].EventSyslogPattern.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/syslog-choice/pattern", predicates))
+				}
 				if !state.Applets[i].EventTimerCronRatelimit.IsNull() && data.Applets[j].EventTimerCronRatelimit.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/ratelimit-set", predicates))
 				}
@@ -3887,11 +4062,11 @@ func (data *EEM) addDeletedItemsXML(ctx context.Context, state EEM, body string)
 							found = false
 						}
 						if found {
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-2", predicates, cpredicates))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/first", predicates, cpredicates))
 							}
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-1", predicates, cpredicates))
+							if !state.Applets[i].Actions[ci].StringFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringFirstStringOp1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/first", predicates, cpredicates))
 							}
 							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidTypeValue.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid-type-value", predicates, cpredicates))

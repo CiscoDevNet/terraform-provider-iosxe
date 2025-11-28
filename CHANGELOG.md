@@ -1,8 +1,10 @@
+
 ## (Unreleased)
 
 - Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data sources
 - Add `iosxe_crypto` resource and data source
 - Add `rd_auto` attribute to `iosxe_vrf` resource and data source
+- Add comprehensive EEM applet support to `iosxe_eem` resource and data source including event triggers (`event_syslog_*`, `event_timer_watchdog_*`, `event_timer_cron_*`, `event_cli_*`) and action types (`cli_command`, `set_*`, `regexp_*`, `if_*`, `elseif_*`, `else`, `while_*`, `foreach_*`, `break`, `continue`, `end`, `exit`, `reload`, `wait`, `increment_*`, `decrement_*`, `append_*`, `divide_*`, `counter_*`, `context_*`, `string_*`, `syslog_*`, `snmp_trap_*`, `info_type_snmp_*`, `handle_error_type`, `puts`, `gets`)
 
 ## 0.11.0
 

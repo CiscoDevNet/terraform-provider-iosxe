@@ -51,6 +51,11 @@ Read-Only:
 - `event_cli_pattern` (String) CLI command pattern match
 - `event_cli_skip` (String) describes whether to skip CLI command execution
 - `event_cli_sync` (String) CLI and EEM policy execution sync or async
+- `event_syslog_maxrun` (Number) Maximum runtime of applet
+- `event_syslog_occurs` (Number) Number of occurrences before raising event
+- `event_syslog_pattern` (String) Pattern match string for the entire message
+- `event_syslog_period` (Number) Occurrence period
+- `event_syslog_ratelimit` (Number) seconds[.milliseconds] value
 - `event_timer_cron_entry` (String) Cron entry for cron timer
 - `event_timer_cron_maxrun` (Number) Maximum runtime of applet
 - `event_timer_cron_name` (String) Timer name string
@@ -125,9 +130,9 @@ Read-Only:
 - `snmp_trap_intdata1` (Number) SNMP integer data1
 - `snmp_trap_intdata2` (Number) SNMP integer data2
 - `snmp_trap_strdata` (String) SNMP trap string
+- `string_first_string_op_1` (String)
+- `string_first_string_op_2` (String)
 - `string_trim` (String) trim characters from both ends of string
-- `string_trim_first_string_op_1` (String)
-- `string_trim_first_string_op_2` (String)
 - `syslog_facility` (String) Facility string
 - `syslog_msg` (String) Syslog message
 - `syslog_priority` (String) Priority of syslog message
