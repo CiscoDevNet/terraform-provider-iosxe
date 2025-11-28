@@ -23,17 +23,13 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -49,26 +45,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &InterfaceVLANResource{}
-	_ resource.ResourceWithImportState = &InterfaceVLANResource{}
+	_ resource.Resource                = &CryptoResource{}
+	_ resource.ResourceWithImportState = &CryptoResource{}
 )
 
-func NewInterfaceVLANResource() resource.Resource {
-	return &InterfaceVLANResource{}
+func NewCryptoResource() resource.Resource {
+	return &CryptoResource{}
 }
 
-type InterfaceVLANResource struct {
+type CryptoResource struct {
 	data *IosxeProviderData
 }
 
-func (r *InterfaceVLANResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_vlan"
+func (r *CryptoResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_crypto"
 }
 
-func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *CryptoResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface VLAN configuration.",
+		MarkdownDescription: "This resource can manage the Crypto configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -89,244 +85,15 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"name": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
-				Required:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 4094),
-				},
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplace(),
-				},
-			},
-			"autostate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable auto-state determination for VLAN").String,
-				Optional:            true,
-			},
-			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface specific description").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(0, 200),
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-				},
-			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
-				Optional:            true,
-			},
-			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
-				Optional:            true,
-			},
-			"ip_local_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable local-proxy ARP").String,
-				Optional:            true,
-			},
-			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
-				Optional:            true,
-			},
-			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
-				Optional:            true,
-			},
-			"vrf_forwarding": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
-				Optional:            true,
-			},
-			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ip address").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ip subnet mask").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"unnumbered": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IP processing without an explicit address").String,
-				Optional:            true,
-			},
-			"ip_dhcp_relay_source_interface": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set source interface for relayed messages").String,
-				Optional:            true,
-			},
-			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
-				Optional:            true,
-			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
-				Optional:            true,
-			},
-			"ip_access_group_out": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"helper_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a destination address for UDP broadcasts").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IP destination address").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
-							Optional:            true,
-						},
-						"vrf": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"bfd_template": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("BFD template").String,
-				Optional:            true,
-			},
-			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
-				Optional:            true,
-			},
-			"bfd_local_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
-				Optional:            true,
-			},
-			"bfd_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(50, 9999).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(50, 9999),
-				},
-			},
-			"bfd_interval_min_rx": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(50, 9999).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(50, 9999),
-				},
-			},
-			"bfd_interval_multiplier": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Multiplier value used to compute holddown").AddIntegerRangeDescription(3, 50).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(3, 50),
-				},
-			},
-			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
-				Optional:            true,
-			},
-			"ipv6_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
-				Optional:            true,
-			},
-			"ipv6_mtu": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1280, 9976),
-				},
-			},
-			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
-				Optional:            true,
-			},
-			"ipv6_address_autoconfig_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
-				Optional:            true,
-			},
-			"ipv6_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
-				Optional:            true,
-			},
-			"ipv6_link_local_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
-							},
-						},
-						"link_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"ipv6_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"prefix": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
-							},
-						},
-						"eui_64": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"load_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify interval for load calculation for an interface").AddIntegerRangeDescription(30, 600).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(30, 600),
-				},
-			},
-			"mac_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Manually set interface MAC address").String,
-				Optional:            true,
-			},
-			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable vpn-id support on this interface").String,
-				Optional:            true,
-			},
-			"ip_igmp_version": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 3),
-				},
-			},
-			"ip_router_isis": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"engine_compliance_shield_disable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow weak crypto to be configured").String,
 				Optional:            true,
 			},
 		},
 	}
 }
 
-func (r *InterfaceVLANResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *CryptoResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -338,8 +105,8 @@ func (r *InterfaceVLANResource) Configure(_ context.Context, req resource.Config
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *InterfaceVLANResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan InterfaceVLAN
+func (r *CryptoResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan Crypto
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -422,8 +189,8 @@ func (r *InterfaceVLANResource) Create(ctx context.Context, req resource.CreateR
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *InterfaceVLANResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state InterfaceVLAN
+func (r *CryptoResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state Crypto
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -449,7 +216,7 @@ func (r *InterfaceVLANResource) Read(ctx context.Context, req resource.ReadReque
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = InterfaceVLAN{Device: state.Device, Id: state.Id}
+				state = Crypto{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -505,8 +272,8 @@ func (r *InterfaceVLANResource) Read(ctx context.Context, req resource.ReadReque
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *InterfaceVLANResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state InterfaceVLAN
+func (r *CryptoResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state Crypto
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -606,8 +373,8 @@ func (r *InterfaceVLANResource) Update(ctx context.Context, req resource.UpdateR
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *InterfaceVLANResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state InterfaceVLAN
+func (r *CryptoResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state Crypto
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -705,31 +472,25 @@ func (r *InterfaceVLANResource) Delete(ctx context.Context, req resource.DeleteR
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *InterfaceVLANResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *CryptoResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 1 && len(idParts) != 2 {
-		expectedIdentifier := "Expected import identifier with format: '<name>'"
-		expectedIdentifier += " or '<name>,<device>'"
+	if len(idParts) != 0 && len(idParts) != 1 {
+		expectedIdentifier := "Expected import identifier with format: ''"
+		expectedIdentifier += " or '<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), helpers.Must(strconv.ParseInt(idParts[0], 10, 64)))...)
-	if len(idParts) == 2 {
+	if len(idParts) == 1 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state InterfaceVLAN
-	diags := resp.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	var state Crypto
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

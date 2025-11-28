@@ -19,6 +19,7 @@ resource "iosxe_interface_vlan" "example" {
   description                    = "My Interface Description"
   shutdown                       = false
   ip_proxy_arp                   = false
+  ip_local_proxy_arp             = false
   ip_redirects                   = false
   ip_unreachables                = false
   vrf_forwarding                 = "VRF1"
@@ -94,6 +95,7 @@ resource "iosxe_interface_vlan" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
+- `ip_local_proxy_arp` (Boolean) Enable local-proxy ARP
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)
