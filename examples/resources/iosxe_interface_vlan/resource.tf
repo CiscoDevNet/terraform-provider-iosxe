@@ -4,6 +4,7 @@ resource "iosxe_interface_vlan" "example" {
   description                    = "My Interface Description"
   shutdown                       = false
   ip_proxy_arp                   = false
+  ip_local_proxy_arp             = false
   ip_redirects                   = false
   ip_unreachables                = false
   vrf_forwarding                 = "VRF1"
