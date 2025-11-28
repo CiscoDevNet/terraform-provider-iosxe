@@ -49,6 +49,7 @@ data "iosxe_interface_vlan" "example" {
 - `ip_dhcp_relay_information_option_vpn_id` (Boolean) Enable vpn-id support on this interface
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_igmp_version` (Number) IGMP version
+- `ip_local_proxy_arp` (Boolean) Enable local-proxy ARP
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)
@@ -69,6 +70,7 @@ data "iosxe_interface_vlan" "example" {
 - `vrf_forwarding` (String) Configure forwarding table
 
 <a id="nestedatt--helper_addresses"></a>
+
 ### Nested Schema for `helper_addresses`
 
 Read-Only:
@@ -77,8 +79,8 @@ Read-Only:
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
-
 <a id="nestedatt--ipv6_addresses"></a>
+
 ### Nested Schema for `ipv6_addresses`
 
 Read-Only:
@@ -86,8 +88,8 @@ Read-Only:
 - `eui_64` (Boolean) Use eui-64 interface identifier
 - `prefix` (String) IPv6 prefix
 
-
 <a id="nestedatt--ipv6_link_local_addresses"></a>
+
 ### Nested Schema for `ipv6_link_local_addresses`
 
 Read-Only:

@@ -1,3 +1,7 @@
+## (Unreleased)
+
+- Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data sources.
+
 ## 0.11.0
 
 - Fix `iosxe_yang` resource payload ordering with NETCONF, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/372)
