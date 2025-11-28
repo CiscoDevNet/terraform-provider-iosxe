@@ -1,0 +1,7 @@
+---
+name: Crypto
+path: Cisco-IOS-XE-native:native/crypto
+doc_category: Crypto
+attributes:
+  - yang_name: Cisco-IOS-XE-crypto:engine/compliance/shield/disable
+    example: true

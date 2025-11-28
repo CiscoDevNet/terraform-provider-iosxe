@@ -1,6 +1,7 @@
 ## (Unreleased)
 
-- Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data sources.
+- Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data sources
+- Add `iosxe_crypto` resource and data source
 
 ## 0.11.0
 
