@@ -27,6 +27,7 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -100,6 +101,10 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 244),
 				},
+			},
+			"rd_auto": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify to enable auto Route Distinguisher").String,
+				Optional:            true,
 			},
 			"rd": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify Route Distinguisher").String,
@@ -329,6 +334,70 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Default:             booldefault.StaticBool(true),
 						},
 					},
+				},
+			},
+			"ipv4_mdt_default_address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("MDT default group IPv4 address").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+				},
+			},
+			"ipv4_mdt_auto_discovery_vxlan": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP auto-discovery for VxLAN").String,
+				Optional:            true,
+			},
+			"ipv4_mdt_auto_discovery_vxlan_inter_as": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Inter-AS BGP auto-discovery for VxLAN").String,
+				Optional:            true,
+			},
+			"ipv4_mdt_auto_discovery_interworking_vxlan_pim": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP auto-discovery for VxLAN PIM interworking").String,
+				Optional:            true,
+			},
+			"ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking").String,
+				Optional:            true,
+			},
+			"ipv4_mdt_overlay_use_bgp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP for MDT overlay signaling").String,
+				Optional:            true,
+			},
+			"ipv4_mdt_overlay_use_bgp_spt_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Shortest path tree-only ASM mode").String,
+				Optional:            true,
+			},
+			"ipv4_mdt_data_multicast": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("MDT data multicast group ranges").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Multicast group base address").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"wildcard": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Wildcard mask for address range").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"list": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Access-list for group range").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"ipv4_mdt_data_threshold": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("MDT switching threshold in Kbps (1-4294967)").AddIntegerRangeDescription(1, 4294967).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4294967),
 				},
 			},
 		},

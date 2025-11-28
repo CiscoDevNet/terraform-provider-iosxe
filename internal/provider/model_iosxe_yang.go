@@ -123,9 +123,32 @@ func (data Yang) toBodyXML(ctx context.Context) string {
 				var listAttributes map[string]string
 				data.Lists[i].Items[ii].ElementsAs(ctx, &listAttributes, false)
 				attrs := netconf.Body{}
-				for attr, value := range listAttributes {
-					attrs = helpers.SetFromXPath(attrs, attr, value)
+
+				// Get key(s) for this list
+				keys := strings.Split(data.Lists[i].Key.ValueString(), ",")
+
+				// First, set all key attributes in order
+				for _, key := range keys {
+					if value, ok := listAttributes[key]; ok {
+						attrs = helpers.SetFromXPath(attrs, key, value)
+					}
 				}
+
+				// Then, set all non-key attributes
+				for attr, value := range listAttributes {
+					// Skip if this is a key attribute (already set above)
+					isKey := false
+					for _, key := range keys {
+						if attr == key {
+							isKey = true
+							break
+						}
+					}
+					if !isKey {
+						attrs = helpers.SetFromXPath(attrs, attr, value)
+					}
+				}
+
 				body = helpers.SetRawFromXPath(body, data.Path.ValueString()+"/"+data.Lists[i].Name.ValueString(), attrs.Res())
 			}
 		} else if len(data.Lists[i].Values.Elements()) > 0 {

@@ -29,14 +29,25 @@ attributes:
     example: 123
     allow_import_changes: true
     delete_parent: true
+  - yang_name: key/encryption
+    tf_name: key_encryption
+    write_only: true
+    example: 0
   - yang_name: automate-tester/username
     example: dummy
   - yang_name: automate-tester/ignore-acct-port
+    example: true
+  - yang_name: automate-tester/ignore-auth-port
     example: true
   - yang_name: automate-tester/type-of-testing/probe-on-config/probe-on-config
     xpath: automate-tester/probe-on-config
     tf_name: automate_tester_probe_on_config
     example: true
+  - yang_name: automate-tester/type-of-testing/idle-time-config/idle-time-config
+    xpath: automate-tester/idle-time-config
+    tf_name: automate_tester_idle_time
+    example: 5
+    exclude_test: true
   - yang_name: pac/key/key
     tf_name: pac_key
     write_only: true

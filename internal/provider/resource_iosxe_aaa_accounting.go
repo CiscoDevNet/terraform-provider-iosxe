@@ -407,6 +407,74 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 					},
 				},
 			},
+			"dot1x_default_start_stop_group1": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"dot1x_default_start_stop_group2": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"dot1x_default_start_stop_group3": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"dot1x_default_start_stop_group4": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"dot1x_default_start_stop_broadcast": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+				Optional:            true,
+			},
+			"dot1x_default_start_stop_group_broadcast": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+				Optional:            true,
+			},
+			"dot1x_default_start_stop_group_logger": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+				Optional:            true,
+			},
+			"dot1x": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Named Accounting list (max 31 characters, longer will be rejected).").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"start_stop_group1": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"start_stop_group2": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"start_stop_group3": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"start_stop_group4": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"start_stop_broadcast": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							Optional:            true,
+						},
+						"start_stop_group_broadcast": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
+							Optional:            true,
+						},
+						"start_stop_group_logger": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

@@ -534,6 +534,25 @@ attributes:
       - yang_name: es-value
         id: true
         example: 1
+  - yang_name: Cisco-IOS-XE-ethernet:carrier-delay/delay-choice/msec/msec
+    xpath: Cisco-IOS-XE-ethernet:carrier-delay/msec
+    tf_name: carrier_delay_msec
+    example: 250
+  - yang_name: hold-queue
+    tf_name: hold_queues
+    type: List
+    attributes:
+      - yang_name: direction
+        id: true
+        example: in
+      - yang_name: queue-length
+        example: 50
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/version
+    example: 3
+  - yang_name: ip/router/Cisco-IOS-XE-isis:isis/tag
+    tf_name: ip_router_isis
+    example: TEST
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

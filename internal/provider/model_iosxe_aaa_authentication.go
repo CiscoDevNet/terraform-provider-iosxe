@@ -74,6 +74,10 @@ type AAAAuthentication struct {
 	EnableDefaultGroup4Group  types.String              `tfsdk:"enable_default_group4_group"`
 	EnableDefaultGroup4Line   types.Bool                `tfsdk:"enable_default_group4_line"`
 	EnableDefaultGroup4None   types.Bool                `tfsdk:"enable_default_group4_none"`
+	EnableDefaultGroupLegacy  types.String              `tfsdk:"enable_default_group_legacy"`
+	EnableDefaultEnableLegacy types.Bool                `tfsdk:"enable_default_enable_legacy"`
+	EnableDefaultLineLegacy   types.Bool                `tfsdk:"enable_default_line_legacy"`
+	EnableDefaultNoneLegacy   types.Bool                `tfsdk:"enable_default_none_legacy"`
 }
 
 type AAAAuthenticationData struct {
@@ -109,6 +113,10 @@ type AAAAuthenticationData struct {
 	EnableDefaultGroup4Group  types.String              `tfsdk:"enable_default_group4_group"`
 	EnableDefaultGroup4Line   types.Bool                `tfsdk:"enable_default_group4_line"`
 	EnableDefaultGroup4None   types.Bool                `tfsdk:"enable_default_group4_none"`
+	EnableDefaultGroupLegacy  types.String              `tfsdk:"enable_default_group_legacy"`
+	EnableDefaultEnableLegacy types.Bool                `tfsdk:"enable_default_enable_legacy"`
+	EnableDefaultLineLegacy   types.Bool                `tfsdk:"enable_default_line_legacy"`
+	EnableDefaultNoneLegacy   types.Bool                `tfsdk:"enable_default_none_legacy"`
 }
 type AAAAuthenticationLogins struct {
 	Name     types.String `tfsdk:"name"`
@@ -307,6 +315,24 @@ func (data AAAAuthentication) toBody(ctx context.Context) string {
 	if !data.EnableDefaultGroup4None.IsNull() && !data.EnableDefaultGroup4None.IsUnknown() {
 		if data.EnableDefaultGroup4None.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.default.group4.none", map[string]string{})
+		}
+	}
+	if !data.EnableDefaultGroupLegacy.IsNull() && !data.EnableDefaultGroupLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.default.group", data.EnableDefaultGroupLegacy.ValueString())
+	}
+	if !data.EnableDefaultEnableLegacy.IsNull() && !data.EnableDefaultEnableLegacy.IsUnknown() {
+		if data.EnableDefaultEnableLegacy.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.default.enable", map[string]string{})
+		}
+	}
+	if !data.EnableDefaultLineLegacy.IsNull() && !data.EnableDefaultLineLegacy.IsUnknown() {
+		if data.EnableDefaultLineLegacy.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.default.line", map[string]string{})
+		}
+	}
+	if !data.EnableDefaultNoneLegacy.IsNull() && !data.EnableDefaultNoneLegacy.IsUnknown() {
+		if data.EnableDefaultNoneLegacy.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.default.none", map[string]string{})
 		}
 	}
 	if len(data.Logins) > 0 {
@@ -858,6 +884,30 @@ func (data AAAAuthentication) toBodyXML(ctx context.Context) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/enable/default/group4/none", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/enable/default/group4/none")
+		}
+	}
+	if !data.EnableDefaultGroupLegacy.IsNull() && !data.EnableDefaultGroupLegacy.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/enable/default/group", data.EnableDefaultGroupLegacy.ValueString())
+	}
+	if !data.EnableDefaultEnableLegacy.IsNull() && !data.EnableDefaultEnableLegacy.IsUnknown() {
+		if data.EnableDefaultEnableLegacy.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/enable/default/enable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/enable/default/enable")
+		}
+	}
+	if !data.EnableDefaultLineLegacy.IsNull() && !data.EnableDefaultLineLegacy.IsUnknown() {
+		if data.EnableDefaultLineLegacy.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/enable/default/line", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/enable/default/line")
+		}
+	}
+	if !data.EnableDefaultNoneLegacy.IsNull() && !data.EnableDefaultNoneLegacy.IsUnknown() {
+		if data.EnableDefaultNoneLegacy.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/enable/default/none", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/enable/default/none")
 		}
 	}
 	bodyString, err := body.String()
@@ -1414,6 +1464,38 @@ func (data *AAAAuthentication) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.EnableDefaultGroup4None = types.BoolNull()
 	}
+	if value := res.Get(prefix + "enable.default.group"); value.Exists() && !data.EnableDefaultGroupLegacy.IsNull() {
+		data.EnableDefaultGroupLegacy = types.StringValue(value.String())
+	} else {
+		data.EnableDefaultGroupLegacy = types.StringNull()
+	}
+	if value := res.Get(prefix + "enable.default.enable"); !data.EnableDefaultEnableLegacy.IsNull() {
+		if value.Exists() {
+			data.EnableDefaultEnableLegacy = types.BoolValue(true)
+		} else {
+			data.EnableDefaultEnableLegacy = types.BoolValue(false)
+		}
+	} else {
+		data.EnableDefaultEnableLegacy = types.BoolNull()
+	}
+	if value := res.Get(prefix + "enable.default.line"); !data.EnableDefaultLineLegacy.IsNull() {
+		if value.Exists() {
+			data.EnableDefaultLineLegacy = types.BoolValue(true)
+		} else {
+			data.EnableDefaultLineLegacy = types.BoolValue(false)
+		}
+	} else {
+		data.EnableDefaultLineLegacy = types.BoolNull()
+	}
+	if value := res.Get(prefix + "enable.default.none"); !data.EnableDefaultNoneLegacy.IsNull() {
+		if value.Exists() {
+			data.EnableDefaultNoneLegacy = types.BoolValue(true)
+		} else {
+			data.EnableDefaultNoneLegacy = types.BoolValue(false)
+		}
+	} else {
+		data.EnableDefaultNoneLegacy = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1959,6 +2041,38 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup4None = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group"); value.Exists() && !data.EnableDefaultGroupLegacy.IsNull() {
+		data.EnableDefaultGroupLegacy = types.StringValue(value.String())
+	} else {
+		data.EnableDefaultGroupLegacy = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/enable"); !data.EnableDefaultEnableLegacy.IsNull() {
+		if value.Exists() {
+			data.EnableDefaultEnableLegacy = types.BoolValue(true)
+		} else {
+			data.EnableDefaultEnableLegacy = types.BoolValue(false)
+		}
+	} else {
+		data.EnableDefaultEnableLegacy = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/line"); !data.EnableDefaultLineLegacy.IsNull() {
+		if value.Exists() {
+			data.EnableDefaultLineLegacy = types.BoolValue(true)
+		} else {
+			data.EnableDefaultLineLegacy = types.BoolValue(false)
+		}
+	} else {
+		data.EnableDefaultLineLegacy = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/none"); !data.EnableDefaultNoneLegacy.IsNull() {
+		if value.Exists() {
+			data.EnableDefaultNoneLegacy = types.BoolValue(true)
+		} else {
+			data.EnableDefaultNoneLegacy = types.BoolValue(false)
+		}
+	} else {
+		data.EnableDefaultNoneLegacy = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -2263,6 +2377,24 @@ func (data *AAAAuthentication) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableDefaultGroup4None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4None = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "enable.default.group"); value.Exists() {
+		data.EnableDefaultGroupLegacy = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "enable.default.enable"); value.Exists() {
+		data.EnableDefaultEnableLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultEnableLegacy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "enable.default.line"); value.Exists() {
+		data.EnableDefaultLineLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultLineLegacy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "enable.default.none"); value.Exists() {
+		data.EnableDefaultNoneLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultNoneLegacy = types.BoolValue(false)
 	}
 }
 
@@ -2569,6 +2701,24 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.EnableDefaultGroup4None = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "enable.default.group"); value.Exists() {
+		data.EnableDefaultGroupLegacy = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "enable.default.enable"); value.Exists() {
+		data.EnableDefaultEnableLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultEnableLegacy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "enable.default.line"); value.Exists() {
+		data.EnableDefaultLineLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultLineLegacy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "enable.default.none"); value.Exists() {
+		data.EnableDefaultNoneLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultNoneLegacy = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2869,6 +3019,24 @@ func (data *AAAAuthentication) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.EnableDefaultGroup4None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4None = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group"); value.Exists() {
+		data.EnableDefaultGroupLegacy = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/enable"); value.Exists() {
+		data.EnableDefaultEnableLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultEnableLegacy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/line"); value.Exists() {
+		data.EnableDefaultLineLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultLineLegacy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/none"); value.Exists() {
+		data.EnableDefaultNoneLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultNoneLegacy = types.BoolValue(false)
 	}
 }
 
@@ -3171,6 +3339,24 @@ func (data *AAAAuthenticationData) fromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.EnableDefaultGroup4None = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group"); value.Exists() {
+		data.EnableDefaultGroupLegacy = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/enable"); value.Exists() {
+		data.EnableDefaultEnableLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultEnableLegacy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/line"); value.Exists() {
+		data.EnableDefaultLineLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultLineLegacy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/none"); value.Exists() {
+		data.EnableDefaultNoneLegacy = types.BoolValue(true)
+	} else {
+		data.EnableDefaultNoneLegacy = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -3179,6 +3365,18 @@ func (data *AAAAuthenticationData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAuthentication) []string {
 	deletedItems := make([]string, 0)
+	if !state.EnableDefaultNoneLegacy.IsNull() && data.EnableDefaultNoneLegacy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/default/none", state.getPath()))
+	}
+	if !state.EnableDefaultLineLegacy.IsNull() && data.EnableDefaultLineLegacy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/default/line", state.getPath()))
+	}
+	if !state.EnableDefaultEnableLegacy.IsNull() && data.EnableDefaultEnableLegacy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/default/enable", state.getPath()))
+	}
+	if !state.EnableDefaultGroupLegacy.IsNull() && data.EnableDefaultGroupLegacy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/default/group", state.getPath()))
+	}
 	if !state.EnableDefaultGroup4None.IsNull() && data.EnableDefaultGroup4None.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/default/group4/none", state.getPath()))
 	}
@@ -3431,6 +3629,18 @@ func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAut
 
 func (data *AAAAuthentication) addDeletedItemsXML(ctx context.Context, state AAAAuthentication, body string) string {
 	b := netconf.NewBody(body)
+	if !state.EnableDefaultNoneLegacy.IsNull() && data.EnableDefaultNoneLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/none")
+	}
+	if !state.EnableDefaultLineLegacy.IsNull() && data.EnableDefaultLineLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/line")
+	}
+	if !state.EnableDefaultEnableLegacy.IsNull() && data.EnableDefaultEnableLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/enable")
+	}
+	if !state.EnableDefaultGroupLegacy.IsNull() && data.EnableDefaultGroupLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group")
+	}
 	if !state.EnableDefaultGroup4None.IsNull() && data.EnableDefaultGroup4None.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/none")
 	}
@@ -3694,6 +3904,15 @@ func (data *AAAAuthentication) addDeletedItemsXML(ctx context.Context, state AAA
 
 func (data *AAAAuthentication) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.EnableDefaultNoneLegacy.IsNull() && !data.EnableDefaultNoneLegacy.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/enable/default/none", data.getPath()))
+	}
+	if !data.EnableDefaultLineLegacy.IsNull() && !data.EnableDefaultLineLegacy.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/enable/default/line", data.getPath()))
+	}
+	if !data.EnableDefaultEnableLegacy.IsNull() && !data.EnableDefaultEnableLegacy.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/enable/default/enable", data.getPath()))
+	}
 	if !data.EnableDefaultGroup4None.IsNull() && !data.EnableDefaultGroup4None.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/enable/default/group4/none", data.getPath()))
 	}
@@ -3832,6 +4051,18 @@ func (data *AAAAuthentication) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *AAAAuthentication) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.EnableDefaultNoneLegacy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/default/none", data.getPath()))
+	}
+	if !data.EnableDefaultLineLegacy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/default/line", data.getPath()))
+	}
+	if !data.EnableDefaultEnableLegacy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/default/enable", data.getPath()))
+	}
+	if !data.EnableDefaultGroupLegacy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/default/group", data.getPath()))
+	}
 	if !data.EnableDefaultGroup4None.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/default/group4/none", data.getPath()))
 	}
@@ -3936,6 +4167,18 @@ func (data *AAAAuthentication) getDeletePaths(ctx context.Context) []string {
 
 func (data *AAAAuthentication) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.EnableDefaultNoneLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/none")
+	}
+	if !data.EnableDefaultLineLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/line")
+	}
+	if !data.EnableDefaultEnableLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/enable")
+	}
+	if !data.EnableDefaultGroupLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group")
+	}
 	if !data.EnableDefaultGroup4None.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/none")
 	}

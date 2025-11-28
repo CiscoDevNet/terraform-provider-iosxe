@@ -76,6 +76,10 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "VRF specific description",
 				Computed:            true,
 			},
+			"rd_auto": schema.BoolAttribute{
+				MarkdownDescription: "Specify to enable auto Route Distinguisher",
+				Computed:            true,
+			},
 			"rd": schema.StringAttribute{
 				MarkdownDescription: "Specify Route Distinguisher",
 				Computed:            true,
@@ -255,6 +259,58 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						},
 					},
 				},
+			},
+			"ipv4_mdt_default_address": schema.StringAttribute{
+				MarkdownDescription: "MDT default group IPv4 address",
+				Computed:            true,
+			},
+			"ipv4_mdt_auto_discovery_vxlan": schema.BoolAttribute{
+				MarkdownDescription: "Enable BGP auto-discovery for VxLAN",
+				Computed:            true,
+			},
+			"ipv4_mdt_auto_discovery_vxlan_inter_as": schema.BoolAttribute{
+				MarkdownDescription: "Enable Inter-AS BGP auto-discovery for VxLAN",
+				Computed:            true,
+			},
+			"ipv4_mdt_auto_discovery_interworking_vxlan_pim": schema.BoolAttribute{
+				MarkdownDescription: "Enable BGP auto-discovery for VxLAN PIM interworking",
+				Computed:            true,
+			},
+			"ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as": schema.BoolAttribute{
+				MarkdownDescription: "Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking",
+				Computed:            true,
+			},
+			"ipv4_mdt_overlay_use_bgp": schema.BoolAttribute{
+				MarkdownDescription: "Enable BGP for MDT overlay signaling",
+				Computed:            true,
+			},
+			"ipv4_mdt_overlay_use_bgp_spt_only": schema.BoolAttribute{
+				MarkdownDescription: "Enable Shortest path tree-only ASM mode",
+				Computed:            true,
+			},
+			"ipv4_mdt_data_multicast": schema.ListNestedAttribute{
+				MarkdownDescription: "MDT data multicast group ranges",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: "Multicast group base address",
+							Computed:            true,
+						},
+						"wildcard": schema.StringAttribute{
+							MarkdownDescription: "Wildcard mask for address range",
+							Computed:            true,
+						},
+						"list": schema.StringAttribute{
+							MarkdownDescription: "Access-list for group range",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv4_mdt_data_threshold": schema.Int64Attribute{
+				MarkdownDescription: "MDT switching threshold in Kbps (1-4294967)",
+				Computed:            true,
 			},
 		},
 	}

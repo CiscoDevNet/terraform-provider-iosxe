@@ -100,6 +100,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Enable unicast routing").String,
 				Optional:            true,
 			},
+			"ipv6_multicast_routing": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IPV6 multicast forwarding").String,
+				Optional:            true,
+			},
 			"mtu": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1500, 9198).String,
 				Optional:            true,
@@ -950,6 +954,57 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("dst-ip", "dst-mac", "dst-mixed-ip-port", "dst-port", "mpls", "src-dst-ip", "src-dst-mac", "src-dst-mixed-ip-port", "src-dst-port", "src-ip", "src-mac", "src-mixed-ip-port", "src-port", "vlan-dst-ip", "vlan-dst-mixed-ip-port", "vlan-src-dst-ip", "vlan-src-dst-mixed-ip-port", "vlan-src-ip", "vlan-src-mixed-ip-port"),
+				},
+			},
+			"authentication_mac_move_permit": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("PERMIT MAC moves (clears existing session)").String,
+				Optional:            true,
+			},
+			"authentication_mac_move_deny_uncontrolled": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Deny MAC move to uncontrolled port").String,
+				Optional:            true,
+			},
+			"ip_default_gateway": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify default gateway (if not routing IP)").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+				},
+			},
+			"device_classifier": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable classification of attached devices").String,
+				Optional:            true,
+			},
+			"table_maps": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Table Map").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"default": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("the default behavior for setting value not found in the table map").String,
+							Optional:            true,
+						},
+						"mappings": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("map to-value from from-value").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"from": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("map from value").String,
+										Required:            true,
+									},
+									"to": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("map to value").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},

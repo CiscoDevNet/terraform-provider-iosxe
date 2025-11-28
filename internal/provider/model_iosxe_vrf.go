@@ -47,6 +47,7 @@ type VRF struct {
 	DeleteMode                     types.String                        `tfsdk:"delete_mode"`
 	Name                           types.String                        `tfsdk:"name"`
 	Description                    types.String                        `tfsdk:"description"`
+	RdAuto                         types.Bool                          `tfsdk:"rd_auto"`
 	Rd                             types.String                        `tfsdk:"rd"`
 	AddressFamilyIpv4              types.Bool                          `tfsdk:"address_family_ipv4"`
 	AddressFamilyIpv6              types.Bool                          `tfsdk:"address_family_ipv6"`
@@ -69,6 +70,7 @@ type VRFData struct {
 	Id                             types.String                        `tfsdk:"id"`
 	Name                           types.String                        `tfsdk:"name"`
 	Description                    types.String                        `tfsdk:"description"`
+	RdAuto                         types.Bool                          `tfsdk:"rd_auto"`
 	Rd                             types.String                        `tfsdk:"rd"`
 	AddressFamilyIpv4              types.Bool                          `tfsdk:"address_family_ipv4"`
 	AddressFamilyIpv6              types.Bool                          `tfsdk:"address_family_ipv6"`
@@ -126,6 +128,11 @@ type VRFIpv6RouteTargetExportStitching struct {
 	Value     types.String `tfsdk:"value"`
 	Stitching types.Bool   `tfsdk:"stitching"`
 }
+type VRFIpv4MdtDataMulticast struct {
+	Address  types.String `tfsdk:"address"`
+	Wildcard types.String `tfsdk:"wildcard"`
+	List     types.String `tfsdk:"list"`
+}
 
 // End of section. //template:end types
 
@@ -175,6 +182,11 @@ func (data VRF) toBody(ctx context.Context) string {
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
 	}
+	if !data.RdAuto.IsNull() && !data.RdAuto.IsUnknown() {
+		if data.RdAuto.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rd-auto", map[string]string{})
+		}
+	}
 	if !data.Rd.IsNull() && !data.Rd.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rd", data.Rd.ValueString())
 	}
@@ -190,6 +202,42 @@ func (data VRF) toBody(ctx context.Context) string {
 	}
 	if !data.VpnId.IsNull() && !data.VpnId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vpn.id", data.VpnId.ValueString())
+	}
+	if !data.Ipv4MdtDefaultAddress.IsNull() && !data.Ipv4MdtDefaultAddress.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.default.address", data.Ipv4MdtDefaultAddress.ValueString())
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlan.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryVxlan.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.auto-discovery.vxlan-config.vxlan", map[string]string{})
+		}
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryVxlanInterAs.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.auto-discovery.vxlan-config.inter-as", map[string]string{})
+		}
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.vxlan-pim", map[string]string{})
+		}
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.inter-as", map[string]string{})
+		}
+	}
+	if !data.Ipv4MdtOverlayUseBgp.IsNull() && !data.Ipv4MdtOverlayUseBgp.IsUnknown() {
+		if data.Ipv4MdtOverlayUseBgp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.overlay.use-bgp-config", map[string]string{})
+		}
+	}
+	if !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && !data.Ipv4MdtOverlayUseBgpSptOnly.IsUnknown() {
+		if data.Ipv4MdtOverlayUseBgpSptOnly.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.overlay.use-bgp-config.spt-only", map[string]string{})
+		}
+	}
+	if !data.Ipv4MdtDataThreshold.IsNull() && !data.Ipv4MdtDataThreshold.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.data.threshold", strconv.FormatInt(data.Ipv4MdtDataThreshold.ValueInt64(), 10))
 	}
 	if len(data.RouteTargetImport) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-target.import", []interface{}{})
@@ -317,6 +365,20 @@ func (data VRF) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.Ipv4MdtDataMulticast) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.data.multicast", []interface{}{})
+		for index, item := range data.Ipv4MdtDataMulticast {
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.data.multicast"+"."+strconv.Itoa(index)+"."+"address", item.Address.ValueString())
+			}
+			if !item.Wildcard.IsNull() && !item.Wildcard.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.data.multicast"+"."+strconv.Itoa(index)+"."+"wildcard", item.Wildcard.ValueString())
+			}
+			if !item.List.IsNull() && !item.List.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.data.multicast"+"."+strconv.Itoa(index)+"."+"list", item.List.ValueString())
+			}
+		}
+	}
 	return body
 }
 
@@ -331,6 +393,13 @@ func (data VRF) toBodyXML(ctx context.Context) string {
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.RdAuto.IsNull() && !data.RdAuto.IsUnknown() {
+		if data.RdAuto.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/rd-auto", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/rd-auto")
+		}
 	}
 	if !data.Rd.IsNull() && !data.Rd.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/rd", data.Rd.ValueString())
@@ -503,6 +572,69 @@ func (data VRF) toBodyXML(ctx context.Context) string {
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching", cBody.Res())
 		}
 	}
+	if !data.Ipv4MdtDefaultAddress.IsNull() && !data.Ipv4MdtDefaultAddress.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/default/address", data.Ipv4MdtDefaultAddress.ValueString())
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlan.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryVxlan.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan")
+		}
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryVxlanInterAs.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as")
+		}
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim")
+		}
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsUnknown() {
+		if data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as")
+		}
+	}
+	if !data.Ipv4MdtOverlayUseBgp.IsNull() && !data.Ipv4MdtOverlayUseBgp.IsUnknown() {
+		if data.Ipv4MdtOverlayUseBgp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config")
+		}
+	}
+	if !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && !data.Ipv4MdtOverlayUseBgpSptOnly.IsUnknown() {
+		if data.Ipv4MdtOverlayUseBgpSptOnly.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only")
+		}
+	}
+	if len(data.Ipv4MdtDataMulticast) > 0 {
+		for _, item := range data.Ipv4MdtDataMulticast {
+			cBody := netconf.Body{}
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "address", item.Address.ValueString())
+			}
+			if !item.Wildcard.IsNull() && !item.Wildcard.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wildcard", item.Wildcard.ValueString())
+			}
+			if !item.List.IsNull() && !item.List.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "list", item.List.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/data/multicast", cBody.Res())
+		}
+	}
+	if !data.Ipv4MdtDataThreshold.IsNull() && !data.Ipv4MdtDataThreshold.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/data/threshold", strconv.FormatInt(data.Ipv4MdtDataThreshold.ValueInt64(), 10))
+	}
 	bodyString, err := body.String()
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
@@ -528,6 +660,15 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.Description = types.StringValue(value.String())
 	} else {
 		data.Description = types.StringNull()
+	}
+	if value := res.Get(prefix + "rd-auto"); !data.RdAuto.IsNull() {
+		if value.Exists() {
+			data.RdAuto = types.BoolValue(true)
+		} else {
+			data.RdAuto = types.BoolValue(false)
+		}
+	} else {
+		data.RdAuto = types.BoolNull()
 	}
 	if value := res.Get(prefix + "rd"); value.Exists() && !data.Rd.IsNull() {
 		data.Rd = types.StringValue(value.String())
@@ -944,6 +1085,109 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv6RouteTargetExportStitching[i].Stitching = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.default.address"); value.Exists() && !data.Ipv4MdtDefaultAddress.IsNull() {
+		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
+	} else {
+		data.Ipv4MdtDefaultAddress = types.StringNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.vxlan-config.vxlan"); !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.vxlan-config.inter-as"); !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.vxlan-pim"); !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.inter-as"); !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.overlay.use-bgp-config"); !data.Ipv4MdtOverlayUseBgp.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtOverlayUseBgp = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtOverlayUseBgp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtOverlayUseBgp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.overlay.use-bgp-config.spt-only"); !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolNull()
+	}
+	for i := range data.Ipv4MdtDataMulticast {
+		keys := [...]string{"address", "wildcard"}
+		keyValues := [...]string{data.Ipv4MdtDataMulticast[i].Address.ValueString(), data.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "address-family.ipv4.mdt.data.multicast").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("address"); value.Exists() && !data.Ipv4MdtDataMulticast[i].Address.IsNull() {
+			data.Ipv4MdtDataMulticast[i].Address = types.StringValue(value.String())
+		} else {
+			data.Ipv4MdtDataMulticast[i].Address = types.StringNull()
+		}
+		if value := r.Get("wildcard"); value.Exists() && !data.Ipv4MdtDataMulticast[i].Wildcard.IsNull() {
+			data.Ipv4MdtDataMulticast[i].Wildcard = types.StringValue(value.String())
+		} else {
+			data.Ipv4MdtDataMulticast[i].Wildcard = types.StringNull()
+		}
+		if value := r.Get("list"); value.Exists() && !data.Ipv4MdtDataMulticast[i].List.IsNull() {
+			data.Ipv4MdtDataMulticast[i].List = types.StringValue(value.String())
+		} else {
+			data.Ipv4MdtDataMulticast[i].List = types.StringNull()
+		}
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.data.threshold"); value.Exists() && !data.Ipv4MdtDataThreshold.IsNull() {
+		data.Ipv4MdtDataThreshold = types.Int64Value(value.Int())
+	} else {
+		data.Ipv4MdtDataThreshold = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -960,6 +1204,15 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Description = types.StringValue(value.String())
 	} else {
 		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd-auto"); !data.RdAuto.IsNull() {
+		if value.Exists() {
+			data.RdAuto = types.BoolValue(true)
+		} else {
+			data.RdAuto = types.BoolValue(false)
+		}
+	} else {
+		data.RdAuto = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() && !data.Rd.IsNull() {
 		data.Rd = types.StringValue(value.String())
@@ -1376,6 +1629,109 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv6RouteTargetExportStitching[i].Stitching = types.BoolNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/default/address"); value.Exists() && !data.Ipv4MdtDefaultAddress.IsNull() {
+		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
+	} else {
+		data.Ipv4MdtDefaultAddress = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan"); !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as"); !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim"); !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as"); !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config"); !data.Ipv4MdtOverlayUseBgp.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtOverlayUseBgp = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtOverlayUseBgp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtOverlayUseBgp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only"); !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() {
+		if value.Exists() {
+			data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(true)
+		} else {
+			data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolNull()
+	}
+	for i := range data.Ipv4MdtDataMulticast {
+		keys := [...]string{"address", "wildcard"}
+		keyValues := [...]string{data.Ipv4MdtDataMulticast[i].Address.ValueString(), data.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/multicast").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Ipv4MdtDataMulticast[i].Address.IsNull() {
+			data.Ipv4MdtDataMulticast[i].Address = types.StringValue(value.String())
+		} else {
+			data.Ipv4MdtDataMulticast[i].Address = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wildcard"); value.Exists() && !data.Ipv4MdtDataMulticast[i].Wildcard.IsNull() {
+			data.Ipv4MdtDataMulticast[i].Wildcard = types.StringValue(value.String())
+		} else {
+			data.Ipv4MdtDataMulticast[i].Wildcard = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "list"); value.Exists() && !data.Ipv4MdtDataMulticast[i].List.IsNull() {
+			data.Ipv4MdtDataMulticast[i].List = types.StringValue(value.String())
+		} else {
+			data.Ipv4MdtDataMulticast[i].List = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/threshold"); value.Exists() && !data.Ipv4MdtDataThreshold.IsNull() {
+		data.Ipv4MdtDataThreshold = types.Int64Value(value.Int())
+	} else {
+		data.Ipv4MdtDataThreshold = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1389,6 +1745,11 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
@@ -1564,6 +1925,59 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv6RouteTargetExportStitching = append(data.Ipv6RouteTargetExportStitching, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.default.address"); value.Exists() {
+		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.vxlan-config.vxlan"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.vxlan-config.inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.vxlan-pim"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.overlay.use-bgp-config"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.overlay.use-bgp-config.spt-only"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.data.multicast"); value.Exists() {
+		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticast, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4MdtDataMulticast{}
+			if cValue := v.Get("address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("list"); cValue.Exists() {
+				item.List = types.StringValue(cValue.String())
+			}
+			data.Ipv4MdtDataMulticast = append(data.Ipv4MdtDataMulticast, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.data.threshold"); value.Exists() {
+		data.Ipv4MdtDataThreshold = types.Int64Value(value.Int())
 	}
 }
 
@@ -1579,6 +1993,11 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
 	}
@@ -1754,6 +2173,59 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.default.address"); value.Exists() {
+		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.vxlan-config.vxlan"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.vxlan-config.inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.vxlan-pim"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.auto-discovery.interworking.vxlan-pim-config.inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.overlay.use-bgp-config"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.overlay.use-bgp-config.spt-only"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.data.multicast"); value.Exists() {
+		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticast, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4MdtDataMulticast{}
+			if cValue := v.Get("address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("list"); cValue.Exists() {
+				item.List = types.StringValue(cValue.String())
+			}
+			data.Ipv4MdtDataMulticast = append(data.Ipv4MdtDataMulticast, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.mdt.data.threshold"); value.Exists() {
+		data.Ipv4MdtDataThreshold = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1763,6 +2235,11 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
@@ -1938,6 +2415,59 @@ func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv6RouteTargetExportStitching = append(data.Ipv6RouteTargetExportStitching, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/default/address"); value.Exists() {
+		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/multicast"); value.Exists() {
+		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticast, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4MdtDataMulticast{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "list"); cValue.Exists() {
+				item.List = types.StringValue(cValue.String())
+			}
+			data.Ipv4MdtDataMulticast = append(data.Ipv4MdtDataMulticast, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/threshold"); value.Exists() {
+		data.Ipv4MdtDataThreshold = types.Int64Value(value.Int())
 	}
 }
 
@@ -1949,6 +2479,11 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
 	}
@@ -2124,6 +2659,59 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/default/address"); value.Exists() {
+		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlan = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryVxlanInterAs = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as"); value.Exists() {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only"); value.Exists() {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(true)
+	} else {
+		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/multicast"); value.Exists() {
+		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticast, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFIpv4MdtDataMulticast{}
+			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "list"); cValue.Exists() {
+				item.List = types.StringValue(cValue.String())
+			}
+			data.Ipv4MdtDataMulticast = append(data.Ipv4MdtDataMulticast, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/threshold"); value.Exists() {
+		data.Ipv4MdtDataThreshold = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2132,6 +2720,64 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 	deletedItems := make([]string, 0)
+	if !state.Ipv4MdtDataThreshold.IsNull() && data.Ipv4MdtDataThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/data/threshold", state.getPath()))
+	}
+	for i := range state.Ipv4MdtDataMulticast {
+		stateKeyValues := [...]string{state.Ipv4MdtDataMulticast[i].Address.ValueString(), state.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4MdtDataMulticast[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4MdtDataMulticast[i].Wildcard.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4MdtDataMulticast {
+			found = true
+			if state.Ipv4MdtDataMulticast[i].Address.ValueString() != data.Ipv4MdtDataMulticast[j].Address.ValueString() {
+				found = false
+			}
+			if state.Ipv4MdtDataMulticast[i].Wildcard.ValueString() != data.Ipv4MdtDataMulticast[j].Wildcard.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4MdtDataMulticast[i].List.IsNull() && data.Ipv4MdtDataMulticast[j].List.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/data/multicast=%v/list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/data/multicast=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only", state.getPath()))
+	}
+	if !state.Ipv4MdtOverlayUseBgp.IsNull() && data.Ipv4MdtOverlayUseBgp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/overlay/use-bgp-config", state.getPath()))
+	}
+	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as", state.getPath()))
+	}
+	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim", state.getPath()))
+	}
+	if !state.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as", state.getPath()))
+	}
+	if !state.Ipv4MdtAutoDiscoveryVxlan.IsNull() && data.Ipv4MdtAutoDiscoveryVxlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan", state.getPath()))
+	}
+	if !state.Ipv4MdtDefaultAddress.IsNull() && data.Ipv4MdtDefaultAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/default/address", state.getPath()))
+	}
 	for i := range state.Ipv6RouteTargetExportStitching {
 		stateKeyValues := [...]string{state.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
 
@@ -2443,6 +3089,9 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 	if !state.Rd.IsNull() && data.Rd.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/rd", state.getPath()))
 	}
+	if !state.RdAuto.IsNull() && data.RdAuto.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rd-auto", state.getPath()))
+	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
@@ -2456,6 +3105,69 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 
 func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string) string {
 	b := netconf.NewBody(body)
+	if !state.Ipv4MdtDataThreshold.IsNull() && data.Ipv4MdtDataThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/data/threshold")
+	}
+	for i := range state.Ipv4MdtDataMulticast {
+		stateKeys := [...]string{"address", "wildcard"}
+		stateKeyValues := [...]string{state.Ipv4MdtDataMulticast[i].Address.ValueString(), state.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4MdtDataMulticast[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4MdtDataMulticast[i].Wildcard.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4MdtDataMulticast {
+			found = true
+			if state.Ipv4MdtDataMulticast[i].Address.ValueString() != data.Ipv4MdtDataMulticast[j].Address.ValueString() {
+				found = false
+			}
+			if state.Ipv4MdtDataMulticast[i].Wildcard.ValueString() != data.Ipv4MdtDataMulticast[j].Wildcard.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4MdtDataMulticast[i].List.IsNull() && data.Ipv4MdtDataMulticast[j].List.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/mdt/data/multicast%v/list", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/mdt/data/multicast%v", predicates))
+		}
+	}
+	if !state.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only")
+	}
+	if !state.Ipv4MdtOverlayUseBgp.IsNull() && data.Ipv4MdtOverlayUseBgp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config")
+	}
+	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as")
+	}
+	if !state.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim")
+	}
+	if !state.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as")
+	}
+	if !state.Ipv4MdtAutoDiscoveryVxlan.IsNull() && data.Ipv4MdtAutoDiscoveryVxlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan")
+	}
+	if !state.Ipv4MdtDefaultAddress.IsNull() && data.Ipv4MdtDefaultAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/default/address")
+	}
 	for i := range state.Ipv6RouteTargetExportStitching {
 		stateKeys := [...]string{"asn-ip"}
 		stateKeyValues := [...]string{state.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
@@ -2822,6 +3534,9 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 	if !state.Rd.IsNull() && data.Rd.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rd")
 	}
+	if !state.RdAuto.IsNull() && data.RdAuto.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rd-auto")
+	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
@@ -2836,6 +3551,25 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 
 func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
+	if !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() && !data.Ipv4MdtOverlayUseBgpSptOnly.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only", data.getPath()))
+	}
+	if !data.Ipv4MdtOverlayUseBgp.IsNull() && !data.Ipv4MdtOverlayUseBgp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4/mdt/overlay/use-bgp-config", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() && !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlanInterAs.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() && !data.Ipv4MdtAutoDiscoveryVxlan.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan", data.getPath()))
+	}
 
 	for i := range data.Ipv6RouteTargetExportStitching {
 		keyValues := [...]string{data.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
@@ -2891,6 +3625,9 @@ func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.AddressFamilyIpv4.IsNull() && !data.AddressFamilyIpv4.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4", data.getPath()))
 	}
+	if !data.RdAuto.IsNull() && !data.RdAuto.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rd-auto", data.getPath()))
+	}
 
 	return emptyLeafsDelete
 }
@@ -2901,6 +3638,35 @@ func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *VRF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.Ipv4MdtDataThreshold.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/data/threshold", data.getPath()))
+	}
+	for i := range data.Ipv4MdtDataMulticast {
+		keyValues := [...]string{data.Ipv4MdtDataMulticast[i].Address.ValueString(), data.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/data/multicast=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only", data.getPath()))
+	}
+	if !data.Ipv4MdtOverlayUseBgp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/overlay/use-bgp-config", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as", data.getPath()))
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan", data.getPath()))
+	}
+	if !data.Ipv4MdtDefaultAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/default/address", data.getPath()))
+	}
 	for i := range data.Ipv6RouteTargetExportStitching {
 		keyValues := [...]string{data.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
 
@@ -2968,6 +3734,9 @@ func (data *VRF) getDeletePaths(ctx context.Context) []string {
 	if !data.Rd.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/rd", data.getPath()))
 	}
+	if !data.RdAuto.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rd-auto", data.getPath()))
+	}
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
 	}
@@ -2981,6 +3750,40 @@ func (data *VRF) getDeletePaths(ctx context.Context) []string {
 
 func (data *VRF) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.Ipv4MdtDataThreshold.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/data/threshold")
+	}
+	for i := range data.Ipv4MdtDataMulticast {
+		keys := [...]string{"address", "wildcard"}
+		keyValues := [...]string{data.Ipv4MdtDataMulticast[i].Address.ValueString(), data.Ipv4MdtDataMulticast[i].Wildcard.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/mdt/data/multicast%v", predicates))
+	}
+	if !data.Ipv4MdtOverlayUseBgpSptOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config/spt-only")
+	}
+	if !data.Ipv4MdtOverlayUseBgp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/overlay/use-bgp-config")
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as")
+	}
+	if !data.Ipv4MdtAutoDiscoveryInterworkingVxlanPim.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim")
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlanInterAs.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as")
+	}
+	if !data.Ipv4MdtAutoDiscoveryVxlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan")
+	}
+	if !data.Ipv4MdtDefaultAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/default/address")
+	}
 	for i := range data.Ipv6RouteTargetExportStitching {
 		keys := [...]string{"asn-ip"}
 		keyValues := [...]string{data.Ipv6RouteTargetExportStitching[i].Value.ValueString()}
@@ -3102,6 +3905,9 @@ func (data *VRF) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.Rd.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rd")
+	}
+	if !data.RdAuto.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rd-auto")
 	}
 	if !data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")

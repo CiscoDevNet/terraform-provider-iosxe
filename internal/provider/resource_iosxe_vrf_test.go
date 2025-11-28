@@ -36,7 +36,7 @@ func TestAccIosxeVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "name", "VRF22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "description", "VRF22 description"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "rd", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "rd_auto", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "address_family_ipv4", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "address_family_ipv6", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "vpn_id", "22:22"))
@@ -51,15 +51,23 @@ func TestAccIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_import_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_export.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_default_address", "239.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan_inter_as", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp_spt_only", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_data_multicast.0.address", "239.1.2.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_data_multicast.0.wildcard", "0.0.0.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_data_threshold", "50"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeVRFConfig_minimum(),
+				Config: testAccIosxeVRFPrerequisitesConfig + testAccIosxeVRFConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeVRFConfig_all(),
+				Config: testAccIosxeVRFPrerequisitesConfig + testAccIosxeVRFConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -67,7 +75,7 @@ func TestAccIosxeVRF(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeVRFImportStateIdFunc("iosxe_vrf.test"),
-				ImportStateVerifyIgnore: []string{"ipv4_route_target_import_stitching.0.stitching", "ipv4_route_target_export_stitching.0.stitching", "ipv6_route_target_import_stitching.0.stitching", "ipv6_route_target_export_stitching.0.stitching"},
+				ImportStateVerifyIgnore: []string{"ipv4_route_target_import_stitching.0.stitching", "ipv4_route_target_export_stitching.0.stitching", "ipv6_route_target_import_stitching.0.stitching", "ipv6_route_target_export_stitching.0.stitching", "ipv4_mdt_auto_discovery_interworking_vxlan_pim", "ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -90,6 +98,24 @@ func iosxeVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeVRFPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/route-map[name=RM1]"
+	attributes = {
+		"name" = "RM1"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
@@ -97,6 +123,7 @@ func iosxeVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 func testAccIosxeVRFConfig_minimum() string {
 	config := `resource "iosxe_vrf" "test" {` + "\n"
 	config += `	name = "VRF22"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -109,7 +136,7 @@ func testAccIosxeVRFConfig_all() string {
 	config := `resource "iosxe_vrf" "test" {` + "\n"
 	config += `	name = "VRF22"` + "\n"
 	config += `	description = "VRF22 description"` + "\n"
-	config += `	rd = "22:22"` + "\n"
+	config += `	rd_auto = true` + "\n"
 	config += `	address_family_ipv4 = true` + "\n"
 	config += `	address_family_ipv6 = true` + "\n"
 	config += `	vpn_id = "22:22"` + "\n"
@@ -142,6 +169,17 @@ func testAccIosxeVRFConfig_all() string {
 	config += `	ipv6_route_target_export_stitching = [{` + "\n"
 	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv4_mdt_default_address = "239.1.1.1"` + "\n"
+	config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"
+	config += `	ipv4_mdt_auto_discovery_vxlan_inter_as = true` + "\n"
+	config += `	ipv4_mdt_overlay_use_bgp = true` + "\n"
+	config += `	ipv4_mdt_overlay_use_bgp_spt_only = true` + "\n"
+	config += `	ipv4_mdt_data_multicast = [{` + "\n"
+	config += `		address = "239.1.2.0"` + "\n"
+	config += `		wildcard = "0.0.0.255"` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv4_mdt_data_threshold = 50` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

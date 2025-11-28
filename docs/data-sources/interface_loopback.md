@@ -14,7 +14,7 @@ This data source can read the Interface Loopback configuration.
 
 ```terraform
 data "iosxe_interface_loopback" "example" {
-  name = 100
+  name = 201
 }
 ```
 
@@ -38,8 +38,10 @@ data "iosxe_interface_loopback" "example" {
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_igmp_version` (Number) IGMP version
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
 - `ipv4_address_mask` (String) Ip subnet mask

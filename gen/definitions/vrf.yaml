@@ -7,8 +7,11 @@ attributes:
     example: VRF22
   - yang_name: description
     example: VRF22 description
+  - yang_name: rd-auto
+    example: true
   - yang_name: rd
     requires_replace: true
+    exclude_test: true
     example: 22:22
   - yang_name: address-family/ipv4
     example: true
@@ -141,3 +144,68 @@ attributes:
         default_value: true
         exclude_test: true
         example: true
+  - yang_name: address-family/ipv4/mdt/default/address
+    tf_name: ipv4_mdt_default_address
+    description: MDT default group IPv4 address
+    example: 239.1.1.1
+  - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/vxlan/vxlan-config/vxlan
+    xpath: address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan
+    tf_name: ipv4_mdt_auto_discovery_vxlan
+    description: Enable BGP auto-discovery for VxLAN
+    example: true
+  - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/vxlan/vxlan-config/inter-as
+    xpath: address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as
+    tf_name: ipv4_mdt_auto_discovery_vxlan_inter_as
+    description: Enable Inter-AS BGP auto-discovery for VxLAN
+    example: true
+  - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/interworking/interworking/interworking/vxlan-pim/vxlan-pim-config/vxlan-pim
+    xpath: address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim
+    tf_name: ipv4_mdt_auto_discovery_interworking_vxlan_pim
+    description: Enable BGP auto-discovery for VxLAN PIM interworking
+    exclude_test: true
+    example: true
+  - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/interworking/interworking/interworking/vxlan-pim/vxlan-pim-config/inter-as
+    xpath: address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/inter-as
+    tf_name: ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as
+    description: Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
+    exclude_test: true
+    example: true
+  - yang_name: address-family/ipv4/mdt/overlay/use-bgp-config
+    tf_name: ipv4_mdt_overlay_use_bgp
+    description: Enable BGP for MDT overlay signaling
+    example: true
+  - yang_name: address-family/ipv4/mdt/overlay/use-bgp-config/spt-only
+    tf_name: ipv4_mdt_overlay_use_bgp_spt_only
+    description: Enable Shortest path tree-only ASM mode
+    example: true
+  - yang_name: address-family/ipv4/mdt/data/multicast
+    tf_name: ipv4_mdt_data_multicast
+    type: List
+    description: MDT data multicast group ranges
+    attributes:
+      - yang_name: address
+        description: Multicast group base address
+        example: 239.1.2.0
+        id: true
+      - yang_name: wildcard
+        description: Wildcard mask for address range
+        example: 0.0.0.255
+        id: true
+      - yang_name: list
+        description: Access-list for group range
+        example: ACL_MDT
+        exclude_test: true
+  - yang_name: address-family/ipv4/mdt/data/threshold
+    tf_name: ipv4_mdt_data_threshold
+    description: MDT switching threshold in Kbps (1-4294967)
+    example: 50
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+  - path: Cisco-IOS-XE-native:native/route-map[name=RM1]
+    attributes:
+      - name: name
+        value: RM1

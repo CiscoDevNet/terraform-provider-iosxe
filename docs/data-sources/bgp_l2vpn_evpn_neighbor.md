@@ -35,6 +35,15 @@ data "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
 
 - `activate` (Boolean) Enable the address family for this neighbor
 - `id` (String) The path of the retrieved object.
+- `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String)
 - `soft_reconfiguration` (String) Per neighbor soft reconfiguration
+
+<a id="nestedatt--route_maps"></a>
+### Nested Schema for `route_maps`
+
+Read-Only:
+
+- `in_out` (String)
+- `route_map_name` (String)

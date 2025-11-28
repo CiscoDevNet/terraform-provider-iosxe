@@ -18,4 +18,6 @@ resource "iosxe_flow_record" "example" {
   match_datalink_mac_source_address_input      = true
   match_datalink_mac_destination_address_input = true
   match_ipv4_ttl                               = true
+  match_routing_vrf_input                      = true
+  match_vxlan_vnid                             = true
 }

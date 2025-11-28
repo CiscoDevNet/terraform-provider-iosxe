@@ -15,6 +15,9 @@ attributes:
     allow_import_changes: true
   - yang_name: ipv6/unicast-routing
     example: true
+  - yang_name: ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing
+    tf_name: ipv6_multicast_routing
+    example: true
   - yang_name: system/Cisco-IOS-XE-switch:mtu/size
     tf_name: mtu
     exclude_test: true
@@ -674,6 +677,60 @@ attributes:
     tf_name: port_channel_load_balance
     example: src-dst-mixed-ip-port
     test_tags: [C9000V]
+  - yang_name: Cisco-IOS-XE-sanet:authentication/mac-move/permit
+    example: true
+    test_tags: [C8000V]
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled
+    example: true
+    test_tags: [C8000V]
+    exclude_test: true
+  - yang_name: ip/default-gateway
+    example: 192.168.1.1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:device/classifier-enable/classifier
+    tf_name: device_classifier
+    example: true
+    exclude_test: true
+    test_tags: [C9000V]
+  - yang_name: table-map
+    tf_name: table_maps
+    type: List
+    exclude_test: true
+    test_tags: [C9000V]
+    attributes:
+      - yang_name: name
+        id: true
+        example: TABLE-MAP-1
+      - yang_name: Cisco-IOS-XE-qos:default
+        xpath: Cisco-IOS-XE-qos:default
+        tf_name: default
+        type: String
+        description: the default behavior for setting value not found in the table map
+        example: copy
+        no_augment_config: true
+      - yang_name: Cisco-IOS-XE-qos:map-list
+        xpath: Cisco-IOS-XE-qos:map-list
+        tf_name: mappings
+        type: List
+        description: map to-value from from-value
+        no_augment_config: true
+        attributes:
+          - yang_name: from
+            xpath: from
+            tf_name: from
+            id: true
+            type: Int64
+            description: map from value
+            example: 18
+            no_augment_config: true
+          - yang_name: to
+            xpath: to
+            tf_name: to
+            type: Int64
+            description: map to value
+            example: 18
+            no_augment_config: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

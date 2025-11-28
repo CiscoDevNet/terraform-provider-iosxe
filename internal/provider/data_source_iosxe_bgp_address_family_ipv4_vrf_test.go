@@ -38,6 +38,7 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_router_id_loopback", "101"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.ipv4_address", "50.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.ipv4_mask", "255.255.0.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.summary_only", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_static", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks_mask.0.network", "12.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks_mask.0.mask", "255.255.0.0"))
@@ -54,6 +55,7 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_distance_bgp_local", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_maximum_paths_ebgp", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_maximum_paths_ibgp", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_import_path_selection_all", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -118,6 +120,7 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `		ipv4_unicast_aggregate_addresses = [{` + "\n"
 	config += `			ipv4_address = "50.0.0.0"` + "\n"
 	config += `			ipv4_mask = "255.255.0.0"` + "\n"
+	config += `			summary_only = true` + "\n"
 	config += `		}]` + "\n"
 	config += `		ipv4_unicast_redistribute_static = true` + "\n"
 	config += `		ipv4_unicast_networks_mask = [{` + "\n"
@@ -141,6 +144,7 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `		ipv4_unicast_distance_bgp_local = 200` + "\n"
 	config += `		ipv4_unicast_maximum_paths_ebgp = 2` + "\n"
 	config += `		ipv4_unicast_maximum_paths_ibgp = 2` + "\n"
+	config += `		ipv4_unicast_import_path_selection_all = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"

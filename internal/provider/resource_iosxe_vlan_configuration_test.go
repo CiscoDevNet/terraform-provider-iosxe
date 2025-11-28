@@ -39,8 +39,17 @@ func TestAccIosxeVLANConfiguration(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "vlan_id", "123"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "evpn_instance", "123"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "evpn_instance_vni", "10123"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "evpn_instance_legacy", "123"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "evpn_instance_vni_legacy", "10123"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "evpn_instance", "123"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "evpn_instance_vni", "10123"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_configuration.test", "evpn_instance_protected", "true"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -57,7 +66,7 @@ func TestAccIosxeVLANConfiguration(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeVLANConfigurationImportStateIdFunc("iosxe_vlan_configuration.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"evpn_instance_protected", "evpn_instance_profile_protected"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -86,7 +95,7 @@ func iosxeVLANConfigurationImportStateIdFunc(resourceName string) resource.Impor
 
 func testAccIosxeVLANConfigurationConfig_minimum() string {
 	config := `resource "iosxe_vlan_configuration" "test" {` + "\n"
-	config += `	vlan_id = 123` + "\n"
+	config += `	vlan_id = "123"` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -97,9 +106,18 @@ func testAccIosxeVLANConfigurationConfig_minimum() string {
 
 func testAccIosxeVLANConfigurationConfig_all() string {
 	config := `resource "iosxe_vlan_configuration" "test" {` + "\n"
-	config += `	vlan_id = 123` + "\n"
-	config += `	evpn_instance = 123` + "\n"
-	config += `	evpn_instance_vni = 10123` + "\n"
+	config += `	vlan_id = "123"` + "\n"
+	config += `	evpn_instance_legacy = 123` + "\n"
+	config += `	evpn_instance_vni_legacy = 10123` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	evpn_instance = 123` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	evpn_instance_vni = 10123` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	evpn_instance_protected = true` + "\n"
+	}
 	config += `}` + "\n"
 	return config
 }

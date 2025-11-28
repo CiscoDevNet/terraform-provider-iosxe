@@ -74,6 +74,7 @@ type AAAServerRadiusDynamicAuthorClients struct {
 }
 type AAAGroupServerRadius struct {
 	Name                                             types.String                      `tfsdk:"name"`
+	Deadtime                                         types.Int64                       `tfsdk:"deadtime"`
 	ServerNames                                      []AAAGroupServerRadiusServerNames `tfsdk:"server_names"`
 	IpRadiusSourceInterfaceLoopback                  types.Int64                       `tfsdk:"ip_radius_source_interface_loopback"`
 	IpRadiusSourceInterfaceVlan                      types.Int64                       `tfsdk:"ip_radius_source_interface_vlan"`
@@ -187,6 +188,9 @@ func (data AAA) toBody(ctx context.Context) string {
 		for index, item := range data.GroupServerRadius {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.radius"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Deadtime.IsNull() && !item.Deadtime.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.radius"+"."+strconv.Itoa(index)+"."+"deadtime", strconv.FormatInt(item.Deadtime.ValueInt64(), 10))
 			}
 			if !item.IpRadiusSourceInterfaceLoopback.IsNull() && !item.IpRadiusSourceInterfaceLoopback.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.radius"+"."+strconv.Itoa(index)+"."+"ip.radius.source-interface.Loopback", strconv.FormatInt(item.IpRadiusSourceInterfaceLoopback.ValueInt64(), 10))
@@ -317,6 +321,9 @@ func (data AAA) toBodyXML(ctx context.Context) string {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Deadtime.IsNull() && !item.Deadtime.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "deadtime", strconv.FormatInt(item.Deadtime.ValueInt64(), 10))
 			}
 			if len(item.ServerNames) > 0 {
 				for _, citem := range item.ServerNames {
@@ -509,6 +516,11 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.GroupServerRadius[i].Name = types.StringValue(value.String())
 		} else {
 			data.GroupServerRadius[i].Name = types.StringNull()
+		}
+		if value := r.Get("deadtime"); value.Exists() && !data.GroupServerRadius[i].Deadtime.IsNull() {
+			data.GroupServerRadius[i].Deadtime = types.Int64Value(value.Int())
+		} else {
+			data.GroupServerRadius[i].Deadtime = types.Int64Null()
 		}
 		for ci := range data.GroupServerRadius[i].ServerNames {
 			keys := [...]string{"name"}
@@ -795,6 +807,11 @@ func (data *AAA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.GroupServerRadius[i].Name = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "deadtime"); value.Exists() && !data.GroupServerRadius[i].Deadtime.IsNull() {
+			data.GroupServerRadius[i].Deadtime = types.Int64Value(value.Int())
+		} else {
+			data.GroupServerRadius[i].Deadtime = types.Int64Null()
+		}
 		for ci := range data.GroupServerRadius[i].ServerNames {
 			keys := [...]string{"name"}
 			keyValues := [...]string{data.GroupServerRadius[i].ServerNames[ci].Name.ValueString()}
@@ -1041,6 +1058,9 @@ func (data *AAA) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("deadtime"); cValue.Exists() {
+				item.Deadtime = types.Int64Value(cValue.Int())
+			}
 			if cValue := v.Get("server.name"); cValue.Exists() {
 				item.ServerNames = make([]AAAGroupServerRadiusServerNames, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -1192,6 +1212,9 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("deadtime"); cValue.Exists() {
+				item.Deadtime = types.Int64Value(cValue.Int())
+			}
 			if cValue := v.Get("server.name"); cValue.Exists() {
 				item.ServerNames = make([]AAAGroupServerRadiusServerNames, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -1339,6 +1362,9 @@ func (data *AAA) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "deadtime"); cValue.Exists() {
+				item.Deadtime = types.Int64Value(cValue.Int())
+			}
 			if cValue := helpers.GetFromXPath(v, "server/name"); cValue.Exists() {
 				item.ServerNames = make([]AAAGroupServerRadiusServerNames, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
@@ -1485,6 +1511,9 @@ func (data *AAAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			item := AAAGroupServerRadius{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "deadtime"); cValue.Exists() {
+				item.Deadtime = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "server/name"); cValue.Exists() {
 				item.ServerNames = make([]AAAGroupServerRadiusServerNames, 0)
@@ -1756,6 +1785,9 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
+				if !state.GroupServerRadius[i].Deadtime.IsNull() && data.GroupServerRadius[j].Deadtime.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/deadtime", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1991,6 +2023,9 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 					if !found {
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/server/name%v", predicates, cpredicates))
 					}
+				}
+				if !state.GroupServerRadius[i].Deadtime.IsNull() && data.GroupServerRadius[j].Deadtime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius%v/deadtime", predicates))
 				}
 				break
 			}

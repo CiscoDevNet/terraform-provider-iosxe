@@ -68,16 +68,20 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"name": schema.StringAttribute{
-				MarkdownDescription: "Name for the tacacs server configuration",
-				Required:            true,
-			},
-			"address_ipv4": schema.StringAttribute{
-				MarkdownDescription: "IPv4 address or Hostname for tacacs server",
+			"timeout": schema.Int64Attribute{
+				MarkdownDescription: "Time to wait for a TACACS server to reply",
 				Computed:            true,
 			},
-			"timeout": schema.Int64Attribute{
-				MarkdownDescription: "Time to wait for this TACACS server to reply (overrides default)",
+			"directed_request": schema.BoolAttribute{
+				MarkdownDescription: "Allow user to specify tacacs server to use with `@server'",
+				Computed:            true,
+			},
+			"directed_request_restricted": schema.BoolAttribute{
+				MarkdownDescription: "restrict queries to directed request servers only",
+				Computed:            true,
+			},
+			"directed_request_no_truncate": schema.BoolAttribute{
+				MarkdownDescription: "Do not truncate the @hostname from username.",
 				Computed:            true,
 			},
 			"encryption": schema.StringAttribute{
@@ -85,9 +89,13 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed:            true,
 			},
 			"key": schema.StringAttribute{
-				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
+				MarkdownDescription: "",
 				Computed:            true,
 				Sensitive:           true,
+			},
+			"attribute_allow_unknown": schema.BoolAttribute{
+				MarkdownDescription: "Unknown Tacacs+ attributes",
+				Computed:            true,
 			},
 		},
 	}

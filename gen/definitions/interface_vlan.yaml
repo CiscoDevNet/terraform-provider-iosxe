@@ -14,6 +14,8 @@ attributes:
     example: false
   - yang_name: ip/proxy-arp
     example: false
+  - yang_name: ip/local-proxy-arp
+    example: false
   - yang_name: ip/redirects
     example: false
   - yang_name: ip/Cisco-IOS-XE-icmp:unreachables
@@ -136,6 +138,12 @@ attributes:
     example: 0000.dead.beef
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id
     example: true
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/version
+    example: 3
+  - yang_name: ip/router/Cisco-IOS-XE-isis:isis/tag
+    tf_name: ip_router_isis
+    example: TEST
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
