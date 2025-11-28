@@ -84,6 +84,10 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Enable unicast routing",
 				Computed:            true,
 			},
+			"ipv6_multicast_routing": schema.BoolAttribute{
+				MarkdownDescription: "Enable IPV6 multicast forwarding",
+				Computed:            true,
+			},
 			"mtu": schema.Int64Attribute{
 				MarkdownDescription: "",
 				Computed:            true,

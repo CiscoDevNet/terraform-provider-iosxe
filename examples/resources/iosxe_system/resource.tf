@@ -2,6 +2,7 @@ resource "iosxe_system" "example" {
   hostname                    = "ROUTER-1"
   ip_bgp_community_new_format = true
   ipv6_unicast_routing        = true
+  ipv6_multicast_routing      = true
   ip_source_route             = false
   ip_domain_lookup            = true
   ip_domain_name              = "test.com"

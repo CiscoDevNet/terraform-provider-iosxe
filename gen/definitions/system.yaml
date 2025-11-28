@@ -15,6 +15,9 @@ attributes:
     allow_import_changes: true
   - yang_name: ipv6/unicast-routing
     example: true
+  - yang_name: ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing
+    tf_name: ipv6_multicast_routing
+    example: true
   - yang_name: system/Cisco-IOS-XE-switch:mtu/size
     tf_name: mtu
     exclude_test: true

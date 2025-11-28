@@ -47,6 +47,7 @@ type System struct {
 	IpBgpCommunityNewFormat                                types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
 	IpRouting                                              types.Bool                                          `tfsdk:"ip_routing"`
 	Ipv6UnicastRouting                                     types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
+	Ipv6MulticastRouting                                   types.Bool                                          `tfsdk:"ipv6_multicast_routing"`
 	Mtu                                                    types.Int64                                         `tfsdk:"mtu"`
 	IpSourceRoute                                          types.Bool                                          `tfsdk:"ip_source_route"`
 	IpDomainLookup                                         types.Bool                                          `tfsdk:"ip_domain_lookup"`
@@ -197,6 +198,7 @@ type SystemData struct {
 	IpBgpCommunityNewFormat                                types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
 	IpRouting                                              types.Bool                                          `tfsdk:"ip_routing"`
 	Ipv6UnicastRouting                                     types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
+	Ipv6MulticastRouting                                   types.Bool                                          `tfsdk:"ipv6_multicast_routing"`
 	Mtu                                                    types.Int64                                         `tfsdk:"mtu"`
 	IpSourceRoute                                          types.Bool                                          `tfsdk:"ip_source_route"`
 	IpDomainLookup                                         types.Bool                                          `tfsdk:"ip_domain_lookup"`
@@ -455,6 +457,11 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.Ipv6UnicastRouting.IsNull() && !data.Ipv6UnicastRouting.IsUnknown() {
 		if data.Ipv6UnicastRouting.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.unicast-routing", map[string]string{})
+		}
+	}
+	if !data.Ipv6MulticastRouting.IsNull() && !data.Ipv6MulticastRouting.IsUnknown() {
+		if data.Ipv6MulticastRouting.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing", map[string]string{})
 		}
 	}
 	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
@@ -1108,6 +1115,13 @@ func (data System) toBodyXML(ctx context.Context) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/unicast-routing", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/unicast-routing")
+		}
+	}
+	if !data.Ipv6MulticastRouting.IsNull() && !data.Ipv6MulticastRouting.IsUnknown() {
+		if data.Ipv6MulticastRouting.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing")
 		}
 	}
 	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
@@ -1862,6 +1876,15 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.Ipv6UnicastRouting = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing"); !data.Ipv6MulticastRouting.IsNull() {
+		if value.Exists() {
+			data.Ipv6MulticastRouting = types.BoolValue(true)
+		} else {
+			data.Ipv6MulticastRouting = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6MulticastRouting = types.BoolNull()
 	}
 	if value := res.Get(prefix + "system.Cisco-IOS-XE-switch:mtu.size"); value.Exists() && !data.Mtu.IsNull() {
 		data.Mtu = types.Int64Value(value.Int())
@@ -3157,6 +3180,15 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv6UnicastRouting = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing"); !data.Ipv6MulticastRouting.IsNull() {
+		if value.Exists() {
+			data.Ipv6MulticastRouting = types.BoolValue(true)
+		} else {
+			data.Ipv6MulticastRouting = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6MulticastRouting = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system/Cisco-IOS-XE-switch:mtu/size"); value.Exists() && !data.Mtu.IsNull() {
 		data.Mtu = types.Int64Value(value.Int())
 	} else {
@@ -4443,6 +4475,11 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Ipv6UnicastRouting = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing"); value.Exists() {
+		data.Ipv6MulticastRouting = types.BoolValue(true)
+	} else {
+		data.Ipv6MulticastRouting = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "system.Cisco-IOS-XE-switch:mtu.size"); value.Exists() {
 		data.Mtu = types.Int64Value(value.Int())
 	}
@@ -5155,6 +5192,11 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Ipv6UnicastRouting = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing"); value.Exists() {
+		data.Ipv6MulticastRouting = types.BoolValue(true)
+	} else {
+		data.Ipv6MulticastRouting = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "system.Cisco-IOS-XE-switch:mtu.size"); value.Exists() {
 		data.Mtu = types.Int64Value(value.Int())
 	}
@@ -5863,6 +5905,11 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv6UnicastRouting = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing"); value.Exists() {
+		data.Ipv6MulticastRouting = types.BoolValue(true)
+	} else {
+		data.Ipv6MulticastRouting = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system/Cisco-IOS-XE-switch:mtu/size"); value.Exists() {
 		data.Mtu = types.Int64Value(value.Int())
 	}
@@ -6570,6 +6617,11 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Ipv6UnicastRouting = types.BoolValue(true)
 	} else {
 		data.Ipv6UnicastRouting = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing"); value.Exists() {
+		data.Ipv6MulticastRouting = types.BoolValue(true)
+	} else {
+		data.Ipv6MulticastRouting = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system/Cisco-IOS-XE-switch:mtu/size"); value.Exists() {
 		data.Mtu = types.Int64Value(value.Int())
@@ -8127,6 +8179,9 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/system/Cisco-IOS-XE-switch:mtu/size", state.getPath()))
 	}
+	if !state.Ipv6MulticastRouting.IsNull() && data.Ipv6MulticastRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", state.getPath()))
+	}
 	if !state.Ipv6UnicastRouting.IsNull() && data.Ipv6UnicastRouting.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/unicast-routing", state.getPath()))
 	}
@@ -9099,6 +9154,9 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/system/Cisco-IOS-XE-switch:mtu/size")
 	}
+	if !state.Ipv6MulticastRouting.IsNull() && data.Ipv6MulticastRouting.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing")
+	}
 	if !state.Ipv6UnicastRouting.IsNull() && data.Ipv6UnicastRouting.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/unicast-routing")
 	}
@@ -9224,6 +9282,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.LoginOnFailure.IsNull() && !data.LoginOnFailure.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-failure", data.getPath()))
+	}
+	if !data.Ipv6MulticastRouting.IsNull() && !data.Ipv6MulticastRouting.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
 	}
 	if !data.Ipv6UnicastRouting.IsNull() && !data.Ipv6UnicastRouting.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/unicast-routing", data.getPath()))
@@ -9685,6 +9746,9 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Mtu.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/system/Cisco-IOS-XE-switch:mtu/size", data.getPath()))
+	}
+	if !data.Ipv6MulticastRouting.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
 	}
 	if !data.Ipv6UnicastRouting.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/unicast-routing", data.getPath()))
@@ -10215,6 +10279,9 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.Mtu.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/system/Cisco-IOS-XE-switch:mtu/size")
+	}
+	if !data.Ipv6MulticastRouting.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing")
 	}
 	if !data.Ipv6UnicastRouting.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/unicast-routing")

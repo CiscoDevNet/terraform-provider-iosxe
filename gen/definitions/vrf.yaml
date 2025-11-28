@@ -7,8 +7,11 @@ attributes:
     example: VRF22
   - yang_name: description
     example: VRF22 description
+  - yang_name: rd-auto
+    example: true
   - yang_name: rd
     requires_replace: true
+    exclude_test: true
     example: 22:22
   - yang_name: address-family/ipv4
     example: true
@@ -196,3 +199,13 @@ attributes:
     tf_name: ipv4_mdt_data_threshold
     description: MDT switching threshold in Kbps (1-4294967)
     example: 50
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+  - path: Cisco-IOS-XE-native:native/route-map[name=RM1]
+    attributes:
+      - name: name
+        value: RM1

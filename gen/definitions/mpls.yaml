@@ -1,0 +1,68 @@
+---
+name: MPLS
+path: Cisco-IOS-XE-native:native/mpls
+doc_category: MPLS
+test_tags: [IOSXE1715]
+attributes:
+  - yang_name: Cisco-IOS-XE-mpls:label/protocol
+    example: ldp
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/all-afs/label-mode-choice/per-vrf/per-vrf
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/all-afs/per-vrf
+    tf_name: label_mode_all_vrfs_all_afs_per_vrf
+    example: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/all-afs/label-mode-choice/per-prefix/per-prefix
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/all-afs/per-prefix
+    tf_name: label_mode_all_vrfs_all_afs_per_prefix
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/all-afs/label-mode-choice/per-ce/per-ce
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/all-afs/per-ce
+    tf_name: label_mode_all_vrfs_all_afs_per_ce
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/all-afs/label-mode-choice/vrf-conn-aggr/vrf-conn-aggr
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/all-afs/vrf-conn-aggr
+    tf_name: label_mode_all_vrfs_all_afs_vrf_conn_aggr
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv4/label-mode-choice/per-vrf/per-vrf
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv4/per-vrf
+    tf_name: label_mode_all_vrfs_bgp_vpnv4_per_vrf
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv4/label-mode-choice/per-prefix/per-prefix
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv4/per-prefix
+    tf_name: label_mode_all_vrfs_bgp_vpnv4_per_prefix
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv4/label-mode-choice/per-ce/per-ce
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv4/per-ce
+    tf_name: label_mode_all_vrfs_bgp_vpnv4_per_ce
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv4/label-mode-choice/vrf-conn-aggr/vrf-conn-aggr
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv4/vrf-conn-aggr
+    tf_name: label_mode_all_vrfs_bgp_vpnv4_vrf_conn_aggr
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv6/label-mode-choice/per-vrf/per-vrf
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv6/per-vrf
+    tf_name: label_mode_all_vrfs_bgp_vpnv6_per_vrf
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv6/label-mode-choice/per-prefix/per-prefix
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv6/per-prefix
+    tf_name: label_mode_all_vrfs_bgp_vpnv6_per_prefix
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv6/label-mode-choice/per-ce/per-ce
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv6/per-ce
+    tf_name: label_mode_all_vrfs_bgp_vpnv6_per_ce
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-mpls:label/mode/mode-choice/all-vrfs/all-vrfs/protocol/bgp-vpnv6/label-mode-choice/vrf-conn-aggr/vrf-conn-aggr
+    xpath: Cisco-IOS-XE-mpls:label/mode/all-vrfs/protocol/bgp-vpnv6/vrf-conn-aggr
+    tf_name: label_mode_all_vrfs_bgp_vpnv6_vrf_conn_aggr
+    example: true
+    exclude_test: true

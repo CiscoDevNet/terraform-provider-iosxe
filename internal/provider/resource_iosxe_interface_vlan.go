@@ -119,6 +119,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 				Optional:            true,
 			},
+			"ip_local_proxy_arp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable local-proxy ARP").String,
+				Optional:            true,
+			},
 			"ip_redirects": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 				Optional:            true,

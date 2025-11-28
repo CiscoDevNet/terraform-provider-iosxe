@@ -102,6 +102,10 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.LengthBetween(1, 244),
 				},
 			},
+			"rd_auto": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify to enable auto Route Distinguisher").String,
+				Optional:            true,
+			},
 			"rd": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify Route Distinguisher").String,
 				Optional:            true,

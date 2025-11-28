@@ -140,6 +140,7 @@ data "iosxe_system" "example" {
 - `ip_tacacs_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
 - `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean)
+- `ipv6_multicast_routing` (Boolean) Enable IPV6 multicast forwarding
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
 - `login_delay` (Number) Set delay between successive fail login
 - `login_on_failure` (Boolean) Set options for failed login attempt

@@ -33,7 +33,7 @@ import (
 func TestAccDataSourceIosxeVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "description", "VRF22 description"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd_auto", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv4", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv6", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vpn_id", "22:22"))
@@ -61,7 +61,7 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeVRFConfig(),
+				Config: testAccDataSourceIosxeVRFPrerequisitesConfig + testAccDataSourceIosxeVRFConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -71,6 +71,24 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeVRFPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/route-map[name=RM1]"
+	attributes = {
+		"name" = "RM1"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -80,7 +98,7 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "VRF22"` + "\n"
 	config += `	description = "VRF22 description"` + "\n"
-	config += `	rd = "22:22"` + "\n"
+	config += `	rd_auto = true` + "\n"
 	config += `	address_family_ipv4 = true` + "\n"
 	config += `	address_family_ipv6 = true` + "\n"
 	config += `	vpn_id = "22:22"` + "\n"
@@ -123,6 +141,7 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `		wildcard = "0.0.0.255"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_mdt_data_threshold = 50` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

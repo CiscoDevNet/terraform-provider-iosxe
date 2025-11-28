@@ -14,6 +14,8 @@ attributes:
     example: false
   - yang_name: ip/proxy-arp
     example: false
+  - yang_name: ip/local-proxy-arp
+    example: false
   - yang_name: ip/redirects
     example: false
   - yang_name: ip/Cisco-IOS-XE-icmp:unreachables
