@@ -35,6 +35,15 @@ data "iosxe_vrf" "example" {
 - `address_family_ipv6` (Boolean) Address family
 - `description` (String) VRF specific description
 - `id` (String) The path of the retrieved object.
+- `ipv4_mdt_auto_discovery_interworking_vxlan_pim` (Boolean) Enable BGP auto-discovery for VxLAN PIM interworking
+- `ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
+- `ipv4_mdt_auto_discovery_vxlan` (Boolean) Enable BGP auto-discovery for VxLAN
+- `ipv4_mdt_auto_discovery_vxlan_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN
+- `ipv4_mdt_data_multicast` (Attributes List) MDT data multicast group ranges (see [below for nested schema](#nestedatt--ipv4_mdt_data_multicast))
+- `ipv4_mdt_data_threshold` (Number) MDT switching threshold in Kbps (1-4294967)
+- `ipv4_mdt_default_address` (String) MDT default group IPv4 address
+- `ipv4_mdt_overlay_use_bgp` (Boolean) Enable BGP for MDT overlay signaling
+- `ipv4_mdt_overlay_use_bgp_spt_only` (Boolean) Enable Shortest path tree-only ASM mode
 - `ipv4_route_replicate` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_route_replicate))
 - `ipv4_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export))
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
@@ -49,6 +58,16 @@ data "iosxe_vrf" "example" {
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
+
+<a id="nestedatt--ipv4_mdt_data_multicast"></a>
+### Nested Schema for `ipv4_mdt_data_multicast`
+
+Read-Only:
+
+- `address` (String) Multicast group base address
+- `list` (String) Access-list for group range
+- `wildcard` (String) Wildcard mask for address range
+
 
 <a id="nestedatt--ipv4_route_replicate"></a>
 ### Nested Schema for `ipv4_route_replicate`

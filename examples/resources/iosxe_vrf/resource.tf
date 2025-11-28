@@ -52,4 +52,16 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
+  ipv4_mdt_default_address               = "239.1.1.1"
+  ipv4_mdt_auto_discovery_vxlan          = true
+  ipv4_mdt_auto_discovery_vxlan_inter_as = true
+  ipv4_mdt_overlay_use_bgp               = true
+  ipv4_mdt_overlay_use_bgp_spt_only      = true
+  ipv4_mdt_data_multicast = [
+    {
+      address  = "239.1.2.0"
+      wildcard = "0.0.0.255"
+    }
+  ]
+  ipv4_mdt_data_threshold = 50
 }
