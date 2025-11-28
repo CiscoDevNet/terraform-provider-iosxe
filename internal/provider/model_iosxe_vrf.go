@@ -47,6 +47,7 @@ type VRF struct {
 	DeleteMode                     types.String                        `tfsdk:"delete_mode"`
 	Name                           types.String                        `tfsdk:"name"`
 	Description                    types.String                        `tfsdk:"description"`
+	RdAuto                         types.Bool                          `tfsdk:"rd_auto"`
 	Rd                             types.String                        `tfsdk:"rd"`
 	AddressFamilyIpv4              types.Bool                          `tfsdk:"address_family_ipv4"`
 	AddressFamilyIpv6              types.Bool                          `tfsdk:"address_family_ipv6"`
@@ -69,6 +70,7 @@ type VRFData struct {
 	Id                             types.String                        `tfsdk:"id"`
 	Name                           types.String                        `tfsdk:"name"`
 	Description                    types.String                        `tfsdk:"description"`
+	RdAuto                         types.Bool                          `tfsdk:"rd_auto"`
 	Rd                             types.String                        `tfsdk:"rd"`
 	AddressFamilyIpv4              types.Bool                          `tfsdk:"address_family_ipv4"`
 	AddressFamilyIpv6              types.Bool                          `tfsdk:"address_family_ipv6"`
@@ -174,6 +176,11 @@ func (data VRF) toBody(ctx context.Context) string {
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
+	}
+	if !data.RdAuto.IsNull() && !data.RdAuto.IsUnknown() {
+		if data.RdAuto.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rd-auto", map[string]string{})
+		}
 	}
 	if !data.Rd.IsNull() && !data.Rd.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"rd", data.Rd.ValueString())
@@ -331,6 +338,13 @@ func (data VRF) toBodyXML(ctx context.Context) string {
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.RdAuto.IsNull() && !data.RdAuto.IsUnknown() {
+		if data.RdAuto.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/rd-auto", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/rd-auto")
+		}
 	}
 	if !data.Rd.IsNull() && !data.Rd.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/rd", data.Rd.ValueString())
@@ -528,6 +542,15 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.Description = types.StringValue(value.String())
 	} else {
 		data.Description = types.StringNull()
+	}
+	if value := res.Get(prefix + "rd-auto"); !data.RdAuto.IsNull() {
+		if value.Exists() {
+			data.RdAuto = types.BoolValue(true)
+		} else {
+			data.RdAuto = types.BoolValue(false)
+		}
+	} else {
+		data.RdAuto = types.BoolNull()
 	}
 	if value := res.Get(prefix + "rd"); value.Exists() && !data.Rd.IsNull() {
 		data.Rd = types.StringValue(value.String())
@@ -961,6 +984,15 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Description = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd-auto"); !data.RdAuto.IsNull() {
+		if value.Exists() {
+			data.RdAuto = types.BoolValue(true)
+		} else {
+			data.RdAuto = types.BoolValue(false)
+		}
+	} else {
+		data.RdAuto = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() && !data.Rd.IsNull() {
 		data.Rd = types.StringValue(value.String())
 	} else {
@@ -1390,6 +1422,11 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
 	}
@@ -1579,6 +1616,11 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
 	}
@@ -1764,6 +1806,11 @@ func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
 	}
@@ -1948,6 +1995,11 @@ func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd-auto"); value.Exists() {
+		data.RdAuto = types.BoolValue(true)
+	} else {
+		data.RdAuto = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/rd"); value.Exists() {
 		data.Rd = types.StringValue(value.String())
@@ -2443,6 +2495,9 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 	if !state.Rd.IsNull() && data.Rd.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/rd", state.getPath()))
 	}
+	if !state.RdAuto.IsNull() && data.RdAuto.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rd-auto", state.getPath()))
+	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
@@ -2822,6 +2877,9 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 	if !state.Rd.IsNull() && data.Rd.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rd")
 	}
+	if !state.RdAuto.IsNull() && data.RdAuto.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/rd-auto")
+	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
@@ -2890,6 +2948,9 @@ func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.AddressFamilyIpv4.IsNull() && !data.AddressFamilyIpv4.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/address-family/ipv4", data.getPath()))
+	}
+	if !data.RdAuto.IsNull() && !data.RdAuto.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rd-auto", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -2967,6 +3028,9 @@ func (data *VRF) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Rd.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/rd", data.getPath()))
+	}
+	if !data.RdAuto.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rd-auto", data.getPath()))
 	}
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
@@ -3102,6 +3166,9 @@ func (data *VRF) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.Rd.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rd")
+	}
+	if !data.RdAuto.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/rd-auto")
 	}
 	if !data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
