@@ -1,7 +1,7 @@
 resource "iosxe_vrf" "example" {
   name                = "VRF22"
   description         = "VRF22 description"
-  rd                  = "22:22"
+  rd_auto             = true
   address_family_ipv4 = true
   address_family_ipv6 = true
   vpn_id              = "22:22"

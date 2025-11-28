@@ -45,6 +45,7 @@ data "iosxe_vrf" "example" {
 - `ipv6_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import))
 - `ipv6_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import_stitching))
 - `rd` (String) Specify Route Distinguisher
+- `rd_auto` (Boolean) Specify to enable auto Route Distinguisher
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
