@@ -70,7 +70,6 @@ data "iosxe_interface_vlan" "example" {
 - `vrf_forwarding` (String) Configure forwarding table
 
 <a id="nestedatt--helper_addresses"></a>
-
 ### Nested Schema for `helper_addresses`
 
 Read-Only:
@@ -79,8 +78,8 @@ Read-Only:
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
-<a id="nestedatt--ipv6_addresses"></a>
 
+<a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`
 
 Read-Only:
@@ -88,8 +87,8 @@ Read-Only:
 - `eui_64` (Boolean) Use eui-64 interface identifier
 - `prefix` (String) IPv6 prefix
 
-<a id="nestedatt--ipv6_link_local_addresses"></a>
 
+<a id="nestedatt--ipv6_link_local_addresses"></a>
 ### Nested Schema for `ipv6_link_local_addresses`
 
 Read-Only:

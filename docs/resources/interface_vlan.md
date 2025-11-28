@@ -122,7 +122,6 @@ resource "iosxe_interface_vlan" "example" {
 - `id` (String) The path of the object.
 
 <a id="nestedatt--helper_addresses"></a>
-
 ### Nested Schema for `helper_addresses`
 
 Required:
@@ -134,8 +133,8 @@ Optional:
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
-<a id="nestedatt--ipv6_addresses"></a>
 
+<a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`
 
 Required:
@@ -146,8 +145,8 @@ Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
 
-<a id="nestedatt--ipv6_link_local_addresses"></a>
 
+<a id="nestedatt--ipv6_link_local_addresses"></a>
 ### Nested Schema for `ipv6_link_local_addresses`
 
 Required:

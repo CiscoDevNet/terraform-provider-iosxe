@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &CryptoEngineDataSource{}
-	_ datasource.DataSourceWithConfigure = &CryptoEngineDataSource{}
+	_ datasource.DataSource              = &CryptoDataSource{}
+	_ datasource.DataSourceWithConfigure = &CryptoDataSource{}
 )
 
-func NewCryptoEngineDataSource() datasource.DataSource {
-	return &CryptoEngineDataSource{}
+func NewCryptoDataSource() datasource.DataSource {
+	return &CryptoDataSource{}
 }
 
-type CryptoEngineDataSource struct {
+type CryptoDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *CryptoEngineDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_crypto_engine"
+func (d *CryptoDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_crypto"
 }
 
-func (d *CryptoEngineDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *CryptoDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Crypto Engine configuration.",
+		MarkdownDescription: "This data source can read the Crypto configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -68,7 +68,7 @@ func (d *CryptoEngineDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"compliance_shield_disable": schema.BoolAttribute{
+			"engine_compliance_shield_disable": schema.BoolAttribute{
 				MarkdownDescription: "Allow weak crypto to be configured",
 				Computed:            true,
 			},
@@ -76,7 +76,7 @@ func (d *CryptoEngineDataSource) Schema(ctx context.Context, req datasource.Sche
 	}
 }
 
-func (d *CryptoEngineDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *CryptoDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -88,8 +88,8 @@ func (d *CryptoEngineDataSource) Configure(_ context.Context, req datasource.Con
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *CryptoEngineDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config CryptoEngineData
+func (d *CryptoDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config CryptoData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -109,7 +109,7 @@ func (d *CryptoEngineDataSource) Read(ctx context.Context, req datasource.ReadRe
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = CryptoEngineData{Device: config.Device}
+			config = CryptoData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

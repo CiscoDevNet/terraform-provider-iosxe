@@ -32,25 +32,25 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeCryptoEngine(t *testing.T) {
+func TestAccIosxeCrypto(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_engine.test", "compliance_shield_disable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto.test", "engine_compliance_shield_disable", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeCryptoEngineConfig_minimum(),
+				Config: testAccIosxeCryptoConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeCryptoEngineConfig_all(),
+				Config: testAccIosxeCryptoConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_crypto_engine.test",
+				ResourceName:            "iosxe_crypto.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeCryptoEngineImportStateIdFunc("iosxe_crypto_engine.test"),
+				ImportStateIdFunc:       iosxeCryptoImportStateIdFunc("iosxe_crypto.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -62,7 +62,7 @@ func TestAccIosxeCryptoEngine(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeCryptoEngineImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeCryptoImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 
 		return fmt.Sprintf(""), nil
@@ -76,8 +76,8 @@ func iosxeCryptoEngineImportStateIdFunc(resourceName string) resource.ImportStat
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeCryptoEngineConfig_minimum() string {
-	config := `resource "iosxe_crypto_engine" "test" {` + "\n"
+func testAccIosxeCryptoConfig_minimum() string {
+	config := `resource "iosxe_crypto" "test" {` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -86,9 +86,9 @@ func testAccIosxeCryptoEngineConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeCryptoEngineConfig_all() string {
-	config := `resource "iosxe_crypto_engine" "test" {` + "\n"
-	config += `	compliance_shield_disable = true` + "\n"
+func testAccIosxeCryptoConfig_all() string {
+	config := `resource "iosxe_crypto" "test" {` + "\n"
+	config += `	engine_compliance_shield_disable = true` + "\n"
 	config += `}` + "\n"
 	return config
 }

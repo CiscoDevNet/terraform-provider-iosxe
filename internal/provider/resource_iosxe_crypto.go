@@ -45,26 +45,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &CryptoEngineResource{}
-	_ resource.ResourceWithImportState = &CryptoEngineResource{}
+	_ resource.Resource                = &CryptoResource{}
+	_ resource.ResourceWithImportState = &CryptoResource{}
 )
 
-func NewCryptoEngineResource() resource.Resource {
-	return &CryptoEngineResource{}
+func NewCryptoResource() resource.Resource {
+	return &CryptoResource{}
 }
 
-type CryptoEngineResource struct {
+type CryptoResource struct {
 	data *IosxeProviderData
 }
 
-func (r *CryptoEngineResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_crypto_engine"
+func (r *CryptoResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_crypto"
 }
 
-func (r *CryptoEngineResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *CryptoResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Crypto Engine configuration.",
+		MarkdownDescription: "This resource can manage the Crypto configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -85,7 +85,7 @@ func (r *CryptoEngineResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"compliance_shield_disable": schema.BoolAttribute{
+			"engine_compliance_shield_disable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Allow weak crypto to be configured").String,
 				Optional:            true,
 			},
@@ -93,7 +93,7 @@ func (r *CryptoEngineResource) Schema(ctx context.Context, req resource.SchemaRe
 	}
 }
 
-func (r *CryptoEngineResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *CryptoResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -105,8 +105,8 @@ func (r *CryptoEngineResource) Configure(_ context.Context, req resource.Configu
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *CryptoEngineResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan CryptoEngine
+func (r *CryptoResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan Crypto
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -189,8 +189,8 @@ func (r *CryptoEngineResource) Create(ctx context.Context, req resource.CreateRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *CryptoEngineResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state CryptoEngine
+func (r *CryptoResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state Crypto
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -216,7 +216,7 @@ func (r *CryptoEngineResource) Read(ctx context.Context, req resource.ReadReques
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = CryptoEngine{Device: state.Device, Id: state.Id}
+				state = Crypto{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -272,8 +272,8 @@ func (r *CryptoEngineResource) Read(ctx context.Context, req resource.ReadReques
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *CryptoEngineResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state CryptoEngine
+func (r *CryptoResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state Crypto
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -373,8 +373,8 @@ func (r *CryptoEngineResource) Update(ctx context.Context, req resource.UpdateRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *CryptoEngineResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state CryptoEngine
+func (r *CryptoResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state Crypto
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -472,7 +472,7 @@ func (r *CryptoEngineResource) Delete(ctx context.Context, req resource.DeleteRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *CryptoEngineResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *CryptoResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -490,7 +490,7 @@ func (r *CryptoEngineResource) ImportState(ctx context.Context, req resource.Imp
 	}
 
 	// construct path for 'id' attribute
-	var state CryptoEngine
+	var state Crypto
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

@@ -30,15 +30,15 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeCryptoEngine(t *testing.T) {
+func TestAccDataSourceIosxeCrypto(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_engine.test", "compliance_shield_disable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto.test", "engine_compliance_shield_disable", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeCryptoEngineConfig(),
+				Config: testAccDataSourceIosxeCryptoConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -52,15 +52,15 @@ func TestAccDataSourceIosxeCryptoEngine(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeCryptoEngineConfig() string {
-	config := `resource "iosxe_crypto_engine" "test" {` + "\n"
+func testAccDataSourceIosxeCryptoConfig() string {
+	config := `resource "iosxe_crypto" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	compliance_shield_disable = true` + "\n"
+	config += `	engine_compliance_shield_disable = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_crypto_engine" "test" {
-			depends_on = [iosxe_crypto_engine.test]
+		data "iosxe_crypto" "test" {
+			depends_on = [iosxe_crypto.test]
 		}
 	`
 	return config
