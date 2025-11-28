@@ -1,0 +1,24 @@
+---
+name: L2 VFI
+path: Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]
+test_tags: [IOSXE1715]
+doc_category: L2VPN
+skip_minimum_test: true
+attributes:
+  - yang_name: name
+    example: TENANT-A
+  - yang_name: mode
+    example: manual
+  - yang_name: vpn/id
+    tf_name: vpn_id
+    example: 20001
+  - yang_name: neighbor
+    tf_name: neighbors
+    type: List
+    attributes:
+      - yang_name: router-id
+        tf_name: ip_address
+        id: true
+        example: 172.16.255.2
+      - yang_name: encapsulation
+        example: mpls
