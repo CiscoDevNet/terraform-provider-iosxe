@@ -193,12 +193,10 @@ func (r *LLDPResource) Create(ctx context.Context, req resource.CreateRequest, r
 					return
 				}
 			} else {
-				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
-				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-					_, err = device.RestconfClient.PutData(plan.getPath(), body)
-				}
+				// Use PUT for resource creation (more reliable than PATCH for devices)
+				_, err := device.RestconfClient.PutData(plan.getPath(), body)
 				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PUT, %s), got error: %s", plan.getPath(), err))
 					return
 				}
 				for _, i := range emptyLeafsDelete {

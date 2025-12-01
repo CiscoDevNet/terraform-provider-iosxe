@@ -52,6 +52,17 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
+  vnid = [
+    {
+      vnid_value = 10001
+      evpn_instance_vni_vni_num = [
+        {
+          vni_num   = 20000
+          core_vlan = 200
+        }
+      ]
+    }
+  ]
   ipv4_mdt_default_address               = "239.1.1.1"
   ipv4_mdt_auto_discovery_vxlan          = true
   ipv4_mdt_auto_discovery_vxlan_inter_as = true
