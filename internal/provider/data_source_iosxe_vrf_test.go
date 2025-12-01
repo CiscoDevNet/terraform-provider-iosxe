@@ -33,30 +33,38 @@ import (
 func TestAccDataSourceIosxeVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "description", "VRF22 description"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd", "1342"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd_auto", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv4", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv6", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vpn_id", "1342"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_import.0.value", "1342"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_import_stitching.0.value", "1342"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_export.0.value", "1342"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_export_stitching.0.value", "1342"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vpn_id", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_import.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_import_stitching.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_export.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_export_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_replicate.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all_route_map", "RM1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_import.0.value", "1342"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_import_stitching.0.value", "1342"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export.0.value", "1342"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "1342"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_import.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_import_stitching.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vnid.0.vnid_value", "10001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vnid.0.evpn_instance_vni_vni_num.0.vni_num", "20000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vnid.0.evpn_instance_vni_vni_num.0.core_vlan", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_default_address", "239.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan_inter_as", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp_spt_only", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_multicast.0.address", "239.1.2.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_multicast.0.wildcard", "0.0.0.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_threshold", "50"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeVRFConfig(),
+				Config: testAccDataSourceIosxeVRFPrerequisitesConfig + testAccDataSourceIosxeVRFConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -66,6 +74,24 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeVRFPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/route-map[name=RM1]"
+	attributes = {
+		"name" = "RM1"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -75,21 +101,21 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "VRF22"` + "\n"
 	config += `	description = "VRF22 description"` + "\n"
-	config += `	rd = "1342"` + "\n"
+	config += `	rd_auto = true` + "\n"
 	config += `	address_family_ipv4 = true` + "\n"
 	config += `	address_family_ipv6 = true` + "\n"
-	config += `	vpn_id = "1342"` + "\n"
+	config += `	vpn_id = "22:22"` + "\n"
 	config += `	ipv4_route_target_import = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_route_target_import_stitching = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_route_target_export = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_route_target_export_stitching = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_route_replicate = [{` + "\n"
 	config += `		name = "VRF1"` + "\n"
@@ -97,16 +123,16 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `		unicast_all_route_map = "RM1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_route_target_import = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_route_target_import_stitching = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_route_target_export = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_route_target_export_stitching = [{` + "\n"
-	config += `		value = "1342"` + "\n"
+	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
 	config += `	vnid = [{` + "\n"
 	config += `		vnid_value = 10001` + "\n"
@@ -115,6 +141,17 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `			core_vlan = 200` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv4_mdt_default_address = "239.1.1.1"` + "\n"
+	config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"
+	config += `	ipv4_mdt_auto_discovery_vxlan_inter_as = true` + "\n"
+	config += `	ipv4_mdt_overlay_use_bgp = true` + "\n"
+	config += `	ipv4_mdt_overlay_use_bgp_spt_only = true` + "\n"
+	config += `	ipv4_mdt_data_multicast = [{` + "\n"
+	config += `		address = "239.1.2.0"` + "\n"
+	config += `		wildcard = "0.0.0.255"` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv4_mdt_data_threshold = 50` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

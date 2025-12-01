@@ -16,28 +16,28 @@ This resource can manage the VRF configuration.
 resource "iosxe_vrf" "example" {
   name                = "VRF22"
   description         = "VRF22 description"
-  rd                  = "1342"
+  rd_auto             = true
   address_family_ipv4 = true
   address_family_ipv6 = true
-  vpn_id              = "1342"
+  vpn_id              = "22:22"
   ipv4_route_target_import = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   ipv4_route_target_import_stitching = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   ipv4_route_target_export = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   ipv4_route_target_export_stitching = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   ipv4_route_replicate = [
@@ -49,22 +49,22 @@ resource "iosxe_vrf" "example" {
   ]
   ipv6_route_target_import = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   ipv6_route_target_import_stitching = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   ipv6_route_target_export = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   ipv6_route_target_export_stitching = [
     {
-      value = "1342"
+      value = "22:22"
     }
   ]
   vnid = [
@@ -78,6 +78,18 @@ resource "iosxe_vrf" "example" {
       ]
     }
   ]
+  ipv4_mdt_default_address               = "239.1.1.1"
+  ipv4_mdt_auto_discovery_vxlan          = true
+  ipv4_mdt_auto_discovery_vxlan_inter_as = true
+  ipv4_mdt_overlay_use_bgp               = true
+  ipv4_mdt_overlay_use_bgp_spt_only      = true
+  ipv4_mdt_data_multicast = [
+    {
+      address  = "239.1.2.0"
+      wildcard = "0.0.0.255"
+    }
+  ]
+  ipv4_mdt_data_threshold = 50
 }
 ```
 
@@ -96,6 +108,16 @@ resource "iosxe_vrf" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) VRF specific description
 - `device` (String) A device name from the provider configuration.
+- `ipv4_mdt_auto_discovery_interworking_vxlan_pim` (Boolean) Enable BGP auto-discovery for VxLAN PIM interworking
+- `ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
+- `ipv4_mdt_auto_discovery_vxlan` (Boolean) Enable BGP auto-discovery for VxLAN
+- `ipv4_mdt_auto_discovery_vxlan_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN
+- `ipv4_mdt_data_multicast` (Attributes List) MDT data multicast group ranges (see [below for nested schema](#nestedatt--ipv4_mdt_data_multicast))
+- `ipv4_mdt_data_threshold` (Number) MDT switching threshold in Kbps (1-4294967)
+  - Range: `1`-`4294967`
+- `ipv4_mdt_default_address` (String) MDT default group IPv4 address
+- `ipv4_mdt_overlay_use_bgp` (Boolean) Enable BGP for MDT overlay signaling
+- `ipv4_mdt_overlay_use_bgp_spt_only` (Boolean) Enable Shortest path tree-only ASM mode
 - `ipv4_route_replicate` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_route_replicate))
 - `ipv4_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export))
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
@@ -106,6 +128,7 @@ resource "iosxe_vrf" "example" {
 - `ipv6_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import))
 - `ipv6_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import_stitching))
 - `rd` (String) Specify Route Distinguisher
+- `rd_auto` (Boolean) Specify to enable auto Route Distinguisher
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
 - `vnid` (Attributes List) Specify VNID for route-target auto generation (see [below for nested schema](#nestedatt--vnid))
@@ -114,6 +137,19 @@ resource "iosxe_vrf" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv4_mdt_data_multicast"></a>
+### Nested Schema for `ipv4_mdt_data_multicast`
+
+Required:
+
+- `address` (String) Multicast group base address
+- `wildcard` (String) Wildcard mask for address range
+
+Optional:
+
+- `list` (String) Access-list for group range
+
 
 <a id="nestedatt--ipv4_route_replicate"></a>
 ### Nested Schema for `ipv4_route_replicate`

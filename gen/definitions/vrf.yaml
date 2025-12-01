@@ -147,7 +147,6 @@ attributes:
   - yang_name: vnid
     tf_name: vnid
     type: List
-    max_elements: 1
     attributes:
       - yang_name: vnid-value
         tf_name: vnid_value
@@ -158,7 +157,6 @@ attributes:
         xpath: evpn-instance/vni/vni-num
         tf_name: evpn_instance_vni_vni_num
         type: List
-        max_elements: 1
         description: Specify explicit NVE L3 VNI number
         attributes:
           - yang_name: vni-num
