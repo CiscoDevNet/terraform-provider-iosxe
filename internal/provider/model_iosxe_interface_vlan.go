@@ -50,6 +50,7 @@ type InterfaceVLAN struct {
 	Description                       types.String                          `tfsdk:"description"`
 	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
 	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
+	IpLocalProxyArp                   types.Bool                            `tfsdk:"ip_local_proxy_arp"`
 	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
 	IpUnreachables                    types.Bool                            `tfsdk:"ip_unreachables"`
 	VrfForwarding                     types.String                          `tfsdk:"vrf_forwarding"`
@@ -79,6 +80,8 @@ type InterfaceVLAN struct {
 	LoadInterval                      types.Int64                           `tfsdk:"load_interval"`
 	MacAddress                        types.String                          `tfsdk:"mac_address"`
 	IpDhcpRelayInformationOptionVpnId types.Bool                            `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
+	IpIgmpVersion                     types.Int64                           `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                      types.String                          `tfsdk:"ip_router_isis"`
 }
 
 type InterfaceVLANData struct {
@@ -89,6 +92,7 @@ type InterfaceVLANData struct {
 	Description                       types.String                          `tfsdk:"description"`
 	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
 	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
+	IpLocalProxyArp                   types.Bool                            `tfsdk:"ip_local_proxy_arp"`
 	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
 	IpUnreachables                    types.Bool                            `tfsdk:"ip_unreachables"`
 	VrfForwarding                     types.String                          `tfsdk:"vrf_forwarding"`
@@ -118,6 +122,8 @@ type InterfaceVLANData struct {
 	LoadInterval                      types.Int64                           `tfsdk:"load_interval"`
 	MacAddress                        types.String                          `tfsdk:"mac_address"`
 	IpDhcpRelayInformationOptionVpnId types.Bool                            `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
+	IpIgmpVersion                     types.Int64                           `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                      types.String                          `tfsdk:"ip_router_isis"`
 }
 type InterfaceVLANHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -191,6 +197,11 @@ func (data InterfaceVLAN) toBody(ctx context.Context) string {
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.proxy-arp", data.IpProxyArp.ValueBool())
+	}
+	if !data.IpLocalProxyArp.IsNull() && !data.IpLocalProxyArp.IsUnknown() {
+		if data.IpLocalProxyArp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.local-proxy-arp", map[string]string{})
+		}
 	}
 	if !data.IpRedirects.IsNull() && !data.IpRedirects.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.redirects", data.IpRedirects.ValueBool())
@@ -284,6 +295,12 @@ func (data InterfaceVLAN) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id", map[string]string{})
 		}
 	}
+	if !data.IpIgmpVersion.IsNull() && !data.IpIgmpVersion.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-igmp:igmp.version", strconv.FormatInt(data.IpIgmpVersion.ValueInt64(), 10))
+	}
+	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.router.Cisco-IOS-XE-isis:isis.tag", data.IpRouterIsis.ValueString())
+	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
 		for index, item := range data.HelperAddresses {
@@ -353,6 +370,13 @@ func (data InterfaceVLAN) toBodyXML(ctx context.Context) string {
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/proxy-arp", data.IpProxyArp.ValueBool())
+	}
+	if !data.IpLocalProxyArp.IsNull() && !data.IpLocalProxyArp.IsUnknown() {
+		if data.IpLocalProxyArp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/local-proxy-arp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/local-proxy-arp")
+		}
 	}
 	if !data.IpRedirects.IsNull() && !data.IpRedirects.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/redirects", data.IpRedirects.ValueBool())
@@ -511,6 +535,12 @@ func (data InterfaceVLAN) toBodyXML(ctx context.Context) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
 		}
 	}
+	if !data.IpIgmpVersion.IsNull() && !data.IpIgmpVersion.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version", strconv.FormatInt(data.IpIgmpVersion.ValueInt64(), 10))
+	}
+	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag", data.IpRouterIsis.ValueString())
+	}
 	bodyString, err := body.String()
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
@@ -559,6 +589,15 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 		}
 	} else {
 		data.IpProxyArp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.local-proxy-arp"); !data.IpLocalProxyArp.IsNull() {
+		if value.Exists() {
+			data.IpLocalProxyArp = types.BoolValue(true)
+		} else {
+			data.IpLocalProxyArp = types.BoolValue(false)
+		}
+	} else {
+		data.IpLocalProxyArp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.redirects"); !data.IpRedirects.IsNull() {
 		if value.Exists() {
@@ -845,6 +884,16 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() && !data.IpIgmpVersion.IsNull() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	} else {
+		data.IpIgmpVersion = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() && !data.IpRouterIsis.IsNull() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	} else {
+		data.IpRouterIsis = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -884,6 +933,15 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		}
 	} else {
 		data.IpProxyArp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/local-proxy-arp"); !data.IpLocalProxyArp.IsNull() {
+		if value.Exists() {
+			data.IpLocalProxyArp = types.BoolValue(true)
+		} else {
+			data.IpLocalProxyArp = types.BoolValue(false)
+		}
+	} else {
+		data.IpLocalProxyArp = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/redirects"); !data.IpRedirects.IsNull() {
 		if value.Exists() {
@@ -1170,6 +1228,16 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() && !data.IpIgmpVersion.IsNull() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	} else {
+		data.IpIgmpVersion = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() && !data.IpRouterIsis.IsNull() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	} else {
+		data.IpRouterIsis = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1198,6 +1266,11 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
 		data.IpProxyArp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.local-proxy-arp"); value.Exists() {
+		data.IpLocalProxyArp = types.BoolValue(true)
+	} else {
+		data.IpLocalProxyArp = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
@@ -1349,6 +1422,12 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
 	} else {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
 	}
 }
 
@@ -1379,6 +1458,11 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpProxyArp = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.local-proxy-arp"); value.Exists() {
+		data.IpLocalProxyArp = types.BoolValue(true)
+	} else {
+		data.IpLocalProxyArp = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
@@ -1530,6 +1614,12 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1554,6 +1644,11 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
 		data.IpProxyArp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/local-proxy-arp"); value.Exists() {
+		data.IpLocalProxyArp = types.BoolValue(true)
+	} else {
+		data.IpLocalProxyArp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
@@ -1705,6 +1800,12 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
 	} else {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
 	}
 }
 
@@ -1731,6 +1832,11 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.IpProxyArp = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/local-proxy-arp"); value.Exists() {
+		data.IpLocalProxyArp = types.BoolValue(true)
+	} else {
+		data.IpLocalProxyArp = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
@@ -1882,6 +1988,12 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version"); value.Exists() {
+		data.IpIgmpVersion = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
+		data.IpRouterIsis = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1890,6 +2002,12 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceVLAN) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", state.getPath()))
+	}
+	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", state.getPath()))
+	}
 	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", state.getPath()))
 	}
@@ -2052,6 +2170,9 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 	if !state.IpRedirects.IsNull() && data.IpRedirects.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/redirects", state.getPath()))
 	}
+	if !state.IpLocalProxyArp.IsNull() && data.IpLocalProxyArp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/local-proxy-arp", state.getPath()))
+	}
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/proxy-arp", state.getPath()))
 	}
@@ -2074,6 +2195,12 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 
 func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state InterfaceVLAN, body string) string {
 	b := netconf.NewBody(body)
+	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
+	}
+	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")
+	}
 	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
 	}
@@ -2251,6 +2378,9 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 	if !state.IpRedirects.IsNull() && data.IpRedirects.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/redirects")
 	}
+	if !state.IpLocalProxyArp.IsNull() && data.IpLocalProxyArp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/local-proxy-arp")
+	}
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/proxy-arp")
 	}
@@ -2316,6 +2446,9 @@ func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
+	if !data.IpLocalProxyArp.IsNull() && !data.IpLocalProxyArp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/local-proxy-arp", data.getPath()))
+	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
@@ -2329,6 +2462,12 @@ func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpRouterIsis.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", data.getPath()))
+	}
+	if !data.IpIgmpVersion.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", data.getPath()))
+	}
 	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", data.getPath()))
 	}
@@ -2419,6 +2558,9 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	if !data.IpRedirects.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/redirects", data.getPath()))
 	}
+	if !data.IpLocalProxyArp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/local-proxy-arp", data.getPath()))
+	}
 	if !data.IpProxyArp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/proxy-arp", data.getPath()))
 	}
@@ -2441,6 +2583,12 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.IpRouterIsis.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
+	}
+	if !data.IpIgmpVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")
+	}
 	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
 	}
@@ -2545,6 +2693,9 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 	}
 	if !data.IpRedirects.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/redirects")
+	}
+	if !data.IpLocalProxyArp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/local-proxy-arp")
 	}
 	if !data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/proxy-arp")

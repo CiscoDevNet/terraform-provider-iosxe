@@ -1,0 +1,29 @@
+---
+name: Multicast
+path: Cisco-IOS-XE-native:native/ip/multicast
+doc_category: Multicast
+attributes:
+  - yang_name: Cisco-IOS-XE-multicast:multipath
+    example: true
+  - yang_name: Cisco-IOS-XE-multicast:multipath/s-g-hash
+    example: next-hop-based
+  - yang_name: Cisco-IOS-XE-multicast:vrf
+    tf_name: vrfs
+    type: List
+    attributes:
+      - yang_name: name
+        tf_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: multipath
+        example: true
+      - yang_name: multipath/s-g-hash
+        example: next-hop-based
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""

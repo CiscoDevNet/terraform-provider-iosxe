@@ -1,5 +1,5 @@
 resource "iosxe_interface_loopback" "example" {
-  name                       = 100
+  name                       = 201
   description                = "My Interface Description"
   shutdown                   = false
   ip_proxy_arp               = false
@@ -27,5 +27,6 @@ resource "iosxe_interface_loopback" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout = 2147
+  arp_timeout     = 2147
+  ip_igmp_version = 3
 }

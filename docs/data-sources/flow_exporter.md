@@ -52,3 +52,4 @@ data "iosxe_flow_exporter" "example" {
 - `source_vlan` (Number) Iosxr Vlans
 - `template_data_timeout` (Number) Resend data based on a timeout
 - `transport_udp` (Number) UDP transport protocol
+- `ttl` (Number) Optional TTL or hop limit

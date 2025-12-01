@@ -7,6 +7,56 @@ description: |-
 
 # Changelog
 
+
+## (Unreleased)
+
+- Add `iosxe_l2_vfi` resource and data source
+- Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data source
+- Add `iosxe_crypto` resource and data source
+- Add `rd_auto` attribute to `iosxe_vrf` resource and data source
+- Add `ipv6_multicast_routing` attribute to `iosxe_system` resource and data source
+- Add `iosxe_mpls` resource and data source
+- Add `iosxe_bgp_address_family_vpnv4` resource and data source
+- Add `iosxe_bgp_address_family_vpnv6` resource and data source
+- Add `ipv4_mdt_*` attributes to `iosxe_vrf` resource and data source
+- Add `event_syslog_*` attributes to `iosxe_eem` resource and data source
+
+## 0.11.0
+
+- Fix `iosxe_yang` resource payload ordering with NETCONF, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/372)
+- Add `ip_igmp_version` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, `iosxe_interface_tunnel`, and `iosxe_interface_vlan` resources and data sources
+- Add `ip_default_gateway` attribute to `iosxe_system` resource and data source for default gateway configuration on non-routing devices
+- Add `device_classifier` attribute to `iosxe_system` resource and data source for endpoint device classification
+- Add `table_maps` attribute to `iosxe_system` resource and data source for QoS table map configuration with DSCP/CoS value translation
+- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- Add `route_map` attribute to `iosxe_bgp_l2vpn_evpn_neighbor` resource and data source
+- Add `import_path_selection_all` and `ipv4_unicast_aggregate_addresses.summary_only` attributes to `iosxe_bgp_address_family_ipv4_vrf` resource and data source
+- BREAKING CHANGE: Rename `evpn_instance` to `evpn_instance_legacy` and `evpn_instance_vni` to `evpn_instance_vni_legacy` in `iosxe_vlan_configuration` resource and data source
+- Add `evpn_instance`, `evpn_instance_vni`, and `evpn_instance_protected` attributes to `iosxe_vlan_configuration` resource and data source
+- Add `evpn_instance_profile` and `evpn_instance_profile_protected` attributes to `iosxe_vlan_configuration` resource and data source
+- Add `ttl` attribute to `iosxe_flow_exporter` resource and data source
+- Add `match_routing_vrf_input`, `match_vxlan_vnid`, `match_vxlan_vtep_input`, and `match_vxlan_vtep_output` attributes to `iosxe_flow_record` resource and data source
+- Add `register_source_interface_loopback` attributes to `iosxe_pim` resource and data source
+- Add `iosxe_bgp_address_family_ipv4_mvpn` resource and data source
+- Add `iosxe_bgp_ipv4_mvpn_neighbor` resource and data source
+- Add `vlan_based_multicast_advertise` attribute to `iosxe_evpn_instance` resource and data source
+- Add `multicast_advertise` attribute to `iosxe_evpn` resource and data source
+- Add `carrier_delay_msec` and `hold_queues` attributes to `iosxe_interface_ethernet` resource and data source
+- Add `iosxe_pim_ipv6` resource and data source
+- Add `iosxe_interface_pim_ipv6` resource and data source
+- Add `iosxe_multicast` resource and data source
+- Add `deadtime` attribute to AAA group server radius in `iosxe_aaa` resource and data source
+- Add `key_encryption`, `automate_tester_ignore_auth_port`, and `automate_tester_idle_time` attributes to `iosxe_radius` resource and data source
+- Add `authentication_mac_move_permit` and `authentication_mac_move_deny_uncontrolled` attributes to `iosxe_system` resource and data source
+- Add `dot1x` and `dot1x_default_*`  attributes to `iosxe_aaa_accounting` resource and data source
+- BREAKING CHANGE: Rename `iosxe_tacacs_server` resource and data source to `iosxe_tacacs`
+- Add `port` attribute to `iosxe_tacacs` resource and data source
+- BREAKING CHANGE: Add new `iosxe_tacacs_server` resource and data source
+- Add `enable_default_group_legacy`, `enable_default_enable_legacy`, `enable_default_line_legacy` and `enable_default_none_legacy` attributes to `iosxe_aaa_authentication` resource and data source
+- Add `iosxe_isis` resource and data source
+- Add `iosxe_interface_isis` resource and data source
+- Add `ip_router_isis` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_port_channel_subinterface`, `iosxe_interface_port_channel`, `iosxe_interface_tunnel` and `iosxe_interface_vlan` resources and data sources
+
 ## 0.10.2
 
 - Fix issue with incorrect reading of lists via NETCONF

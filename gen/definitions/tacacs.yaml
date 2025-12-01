@@ -1,0 +1,30 @@
+---
+name: TACACS
+path: /Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server[name=%v]
+doc_category: AAA
+attributes:
+  - yang_name: name
+    id: true
+    example: tacacs_10.10.15.13
+  - yang_name: address/tacacs-host-address/ipv4/ipv4
+    xpath: address/ipv4
+    tf_name: address_ipv4
+    example: 10.10.15.13
+  - yang_name: timeout
+    example: 4
+  - yang_name: port
+    example: 490
+  - yang_name: key/encryption
+    tf_name: encryption
+    write_only: true
+    example: 0
+    requires_replace: true
+    delete_parent: true
+  - yang_name: key/key
+    tf_name: key
+    write_only: true
+    sensitive: true
+    example: 123
+    allow_import_changes: true
+    delete_parent: true
+

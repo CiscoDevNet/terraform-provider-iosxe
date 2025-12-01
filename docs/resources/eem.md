@@ -30,27 +30,21 @@ resource "iosxe_eem" "example" {
   detector_routing_bootup_delay         = 2
   applets = [
     {
-      name              = "test_applet_10"
-      authorization     = "bypass"
-      class             = "A"
-      description       = "test describing applet"
-      event_cli_pattern = "shutdown"
-      event_cli_sync    = "no"
-      event_cli_skip    = "no"
+      name          = "test_applet_10"
+      authorization = "bypass"
+      class         = "A"
+      description   = "test describing applet"
       actions = [
         {
           name        = "10"
           cli_command = "enable"
         }
       ]
-      event_timer_watchdog_time      = 1800
-      event_timer_watchdog_name      = "test_time"
-      event_timer_watchdog_maxrun    = 10
-      event_timer_watchdog_ratelimit = 10
-      event_timer_cron_entry         = "0 12 * * 1-5"
-      event_timer_cron_name          = "test_time"
-      event_timer_cron_maxrun        = 10
-      event_timer_cron_ratelimit     = 10
+      event_syslog_pattern   = "%EXAMPLE-5-TEST: Example syslog for testing purposes"
+      event_syslog_occurs    = 1
+      event_syslog_maxrun    = 30
+      event_syslog_ratelimit = 10
+      event_syslog_period    = 60
     }
   ]
 }
@@ -102,6 +96,15 @@ Optional:
   - Choices: `no`, `yes`
 - `event_cli_sync` (String) CLI and EEM policy execution sync or async
   - Choices: `no`, `yes`
+- `event_syslog_maxrun` (Number) Maximum runtime of applet
+  - Range: `0`-`3.1536000999e+10`
+- `event_syslog_occurs` (Number) Number of occurrences before raising event
+  - Range: `1`-`32`
+- `event_syslog_pattern` (String) Pattern match string for the entire message
+- `event_syslog_period` (Number) Occurrence period
+  - Range: `0`-`4.294967295999e+12`
+- `event_syslog_ratelimit` (Number) seconds[.milliseconds] value
+  - Range: `0`-`3.1536000999e+10`
 - `event_timer_cron_entry` (String) Cron entry for cron timer
 - `event_timer_cron_maxrun` (Number) Maximum runtime of applet
   - Range: `0`-`3.1536000999e+10`
@@ -190,9 +193,9 @@ Optional:
 - `snmp_trap_intdata2` (Number) SNMP integer data2
   - Range: `-2147483648`-`2147483647`
 - `snmp_trap_strdata` (String) SNMP trap string
+- `string_first_string_op_1` (String)
+- `string_first_string_op_2` (String)
 - `string_trim` (String) trim characters from both ends of string
-- `string_trim_first_string_op_1` (String)
-- `string_trim_first_string_op_2` (String)
 - `syslog_facility` (String) Facility string
 - `syslog_msg` (String) Syslog message
 - `syslog_priority` (String) Priority of syslog message

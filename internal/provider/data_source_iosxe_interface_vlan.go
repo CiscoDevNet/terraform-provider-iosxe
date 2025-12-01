@@ -88,6 +88,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Enable proxy ARP",
 				Computed:            true,
 			},
+			"ip_local_proxy_arp": schema.BoolAttribute{
+				MarkdownDescription: "Enable local-proxy ARP",
+				Computed:            true,
+			},
 			"ip_redirects": schema.BoolAttribute{
 				MarkdownDescription: "Enable sending ICMP Redirect messages",
 				Computed:            true,
@@ -242,6 +246,14 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 			},
 			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
 				MarkdownDescription: "Enable vpn-id support on this interface",
+				Computed:            true,
+			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: "IGMP version",
+				Computed:            true,
+			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
 		},

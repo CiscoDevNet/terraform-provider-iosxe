@@ -63,6 +63,7 @@ type EVPNInstance struct {
 	VlanBasedIpLocalLearningEnable   types.Bool                                `tfsdk:"vlan_based_ip_local_learning_enable"`
 	VlanBasedDefaultGatewayAdvertise types.String                              `tfsdk:"vlan_based_default_gateway_advertise"`
 	VlanBasedReOriginateRouteType5   types.Bool                                `tfsdk:"vlan_based_re_originate_route_type5"`
+	VlanBasedMulticastAdvertise      types.String                              `tfsdk:"vlan_based_multicast_advertise"`
 }
 
 type EVPNInstanceData struct {
@@ -87,6 +88,7 @@ type EVPNInstanceData struct {
 	VlanBasedIpLocalLearningEnable   types.Bool                                `tfsdk:"vlan_based_ip_local_learning_enable"`
 	VlanBasedDefaultGatewayAdvertise types.String                              `tfsdk:"vlan_based_default_gateway_advertise"`
 	VlanBasedReOriginateRouteType5   types.Bool                                `tfsdk:"vlan_based_re_originate_route_type5"`
+	VlanBasedMulticastAdvertise      types.String                              `tfsdk:"vlan_based_multicast_advertise"`
 }
 type EVPNInstanceVlanBasedRouteTargetExports struct {
 	RouteTarget types.String `tfsdk:"route_target"`
@@ -203,6 +205,9 @@ func (data EVPNInstance) toBody(ctx context.Context) string {
 		if data.VlanBasedReOriginateRouteType5.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.re-originate.route-type5", map[string]string{})
 		}
+	}
+	if !data.VlanBasedMulticastAdvertise.IsNull() && !data.VlanBasedMulticastAdvertise.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.multicast.advertise", data.VlanBasedMulticastAdvertise.ValueString())
 	}
 	if len(data.VlanBasedRouteTargetExports) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target-v2.export", []interface{}{})
@@ -329,6 +334,9 @@ func (data EVPNInstance) toBodyXML(ctx context.Context) string {
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/vlan-based/re-originate/route-type5")
 		}
+	}
+	if !data.VlanBasedMulticastAdvertise.IsNull() && !data.VlanBasedMulticastAdvertise.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/multicast/advertise", data.VlanBasedMulticastAdvertise.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -523,6 +531,11 @@ func (data *EVPNInstance) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.VlanBasedReOriginateRouteType5 = types.BoolNull()
 	}
+	if value := res.Get(prefix + "vlan-based.multicast.advertise"); value.Exists() && !data.VlanBasedMulticastAdvertise.IsNull() {
+		data.VlanBasedMulticastAdvertise = types.StringValue(value.String())
+	} else {
+		data.VlanBasedMulticastAdvertise = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -707,6 +720,11 @@ func (data *EVPNInstance) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.VlanBasedReOriginateRouteType5 = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-based/multicast/advertise"); value.Exists() && !data.VlanBasedMulticastAdvertise.IsNull() {
+		data.VlanBasedMulticastAdvertise = types.StringValue(value.String())
+	} else {
+		data.VlanBasedMulticastAdvertise = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -805,6 +823,9 @@ func (data *EVPNInstance) fromBody(ctx context.Context, res gjson.Result) {
 		data.VlanBasedReOriginateRouteType5 = types.BoolValue(true)
 	} else {
 		data.VlanBasedReOriginateRouteType5 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "vlan-based.multicast.advertise"); value.Exists() {
+		data.VlanBasedMulticastAdvertise = types.StringValue(value.String())
 	}
 }
 
@@ -905,6 +926,9 @@ func (data *EVPNInstanceData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.VlanBasedReOriginateRouteType5 = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "vlan-based.multicast.advertise"); value.Exists() {
+		data.VlanBasedMulticastAdvertise = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -999,6 +1023,9 @@ func (data *EVPNInstance) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.VlanBasedReOriginateRouteType5 = types.BoolValue(true)
 	} else {
 		data.VlanBasedReOriginateRouteType5 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-based/multicast/advertise"); value.Exists() {
+		data.VlanBasedMulticastAdvertise = types.StringValue(value.String())
 	}
 }
 
@@ -1095,6 +1122,9 @@ func (data *EVPNInstanceData) fromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.VlanBasedReOriginateRouteType5 = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-based/multicast/advertise"); value.Exists() {
+		data.VlanBasedMulticastAdvertise = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1103,6 +1133,9 @@ func (data *EVPNInstanceData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *EVPNInstance) getDeletedItems(ctx context.Context, state EVPNInstance) []string {
 	deletedItems := make([]string, 0)
+	if !state.VlanBasedMulticastAdvertise.IsNull() && data.VlanBasedMulticastAdvertise.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/multicast/advertise", state.getPath()))
+	}
 	if !state.VlanBasedReOriginateRouteType5.IsNull() && data.VlanBasedReOriginateRouteType5.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/re-originate/route-type5", state.getPath()))
 	}
@@ -1211,6 +1244,9 @@ func (data *EVPNInstance) getDeletedItems(ctx context.Context, state EVPNInstanc
 
 func (data *EVPNInstance) addDeletedItemsXML(ctx context.Context, state EVPNInstance, body string) string {
 	b := netconf.NewBody(body)
+	if !state.VlanBasedMulticastAdvertise.IsNull() && data.VlanBasedMulticastAdvertise.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/multicast/advertise")
+	}
 	if !state.VlanBasedReOriginateRouteType5.IsNull() && data.VlanBasedReOriginateRouteType5.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-based/re-originate/route-type5")
 	}
@@ -1365,6 +1401,9 @@ func (data *EVPNInstance) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *EVPNInstance) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.VlanBasedMulticastAdvertise.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/multicast/advertise", data.getPath()))
+	}
 	if !data.VlanBasedReOriginateRouteType5.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/re-originate/route-type5", data.getPath()))
 	}
@@ -1433,6 +1472,9 @@ func (data *EVPNInstance) getDeletePaths(ctx context.Context) []string {
 
 func (data *EVPNInstance) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.VlanBasedMulticastAdvertise.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vlan-based/multicast/advertise")
+	}
 	if !data.VlanBasedReOriginateRouteType5.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vlan-based/re-originate/route-type5")
 	}

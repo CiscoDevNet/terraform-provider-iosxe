@@ -119,6 +119,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 				Optional:            true,
 			},
+			"ip_local_proxy_arp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable local-proxy ARP").String,
+				Optional:            true,
+			},
 			"ip_redirects": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 				Optional:            true,
@@ -305,6 +309,17 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable vpn-id support on this interface").String,
+				Optional:            true,
+			},
+			"ip_igmp_version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3),
+				},
+			},
+			"ip_router_isis": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 		},

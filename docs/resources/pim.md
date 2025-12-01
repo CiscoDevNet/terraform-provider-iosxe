@@ -14,16 +14,17 @@ This resource can manage the PIM configuration.
 
 ```terraform
 resource "iosxe_pim" "example" {
-  autorp                 = false
-  autorp_listener        = false
-  bsr_candidate_loopback = 100
-  bsr_candidate_mask     = 30
-  bsr_candidate_priority = 10
-  ssm_range              = "10"
-  ssm_default            = false
-  rp_address             = "9.9.9.9"
-  rp_address_override    = false
-  rp_address_bidir       = false
+  autorp                             = false
+  autorp_listener                    = false
+  bsr_candidate_loopback             = 100
+  bsr_candidate_mask                 = 30
+  bsr_candidate_priority             = 10
+  register_source_interface_loopback = 100
+  ssm_range                          = "10"
+  ssm_default                        = false
+  rp_address                         = "9.9.9.9"
+  rp_address_override                = false
+  rp_address_bidir                   = false
   rp_addresses = [
     {
       access_list = "10"
@@ -42,17 +43,18 @@ resource "iosxe_pim" "example" {
   ]
   vrfs = [
     {
-      vrf                    = "VRF1"
-      autorp                 = false
-      autorp_listener        = false
-      bsr_candidate_loopback = 200
-      bsr_candidate_mask     = 30
-      bsr_candidate_priority = 10
-      ssm_range              = "10"
-      ssm_default            = false
-      rp_address             = "19.19.19.19"
-      rp_address_override    = false
-      rp_address_bidir       = false
+      vrf                                = "VRF1"
+      autorp                             = false
+      autorp_listener                    = false
+      bsr_candidate_loopback             = 200
+      bsr_candidate_mask                 = 30
+      bsr_candidate_priority             = 10
+      register_source_interface_loopback = 200
+      ssm_range                          = "10"
+      ssm_default                        = false
+      rp_address                         = "19.19.19.19"
+      rp_address_override                = false
+      rp_address_bidir                   = false
       rp_addresses = [
         {
           access_list = "10"
@@ -91,6 +93,8 @@ resource "iosxe_pim" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `register_source_interface_loopback` (Number) Loopback interface
+  - Range: `0`-`2147483647`
 - `rp_address` (String) IP address of Rendezvous-point for group
 - `rp_address_bidir` (Boolean) Group range treated in bidirectional shared-tree mode
 - `rp_address_override` (Boolean) Overrides dynamically learnt RP mappings
@@ -154,6 +158,8 @@ Optional:
 - `bsr_candidate_priority` (Number) Priority value for candidate bootstrap router
   - Range: `0`-`255`
 - `cache_rpf_oif` (Boolean) Cache outgoing interface RPF info
+- `register_source_interface_loopback` (Number) Loopback interface
+  - Range: `0`-`2147483647`
 - `rp_address` (String) IP address of Rendezvous-point for group
 - `rp_address_bidir` (Boolean) Group range treated in bidirectional shared-tree mode
 - `rp_address_override` (Boolean) Overrides dynamically learnt RP mappings

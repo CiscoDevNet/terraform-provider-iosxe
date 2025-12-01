@@ -40,6 +40,7 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_proxy_arp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_local_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_redirects", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "vrf_forwarding", "VRF1"))
@@ -67,6 +68,7 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "mac_address", "0000.dead.beef"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_igmp_version", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -107,6 +109,7 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
+	config += `	ip_local_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
 	config += `	ip_unreachables = false` + "\n"
 	config += `	vrf_forwarding = "VRF1"` + "\n"
@@ -140,6 +143,7 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `	load_interval = 30` + "\n"
 	config += `	mac_address = "0000.dead.beef"` + "\n"
 	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
+	config += `	ip_igmp_version = 3` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

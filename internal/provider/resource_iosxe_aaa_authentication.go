@@ -365,6 +365,22 @@ func (r *AAAAuthenticationResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("No authentication for Privileged command level(enable)").String,
 				Optional:            true,
 			},
+			"enable_default_group_legacy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"enable_default_enable_legacy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use enable password for authentication.").String,
+				Optional:            true,
+			},
+			"enable_default_line_legacy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use line password for authentication.").String,
+				Optional:            true,
+			},
+			"enable_default_none_legacy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("No authentication.").String,
+				Optional:            true,
+			},
 		},
 	}
 }

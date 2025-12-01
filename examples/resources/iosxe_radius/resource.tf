@@ -6,7 +6,9 @@ resource "iosxe_radius" "example" {
   timeout                          = 4
   retransmit                       = 3
   key                              = "123"
+  key_encryption                   = "0"
   automate_tester_username         = "dummy"
   automate_tester_ignore_acct_port = true
+  automate_tester_ignore_auth_port = true
   automate_tester_probe_on_config  = true
 }

@@ -28,6 +28,14 @@ data "iosxe_aaa_accounting" "example" {
 
 - `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
 - `connections` (Attributes List) For outbound connections. (telnet, rlogin) (see [below for nested schema](#nestedatt--connections))
+- `dot1x` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--dot1x))
+- `dot1x_default_start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+- `dot1x_default_start_stop_group1` (String) Use Server-group
+- `dot1x_default_start_stop_group2` (String) Use Server-group
+- `dot1x_default_start_stop_group3` (String) Use Server-group
+- `dot1x_default_start_stop_group4` (String) Use Server-group
+- `dot1x_default_start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+- `dot1x_default_start_stop_group_logger` (Boolean) Use system logger for Accounting
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
 - `identities` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--identities))
@@ -82,6 +90,21 @@ Read-Only:
 - `wait_start_group3` (String) Use Server-group
 - `wait_start_group4` (String) Use Server-group
 - `wait_start_logger` (Boolean) Use system logger for Accounting
+
+
+<a id="nestedatt--dot1x"></a>
+### Nested Schema for `dot1x`
+
+Read-Only:
+
+- `name` (String)
+- `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
+- `start_stop_group3` (String) Use Server-group
+- `start_stop_group4` (String) Use Server-group
+- `start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--execs"></a>

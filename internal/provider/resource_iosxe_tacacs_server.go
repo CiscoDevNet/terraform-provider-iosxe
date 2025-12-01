@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -87,23 +86,24 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name for the tacacs server configuration").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"address_ipv4": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address or Hostname for tacacs server").String,
-				Optional:            true,
-			},
 			"timeout": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Time to wait for this TACACS server to reply (overrides default)").AddIntegerRangeDescription(1, 1000).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Time to wait for a TACACS server to reply").AddIntegerRangeDescription(1, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 1000),
 				},
+			},
+			"directed_request": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow user to specify tacacs server to use with `@server'").String,
+				Optional:            true,
+			},
+			"directed_request_restricted": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("restrict queries to directed request servers only").String,
+				Optional:            true,
+			},
+			"directed_request_no_truncate": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Do not truncate the @hostname from username.").String,
+				Optional:            true,
 			},
 			"encryption": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow").AddStringEnumDescription("0", "6", "7").String,
@@ -116,12 +116,13 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"key": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				Sensitive:           true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-				},
+			},
+			"attribute_allow_unknown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Unknown Tacacs+ attributes").String,
+				Optional:            true,
 			},
 		},
 	}
@@ -510,27 +511,21 @@ func (r *TACACSServerResource) ImportState(ctx context.Context, req resource.Imp
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 1 && len(idParts) != 2 {
-		expectedIdentifier := "Expected import identifier with format: '<name>'"
-		expectedIdentifier += " or '<name>,<device>'"
+	if len(idParts) != 0 && len(idParts) != 1 {
+		expectedIdentifier := "Expected import identifier with format: ''"
+		expectedIdentifier += " or '<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
-	if len(idParts) == 2 {
+	if len(idParts) == 1 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
 	var state TACACSServer
-	diags := resp.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

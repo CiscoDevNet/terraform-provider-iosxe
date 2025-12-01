@@ -426,11 +426,11 @@ func (d *EEMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 										MarkdownDescription: "",
 										Computed:            true,
 									},
-									"string_trim_first_string_op_1": schema.StringAttribute{
+									"string_first_string_op_1": schema.StringAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},
-									"string_trim_first_string_op_2": schema.StringAttribute{
+									"string_first_string_op_2": schema.StringAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},
@@ -467,6 +467,26 @@ func (d *EEMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						},
 						"event_timer_cron_ratelimit": schema.Float64Attribute{
 							MarkdownDescription: "seconds[.milliseconds] value",
+							Computed:            true,
+						},
+						"event_syslog_pattern": schema.StringAttribute{
+							MarkdownDescription: "Pattern match string for the entire message",
+							Computed:            true,
+						},
+						"event_syslog_occurs": schema.Int64Attribute{
+							MarkdownDescription: "Number of occurrences before raising event",
+							Computed:            true,
+						},
+						"event_syslog_maxrun": schema.Float64Attribute{
+							MarkdownDescription: "Maximum runtime of applet",
+							Computed:            true,
+						},
+						"event_syslog_ratelimit": schema.Float64Attribute{
+							MarkdownDescription: "seconds[.milliseconds] value",
+							Computed:            true,
+						},
+						"event_syslog_period": schema.Float64Attribute{
+							MarkdownDescription: "Occurrence period",
 							Computed:            true,
 						},
 					},

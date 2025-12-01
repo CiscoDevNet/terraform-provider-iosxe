@@ -92,6 +92,10 @@ func (d *PIMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "BSR RP candidate filter",
 				Computed:            true,
 			},
+			"register_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: "Loopback interface",
+				Computed:            true,
+			},
 			"ssm_range": schema.StringAttribute{
 				MarkdownDescription: "ACL for group range to be used for SSM",
 				Computed:            true,
@@ -195,6 +199,10 @@ func (d *PIMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						},
 						"bsr_candidate_accept_rp_candidate": schema.StringAttribute{
 							MarkdownDescription: "BSR RP candidate filter",
+							Computed:            true,
+						},
+						"register_source_interface_loopback": schema.Int64Attribute{
+							MarkdownDescription: "Loopback interface",
 							Computed:            true,
 						},
 						"ssm_range": schema.StringAttribute{

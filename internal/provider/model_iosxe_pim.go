@@ -41,42 +41,44 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type PIM struct {
-	Device                        types.String      `tfsdk:"device"`
-	Id                            types.String      `tfsdk:"id"`
-	DeleteMode                    types.String      `tfsdk:"delete_mode"`
-	Autorp                        types.Bool        `tfsdk:"autorp"`
-	AutorpListener                types.Bool        `tfsdk:"autorp_listener"`
-	BsrCandidateLoopback          types.Int64       `tfsdk:"bsr_candidate_loopback"`
-	BsrCandidateMask              types.Int64       `tfsdk:"bsr_candidate_mask"`
-	BsrCandidatePriority          types.Int64       `tfsdk:"bsr_candidate_priority"`
-	BsrCandidateAcceptRpCandidate types.String      `tfsdk:"bsr_candidate_accept_rp_candidate"`
-	SsmRange                      types.String      `tfsdk:"ssm_range"`
-	SsmDefault                    types.Bool        `tfsdk:"ssm_default"`
-	RpAddress                     types.String      `tfsdk:"rp_address"`
-	RpAddressOverride             types.Bool        `tfsdk:"rp_address_override"`
-	RpAddressBidir                types.Bool        `tfsdk:"rp_address_bidir"`
-	RpAddresses                   []PIMRpAddresses  `tfsdk:"rp_addresses"`
-	RpCandidates                  []PIMRpCandidates `tfsdk:"rp_candidates"`
-	Vrfs                          []PIMVrfs         `tfsdk:"vrfs"`
+	Device                          types.String      `tfsdk:"device"`
+	Id                              types.String      `tfsdk:"id"`
+	DeleteMode                      types.String      `tfsdk:"delete_mode"`
+	Autorp                          types.Bool        `tfsdk:"autorp"`
+	AutorpListener                  types.Bool        `tfsdk:"autorp_listener"`
+	BsrCandidateLoopback            types.Int64       `tfsdk:"bsr_candidate_loopback"`
+	BsrCandidateMask                types.Int64       `tfsdk:"bsr_candidate_mask"`
+	BsrCandidatePriority            types.Int64       `tfsdk:"bsr_candidate_priority"`
+	BsrCandidateAcceptRpCandidate   types.String      `tfsdk:"bsr_candidate_accept_rp_candidate"`
+	RegisterSourceInterfaceLoopback types.Int64       `tfsdk:"register_source_interface_loopback"`
+	SsmRange                        types.String      `tfsdk:"ssm_range"`
+	SsmDefault                      types.Bool        `tfsdk:"ssm_default"`
+	RpAddress                       types.String      `tfsdk:"rp_address"`
+	RpAddressOverride               types.Bool        `tfsdk:"rp_address_override"`
+	RpAddressBidir                  types.Bool        `tfsdk:"rp_address_bidir"`
+	RpAddresses                     []PIMRpAddresses  `tfsdk:"rp_addresses"`
+	RpCandidates                    []PIMRpCandidates `tfsdk:"rp_candidates"`
+	Vrfs                            []PIMVrfs         `tfsdk:"vrfs"`
 }
 
 type PIMData struct {
-	Device                        types.String      `tfsdk:"device"`
-	Id                            types.String      `tfsdk:"id"`
-	Autorp                        types.Bool        `tfsdk:"autorp"`
-	AutorpListener                types.Bool        `tfsdk:"autorp_listener"`
-	BsrCandidateLoopback          types.Int64       `tfsdk:"bsr_candidate_loopback"`
-	BsrCandidateMask              types.Int64       `tfsdk:"bsr_candidate_mask"`
-	BsrCandidatePriority          types.Int64       `tfsdk:"bsr_candidate_priority"`
-	BsrCandidateAcceptRpCandidate types.String      `tfsdk:"bsr_candidate_accept_rp_candidate"`
-	SsmRange                      types.String      `tfsdk:"ssm_range"`
-	SsmDefault                    types.Bool        `tfsdk:"ssm_default"`
-	RpAddress                     types.String      `tfsdk:"rp_address"`
-	RpAddressOverride             types.Bool        `tfsdk:"rp_address_override"`
-	RpAddressBidir                types.Bool        `tfsdk:"rp_address_bidir"`
-	RpAddresses                   []PIMRpAddresses  `tfsdk:"rp_addresses"`
-	RpCandidates                  []PIMRpCandidates `tfsdk:"rp_candidates"`
-	Vrfs                          []PIMVrfs         `tfsdk:"vrfs"`
+	Device                          types.String      `tfsdk:"device"`
+	Id                              types.String      `tfsdk:"id"`
+	Autorp                          types.Bool        `tfsdk:"autorp"`
+	AutorpListener                  types.Bool        `tfsdk:"autorp_listener"`
+	BsrCandidateLoopback            types.Int64       `tfsdk:"bsr_candidate_loopback"`
+	BsrCandidateMask                types.Int64       `tfsdk:"bsr_candidate_mask"`
+	BsrCandidatePriority            types.Int64       `tfsdk:"bsr_candidate_priority"`
+	BsrCandidateAcceptRpCandidate   types.String      `tfsdk:"bsr_candidate_accept_rp_candidate"`
+	RegisterSourceInterfaceLoopback types.Int64       `tfsdk:"register_source_interface_loopback"`
+	SsmRange                        types.String      `tfsdk:"ssm_range"`
+	SsmDefault                      types.Bool        `tfsdk:"ssm_default"`
+	RpAddress                       types.String      `tfsdk:"rp_address"`
+	RpAddressOverride               types.Bool        `tfsdk:"rp_address_override"`
+	RpAddressBidir                  types.Bool        `tfsdk:"rp_address_bidir"`
+	RpAddresses                     []PIMRpAddresses  `tfsdk:"rp_addresses"`
+	RpCandidates                    []PIMRpCandidates `tfsdk:"rp_candidates"`
+	Vrfs                            []PIMVrfs         `tfsdk:"vrfs"`
 }
 type PIMRpAddresses struct {
 	AccessList types.String `tfsdk:"access_list"`
@@ -92,21 +94,22 @@ type PIMRpCandidates struct {
 	Bidir     types.Bool   `tfsdk:"bidir"`
 }
 type PIMVrfs struct {
-	Vrf                           types.String          `tfsdk:"vrf"`
-	Autorp                        types.Bool            `tfsdk:"autorp"`
-	AutorpListener                types.Bool            `tfsdk:"autorp_listener"`
-	BsrCandidateLoopback          types.Int64           `tfsdk:"bsr_candidate_loopback"`
-	BsrCandidateMask              types.Int64           `tfsdk:"bsr_candidate_mask"`
-	BsrCandidatePriority          types.Int64           `tfsdk:"bsr_candidate_priority"`
-	BsrCandidateAcceptRpCandidate types.String          `tfsdk:"bsr_candidate_accept_rp_candidate"`
-	SsmRange                      types.String          `tfsdk:"ssm_range"`
-	SsmDefault                    types.Bool            `tfsdk:"ssm_default"`
-	RpAddress                     types.String          `tfsdk:"rp_address"`
-	RpAddressOverride             types.Bool            `tfsdk:"rp_address_override"`
-	RpAddressBidir                types.Bool            `tfsdk:"rp_address_bidir"`
-	CacheRpfOif                   types.Bool            `tfsdk:"cache_rpf_oif"`
-	RpAddresses                   []PIMVrfsRpAddresses  `tfsdk:"rp_addresses"`
-	RpCandidates                  []PIMVrfsRpCandidates `tfsdk:"rp_candidates"`
+	Vrf                             types.String          `tfsdk:"vrf"`
+	Autorp                          types.Bool            `tfsdk:"autorp"`
+	AutorpListener                  types.Bool            `tfsdk:"autorp_listener"`
+	BsrCandidateLoopback            types.Int64           `tfsdk:"bsr_candidate_loopback"`
+	BsrCandidateMask                types.Int64           `tfsdk:"bsr_candidate_mask"`
+	BsrCandidatePriority            types.Int64           `tfsdk:"bsr_candidate_priority"`
+	BsrCandidateAcceptRpCandidate   types.String          `tfsdk:"bsr_candidate_accept_rp_candidate"`
+	RegisterSourceInterfaceLoopback types.Int64           `tfsdk:"register_source_interface_loopback"`
+	SsmRange                        types.String          `tfsdk:"ssm_range"`
+	SsmDefault                      types.Bool            `tfsdk:"ssm_default"`
+	RpAddress                       types.String          `tfsdk:"rp_address"`
+	RpAddressOverride               types.Bool            `tfsdk:"rp_address_override"`
+	RpAddressBidir                  types.Bool            `tfsdk:"rp_address_bidir"`
+	CacheRpfOif                     types.Bool            `tfsdk:"cache_rpf_oif"`
+	RpAddresses                     []PIMVrfsRpAddresses  `tfsdk:"rp_addresses"`
+	RpCandidates                    []PIMVrfsRpCandidates `tfsdk:"rp_candidates"`
 }
 type PIMVrfsRpAddresses struct {
 	AccessList types.String `tfsdk:"access_list"`
@@ -181,6 +184,9 @@ func (data PIM) toBody(ctx context.Context) string {
 	}
 	if !data.BsrCandidateAcceptRpCandidate.IsNull() && !data.BsrCandidateAcceptRpCandidate.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:bsr-candidate.accept-rp-candidate", data.BsrCandidateAcceptRpCandidate.ValueString())
+	}
+	if !data.RegisterSourceInterfaceLoopback.IsNull() && !data.RegisterSourceInterfaceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:register-source.Loopback", strconv.FormatInt(data.RegisterSourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if !data.SsmRange.IsNull() && !data.SsmRange.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:ssm.range", data.SsmRange.ValueString())
@@ -271,6 +277,9 @@ func (data PIM) toBody(ctx context.Context) string {
 			}
 			if !item.BsrCandidateAcceptRpCandidate.IsNull() && !item.BsrCandidateAcceptRpCandidate.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"bsr-candidate.accept-rp-candidate", item.BsrCandidateAcceptRpCandidate.ValueString())
+			}
+			if !item.RegisterSourceInterfaceLoopback.IsNull() && !item.RegisterSourceInterfaceLoopback.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"register-source.Loopback", strconv.FormatInt(item.RegisterSourceInterfaceLoopback.ValueInt64(), 10))
 			}
 			if !item.SsmRange.IsNull() && !item.SsmRange.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"ssm.range", item.SsmRange.ValueString())
@@ -373,6 +382,9 @@ func (data PIM) toBodyXML(ctx context.Context) string {
 	}
 	if !data.BsrCandidateAcceptRpCandidate.IsNull() && !data.BsrCandidateAcceptRpCandidate.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate", data.BsrCandidateAcceptRpCandidate.ValueString())
+	}
+	if !data.RegisterSourceInterfaceLoopback.IsNull() && !data.RegisterSourceInterfaceLoopback.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:register-source/Loopback", strconv.FormatInt(data.RegisterSourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if !data.SsmRange.IsNull() && !data.SsmRange.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range", data.SsmRange.ValueString())
@@ -479,6 +491,9 @@ func (data PIM) toBodyXML(ctx context.Context) string {
 			}
 			if !item.BsrCandidateAcceptRpCandidate.IsNull() && !item.BsrCandidateAcceptRpCandidate.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "bsr-candidate/accept-rp-candidate", item.BsrCandidateAcceptRpCandidate.ValueString())
+			}
+			if !item.RegisterSourceInterfaceLoopback.IsNull() && !item.RegisterSourceInterfaceLoopback.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "register-source/Loopback", strconv.FormatInt(item.RegisterSourceInterfaceLoopback.ValueInt64(), 10))
 			}
 			if !item.SsmRange.IsNull() && !item.SsmRange.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ssm/range", item.SsmRange.ValueString())
@@ -619,6 +634,11 @@ func (data *PIM) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
 	} else {
 		data.BsrCandidateAcceptRpCandidate = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:register-source.Loopback"); value.Exists() && !data.RegisterSourceInterfaceLoopback.IsNull() {
+		data.RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+	} else {
+		data.RegisterSourceInterfaceLoopback = types.Int64Null()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:ssm.range"); value.Exists() && !data.SsmRange.IsNull() {
 		data.SsmRange = types.StringValue(value.String())
@@ -826,6 +846,11 @@ func (data *PIM) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Vrfs[i].BsrCandidateAcceptRpCandidate = types.StringNull()
 		}
+		if value := r.Get("register-source.Loopback"); value.Exists() && !data.Vrfs[i].RegisterSourceInterfaceLoopback.IsNull() {
+			data.Vrfs[i].RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].RegisterSourceInterfaceLoopback = types.Int64Null()
+		}
 		if value := r.Get("ssm.range"); value.Exists() && !data.Vrfs[i].SsmRange.IsNull() {
 			data.Vrfs[i].SsmRange = types.StringValue(value.String())
 		} else {
@@ -1020,6 +1045,11 @@ func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
 	} else {
 		data.BsrCandidateAcceptRpCandidate = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:register-source/Loopback"); value.Exists() && !data.RegisterSourceInterfaceLoopback.IsNull() {
+		data.RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+	} else {
+		data.RegisterSourceInterfaceLoopback = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range"); value.Exists() && !data.SsmRange.IsNull() {
 		data.SsmRange = types.StringValue(value.String())
@@ -1227,6 +1257,11 @@ func (data *PIM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Vrfs[i].BsrCandidateAcceptRpCandidate = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "register-source/Loopback"); value.Exists() && !data.Vrfs[i].RegisterSourceInterfaceLoopback.IsNull() {
+			data.Vrfs[i].RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].RegisterSourceInterfaceLoopback = types.Int64Null()
+		}
 		if value := helpers.GetFromXPath(r, "ssm/range"); value.Exists() && !data.Vrfs[i].SsmRange.IsNull() {
 			data.Vrfs[i].SsmRange = types.StringValue(value.String())
 		} else {
@@ -1412,6 +1447,9 @@ func (data *PIM) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bsr-candidate.accept-rp-candidate"); value.Exists() {
 		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:register-source.Loopback"); value.Exists() {
+		data.RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:ssm.range"); value.Exists() {
 		data.SsmRange = types.StringValue(value.String())
 	}
@@ -1510,6 +1548,9 @@ func (data *PIM) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("bsr-candidate.accept-rp-candidate"); cValue.Exists() {
 				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("register-source.Loopback"); cValue.Exists() {
+				item.RegisterSourceInterfaceLoopback = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("ssm.range"); cValue.Exists() {
 				item.SsmRange = types.StringValue(cValue.String())
@@ -1623,6 +1664,9 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bsr-candidate.accept-rp-candidate"); value.Exists() {
 		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:register-source.Loopback"); value.Exists() {
+		data.RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:ssm.range"); value.Exists() {
 		data.SsmRange = types.StringValue(value.String())
 	}
@@ -1721,6 +1765,9 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("bsr-candidate.accept-rp-candidate"); cValue.Exists() {
 				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("register-source.Loopback"); cValue.Exists() {
+				item.RegisterSourceInterfaceLoopback = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("ssm.range"); cValue.Exists() {
 				item.SsmRange = types.StringValue(cValue.String())
@@ -1830,6 +1877,9 @@ func (data *PIM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate"); value.Exists() {
 		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:register-source/Loopback"); value.Exists() {
+		data.RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range"); value.Exists() {
 		data.SsmRange = types.StringValue(value.String())
 	}
@@ -1928,6 +1978,9 @@ func (data *PIM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "bsr-candidate/accept-rp-candidate"); cValue.Exists() {
 				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "register-source/Loopback"); cValue.Exists() {
+				item.RegisterSourceInterfaceLoopback = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "ssm/range"); cValue.Exists() {
 				item.SsmRange = types.StringValue(cValue.String())
@@ -2037,6 +2090,9 @@ func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate"); value.Exists() {
 		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:register-source/Loopback"); value.Exists() {
+		data.RegisterSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range"); value.Exists() {
 		data.SsmRange = types.StringValue(value.String())
 	}
@@ -2135,6 +2191,9 @@ func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "bsr-candidate/accept-rp-candidate"); cValue.Exists() {
 				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "register-source/Loopback"); cValue.Exists() {
+				item.RegisterSourceInterfaceLoopback = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "ssm/range"); cValue.Exists() {
 				item.SsmRange = types.StringValue(cValue.String())
@@ -2327,6 +2386,9 @@ func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 				if !state.Vrfs[i].SsmRange.IsNull() && data.Vrfs[j].SsmRange.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/ssm/range", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
+				if !state.Vrfs[i].RegisterSourceInterfaceLoopback.IsNull() && data.Vrfs[j].RegisterSourceInterfaceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/register-source/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Vrfs[i].BsrCandidateAcceptRpCandidate.IsNull() && data.Vrfs[j].BsrCandidateAcceptRpCandidate.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/bsr-candidate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -2437,6 +2499,9 @@ func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 	}
 	if !state.SsmRange.IsNull() && data.SsmRange.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:ssm/range", state.getPath()))
+	}
+	if !state.RegisterSourceInterfaceLoopback.IsNull() && data.RegisterSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:register-source/Loopback", state.getPath()))
 	}
 	if !state.BsrCandidateAcceptRpCandidate.IsNull() && data.BsrCandidateAcceptRpCandidate.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bsr-candidate", state.getPath()))
@@ -2585,6 +2650,9 @@ func (data *PIM) addDeletedItemsXML(ctx context.Context, state PIM, body string)
 				if !state.Vrfs[i].SsmRange.IsNull() && data.Vrfs[j].SsmRange.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/ssm/range", predicates))
 				}
+				if !state.Vrfs[i].RegisterSourceInterfaceLoopback.IsNull() && data.Vrfs[j].RegisterSourceInterfaceLoopback.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/register-source/Loopback", predicates))
+				}
 				if !state.Vrfs[i].BsrCandidateAcceptRpCandidate.IsNull() && data.Vrfs[j].BsrCandidateAcceptRpCandidate.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
 				}
@@ -2705,6 +2773,9 @@ func (data *PIM) addDeletedItemsXML(ctx context.Context, state PIM, body string)
 	}
 	if !state.SsmRange.IsNull() && data.SsmRange.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range")
+	}
+	if !state.RegisterSourceInterfaceLoopback.IsNull() && data.RegisterSourceInterfaceLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:register-source/Loopback")
 	}
 	if !state.BsrCandidateAcceptRpCandidate.IsNull() && data.BsrCandidateAcceptRpCandidate.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
@@ -2840,6 +2911,9 @@ func (data *PIM) getDeletePaths(ctx context.Context) []string {
 	if !data.SsmRange.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:ssm/range", data.getPath()))
 	}
+	if !data.RegisterSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:register-source/Loopback", data.getPath()))
+	}
 	if !data.BsrCandidateAcceptRpCandidate.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bsr-candidate", data.getPath()))
 	}
@@ -2912,6 +2986,9 @@ func (data *PIM) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.SsmRange.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range")
+	}
+	if !data.RegisterSourceInterfaceLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:register-source/Loopback")
 	}
 	if !data.BsrCandidateAcceptRpCandidate.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")

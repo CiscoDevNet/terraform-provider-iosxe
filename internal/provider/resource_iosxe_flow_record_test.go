@@ -60,6 +60,14 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_datalink_source_vlan_id", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_ipv4_ttl", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_routing_vrf_input", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_vxlan_vnid", "true"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_vxlan_vtep_input", "true"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_vxlan_vtep_output", "true"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -76,7 +84,7 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeFlowRecordImportStateIdFunc("iosxe_flow_record.test"),
-				ImportStateVerifyIgnore: []string{"match_ipv6_source_address", "match_ipv6_destination_address", "match_application_name", "match_flow_observation_point", "match_ipv4_version", "match_ipv6_version", "match_ipv6_protocol", "match_connection_client_ipv4_address", "match_connection_server_ipv4_address", "match_connection_client_ipv6_address", "match_connection_server_ipv6_address", "match_connection_server_transport_port", "collect_connection_initiator", "collect_connection_new_connections", "collect_connection_server_counter_bytes_network_long", "collect_connection_server_counter_packets_long", "match_datalink_source_vlan_id", "match_datalink_destination_vlan_id", "collect_datalink_mac_source_address_input", "collect_flow_direction"},
+				ImportStateVerifyIgnore: []string{"match_ipv6_source_address", "match_ipv6_destination_address", "match_application_name", "match_flow_observation_point", "match_ipv4_version", "match_ipv6_version", "match_ipv6_protocol", "match_connection_client_ipv4_address", "match_connection_server_ipv4_address", "match_connection_client_ipv6_address", "match_connection_server_ipv6_address", "match_connection_server_transport_port", "collect_connection_initiator", "collect_connection_new_connections", "collect_connection_server_counter_bytes_network_long", "collect_connection_server_counter_packets_long", "match_datalink_source_vlan_id", "match_datalink_destination_vlan_id", "collect_datalink_mac_source_address_input", "collect_flow_direction", "match_vxlan_vtep_input", "match_vxlan_vtep_output"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -141,6 +149,14 @@ func testAccIosxeFlowRecordConfig_all() string {
 		config += `	match_datalink_source_vlan_id = true` + "\n"
 	}
 	config += `	match_ipv4_ttl = true` + "\n"
+	config += `	match_routing_vrf_input = true` + "\n"
+	config += `	match_vxlan_vnid = true` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	match_vxlan_vtep_input = true` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	match_vxlan_vtep_output = true` + "\n"
+	}
 	config += `}` + "\n"
 	return config
 }
