@@ -1,143 +1,168 @@
----
 name: VRF
 path: /Cisco-IOS-XE-native:native/vrf/definition[name=%s]
 doc_category: VRF
 attributes:
+- yang_name: name
+  example: VRF22
+- yang_name: description
+  example: VRF22 description
+- yang_name: rd
+  requires_replace: true
+  example: 1342
+- yang_name: address-family/ipv4
+  example: true
+- yang_name: address-family/ipv6
+  example: true
+- yang_name: vpn/id
+  example: 1342
+- yang_name: route-target/import
+  type: Set
+  exclude_test: true
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+  - yang_name: stitching
+    example: false
+- yang_name: route-target/export
+  type: Set
+  exclude_test: true
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+  - yang_name: stitching
+    example: false
+- yang_name: address-family/ipv4/route-target/import-route-target/without-stitching
+  tf_name: ipv4_route_target_import
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+- yang_name: address-family/ipv4/route-target/import-route-target/with-stitching
+  tf_name: ipv4_route_target_import_stitching
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+  - yang_name: stitching
+    default_value: true
+    exclude_test: true
+    example: true
+- yang_name: address-family/ipv4/route-target/export-route-target/without-stitching
+  tf_name: ipv4_route_target_export
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+- yang_name: address-family/ipv4/route-target/export-route-target/with-stitching
+  tf_name: ipv4_route_target_export_stitching
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+  - yang_name: stitching
+    default_value: true
+    exclude_test: true
+    example: true
+- yang_name: address-family/ipv4/route-replicate/from/vrf
+  tf_name: ipv4_route_replicate
+  type: List
+  attributes:
   - yang_name: name
-    example: VRF22
-  - yang_name: description
-    example: VRF22 description
-  - yang_name: rd
-    requires_replace: true
-    example: 22:22
-  - yang_name: address-family/ipv4
+    description: Source VRF name or 'global'
+    example: VRF1
+    id: true
+  - yang_name: unicast/source-proto-config/all
+    tf_name: unicast_all
     example: true
-  - yang_name: address-family/ipv6
+  - yang_name: unicast/source-proto-config/all/route-map
+    tf_name: unicast_all_route_map
+    description: Route map reference
+    example: RM1
+- yang_name: address-family/ipv6/route-target/import-route-target/without-stitching
+  tf_name: ipv6_route_target_import
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+- yang_name: address-family/ipv6/route-target/import-route-target/with-stitching
+  tf_name: ipv6_route_target_import_stitching
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+  - yang_name: stitching
+    default_value: true
+    exclude_test: true
     example: true
-  - yang_name: vpn/id
-    example: 22:22
-  - yang_name: route-target/import
-    type: Set
+- yang_name: address-family/ipv6/route-target/export-route-target/without-stitching
+  tf_name: ipv6_route_target_export
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+- yang_name: address-family/ipv6/route-target/export-route-target/with-stitching
+  tf_name: ipv6_route_target_export_stitching
+  type: Set
+  attributes:
+  - yang_name: asn-ip
+    tf_name: value
+    description: Value
+    example: 1342
+    id: true
+  - yang_name: stitching
+    default_value: true
     exclude_test: true
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-      - yang_name: stitching
-        example: false
-  - yang_name: route-target/export
-    type: Set
-    exclude_test: true
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-      - yang_name: stitching
-        example: false
-  - yang_name: address-family/ipv4/route-target/import-route-target/without-stitching
-    tf_name: ipv4_route_target_import
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-  - yang_name: address-family/ipv4/route-target/import-route-target/with-stitching
-    tf_name: ipv4_route_target_import_stitching
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-      - yang_name: stitching
-        default_value: true
-        exclude_test: true
-        example: true
-  - yang_name: address-family/ipv4/route-target/export-route-target/without-stitching
-    tf_name: ipv4_route_target_export
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-  - yang_name: address-family/ipv4/route-target/export-route-target/with-stitching
-    tf_name: ipv4_route_target_export_stitching
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-      - yang_name: stitching
-        default_value: true
-        exclude_test: true
-        example: true
-  - yang_name: address-family/ipv4/route-replicate/from/vrf
-    tf_name: ipv4_route_replicate
+    example: true
+- yang_name: vnid
+  tf_name: vnid
+  type: List
+  max_elements: 1
+  attributes:
+  - yang_name: vnid-value
+    tf_name: vnid_value
+    id: true
+    description: VNID value for route-target auto generation
+    example: 10001
+  - yang_name: evpn-instance/vni/vni-auto-num/vni-num/vni-num
+    xpath: evpn-instance/vni/vni-num
+    tf_name: evpn_instance_vni_vni_num
     type: List
+    max_elements: 1
+    description: Specify explicit NVE L3 VNI number
     attributes:
-      - yang_name: name
-        description: Source VRF name or 'global'
-        example: VRF1
-        id: true
-      - yang_name: unicast/source-proto-config/all
-        tf_name: unicast_all
-        example: true
-      - yang_name: unicast/source-proto-config/all/route-map
-        tf_name: unicast_all_route_map
-        description: Route map reference
-        example: RM1
-  - yang_name: address-family/ipv6/route-target/import-route-target/without-stitching
-    tf_name: ipv6_route_target_import
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-  - yang_name: address-family/ipv6/route-target/import-route-target/with-stitching
-    tf_name: ipv6_route_target_import_stitching
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-      - yang_name: stitching
-        default_value: true
-        exclude_test: true
-        example: true
-  - yang_name: address-family/ipv6/route-target/export-route-target/without-stitching
-    tf_name: ipv6_route_target_export
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-  - yang_name: address-family/ipv6/route-target/export-route-target/with-stitching
-    tf_name: ipv6_route_target_export_stitching
-    type: Set
-    attributes:
-      - yang_name: asn-ip
-        tf_name: value
-        description: Value
-        example: 22:22
-        id: true
-      - yang_name: stitching
-        default_value: true
-        exclude_test: true
-        example: true
+    - yang_name: vni-num
+      tf_name: vni_num
+      id: true
+      description: The NVE L3 VNI number
+      example: 20000
+    - yang_name: core-vlan
+      tf_name: core_vlan
+      description: Core vlan number to associate with VNI (explicit VNI mode)
+      example: 200

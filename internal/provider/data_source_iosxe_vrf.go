@@ -256,6 +256,34 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"vnid": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify VNID for route-target auto generation",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vnid_value": schema.Int64Attribute{
+							MarkdownDescription: "VNID value for route-target auto generation",
+							Computed:            true,
+						},
+						"evpn_instance_vni_vni_num": schema.ListNestedAttribute{
+							MarkdownDescription: "Specify explicit NVE L3 VNI number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"vni_num": schema.Int64Attribute{
+										MarkdownDescription: "The NVE L3 VNI number",
+										Computed:            true,
+									},
+									"core_vlan": schema.Int64Attribute{
+										MarkdownDescription: "Core vlan number to associate with VNI (explicit VNI mode)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

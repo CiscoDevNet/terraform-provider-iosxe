@@ -16,28 +16,28 @@ This resource can manage the VRF configuration.
 resource "iosxe_vrf" "example" {
   name                = "VRF22"
   description         = "VRF22 description"
-  rd                  = "22:22"
+  rd                  = "1342"
   address_family_ipv4 = true
   address_family_ipv6 = true
-  vpn_id              = "22:22"
+  vpn_id              = "1342"
   ipv4_route_target_import = [
     {
-      value = "22:22"
+      value = "1342"
     }
   ]
   ipv4_route_target_import_stitching = [
     {
-      value = "22:22"
+      value = "1342"
     }
   ]
   ipv4_route_target_export = [
     {
-      value = "22:22"
+      value = "1342"
     }
   ]
   ipv4_route_target_export_stitching = [
     {
-      value = "22:22"
+      value = "1342"
     }
   ]
   ipv4_route_replicate = [
@@ -49,22 +49,33 @@ resource "iosxe_vrf" "example" {
   ]
   ipv6_route_target_import = [
     {
-      value = "22:22"
+      value = "1342"
     }
   ]
   ipv6_route_target_import_stitching = [
     {
-      value = "22:22"
+      value = "1342"
     }
   ]
   ipv6_route_target_export = [
     {
-      value = "22:22"
+      value = "1342"
     }
   ]
   ipv6_route_target_export_stitching = [
     {
-      value = "22:22"
+      value = "1342"
+    }
+  ]
+  vnid = [
+    {
+      vnid_value = 10001
+      evpn_instance_vni_vni_num = [
+        {
+          vni_num   = 20000
+          core_vlan = 200
+        }
+      ]
     }
   ]
 }
@@ -97,6 +108,7 @@ resource "iosxe_vrf" "example" {
 - `rd` (String) Specify Route Distinguisher
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
+- `vnid` (Attributes List) Specify VNID for route-target auto generation (see [below for nested schema](#nestedatt--vnid))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
 
 ### Read-Only
@@ -222,6 +234,32 @@ Required:
 Optional:
 
 - `stitching` (Boolean) VXLAN route target set
+
+
+<a id="nestedatt--vnid"></a>
+### Nested Schema for `vnid`
+
+Required:
+
+- `vnid_value` (Number) VNID value for route-target auto generation
+  - Range: `1`-`2147483647`
+
+Optional:
+
+- `evpn_instance_vni_vni_num` (Attributes List) Specify explicit NVE L3 VNI number (see [below for nested schema](#nestedatt--vnid--evpn_instance_vni_vni_num))
+
+<a id="nestedatt--vnid--evpn_instance_vni_vni_num"></a>
+### Nested Schema for `vnid.evpn_instance_vni_vni_num`
+
+Required:
+
+- `vni_num` (Number) The NVE L3 VNI number
+  - Range: `4096`-`16777215`
+
+Optional:
+
+- `core_vlan` (Number) Core vlan number to associate with VNI (explicit VNI mode)
+  - Range: `1`-`4094`
 
 ## Import
 

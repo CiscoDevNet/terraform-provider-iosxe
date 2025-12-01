@@ -27,6 +27,7 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -331,6 +332,43 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
+			"vnid": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify VNID for route-target auto generation").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vnid_value": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VNID value for route-target auto generation").AddIntegerRangeDescription(1, 2147483647).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483647),
+							},
+						},
+						"evpn_instance_vni_vni_num": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify explicit NVE L3 VNI number").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"vni_num": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("The NVE L3 VNI number").AddIntegerRangeDescription(4096, 16777215).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(4096, 16777215),
+										},
+									},
+									"core_vlan": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Core vlan number to associate with VNI (explicit VNI mode)").AddIntegerRangeDescription(1, 4094).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 4094),
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -384,12 +422,10 @@ func (r *VRFResource) Create(ctx context.Context, req resource.CreateRequest, re
 					return
 				}
 			} else {
-				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
-				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-					_, err = device.RestconfClient.PutData(plan.getPath(), body)
-				}
+				// Use PUT for resource creation (more reliable than PATCH for devices)
+				_, err := device.RestconfClient.PutData(plan.getPath(), body)
 				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PUT, %s), got error: %s", plan.getPath(), err))
 					return
 				}
 				for _, i := range emptyLeafsDelete {
