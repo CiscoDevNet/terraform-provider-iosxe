@@ -7,7 +7,6 @@ description: |-
 
 # Changelog
 
-
 ## (Unreleased)
 
 - Add `iosxe_l2_vfi` resource and data source
@@ -20,6 +19,7 @@ description: |-
 - Add `iosxe_bgp_address_family_vpnv6` resource and data source
 - Add `ipv4_mdt_*` attributes to `iosxe_vrf` resource and data source
 - Add `event_syslog_*` attributes to `iosxe_eem` resource and data source
+- Created `iosxe_mld_snooping` resource and datasources with `snooping` and `querier` attrubutes.
 
 ## 0.11.0
 
@@ -435,4 +435,3 @@ description: |-
 ## 0.1.0
 
 - Initial release
-
