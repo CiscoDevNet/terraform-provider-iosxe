@@ -1,0 +1,12 @@
+---
+name: MLD Snooping
+path: /Cisco-IOS-XE-native:native/ipv6/Cisco-IOS-XE-mld:mld
+doc_category: Multicast
+test_tags: [C9000V]
+attributes:
+  - yang_name: snooping-conf/snooping
+    tf_name: snooping
+    example: true
+  - yang_name: snooping-container/snooping/querier-conf/querier
+    tf_name: querier
+    example: true
