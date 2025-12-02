@@ -97,6 +97,10 @@ resource "iosxe_vrf" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) VRF specific description
 - `device` (String) A device name from the provider configuration.
+- `ipv4_evpn_mcast_anycast` (String) IPv4 address of Rendezvous-point for anycast mode
+- `ipv4_evpn_mcast_data_address` (String) EVPN multicast data MDT group address
+- `ipv4_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits
+- `ipv4_evpn_mcast_mdt_default_address` (String) EVPN multicast MDT default group address
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim` (Boolean) Enable BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_vxlan` (Boolean) Enable BGP auto-discovery for VxLAN

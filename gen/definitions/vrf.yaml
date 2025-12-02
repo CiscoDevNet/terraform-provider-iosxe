@@ -199,6 +199,26 @@ attributes:
     tf_name: ipv4_mdt_data_threshold
     description: MDT switching threshold in Kbps (1-4294967)
     example: 50
+  - yang_name: address-family/ipv4/evpn-mcast/mdt-def-addr
+    tf_name: ipv4_evpn_mcast_mdt_default_address
+    description: EVPN multicast MDT default group address
+    exclude_test: true
+    example: 225.25.25.25
+  - yang_name: address-family/ipv4/evpn-mcast/anycast
+    tf_name: ipv4_evpn_mcast_anycast
+    description: IPv4 address of Rendezvous-point for anycast mode
+    exclude_test: true
+    example: 61.61.1.11
+  - yang_name: address-family/ipv4/evpn-mcast/data/data-addr
+    tf_name: ipv4_evpn_mcast_data_address
+    description: EVPN multicast data MDT group address
+    exclude_test: true
+    example: 225.25.25.26
+  - yang_name: address-family/ipv4/evpn-mcast/data/mask-bits
+    tf_name: ipv4_evpn_mcast_data_mask_bits
+    description: EVPN multicast data MDT mask bits
+    exclude_test: true
+    example: 0.0.0.255
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true

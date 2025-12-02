@@ -35,6 +35,10 @@ data "iosxe_vrf" "example" {
 - `address_family_ipv6` (Boolean) Address family
 - `description` (String) VRF specific description
 - `id` (String) The path of the retrieved object.
+- `ipv4_evpn_mcast_anycast` (String) IPv4 address of Rendezvous-point for anycast mode
+- `ipv4_evpn_mcast_data_address` (String) EVPN multicast data MDT group address
+- `ipv4_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits
+- `ipv4_evpn_mcast_mdt_default_address` (String) EVPN multicast MDT default group address
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim` (Boolean) Enable BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_vxlan` (Boolean) Enable BGP auto-discovery for VxLAN
