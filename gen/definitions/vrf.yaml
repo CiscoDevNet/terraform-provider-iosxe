@@ -10,8 +10,7 @@ attributes:
   - yang_name: rd-auto
     example: true
   - yang_name: rd
-    requires_replace: true
-    exclude_test: true
+    exclude_test: false
     example: 22:22
   - yang_name: address-family/ipv4
     example: true
@@ -100,6 +99,14 @@ attributes:
         tf_name: unicast_all_route_map
         description: Route map reference
         example: RM1
+  - yang_name: address-family/ipv4/import/map
+    tf_name: ipv4_import_map
+    description: Route-map based VRF import for IPv4
+    example: IMPORT-MAP-1
+  - yang_name: address-family/ipv4/export/map
+    tf_name: ipv4_export_map
+    description: Route-map based VRF export for IPv4
+    example: EXPORT-MAP-1
   - yang_name: address-family/ipv6/route-target/import-route-target/without-stitching
     tf_name: ipv6_route_target_import
     type: Set
@@ -144,6 +151,14 @@ attributes:
         default_value: true
         exclude_test: true
         example: true
+  - yang_name: address-family/ipv6/import/map
+    tf_name: ipv6_import_map
+    description: Route-map based VRF import for IPv6
+    example: IMPORT-MAP-1
+  - yang_name: address-family/ipv6/export/map
+    tf_name: ipv6_export_map
+    description: Route-map based VRF export for IPv6
+    example: EXPORT-MAP-1
   - yang_name: address-family/ipv4/mdt/default/address
     tf_name: ipv4_mdt_default_address
     description: MDT default group IPv4 address

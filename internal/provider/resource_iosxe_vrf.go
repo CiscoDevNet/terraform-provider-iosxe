@@ -112,9 +112,6 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
 				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
 			},
 			"address_family_ipv4": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Address family").String,
@@ -264,6 +261,14 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
+			"ipv4_import_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route-map based VRF import for IPv4").String,
+				Optional:            true,
+			},
+			"ipv4_export_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route-map based VRF export for IPv4").String,
+				Optional:            true,
+			},
 			"ipv6_route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
 				Optional:            true,
@@ -335,6 +340,14 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						},
 					},
 				},
+			},
+			"ipv6_import_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route-map based VRF import for IPv6").String,
+				Optional:            true,
+			},
+			"ipv6_export_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route-map based VRF export for IPv6").String,
+				Optional:            true,
 			},
 			"ipv4_mdt_default_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("MDT default group IPv4 address").String,
