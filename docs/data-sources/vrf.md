@@ -35,6 +35,8 @@ data "iosxe_vrf" "example" {
 - `address_family_ipv6` (Boolean) Address family
 - `description` (String) VRF specific description
 - `id` (String) The path of the retrieved object.
+- `ipv4_export_map` (String) Route-map based VRF export for IPv4
+- `ipv4_import_map` (String) Route-map based VRF import for IPv4
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim` (Boolean) Enable BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_vxlan` (Boolean) Enable BGP auto-discovery for VxLAN
@@ -49,6 +51,8 @@ data "iosxe_vrf" "example" {
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
 - `ipv4_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
 - `ipv4_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import_stitching))
+- `ipv6_export_map` (String) Route-map based VRF export for IPv6
+- `ipv6_import_map` (String) Route-map based VRF import for IPv6
 - `ipv6_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export))
 - `ipv6_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export_stitching))
 - `ipv6_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import))

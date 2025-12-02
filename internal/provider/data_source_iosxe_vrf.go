@@ -204,6 +204,14 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"ipv4_import_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF import for IPv4",
+				Computed:            true,
+			},
+			"ipv4_export_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF export for IPv4",
+				Computed:            true,
+			},
 			"ipv6_route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: "Import Target-VPN community",
 				Computed:            true,
@@ -259,6 +267,14 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						},
 					},
 				},
+			},
+			"ipv6_import_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF import for IPv6",
+				Computed:            true,
+			},
+			"ipv6_export_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF export for IPv6",
+				Computed:            true,
 			},
 			"ipv4_mdt_default_address": schema.StringAttribute{
 				MarkdownDescription: "MDT default group IPv4 address",

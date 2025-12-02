@@ -34,6 +34,7 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "description", "VRF22 description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd_auto", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv4", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv6", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vpn_id", "22:22"))
@@ -44,10 +45,14 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_replicate.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all_route_map", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_import_map", "IMPORT-MAP-1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_export_map", "EXPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_import.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_import_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_import_map", "IMPORT-MAP-1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_export_map", "EXPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_default_address", "239.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan_inter_as", "true"))
@@ -99,6 +104,7 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	name = "VRF22"` + "\n"
 	config += `	description = "VRF22 description"` + "\n"
 	config += `	rd_auto = true` + "\n"
+	config += `	rd = "22:22"` + "\n"
 	config += `	address_family_ipv4 = true` + "\n"
 	config += `	address_family_ipv6 = true` + "\n"
 	config += `	vpn_id = "22:22"` + "\n"
@@ -119,6 +125,8 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `		unicast_all = true` + "\n"
 	config += `		unicast_all_route_map = "RM1"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv4_import_map = "IMPORT-MAP-1"` + "\n"
+	config += `	ipv4_export_map = "EXPORT-MAP-1"` + "\n"
 	config += `	ipv6_route_target_import = [{` + "\n"
 	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
@@ -131,6 +139,8 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	ipv6_route_target_export_stitching = [{` + "\n"
 	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv6_import_map = "IMPORT-MAP-1"` + "\n"
+	config += `	ipv6_export_map = "EXPORT-MAP-1"` + "\n"
 	config += `	ipv4_mdt_default_address = "239.1.1.1"` + "\n"
 	config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"
 	config += `	ipv4_mdt_auto_discovery_vxlan_inter_as = true` + "\n"
