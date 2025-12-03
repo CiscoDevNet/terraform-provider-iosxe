@@ -42,6 +42,7 @@ Read-Only:
 - `first` (String) Auxiliary line number
 - `logging_synchronous` (Boolean) Synchronized message output
 - `monitor` (Boolean) Copy debug output to the current terminal line
+- `stopbits` (String) Set async line stop bits
 - `transport_output_none` (Boolean) Define no transport protocols for line
 
 

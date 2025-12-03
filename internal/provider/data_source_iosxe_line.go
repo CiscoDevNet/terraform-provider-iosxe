@@ -286,6 +286,10 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "Copy debug output to the current terminal line",
 							Computed:            true,
 						},
+						"stopbits": schema.StringAttribute{
+							MarkdownDescription: "Set async line stop bits",
+							Computed:            true,
+						},
 						"transport_output_none": schema.BoolAttribute{
 							MarkdownDescription: "Define no transport protocols for line",
 							Computed:            true,

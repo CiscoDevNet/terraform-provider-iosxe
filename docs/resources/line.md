@@ -85,6 +85,8 @@ Optional:
   - Range: `0`-`2147483`
 - `logging_synchronous` (Boolean) Synchronized message output
 - `monitor` (Boolean) Copy debug output to the current terminal line
+- `stopbits` (String) Set async line stop bits
+  - Choices: `1`, `1.5`, `2`
 - `transport_output_none` (Boolean) Define no transport protocols for line
 
 

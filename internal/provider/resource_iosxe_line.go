@@ -371,6 +371,13 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							MarkdownDescription: helpers.NewAttributeDescription("Copy debug output to the current terminal line").String,
 							Optional:            true,
 						},
+						"stopbits": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set async line stop bits").AddStringEnumDescription("1", "1.5", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "1.5", "2"),
+							},
+						},
 						"transport_output_none": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
 							Optional:            true,
