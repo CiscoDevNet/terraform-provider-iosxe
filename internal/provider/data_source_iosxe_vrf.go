@@ -312,6 +312,38 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "MDT switching threshold in Kbps (1-4294967)",
 				Computed:            true,
 			},
+			"ipv4_evpn_mcast_mdt_default_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast MDT default group address",
+				Computed:            true,
+			},
+			"ipv4_evpn_mcast_anycast": schema.StringAttribute{
+				MarkdownDescription: "IPv4 address of Rendezvous-point for anycast mode",
+				Computed:            true,
+			},
+			"ipv4_evpn_mcast_data_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT group address",
+				Computed:            true,
+			},
+			"ipv4_evpn_mcast_data_mask_bits": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT mask bits",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_mdt_default_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast MDT default group address (IPv6)",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_anycast": schema.StringAttribute{
+				MarkdownDescription: "IPv6 address of Rendezvous-point for anycast mode",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_data_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT group address (IPv6)",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_data_mask_bits": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT mask bits (IPv6)",
+				Computed:            true,
+			},
 		},
 	}
 }
