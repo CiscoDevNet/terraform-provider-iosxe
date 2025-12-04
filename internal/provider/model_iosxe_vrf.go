@@ -76,6 +76,10 @@ type VRF struct {
 	Ipv4EvpnMcastAnycast                            types.String                        `tfsdk:"ipv4_evpn_mcast_anycast"`
 	Ipv4EvpnMcastDataAddress                        types.String                        `tfsdk:"ipv4_evpn_mcast_data_address"`
 	Ipv4EvpnMcastDataMaskBits                       types.String                        `tfsdk:"ipv4_evpn_mcast_data_mask_bits"`
+	Ipv6EvpnMcastMdtDefaultAddress                  types.String                        `tfsdk:"ipv6_evpn_mcast_mdt_default_address"`
+	Ipv6EvpnMcastAnycast                            types.String                        `tfsdk:"ipv6_evpn_mcast_anycast"`
+	Ipv6EvpnMcastDataAddress                        types.String                        `tfsdk:"ipv6_evpn_mcast_data_address"`
+	Ipv6EvpnMcastDataMaskBits                       types.String                        `tfsdk:"ipv6_evpn_mcast_data_mask_bits"`
 }
 
 type VRFData struct {
@@ -112,6 +116,10 @@ type VRFData struct {
 	Ipv4EvpnMcastAnycast                            types.String                        `tfsdk:"ipv4_evpn_mcast_anycast"`
 	Ipv4EvpnMcastDataAddress                        types.String                        `tfsdk:"ipv4_evpn_mcast_data_address"`
 	Ipv4EvpnMcastDataMaskBits                       types.String                        `tfsdk:"ipv4_evpn_mcast_data_mask_bits"`
+	Ipv6EvpnMcastMdtDefaultAddress                  types.String                        `tfsdk:"ipv6_evpn_mcast_mdt_default_address"`
+	Ipv6EvpnMcastAnycast                            types.String                        `tfsdk:"ipv6_evpn_mcast_anycast"`
+	Ipv6EvpnMcastDataAddress                        types.String                        `tfsdk:"ipv6_evpn_mcast_data_address"`
+	Ipv6EvpnMcastDataMaskBits                       types.String                        `tfsdk:"ipv6_evpn_mcast_data_mask_bits"`
 }
 type VRFRouteTargetImport struct {
 	Value     types.String `tfsdk:"value"`
@@ -276,6 +284,18 @@ func (data VRF) toBody(ctx context.Context) string {
 	}
 	if !data.Ipv4EvpnMcastDataMaskBits.IsNull() && !data.Ipv4EvpnMcastDataMaskBits.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.evpn-mcast.data.mask-bits", data.Ipv4EvpnMcastDataMaskBits.ValueString())
+	}
+	if !data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() && !data.Ipv6EvpnMcastMdtDefaultAddress.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv6.evpn-mcast.mdt-def-addr", data.Ipv6EvpnMcastMdtDefaultAddress.ValueString())
+	}
+	if !data.Ipv6EvpnMcastAnycast.IsNull() && !data.Ipv6EvpnMcastAnycast.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv6.evpn-mcast.anycast", data.Ipv6EvpnMcastAnycast.ValueString())
+	}
+	if !data.Ipv6EvpnMcastDataAddress.IsNull() && !data.Ipv6EvpnMcastDataAddress.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv6.evpn-mcast.data.data-addr", data.Ipv6EvpnMcastDataAddress.ValueString())
+	}
+	if !data.Ipv6EvpnMcastDataMaskBits.IsNull() && !data.Ipv6EvpnMcastDataMaskBits.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv6.evpn-mcast.data.mask-bits", data.Ipv6EvpnMcastDataMaskBits.ValueString())
 	}
 	if len(data.RouteTargetImport) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-target.import", []interface{}{})
@@ -684,6 +704,18 @@ func (data VRF) toBodyXML(ctx context.Context) string {
 	}
 	if !data.Ipv4EvpnMcastDataMaskBits.IsNull() && !data.Ipv4EvpnMcastDataMaskBits.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/evpn-mcast/data/mask-bits", data.Ipv4EvpnMcastDataMaskBits.ValueString())
+	}
+	if !data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() && !data.Ipv6EvpnMcastMdtDefaultAddress.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6/evpn-mcast/mdt-def-addr", data.Ipv6EvpnMcastMdtDefaultAddress.ValueString())
+	}
+	if !data.Ipv6EvpnMcastAnycast.IsNull() && !data.Ipv6EvpnMcastAnycast.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6/evpn-mcast/anycast", data.Ipv6EvpnMcastAnycast.ValueString())
+	}
+	if !data.Ipv6EvpnMcastDataAddress.IsNull() && !data.Ipv6EvpnMcastDataAddress.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6/evpn-mcast/data/data-addr", data.Ipv6EvpnMcastDataAddress.ValueString())
+	}
+	if !data.Ipv6EvpnMcastDataMaskBits.IsNull() && !data.Ipv6EvpnMcastDataMaskBits.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6/evpn-mcast/data/mask-bits", data.Ipv6EvpnMcastDataMaskBits.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1258,6 +1290,26 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Ipv4EvpnMcastDataMaskBits = types.StringNull()
 	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.mdt-def-addr"); value.Exists() && !data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.anycast"); value.Exists() && !data.Ipv6EvpnMcastAnycast.IsNull() {
+		data.Ipv6EvpnMcastAnycast = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastAnycast = types.StringNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.data.data-addr"); value.Exists() && !data.Ipv6EvpnMcastDataAddress.IsNull() {
+		data.Ipv6EvpnMcastDataAddress = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastDataAddress = types.StringNull()
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.data.mask-bits"); value.Exists() && !data.Ipv6EvpnMcastDataMaskBits.IsNull() {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1822,6 +1874,26 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv4EvpnMcastDataMaskBits = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/mdt-def-addr"); value.Exists() && !data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/anycast"); value.Exists() && !data.Ipv6EvpnMcastAnycast.IsNull() {
+		data.Ipv6EvpnMcastAnycast = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastAnycast = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/data/data-addr"); value.Exists() && !data.Ipv6EvpnMcastDataAddress.IsNull() {
+		data.Ipv6EvpnMcastDataAddress = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastDataAddress = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/data/mask-bits"); value.Exists() && !data.Ipv6EvpnMcastDataMaskBits.IsNull() {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringValue(value.String())
+	} else {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -2080,6 +2152,18 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "address-family.ipv4.evpn-mcast.data.mask-bits"); value.Exists() {
 		data.Ipv4EvpnMcastDataMaskBits = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.mdt-def-addr"); value.Exists() {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.anycast"); value.Exists() {
+		data.Ipv6EvpnMcastAnycast = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.data.data-addr"); value.Exists() {
+		data.Ipv6EvpnMcastDataAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.data.mask-bits"); value.Exists() {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringValue(value.String())
 	}
 }
 
@@ -2340,6 +2424,18 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "address-family.ipv4.evpn-mcast.data.mask-bits"); value.Exists() {
 		data.Ipv4EvpnMcastDataMaskBits = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.mdt-def-addr"); value.Exists() {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.anycast"); value.Exists() {
+		data.Ipv6EvpnMcastAnycast = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.data.data-addr"); value.Exists() {
+		data.Ipv6EvpnMcastDataAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv6.evpn-mcast.data.mask-bits"); value.Exists() {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2594,6 +2690,18 @@ func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/evpn-mcast/data/mask-bits"); value.Exists() {
 		data.Ipv4EvpnMcastDataMaskBits = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/mdt-def-addr"); value.Exists() {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/anycast"); value.Exists() {
+		data.Ipv6EvpnMcastAnycast = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/data/data-addr"); value.Exists() {
+		data.Ipv6EvpnMcastDataAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/data/mask-bits"); value.Exists() {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringValue(value.String())
 	}
 }
 
@@ -2850,6 +2958,18 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/evpn-mcast/data/mask-bits"); value.Exists() {
 		data.Ipv4EvpnMcastDataMaskBits = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/mdt-def-addr"); value.Exists() {
+		data.Ipv6EvpnMcastMdtDefaultAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/anycast"); value.Exists() {
+		data.Ipv6EvpnMcastAnycast = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/data/data-addr"); value.Exists() {
+		data.Ipv6EvpnMcastDataAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/evpn-mcast/data/mask-bits"); value.Exists() {
+		data.Ipv6EvpnMcastDataMaskBits = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2858,6 +2978,18 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 	deletedItems := make([]string, 0)
+	if !state.Ipv6EvpnMcastDataMaskBits.IsNull() && data.Ipv6EvpnMcastDataMaskBits.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/data/mask-bits", state.getPath()))
+	}
+	if !state.Ipv6EvpnMcastDataAddress.IsNull() && data.Ipv6EvpnMcastDataAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/data/data-addr", state.getPath()))
+	}
+	if !state.Ipv6EvpnMcastAnycast.IsNull() && data.Ipv6EvpnMcastAnycast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/anycast", state.getPath()))
+	}
+	if !state.Ipv6EvpnMcastMdtDefaultAddress.IsNull() && data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/mdt-def-addr", state.getPath()))
+	}
 	if !state.Ipv4EvpnMcastDataMaskBits.IsNull() && data.Ipv4EvpnMcastDataMaskBits.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/evpn-mcast/data/mask-bits", state.getPath()))
 	}
@@ -3255,6 +3387,18 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 
 func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string) string {
 	b := netconf.NewBody(body)
+	if !state.Ipv6EvpnMcastDataMaskBits.IsNull() && data.Ipv6EvpnMcastDataMaskBits.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/data/mask-bits")
+	}
+	if !state.Ipv6EvpnMcastDataAddress.IsNull() && data.Ipv6EvpnMcastDataAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/data/data-addr")
+	}
+	if !state.Ipv6EvpnMcastAnycast.IsNull() && data.Ipv6EvpnMcastAnycast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/anycast")
+	}
+	if !state.Ipv6EvpnMcastMdtDefaultAddress.IsNull() && data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/evpn-mcast/mdt-def-addr")
+	}
 	if !state.Ipv4EvpnMcastDataMaskBits.IsNull() && data.Ipv4EvpnMcastDataMaskBits.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/evpn-mcast/data/mask-bits")
 	}
@@ -3800,6 +3944,18 @@ func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *VRF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.Ipv6EvpnMcastDataMaskBits.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/data/mask-bits", data.getPath()))
+	}
+	if !data.Ipv6EvpnMcastDataAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/data/data-addr", data.getPath()))
+	}
+	if !data.Ipv6EvpnMcastAnycast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/anycast", data.getPath()))
+	}
+	if !data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv6/evpn-mcast/mdt-def-addr", data.getPath()))
+	}
 	if !data.Ipv4EvpnMcastDataMaskBits.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/evpn-mcast/data/mask-bits", data.getPath()))
 	}
@@ -3924,6 +4080,18 @@ func (data *VRF) getDeletePaths(ctx context.Context) []string {
 
 func (data *VRF) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.Ipv6EvpnMcastDataMaskBits.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv6/evpn-mcast/data/mask-bits")
+	}
+	if !data.Ipv6EvpnMcastDataAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv6/evpn-mcast/data/data-addr")
+	}
+	if !data.Ipv6EvpnMcastAnycast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv6/evpn-mcast/anycast")
+	}
+	if !data.Ipv6EvpnMcastMdtDefaultAddress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv6/evpn-mcast/mdt-def-addr")
+	}
 	if !data.Ipv4EvpnMcastDataMaskBits.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/evpn-mcast/data/mask-bits")
 	}

@@ -419,6 +419,26 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("EVPN multicast data MDT mask bits").String,
 				Optional:            true,
 			},
+			"ipv6_evpn_mcast_mdt_default_address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("EVPN multicast MDT default group address (IPv6)").String,
+				Optional:            true,
+			},
+			"ipv6_evpn_mcast_anycast": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 address of Rendezvous-point for anycast mode").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
+				},
+			},
+			"ipv6_evpn_mcast_data_address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("EVPN multicast data MDT group address (IPv6)").String,
+				Optional:            true,
+			},
+			"ipv6_evpn_mcast_data_mask_bits": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("EVPN multicast data MDT mask bits (IPv6)").String,
+				Optional:            true,
+			},
 		},
 	}
 }
