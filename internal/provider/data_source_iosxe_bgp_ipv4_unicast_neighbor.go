@@ -116,6 +116,10 @@ func (d *BGPIPv4UnicastNeighborDataSource) Schema(ctx context.Context, req datas
 					},
 				},
 			},
+			"inherit_peer_policy": schema.StringAttribute{
+				MarkdownDescription: "Inherit a peer-policy template",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -151,6 +151,10 @@ func (r *BGPIPv4UnicastNeighborResource) Schema(ctx context.Context, req resourc
 					},
 				},
 			},
+			"inherit_peer_policy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Inherit a peer-policy template").String,
+				Optional:            true,
+			},
 		},
 	}
 }

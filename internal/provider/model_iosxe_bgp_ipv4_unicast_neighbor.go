@@ -54,6 +54,7 @@ type BGPIPv4UnicastNeighbor struct {
 	DefaultOriginate         types.Bool                        `tfsdk:"default_originate"`
 	DefaultOriginateRouteMap types.String                      `tfsdk:"default_originate_route_map"`
 	RouteMaps                []BGPIPv4UnicastNeighborRouteMaps `tfsdk:"route_maps"`
+	InheritPeerPolicy        types.String                      `tfsdk:"inherit_peer_policy"`
 }
 
 type BGPIPv4UnicastNeighborData struct {
@@ -68,6 +69,7 @@ type BGPIPv4UnicastNeighborData struct {
 	DefaultOriginate         types.Bool                        `tfsdk:"default_originate"`
 	DefaultOriginateRouteMap types.String                      `tfsdk:"default_originate_route_map"`
 	RouteMaps                []BGPIPv4UnicastNeighborRouteMaps `tfsdk:"route_maps"`
+	InheritPeerPolicy        types.String                      `tfsdk:"inherit_peer_policy"`
 }
 type BGPIPv4UnicastNeighborRouteMaps struct {
 	InOut        types.String `tfsdk:"in_out"`
@@ -143,6 +145,9 @@ func (data BGPIPv4UnicastNeighbor) toBody(ctx context.Context) string {
 	if !data.DefaultOriginateRouteMap.IsNull() && !data.DefaultOriginateRouteMap.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-originate.route-map", data.DefaultOriginateRouteMap.ValueString())
 	}
+	if !data.InheritPeerPolicy.IsNull() && !data.InheritPeerPolicy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inherit.peer-policy", data.InheritPeerPolicy.ValueString())
+	}
 	if len(data.RouteMaps) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
 		for index, item := range data.RouteMaps {
@@ -207,6 +212,9 @@ func (data BGPIPv4UnicastNeighbor) toBodyXML(ctx context.Context) string {
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-map", cBody.Res())
 		}
+	}
+	if !data.InheritPeerPolicy.IsNull() && !data.InheritPeerPolicy.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/inherit/peer-policy", data.InheritPeerPolicy.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -305,6 +313,11 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBody(ctx context.Context, res gjso
 			data.RouteMaps[i].RouteMapName = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "inherit.peer-policy"); value.Exists() && !data.InheritPeerPolicy.IsNull() {
+		data.InheritPeerPolicy = types.StringValue(value.String())
+	} else {
+		data.InheritPeerPolicy = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -393,6 +406,11 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBodyXML(ctx context.Context, res x
 			data.RouteMaps[i].RouteMapName = types.StringNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-policy"); value.Exists() && !data.InheritPeerPolicy.IsNull() {
+		data.InheritPeerPolicy = types.StringValue(value.String())
+	} else {
+		data.InheritPeerPolicy = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -441,6 +459,9 @@ func (data *BGPIPv4UnicastNeighbor) fromBody(ctx context.Context, res gjson.Resu
 			data.RouteMaps = append(data.RouteMaps, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "inherit.peer-policy"); value.Exists() {
+		data.InheritPeerPolicy = types.StringValue(value.String())
 	}
 }
 
@@ -491,6 +512,9 @@ func (data *BGPIPv4UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 			return true
 		})
 	}
+	if value := res.Get(prefix + "inherit.peer-policy"); value.Exists() {
+		data.InheritPeerPolicy = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -535,6 +559,9 @@ func (data *BGPIPv4UnicastNeighbor) fromBodyXML(ctx context.Context, res xmldot.
 			data.RouteMaps = append(data.RouteMaps, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-policy"); value.Exists() {
+		data.InheritPeerPolicy = types.StringValue(value.String())
 	}
 }
 
@@ -581,6 +608,9 @@ func (data *BGPIPv4UnicastNeighborData) fromBodyXML(ctx context.Context, res xml
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-policy"); value.Exists() {
+		data.InheritPeerPolicy = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -589,6 +619,9 @@ func (data *BGPIPv4UnicastNeighborData) fromBodyXML(ctx context.Context, res xml
 
 func (data *BGPIPv4UnicastNeighbor) getDeletedItems(ctx context.Context, state BGPIPv4UnicastNeighbor) []string {
 	deletedItems := make([]string, 0)
+	if !state.InheritPeerPolicy.IsNull() && data.InheritPeerPolicy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inherit/peer-policy", state.getPath()))
+	}
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
 
@@ -642,6 +675,9 @@ func (data *BGPIPv4UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 
 func (data *BGPIPv4UnicastNeighbor) addDeletedItemsXML(ctx context.Context, state BGPIPv4UnicastNeighbor, body string) string {
 	b := netconf.NewBody(body)
+	if !state.InheritPeerPolicy.IsNull() && data.InheritPeerPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inherit/peer-policy")
+	}
 	for i := range state.RouteMaps {
 		stateKeys := [...]string{"inout"}
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
@@ -721,6 +757,9 @@ func (data *BGPIPv4UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []s
 
 func (data *BGPIPv4UnicastNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.InheritPeerPolicy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inherit/peer-policy", data.getPath()))
+	}
 	for i := range data.RouteMaps {
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
 
@@ -751,6 +790,9 @@ func (data *BGPIPv4UnicastNeighbor) getDeletePaths(ctx context.Context) []string
 
 func (data *BGPIPv4UnicastNeighbor) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.InheritPeerPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inherit/peer-policy")
+	}
 	for i := range data.RouteMaps {
 		keys := [...]string{"inout"}
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}

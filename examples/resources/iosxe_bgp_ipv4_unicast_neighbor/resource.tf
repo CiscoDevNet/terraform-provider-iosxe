@@ -13,4 +13,5 @@ resource "iosxe_bgp_ipv4_unicast_neighbor" "example" {
       route_map_name = "RM1"
     }
   ]
+  inherit_peer_policy = "PEER_POLICY_TEMPLATE_1"
 }
