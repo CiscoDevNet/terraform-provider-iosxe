@@ -11,6 +11,7 @@
 - Add `iosxe_bgp_address_family_vpnv6` resource and data source
 - Add `ipv4_mdt_*` attributes to `iosxe_vrf` resource and data source
 - Add `event_syslog_*` attributes to `iosxe_eem` resource and data source
+- Add `inherit_peer_policy` attribute to `iosxe_bgp_ipv4_unicast_neighbor` and `iosxe_bgp_l2vpn_evpn_neighbor` resources and data sources.
 
 ## 0.11.0
 

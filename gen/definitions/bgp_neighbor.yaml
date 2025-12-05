@@ -111,3 +111,7 @@ test_prerequisites:
     attributes:
       - name: name
         value: 100
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/template/peer-session[name=PEER_SESSION_TEMPLATE_1]
+    attributes:
+      - name: name
+        value: PEER_SESSION_TEMPLATE_1
