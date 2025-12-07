@@ -35,7 +35,7 @@ import (
 
 func TestAccIosxeL2VPNEVPNProfile(t *testing.T) {
 	if os.Getenv("IOSXE1715") == "" {
-		t.Skip("skipping test, requires IOS-XE 17.15.1 or later")
+		t.Skip("skipping test, set environment variable IOSXE1715")
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_l2vpn_evpn_profile.test", "name", "MY_EVPN_PROFILE"))
