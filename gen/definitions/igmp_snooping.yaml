@@ -1,0 +1,17 @@
+---
+name: IGMP Snooping
+path: /Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping
+doc_category: Multicast
+attributes: 
+  - yang_name: querier-conf/querier
+    tf_name: querier
+    example: true
+  - yang_name: querier-entry/version
+    description: IGMP version
+    example: 2
+  - yang_name: querier-entry/max-response-time
+    description: IGMP querier maximum response time (sec)
+    example: 10
+  - yang_name: querier-entry/timer/expiry
+    description: IGMP querier other querier time out (sec)
+    example: 120
