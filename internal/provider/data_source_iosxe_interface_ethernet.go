@@ -720,6 +720,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"isis_network_point_to_point": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

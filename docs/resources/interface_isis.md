@@ -14,8 +14,9 @@ This resource can manage the Interface ISIS configuration.
 
 ```terraform
 resource "iosxe_interface_isis" "example" {
-  type = "Loopback"
-  name = "100"
+  type                   = "Loopback"
+  name                   = "100"
+  network_point_to_point = true
   ipv4_metric_levels = [
     {
       level = "level-1"
@@ -40,6 +41,7 @@ resource "iosxe_interface_isis" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `ipv4_metric_levels` (Attributes List) Configure IS-IS metric for interface (see [below for nested schema](#nestedatt--ipv4_metric_levels))
+- `network_point_to_point` (Boolean) Set ISIS network type to point-to-point
 
 ### Read-Only
 

@@ -888,6 +888,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"isis_network_point_to_point": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 		},
 	}
 }

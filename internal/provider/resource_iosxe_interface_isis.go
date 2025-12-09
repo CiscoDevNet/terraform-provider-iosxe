@@ -107,6 +107,10 @@ func (r *InterfaceISISResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
+			"network_point_to_point": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set ISIS network type to point-to-point").String,
+				Optional:            true,
+			},
 			"ipv4_metric_levels": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure IS-IS metric for interface").String,
 				Optional:            true,
