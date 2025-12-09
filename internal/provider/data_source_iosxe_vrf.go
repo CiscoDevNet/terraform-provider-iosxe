@@ -76,10 +76,6 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "VRF specific description",
 				Computed:            true,
 			},
-			"rd_auto": schema.BoolAttribute{
-				MarkdownDescription: "Specify to enable auto Route Distinguisher",
-				Computed:            true,
-			},
 			"rd": schema.StringAttribute{
 				MarkdownDescription: "Specify Route Distinguisher",
 				Computed:            true,
