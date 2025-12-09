@@ -54,7 +54,6 @@ func TestAccDataSourceIosxeCrypto(t *testing.T) {
 
 func testAccDataSourceIosxeCryptoConfig() string {
 	config := `resource "iosxe_crypto" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	engine_compliance_shield_disable = true` + "\n"
 	config += `}` + "\n"
 
