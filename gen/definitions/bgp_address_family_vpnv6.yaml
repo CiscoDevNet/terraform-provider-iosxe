@@ -13,4 +13,8 @@ test_prerequisites:
     attributes:
       - name: id
         value: 65000
-
+  - path: /Cisco-IOS-XE-native:native
+    no_delete: true
+    attributes:
+      - name: ipv6/unicast-routing
+        value: ""
