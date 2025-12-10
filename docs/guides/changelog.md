@@ -7,6 +7,9 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `inherit_peer_policy` attribute to `iosxe_bgp_ipv4_unicast_neighbor` and `iosxe_bgp_l2vpn_evpn_neighbor` resources and data source
 
 ## 0.12.0
 

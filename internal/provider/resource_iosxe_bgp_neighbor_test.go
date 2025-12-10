@@ -105,13 +105,6 @@ resource "iosxe_yang" "PreReq1" {
 	}
 }
 
-resource "iosxe_yang" "PreReq2" {
-	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/template/peer-session[name=PEER_SESSION_TEMPLATE_1]"
-	attributes = {
-		"name" = "PEER_SESSION_TEMPLATE_1"
-	}
-}
-
 `
 
 // End of section. //template:end testPrerequisites
@@ -122,7 +115,7 @@ func testAccIosxeBGPNeighborConfig_minimum() string {
 	config := `resource "iosxe_bgp_neighbor" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	ip = "3.3.3.3"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -155,7 +148,7 @@ func testAccIosxeBGPNeighborConfig_all() string {
 	config += `	timers_holdtime = 866` + "\n"
 	config += `	timers_minimum_neighbor_hold = 222` + "\n"
 	config += `	update_source_interface_loopback = 100` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
