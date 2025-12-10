@@ -6,6 +6,7 @@
 - Add `inherit_peer_policy` attribute to `iosxe_bgp_ipv4_unicast_neighbor` and `iosxe_bgp_l2vpn_evpn_neighbor` resources and data source
 - Add `network_point_to_point` attribute to `iosxe_interface_isis` resource and data source
 - Add device level `protocol` provider attribute
+- Add `enable_traps_bgp_cbgp2_state_changes` and `enable_traps_bgp_cbgp2_threshold_prefix` attributes to `iosxe_snmp_server` resource and data source
 
 ## 0.12.0
 
