@@ -44,6 +44,9 @@ attributes:
   - yang_name: match/dscp
     example: 8
     exclude_test: true
+  - yang_name: match/cos
+    example: 7
+    exclude_test: true
   - yang_name: description
     example: My description
     exclude_test: true

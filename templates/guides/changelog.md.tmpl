@@ -20,6 +20,7 @@ description: |-
 - Add `destination_ip_vrf` attribute to `iosxe_flow_exporter` resource and data source
 - Add `collect_interface_input` attribute to `iosxe_flow_record` resource and data source
 - Add `ip_tcp_adjust_mss` attribute to `iosxe_interface_tunnel` resource and data source
+- Add `match_cos` attribute to `iosxe_class_map` resource and data source
 
 ## 0.12.0
 
