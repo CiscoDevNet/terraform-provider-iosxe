@@ -9,7 +9,11 @@ description: |-
 
 ## Unreleased
 
+- Add `stopbits` attribute to `iosxe_line` resource and data source
+- Add `ipv4_evpn_mcast_*` and `ipv6_evpn_mcast_*` attributes to `iosxe_vrf` resource and data source
+- Add `ipv4_import_map`, `ipv4_export_map`, `ipv6_import_map` and `ipv6_export_map` attributes to `iosxe_vrf` resource and data source
 - Add `inherit_peer_policy` attribute to `iosxe_bgp_ipv4_unicast_neighbor` and `iosxe_bgp_l2vpn_evpn_neighbor` resources and data source
+- Add `network_point_to_point` attribute to `iosxe_interface_isis` resource and data source
 
 ## 0.12.0
 
