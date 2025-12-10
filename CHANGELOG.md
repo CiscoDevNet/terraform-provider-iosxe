@@ -5,6 +5,7 @@
 - Add `ipv4_import_map`, `ipv4_export_map`, `ipv6_import_map` and `ipv6_export_map` attributes to `iosxe_vrf` resource and data source
 - Add `inherit_peer_policy` attribute to `iosxe_bgp_ipv4_unicast_neighbor` and `iosxe_bgp_l2vpn_evpn_neighbor` resources and data source
 - Add `network_point_to_point` attribute to `iosxe_interface_isis` resource and data source
+- Add device level `protocol` provider attribute
 
 ## 0.12.0
 
