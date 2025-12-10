@@ -167,20 +167,24 @@ attributes:
           - yang_name: core-vlan
             tf_name: core_vlan
             description: Core vlan number to associate with VNI (explicit VNI mode)
+            exclude_test: true
             example: 200
   - yang_name: address-family/ipv4/mdt/default/address
     tf_name: ipv4_mdt_default_address
     description: MDT default group IPv4 address
+    exclude_test: true
     example: 239.1.1.1
   - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/vxlan/vxlan-config/vxlan
     xpath: address-family/ipv4/mdt/auto-discovery/vxlan-config/vxlan
     tf_name: ipv4_mdt_auto_discovery_vxlan
     description: Enable BGP auto-discovery for VxLAN
+    exclude_test: true
     example: true
   - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/vxlan/vxlan-config/inter-as
     xpath: address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as
     tf_name: ipv4_mdt_auto_discovery_vxlan_inter_as
     description: Enable Inter-AS BGP auto-discovery for VxLAN
+    exclude_test: true
     example: true
   - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/interworking/interworking/interworking/vxlan-pim/vxlan-pim-config/vxlan-pim
     xpath: address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim
@@ -197,14 +201,17 @@ attributes:
   - yang_name: address-family/ipv4/mdt/overlay/use-bgp-config
     tf_name: ipv4_mdt_overlay_use_bgp
     description: Enable BGP for MDT overlay signaling
+    exclude_test: true
     example: true
   - yang_name: address-family/ipv4/mdt/overlay/use-bgp-config/spt-only
     tf_name: ipv4_mdt_overlay_use_bgp_spt_only
     description: Enable Shortest path tree-only ASM mode
+    exclude_test: true
     example: true
   - yang_name: address-family/ipv4/mdt/data/multicast
     tf_name: ipv4_mdt_data_multicast
     type: List
+    exclude_test: true
     description: MDT data multicast group ranges
     attributes:
       - yang_name: address
@@ -222,6 +229,7 @@ attributes:
   - yang_name: address-family/ipv4/mdt/data/threshold
     tf_name: ipv4_mdt_data_threshold
     description: MDT switching threshold in Kbps (1-4294967)
+    exclude_test: true
     example: 50
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

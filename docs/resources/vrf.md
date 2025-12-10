@@ -72,24 +72,11 @@ resource "iosxe_vrf" "example" {
       vnid_value = 10001
       evpn_instance_vni_vni_num = [
         {
-          vni_num   = 20000
-          core_vlan = 200
+          vni_num = 20000
         }
       ]
     }
   ]
-  ipv4_mdt_default_address               = "239.1.1.1"
-  ipv4_mdt_auto_discovery_vxlan          = true
-  ipv4_mdt_auto_discovery_vxlan_inter_as = true
-  ipv4_mdt_overlay_use_bgp               = true
-  ipv4_mdt_overlay_use_bgp_spt_only      = true
-  ipv4_mdt_data_multicast = [
-    {
-      address  = "239.1.2.0"
-      wildcard = "0.0.0.255"
-    }
-  ]
-  ipv4_mdt_data_threshold = 50
 }
 ```
 
