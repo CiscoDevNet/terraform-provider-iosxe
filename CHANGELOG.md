@@ -1,5 +1,5 @@
 
-## (Unreleased)
+## 0.12.0
 
 - Add `iosxe_l2_vfi` resource and data source
 - Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data source
