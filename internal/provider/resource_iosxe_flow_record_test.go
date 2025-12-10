@@ -45,12 +45,6 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_transport_destination_port", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_interface_input", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_flow_direction", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_interface_output", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_counter_bytes_long", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_counter_packets_long", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_transport_tcp_flags", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_timestamp_absolute_first", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_timestamp_absolute_last", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_datalink_mac_source_address_input", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_datalink_mac_destination_address_input", "true"))
 	if os.Getenv("C9000V") != "" {
@@ -68,6 +62,13 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_vxlan_vtep_output", "true"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_interface_input", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_interface_output", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_counter_bytes_long", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_counter_packets_long", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_transport_tcp_flags", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_timestamp_absolute_first", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "collect_timestamp_absolute_last", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -84,7 +85,7 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeFlowRecordImportStateIdFunc("iosxe_flow_record.test"),
-				ImportStateVerifyIgnore: []string{"match_ipv6_source_address", "match_ipv6_destination_address", "match_application_name", "match_flow_observation_point", "match_ipv4_version", "match_ipv6_version", "match_ipv6_protocol", "match_connection_client_ipv4_address", "match_connection_server_ipv4_address", "match_connection_client_ipv6_address", "match_connection_server_ipv6_address", "match_connection_server_transport_port", "collect_connection_initiator", "collect_connection_new_connections", "collect_connection_server_counter_bytes_network_long", "collect_connection_server_counter_packets_long", "match_datalink_source_vlan_id", "match_datalink_destination_vlan_id", "collect_datalink_mac_source_address_input", "collect_flow_direction", "match_vxlan_vtep_input", "match_vxlan_vtep_output"},
+				ImportStateVerifyIgnore: []string{"match_ipv6_source_address", "match_ipv6_destination_address", "match_application_name", "match_flow_observation_point", "match_ipv4_version", "match_ipv6_version", "match_ipv6_protocol", "match_connection_client_ipv4_address", "match_connection_server_ipv4_address", "match_connection_client_ipv6_address", "match_connection_server_ipv6_address", "match_connection_server_transport_port", "match_datalink_source_vlan_id", "match_datalink_destination_vlan_id", "match_vxlan_vtep_input", "match_vxlan_vtep_output", "collect_connection_initiator", "collect_connection_new_connections", "collect_connection_server_counter_bytes_network_long", "collect_connection_server_counter_packets_long", "collect_datalink_mac_source_address_input", "collect_flow_direction"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -134,12 +135,6 @@ func testAccIosxeFlowRecordConfig_all() string {
 	config += `	match_transport_destination_port = true` + "\n"
 	config += `	match_interface_input = true` + "\n"
 	config += `	match_flow_direction = true` + "\n"
-	config += `	collect_interface_output = true` + "\n"
-	config += `	collect_counter_bytes_long = true` + "\n"
-	config += `	collect_counter_packets_long = true` + "\n"
-	config += `	collect_transport_tcp_flags = true` + "\n"
-	config += `	collect_timestamp_absolute_first = true` + "\n"
-	config += `	collect_timestamp_absolute_last = true` + "\n"
 	config += `	match_datalink_mac_source_address_input = true` + "\n"
 	config += `	match_datalink_mac_destination_address_input = true` + "\n"
 	if os.Getenv("C9000V") != "" {
@@ -157,6 +152,13 @@ func testAccIosxeFlowRecordConfig_all() string {
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	match_vxlan_vtep_output = true` + "\n"
 	}
+	config += `	collect_interface_input = true` + "\n"
+	config += `	collect_interface_output = true` + "\n"
+	config += `	collect_counter_bytes_long = true` + "\n"
+	config += `	collect_counter_packets_long = true` + "\n"
+	config += `	collect_transport_tcp_flags = true` + "\n"
+	config += `	collect_timestamp_absolute_first = true` + "\n"
+	config += `	collect_timestamp_absolute_last = true` + "\n"
 	config += `}` + "\n"
 	return config
 }

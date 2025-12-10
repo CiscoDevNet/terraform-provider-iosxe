@@ -18,6 +18,7 @@ description: |-
 - Add `enable_traps_bgp_cbgp2_state_changes` and `enable_traps_bgp_cbgp2_threshold_prefix` attributes to `iosxe_snmp_server` resource and data source
 - Add `tunnel_protection_ipsec_profile_legacy` attribute to `iosxe_interface_tunnel` resource and data source
 - Add `destination_ip_vrf` attribute to `iosxe_flow_exporter` resource and data source
+- Add `collect_interface_input` attribute to `iosxe_flow_record` resource and data source
 
 ## 0.12.0
 
