@@ -15,7 +15,6 @@
 - Add `ip_tcp_adjust_mss` attribute to `iosxe_interface_tunnel` resource and data source
 - Add `match_cos` attribute to `iosxe_class_map` resource and data source
 
-
 ## 0.12.0
 
 - Add `iosxe_l2_vfi` resource and data source
