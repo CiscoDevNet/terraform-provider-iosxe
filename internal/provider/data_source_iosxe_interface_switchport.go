@@ -116,6 +116,38 @@ func (d *InterfaceSwitchportDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "no VLANs",
 				Computed:            true,
 			},
+			"trunk_allowed_vlans_all": schema.BoolAttribute{
+				MarkdownDescription: "all VLANs",
+				Computed:            true,
+			},
+			"trunk_allowed_vlans_add": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vlans": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"trunk_allowed_vlans_except": schema.StringAttribute{
+				MarkdownDescription: "all VLANs except the following",
+				Computed:            true,
+			},
+			"trunk_allowed_vlans_remove": schema.StringAttribute{
+				MarkdownDescription: "VLAN IDs of disallowed VLANs when this port is in trunking mode",
+				Computed:            true,
+			},
+			"trunk_allowed_vlans_legacy": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"trunk_allowed_vlans_none_legacy": schema.BoolAttribute{
+				MarkdownDescription: "no VLANs",
+				Computed:            true,
+			},
 			"trunk_native_vlan_tag": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,

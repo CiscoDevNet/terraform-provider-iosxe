@@ -25,8 +25,16 @@ resource "iosxe_interface_switchport" "example" {
   nonegotiate                   = false
   access_vlan                   = "100"
   trunk_allowed_vlans           = "100,101"
-  trunk_native_vlan             = 100
-  host                          = false
+  trunk_allowed_vlans_all       = true
+  trunk_allowed_vlans_add = [
+    {
+      vlans = "200,201"
+    }
+  ]
+  trunk_allowed_vlans_except = "999"
+  trunk_allowed_vlans_remove = "999"
+  trunk_native_vlan          = 100
+  host                       = false
 }
 ```
 
@@ -54,13 +62,26 @@ resource "iosxe_interface_switchport" "example" {
 - `mode_trunk` (Boolean) Set trunking mode to TRUNK unconditionally
 - `nonegotiate` (Boolean) Device will not engage in negotiation protocol on this interface
 - `trunk_allowed_vlans` (String)
+- `trunk_allowed_vlans_add` (Attributes List) (see [below for nested schema](#nestedatt--trunk_allowed_vlans_add))
+- `trunk_allowed_vlans_all` (Boolean) all VLANs
+- `trunk_allowed_vlans_except` (String) all VLANs except the following
+- `trunk_allowed_vlans_legacy` (String)
 - `trunk_allowed_vlans_none` (Boolean) no VLANs
+- `trunk_allowed_vlans_none_legacy` (Boolean) no VLANs
+- `trunk_allowed_vlans_remove` (String) VLAN IDs of disallowed VLANs when this port is in trunking mode
 - `trunk_native_vlan` (Number) - Range: `1`-`4094`
 - `trunk_native_vlan_tag` (Boolean)
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--trunk_allowed_vlans_add"></a>
+### Nested Schema for `trunk_allowed_vlans_add`
+
+Required:
+
+- `vlans` (String)
 
 ## Import
 
