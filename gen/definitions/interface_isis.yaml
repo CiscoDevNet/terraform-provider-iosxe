@@ -27,6 +27,10 @@ attributes:
     example: Loopback
   - yang_name: name
     example: 100
+  - yang_name: Cisco-IOS-XE-isis:network/point-to-point
+    tf_name: network_point_to_point
+    description: Set ISIS network type to point-to-point
+    example: true
   - yang_name: Cisco-IOS-XE-isis:metric/metric-list
     tf_name: ipv4_metric_levels
     type: List
