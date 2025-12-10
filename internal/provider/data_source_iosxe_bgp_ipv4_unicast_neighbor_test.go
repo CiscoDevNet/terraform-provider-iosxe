@@ -93,6 +93,7 @@ resource "iosxe_yang" "PreReq4" {
 	attributes = {
 		"name" = "PEER_POLICY_TEMPLATE_1"
 	}
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
 `

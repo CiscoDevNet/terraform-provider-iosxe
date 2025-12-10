@@ -63,3 +63,4 @@ test_prerequisites:
     attributes:
       - name: name
         value: PEER_POLICY_TEMPLATE_1
+    dependencies: [0]

@@ -21,7 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,9 +32,6 @@ import (
 
 func TestAccDataSourceIosxeInterfaceISIS(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_isis.test", "network_point_to_point", "true"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_isis.test", "ipv4_metric_levels.0.level", "level-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_isis.test", "ipv4_metric_levels.0.value", "100"))
 	resource.Test(t, resource.TestCase{
@@ -94,9 +90,6 @@ func testAccDataSourceIosxeInterfaceISISConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
-	if os.Getenv("IOSXE1715") != "" {
-		config += `	network_point_to_point = true` + "\n"
-	}
 	config += `	ipv4_metric_levels = [{` + "\n"
 	config += `		level = "level-1"` + "\n"
 	config += `		value = 100` + "\n"

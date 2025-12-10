@@ -31,7 +31,7 @@ attributes:
     tf_name: network_point_to_point
     description: Set ISIS network type to point-to-point
     example: true
-    test_tags: [IOSXE1715]
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-isis:metric/metric-list
     tf_name: ipv4_metric_levels
     type: List
