@@ -69,7 +69,8 @@ data "iosxe_interface_tunnel" "example" {
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
-- `tunnel_protection_ipsec_profile` (String) Obsolete, use the other option profile-option to set ipsec policy profile
+- `tunnel_protection_ipsec_profile` (String) IPSec policy profile
+- `tunnel_protection_ipsec_profile_legacy` (String) Obsolete, use the other option profile-option to set ipsec policy profile
 - `tunnel_source` (String) source of tunnel packets
 - `tunnel_vrf` (String)
 - `unnumbered` (String) Enable IP processing without an explicit address

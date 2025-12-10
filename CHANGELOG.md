@@ -7,6 +7,7 @@
 - Add `network_point_to_point` attribute to `iosxe_interface_isis` resource and data source
 - Add device level `protocol` provider attribute
 - Add `enable_traps_bgp_cbgp2_state_changes` and `enable_traps_bgp_cbgp2_threshold_prefix` attributes to `iosxe_snmp_server` resource and data source
+- Add `tunnel_protection_ipsec_profile_legacy` attribute to `iosxe_interface_tunnel` resource and data source
 
 ## 0.12.0
 
