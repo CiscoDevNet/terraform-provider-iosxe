@@ -1,4 +1,4 @@
-## Unreleased
+## 0.13.0
 
 - Add `stopbits` attribute to `iosxe_line` resource and data source
 - Add `ipv4_evpn_mcast_*` and `ipv6_evpn_mcast_*` attributes to `iosxe_vrf` resource and data source
