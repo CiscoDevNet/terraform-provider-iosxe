@@ -29,7 +29,6 @@ resource "iosxe_flow_record" "example" {
   match_ipv4_ttl                               = true
   match_routing_vrf_input                      = true
   match_vxlan_vnid                             = true
-  collect_interface_input                      = true
   collect_interface_output                     = true
   collect_counter_bytes_long                   = true
   collect_counter_packets_long                 = true

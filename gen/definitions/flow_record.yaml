@@ -94,6 +94,7 @@ attributes:
     test_tags: [IOSXE1715]
   - yang_name: collect/interface/input
     example: true
+    exclude_test: true
   - yang_name: collect/interface/output
     example: true
   - yang_name: collect/counter/bytes/long

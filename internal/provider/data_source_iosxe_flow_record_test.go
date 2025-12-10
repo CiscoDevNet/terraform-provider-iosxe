@@ -59,7 +59,6 @@ func TestAccDataSourceIosxeFlowRecord(t *testing.T) {
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "match_vxlan_vtep_output", "true"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "collect_interface_input", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "collect_interface_output", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "collect_counter_bytes_long", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_record.test", "collect_counter_packets_long", "true"))
@@ -115,7 +114,6 @@ func testAccDataSourceIosxeFlowRecordConfig() string {
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	match_vxlan_vtep_output = true` + "\n"
 	}
-	config += `	collect_interface_input = true` + "\n"
 	config += `	collect_interface_output = true` + "\n"
 	config += `	collect_counter_bytes_long = true` + "\n"
 	config += `	collect_counter_packets_long = true` + "\n"
