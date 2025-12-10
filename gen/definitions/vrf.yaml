@@ -9,8 +9,9 @@ attributes:
     example: VRF22 description
   - yang_name: rd-auto
     example: true
+    exclude_test: true
   - yang_name: rd
-    exclude_test: false
+    requires_replace: true
     example: 22:22
   - yang_name: address-family/ipv4
     example: true
@@ -168,11 +169,13 @@ attributes:
     tf_name: ipv4_mdt_auto_discovery_vxlan
     description: Enable BGP auto-discovery for VxLAN
     example: true
+    test_tags: [C9000V]
   - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/vxlan/vxlan-config/inter-as
     xpath: address-family/ipv4/mdt/auto-discovery/vxlan-config/inter-as
     tf_name: ipv4_mdt_auto_discovery_vxlan_inter_as
     description: Enable Inter-AS BGP auto-discovery for VxLAN
     example: true
+    test_tags: [C9000V]
   - yang_name: address-family/ipv4/mdt/auto-discovery/auto-discovery/interworking/interworking/interworking/vxlan-pim/vxlan-pim-config/vxlan-pim
     xpath: address-family/ipv4/mdt/auto-discovery/interworking/vxlan-pim-config/vxlan-pim
     tf_name: ipv4_mdt_auto_discovery_interworking_vxlan_pim
@@ -189,10 +192,12 @@ attributes:
     tf_name: ipv4_mdt_overlay_use_bgp
     description: Enable BGP for MDT overlay signaling
     example: true
+    test_tags: [C9000V]
   - yang_name: address-family/ipv4/mdt/overlay/use-bgp-config/spt-only
     tf_name: ipv4_mdt_overlay_use_bgp_spt_only
     description: Enable Shortest path tree-only ASM mode
     example: true
+    test_tags: [C9000V]
   - yang_name: address-family/ipv4/mdt/data/multicast
     tf_name: ipv4_mdt_data_multicast
     type: List
@@ -214,12 +219,54 @@ attributes:
     tf_name: ipv4_mdt_data_threshold
     description: MDT switching threshold in Kbps (1-4294967)
     example: 50
+  - yang_name: address-family/ipv4/evpn-mcast/mdt-def-addr
+    tf_name: ipv4_evpn_mcast_mdt_default_address
+    description: EVPN multicast MDT default group address
+    exclude_test: true
+    example: 225.25.25.25
+  - yang_name: address-family/ipv4/evpn-mcast/anycast
+    tf_name: ipv4_evpn_mcast_anycast
+    description: IPv4 address of Rendezvous-point for anycast mode
+    exclude_test: true
+    example: 61.61.1.11
+  - yang_name: address-family/ipv4/evpn-mcast/data/data-addr
+    tf_name: ipv4_evpn_mcast_data_address
+    description: EVPN multicast data MDT group address
+    exclude_test: true
+    example: 225.25.25.26
+  - yang_name: address-family/ipv4/evpn-mcast/data/mask-bits
+    tf_name: ipv4_evpn_mcast_data_mask_bits
+    description: EVPN multicast data MDT mask bits
+    exclude_test: true
+    example: 0.0.0.255
+  - yang_name: address-family/ipv6/evpn-mcast/mdt-def-addr
+    tf_name: ipv6_evpn_mcast_mdt_default_address
+    description: EVPN multicast MDT default group address (IPv6)
+    exclude_test: true
+    example: ff3e::1
+  - yang_name: address-family/ipv6/evpn-mcast/anycast
+    tf_name: ipv6_evpn_mcast_anycast
+    description: IPv6 address of Rendezvous-point for anycast mode
+    exclude_test: true
+    example: 2001:db8::1
+  - yang_name: address-family/ipv6/evpn-mcast/data/data-addr
+    tf_name: ipv6_evpn_mcast_data_address
+    description: EVPN multicast data MDT group address (IPv6)
+    exclude_test: true
+    example: ff3e::2
+  - yang_name: address-family/ipv6/evpn-mcast/data/mask-bits
+    tf_name: ipv6_evpn_mcast_data_mask_bits
+    description: EVPN multicast data MDT mask bits (IPv6)
+    exclude_test: true
+    example: ::ff
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
+      - name: address-family/ipv4
+        value: ""
   - path: Cisco-IOS-XE-native:native/route-map[name=RM1]
     attributes:
       - name: name

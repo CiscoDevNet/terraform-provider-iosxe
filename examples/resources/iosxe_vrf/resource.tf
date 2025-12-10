@@ -1,7 +1,6 @@
 resource "iosxe_vrf" "example" {
   name                = "VRF22"
   description         = "VRF22 description"
-  rd_auto             = true
   rd                  = "22:22"
   address_family_ipv4 = true
   address_family_ipv6 = true
@@ -62,6 +61,7 @@ resource "iosxe_vrf" "example" {
   ipv4_mdt_auto_discovery_vxlan_inter_as = true
   ipv4_mdt_overlay_use_bgp               = true
   ipv4_mdt_overlay_use_bgp_spt_only      = true
+  ipv4_mdt_default_address = "239.1.1.1"
   ipv4_mdt_data_multicast = [
     {
       address  = "239.1.2.0"

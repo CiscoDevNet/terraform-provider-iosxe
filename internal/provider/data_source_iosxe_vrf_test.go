@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,7 +34,6 @@ import (
 func TestAccDataSourceIosxeVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "description", "VRF22 description"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd_auto", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "rd", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv4", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv6", "true"))
@@ -54,10 +54,18 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_import_map", "IMPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_export_map", "EXPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_default_address", "239.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan_inter_as", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp_spt_only", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan_inter_as", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp_spt_only", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_multicast.0.address", "239.1.2.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_multicast.0.wildcard", "0.0.0.255"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_mdt_data_threshold", "50"))
@@ -82,6 +90,7 @@ resource "iosxe_yang" "PreReq0" {
 	delete = false
 	attributes = {
 		"name" = "VRF1"
+		"address-family/ipv4" = ""
 	}
 }
 
@@ -103,7 +112,6 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "VRF22"` + "\n"
 	config += `	description = "VRF22 description"` + "\n"
-	config += `	rd_auto = true` + "\n"
 	config += `	rd = "22:22"` + "\n"
 	config += `	address_family_ipv4 = true` + "\n"
 	config += `	address_family_ipv6 = true` + "\n"
@@ -142,10 +150,18 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	ipv6_import_map = "IMPORT-MAP-1"` + "\n"
 	config += `	ipv6_export_map = "EXPORT-MAP-1"` + "\n"
 	config += `	ipv4_mdt_default_address = "239.1.1.1"` + "\n"
-	config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"
-	config += `	ipv4_mdt_auto_discovery_vxlan_inter_as = true` + "\n"
-	config += `	ipv4_mdt_overlay_use_bgp = true` + "\n"
-	config += `	ipv4_mdt_overlay_use_bgp_spt_only = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	ipv4_mdt_auto_discovery_vxlan_inter_as = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	ipv4_mdt_overlay_use_bgp = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	ipv4_mdt_overlay_use_bgp_spt_only = true` + "\n"
+	}
 	config += `	ipv4_mdt_data_multicast = [{` + "\n"
 	config += `		address = "239.1.2.0"` + "\n"
 	config += `		wildcard = "0.0.0.255"` + "\n"
