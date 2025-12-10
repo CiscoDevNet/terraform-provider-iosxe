@@ -14,9 +14,8 @@ This resource can manage the Interface ISIS configuration.
 
 ```terraform
 resource "iosxe_interface_isis" "example" {
-  type                   = "Loopback"
-  name                   = "100"
-  network_point_to_point = true
+  type = "Loopback"
+  name = "100"
   ipv4_metric_levels = [
     {
       level = "level-1"

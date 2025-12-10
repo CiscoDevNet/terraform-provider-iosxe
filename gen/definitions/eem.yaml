@@ -3,7 +3,7 @@ name: EEM
 path: /Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager
 doc_category: System
 no_delete: true
-test_tags: ["IOSXE1715"]
+test_tags: [IOSXE1715]
 attributes:
   - yang_name: environment
     tf_name: environment_variables
