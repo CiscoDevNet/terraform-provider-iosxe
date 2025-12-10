@@ -35,6 +35,8 @@ data "iosxe_vrf" "example" {
 - `address_family_ipv6` (Boolean) Address family
 - `description` (String) VRF specific description
 - `id` (String) The path of the retrieved object.
+- `ipv4_export_map` (String) Route-map based VRF export for IPv4
+- `ipv4_import_map` (String) Route-map based VRF import for IPv4
 - `ipv4_evpn_mcast_anycast` (String) IPv4 address of Rendezvous-point for anycast mode
 - `ipv4_evpn_mcast_data_address` (String) EVPN multicast data MDT group address
 - `ipv4_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits
@@ -53,6 +55,8 @@ data "iosxe_vrf" "example" {
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
 - `ipv4_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
 - `ipv4_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import_stitching))
+- `ipv6_export_map` (String) Route-map based VRF export for IPv6
+- `ipv6_import_map` (String) Route-map based VRF import for IPv6
 - `ipv6_evpn_mcast_anycast` (String) IPv6 address of Rendezvous-point for anycast mode
 - `ipv6_evpn_mcast_data_address` (String) EVPN multicast data MDT group address (IPv6)
 - `ipv6_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits (IPv6)

@@ -48,10 +48,14 @@ func TestAccIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_replicate.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_route_replicate.0.unicast_all_route_map", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_import_map", "IMPORT-MAP-1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_export_map", "EXPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_import.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_import_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_export.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_import_map", "IMPORT-MAP-1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_export_map", "EXPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_default_address", "239.1.1.1"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
@@ -167,6 +171,8 @@ func testAccIosxeVRFConfig_all() string {
 	config += `		unicast_all = true` + "\n"
 	config += `		unicast_all_route_map = "RM1"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv4_import_map = "IMPORT-MAP-1"` + "\n"
+	config += `	ipv4_export_map = "EXPORT-MAP-1"` + "\n"
 	config += `	ipv6_route_target_import = [{` + "\n"
 	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
@@ -179,6 +185,8 @@ func testAccIosxeVRFConfig_all() string {
 	config += `	ipv6_route_target_export_stitching = [{` + "\n"
 	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv6_import_map = "IMPORT-MAP-1"` + "\n"
+	config += `	ipv6_export_map = "EXPORT-MAP-1"` + "\n"
 	config += `	ipv4_mdt_default_address = "239.1.1.1"` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"

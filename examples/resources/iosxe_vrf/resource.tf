@@ -32,6 +32,8 @@ resource "iosxe_vrf" "example" {
       unicast_all_route_map = "RM1"
     }
   ]
+  ipv4_import_map = "IMPORT-MAP-1"
+  ipv4_export_map = "EXPORT-MAP-1"
   ipv6_route_target_import = [
     {
       value = "22:22"
@@ -52,6 +54,13 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
+  ipv6_import_map                        = "IMPORT-MAP-1"
+  ipv6_export_map                        = "EXPORT-MAP-1"
+  ipv4_mdt_default_address               = "239.1.1.1"
+  ipv4_mdt_auto_discovery_vxlan          = true
+  ipv4_mdt_auto_discovery_vxlan_inter_as = true
+  ipv4_mdt_overlay_use_bgp               = true
+  ipv4_mdt_overlay_use_bgp_spt_only      = true
   ipv4_mdt_default_address = "239.1.1.1"
   ipv4_mdt_data_multicast = [
     {

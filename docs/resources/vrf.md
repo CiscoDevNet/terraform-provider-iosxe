@@ -47,6 +47,8 @@ resource "iosxe_vrf" "example" {
       unicast_all_route_map = "RM1"
     }
   ]
+  ipv4_import_map = "IMPORT-MAP-1"
+  ipv4_export_map = "EXPORT-MAP-1"
   ipv6_route_target_import = [
     {
       value = "22:22"
@@ -67,6 +69,13 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
+  ipv6_import_map                        = "IMPORT-MAP-1"
+  ipv6_export_map                        = "EXPORT-MAP-1"
+  ipv4_mdt_default_address               = "239.1.1.1"
+  ipv4_mdt_auto_discovery_vxlan          = true
+  ipv4_mdt_auto_discovery_vxlan_inter_as = true
+  ipv4_mdt_overlay_use_bgp               = true
+  ipv4_mdt_overlay_use_bgp_spt_only      = true
   ipv4_mdt_default_address = "239.1.1.1"
   ipv4_mdt_data_multicast = [
     {
@@ -93,6 +102,8 @@ resource "iosxe_vrf" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) VRF specific description
 - `device` (String) A device name from the provider configuration.
+- `ipv4_export_map` (String) Route-map based VRF export for IPv4
+- `ipv4_import_map` (String) Route-map based VRF import for IPv4
 - `ipv4_evpn_mcast_anycast` (String) IPv4 address of Rendezvous-point for anycast mode
 - `ipv4_evpn_mcast_data_address` (String) EVPN multicast data MDT group address
 - `ipv4_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits
@@ -112,6 +123,8 @@ resource "iosxe_vrf" "example" {
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
 - `ipv4_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
 - `ipv4_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import_stitching))
+- `ipv6_export_map` (String) Route-map based VRF export for IPv6
+- `ipv6_import_map` (String) Route-map based VRF import for IPv6
 - `ipv6_evpn_mcast_anycast` (String) IPv6 address of Rendezvous-point for anycast mode
 - `ipv6_evpn_mcast_data_address` (String) EVPN multicast data MDT group address (IPv6)
 - `ipv6_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits (IPv6)
