@@ -11,4 +11,5 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
       route_map_name = "RM1"
     }
   ]
+  inherit_peer_policy = "PEER_POLICY_TEMPLATE_1"
 }

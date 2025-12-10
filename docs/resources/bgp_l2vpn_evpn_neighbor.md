@@ -26,6 +26,7 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
       route_map_name = "RM1"
     }
   ]
+  inherit_peer_policy = "PEER_POLICY_TEMPLATE_1"
 }
 ```
 
@@ -44,6 +45,7 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `inherit_peer_policy` (String) Inherit a peer-policy template
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
