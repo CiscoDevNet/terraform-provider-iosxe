@@ -105,6 +105,10 @@ func (r *FlowExporterResource) Schema(ctx context.Context, req resource.SchemaRe
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"destination_ip_vrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Optional VRF label").String,
+				Optional:            true,
+			},
 			"source_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
 				Optional:            true,
