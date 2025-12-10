@@ -284,6 +284,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"ip_tcp_adjust_mss": schema.Int64Attribute{
+				MarkdownDescription: "Adjust the mss of transit packets",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -362,6 +362,13 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"ip_tcp_adjust_mss": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Adjust the mss of transit packets").AddIntegerRangeDescription(500, 1460).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(500, 1460),
+				},
+			},
 		},
 	}
 }

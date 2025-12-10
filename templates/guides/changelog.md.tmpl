@@ -19,6 +19,7 @@ description: |-
 - Add `tunnel_protection_ipsec_profile_legacy` attribute to `iosxe_interface_tunnel` resource and data source
 - Add `destination_ip_vrf` attribute to `iosxe_flow_exporter` resource and data source
 - Add `collect_interface_input` attribute to `iosxe_flow_record` resource and data source
+- Add `ip_tcp_adjust_mss` attribute to `iosxe_interface_tunnel` resource and data source
 
 ## 0.12.0
 

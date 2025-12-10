@@ -170,6 +170,8 @@ attributes:
     tf_name: ip_router_isis
     example: TEST
     exclude_test: true
+  - yang_name: ip/tcp/adjust-mss
+    example: 1400
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

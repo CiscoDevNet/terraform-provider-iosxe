@@ -62,6 +62,7 @@ resource "iosxe_interface_tunnel" "example" {
   logging_event_link_status_enable = true
   tunnel_vrf                       = "VRF1"
   ip_igmp_version                  = 3
+  ip_tcp_adjust_mss                = 1400
 }
 ```
 
@@ -104,6 +105,8 @@ resource "iosxe_interface_tunnel" "example" {
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)
+- `ip_tcp_adjust_mss` (Number) Adjust the mss of transit packets
+  - Range: `500`-`1460`
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
 - `ipv4_address_mask` (String) Ip subnet mask
