@@ -53,13 +53,42 @@ attributes:
   - yang_name: Cisco-IOS-XE-switch:access/vlan/vlan
     tf_name: access_vlan
     example: 100
-  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlan-choice/vlans/vlans
-    xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlans
+  # NEW v2 attributes - trunk allowed VLANs (non-deprecated YANG paths)
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlan-choice/vlans-case/vlans
+    xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans
     tf_name: trunk_allowed_vlans
     example: 100,101
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlan-choice/none-case/none
+    xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/none
+    tf_name: trunk_allowed_vlans_none
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlan-choice/all-case/all
+    xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/all
+    tf_name: trunk_allowed_vlans_all
+    example: true
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/add-vlans/add
+    tf_name: trunk_allowed_vlans_add
+    type: List
+    attributes:
+      - yang_name: vlans
+        id: true
+        example: 200,201
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/except
+    tf_name: trunk_allowed_vlans_except
+    example: 999
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/remove
+    tf_name: trunk_allowed_vlans_remove
+    example: 999
+  # LEGACY attributes - trunk allowed VLANs (deprecated YANG paths)
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlan-choice/vlans/vlans
+    xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlans
+    tf_name: trunk_allowed_vlans_legacy
+    example: 100,101
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlan-choice/none/none
     xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan/none
-    tf_name: trunk_allowed_vlans_none
+    tf_name: trunk_allowed_vlans_none_legacy
     example: true
     exclude_test: true
   - yang_name: Cisco-IOS-XE-switch:trunk/native/vlan/tag
