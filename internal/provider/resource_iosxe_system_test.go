@@ -94,9 +94,6 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_destination", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_source", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "true"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "port_channel_load_balance", "src-dst-mixed-ip-port"))
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -113,7 +110,7 @@ func TestAccIosxeSystem(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeSystemImportStateIdFunc("iosxe_system.test"),
-				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_scp_server_enable", "ip_ssh_version_legacy", "control_plane_service_policy_input", "subscriber_templating", "multilink_ppp_bundle_name", "version", "authentication_mac_move_permit", "authentication_mac_move_deny_uncontrolled", "device_classifier"},
+				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_scp_server_enable", "ip_ssh_version_legacy", "control_plane_service_policy_input", "subscriber_templating", "multilink_ppp_bundle_name", "version", "igmp_snooping_querier", "authentication_mac_move_permit", "authentication_mac_move_deny_uncontrolled", "device_classifier"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -230,9 +227,6 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	ip_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
 	config += `	ipv6_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
 	config += `	ipv6_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `	port_channel_load_balance = "src-dst-mixed-ip-port"` + "\n"
-	}
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

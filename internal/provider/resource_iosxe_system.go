@@ -884,6 +884,31 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(1, 2147483647),
 				},
 			},
+			"igmp_snooping_querier": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP Snooping Querier disable/enable").String,
+				Optional:            true,
+			},
+			"igmp_snooping_querier_version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP Snooping Querier version").AddIntegerRangeDescription(1, 3).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3),
+				},
+			},
+			"igmp_snooping_querier_max_response_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP Snooping Querier maximum response time (sec)").AddIntegerRangeDescription(1, 25).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 25),
+				},
+			},
+			"igmp_snooping_querier_timer_expiry": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IGMP Snooping Querier time out (sec)").AddIntegerRangeDescription(60, 300).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(60, 300),
+				},
+			},
 			"security_passwords_min_length": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum length of passwords").AddIntegerRangeDescription(1, 16).String,
 				Optional:            true,

@@ -53,6 +53,10 @@ data "iosxe_system" "example" {
 - `ethernet_cfm_alarm_config_reset` (Number) msec (default 10000 msec)
 - `hostname` (String) Set system's network name
 - `id` (String) The path of the retrieved object.
+- `igmp_snooping_querier` (Boolean) IGMP Snooping Querier disable/enable
+- `igmp_snooping_querier_max_response_time` (Number) IGMP Snooping Querier maximum response time (sec)
+- `igmp_snooping_querier_timer_expiry` (Number) IGMP Snooping Querier time out (sec)
+- `igmp_snooping_querier_version` (Number) IGMP Snooping Querier version
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
 - `ip_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
 - `ip_cef_load_sharing_algorithm_include_ports_source` (Boolean)
