@@ -269,7 +269,7 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "VNID value for route-target auto generation",
 							Computed:            true,
 						},
-						"evpn_instance_vni_vni_num": schema.ListNestedAttribute{
+						"evpn_instance_vni": schema.ListNestedAttribute{
 							MarkdownDescription: "Specify explicit NVE L3 VNI number",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{

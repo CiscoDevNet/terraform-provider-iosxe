@@ -49,7 +49,7 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vnid.0.vnid_value", "10001"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vnid.0.evpn_instance_vni_vni_num.0.vni_num", "20000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vnid.0.evpn_instance_vni.0.vni_num", "20000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -127,7 +127,7 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	}]` + "\n"
 	config += `	vnid = [{` + "\n"
 	config += `		vnid_value = 10001` + "\n"
-	config += `		evpn_instance_vni_vni_num = [{` + "\n"
+	config += `		evpn_instance_vni = [{` + "\n"
 	config += `			vni_num = 20000` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"

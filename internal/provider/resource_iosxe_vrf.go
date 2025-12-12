@@ -348,7 +348,7 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 								int64validator.Between(1, 2147483647),
 							},
 						},
-						"evpn_instance_vni_vni_num": schema.ListNestedAttribute{
+						"evpn_instance_vni": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify explicit NVE L3 VNI number").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{

@@ -149,15 +149,15 @@ type VRFIpv6RouteTargetExportStitching struct {
 	Stitching types.Bool   `tfsdk:"stitching"`
 }
 type VRFVnid struct {
-	VnidValue             types.Int64                    `tfsdk:"vnid_value"`
-	EvpnInstanceVniVniNum []VRFVnidEvpnInstanceVniVniNum `tfsdk:"evpn_instance_vni_vni_num"`
+	VnidValue       types.Int64              `tfsdk:"vnid_value"`
+	EvpnInstanceVni []VRFVnidEvpnInstanceVni `tfsdk:"evpn_instance_vni"`
 }
 type VRFIpv4MdtDataMulticast struct {
 	Address  types.String `tfsdk:"address"`
 	Wildcard types.String `tfsdk:"wildcard"`
 	List     types.String `tfsdk:"list"`
 }
-type VRFVnidEvpnInstanceVniVniNum struct {
+type VRFVnidEvpnInstanceVni struct {
 	VniNum   types.Int64 `tfsdk:"vni_num"`
 	CoreVlan types.Int64 `tfsdk:"core_vlan"`
 }
@@ -399,9 +399,9 @@ func (data VRF) toBody(ctx context.Context) string {
 			if !item.VnidValue.IsNull() && !item.VnidValue.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid"+"."+strconv.Itoa(index)+"."+"vnid-value", strconv.FormatInt(item.VnidValue.ValueInt64(), 10))
 			}
-			if len(item.EvpnInstanceVniVniNum) > 0 {
+			if len(item.EvpnInstanceVni) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid"+"."+strconv.Itoa(index)+"."+"evpn-instance.vni.vni-num", []interface{}{})
-				for cindex, citem := range item.EvpnInstanceVniVniNum {
+				for cindex, citem := range item.EvpnInstanceVni {
 					if !citem.VniNum.IsNull() && !citem.VniNum.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid"+"."+strconv.Itoa(index)+"."+"evpn-instance.vni.vni-num"+"."+strconv.Itoa(cindex)+"."+"vni-num", strconv.FormatInt(citem.VniNum.ValueInt64(), 10))
 					}
@@ -625,8 +625,8 @@ func (data VRF) toBodyXML(ctx context.Context) string {
 			if !item.VnidValue.IsNull() && !item.VnidValue.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vnid-value", strconv.FormatInt(item.VnidValue.ValueInt64(), 10))
 			}
-			if len(item.EvpnInstanceVniVniNum) > 0 {
-				for _, citem := range item.EvpnInstanceVniVniNum {
+			if len(item.EvpnInstanceVni) > 0 {
+				for _, citem := range item.EvpnInstanceVni {
 					ccBody := netconf.Body{}
 					if !citem.VniNum.IsNull() && !citem.VniNum.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "vni-num", strconv.FormatInt(citem.VniNum.ValueInt64(), 10))
@@ -1181,9 +1181,9 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Vnid[i].VnidValue = types.Int64Null()
 		}
-		for ci := range data.Vnid[i].EvpnInstanceVniVniNum {
+		for ci := range data.Vnid[i].EvpnInstanceVni {
 			keys := [...]string{"vni-num"}
-			keyValues := [...]string{strconv.FormatInt(data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64(), 10)}
+			keyValues := [...]string{strconv.FormatInt(data.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
 
 			var cr gjson.Result
 			r.Get("evpn-instance.vni.vni-num").ForEach(
@@ -1204,15 +1204,15 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 					return true
 				},
 			)
-			if value := cr.Get("vni-num"); value.Exists() && !data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.IsNull() {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum = types.Int64Value(value.Int())
+			if value := cr.Get("vni-num"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].VniNum.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Value(value.Int())
 			} else {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum = types.Int64Null()
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Null()
 			}
-			if value := cr.Get("core-vlan"); value.Exists() && !data.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan.IsNull() {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan = types.Int64Value(value.Int())
+			if value := cr.Get("core-vlan"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Value(value.Int())
 			} else {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan = types.Int64Null()
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Null()
 			}
 		}
 	}
@@ -1788,9 +1788,9 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Vnid[i].VnidValue = types.Int64Null()
 		}
-		for ci := range data.Vnid[i].EvpnInstanceVniVniNum {
+		for ci := range data.Vnid[i].EvpnInstanceVni {
 			keys := [...]string{"vni-num"}
-			keyValues := [...]string{strconv.FormatInt(data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64(), 10)}
+			keyValues := [...]string{strconv.FormatInt(data.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
 
 			var cr xmldot.Result
 			helpers.GetFromXPath(r, "evpn-instance/vni/vni-num").ForEach(
@@ -1811,15 +1811,15 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 					return true
 				},
 			)
-			if value := helpers.GetFromXPath(cr, "vni-num"); value.Exists() && !data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.IsNull() {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum = types.Int64Value(value.Int())
+			if value := helpers.GetFromXPath(cr, "vni-num"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].VniNum.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Value(value.Int())
 			} else {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum = types.Int64Null()
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Null()
 			}
-			if value := helpers.GetFromXPath(cr, "core-vlan"); value.Exists() && !data.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan.IsNull() {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan = types.Int64Value(value.Int())
+			if value := helpers.GetFromXPath(cr, "core-vlan"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Value(value.Int())
 			} else {
-				data.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan = types.Int64Null()
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Null()
 			}
 		}
 	}
@@ -2128,16 +2128,16 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 				item.VnidValue = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("evpn-instance.vni.vni-num"); cValue.Exists() {
-				item.EvpnInstanceVniVniNum = make([]VRFVnidEvpnInstanceVniVniNum, 0)
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := VRFVnidEvpnInstanceVniVniNum{}
+					cItem := VRFVnidEvpnInstanceVni{}
 					if ccValue := cv.Get("vni-num"); ccValue.Exists() {
 						cItem.VniNum = types.Int64Value(ccValue.Int())
 					}
 					if ccValue := cv.Get("core-vlan"); ccValue.Exists() {
 						cItem.CoreVlan = types.Int64Value(ccValue.Int())
 					}
-					item.EvpnInstanceVniVniNum = append(item.EvpnInstanceVniVniNum, cItem)
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
 					return true
 				})
 			}
@@ -2400,16 +2400,16 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 				item.VnidValue = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("evpn-instance.vni.vni-num"); cValue.Exists() {
-				item.EvpnInstanceVniVniNum = make([]VRFVnidEvpnInstanceVniVniNum, 0)
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := VRFVnidEvpnInstanceVniVniNum{}
+					cItem := VRFVnidEvpnInstanceVni{}
 					if ccValue := cv.Get("vni-num"); ccValue.Exists() {
 						cItem.VniNum = types.Int64Value(ccValue.Int())
 					}
 					if ccValue := cv.Get("core-vlan"); ccValue.Exists() {
 						cItem.CoreVlan = types.Int64Value(ccValue.Int())
 					}
-					item.EvpnInstanceVniVniNum = append(item.EvpnInstanceVniVniNum, cItem)
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
 					return true
 				})
 			}
@@ -2668,16 +2668,16 @@ func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.VnidValue = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "evpn-instance/vni/vni-num"); cValue.Exists() {
-				item.EvpnInstanceVniVniNum = make([]VRFVnidEvpnInstanceVniVniNum, 0)
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := VRFVnidEvpnInstanceVniVniNum{}
+					cItem := VRFVnidEvpnInstanceVni{}
 					if ccValue := helpers.GetFromXPath(cv, "vni-num"); ccValue.Exists() {
 						cItem.VniNum = types.Int64Value(ccValue.Int())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "core-vlan"); ccValue.Exists() {
 						cItem.CoreVlan = types.Int64Value(ccValue.Int())
 					}
-					item.EvpnInstanceVniVniNum = append(item.EvpnInstanceVniVniNum, cItem)
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
 					return true
 				})
 			}
@@ -2936,16 +2936,16 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.VnidValue = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "evpn-instance/vni/vni-num"); cValue.Exists() {
-				item.EvpnInstanceVniVniNum = make([]VRFVnidEvpnInstanceVniVniNum, 0)
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := VRFVnidEvpnInstanceVniVniNum{}
+					cItem := VRFVnidEvpnInstanceVni{}
 					if ccValue := helpers.GetFromXPath(cv, "vni-num"); ccValue.Exists() {
 						cItem.VniNum = types.Int64Value(ccValue.Int())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "core-vlan"); ccValue.Exists() {
 						cItem.CoreVlan = types.Int64Value(ccValue.Int())
 					}
-					item.EvpnInstanceVniVniNum = append(item.EvpnInstanceVniVniNum, cItem)
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
 					return true
 				})
 			}
@@ -3090,11 +3090,11 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 				found = false
 			}
 			if found {
-				for ci := range state.Vnid[i].EvpnInstanceVniVniNum {
-					cstateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64(), 10)}
+				for ci := range state.Vnid[i].EvpnInstanceVni {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64()).IsZero() {
+					if !reflect.ValueOf(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -3102,13 +3102,13 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 					}
 
 					found := false
-					for cj := range data.Vnid[j].EvpnInstanceVniVniNum {
+					for cj := range data.Vnid[j].EvpnInstanceVni {
 						found = true
-						if state.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64() != data.Vnid[j].EvpnInstanceVniVniNum[cj].VniNum.ValueInt64() {
+						if state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64() != data.Vnid[j].EvpnInstanceVni[cj].VniNum.ValueInt64() {
 							found = false
 						}
 						if found {
-							if !state.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan.IsNull() && data.Vnid[j].EvpnInstanceVniVniNum[cj].CoreVlan.IsNull() {
+							if !state.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() && data.Vnid[j].EvpnInstanceVni[cj].CoreVlan.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/vnid=%v/evpn-instance/vni/vni-num=%v/core-vlan", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
@@ -3538,16 +3538,16 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 				found = false
 			}
 			if found {
-				for ci := range state.Vnid[i].EvpnInstanceVniVniNum {
+				for ci := range state.Vnid[i].EvpnInstanceVni {
 					cstateKeys := [...]string{"vni-num"}
-					cstateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64(), 10)}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
 					cpredicates := ""
 					for i := range cstateKeys {
 						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
 					}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64()).IsZero() {
+					if !reflect.ValueOf(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -3555,13 +3555,13 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 					}
 
 					found := false
-					for cj := range data.Vnid[j].EvpnInstanceVniVniNum {
+					for cj := range data.Vnid[j].EvpnInstanceVni {
 						found = true
-						if state.Vnid[i].EvpnInstanceVniVniNum[ci].VniNum.ValueInt64() != data.Vnid[j].EvpnInstanceVniVniNum[cj].VniNum.ValueInt64() {
+						if state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64() != data.Vnid[j].EvpnInstanceVni[cj].VniNum.ValueInt64() {
 							found = false
 						}
 						if found {
-							if !state.Vnid[i].EvpnInstanceVniVniNum[ci].CoreVlan.IsNull() && data.Vnid[j].EvpnInstanceVniVniNum[cj].CoreVlan.IsNull() {
+							if !state.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() && data.Vnid[j].EvpnInstanceVni[cj].CoreVlan.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vnid%v/evpn-instance/vni/vni-num%v/core-vlan", predicates, cpredicates))
 							}
 							break

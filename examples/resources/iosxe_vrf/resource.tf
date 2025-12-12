@@ -55,7 +55,7 @@ resource "iosxe_vrf" "example" {
   vnid = [
     {
       vnid_value = 10001
-      evpn_instance_vni_vni_num = [
+      evpn_instance_vni = [
         {
           vni_num = 20000
         }

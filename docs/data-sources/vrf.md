@@ -171,11 +171,11 @@ Read-Only:
 
 Read-Only:
 
-- `evpn_instance_vni_vni_num` (Attributes List) Specify explicit NVE L3 VNI number (see [below for nested schema](#nestedatt--vnid--evpn_instance_vni_vni_num))
+- `evpn_instance_vni` (Attributes List) Specify explicit NVE L3 VNI number (see [below for nested schema](#nestedatt--vnid--evpn_instance_vni))
 - `vnid_value` (Number) VNID value for route-target auto generation
 
-<a id="nestedatt--vnid--evpn_instance_vni_vni_num"></a>
-### Nested Schema for `vnid.evpn_instance_vni_vni_num`
+<a id="nestedatt--vnid--evpn_instance_vni"></a>
+### Nested Schema for `vnid.evpn_instance_vni`
 
 Read-Only:
 
