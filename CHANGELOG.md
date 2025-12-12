@@ -1,3 +1,9 @@
+## Unreleased
+
+- Add `iosxe_interface_bdi` resource and data sources with `name` and `mac_address` attributes.
+- Add `service_instance` attribute to `iosxe_interface_ethernet` resource and data sources.
+- Add `iosxe_bridge_domain` resource and data sources with `bridge_domain_id`, `member_vni`, and `member_interface` attributes.
+
 ## 0.13.0
 
 - Add `stopbits` attribute to `iosxe_line` resource and data source

@@ -436,6 +436,26 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"service_instance": schema.ListNestedAttribute{
+				MarkdownDescription: "Configure Ether Service Instance",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"ethernet": schema.BoolAttribute{
+							MarkdownDescription: "Configure an Ethernet Instance",
+							Computed:            true,
+						},
+						"encapsulation_untagged": schema.BoolAttribute{
+							MarkdownDescription: "Untagged encapsulation",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"authentication_host_mode": schema.StringAttribute{
 				MarkdownDescription: "Set the Host mode for authentication on this interface",
 				Computed:            true,

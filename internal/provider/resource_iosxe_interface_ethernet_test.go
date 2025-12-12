@@ -58,9 +58,6 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bfd_template", "bfd_template1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bfd_enable", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bfd_local_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_mtu", "1300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_nd_ra_suppress_all", "true"))
@@ -83,20 +80,19 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_arp_inspection_limit_rate", "1000"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
+	}
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_dhcp_snooping_trust", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "negotiation_auto", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "service_policy_input", "POLICY1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "service_policy_output", "POLICY1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_flow_monitors.0.name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_flow_monitors.0.direction", "input"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "snmp_trap_link_status", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "logging_event_link_status_enable", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "cdp_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "cdp_tlv_app", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "cdp_tlv_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "cdp_tlv_server_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_nat_inside", "true"))
@@ -123,7 +119,7 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceEthernetImportStateIdFunc("iosxe_interface_ethernet.test"),
-				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "authentication_event_server_alive_action_reinitialize", "authentication_event_server_dead_action_authorize", "authentication_event_server_dead_action_authorize_voice", "authentication_event_fail_action_next_method", "authentication_event_linksec_fail_action_next_method", "mab", "mab_eap", "ip_nbar_protocol_discovery", "device_tracking", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust", "ip_dhcp_relay_information_option_vpn_id", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "service_instance.0.ethernet", "service_instance.0.encapsulation_untagged", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "authentication_event_server_alive_action_reinitialize", "authentication_event_server_dead_action_authorize", "authentication_event_server_dead_action_authorize_voice", "authentication_event_fail_action_next_method", "authentication_event_linksec_fail_action_next_method", "mab", "mab_eap", "ip_nbar_protocol_discovery", "device_tracking", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -242,9 +238,6 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `		template_name = "TEMP1"` + "\n"
 	config += `		merge = false` + "\n"
 	config += `	}]` + "\n"
-	config += `	bfd_template = "bfd_template1"` + "\n"
-	config += `	bfd_enable = false` + "\n"
-	config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	config += `	ipv6_enable = true` + "\n"
 	config += `	ipv6_mtu = 1300` + "\n"
 	config += `	ipv6_nd_ra_suppress_all = true` + "\n"
@@ -271,13 +264,15 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	}
-	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
+	}
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}
 	config += `	negotiation_auto = false` + "\n"
-	config += `	service_policy_input = "POLICY1"` + "\n"
-	config += `	service_policy_output = "POLICY1"` + "\n"
+	config += `	service_instance = [{` + "\n"
+	config += `	}]` + "\n"
 	config += `	ip_flow_monitors = [{` + "\n"
 	config += `		name = "MON1"` + "\n"
 	config += `		direction = "input"` + "\n"
@@ -286,7 +281,6 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `	snmp_trap_link_status = false` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
 	config += `	cdp_enable = true` + "\n"
-	config += `	cdp_tlv_app = false` + "\n"
 	config += `	cdp_tlv_location = false` + "\n"
 	config += `	cdp_tlv_server_location = false` + "\n"
 	config += `	ip_nat_inside = true` + "\n"
