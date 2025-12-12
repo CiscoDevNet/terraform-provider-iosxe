@@ -22,7 +22,6 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -56,22 +55,8 @@ func TestAccIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_import_map", "IMPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_export_map", "EXPORT-MAP-1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_default_address", "239.1.1.1"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan", "true"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_auto_discovery_vxlan_inter_as", "true"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp", "true"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_overlay_use_bgp_spt_only", "true"))
-	}
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_data_multicast.0.address", "239.1.2.0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_data_multicast.0.wildcard", "0.0.0.255"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv4_mdt_data_threshold", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "vnid.0.vnid_value", "10001"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "vnid.0.evpn_instance_vni.0.vni_num", "20000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -187,24 +172,12 @@ func testAccIosxeVRFConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	ipv6_import_map = "IMPORT-MAP-1"` + "\n"
 	config += `	ipv6_export_map = "EXPORT-MAP-1"` + "\n"
-	config += `	ipv4_mdt_default_address = "239.1.1.1"` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `	ipv4_mdt_auto_discovery_vxlan = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	ipv4_mdt_auto_discovery_vxlan_inter_as = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	ipv4_mdt_overlay_use_bgp = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	ipv4_mdt_overlay_use_bgp_spt_only = true` + "\n"
-	}
-	config += `	ipv4_mdt_data_multicast = [{` + "\n"
-	config += `		address = "239.1.2.0"` + "\n"
-	config += `		wildcard = "0.0.0.255"` + "\n"
+	config += `	vnid = [{` + "\n"
+	config += `		vnid_value = 10001` + "\n"
+	config += `		evpn_instance_vni = [{` + "\n"
+	config += `			vni_num = 20000` + "\n"
+	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	ipv4_mdt_data_threshold = 50` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config

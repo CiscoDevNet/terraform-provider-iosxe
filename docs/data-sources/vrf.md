@@ -69,6 +69,7 @@ data "iosxe_vrf" "example" {
 - `rd_auto` (Boolean) Specify to enable auto Route Distinguisher
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
+- `vnid` (Attributes List) Specify VNID for route-target auto generation (see [below for nested schema](#nestedatt--vnid))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
 
 <a id="nestedatt--ipv4_mdt_data_multicast"></a>
@@ -175,3 +176,20 @@ Read-Only:
 
 - `stitching` (Boolean) VXLAN route target set
 - `value` (String) Value
+
+
+<a id="nestedatt--vnid"></a>
+### Nested Schema for `vnid`
+
+Read-Only:
+
+- `evpn_instance_vni` (Attributes List) Specify explicit NVE L3 VNI number (see [below for nested schema](#nestedatt--vnid--evpn_instance_vni))
+- `vnid_value` (Number) VNID value for route-target auto generation
+
+<a id="nestedatt--vnid--evpn_instance_vni"></a>
+### Nested Schema for `vnid.evpn_instance_vni`
+
+Read-Only:
+
+- `core_vlan` (Number) Core vlan number to associate with VNI (explicit VNI mode)
+- `vni_num` (Number) The NVE L3 VNI number
