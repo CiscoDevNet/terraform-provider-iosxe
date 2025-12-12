@@ -175,6 +175,8 @@ attributes:
         example: 25
       - yang_name: monitor
         example: true
+      - yang_name: stopbits
+        example: 1
       - yang_name: transport/output/output-protocol/no-protocol/none
         xpath: transport/output/none
         example: true

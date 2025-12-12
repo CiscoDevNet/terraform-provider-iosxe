@@ -45,6 +45,7 @@ func TestAccIosxeBGPL2VPNEVPNNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "soft_reconfiguration", "inbound"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "route_maps.0.in_out", "in"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "route_maps.0.route_map_name", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "inherit_peer_policy", "PEER_POLICY_TEMPLATE_1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -117,6 +118,14 @@ resource "iosxe_yang" "PreReq3" {
 	}
 }
 
+resource "iosxe_yang" "PreReq4" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/template/peer-policy[name=PEER_POLICY_TEMPLATE_1]"
+	attributes = {
+		"name" = "PEER_POLICY_TEMPLATE_1"
+	}
+	depends_on = [iosxe_yang.PreReq0, ]
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -127,7 +136,7 @@ func testAccIosxeBGPL2VPNEVPNNeighborConfig_minimum() string {
 	config := `resource "iosxe_bgp_l2vpn_evpn_neighbor" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	ip = "3.3.3.3"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -148,7 +157,8 @@ func testAccIosxeBGPL2VPNEVPNNeighborConfig_all() string {
 	config += `		in_out = "in"` + "\n"
 	config += `		route_map_name = "RM1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
+	config += `	inherit_peer_policy = "PEER_POLICY_TEMPLATE_1"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

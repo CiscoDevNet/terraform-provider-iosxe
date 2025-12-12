@@ -39,6 +39,7 @@ data "iosxe_flow_record" "example" {
 - `collect_counter_packets_long` (Boolean) Total number of packets (64 bit counter)
 - `collect_datalink_mac_source_address_input` (Boolean) Source MAC address from packet at input
 - `collect_flow_direction` (Boolean) Direction the flow was monitored in
+- `collect_interface_input` (Boolean) The input interface
 - `collect_interface_output` (Boolean) The output interface
 - `collect_timestamp_absolute_first` (Boolean) Absolute time the first packet was seen (milliseconds)
 - `collect_timestamp_absolute_last` (Boolean) Absolute time the most recent packet was seen (milliseconds)

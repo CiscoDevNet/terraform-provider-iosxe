@@ -201,8 +201,12 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
-			"tunnel_protection_ipsec_profile": schema.StringAttribute{
+			"tunnel_protection_ipsec_profile_legacy": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Obsolete, use the other option profile-option to set ipsec policy profile").String,
+				Optional:            true,
+			},
+			"tunnel_protection_ipsec_profile": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPSec policy profile").String,
 				Optional:            true,
 			},
 			"crypto_ipsec_df_bit": schema.StringAttribute{
@@ -357,6 +361,13 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 			"ip_router_isis": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+			},
+			"ip_tcp_adjust_mss": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Adjust the mss of transit packets").AddIntegerRangeDescription(500, 1460).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(500, 1460),
+				},
 			},
 		},
 	}

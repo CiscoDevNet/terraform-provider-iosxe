@@ -90,4 +90,5 @@ Optional:
 
 - `host` (String) Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`.
 - `managed` (Boolean) Enable or disable device management. This can be used to temporarily skip a device due to maintainance for example. Defaults to `true`.
+- `protocol` (String) Protocol to use for this device. Either `restconf` (HTTPS) or `netconf` (SSH). Overrides the global protocol setting if specified.
 - `url` (String, Deprecated) URL of the Cisco IOS-XE device for RESTCONF protocol. **Deprecated: Use `host` instead.**

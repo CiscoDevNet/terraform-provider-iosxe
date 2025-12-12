@@ -156,6 +156,50 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Transport port of the flow responder",
 				Computed:            true,
 			},
+			"match_datalink_mac_source_address_input": schema.BoolAttribute{
+				MarkdownDescription: "Source MAC address from packet at input",
+				Computed:            true,
+			},
+			"match_datalink_mac_destination_address_input": schema.BoolAttribute{
+				MarkdownDescription: "Destination MAC address from packet at input",
+				Computed:            true,
+			},
+			"match_datalink_vlan": schema.StringAttribute{
+				MarkdownDescription: "Match VLAN input/output, available on switch platforms (C9K)",
+				Computed:            true,
+			},
+			"match_datalink_source_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: "Match source VLAN ID, available on router platforms (C8K, CSR1K)",
+				Computed:            true,
+			},
+			"match_datalink_destination_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: "Match destination VLAN ID, available on router platforms (C8K, CSR1K)",
+				Computed:            true,
+			},
+			"match_ipv4_ttl": schema.BoolAttribute{
+				MarkdownDescription: "IPv4 TTL",
+				Computed:            true,
+			},
+			"match_routing_vrf_input": schema.BoolAttribute{
+				MarkdownDescription: "Match VRF ID for incoming packet for VXLAN-aware NetFlow",
+				Computed:            true,
+			},
+			"match_vxlan_vnid": schema.BoolAttribute{
+				MarkdownDescription: "Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow",
+				Computed:            true,
+			},
+			"match_vxlan_vtep_input": schema.BoolAttribute{
+				MarkdownDescription: "Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow",
+				Computed:            true,
+			},
+			"match_vxlan_vtep_output": schema.BoolAttribute{
+				MarkdownDescription: "Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow",
+				Computed:            true,
+			},
+			"collect_interface_input": schema.BoolAttribute{
+				MarkdownDescription: "The input interface",
+				Computed:            true,
+			},
 			"collect_interface_output": schema.BoolAttribute{
 				MarkdownDescription: "The output interface",
 				Computed:            true,
@@ -196,52 +240,12 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "64 bits counter",
 				Computed:            true,
 			},
-			"match_datalink_mac_source_address_input": schema.BoolAttribute{
-				MarkdownDescription: "Source MAC address from packet at input",
-				Computed:            true,
-			},
-			"match_datalink_mac_destination_address_input": schema.BoolAttribute{
-				MarkdownDescription: "Destination MAC address from packet at input",
-				Computed:            true,
-			},
-			"match_datalink_vlan": schema.StringAttribute{
-				MarkdownDescription: "Match VLAN input/output, available on switch platforms (C9K)",
-				Computed:            true,
-			},
-			"match_datalink_source_vlan_id": schema.BoolAttribute{
-				MarkdownDescription: "Match source VLAN ID, available on router platforms (C8K, CSR1K)",
-				Computed:            true,
-			},
-			"match_datalink_destination_vlan_id": schema.BoolAttribute{
-				MarkdownDescription: "Match destination VLAN ID, available on router platforms (C8K, CSR1K)",
-				Computed:            true,
-			},
-			"match_ipv4_ttl": schema.BoolAttribute{
-				MarkdownDescription: "IPv4 TTL",
-				Computed:            true,
-			},
 			"collect_datalink_mac_source_address_input": schema.BoolAttribute{
 				MarkdownDescription: "Source MAC address from packet at input",
 				Computed:            true,
 			},
 			"collect_flow_direction": schema.BoolAttribute{
 				MarkdownDescription: "Direction the flow was monitored in",
-				Computed:            true,
-			},
-			"match_routing_vrf_input": schema.BoolAttribute{
-				MarkdownDescription: "Match VRF ID for incoming packet for VXLAN-aware NetFlow",
-				Computed:            true,
-			},
-			"match_vxlan_vnid": schema.BoolAttribute{
-				MarkdownDescription: "Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow",
-				Computed:            true,
-			},
-			"match_vxlan_vtep_input": schema.BoolAttribute{
-				MarkdownDescription: "Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow",
-				Computed:            true,
-			},
-			"match_vxlan_vtep_output": schema.BoolAttribute{
-				MarkdownDescription: "Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow",
 				Computed:            true,
 			},
 		},

@@ -57,6 +57,10 @@ attributes:
     tf_name: tunnel_destination_ipv4
     example: 2.2.2.2
   - yang_name: Cisco-IOS-XE-tunnel:tunnel/protection/Cisco-IOS-XE-crypto:ipsec/profile
+    tf_name: tunnel_protection_ipsec_profile_legacy
+    example: vpn300
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/protection/Cisco-IOS-XE-crypto:ipsec/profile-option/name
     tf_name: tunnel_protection_ipsec_profile
     example: vpn300
     exclude_test: true
@@ -166,6 +170,8 @@ attributes:
     tf_name: ip_router_isis
     example: TEST
     exclude_test: true
+  - yang_name: ip/tcp/adjust-mss
+    example: 1400
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

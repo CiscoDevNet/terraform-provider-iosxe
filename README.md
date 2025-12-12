@@ -56,7 +56,7 @@ go mod tidy
 
 Then commit the changes to `go.mod` and `go.sum`.
 
-## Using the provider
+## Using the Provider
 
 This Terraform Provider is available to install automatically via `terraform init`. If you're building the provider, follow the instructions to
 [install it as a plugin.](https://www.terraform.io/docs/plugins/basics.html#installing-a-plugin)
@@ -72,7 +72,7 @@ To compile the provider, run `go install`. This will build the provider and put 
 
 More information about how the code generation works can be found in the [contribution guide](https://github.com/CiscoDevNet/terraform-provider-iosxe/blob/main/CONTRIBUTING.md).
 
-## Acceptance tests
+## Acceptance Tests
 
 In order to run the full suite of acceptance tests, set up a `.env` file with the appropriate environment variables. Copy the sample file at `.env.sample` to `.env`, then edit the file to set the appropriate environment variables.
 

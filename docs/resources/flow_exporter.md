@@ -37,6 +37,7 @@ resource "iosxe_flow_exporter" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Provide a description for this Flow Exporter
 - `destination_ip` (String)
+- `destination_ip_vrf` (String) Optional VRF label
 - `device` (String) A device name from the provider configuration.
 - `export_protocol` (String) Export protocol version
   - Choices: `ipfix`, `netflow-v5`, `netflow-v9`

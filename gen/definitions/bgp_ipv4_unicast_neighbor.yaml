@@ -36,6 +36,8 @@ attributes:
         example: in
       - yang_name: route-map-name
         example: RM1
+  - yang_name: inherit/peer-policy
+    example: PEER_POLICY_TEMPLATE_1
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
@@ -57,3 +59,8 @@ test_prerequisites:
     attributes:
       - name: name
         value: 100
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/template/peer-policy[name=PEER_POLICY_TEMPLATE_1]
+    attributes:
+      - name: name
+        value: PEER_POLICY_TEMPLATE_1
+    dependencies: [0]

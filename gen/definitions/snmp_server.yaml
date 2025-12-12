@@ -699,6 +699,14 @@ attributes:
     tf_name: enable_traps_cbgp2
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions
+    tf_name: enable_traps_bgp_cbgp2_state_changes
+    example: all
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix
+    tf_name: enable_traps_bgp_cbgp2_threshold_prefix
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors
     tf_name: enable_traps_ospfv3_errors
     example: true
