@@ -529,6 +529,29 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"service_instance": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Ether Service Instance").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 8000).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 8000),
+							},
+						},
+						"ethernet": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure an Ethernet Instance").String,
+							Optional:            true,
+						},
+						"encapsulation_untagged": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Untagged encapsulation").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
 			"authentication_host_mode": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the Host mode for authentication on this interface").AddStringEnumDescription("multi-auth", "multi-domain", "multi-host", "single-host").String,
 				Optional:            true,

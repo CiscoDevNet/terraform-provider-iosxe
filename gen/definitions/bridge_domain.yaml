@@ -1,7 +1,7 @@
 ---
 name: Bridge Domain
 path: /Cisco-IOS-XE-native:native/bridge-domain/Cisco-IOS-XE-bridge-domain:brd-id[bridge-domain-id=%s]
-doc_category: Interface
+doc_category: Bridge Domain
 no_delete:
 attributes:
   - yang_name: bridge-domain-id
