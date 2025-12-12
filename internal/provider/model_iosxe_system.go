@@ -189,6 +189,8 @@ type System struct {
 	IpDefaultGateway                                       types.String                                        `tfsdk:"ip_default_gateway"`
 	DeviceClassifier                                       types.Bool                                          `tfsdk:"device_classifier"`
 	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
+	MldSnooping                                            types.Bool                                          `tfsdk:"mld_snooping"`
+	MldSnoopingQuerier                                     types.Bool                                          `tfsdk:"mld_snooping_querier"`
 }
 
 type SystemData struct {
@@ -340,6 +342,8 @@ type SystemData struct {
 	IpDefaultGateway                                       types.String                                        `tfsdk:"ip_default_gateway"`
 	DeviceClassifier                                       types.Bool                                          `tfsdk:"device_classifier"`
 	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
+	MldSnooping                                            types.Bool                                          `tfsdk:"mld_snooping"`
+	MldSnoopingQuerier                                     types.Bool                                          `tfsdk:"mld_snooping_querier"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -912,6 +916,16 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.DeviceClassifier.IsNull() && !data.DeviceClassifier.IsUnknown() {
 		if data.DeviceClassifier.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device.classifier-enable.classifier", map[string]string{})
+		}
+	}
+	if !data.MldSnooping.IsNull() && !data.MldSnooping.IsUnknown() {
+		if data.MldSnooping.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-mld:mld.snooping-conf.snooping", map[string]string{})
+		}
+	}
+	if !data.MldSnoopingQuerier.IsNull() && !data.MldSnoopingQuerier.IsUnknown() {
+		if data.MldSnoopingQuerier.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-mld:mld.snooping-container.snooping.querier-conf.querier", map[string]string{})
 		}
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
@@ -1829,6 +1843,20 @@ func (data System) toBodyXML(ctx context.Context) string {
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/table-map", cBody.Res())
+		}
+	}
+	if !data.MldSnooping.IsNull() && !data.MldSnooping.IsUnknown() {
+		if data.MldSnooping.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping")
+		}
+	}
+	if !data.MldSnoopingQuerier.IsNull() && !data.MldSnoopingQuerier.IsUnknown() {
+		if data.MldSnoopingQuerier.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 		}
 	}
 	bodyString, err := body.String()
@@ -3143,6 +3171,24 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 			}
 		}
 	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-mld:mld.snooping-conf.snooping"); !data.MldSnooping.IsNull() {
+		if value.Exists() {
+			data.MldSnooping = types.BoolValue(true)
+		} else {
+			data.MldSnooping = types.BoolValue(false)
+		}
+	} else {
+		data.MldSnooping = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-mld:mld.snooping-container.snooping.querier-conf.querier"); !data.MldSnoopingQuerier.IsNull() {
+		if value.Exists() {
+			data.MldSnoopingQuerier = types.BoolValue(true)
+		} else {
+			data.MldSnoopingQuerier = types.BoolValue(false)
+		}
+	} else {
+		data.MldSnoopingQuerier = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -4446,6 +4492,24 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping"); !data.MldSnooping.IsNull() {
+		if value.Exists() {
+			data.MldSnooping = types.BoolValue(true)
+		} else {
+			data.MldSnooping = types.BoolValue(false)
+		}
+	} else {
+		data.MldSnooping = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier"); !data.MldSnoopingQuerier.IsNull() {
+		if value.Exists() {
+			data.MldSnoopingQuerier = types.BoolValue(true)
+		} else {
+			data.MldSnoopingQuerier = types.BoolValue(false)
+		}
+	} else {
+		data.MldSnoopingQuerier = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -5162,6 +5226,16 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 			data.TableMaps = append(data.TableMaps, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-mld:mld.snooping-conf.snooping"); value.Exists() {
+		data.MldSnooping = types.BoolValue(true)
+	} else {
+		data.MldSnooping = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-mld:mld.snooping-container.snooping.querier-conf.querier"); value.Exists() {
+		data.MldSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
 }
 
@@ -5880,6 +5954,16 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-mld:mld.snooping-conf.snooping"); value.Exists() {
+		data.MldSnooping = types.BoolValue(true)
+	} else {
+		data.MldSnooping = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-mld:mld.snooping-container.snooping.querier-conf.querier"); value.Exists() {
+		data.MldSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.MldSnoopingQuerier = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -6592,6 +6676,16 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.TableMaps = append(data.TableMaps, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping"); value.Exists() {
+		data.MldSnooping = types.BoolValue(true)
+	} else {
+		data.MldSnooping = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier"); value.Exists() {
+		data.MldSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
 }
 
@@ -7306,6 +7400,16 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping"); value.Exists() {
+		data.MldSnooping = types.BoolValue(true)
+	} else {
+		data.MldSnooping = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier"); value.Exists() {
+		data.MldSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.MldSnoopingQuerier = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -7314,6 +7418,12 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.MldSnoopingQuerier.IsNull() && data.MldSnoopingQuerier.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", state.getPath()))
+	}
+	if !state.MldSnooping.IsNull() && data.MldSnooping.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping", state.getPath()))
+	}
 	for i := range state.TableMaps {
 		stateKeyValues := [...]string{state.TableMaps[i].Name.ValueString()}
 
@@ -8204,6 +8314,12 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) addDeletedItemsXML(ctx context.Context, state System, body string) string {
 	b := netconf.NewBody(body)
+	if !state.MldSnoopingQuerier.IsNull() && data.MldSnoopingQuerier.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
+	}
+	if !state.MldSnooping.IsNull() && data.MldSnooping.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping")
+	}
 	for i := range state.TableMaps {
 		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.TableMaps[i].Name.ValueString()}
@@ -9180,6 +9296,12 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.MldSnoopingQuerier.IsNull() && !data.MldSnoopingQuerier.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", data.getPath()))
+	}
+	if !data.MldSnooping.IsNull() && !data.MldSnooping.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping", data.getPath()))
+	}
 
 	if !data.DeviceClassifier.IsNull() && !data.DeviceClassifier.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device/classifier-enable/classifier", data.getPath()))
@@ -9302,6 +9424,12 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.MldSnoopingQuerier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", data.getPath()))
+	}
+	if !data.MldSnooping.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping", data.getPath()))
+	}
 	for i := range data.TableMaps {
 		keyValues := [...]string{data.TableMaps[i].Name.ValueString()}
 
@@ -9772,6 +9900,12 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 
 func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.MldSnoopingQuerier.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
+	}
+	if !data.MldSnooping.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping")
+	}
 	for i := range data.TableMaps {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.TableMaps[i].Name.ValueString()}

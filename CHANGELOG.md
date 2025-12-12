@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add `mld_snooping` and `mld_snooping_querier` attributes to the `iosxe_system` resource and data sources.
+
 ## 0.13.0
 
 - Add `stopbits` attribute to `iosxe_line` resource and data source

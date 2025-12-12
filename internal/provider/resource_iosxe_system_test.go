@@ -56,9 +56,13 @@ func TestAccIosxeSystem(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_multicast_routing_distributed", "true"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "multicast_routing_vrfs.0.vrf", "VRF1"))
 	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "multicast_routing_vrfs.0.distributed", "true"))
+		if os.Getenv("C8000V") != "" {
+			checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "multicast_routing_vrfs.0.vrf", "VRF1"))
+		}
+		if os.Getenv("C8000V") != "" {
+			checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "multicast_routing_vrfs.0.distributed", "true"))
+		}
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_name_servers.0", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_name_servers_vrf.0.vrf", "VRF1"))
@@ -71,13 +75,8 @@ func TestAccIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "diagnostic_bootup_level", "minimal"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "memory_free_low_watermark_processor", "203038"))
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_forward_protocol_nd", "true"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_authentication_retries", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_bulk_mode", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_bulk_mode_window_size", "262144"))
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
@@ -89,13 +88,14 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_multicast_route_limit", "200000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_list_vrf_domain", "example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_list_vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_routing_protocol_purge_interface", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_source", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_destination", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_source", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "port_channel_load_balance", "src-dst-mixed-ip-port"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "mld_snooping", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "mld_snooping_querier", "true"))
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -113,7 +113,7 @@ func TestAccIosxeSystem(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeSystemImportStateIdFunc("iosxe_system.test"),
-				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_scp_server_enable", "ip_ssh_version_legacy", "control_plane_service_policy_input", "subscriber_templating", "multilink_ppp_bundle_name", "version", "authentication_mac_move_permit", "authentication_mac_move_deny_uncontrolled", "device_classifier"},
+				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_forward_protocol_nd", "ip_scp_server_enable", "ip_ssh_version_legacy", "ip_ssh_bulk_mode", "control_plane_service_policy_input", "subscriber_templating", "multilink_ppp_bundle_name", "version", "ip_cef_load_sharing_algorithm_include_ports_source", "ip_cef_load_sharing_algorithm_include_ports_destination", "ipv6_cef_load_sharing_algorithm_include_ports_source", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "authentication_mac_move_permit", "authentication_mac_move_deny_uncontrolled", "device_classifier", "mld_snooping", "mld_snooping_querier"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -184,12 +184,16 @@ func testAccIosxeSystemConfig_all() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	ip_multicast_routing_distributed = true` + "\n"
 	}
-	config += `	multicast_routing_vrfs = [{` + "\n"
-	config += `		vrf = "VRF1"` + "\n"
 	if os.Getenv("C8000V") != "" {
-		config += `		distributed = true` + "\n"
+		config += `	multicast_routing_vrfs = [{` + "\n"
+		if os.Getenv("C8000V") != "" {
+			config += `		vrf = "VRF1"` + "\n"
+		}
+		if os.Getenv("C8000V") != "" {
+			config += `		distributed = true` + "\n"
+		}
+		config += `	}]` + "\n"
 	}
-	config += `	}]` + "\n"
 	config += `	ip_name_servers = ["1.2.3.4"]` + "\n"
 	config += `	ip_name_servers_vrf = [{` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
@@ -205,13 +209,8 @@ func testAccIosxeSystemConfig_all() string {
 	}
 	config += `	diagnostic_bootup_level = "minimal"` + "\n"
 	config += `	memory_free_low_watermark_processor = 203038` + "\n"
-	if os.Getenv("IOSXE1715") != "" {
-		config += `	ip_forward_protocol_nd = true` + "\n"
-	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
-	config += `	ip_ssh_bulk_mode = true` + "\n"
-	config += `	ip_ssh_bulk_mode_window_size = 262144` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_hosts = [{` + "\n"
 		config += `		name = "test.router.com"` + "\n"
@@ -225,13 +224,14 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
 	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
-	config += `	ip_routing_protocol_purge_interface = true` + "\n"
-	config += `	ip_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
-	config += `	ip_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
-	config += `	ipv6_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
-	config += `	ipv6_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	port_channel_load_balance = "src-dst-mixed-ip-port"` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	mld_snooping = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	mld_snooping_querier = true` + "\n"
 	}
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
