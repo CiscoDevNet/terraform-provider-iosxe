@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `icmp_echo_frequency` attribute to `iosxe_sla` resource and data source
+
 ## 0.13.0
 
 - Add `stopbits` attribute to `iosxe_line` resource and data source

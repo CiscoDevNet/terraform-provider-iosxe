@@ -57,6 +57,7 @@ type SLAEntries struct {
 	Number              types.Int64  `tfsdk:"number"`
 	IcmpEchoDestination types.String `tfsdk:"icmp_echo_destination"`
 	IcmpEchoSourceIp    types.String `tfsdk:"icmp_echo_source_ip"`
+	IcmpEchoFrequency   types.Int64  `tfsdk:"icmp_echo_frequency"`
 }
 type SLASchedules struct {
 	EntryNumber  types.Int64 `tfsdk:"entry_number"`
@@ -116,6 +117,9 @@ func (data SLA) toBody(ctx context.Context) string {
 			if !item.IcmpEchoSourceIp.IsNull() && !item.IcmpEchoSourceIp.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"icmp-echo.source-ip", item.IcmpEchoSourceIp.ValueString())
 			}
+			if !item.IcmpEchoFrequency.IsNull() && !item.IcmpEchoFrequency.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"icmp-echo.frequency", strconv.FormatInt(item.IcmpEchoFrequency.ValueInt64(), 10))
+			}
 		}
 	}
 	if len(data.Schedules) > 0 {
@@ -154,6 +158,9 @@ func (data SLA) toBodyXML(ctx context.Context) string {
 			}
 			if !item.IcmpEchoSourceIp.IsNull() && !item.IcmpEchoSourceIp.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "icmp-echo/source-ip", item.IcmpEchoSourceIp.ValueString())
+			}
+			if !item.IcmpEchoFrequency.IsNull() && !item.IcmpEchoFrequency.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "icmp-echo/frequency", strconv.FormatInt(item.IcmpEchoFrequency.ValueInt64(), 10))
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/entry", cBody.Res())
 		}
@@ -230,6 +237,11 @@ func (data *SLA) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Entries[i].IcmpEchoSourceIp = types.StringValue(value.String())
 		} else {
 			data.Entries[i].IcmpEchoSourceIp = types.StringNull()
+		}
+		if value := r.Get("icmp-echo.frequency"); value.Exists() && !data.Entries[i].IcmpEchoFrequency.IsNull() {
+			data.Entries[i].IcmpEchoFrequency = types.Int64Value(value.Int())
+		} else {
+			data.Entries[i].IcmpEchoFrequency = types.Int64Null()
 		}
 	}
 	for i := range data.Schedules {
@@ -320,6 +332,11 @@ func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Entries[i].IcmpEchoSourceIp = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "icmp-echo/frequency"); value.Exists() && !data.Entries[i].IcmpEchoFrequency.IsNull() {
+			data.Entries[i].IcmpEchoFrequency = types.Int64Value(value.Int())
+		} else {
+			data.Entries[i].IcmpEchoFrequency = types.Int64Null()
+		}
 	}
 	for i := range data.Schedules {
 		keys := [...]string{"entry-number"}
@@ -388,6 +405,9 @@ func (data *SLA) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("icmp-echo.source-ip"); cValue.Exists() {
 				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("icmp-echo.frequency"); cValue.Exists() {
+				item.IcmpEchoFrequency = types.Int64Value(cValue.Int())
+			}
 			data.Entries = append(data.Entries, item)
 			return true
 		})
@@ -435,6 +455,9 @@ func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("icmp-echo.source-ip"); cValue.Exists() {
 				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("icmp-echo.frequency"); cValue.Exists() {
+				item.IcmpEchoFrequency = types.Int64Value(cValue.Int())
+			}
 			data.Entries = append(data.Entries, item)
 			return true
 		})
@@ -478,6 +501,9 @@ func (data *SLA) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "icmp-echo/source-ip"); cValue.Exists() {
 				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "icmp-echo/frequency"); cValue.Exists() {
+				item.IcmpEchoFrequency = types.Int64Value(cValue.Int())
+			}
 			data.Entries = append(data.Entries, item)
 			return true
 		})
@@ -520,6 +546,9 @@ func (data *SLAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "icmp-echo/source-ip"); cValue.Exists() {
 				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-echo/frequency"); cValue.Exists() {
+				item.IcmpEchoFrequency = types.Int64Value(cValue.Int())
 			}
 			data.Entries = append(data.Entries, item)
 			return true
@@ -601,6 +630,9 @@ func (data *SLA) getDeletedItems(ctx context.Context, state SLA) []string {
 				found = false
 			}
 			if found {
+				if !state.Entries[i].IcmpEchoFrequency.IsNull() && data.Entries[j].IcmpEchoFrequency.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/entry=%v/icmp-echo/frequency", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Entries[i].IcmpEchoSourceIp.IsNull() && data.Entries[j].IcmpEchoSourceIp.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/entry=%v/icmp-echo/source-ip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -683,6 +715,9 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 				found = false
 			}
 			if found {
+				if !state.Entries[i].IcmpEchoFrequency.IsNull() && data.Entries[j].IcmpEchoFrequency.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/frequency", predicates))
+				}
 				if !state.Entries[i].IcmpEchoSourceIp.IsNull() && data.Entries[j].IcmpEchoSourceIp.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/source-ip", predicates))
 				}
