@@ -33,30 +33,30 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeL2VPNEVPNProfile(t *testing.T) {
+func TestAccIosxeEVPNProfile(t *testing.T) {
 	if os.Getenv("IOSXE1715") == "" {
 		t.Skip("skipping test, set environment variable IOSXE1715")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_l2vpn_evpn_profile.test", "name", "MY_EVPN_PROFILE"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_l2vpn_evpn_profile.test", "evi_base", "1000"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_l2vpn_evpn_profile.test", "l2vni_base", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_profile.test", "name", "MY_EVPN_PROFILE"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_profile.test", "evi_base", "1000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_profile.test", "l2vni_base", "10000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeL2VPNEVPNProfileConfig_minimum(),
+				Config: testAccIosxeEVPNProfileConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeL2VPNEVPNProfileConfig_all(),
+				Config: testAccIosxeEVPNProfileConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_l2vpn_evpn_profile.test",
+				ResourceName:            "iosxe_evpn_profile.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeL2VPNEVPNProfileImportStateIdFunc("iosxe_l2vpn_evpn_profile.test"),
+				ImportStateIdFunc:       iosxeEVPNProfileImportStateIdFunc("iosxe_evpn_profile.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -68,7 +68,7 @@ func TestAccIosxeL2VPNEVPNProfile(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeL2VPNEVPNProfileImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeEVPNProfileImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
 		Name := primary.Attributes["name"]
@@ -84,8 +84,8 @@ func iosxeL2VPNEVPNProfileImportStateIdFunc(resourceName string) resource.Import
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeL2VPNEVPNProfileConfig_minimum() string {
-	config := `resource "iosxe_l2vpn_evpn_profile" "test" {` + "\n"
+func testAccIosxeEVPNProfileConfig_minimum() string {
+	config := `resource "iosxe_evpn_profile" "test" {` + "\n"
 	config += `	name = "MY_EVPN_PROFILE"` + "\n"
 	config += `}` + "\n"
 	return config
@@ -95,8 +95,8 @@ func testAccIosxeL2VPNEVPNProfileConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeL2VPNEVPNProfileConfig_all() string {
-	config := `resource "iosxe_l2vpn_evpn_profile" "test" {` + "\n"
+func testAccIosxeEVPNProfileConfig_all() string {
+	config := `resource "iosxe_evpn_profile" "test" {` + "\n"
 	config += `	name = "MY_EVPN_PROFILE"` + "\n"
 	config += `	evi_base = 1000` + "\n"
 	config += `	l2vni_base = 10000` + "\n"

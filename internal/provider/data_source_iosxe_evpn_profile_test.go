@@ -31,19 +31,19 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeL2VPNEVPNProfile(t *testing.T) {
+func TestAccDataSourceIosxeEVPNProfile(t *testing.T) {
 	if os.Getenv("IOSXE1715") == "" {
 		t.Skip("skipping test, set environment variable IOSXE1715")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_l2vpn_evpn_profile.test", "evi_base", "1000"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_l2vpn_evpn_profile.test", "l2vni_base", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_profile.test", "evi_base", "1000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_profile.test", "l2vni_base", "10000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeL2VPNEVPNProfileConfig(),
+				Config: testAccDataSourceIosxeEVPNProfileConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -57,8 +57,8 @@ func TestAccDataSourceIosxeL2VPNEVPNProfile(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeL2VPNEVPNProfileConfig() string {
-	config := `resource "iosxe_l2vpn_evpn_profile" "test" {` + "\n"
+func testAccDataSourceIosxeEVPNProfileConfig() string {
+	config := `resource "iosxe_evpn_profile" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "MY_EVPN_PROFILE"` + "\n"
 	config += `	evi_base = 1000` + "\n"
@@ -66,9 +66,9 @@ func testAccDataSourceIosxeL2VPNEVPNProfileConfig() string {
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_l2vpn_evpn_profile" "test" {
+		data "iosxe_evpn_profile" "test" {
 			name = "MY_EVPN_PROFILE"
-			depends_on = [iosxe_l2vpn_evpn_profile.test]
+			depends_on = [iosxe_evpn_profile.test]
 		}
 	`
 	return config

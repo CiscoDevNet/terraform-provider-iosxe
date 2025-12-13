@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &L2VPNEVPNProfileDataSource{}
-	_ datasource.DataSourceWithConfigure = &L2VPNEVPNProfileDataSource{}
+	_ datasource.DataSource              = &EVPNProfileDataSource{}
+	_ datasource.DataSourceWithConfigure = &EVPNProfileDataSource{}
 )
 
-func NewL2VPNEVPNProfileDataSource() datasource.DataSource {
-	return &L2VPNEVPNProfileDataSource{}
+func NewEVPNProfileDataSource() datasource.DataSource {
+	return &EVPNProfileDataSource{}
 }
 
-type L2VPNEVPNProfileDataSource struct {
+type EVPNProfileDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *L2VPNEVPNProfileDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_l2vpn_evpn_profile"
+func (d *EVPNProfileDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_evpn_profile"
 }
 
-func (d *L2VPNEVPNProfileDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *EVPNProfileDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the L2VPN EVPN Profile configuration.",
+		MarkdownDescription: "This data source can read the EVPN Profile configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -84,7 +84,7 @@ func (d *L2VPNEVPNProfileDataSource) Schema(ctx context.Context, req datasource.
 	}
 }
 
-func (d *L2VPNEVPNProfileDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *EVPNProfileDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -96,8 +96,8 @@ func (d *L2VPNEVPNProfileDataSource) Configure(_ context.Context, req datasource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *L2VPNEVPNProfileDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config L2VPNEVPNProfileData
+func (d *EVPNProfileDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config EVPNProfileData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -117,7 +117,7 @@ func (d *L2VPNEVPNProfileDataSource) Read(ctx context.Context, req datasource.Re
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = L2VPNEVPNProfileData{Device: config.Device}
+			config = EVPNProfileData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

@@ -46,26 +46,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &L2VPNEVPNProfileResource{}
-	_ resource.ResourceWithImportState = &L2VPNEVPNProfileResource{}
+	_ resource.Resource                = &EVPNProfileResource{}
+	_ resource.ResourceWithImportState = &EVPNProfileResource{}
 )
 
-func NewL2VPNEVPNProfileResource() resource.Resource {
-	return &L2VPNEVPNProfileResource{}
+func NewEVPNProfileResource() resource.Resource {
+	return &EVPNProfileResource{}
 }
 
-type L2VPNEVPNProfileResource struct {
+type EVPNProfileResource struct {
 	data *IosxeProviderData
 }
 
-func (r *L2VPNEVPNProfileResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_l2vpn_evpn_profile"
+func (r *EVPNProfileResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_evpn_profile"
 }
 
-func (r *L2VPNEVPNProfileResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *EVPNProfileResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the L2VPN EVPN Profile configuration.",
+		MarkdownDescription: "This resource can manage the EVPN Profile configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -111,7 +111,7 @@ func (r *L2VPNEVPNProfileResource) Schema(ctx context.Context, req resource.Sche
 	}
 }
 
-func (r *L2VPNEVPNProfileResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *EVPNProfileResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -123,8 +123,8 @@ func (r *L2VPNEVPNProfileResource) Configure(_ context.Context, req resource.Con
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *L2VPNEVPNProfileResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan L2VPNEVPNProfile
+func (r *EVPNProfileResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan EVPNProfile
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -207,8 +207,8 @@ func (r *L2VPNEVPNProfileResource) Create(ctx context.Context, req resource.Crea
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *L2VPNEVPNProfileResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state L2VPNEVPNProfile
+func (r *EVPNProfileResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state EVPNProfile
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -234,7 +234,7 @@ func (r *L2VPNEVPNProfileResource) Read(ctx context.Context, req resource.ReadRe
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = L2VPNEVPNProfile{Device: state.Device, Id: state.Id}
+				state = EVPNProfile{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -290,8 +290,8 @@ func (r *L2VPNEVPNProfileResource) Read(ctx context.Context, req resource.ReadRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *L2VPNEVPNProfileResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state L2VPNEVPNProfile
+func (r *EVPNProfileResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state EVPNProfile
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -391,8 +391,8 @@ func (r *L2VPNEVPNProfileResource) Update(ctx context.Context, req resource.Upda
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *L2VPNEVPNProfileResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state L2VPNEVPNProfile
+func (r *EVPNProfileResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state EVPNProfile
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -490,7 +490,7 @@ func (r *L2VPNEVPNProfileResource) Delete(ctx context.Context, req resource.Dele
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *L2VPNEVPNProfileResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *EVPNProfileResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -509,7 +509,7 @@ func (r *L2VPNEVPNProfileResource) ImportState(ctx context.Context, req resource
 	}
 
 	// construct path for 'id' attribute
-	var state L2VPNEVPNProfile
+	var state EVPNProfile
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
