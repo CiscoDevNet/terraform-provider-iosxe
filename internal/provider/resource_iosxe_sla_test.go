@@ -37,6 +37,7 @@ func TestAccIosxeSLA(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sla.test", "entries.0.number", "20"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sla.test", "entries.0.icmp_echo_destination", "192.168.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sla.test", "entries.0.icmp_echo_source_ip", "192.168.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sla.test", "entries.0.icmp_echo_frequency", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sla.test", "schedules.0.entry_number", "20"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sla.test", "schedules.0.life", "4000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_sla.test", "schedules.0.start_time_now", "true"))
@@ -97,6 +98,7 @@ func testAccIosxeSLAConfig_all() string {
 	config += `		number = 20` + "\n"
 	config += `		icmp_echo_destination = "192.168.10.10"` + "\n"
 	config += `		icmp_echo_source_ip = "192.168.1.1"` + "\n"
+	config += `		icmp_echo_frequency = 10` + "\n"
 	config += `	}]` + "\n"
 	config += `	schedules = [{` + "\n"
 	config += `		entry_number = 20` + "\n"

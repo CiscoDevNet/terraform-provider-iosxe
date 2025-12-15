@@ -54,14 +54,16 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
-  ipv6_import_map          = "IMPORT-MAP-1"
-  ipv6_export_map          = "EXPORT-MAP-1"
-  ipv4_mdt_default_address = "239.1.1.1"
-  ipv4_mdt_data_multicast = [
+  ipv6_import_map = "IMPORT-MAP-1"
+  ipv6_export_map = "EXPORT-MAP-1"
+  vnid = [
     {
-      address  = "239.1.2.0"
-      wildcard = "0.0.0.255"
+      vnid_value = 10001
+      evpn_instance_vni = [
+        {
+          vni_num = 20000
+        }
+      ]
     }
   ]
-  ipv4_mdt_data_threshold = 50
 }

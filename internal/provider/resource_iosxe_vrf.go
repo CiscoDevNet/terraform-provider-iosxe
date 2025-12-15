@@ -352,6 +352,43 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("Route-map based VRF export for IPv6").String,
 				Optional:            true,
 			},
+			"vnid": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify VNID for route-target auto generation").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vnid_value": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VNID value for route-target auto generation").AddIntegerRangeDescription(1, 2147483647).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483647),
+							},
+						},
+						"evpn_instance_vni": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify explicit NVE L3 VNI number").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"vni_num": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("The NVE L3 VNI number").AddIntegerRangeDescription(4096, 16777215).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(4096, 16777215),
+										},
+									},
+									"core_vlan": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Core vlan number to associate with VNI (explicit VNI mode)").AddIntegerRangeDescription(1, 4094).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 4094),
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 			"ipv4_mdt_default_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("MDT default group IPv4 address").String,
 				Optional:            true,

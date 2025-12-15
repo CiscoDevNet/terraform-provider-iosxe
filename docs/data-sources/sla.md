@@ -36,6 +36,7 @@ data "iosxe_sla" "example" {
 Read-Only:
 
 - `icmp_echo_destination` (String) Destination IP address or hostname, broadcast disallowed
+- `icmp_echo_frequency` (Number) Frequency of an operation
 - `icmp_echo_source_ip` (String) Source Address
 - `number` (Number) Entry Number
 
