@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Add `iosxe_interface_bdi` resource and data sources with `name` and `mac_address` attributes.
+- Add `service_instance` attribute to `iosxe_interface_ethernet` resource and data sources.
+- Add `iosxe_bridge_domain` resource and data sources with `bridge_domain_id`, `member_vni`, and `member_interface` attributes.
 - Add `trunk_allowed_vlans_all`, `trunk_allowed_vlans_none`, `trunk_allowed_vlans_add`, `trunk_allowed_vlans_except`, and `trunk_allowed_vlans_remove` attributes to `iosxe_interface_switchport` resource and data source using non-deprecated YANG vlan-v2 paths
 - Add `trunk_allowed_vlans_legacy` and `trunk_allowed_vlans_none_legacy` attributes to `iosxe_interface_switchport` resource and data source for backward compatibility with deprecated YANG paths
 - Add `icmp_echo_frequency` attribute to `iosxe_sla` resource and data source

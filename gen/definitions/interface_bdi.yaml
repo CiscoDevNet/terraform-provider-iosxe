@@ -1,0 +1,10 @@
+---
+name: Interface BDI
+path: /Cisco-IOS-XE-native:native/interface/BDI[name=%s]
+doc_category: Interface
+no_delete:
+attributes:
+  - yang_name: name
+    example: 100
+  - yang_name: mac-address
+    example: 0000.11AA.22BB
