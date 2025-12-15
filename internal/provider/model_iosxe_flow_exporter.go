@@ -46,6 +46,7 @@ type FlowExporter struct {
 	Name                               types.String `tfsdk:"name"`
 	Description                        types.String `tfsdk:"description"`
 	DestinationIp                      types.String `tfsdk:"destination_ip"`
+	DestinationIpVrf                   types.String `tfsdk:"destination_ip_vrf"`
 	SourceLoopback                     types.Int64  `tfsdk:"source_loopback"`
 	SourceGigabitEthernet              types.String `tfsdk:"source_gigabit_ethernet"`
 	SourceTwoGigabitEthernet           types.String `tfsdk:"source_two_gigabit_ethernet"`
@@ -73,6 +74,7 @@ type FlowExporterData struct {
 	Name                               types.String `tfsdk:"name"`
 	Description                        types.String `tfsdk:"description"`
 	DestinationIp                      types.String `tfsdk:"destination_ip"`
+	DestinationIpVrf                   types.String `tfsdk:"destination_ip_vrf"`
 	SourceLoopback                     types.Int64  `tfsdk:"source_loopback"`
 	SourceGigabitEthernet              types.String `tfsdk:"source_gigabit_ethernet"`
 	SourceTwoGigabitEthernet           types.String `tfsdk:"source_two_gigabit_ethernet"`
@@ -144,6 +146,9 @@ func (data FlowExporter) toBody(ctx context.Context) string {
 	}
 	if !data.DestinationIp.IsNull() && !data.DestinationIp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"destination.ipdest.ip", data.DestinationIp.ValueString())
+	}
+	if !data.DestinationIpVrf.IsNull() && !data.DestinationIpVrf.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"destination.ipdest.vrf", data.DestinationIpVrf.ValueString())
 	}
 	if !data.SourceLoopback.IsNull() && !data.SourceLoopback.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.Loopback", strconv.FormatInt(data.SourceLoopback.ValueInt64(), 10))
@@ -221,6 +226,9 @@ func (data FlowExporter) toBodyXML(ctx context.Context) string {
 	}
 	if !data.DestinationIp.IsNull() && !data.DestinationIp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/destination/ipdest/ip", data.DestinationIp.ValueString())
+	}
+	if !data.DestinationIpVrf.IsNull() && !data.DestinationIpVrf.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/destination/ipdest/vrf", data.DestinationIpVrf.ValueString())
 	}
 	if !data.SourceLoopback.IsNull() && !data.SourceLoopback.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/source/Loopback", strconv.FormatInt(data.SourceLoopback.ValueInt64(), 10))
@@ -313,6 +321,11 @@ func (data *FlowExporter) updateFromBody(ctx context.Context, res gjson.Result) 
 		data.DestinationIp = types.StringValue(value.String())
 	} else {
 		data.DestinationIp = types.StringNull()
+	}
+	if value := res.Get(prefix + "destination.ipdest.vrf"); value.Exists() && !data.DestinationIpVrf.IsNull() {
+		data.DestinationIpVrf = types.StringValue(value.String())
+	} else {
+		data.DestinationIpVrf = types.StringNull()
 	}
 	if value := res.Get(prefix + "source.Loopback"); value.Exists() && !data.SourceLoopback.IsNull() {
 		data.SourceLoopback = types.Int64Value(value.Int())
@@ -435,6 +448,11 @@ func (data *FlowExporter) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.DestinationIp = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/vrf"); value.Exists() && !data.DestinationIpVrf.IsNull() {
+		data.DestinationIpVrf = types.StringValue(value.String())
+	} else {
+		data.DestinationIpVrf = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/Loopback"); value.Exists() && !data.SourceLoopback.IsNull() {
 		data.SourceLoopback = types.Int64Value(value.Int())
 	} else {
@@ -551,6 +569,9 @@ func (data *FlowExporter) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "destination.ipdest.ip"); value.Exists() {
 		data.DestinationIp = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "destination.ipdest.vrf"); value.Exists() {
+		data.DestinationIpVrf = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "source.Loopback"); value.Exists() {
 		data.SourceLoopback = types.Int64Value(value.Int())
 	}
@@ -627,6 +648,9 @@ func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "destination.ipdest.ip"); value.Exists() {
 		data.DestinationIp = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "destination.ipdest.vrf"); value.Exists() {
+		data.DestinationIpVrf = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "source.Loopback"); value.Exists() {
 		data.SourceLoopback = types.Int64Value(value.Int())
 	}
@@ -699,6 +723,9 @@ func (data *FlowExporter) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() {
 		data.DestinationIp = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/vrf"); value.Exists() {
+		data.DestinationIpVrf = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/Loopback"); value.Exists() {
 		data.SourceLoopback = types.Int64Value(value.Int())
 	}
@@ -770,6 +797,9 @@ func (data *FlowExporterData) fromBodyXML(ctx context.Context, res xmldot.Result
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() {
 		data.DestinationIp = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/vrf"); value.Exists() {
+		data.DestinationIpVrf = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/Loopback"); value.Exists() {
 		data.SourceLoopback = types.Int64Value(value.Int())
@@ -895,6 +925,9 @@ func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporte
 	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/Loopback", state.getPath()))
 	}
+	if !state.DestinationIpVrf.IsNull() && data.DestinationIpVrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/destination/ipdest/vrf", state.getPath()))
+	}
 	if !state.DestinationIp.IsNull() && data.DestinationIp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/destination/ipdest/ip", state.getPath()))
 	}
@@ -967,6 +1000,9 @@ func (data *FlowExporter) addDeletedItemsXML(ctx context.Context, state FlowExpo
 	}
 	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/Loopback")
+	}
+	if !state.DestinationIpVrf.IsNull() && data.DestinationIpVrf.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/destination/ipdest/vrf")
 	}
 	if !state.DestinationIp.IsNull() && data.DestinationIp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/destination/ipdest/ip")
@@ -1055,6 +1091,9 @@ func (data *FlowExporter) getDeletePaths(ctx context.Context) []string {
 	if !data.SourceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/Loopback", data.getPath()))
 	}
+	if !data.DestinationIpVrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/destination/ipdest/vrf", data.getPath()))
+	}
 	if !data.DestinationIp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/destination/ipdest/ip", data.getPath()))
 	}
@@ -1127,6 +1166,9 @@ func (data *FlowExporter) addDeletePathsXML(ctx context.Context, body string) st
 	}
 	if !data.SourceLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/source/Loopback")
+	}
+	if !data.DestinationIpVrf.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/destination/ipdest/vrf")
 	}
 	if !data.DestinationIp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/destination/ipdest/ip")

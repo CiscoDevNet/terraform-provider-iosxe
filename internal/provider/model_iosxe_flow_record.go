@@ -64,6 +64,17 @@ type FlowRecord struct {
 	MatchConnectionClientIpv6Address               types.Bool   `tfsdk:"match_connection_client_ipv6_address"`
 	MatchConnectionServerIpv6Address               types.Bool   `tfsdk:"match_connection_server_ipv6_address"`
 	MatchConnectionServerTransportPort             types.Bool   `tfsdk:"match_connection_server_transport_port"`
+	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
+	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
+	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
+	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
+	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
+	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
+	MatchRoutingVrfInput                           types.Bool   `tfsdk:"match_routing_vrf_input"`
+	MatchVxlanVnid                                 types.Bool   `tfsdk:"match_vxlan_vnid"`
+	MatchVxlanVtepInput                            types.Bool   `tfsdk:"match_vxlan_vtep_input"`
+	MatchVxlanVtepOutput                           types.Bool   `tfsdk:"match_vxlan_vtep_output"`
+	CollectInterfaceInput                          types.Bool   `tfsdk:"collect_interface_input"`
 	CollectInterfaceOutput                         types.Bool   `tfsdk:"collect_interface_output"`
 	CollectCounterBytesLong                        types.Bool   `tfsdk:"collect_counter_bytes_long"`
 	CollectCounterPacketsLong                      types.Bool   `tfsdk:"collect_counter_packets_long"`
@@ -74,18 +85,8 @@ type FlowRecord struct {
 	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
 	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
 	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
-	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
-	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
-	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
-	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
-	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
-	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
-	MatchRoutingVrfInput                           types.Bool   `tfsdk:"match_routing_vrf_input"`
-	MatchVxlanVnid                                 types.Bool   `tfsdk:"match_vxlan_vnid"`
-	MatchVxlanVtepInput                            types.Bool   `tfsdk:"match_vxlan_vtep_input"`
-	MatchVxlanVtepOutput                           types.Bool   `tfsdk:"match_vxlan_vtep_output"`
 }
 
 type FlowRecordData struct {
@@ -113,6 +114,17 @@ type FlowRecordData struct {
 	MatchConnectionClientIpv6Address               types.Bool   `tfsdk:"match_connection_client_ipv6_address"`
 	MatchConnectionServerIpv6Address               types.Bool   `tfsdk:"match_connection_server_ipv6_address"`
 	MatchConnectionServerTransportPort             types.Bool   `tfsdk:"match_connection_server_transport_port"`
+	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
+	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
+	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
+	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
+	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
+	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
+	MatchRoutingVrfInput                           types.Bool   `tfsdk:"match_routing_vrf_input"`
+	MatchVxlanVnid                                 types.Bool   `tfsdk:"match_vxlan_vnid"`
+	MatchVxlanVtepInput                            types.Bool   `tfsdk:"match_vxlan_vtep_input"`
+	MatchVxlanVtepOutput                           types.Bool   `tfsdk:"match_vxlan_vtep_output"`
+	CollectInterfaceInput                          types.Bool   `tfsdk:"collect_interface_input"`
 	CollectInterfaceOutput                         types.Bool   `tfsdk:"collect_interface_output"`
 	CollectCounterBytesLong                        types.Bool   `tfsdk:"collect_counter_bytes_long"`
 	CollectCounterPacketsLong                      types.Bool   `tfsdk:"collect_counter_packets_long"`
@@ -123,18 +135,8 @@ type FlowRecordData struct {
 	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
 	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
 	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
-	MatchDatalinkMacSourceAddressInput             types.Bool   `tfsdk:"match_datalink_mac_source_address_input"`
-	MatchDatalinkMacDestinationAddressInput        types.Bool   `tfsdk:"match_datalink_mac_destination_address_input"`
-	MatchDatalinkVlan                              types.String `tfsdk:"match_datalink_vlan"`
-	MatchDatalinkSourceVlanId                      types.Bool   `tfsdk:"match_datalink_source_vlan_id"`
-	MatchDatalinkDestinationVlanId                 types.Bool   `tfsdk:"match_datalink_destination_vlan_id"`
-	MatchIpv4Ttl                                   types.Bool   `tfsdk:"match_ipv4_ttl"`
 	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
 	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
-	MatchRoutingVrfInput                           types.Bool   `tfsdk:"match_routing_vrf_input"`
-	MatchVxlanVnid                                 types.Bool   `tfsdk:"match_vxlan_vnid"`
-	MatchVxlanVtepInput                            types.Bool   `tfsdk:"match_vxlan_vtep_input"`
-	MatchVxlanVtepOutput                           types.Bool   `tfsdk:"match_vxlan_vtep_output"`
 }
 
 // End of section. //template:end types
@@ -285,6 +287,59 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.connection.server.transport.port", map[string]string{})
 		}
 	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.source.address.input", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.destination.address.input", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkVlan.IsNull() && !data.MatchDatalinkVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.vlan", data.MatchDatalinkVlan.ValueString())
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.IsUnknown() {
+		if data.MatchDatalinkSourceVlanId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.source-vlan-id", map[string]string{})
+		}
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.IsUnknown() {
+		if data.MatchDatalinkDestinationVlanId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.destination-vlan-id", map[string]string{})
+		}
+	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.IsUnknown() {
+		if data.MatchIpv4Ttl.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv4.ttl", map[string]string{})
+		}
+	}
+	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.IsUnknown() {
+		if data.MatchRoutingVrfInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.routing.vrf.input", map[string]string{})
+		}
+	}
+	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.IsUnknown() {
+		if data.MatchVxlanVnid.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vnid", map[string]string{})
+		}
+	}
+	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.IsUnknown() {
+		if data.MatchVxlanVtepInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vtep.input", map[string]string{})
+		}
+	}
+	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.IsUnknown() {
+		if data.MatchVxlanVtepOutput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vtep.output", map[string]string{})
+		}
+	}
+	if !data.CollectInterfaceInput.IsNull() && !data.CollectInterfaceInput.IsUnknown() {
+		if data.CollectInterfaceInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.interface.input", map[string]string{})
+		}
+	}
 	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.IsUnknown() {
 		if data.CollectInterfaceOutput.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.interface.output", map[string]string{})
@@ -335,34 +390,6 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.connection.server.counter.packets.long", map[string]string{})
 		}
 	}
-	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.IsUnknown() {
-		if data.MatchDatalinkMacSourceAddressInput.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.source.address.input", map[string]string{})
-		}
-	}
-	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.IsUnknown() {
-		if data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.mac.destination.address.input", map[string]string{})
-		}
-	}
-	if !data.MatchDatalinkVlan.IsNull() && !data.MatchDatalinkVlan.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.vlan", data.MatchDatalinkVlan.ValueString())
-	}
-	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.IsUnknown() {
-		if data.MatchDatalinkSourceVlanId.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.source-vlan-id", map[string]string{})
-		}
-	}
-	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.IsUnknown() {
-		if data.MatchDatalinkDestinationVlanId.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.datalink.destination-vlan-id", map[string]string{})
-		}
-	}
-	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.IsUnknown() {
-		if data.MatchIpv4Ttl.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv4.ttl", map[string]string{})
-		}
-	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.IsUnknown() {
 		if data.CollectDatalinkMacSourceAddressInput.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.datalink.mac.source.address.input", map[string]string{})
@@ -371,26 +398,6 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.IsUnknown() {
 		if data.CollectFlowDirection.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.flow.direction", map[string]string{})
-		}
-	}
-	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.IsUnknown() {
-		if data.MatchRoutingVrfInput.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.routing.vrf.input", map[string]string{})
-		}
-	}
-	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.IsUnknown() {
-		if data.MatchVxlanVnid.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vnid", map[string]string{})
-		}
-	}
-	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.IsUnknown() {
-		if data.MatchVxlanVtepInput.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vtep.input", map[string]string{})
-		}
-	}
-	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.IsUnknown() {
-		if data.MatchVxlanVtepOutput.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.vxlan.vtep.output", map[string]string{})
 		}
 	}
 	return body
@@ -548,6 +555,79 @@ func (data FlowRecord) toBodyXML(ctx context.Context) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/connection/server/transport/port")
 		}
 	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/mac/source/address/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/mac/source/address/input")
+		}
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.IsUnknown() {
+		if data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/mac/destination/address/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/mac/destination/address/input")
+		}
+	}
+	if !data.MatchDatalinkVlan.IsNull() && !data.MatchDatalinkVlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/vlan", data.MatchDatalinkVlan.ValueString())
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.IsUnknown() {
+		if data.MatchDatalinkSourceVlanId.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/source-vlan-id", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/source-vlan-id")
+		}
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.IsUnknown() {
+		if data.MatchDatalinkDestinationVlanId.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/destination-vlan-id", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/destination-vlan-id")
+		}
+	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.IsUnknown() {
+		if data.MatchIpv4Ttl.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/ttl", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/ttl")
+		}
+	}
+	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.IsUnknown() {
+		if data.MatchRoutingVrfInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/routing/vrf/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/routing/vrf/input")
+		}
+	}
+	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.IsUnknown() {
+		if data.MatchVxlanVnid.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vnid", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vnid")
+		}
+	}
+	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.IsUnknown() {
+		if data.MatchVxlanVtepInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vtep/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vtep/input")
+		}
+	}
+	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.IsUnknown() {
+		if data.MatchVxlanVtepOutput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vtep/output", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vtep/output")
+		}
+	}
+	if !data.CollectInterfaceInput.IsNull() && !data.CollectInterfaceInput.IsUnknown() {
+		if data.CollectInterfaceInput.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/interface/input", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/interface/input")
+		}
+	}
 	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.IsUnknown() {
 		if data.CollectInterfaceOutput.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/interface/output", "")
@@ -618,44 +698,6 @@ func (data FlowRecord) toBodyXML(ctx context.Context) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/connection/server/counter/packets/long")
 		}
 	}
-	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.IsUnknown() {
-		if data.MatchDatalinkMacSourceAddressInput.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/mac/source/address/input", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/mac/source/address/input")
-		}
-	}
-	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.IsUnknown() {
-		if data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/mac/destination/address/input", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/mac/destination/address/input")
-		}
-	}
-	if !data.MatchDatalinkVlan.IsNull() && !data.MatchDatalinkVlan.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/vlan", data.MatchDatalinkVlan.ValueString())
-	}
-	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.IsUnknown() {
-		if data.MatchDatalinkSourceVlanId.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/source-vlan-id", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/source-vlan-id")
-		}
-	}
-	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.IsUnknown() {
-		if data.MatchDatalinkDestinationVlanId.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/datalink/destination-vlan-id", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/datalink/destination-vlan-id")
-		}
-	}
-	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.IsUnknown() {
-		if data.MatchIpv4Ttl.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv4/ttl", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/ipv4/ttl")
-		}
-	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.IsUnknown() {
 		if data.CollectDatalinkMacSourceAddressInput.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/datalink/mac/source/address/input", "")
@@ -668,34 +710,6 @@ func (data FlowRecord) toBodyXML(ctx context.Context) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/collect/flow/direction", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/collect/flow/direction")
-		}
-	}
-	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.IsUnknown() {
-		if data.MatchRoutingVrfInput.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/routing/vrf/input", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/routing/vrf/input")
-		}
-	}
-	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.IsUnknown() {
-		if data.MatchVxlanVnid.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vnid", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vnid")
-		}
-	}
-	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.IsUnknown() {
-		if data.MatchVxlanVtepInput.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vtep/input", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vtep/input")
-		}
-	}
-	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.IsUnknown() {
-		if data.MatchVxlanVtepOutput.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/match/vxlan/vtep/output", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/vxlan/vtep/output")
 		}
 	}
 	bodyString, err := body.String()
@@ -904,6 +918,101 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchConnectionServerTransportPort = types.BoolNull()
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() && !data.MatchDatalinkVlan.IsNull() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	} else {
+		data.MatchDatalinkVlan = types.StringNull()
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); !data.MatchDatalinkSourceVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); !data.MatchDatalinkDestinationVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); !data.MatchIpv4Ttl.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Ttl = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Ttl = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Ttl = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.routing.vrf.input"); !data.MatchRoutingVrfInput.IsNull() {
+		if value.Exists() {
+			data.MatchRoutingVrfInput = types.BoolValue(true)
+		} else {
+			data.MatchRoutingVrfInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchRoutingVrfInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.vxlan.vnid"); !data.MatchVxlanVnid.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVnid = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVnid = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVnid = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.input"); !data.MatchVxlanVtepInput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepInput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.output"); !data.MatchVxlanVtepOutput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepOutput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepOutput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "collect.interface.input"); !data.CollectInterfaceInput.IsNull() {
+		if value.Exists() {
+			data.CollectInterfaceInput = types.BoolValue(true)
+		} else {
+			data.CollectInterfaceInput = types.BoolValue(false)
+		}
+	} else {
+		data.CollectInterfaceInput = types.BoolNull()
+	}
 	if value := res.Get(prefix + "collect.interface.output"); !data.CollectInterfaceOutput.IsNull() {
 		if value.Exists() {
 			data.CollectInterfaceOutput = types.BoolValue(true)
@@ -994,56 +1103,6 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolNull()
 	}
-	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); !data.MatchDatalinkMacSourceAddressInput.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() && !data.MatchDatalinkVlan.IsNull() {
-		data.MatchDatalinkVlan = types.StringValue(value.String())
-	} else {
-		data.MatchDatalinkVlan = types.StringNull()
-	}
-	if value := res.Get(prefix + "match.datalink.source-vlan-id"); !data.MatchDatalinkSourceVlanId.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkSourceVlanId = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkSourceVlanId = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkSourceVlanId = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); !data.MatchDatalinkDestinationVlanId.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkDestinationVlanId = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.ipv4.ttl"); !data.MatchIpv4Ttl.IsNull() {
-		if value.Exists() {
-			data.MatchIpv4Ttl = types.BoolValue(true)
-		} else {
-			data.MatchIpv4Ttl = types.BoolValue(false)
-		}
-	} else {
-		data.MatchIpv4Ttl = types.BoolNull()
-	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		if value.Exists() {
 			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
@@ -1061,42 +1120,6 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.CollectFlowDirection = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.routing.vrf.input"); !data.MatchRoutingVrfInput.IsNull() {
-		if value.Exists() {
-			data.MatchRoutingVrfInput = types.BoolValue(true)
-		} else {
-			data.MatchRoutingVrfInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchRoutingVrfInput = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.vxlan.vnid"); !data.MatchVxlanVnid.IsNull() {
-		if value.Exists() {
-			data.MatchVxlanVnid = types.BoolValue(true)
-		} else {
-			data.MatchVxlanVnid = types.BoolValue(false)
-		}
-	} else {
-		data.MatchVxlanVnid = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.vxlan.vtep.input"); !data.MatchVxlanVtepInput.IsNull() {
-		if value.Exists() {
-			data.MatchVxlanVtepInput = types.BoolValue(true)
-		} else {
-			data.MatchVxlanVtepInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchVxlanVtepInput = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.vxlan.vtep.output"); !data.MatchVxlanVtepOutput.IsNull() {
-		if value.Exists() {
-			data.MatchVxlanVtepOutput = types.BoolValue(true)
-		} else {
-			data.MatchVxlanVtepOutput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchVxlanVtepOutput = types.BoolNull()
 	}
 }
 
@@ -1295,6 +1318,101 @@ func (data *FlowRecord) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.MatchConnectionServerTransportPort = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() && !data.MatchDatalinkVlan.IsNull() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	} else {
+		data.MatchDatalinkVlan = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); !data.MatchDatalinkSourceVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); !data.MatchDatalinkDestinationVlanId.IsNull() {
+		if value.Exists() {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+		} else {
+			data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+		}
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); !data.MatchIpv4Ttl.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Ttl = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Ttl = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Ttl = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); !data.MatchRoutingVrfInput.IsNull() {
+		if value.Exists() {
+			data.MatchRoutingVrfInput = types.BoolValue(true)
+		} else {
+			data.MatchRoutingVrfInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchRoutingVrfInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); !data.MatchVxlanVnid.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVnid = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVnid = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVnid = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); !data.MatchVxlanVtepInput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepInput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepInput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepInput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); !data.MatchVxlanVtepOutput.IsNull() {
+		if value.Exists() {
+			data.MatchVxlanVtepOutput = types.BoolValue(true)
+		} else {
+			data.MatchVxlanVtepOutput = types.BoolValue(false)
+		}
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/input"); !data.CollectInterfaceInput.IsNull() {
+		if value.Exists() {
+			data.CollectInterfaceInput = types.BoolValue(true)
+		} else {
+			data.CollectInterfaceInput = types.BoolValue(false)
+		}
+	} else {
+		data.CollectInterfaceInput = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/output"); !data.CollectInterfaceOutput.IsNull() {
 		if value.Exists() {
 			data.CollectInterfaceOutput = types.BoolValue(true)
@@ -1385,56 +1503,6 @@ func (data *FlowRecord) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); !data.MatchDatalinkMacSourceAddressInput.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() && !data.MatchDatalinkVlan.IsNull() {
-		data.MatchDatalinkVlan = types.StringValue(value.String())
-	} else {
-		data.MatchDatalinkVlan = types.StringNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); !data.MatchDatalinkSourceVlanId.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkSourceVlanId = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkSourceVlanId = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkSourceVlanId = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); !data.MatchDatalinkDestinationVlanId.IsNull() {
-		if value.Exists() {
-			data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
-		} else {
-			data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
-		}
-	} else {
-		data.MatchDatalinkDestinationVlanId = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); !data.MatchIpv4Ttl.IsNull() {
-		if value.Exists() {
-			data.MatchIpv4Ttl = types.BoolValue(true)
-		} else {
-			data.MatchIpv4Ttl = types.BoolValue(false)
-		}
-	} else {
-		data.MatchIpv4Ttl = types.BoolNull()
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/datalink/mac/source/address/input"); !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		if value.Exists() {
 			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
@@ -1452,42 +1520,6 @@ func (data *FlowRecord) updateFromBodyXML(ctx context.Context, res xmldot.Result
 		}
 	} else {
 		data.CollectFlowDirection = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); !data.MatchRoutingVrfInput.IsNull() {
-		if value.Exists() {
-			data.MatchRoutingVrfInput = types.BoolValue(true)
-		} else {
-			data.MatchRoutingVrfInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchRoutingVrfInput = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); !data.MatchVxlanVnid.IsNull() {
-		if value.Exists() {
-			data.MatchVxlanVnid = types.BoolValue(true)
-		} else {
-			data.MatchVxlanVnid = types.BoolValue(false)
-		}
-	} else {
-		data.MatchVxlanVnid = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); !data.MatchVxlanVtepInput.IsNull() {
-		if value.Exists() {
-			data.MatchVxlanVtepInput = types.BoolValue(true)
-		} else {
-			data.MatchVxlanVtepInput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchVxlanVtepInput = types.BoolNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); !data.MatchVxlanVtepOutput.IsNull() {
-		if value.Exists() {
-			data.MatchVxlanVtepOutput = types.BoolValue(true)
-		} else {
-			data.MatchVxlanVtepOutput = types.BoolValue(false)
-		}
-	} else {
-		data.MatchVxlanVtepOutput = types.BoolNull()
 	}
 }
 
@@ -1603,6 +1635,59 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchConnectionServerTransportPort = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.routing.vrf.input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.interface.input"); value.Exists() {
+		data.CollectInterfaceInput = types.BoolValue(true)
+	} else {
+		data.CollectInterfaceInput = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "collect.interface.output"); value.Exists() {
 		data.CollectInterfaceOutput = types.BoolValue(true)
 	} else {
@@ -1653,34 +1738,6 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
-		data.MatchDatalinkVlan = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
-		data.MatchIpv4Ttl = types.BoolValue(true)
-	} else {
-		data.MatchIpv4Ttl = types.BoolValue(false)
-	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
 	} else {
@@ -1690,26 +1747,6 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 		data.CollectFlowDirection = types.BoolValue(true)
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.routing.vrf.input"); value.Exists() {
-		data.MatchRoutingVrfInput = types.BoolValue(true)
-	} else {
-		data.MatchRoutingVrfInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.vxlan.vnid"); value.Exists() {
-		data.MatchVxlanVnid = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVnid = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.vxlan.vtep.input"); value.Exists() {
-		data.MatchVxlanVtepInput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.vxlan.vtep.output"); value.Exists() {
-		data.MatchVxlanVtepOutput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepOutput = types.BoolValue(false)
 	}
 }
 
@@ -1825,6 +1862,59 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchConnectionServerTransportPort = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.routing.vrf.input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.vxlan.vtep.output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.interface.input"); value.Exists() {
+		data.CollectInterfaceInput = types.BoolValue(true)
+	} else {
+		data.CollectInterfaceInput = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "collect.interface.output"); value.Exists() {
 		data.CollectInterfaceOutput = types.BoolValue(true)
 	} else {
@@ -1875,34 +1965,6 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "match.datalink.mac.source.address.input"); value.Exists() {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.datalink.mac.destination.address.input"); value.Exists() {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.datalink.vlan"); value.Exists() {
-		data.MatchDatalinkVlan = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "match.datalink.source-vlan-id"); value.Exists() {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.datalink.destination-vlan-id"); value.Exists() {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.ipv4.ttl"); value.Exists() {
-		data.MatchIpv4Ttl = types.BoolValue(true)
-	} else {
-		data.MatchIpv4Ttl = types.BoolValue(false)
-	}
 	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
 	} else {
@@ -1912,26 +1974,6 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 		data.CollectFlowDirection = types.BoolValue(true)
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.routing.vrf.input"); value.Exists() {
-		data.MatchRoutingVrfInput = types.BoolValue(true)
-	} else {
-		data.MatchRoutingVrfInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.vxlan.vnid"); value.Exists() {
-		data.MatchVxlanVnid = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVnid = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.vxlan.vtep.input"); value.Exists() {
-		data.MatchVxlanVtepInput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepInput = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.vxlan.vtep.output"); value.Exists() {
-		data.MatchVxlanVtepOutput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepOutput = types.BoolValue(false)
 	}
 }
 
@@ -2043,6 +2085,59 @@ func (data *FlowRecord) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MatchConnectionServerTransportPort = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/input"); value.Exists() {
+		data.CollectInterfaceInput = types.BoolValue(true)
+	} else {
+		data.CollectInterfaceInput = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/output"); value.Exists() {
 		data.CollectInterfaceOutput = types.BoolValue(true)
 	} else {
@@ -2093,34 +2188,6 @@ func (data *FlowRecord) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); value.Exists() {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); value.Exists() {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() {
-		data.MatchDatalinkVlan = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); value.Exists() {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); value.Exists() {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); value.Exists() {
-		data.MatchIpv4Ttl = types.BoolValue(true)
-	} else {
-		data.MatchIpv4Ttl = types.BoolValue(false)
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/datalink/mac/source/address/input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
 	} else {
@@ -2130,26 +2197,6 @@ func (data *FlowRecord) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.CollectFlowDirection = types.BoolValue(true)
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); value.Exists() {
-		data.MatchRoutingVrfInput = types.BoolValue(true)
-	} else {
-		data.MatchRoutingVrfInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); value.Exists() {
-		data.MatchVxlanVnid = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVnid = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); value.Exists() {
-		data.MatchVxlanVtepInput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); value.Exists() {
-		data.MatchVxlanVtepOutput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepOutput = types.BoolValue(false)
 	}
 }
 
@@ -2261,6 +2308,59 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.MatchConnectionServerTransportPort = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); value.Exists() {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); value.Exists() {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() {
+		data.MatchDatalinkVlan = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); value.Exists() {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); value.Exists() {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
+	} else {
+		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); value.Exists() {
+		data.MatchIpv4Ttl = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Ttl = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); value.Exists() {
+		data.MatchRoutingVrfInput = types.BoolValue(true)
+	} else {
+		data.MatchRoutingVrfInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); value.Exists() {
+		data.MatchVxlanVnid = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVnid = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); value.Exists() {
+		data.MatchVxlanVtepInput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepInput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); value.Exists() {
+		data.MatchVxlanVtepOutput = types.BoolValue(true)
+	} else {
+		data.MatchVxlanVtepOutput = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/input"); value.Exists() {
+		data.CollectInterfaceInput = types.BoolValue(true)
+	} else {
+		data.CollectInterfaceInput = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/interface/output"); value.Exists() {
 		data.CollectInterfaceOutput = types.BoolValue(true)
 	} else {
@@ -2311,34 +2411,6 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/source/address/input"); value.Exists() {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacSourceAddressInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/mac/destination/address/input"); value.Exists() {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkMacDestinationAddressInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/vlan"); value.Exists() {
-		data.MatchDatalinkVlan = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/source-vlan-id"); value.Exists() {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkSourceVlanId = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/datalink/destination-vlan-id"); value.Exists() {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(true)
-	} else {
-		data.MatchDatalinkDestinationVlanId = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv4/ttl"); value.Exists() {
-		data.MatchIpv4Ttl = types.BoolValue(true)
-	} else {
-		data.MatchIpv4Ttl = types.BoolValue(false)
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/collect/datalink/mac/source/address/input"); value.Exists() {
 		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
 	} else {
@@ -2349,26 +2421,6 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.CollectFlowDirection = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/routing/vrf/input"); value.Exists() {
-		data.MatchRoutingVrfInput = types.BoolValue(true)
-	} else {
-		data.MatchRoutingVrfInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vnid"); value.Exists() {
-		data.MatchVxlanVnid = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVnid = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/input"); value.Exists() {
-		data.MatchVxlanVtepInput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepInput = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/vxlan/vtep/output"); value.Exists() {
-		data.MatchVxlanVtepOutput = types.BoolValue(true)
-	} else {
-		data.MatchVxlanVtepOutput = types.BoolValue(false)
-	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2377,41 +2429,11 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 
 func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) []string {
 	deletedItems := make([]string, 0)
-	if !state.MatchVxlanVtepOutput.IsNull() && data.MatchVxlanVtepOutput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vtep/output", state.getPath()))
-	}
-	if !state.MatchVxlanVtepInput.IsNull() && data.MatchVxlanVtepInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vtep/input", state.getPath()))
-	}
-	if !state.MatchVxlanVnid.IsNull() && data.MatchVxlanVnid.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vnid", state.getPath()))
-	}
-	if !state.MatchRoutingVrfInput.IsNull() && data.MatchRoutingVrfInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/routing/vrf/input", state.getPath()))
-	}
 	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/flow/direction", state.getPath()))
 	}
 	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", state.getPath()))
-	}
-	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/ttl", state.getPath()))
-	}
-	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/destination-vlan-id", state.getPath()))
-	}
-	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/source-vlan-id", state.getPath()))
-	}
-	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/vlan", state.getPath()))
-	}
-	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", state.getPath()))
-	}
-	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/source/address/input", state.getPath()))
 	}
 	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", state.getPath()))
@@ -2442,6 +2464,39 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 	}
 	if !state.CollectInterfaceOutput.IsNull() && data.CollectInterfaceOutput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/interface/output", state.getPath()))
+	}
+	if !state.CollectInterfaceInput.IsNull() && data.CollectInterfaceInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/interface/input", state.getPath()))
+	}
+	if !state.MatchVxlanVtepOutput.IsNull() && data.MatchVxlanVtepOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vtep/output", state.getPath()))
+	}
+	if !state.MatchVxlanVtepInput.IsNull() && data.MatchVxlanVtepInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vtep/input", state.getPath()))
+	}
+	if !state.MatchVxlanVnid.IsNull() && data.MatchVxlanVnid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/vxlan/vnid", state.getPath()))
+	}
+	if !state.MatchRoutingVrfInput.IsNull() && data.MatchRoutingVrfInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/routing/vrf/input", state.getPath()))
+	}
+	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/ttl", state.getPath()))
+	}
+	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/destination-vlan-id", state.getPath()))
+	}
+	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/source-vlan-id", state.getPath()))
+	}
+	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/vlan", state.getPath()))
+	}
+	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", state.getPath()))
+	}
+	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/datalink/mac/source/address/input", state.getPath()))
 	}
 	if !state.MatchConnectionServerTransportPort.IsNull() && data.MatchConnectionServerTransportPort.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/transport/port", state.getPath()))
@@ -2516,41 +2571,11 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 
 func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord, body string) string {
 	b := netconf.NewBody(body)
-	if !state.MatchVxlanVtepOutput.IsNull() && data.MatchVxlanVtepOutput.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/output")
-	}
-	if !state.MatchVxlanVtepInput.IsNull() && data.MatchVxlanVtepInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/input")
-	}
-	if !state.MatchVxlanVnid.IsNull() && data.MatchVxlanVnid.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vnid")
-	}
-	if !state.MatchRoutingVrfInput.IsNull() && data.MatchRoutingVrfInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/routing/vrf/input")
-	}
 	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/flow/direction")
 	}
 	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/datalink/mac/source/address/input")
-	}
-	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/ttl")
-	}
-	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/destination-vlan-id")
-	}
-	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/source-vlan-id")
-	}
-	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/vlan")
-	}
-	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/destination/address/input")
-	}
-	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/source/address/input")
 	}
 	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/connection/server/counter/packets/long")
@@ -2581,6 +2606,39 @@ func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord
 	}
 	if !state.CollectInterfaceOutput.IsNull() && data.CollectInterfaceOutput.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/interface/output")
+	}
+	if !state.CollectInterfaceInput.IsNull() && data.CollectInterfaceInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/interface/input")
+	}
+	if !state.MatchVxlanVtepOutput.IsNull() && data.MatchVxlanVtepOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/output")
+	}
+	if !state.MatchVxlanVtepInput.IsNull() && data.MatchVxlanVtepInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vtep/input")
+	}
+	if !state.MatchVxlanVnid.IsNull() && data.MatchVxlanVnid.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/vxlan/vnid")
+	}
+	if !state.MatchRoutingVrfInput.IsNull() && data.MatchRoutingVrfInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/routing/vrf/input")
+	}
+	if !state.MatchIpv4Ttl.IsNull() && data.MatchIpv4Ttl.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv4/ttl")
+	}
+	if !state.MatchDatalinkDestinationVlanId.IsNull() && data.MatchDatalinkDestinationVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/destination-vlan-id")
+	}
+	if !state.MatchDatalinkSourceVlanId.IsNull() && data.MatchDatalinkSourceVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/source-vlan-id")
+	}
+	if !state.MatchDatalinkVlan.IsNull() && data.MatchDatalinkVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/vlan")
+	}
+	if !state.MatchDatalinkMacDestinationAddressInput.IsNull() && data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/destination/address/input")
+	}
+	if !state.MatchDatalinkMacSourceAddressInput.IsNull() && data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/datalink/mac/source/address/input")
 	}
 	if !state.MatchConnectionServerTransportPort.IsNull() && data.MatchConnectionServerTransportPort.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/connection/server/transport/port")
@@ -2656,38 +2714,11 @@ func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord
 
 func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vtep/output", data.getPath()))
-	}
-	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vtep/input", data.getPath()))
-	}
-	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vnid", data.getPath()))
-	}
-	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/routing/vrf/input", data.getPath()))
-	}
 	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
-	}
-	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
-	}
-	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
-	}
-	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
-	}
-	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
-	}
-	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
 	}
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
@@ -2718,6 +2749,36 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
+	}
+	if !data.CollectInterfaceInput.IsNull() && !data.CollectInterfaceInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/interface/input", data.getPath()))
+	}
+	if !data.MatchVxlanVtepOutput.IsNull() && !data.MatchVxlanVtepOutput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vtep/output", data.getPath()))
+	}
+	if !data.MatchVxlanVtepInput.IsNull() && !data.MatchVxlanVtepInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vtep/input", data.getPath()))
+	}
+	if !data.MatchVxlanVnid.IsNull() && !data.MatchVxlanVnid.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/vxlan/vnid", data.getPath()))
+	}
+	if !data.MatchRoutingVrfInput.IsNull() && !data.MatchRoutingVrfInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/routing/vrf/input", data.getPath()))
+	}
+	if !data.MatchIpv4Ttl.IsNull() && !data.MatchIpv4Ttl.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() && !data.MatchDatalinkDestinationVlanId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() && !data.MatchDatalinkSourceVlanId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() && !data.MatchDatalinkMacDestinationAddressInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() && !data.MatchDatalinkMacSourceAddressInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
 	}
 	if !data.MatchConnectionServerTransportPort.IsNull() && !data.MatchConnectionServerTransportPort.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
@@ -2789,41 +2850,11 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.MatchVxlanVtepOutput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vtep/output", data.getPath()))
-	}
-	if !data.MatchVxlanVtepInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vtep/input", data.getPath()))
-	}
-	if !data.MatchVxlanVnid.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vnid", data.getPath()))
-	}
-	if !data.MatchRoutingVrfInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/routing/vrf/input", data.getPath()))
-	}
 	if !data.CollectFlowDirection.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
-	}
-	if !data.MatchIpv4Ttl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
-	}
-	if !data.MatchDatalinkDestinationVlanId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
-	}
-	if !data.MatchDatalinkSourceVlanId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
-	}
-	if !data.MatchDatalinkVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/vlan", data.getPath()))
-	}
-	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
-	}
-	if !data.MatchDatalinkMacSourceAddressInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
 	}
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
@@ -2854,6 +2885,39 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.CollectInterfaceOutput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
+	}
+	if !data.CollectInterfaceInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/interface/input", data.getPath()))
+	}
+	if !data.MatchVxlanVtepOutput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vtep/output", data.getPath()))
+	}
+	if !data.MatchVxlanVtepInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vtep/input", data.getPath()))
+	}
+	if !data.MatchVxlanVnid.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/vxlan/vnid", data.getPath()))
+	}
+	if !data.MatchRoutingVrfInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/routing/vrf/input", data.getPath()))
+	}
+	if !data.MatchIpv4Ttl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/ttl", data.getPath()))
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/destination-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/source-vlan-id", data.getPath()))
+	}
+	if !data.MatchDatalinkVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/vlan", data.getPath()))
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/destination/address/input", data.getPath()))
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/datalink/mac/source/address/input", data.getPath()))
 	}
 	if !data.MatchConnectionServerTransportPort.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
@@ -2928,41 +2992,11 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 
 func (data *FlowRecord) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.MatchVxlanVtepOutput.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vtep/output")
-	}
-	if !data.MatchVxlanVtepInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vtep/input")
-	}
-	if !data.MatchVxlanVnid.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vnid")
-	}
-	if !data.MatchRoutingVrfInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/routing/vrf/input")
-	}
 	if !data.CollectFlowDirection.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/flow/direction")
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/datalink/mac/source/address/input")
-	}
-	if !data.MatchIpv4Ttl.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/ttl")
-	}
-	if !data.MatchDatalinkDestinationVlanId.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/destination-vlan-id")
-	}
-	if !data.MatchDatalinkSourceVlanId.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/source-vlan-id")
-	}
-	if !data.MatchDatalinkVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/vlan")
-	}
-	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/mac/destination/address/input")
-	}
-	if !data.MatchDatalinkMacSourceAddressInput.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/mac/source/address/input")
 	}
 	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/connection/server/counter/packets/long")
@@ -2993,6 +3027,39 @@ func (data *FlowRecord) addDeletePathsXML(ctx context.Context, body string) stri
 	}
 	if !data.CollectInterfaceOutput.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/interface/output")
+	}
+	if !data.CollectInterfaceInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/interface/input")
+	}
+	if !data.MatchVxlanVtepOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vtep/output")
+	}
+	if !data.MatchVxlanVtepInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vtep/input")
+	}
+	if !data.MatchVxlanVnid.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/vxlan/vnid")
+	}
+	if !data.MatchRoutingVrfInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/routing/vrf/input")
+	}
+	if !data.MatchIpv4Ttl.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv4/ttl")
+	}
+	if !data.MatchDatalinkDestinationVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/destination-vlan-id")
+	}
+	if !data.MatchDatalinkSourceVlanId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/source-vlan-id")
+	}
+	if !data.MatchDatalinkVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/vlan")
+	}
+	if !data.MatchDatalinkMacDestinationAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/mac/destination/address/input")
+	}
+	if !data.MatchDatalinkMacSourceAddressInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/datalink/mac/source/address/input")
 	}
 	if !data.MatchConnectionServerTransportPort.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/connection/server/transport/port")

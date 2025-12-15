@@ -1,5 +1,25 @@
+## Unreleased
 
-## (Unreleased)
+- Add `icmp_echo_frequency` attribute to `iosxe_sla` resource and data source
+- Add `iosxe_commit` action
+- Add `iosxe_save_config` action
+
+## 0.13.0
+
+- Add `stopbits` attribute to `iosxe_line` resource and data source
+- Add `ipv4_evpn_mcast_*` and `ipv6_evpn_mcast_*` attributes to `iosxe_vrf` resource and data source
+- Add `ipv4_import_map`, `ipv4_export_map`, `ipv6_import_map` and `ipv6_export_map` attributes to `iosxe_vrf` resource and data source
+- Add `inherit_peer_policy` attribute to `iosxe_bgp_ipv4_unicast_neighbor` and `iosxe_bgp_l2vpn_evpn_neighbor` resources and data source
+- Add `network_point_to_point` attribute to `iosxe_interface_isis` resource and data source
+- Add device level `protocol` provider attribute
+- Add `enable_traps_bgp_cbgp2_state_changes` and `enable_traps_bgp_cbgp2_threshold_prefix` attributes to `iosxe_snmp_server` resource and data source
+- Add `tunnel_protection_ipsec_profile_legacy` attribute to `iosxe_interface_tunnel` resource and data source
+- Add `destination_ip_vrf` attribute to `iosxe_flow_exporter` resource and data source
+- Add `collect_interface_input` attribute to `iosxe_flow_record` resource and data source
+- Add `ip_tcp_adjust_mss` attribute to `iosxe_interface_tunnel` resource and data source
+- Add `match_cos` attribute to `iosxe_class_map` resource and data source
+
+## 0.12.0
 
 - Add `igmp_snooping_querier`, `igmp_snooping_querier_version`, `igmp_snooping_querier_max_response_time`, and `igmp_snooping_querier_timer_expiry` attributes to `iosxe_system` resource and data source
 - Add `iosxe_l2_vfi` resource and data source

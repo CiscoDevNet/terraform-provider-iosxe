@@ -143,6 +143,10 @@ func (r *BGPL2VPNEVPNNeighborResource) Schema(ctx context.Context, req resource.
 					},
 				},
 			},
+			"inherit_peer_policy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Inherit a peer-policy template").String,
+				Optional:            true,
+			},
 		},
 	}
 }

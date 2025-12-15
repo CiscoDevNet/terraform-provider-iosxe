@@ -108,6 +108,10 @@ func (d *BGPL2VPNEVPNNeighborDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
+			"inherit_peer_policy": schema.StringAttribute{
+				MarkdownDescription: "Inherit a peer-policy template",
+				Computed:            true,
+			},
 		},
 	}
 }

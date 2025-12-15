@@ -42,20 +42,22 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceISIS struct {
-	Device           types.String                    `tfsdk:"device"`
-	Id               types.String                    `tfsdk:"id"`
-	DeleteMode       types.String                    `tfsdk:"delete_mode"`
-	Type             types.String                    `tfsdk:"type"`
-	Name             types.String                    `tfsdk:"name"`
-	Ipv4MetricLevels []InterfaceISISIpv4MetricLevels `tfsdk:"ipv4_metric_levels"`
+	Device              types.String                    `tfsdk:"device"`
+	Id                  types.String                    `tfsdk:"id"`
+	DeleteMode          types.String                    `tfsdk:"delete_mode"`
+	Type                types.String                    `tfsdk:"type"`
+	Name                types.String                    `tfsdk:"name"`
+	NetworkPointToPoint types.Bool                      `tfsdk:"network_point_to_point"`
+	Ipv4MetricLevels    []InterfaceISISIpv4MetricLevels `tfsdk:"ipv4_metric_levels"`
 }
 
 type InterfaceISISData struct {
-	Device           types.String                    `tfsdk:"device"`
-	Id               types.String                    `tfsdk:"id"`
-	Type             types.String                    `tfsdk:"type"`
-	Name             types.String                    `tfsdk:"name"`
-	Ipv4MetricLevels []InterfaceISISIpv4MetricLevels `tfsdk:"ipv4_metric_levels"`
+	Device              types.String                    `tfsdk:"device"`
+	Id                  types.String                    `tfsdk:"id"`
+	Type                types.String                    `tfsdk:"type"`
+	Name                types.String                    `tfsdk:"name"`
+	NetworkPointToPoint types.Bool                      `tfsdk:"network_point_to_point"`
+	Ipv4MetricLevels    []InterfaceISISIpv4MetricLevels `tfsdk:"ipv4_metric_levels"`
 }
 type InterfaceISISIpv4MetricLevels struct {
 	Level types.String `tfsdk:"level"`
@@ -104,6 +106,9 @@ func (data InterfaceISISData) getXPath() string {
 
 func (data InterfaceISIS) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
+	if !data.NetworkPointToPoint.IsNull() && !data.NetworkPointToPoint.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-isis:network.point-to-point", data.NetworkPointToPoint.ValueBool())
+	}
 	if len(data.Ipv4MetricLevels) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-isis:metric.metric-list", []interface{}{})
 		for index, item := range data.Ipv4MetricLevels {
@@ -124,6 +129,9 @@ func (data InterfaceISIS) toBody(ctx context.Context) string {
 
 func (data InterfaceISIS) toBodyXML(ctx context.Context) string {
 	body := netconf.Body{}
+	if !data.NetworkPointToPoint.IsNull() && !data.NetworkPointToPoint.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point", data.NetworkPointToPoint.ValueBool())
+	}
 	if len(data.Ipv4MetricLevels) > 0 {
 		for _, item := range data.Ipv4MetricLevels {
 			cBody := netconf.Body{}
@@ -151,6 +159,13 @@ func (data *InterfaceISIS) updateFromBody(ctx context.Context, res gjson.Result)
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-isis:network.point-to-point"); !data.NetworkPointToPoint.IsNull() {
+		if value.Exists() {
+			data.NetworkPointToPoint = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.NetworkPointToPoint = types.BoolNull()
 	}
 	for i := range data.Ipv4MetricLevels {
 		keys := [...]string{"levels"}
@@ -193,6 +208,13 @@ func (data *InterfaceISIS) updateFromBody(ctx context.Context, res gjson.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *InterfaceISIS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point"); !data.NetworkPointToPoint.IsNull() {
+		if value.Exists() {
+			data.NetworkPointToPoint = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.NetworkPointToPoint = types.BoolNull()
+	}
 	for i := range data.Ipv4MetricLevels {
 		keys := [...]string{"levels"}
 		keyValues := [...]string{data.Ipv4MetricLevels[i].Level.ValueString()}
@@ -238,6 +260,11 @@ func (data *InterfaceISIS) fromBody(ctx context.Context, res gjson.Result) {
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-isis:network.point-to-point"); value.Exists() {
+		data.NetworkPointToPoint = types.BoolValue(value.Bool())
+	} else {
+		data.NetworkPointToPoint = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-isis:metric.metric-list"); value.Exists() {
 		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevels, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -263,6 +290,11 @@ func (data *InterfaceISISData) fromBody(ctx context.Context, res gjson.Result) {
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-isis:network.point-to-point"); value.Exists() {
+		data.NetworkPointToPoint = types.BoolValue(value.Bool())
+	} else {
+		data.NetworkPointToPoint = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-isis:metric.metric-list"); value.Exists() {
 		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevels, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -284,6 +316,11 @@ func (data *InterfaceISISData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *InterfaceISIS) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point"); value.Exists() {
+		data.NetworkPointToPoint = types.BoolValue(value.Bool())
+	} else {
+		data.NetworkPointToPoint = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list"); value.Exists() {
 		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevels, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -305,6 +342,11 @@ func (data *InterfaceISIS) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *InterfaceISISData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point"); value.Exists() {
+		data.NetworkPointToPoint = types.BoolValue(value.Bool())
+	} else {
+		data.NetworkPointToPoint = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list"); value.Exists() {
 		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevels, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -355,6 +397,9 @@ func (data *InterfaceISIS) getDeletedItems(ctx context.Context, state InterfaceI
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-isis:metric/metric-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.NetworkPointToPoint.IsNull() && data.NetworkPointToPoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-isis:network/point-to-point", state.getPath()))
+	}
 
 	return deletedItems
 }
@@ -398,6 +443,9 @@ func (data *InterfaceISIS) addDeletedItemsXML(ctx context.Context, state Interfa
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list%v", predicates))
 		}
 	}
+	if !state.NetworkPointToPoint.IsNull() && data.NetworkPointToPoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point")
+	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -424,6 +472,9 @@ func (data *InterfaceISIS) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-isis:metric/metric-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.NetworkPointToPoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-isis:network/point-to-point", data.getPath()))
+	}
 
 	return deletePaths
 }
@@ -443,6 +494,9 @@ func (data *InterfaceISIS) addDeletePathsXML(ctx context.Context, body string) s
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list%v", predicates))
+	}
+	if !data.NetworkPointToPoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)

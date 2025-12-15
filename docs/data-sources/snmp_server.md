@@ -40,6 +40,8 @@ data "iosxe_snmp_server" "example" {
 - `enable_traps_bfd` (Boolean)
 - `enable_traps_bgp` (Boolean) Allow BGP state change traps (OBSOLETE)
 - `enable_traps_bgp_cbgp2` (Boolean) Enable BGP MIBv2 traps
+- `enable_traps_bgp_cbgp2_state_changes` (List of String)
+- `enable_traps_bgp_cbgp2_threshold_prefix` (Boolean) CISCO specific trap for prefix threshold events
 - `enable_traps_bridge_newroot` (Boolean)
 - `enable_traps_bridge_topologychange` (Boolean)
 - `enable_traps_bulkstat_collection` (Boolean) Enable Data-Collection-MIB Collection notifications

@@ -229,6 +229,8 @@ type SNMPServer struct {
 	EnableTrapsVoice                              types.Bool                  `tfsdk:"enable_traps_voice"`
 	EnableTrapsBgp                                types.Bool                  `tfsdk:"enable_traps_bgp"`
 	EnableTrapsCbgp2                              types.Bool                  `tfsdk:"enable_traps_cbgp2"`
+	EnableTrapsBgpCbgp2StateChanges               types.List                  `tfsdk:"enable_traps_bgp_cbgp2_state_changes"`
+	EnableTrapsBgpCbgp2ThresholdPrefix            types.Bool                  `tfsdk:"enable_traps_bgp_cbgp2_threshold_prefix"`
 	EnableTrapsOspfv3Errors                       types.Bool                  `tfsdk:"enable_traps_ospfv3_errors"`
 	EnableTrapsOspfv3StateChange                  types.Bool                  `tfsdk:"enable_traps_ospfv3_state_change"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
@@ -450,6 +452,8 @@ type SNMPServerData struct {
 	EnableTrapsVoice                              types.Bool                  `tfsdk:"enable_traps_voice"`
 	EnableTrapsBgp                                types.Bool                  `tfsdk:"enable_traps_bgp"`
 	EnableTrapsCbgp2                              types.Bool                  `tfsdk:"enable_traps_cbgp2"`
+	EnableTrapsBgpCbgp2StateChanges               types.List                  `tfsdk:"enable_traps_bgp_cbgp2_state_changes"`
+	EnableTrapsBgpCbgp2ThresholdPrefix            types.Bool                  `tfsdk:"enable_traps_bgp_cbgp2_threshold_prefix"`
 	EnableTrapsOspfv3Errors                       types.Bool                  `tfsdk:"enable_traps_ospfv3_errors"`
 	EnableTrapsOspfv3StateChange                  types.Bool                  `tfsdk:"enable_traps_ospfv3_state_change"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
@@ -1481,6 +1485,16 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	if !data.EnableTrapsCbgp2.IsNull() && !data.EnableTrapsCbgp2.IsUnknown() {
 		if data.EnableTrapsCbgp2.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp-traps.cbgp2", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsBgpCbgp2StateChanges.IsNull() && !data.EnableTrapsBgpCbgp2StateChanges.IsUnknown() {
+		var values []string
+		data.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.state-changes.suboptions", values)
+	}
+	if !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() && !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsUnknown() {
+		if data.EnableTrapsBgpCbgp2ThresholdPrefix.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.threshold.prefix", map[string]string{})
 		}
 	}
 	if !data.EnableTrapsOspfv3Errors.IsNull() && !data.EnableTrapsOspfv3Errors.IsUnknown() {
@@ -3044,6 +3058,20 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2")
+		}
+	}
+	if !data.EnableTrapsBgpCbgp2StateChanges.IsNull() && !data.EnableTrapsBgpCbgp2StateChanges.IsUnknown() {
+		var values []string
+		data.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions", v)
+		}
+	}
+	if !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() && !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsUnknown() {
+		if data.EnableTrapsBgpCbgp2ThresholdPrefix.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix")
 		}
 	}
 	if !data.EnableTrapsOspfv3Errors.IsNull() && !data.EnableTrapsOspfv3Errors.IsUnknown() {
@@ -5000,6 +5028,20 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.EnableTrapsCbgp2 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.state-changes.suboptions"); value.Exists() && !data.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+		data.EnableTrapsBgpCbgp2StateChanges = helpers.GetStringList(value.Array())
+	} else {
+		data.EnableTrapsBgpCbgp2StateChanges = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.threshold.prefix"); !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(true)
+		} else {
+			data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.errors"); !data.EnableTrapsOspfv3Errors.IsNull() {
 		if value.Exists() {
@@ -7056,6 +7098,20 @@ func (data *SNMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.EnableTrapsCbgp2 = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions"); value.Exists() && !data.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+		data.EnableTrapsBgpCbgp2StateChanges = helpers.GetStringListXML(value.Array())
+	} else {
+		data.EnableTrapsBgpCbgp2StateChanges = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix"); !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(true)
+		} else {
+			data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors"); !data.EnableTrapsOspfv3Errors.IsNull() {
 		if value.Exists() {
 			data.EnableTrapsOspfv3Errors = types.BoolValue(true)
@@ -8361,6 +8417,16 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsCbgp2 = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.state-changes.suboptions"); value.Exists() {
+		data.EnableTrapsBgpCbgp2StateChanges = helpers.GetStringList(value.Array())
+	} else {
+		data.EnableTrapsBgpCbgp2StateChanges = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.threshold.prefix"); value.Exists() {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(true)
+	} else {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.errors"); value.Exists() {
 		data.EnableTrapsOspfv3Errors = types.BoolValue(true)
 	} else {
@@ -9565,6 +9631,16 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsCbgp2 = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.state-changes.suboptions"); value.Exists() {
+		data.EnableTrapsBgpCbgp2StateChanges = helpers.GetStringList(value.Array())
+	} else {
+		data.EnableTrapsBgpCbgp2StateChanges = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp-v2.cbgp2.threshold.prefix"); value.Exists() {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(true)
+	} else {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.errors"); value.Exists() {
 		data.EnableTrapsOspfv3Errors = types.BoolValue(true)
 	} else {
@@ -10764,6 +10840,16 @@ func (data *SNMPServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.EnableTrapsCbgp2 = types.BoolValue(true)
 	} else {
 		data.EnableTrapsCbgp2 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions"); value.Exists() {
+		data.EnableTrapsBgpCbgp2StateChanges = helpers.GetStringListXML(value.Array())
+	} else {
+		data.EnableTrapsBgpCbgp2StateChanges = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix"); value.Exists() {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(true)
+	} else {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors"); value.Exists() {
 		data.EnableTrapsOspfv3Errors = types.BoolValue(true)
@@ -11965,6 +12051,16 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.EnableTrapsCbgp2 = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions"); value.Exists() {
+		data.EnableTrapsBgpCbgp2StateChanges = helpers.GetStringListXML(value.Array())
+	} else {
+		data.EnableTrapsBgpCbgp2StateChanges = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix"); value.Exists() {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(true)
+	} else {
+		data.EnableTrapsBgpCbgp2ThresholdPrefix = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors"); value.Exists() {
 		data.EnableTrapsOspfv3Errors = types.BoolValue(true)
 	} else {
@@ -12552,6 +12648,30 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 	}
 	if !state.EnableTrapsOspfv3Errors.IsNull() && data.EnableTrapsOspfv3Errors.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors", state.getPath()))
+	}
+	if !state.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() && data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix", state.getPath()))
+	}
+	if !state.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+		if data.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &dataValues, false)
+			state.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	if !state.EnableTrapsCbgp2.IsNull() && data.EnableTrapsCbgp2.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2", state.getPath()))
@@ -13561,6 +13681,34 @@ func (data *SNMPServer) addDeletedItemsXML(ctx context.Context, state SNMPServer
 	if !state.EnableTrapsOspfv3Errors.IsNull() && data.EnableTrapsOspfv3Errors.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors")
 	}
+	if !state.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() && data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix")
+	}
+	if !state.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+		if data.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+			var values []string
+			state.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &dataValues, false)
+			state.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions[.=%v]", v))
+				}
+			}
+		}
+	}
 	if !state.EnableTrapsCbgp2.IsNull() && data.EnableTrapsCbgp2.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2")
 	}
@@ -14224,6 +14372,9 @@ func (data *SNMPServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.EnableTrapsOspfv3Errors.IsNull() && !data.EnableTrapsOspfv3Errors.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors", data.getPath()))
 	}
+	if !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() && !data.EnableTrapsBgpCbgp2ThresholdPrefix.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix", data.getPath()))
+	}
 	if !data.EnableTrapsCbgp2.IsNull() && !data.EnableTrapsCbgp2.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2", data.getPath()))
 	}
@@ -14853,6 +15004,12 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.EnableTrapsOspfv3Errors.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors", data.getPath()))
+	}
+	if !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix", data.getPath()))
+	}
+	if !data.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions", data.getPath()))
 	}
 	if !data.EnableTrapsCbgp2.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2", data.getPath()))
@@ -15550,6 +15707,16 @@ func (data *SNMPServer) addDeletePathsXML(ctx context.Context, body string) stri
 	}
 	if !data.EnableTrapsOspfv3Errors.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors")
+	}
+	if !data.EnableTrapsBgpCbgp2ThresholdPrefix.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/threshold/prefix")
+	}
+	if !data.EnableTrapsBgpCbgp2StateChanges.IsNull() {
+		var values []string
+		data.EnableTrapsBgpCbgp2StateChanges.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp-v2/cbgp2/state-changes/suboptions[.=%v]", v))
+		}
 	}
 	if !data.EnableTrapsCbgp2.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2")

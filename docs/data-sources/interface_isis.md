@@ -35,6 +35,7 @@ data "iosxe_interface_isis" "example" {
 
 - `id` (String) The path of the retrieved object.
 - `ipv4_metric_levels` (Attributes List) Configure IS-IS metric for interface (see [below for nested schema](#nestedatt--ipv4_metric_levels))
+- `network_point_to_point` (Boolean) Set ISIS network type to point-to-point
 
 <a id="nestedatt--ipv4_metric_levels"></a>
 ### Nested Schema for `ipv4_metric_levels`

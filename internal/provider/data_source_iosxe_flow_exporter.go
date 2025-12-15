@@ -80,6 +80,10 @@ func (d *FlowExporterDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"destination_ip_vrf": schema.StringAttribute{
+				MarkdownDescription: "Optional VRF label",
+				Computed:            true,
+			},
 			"source_loopback": schema.Int64Attribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,

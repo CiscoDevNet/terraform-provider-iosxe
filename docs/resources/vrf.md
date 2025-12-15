@@ -16,7 +16,7 @@ This resource can manage the VRF configuration.
 resource "iosxe_vrf" "example" {
   name                = "VRF22"
   description         = "VRF22 description"
-  rd_auto             = true
+  rd                  = "22:22"
   address_family_ipv4 = true
   address_family_ipv6 = true
   vpn_id              = "22:22"
@@ -47,6 +47,8 @@ resource "iosxe_vrf" "example" {
       unicast_all_route_map = "RM1"
     }
   ]
+  ipv4_import_map = "IMPORT-MAP-1"
+  ipv4_export_map = "EXPORT-MAP-1"
   ipv6_route_target_import = [
     {
       value = "22:22"
@@ -67,18 +69,18 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
-  ipv4_mdt_default_address               = "239.1.1.1"
-  ipv4_mdt_auto_discovery_vxlan          = true
-  ipv4_mdt_auto_discovery_vxlan_inter_as = true
-  ipv4_mdt_overlay_use_bgp               = true
-  ipv4_mdt_overlay_use_bgp_spt_only      = true
-  ipv4_mdt_data_multicast = [
+  ipv6_import_map = "IMPORT-MAP-1"
+  ipv6_export_map = "EXPORT-MAP-1"
+  vnid = [
     {
-      address  = "239.1.2.0"
-      wildcard = "0.0.0.255"
+      vnid_value = 10001
+      evpn_instance_vni = [
+        {
+          vni_num = 20000
+        }
+      ]
     }
   ]
-  ipv4_mdt_data_threshold = 50
 }
 ```
 
@@ -97,6 +99,12 @@ resource "iosxe_vrf" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) VRF specific description
 - `device` (String) A device name from the provider configuration.
+- `ipv4_evpn_mcast_anycast` (String) IPv4 address of Rendezvous-point for anycast mode
+- `ipv4_evpn_mcast_data_address` (String) EVPN multicast data MDT group address
+- `ipv4_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits
+- `ipv4_evpn_mcast_mdt_default_address` (String) EVPN multicast MDT default group address
+- `ipv4_export_map` (String) Route-map based VRF export for IPv4
+- `ipv4_import_map` (String) Route-map based VRF import for IPv4
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim` (Boolean) Enable BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as` (Boolean) Enable Inter-AS BGP auto-discovery for VxLAN PIM interworking
 - `ipv4_mdt_auto_discovery_vxlan` (Boolean) Enable BGP auto-discovery for VxLAN
@@ -112,6 +120,12 @@ resource "iosxe_vrf" "example" {
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
 - `ipv4_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
 - `ipv4_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import_stitching))
+- `ipv6_evpn_mcast_anycast` (String) IPv6 address of Rendezvous-point for anycast mode
+- `ipv6_evpn_mcast_data_address` (String) EVPN multicast data MDT group address (IPv6)
+- `ipv6_evpn_mcast_data_mask_bits` (String) EVPN multicast data MDT mask bits (IPv6)
+- `ipv6_evpn_mcast_mdt_default_address` (String) EVPN multicast MDT default group address (IPv6)
+- `ipv6_export_map` (String) Route-map based VRF export for IPv6
+- `ipv6_import_map` (String) Route-map based VRF import for IPv6
 - `ipv6_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export))
 - `ipv6_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export_stitching))
 - `ipv6_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import))
@@ -120,6 +134,7 @@ resource "iosxe_vrf" "example" {
 - `rd_auto` (Boolean) Specify to enable auto Route Distinguisher
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
+- `vnid` (Attributes List) Specify VNID for route-target auto generation (see [below for nested schema](#nestedatt--vnid))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
 
 ### Read-Only
@@ -258,6 +273,32 @@ Required:
 Optional:
 
 - `stitching` (Boolean) VXLAN route target set
+
+
+<a id="nestedatt--vnid"></a>
+### Nested Schema for `vnid`
+
+Required:
+
+- `vnid_value` (Number) VNID value for route-target auto generation
+  - Range: `1`-`2147483647`
+
+Optional:
+
+- `evpn_instance_vni` (Attributes List) Specify explicit NVE L3 VNI number (see [below for nested schema](#nestedatt--vnid--evpn_instance_vni))
+
+<a id="nestedatt--vnid--evpn_instance_vni"></a>
+### Nested Schema for `vnid.evpn_instance_vni`
+
+Required:
+
+- `vni_num` (Number) The NVE L3 VNI number
+  - Range: `4096`-`16777215`
+
+Optional:
+
+- `core_vlan` (Number) Core vlan number to associate with VNI (explicit VNI mode)
+  - Range: `1`-`4094`
 
 ## Import
 

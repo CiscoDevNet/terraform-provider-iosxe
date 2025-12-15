@@ -35,6 +35,7 @@ data "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
 
 - `activate` (Boolean) Enable the address family for this neighbor
 - `id` (String) The path of the retrieved object.
+- `inherit_peer_policy` (String) Inherit a peer-policy template
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String)

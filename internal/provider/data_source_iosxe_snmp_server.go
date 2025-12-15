@@ -862,6 +862,15 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable BGP MIBv2 traps (OBSOLETE - please use snmp configuration in Cisco-IOS-XE-bgp.yang)",
 				Computed:            true,
 			},
+			"enable_traps_bgp_cbgp2_state_changes": schema.ListAttribute{
+				MarkdownDescription: "",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"enable_traps_bgp_cbgp2_threshold_prefix": schema.BoolAttribute{
+				MarkdownDescription: "CISCO specific trap for prefix threshold events",
+				Computed:            true,
+			},
 			"enable_traps_ospfv3_errors": schema.BoolAttribute{
 				MarkdownDescription: "Error traps",
 				Computed:            true,

@@ -59,6 +59,42 @@ attributes:
   - yang_name: match/connection/server/transport/port
     example: true
     exclude_test: true
+  - yang_name: match/datalink/mac/source/address/input
+    example: true
+  - yang_name: match/datalink/mac/destination/address/input
+    example: true
+  - yang_name: match/datalink/vlan
+    description: Match VLAN input/output, available on switch platforms (C9K)
+    example: input
+    test_tags: [C9000V]
+  - yang_name: match/datalink/source-vlan-id
+    description: Match source VLAN ID, available on router platforms (C8K, CSR1K)
+    example: true
+    test_tags: [C8000V]
+  - yang_name: match/datalink/destination-vlan-id
+    description: Match destination VLAN ID, available on router platforms (C8K, CSR1K)
+    example: true
+    test_tags: [C8000V]
+    exclude_test: true
+  - yang_name: match/ipv4/ttl
+    example: true
+  - yang_name: match/routing/vrf/input
+    description: Match VRF ID for incoming packet for VXLAN-aware NetFlow
+    example: true
+  - yang_name: match/vxlan/vnid
+    description: Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow
+    example: true
+  - yang_name: match/vxlan/vtep/input
+    description: Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow
+    example: true
+    test_tags: [IOSXE1715]
+  - yang_name: match/vxlan/vtep/output
+    description: Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow
+    example: true
+    test_tags: [IOSXE1715]
+  - yang_name: collect/interface/input
+    example: true
+    exclude_test: true
   - yang_name: collect/interface/output
     example: true
   - yang_name: collect/counter/bytes/long
@@ -85,42 +121,9 @@ attributes:
   - yang_name: collect/connection/server/counter/packets/long
     example: true
     exclude_test: true
-  - yang_name: match/datalink/mac/source/address/input
-    example: true
-  - yang_name: match/datalink/mac/destination/address/input
-    example: true
-  - yang_name: match/datalink/vlan
-    description: Match VLAN input/output, available on switch platforms (C9K)
-    example: input
-    test_tags: [C9000V]
-  - yang_name: match/datalink/source-vlan-id
-    description: Match source VLAN ID, available on router platforms (C8K, CSR1K)
-    example: true
-    test_tags: [C8000V]
-  - yang_name: match/datalink/destination-vlan-id
-    description: Match destination VLAN ID, available on router platforms (C8K, CSR1K)
-    example: true
-    test_tags: [C8000V]
-    exclude_test: true
-  - yang_name: match/ipv4/ttl
-    example: true
   - yang_name: collect/datalink/mac/source/address/input
     example: true
     exclude_test: true
   - yang_name: collect/flow/direction
     example: true
     exclude_test: true
-  - yang_name: match/routing/vrf/input
-    description: Match VRF ID for incoming packet for VXLAN-aware NetFlow
-    example: true
-  - yang_name: match/vxlan/vnid
-    description: Match VXLAN Network Identifier (VNID) for VXLAN-aware NetFlow
-    example: true
-  - yang_name: match/vxlan/vtep/input
-    description: Match VXLAN Tunnel Endpoint (VTEP) input field for VXLAN-aware NetFlow
-    example: true
-    test_tags: [IOSXE1715]
-  - yang_name: match/vxlan/vtep/output
-    description: Match VXLAN Tunnel Endpoint (VTEP) output field for VXLAN-aware NetFlow
-    example: true
-    test_tags: [IOSXE1715]

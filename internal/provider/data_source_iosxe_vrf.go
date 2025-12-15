@@ -204,6 +204,14 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"ipv4_import_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF import for IPv4",
+				Computed:            true,
+			},
+			"ipv4_export_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF export for IPv4",
+				Computed:            true,
+			},
 			"ipv6_route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: "Import Target-VPN community",
 				Computed:            true,
@@ -260,6 +268,42 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"ipv6_import_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF import for IPv6",
+				Computed:            true,
+			},
+			"ipv6_export_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map based VRF export for IPv6",
+				Computed:            true,
+			},
+			"vnid": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify VNID for route-target auto generation",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vnid_value": schema.Int64Attribute{
+							MarkdownDescription: "VNID value for route-target auto generation",
+							Computed:            true,
+						},
+						"evpn_instance_vni": schema.ListNestedAttribute{
+							MarkdownDescription: "Specify explicit NVE L3 VNI number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"vni_num": schema.Int64Attribute{
+										MarkdownDescription: "The NVE L3 VNI number",
+										Computed:            true,
+									},
+									"core_vlan": schema.Int64Attribute{
+										MarkdownDescription: "Core vlan number to associate with VNI (explicit VNI mode)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 			"ipv4_mdt_default_address": schema.StringAttribute{
 				MarkdownDescription: "MDT default group IPv4 address",
 				Computed:            true,
@@ -310,6 +354,38 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			},
 			"ipv4_mdt_data_threshold": schema.Int64Attribute{
 				MarkdownDescription: "MDT switching threshold in Kbps (1-4294967)",
+				Computed:            true,
+			},
+			"ipv4_evpn_mcast_mdt_default_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast MDT default group address",
+				Computed:            true,
+			},
+			"ipv4_evpn_mcast_anycast": schema.StringAttribute{
+				MarkdownDescription: "IPv4 address of Rendezvous-point for anycast mode",
+				Computed:            true,
+			},
+			"ipv4_evpn_mcast_data_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT group address",
+				Computed:            true,
+			},
+			"ipv4_evpn_mcast_data_mask_bits": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT mask bits",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_mdt_default_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast MDT default group address (IPv6)",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_anycast": schema.StringAttribute{
+				MarkdownDescription: "IPv6 address of Rendezvous-point for anycast mode",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_data_address": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT group address (IPv6)",
+				Computed:            true,
+			},
+			"ipv6_evpn_mcast_data_mask_bits": schema.StringAttribute{
+				MarkdownDescription: "EVPN multicast data MDT mask bits (IPv6)",
 				Computed:            true,
 			},
 		},

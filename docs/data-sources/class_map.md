@@ -38,6 +38,7 @@ data "iosxe_class_map" "example" {
 - `match_authorization_status_authorized` (Boolean) authorized
 - `match_authorization_status_unauthorized` (Boolean) unauthorized
 - `match_authorizing_method_priority_greater_than` (List of Number) greater than
+- `match_cos` (List of Number) IEEE 802.1Q/ISL class of service/user priority values
 - `match_dscp` (List of String) Match DSCP in IP(v4) and IPv6 packets
 - `match_ip_dscp` (List of String) Match IP DSCP (DiffServ CodePoints)
 - `match_ip_precedence` (List of String) Match IP precedence

@@ -156,8 +156,12 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "ip address or host name",
 				Computed:            true,
 			},
-			"tunnel_protection_ipsec_profile": schema.StringAttribute{
+			"tunnel_protection_ipsec_profile_legacy": schema.StringAttribute{
 				MarkdownDescription: "Obsolete, use the other option profile-option to set ipsec policy profile",
+				Computed:            true,
+			},
+			"tunnel_protection_ipsec_profile": schema.StringAttribute{
+				MarkdownDescription: "IPSec policy profile",
 				Computed:            true,
 			},
 			"crypto_ipsec_df_bit": schema.StringAttribute{
@@ -278,6 +282,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"ip_router_isis": schema.StringAttribute{
 				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ip_tcp_adjust_mss": schema.Int64Attribute{
+				MarkdownDescription: "Adjust the mss of transit packets",
 				Computed:            true,
 			},
 		},

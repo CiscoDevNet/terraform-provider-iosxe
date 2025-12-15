@@ -83,6 +83,14 @@ resource "iosxe_yang" "PreReq0" {
 	}
 }
 
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native"
+	delete = false
+	attributes = {
+		"ipv6/unicast-routing" = ""
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -93,7 +101,7 @@ func testAccIosxeBGPAddressFamilyVPNv6Config_minimum() string {
 	config := `resource "iosxe_bgp_address_family_vpnv6" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -106,7 +114,7 @@ func testAccIosxeBGPAddressFamilyVPNv6Config_all() string {
 	config := `resource "iosxe_bgp_address_family_vpnv6" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

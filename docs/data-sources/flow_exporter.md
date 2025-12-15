@@ -33,6 +33,7 @@ data "iosxe_flow_exporter" "example" {
 
 - `description` (String) Provide a description for this Flow Exporter
 - `destination_ip` (String)
+- `destination_ip_vrf` (String) Optional VRF label
 - `export_protocol` (String) Export protocol version
 - `id` (String) The path of the retrieved object.
 - `option_application_attributes_timeout` (Number) Option resend time

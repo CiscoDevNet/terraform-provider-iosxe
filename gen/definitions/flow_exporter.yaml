@@ -11,6 +11,11 @@ attributes:
     xpath: destination/ipdest/ip
     tf_name: destination_ip
     example: 1.1.1.1
+  - yang_name: destination/destination-choice/ipdest/ipdest/vrf
+    xpath: destination/ipdest/vrf
+    tf_name: destination_ip_vrf
+    example: VRF1
+    exclude_test: true
   - yang_name: source/interface-choice/Loopback/Loopback
     xpath: source/Loopback
     tf_name: source_loopback

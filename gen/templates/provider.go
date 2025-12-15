@@ -44,6 +44,9 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
+var _ provider.Provider = &IosxeProvider{}
+var _ provider.ProviderWithActions = &IosxeProvider{}
+
 const (
 	YangPatch = false
 )
@@ -73,10 +76,11 @@ type IosxeProviderModel struct {
 }
 
 type IosxeProviderModelDevice struct {
-	Name    types.String `tfsdk:"name"`
-	URL     types.String `tfsdk:"url"`
-	Host    types.String `tfsdk:"host"`
-	Managed types.Bool   `tfsdk:"managed"`
+	Name     types.String `tfsdk:"name"`
+	URL      types.String `tfsdk:"url"`
+	Host     types.String `tfsdk:"host"`
+	Protocol types.String `tfsdk:"protocol"`
+	Managed  types.Bool   `tfsdk:"managed"`
 }
 
 // IosxeProviderData describes the data maintained by the provider.
@@ -175,6 +179,13 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 						"host": schema.StringAttribute{
 							MarkdownDescription: "Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`.",
 							Optional:            true,
+						},
+						"protocol": schema.StringAttribute{
+							MarkdownDescription: "Protocol to use for this device. Either `restconf` (HTTPS) or `netconf` (SSH). Overrides the global protocol setting if specified.",
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("restconf", "netconf"),
+							},
 						},
 						"managed": schema.BoolAttribute{
 							MarkdownDescription: "Enable or disable device management. This can be used to temporarily skip a device due to maintainance for example. Defaults to `true`.",
@@ -523,6 +534,12 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			}
 		}
 
+		// Determine device protocol (prefer device-specific over global)
+		deviceProtocol := protocol
+		if !device.Protocol.IsNull() && !device.Protocol.IsUnknown() {
+			deviceProtocol = device.Protocol.ValueString()
+		}
+
 		// Determine device host (prefer host over url)
 		var deviceHost string
 		if !device.Host.IsNull() {
@@ -530,14 +547,14 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		} else {
 			deviceHost = device.URL.ValueString()
 			// Strip https:// prefix for NETCONF
-			if protocol == "netconf" {
+			if deviceProtocol == "netconf" {
 				deviceHost = strings.TrimPrefix(deviceHost, "https://")
 				deviceHost = strings.TrimPrefix(deviceHost, "http://")
 			}
 		}
 
-		// Create device client based on protocol
-		if protocol == "restconf" {
+		// Create device client based on device-specific protocol
+		if deviceProtocol == "restconf" {
 			// For RESTCONF, add https:// prefix if not present
 			url := deviceHost
 			if !strings.HasPrefix(url, "https://") && !strings.HasPrefix(url, "http://") {
@@ -551,7 +568,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 		} else {
 			// NETCONF
 			// Use device name as identifier for better log correlation
@@ -575,7 +592,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 		}
 	}
 
@@ -583,7 +600,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	resp.ResourceData = &data
 }
 
-func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resource {
+func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewYangResource,
 		NewSaveConfigResource,
@@ -595,12 +612,19 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 	}
 }
 
-func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
+func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewYangDataSource,
 		{{- range .}}
 		New{{camelCase .Name}}DataSource,
 		{{- end}}
+	}
+}
+
+func (p *IosxeProvider) Actions(_ context.Context) []func() action.Action {
+	return []func() action.Action{
+		NewCommitAction,
+		NewSaveConfigAction,
 	}
 }
 

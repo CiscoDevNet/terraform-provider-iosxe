@@ -76,6 +76,10 @@ func (d *InterfaceISISDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "",
 				Required:            true,
 			},
+			"network_point_to_point": schema.BoolAttribute{
+				MarkdownDescription: "Set ISIS network type to point-to-point",
+				Computed:            true,
+			},
 			"ipv4_metric_levels": schema.ListNestedAttribute{
 				MarkdownDescription: "Configure IS-IS metric for interface",
 				Computed:            true,

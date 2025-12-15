@@ -40,7 +40,6 @@ import (
 type Crypto struct {
 	Device                        types.String `tfsdk:"device"`
 	Id                            types.String `tfsdk:"id"`
-	DeleteMode                    types.String `tfsdk:"delete_mode"`
 	EngineComplianceShieldDisable types.Bool   `tfsdk:"engine_compliance_shield_disable"`
 }
 

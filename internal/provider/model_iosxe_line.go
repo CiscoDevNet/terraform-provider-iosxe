@@ -105,6 +105,7 @@ type LineAux struct {
 	ExecTimeoutMinutes  types.Int64  `tfsdk:"exec_timeout_minutes"`
 	ExecTimeoutSeconds  types.Int64  `tfsdk:"exec_timeout_seconds"`
 	Monitor             types.Bool   `tfsdk:"monitor"`
+	Stopbits            types.String `tfsdk:"stopbits"`
 	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
 }
 type LineVtyAccessClasses struct {
@@ -342,6 +343,9 @@ func (data Line) toBody(ctx context.Context) string {
 				if item.Monitor.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"monitor", map[string]string{})
 				}
+			}
+			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"stopbits", item.Stopbits.ValueString())
 			}
 			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
 				if item.TransportOutputNone.ValueBool() {
@@ -585,6 +589,9 @@ func (data Line) toBodyXML(ctx context.Context) string {
 				} else {
 					cBody = helpers.RemoveFromXPath(cBody, "monitor")
 				}
+			}
+			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stopbits", item.Stopbits.ValueString())
 			}
 			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
 				if item.TransportOutputNone.ValueBool() {
@@ -973,6 +980,11 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Aux[i].Monitor = types.BoolNull()
 		}
+		if value := r.Get("stopbits"); value.Exists() && !data.Aux[i].Stopbits.IsNull() {
+			data.Aux[i].Stopbits = types.StringValue(value.String())
+		} else {
+			data.Aux[i].Stopbits = types.StringNull()
+		}
 		if value := r.Get("transport.output.none"); !data.Aux[i].TransportOutputNone.IsNull() {
 			if value.Exists() {
 				data.Aux[i].TransportOutputNone = types.BoolValue(true)
@@ -1351,6 +1363,11 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Aux[i].Monitor = types.BoolNull()
 		}
+		if value := helpers.GetFromXPath(r, "stopbits"); value.Exists() && !data.Aux[i].Stopbits.IsNull() {
+			data.Aux[i].Stopbits = types.StringValue(value.String())
+		} else {
+			data.Aux[i].Stopbits = types.StringNull()
+		}
 		if value := helpers.GetFromXPath(r, "transport/output/none"); !data.Aux[i].TransportOutputNone.IsNull() {
 			if value.Exists() {
 				data.Aux[i].TransportOutputNone = types.BoolValue(true)
@@ -1572,6 +1589,9 @@ func (data *Line) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.Monitor = types.BoolValue(false)
 			}
+			if cValue := v.Get("stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("transport.output.none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
 			} else {
@@ -1792,6 +1812,9 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.Monitor = types.BoolValue(false)
 			}
+			if cValue := v.Get("stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("transport.output.none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
 			} else {
@@ -2007,6 +2030,9 @@ func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.Monitor = types.BoolValue(true)
 			} else {
 				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
@@ -2224,6 +2250,9 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.Monitor = types.BoolValue(false)
 			}
+			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
 			} else {
@@ -2261,6 +2290,9 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 			if found {
 				if !state.Aux[i].TransportOutputNone.IsNull() && data.Aux[j].TransportOutputNone.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/transport/output/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Aux[i].Stopbits.IsNull() && data.Aux[j].Stopbits.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/stopbits", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Aux[i].Monitor.IsNull() && data.Aux[j].Monitor.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/monitor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -2559,6 +2591,9 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 			if found {
 				if !state.Aux[i].TransportOutputNone.IsNull() && data.Aux[j].TransportOutputNone.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/transport/output/none", predicates))
+				}
+				if !state.Aux[i].Stopbits.IsNull() && data.Aux[j].Stopbits.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/stopbits", predicates))
 				}
 				if !state.Aux[i].Monitor.IsNull() && data.Aux[j].Monitor.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/monitor", predicates))

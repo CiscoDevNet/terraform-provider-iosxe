@@ -60,6 +60,7 @@ type ClassMap struct {
 	MatchMethodMab                            types.Bool                               `tfsdk:"match_method_mab"`
 	MatchResultTypeMethodMabAuthoritative     types.Bool                               `tfsdk:"match_result_type_method_mab_authoritative"`
 	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
+	MatchCos                                  types.List                               `tfsdk:"match_cos"`
 	Description                               types.String                             `tfsdk:"description"`
 	MatchAccessGroupName                      types.List                               `tfsdk:"match_access_group_name"`
 	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
@@ -85,6 +86,7 @@ type ClassMapData struct {
 	MatchMethodMab                            types.Bool                               `tfsdk:"match_method_mab"`
 	MatchResultTypeMethodMabAuthoritative     types.Bool                               `tfsdk:"match_result_type_method_mab_authoritative"`
 	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
+	MatchCos                                  types.List                               `tfsdk:"match_cos"`
 	Description                               types.String                             `tfsdk:"description"`
 	MatchAccessGroupName                      types.List                               `tfsdk:"match_access_group_name"`
 	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
@@ -204,6 +206,11 @@ func (data ClassMap) toBody(ctx context.Context) string {
 		var values []string
 		data.MatchDscp.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.dscp", values)
+	}
+	if !data.MatchCos.IsNull() && !data.MatchCos.IsUnknown() {
+		var values []int
+		data.MatchCos.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.cos", values)
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
@@ -340,6 +347,13 @@ func (data ClassMap) toBodyXML(ctx context.Context) string {
 		data.MatchDscp.ElementsAs(ctx, &values, false)
 		for _, v := range values {
 			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/dscp", v)
+		}
+	}
+	if !data.MatchCos.IsNull() && !data.MatchCos.IsUnknown() {
+		var values []int
+		data.MatchCos.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/cos", v)
 		}
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
@@ -526,6 +540,11 @@ func (data *ClassMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchDscp = types.ListNull(types.StringType)
 	}
+	if value := res.Get(prefix + "match.cos"); value.Exists() && !data.MatchCos.IsNull() {
+		data.MatchCos = helpers.GetInt64List(value.Array())
+	} else {
+		data.MatchCos = types.ListNull(types.Int64Type)
+	}
 	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
 		data.Description = types.StringValue(value.String())
 	} else {
@@ -697,6 +716,11 @@ func (data *ClassMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.MatchDscp = types.ListNull(types.StringType)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/cos"); value.Exists() && !data.MatchCos.IsNull() {
+		data.MatchCos = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.MatchCos = types.ListNull(types.Int64Type)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
 		data.Description = types.StringValue(value.String())
 	} else {
@@ -805,6 +829,11 @@ func (data *ClassMap) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchDscp = types.ListNull(types.StringType)
 	}
+	if value := res.Get(prefix + "match.cos"); value.Exists() {
+		data.MatchCos = helpers.GetInt64List(value.Array())
+	} else {
+		data.MatchCos = types.ListNull(types.Int64Type)
+	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
@@ -911,6 +940,11 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchDscp = types.ListNull(types.StringType)
 	}
+	if value := res.Get(prefix + "match.cos"); value.Exists() {
+		data.MatchCos = helpers.GetInt64List(value.Array())
+	} else {
+		data.MatchCos = types.ListNull(types.Int64Type)
+	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
@@ -1012,6 +1046,11 @@ func (data *ClassMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MatchDscp = helpers.GetStringListXML(value.Array())
 	} else {
 		data.MatchDscp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/cos"); value.Exists() {
+		data.MatchCos = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.MatchCos = types.ListNull(types.Int64Type)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
@@ -1115,6 +1154,11 @@ func (data *ClassMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MatchDscp = types.ListNull(types.StringType)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/cos"); value.Exists() {
+		data.MatchCos = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.MatchCos = types.ListNull(types.Int64Type)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
@@ -1206,6 +1250,27 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.MatchCos.IsNull() {
+		if data.MatchCos.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/cos", state.getPath()))
+		} else {
+			var dataValues, stateValues []int
+			data.MatchCos.ElementsAs(ctx, &dataValues, false)
+			state.MatchCos.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/cos=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	if !state.MatchDscp.IsNull() {
 		if data.MatchDscp.IsNull() {
@@ -1398,6 +1463,31 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
+	if !state.MatchCos.IsNull() {
+		if data.MatchCos.IsNull() {
+			var values []string
+			state.MatchCos.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/cos[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []int
+			data.MatchCos.ElementsAs(ctx, &dataValues, false)
+			state.MatchCos.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/cos[.=%v]", v))
+				}
+			}
+		}
+	}
 	if !state.MatchDscp.IsNull() {
 		if data.MatchDscp.IsNull() {
 			var values []string
@@ -1578,6 +1668,9 @@ func (data *ClassMap) getDeletePaths(ctx context.Context) []string {
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
 	}
+	if !data.MatchCos.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/cos", data.getPath()))
+	}
 	if !data.MatchDscp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/dscp", data.getPath()))
 	}
@@ -1658,6 +1751,13 @@ func (data *ClassMap) addDeletePathsXML(ctx context.Context, body string) string
 	}
 	if !data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+	if !data.MatchCos.IsNull() {
+		var values []int64
+		data.MatchCos.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/match/cos[.=%v]", v))
+		}
 	}
 	if !data.MatchDscp.IsNull() {
 		var values []string

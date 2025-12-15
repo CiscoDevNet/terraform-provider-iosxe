@@ -142,6 +142,11 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
+			"match_cos": schema.ListAttribute{
+				MarkdownDescription: "IEEE 802.1Q/ISL class of service/user priority values",
+				ElementType:         types.Int64Type,
+				Computed:            true,
+			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: "Class-Map description",
 				Computed:            true,
