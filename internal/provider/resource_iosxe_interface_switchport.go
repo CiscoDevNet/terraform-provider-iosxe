@@ -142,8 +142,56 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 			"trunk_allowed_vlans": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 224),
+					stringvalidator.RegexMatches(regexp.MustCompile(`([0-9]+[,-]?)*`), ""),
+				},
 			},
 			"trunk_allowed_vlans_none": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").String,
+				Optional:            true,
+			},
+			"trunk_allowed_vlans_all": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").String,
+				Optional:            true,
+			},
+			"trunk_allowed_vlans_add": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vlans": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 219),
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-9]+[,-]?)*`), ""),
+							},
+						},
+					},
+				},
+			},
+			"trunk_allowed_vlans_except": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("all VLANs except the following").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 216),
+					stringvalidator.RegexMatches(regexp.MustCompile(`([0-9]+[,-]?)*`), ""),
+				},
+			},
+			"trunk_allowed_vlans_remove": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VLAN IDs of disallowed VLANs when this port is in trunking mode").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 216),
+					stringvalidator.RegexMatches(regexp.MustCompile(`([0-9]+[,-]?)*`), ""),
+				},
+			},
+			"trunk_allowed_vlans_legacy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"trunk_allowed_vlans_none_legacy": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").String,
 				Optional:            true,
 			},

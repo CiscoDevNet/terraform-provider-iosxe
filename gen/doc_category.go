@@ -41,6 +41,7 @@ type YamlConfig struct {
 }
 
 var docPaths = []string{"./docs/data-sources/", "./docs/resources/"}
+var generalDocPaths = []string{"./docs/data-sources/", "./docs/resources/", "./docs/actions/"}
 
 func SnakeCase(s string) string {
 	var g []string
@@ -89,7 +90,7 @@ func main() {
 
 	// Update general resources with "General" subcategory
 	for _, resource := range generalResources {
-		for _, path := range docPaths {
+		for _, path := range generalDocPaths {
 			filename := fmt.Sprintf("%s%s.md", path, resource)
 			content, err := os.ReadFile(filename)
 			if err != nil {

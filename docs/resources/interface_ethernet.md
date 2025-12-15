@@ -43,9 +43,6 @@ resource "iosxe_interface_ethernet" "example" {
       merge         = false
     }
   ]
-  bfd_template            = "bfd_template1"
-  bfd_enable              = false
-  bfd_local_address       = "1.2.3.4"
   ipv6_enable             = true
   ipv6_mtu                = 1300
   ipv6_nd_ra_suppress_all = true
@@ -62,18 +59,19 @@ resource "iosxe_interface_ethernet" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout                             = 300
-  spanning_tree_link_type                 = "point-to-point"
-  bpduguard_enable                        = false
-  bpduguard_disable                       = false
-  spanning_tree_portfast                  = true
-  spanning_tree_portfast_disable          = false
-  spanning_tree_portfast_trunk            = true
-  spanning_tree_portfast_edge             = false
-  ip_dhcp_relay_information_option_vpn_id = true
-  negotiation_auto                        = false
-  service_policy_input                    = "POLICY1"
-  service_policy_output                   = "POLICY1"
+  arp_timeout                    = 300
+  spanning_tree_link_type        = "point-to-point"
+  bpduguard_enable               = false
+  bpduguard_disable              = false
+  spanning_tree_portfast         = true
+  spanning_tree_portfast_disable = false
+  spanning_tree_portfast_trunk   = true
+  spanning_tree_portfast_edge    = false
+  negotiation_auto               = false
+  service_instance = [
+    {
+    }
+  ]
   ip_flow_monitors = [
     {
       name      = "MON1"
@@ -84,7 +82,6 @@ resource "iosxe_interface_ethernet" "example" {
   snmp_trap_link_status            = false
   logging_event_link_status_enable = false
   cdp_enable                       = true
-  cdp_tlv_app                      = false
   cdp_tlv_location                 = false
   cdp_tlv_server_location          = false
   ip_nat_inside                    = true
@@ -251,6 +248,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
   - Range: `64`-`18000`
 - `negotiation_auto` (Boolean) Enable link autonegotiation
+- `service_instance` (Attributes List) Configure Ether Service Instance (see [below for nested schema](#nestedatt--service_instance))
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
@@ -365,6 +363,19 @@ Required:
 Optional:
 
 - `link_local` (Boolean) Use link-local address
+
+
+<a id="nestedatt--service_instance"></a>
+### Nested Schema for `service_instance`
+
+Required:
+
+- `id` (Number) - Range: `1`-`8000`
+
+Optional:
+
+- `encapsulation_untagged` (Boolean) Untagged encapsulation
+- `ethernet` (Boolean) Configure an Ethernet Instance
 
 
 <a id="nestedatt--source_template"></a>

@@ -26,26 +26,42 @@ resource "iosxe_system" "example" {
   login_on_failure_log        = true
   login_on_success            = true
   login_on_success_log        = true
-  ip_name_servers             = ["1.2.3.4"]
+  multicast_routing_vrfs = [
+    {
+      vrf = "VRF1"
+    }
+  ]
+  ip_name_servers = ["1.2.3.4"]
   ip_name_servers_vrf = [
     {
       vrf     = "VRF1"
       servers = ["2.3.4.5"]
     }
   ]
-  ip_domain_lookup_nsap                              = true
-  ip_domain_lookup_recursive                         = true
-  diagnostic_bootup_level                            = "minimal"
-  memory_free_low_watermark_processor                = 203038
-  ip_ssh_time_out                                    = 120
-  ip_ssh_authentication_retries                      = 3
-  call_home_contact_email                            = "email@test.com"
-  call_home_cisco_tac_1_profile_active               = true
-  call_home_cisco_tac_1_destination_transport_method = "email"
-  ip_nbar_classification_dns_classify_by_domain      = true
-  ip_multicast_route_limit                           = 200000
-  ip_domain_list_vrf_domain                          = "example.com"
-  ip_domain_list_vrf                                 = "VRF1"
+  ip_domain_lookup_nsap                                     = true
+  ip_domain_lookup_recursive                                = true
+  diagnostic_bootup_level                                   = "minimal"
+  memory_free_low_watermark_processor                       = 203038
+  ip_ssh_time_out                                           = 120
+  ip_ssh_authentication_retries                             = 3
+  ip_ssh_bulk_mode                                          = true
+  ip_ssh_bulk_mode_window_size                              = 262144
+  call_home_contact_email                                   = "email@test.com"
+  call_home_cisco_tac_1_profile_active                      = true
+  call_home_cisco_tac_1_destination_transport_method        = "email"
+  ip_nbar_classification_dns_classify_by_domain             = true
+  ip_multicast_route_limit                                  = 200000
+  igmp_snooping_querier                                     = true
+  igmp_snooping_querier_version                             = 2
+  igmp_snooping_querier_max_response_time                   = 10
+  igmp_snooping_querier_timer_expiry                        = 120
+  ip_domain_list_vrf_domain                                 = "example.com"
+  ip_domain_list_vrf                                        = "VRF1"
+  ip_routing_protocol_purge_interface                       = true
+  ip_cef_load_sharing_algorithm_include_ports_source        = true
+  ip_cef_load_sharing_algorithm_include_ports_destination   = true
+  ipv6_cef_load_sharing_algorithm_include_ports_source      = true
+  ipv6_cef_load_sharing_algorithm_include_ports_destination = true
 }
 ```
 
@@ -90,6 +106,13 @@ resource "iosxe_system" "example" {
 - `ethernet_cfm_alarm_config_reset` (Number) msec (default 10000 msec)
   - Range: `2500`-`10000`
 - `hostname` (String) Set system's network name
+- `igmp_snooping_querier` (Boolean) IGMP Snooping Querier disable/enable
+- `igmp_snooping_querier_max_response_time` (Number) IGMP Snooping Querier maximum response time (sec)
+  - Range: `1`-`25`
+- `igmp_snooping_querier_timer_expiry` (Number) IGMP Snooping Querier time out (sec)
+  - Range: `60`-`300`
+- `igmp_snooping_querier_version` (Number) IGMP Snooping Querier version
+  - Range: `1`-`3`
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
 - `ip_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
 - `ip_cef_load_sharing_algorithm_include_ports_source` (Boolean)
@@ -204,8 +227,6 @@ resource "iosxe_system" "example" {
 - `login_on_success_log` (Boolean) Generate syslogs on successful logins
 - `memory_free_low_watermark_processor` (Number) low water mark of memory in KB
   - Range: `1`-`3994575`
-- `mld_snooping` (Boolean) Global MLD Snooping enable for Catalyst Vlans
-- `mld_snooping_querier` (Boolean) MLD querier disable/enable
 - `mtu` (Number) - Range: `1500`-`9198`
 - `multicast_routing_switch` (Boolean) Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))

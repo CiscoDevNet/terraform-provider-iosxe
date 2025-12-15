@@ -170,6 +170,10 @@ type System struct {
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
 	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
+	IgmpSnoopingQuerier                                    types.Bool                                          `tfsdk:"igmp_snooping_querier"`
+	IgmpSnoopingQuerierVersion                             types.Int64                                         `tfsdk:"igmp_snooping_querier_version"`
+	IgmpSnoopingQuerierMaxResponseTime                     types.Int64                                         `tfsdk:"igmp_snooping_querier_max_response_time"`
+	IgmpSnoopingQuerierTimerExpiry                         types.Int64                                         `tfsdk:"igmp_snooping_querier_timer_expiry"`
 	SecurityPasswordsMinLength                             types.Int64                                         `tfsdk:"security_passwords_min_length"`
 	IpDomainListNames                                      types.List                                          `tfsdk:"ip_domain_list_names"`
 	IpDomainListVrfDomain                                  types.String                                        `tfsdk:"ip_domain_list_vrf_domain"`
@@ -323,6 +327,10 @@ type SystemData struct {
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
 	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
+	IgmpSnoopingQuerier                                    types.Bool                                          `tfsdk:"igmp_snooping_querier"`
+	IgmpSnoopingQuerierVersion                             types.Int64                                         `tfsdk:"igmp_snooping_querier_version"`
+	IgmpSnoopingQuerierMaxResponseTime                     types.Int64                                         `tfsdk:"igmp_snooping_querier_max_response_time"`
+	IgmpSnoopingQuerierTimerExpiry                         types.Int64                                         `tfsdk:"igmp_snooping_querier_timer_expiry"`
 	SecurityPasswordsMinLength                             types.Int64                                         `tfsdk:"security_passwords_min_length"`
 	IpDomainListNames                                      types.List                                          `tfsdk:"ip_domain_list_names"`
 	IpDomainListVrfDomain                                  types.String                                        `tfsdk:"ip_domain_list_vrf_domain"`
@@ -847,6 +855,20 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpMulticastRouteLimit.IsNull() && !data.IpMulticastRouteLimit.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit", strconv.FormatInt(data.IpMulticastRouteLimit.ValueInt64(), 10))
+	}
+	if !data.IgmpSnoopingQuerier.IsNull() && !data.IgmpSnoopingQuerier.IsUnknown() {
+		if data.IgmpSnoopingQuerier.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-conf.querier", map[string]string{})
+		}
+	}
+	if !data.IgmpSnoopingQuerierVersion.IsNull() && !data.IgmpSnoopingQuerierVersion.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.version", strconv.FormatInt(data.IgmpSnoopingQuerierVersion.ValueInt64(), 10))
+	}
+	if !data.IgmpSnoopingQuerierMaxResponseTime.IsNull() && !data.IgmpSnoopingQuerierMaxResponseTime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.max-response-time", strconv.FormatInt(data.IgmpSnoopingQuerierMaxResponseTime.ValueInt64(), 10))
+	}
+	if !data.IgmpSnoopingQuerierTimerExpiry.IsNull() && !data.IgmpSnoopingQuerierTimerExpiry.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.timer.expiry", strconv.FormatInt(data.IgmpSnoopingQuerierTimerExpiry.ValueInt64(), 10))
 	}
 	if !data.SecurityPasswordsMinLength.IsNull() && !data.SecurityPasswordsMinLength.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:security.passwords.min-length", strconv.FormatInt(data.SecurityPasswordsMinLength.ValueInt64(), 10))
@@ -1734,6 +1756,22 @@ func (data System) toBodyXML(ctx context.Context) string {
 	}
 	if !data.IpMulticastRouteLimit.IsNull() && !data.IpMulticastRouteLimit.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", strconv.FormatInt(data.IpMulticastRouteLimit.ValueInt64(), 10))
+	}
+	if !data.IgmpSnoopingQuerier.IsNull() && !data.IgmpSnoopingQuerier.IsUnknown() {
+		if data.IgmpSnoopingQuerier.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier")
+		}
+	}
+	if !data.IgmpSnoopingQuerierVersion.IsNull() && !data.IgmpSnoopingQuerierVersion.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version", strconv.FormatInt(data.IgmpSnoopingQuerierVersion.ValueInt64(), 10))
+	}
+	if !data.IgmpSnoopingQuerierMaxResponseTime.IsNull() && !data.IgmpSnoopingQuerierMaxResponseTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time", strconv.FormatInt(data.IgmpSnoopingQuerierMaxResponseTime.ValueInt64(), 10))
+	}
+	if !data.IgmpSnoopingQuerierTimerExpiry.IsNull() && !data.IgmpSnoopingQuerierTimerExpiry.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry", strconv.FormatInt(data.IgmpSnoopingQuerierTimerExpiry.ValueInt64(), 10))
 	}
 	if !data.SecurityPasswordsMinLength.IsNull() && !data.SecurityPasswordsMinLength.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:security/passwords/min-length", strconv.FormatInt(data.SecurityPasswordsMinLength.ValueInt64(), 10))
@@ -2980,6 +3018,30 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	} else {
 		data.IpMulticastRouteLimit = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-conf.querier"); !data.IgmpSnoopingQuerier.IsNull() {
+		if value.Exists() {
+			data.IgmpSnoopingQuerier = types.BoolValue(true)
+		} else {
+			data.IgmpSnoopingQuerier = types.BoolValue(false)
+		}
+	} else {
+		data.IgmpSnoopingQuerier = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.version"); value.Exists() && !data.IgmpSnoopingQuerierVersion.IsNull() {
+		data.IgmpSnoopingQuerierVersion = types.Int64Value(value.Int())
+	} else {
+		data.IgmpSnoopingQuerierVersion = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.max-response-time"); value.Exists() && !data.IgmpSnoopingQuerierMaxResponseTime.IsNull() {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Value(value.Int())
+	} else {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.timer.expiry"); value.Exists() && !data.IgmpSnoopingQuerierTimerExpiry.IsNull() {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Value(value.Int())
+	} else {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Null()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:security.passwords.min-length"); value.Exists() && !data.SecurityPasswordsMinLength.IsNull() {
 		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
@@ -4302,6 +4364,30 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpMulticastRouteLimit = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier"); !data.IgmpSnoopingQuerier.IsNull() {
+		if value.Exists() {
+			data.IgmpSnoopingQuerier = types.BoolValue(true)
+		} else {
+			data.IgmpSnoopingQuerier = types.BoolValue(false)
+		}
+	} else {
+		data.IgmpSnoopingQuerier = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version"); value.Exists() && !data.IgmpSnoopingQuerierVersion.IsNull() {
+		data.IgmpSnoopingQuerierVersion = types.Int64Value(value.Int())
+	} else {
+		data.IgmpSnoopingQuerierVersion = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time"); value.Exists() && !data.IgmpSnoopingQuerierMaxResponseTime.IsNull() {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Value(value.Int())
+	} else {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry"); value.Exists() && !data.IgmpSnoopingQuerierTimerExpiry.IsNull() {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Value(value.Int())
+	} else {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:security/passwords/min-length"); value.Exists() && !data.SecurityPasswordsMinLength.IsNull() {
 		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
 	} else {
@@ -5125,6 +5211,20 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-conf.querier"); value.Exists() {
+		data.IgmpSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.IgmpSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.version"); value.Exists() {
+		data.IgmpSnoopingQuerierVersion = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.max-response-time"); value.Exists() {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.timer.expiry"); value.Exists() {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:security.passwords.min-length"); value.Exists() {
 		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
 	}
@@ -5852,6 +5952,20 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-conf.querier"); value.Exists() {
+		data.IgmpSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.IgmpSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.version"); value.Exists() {
+		data.IgmpSnoopingQuerierVersion = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.max-response-time"); value.Exists() {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-igmp:igmp.snooping-entry.snooping.querier-entry.timer.expiry"); value.Exists() {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:security.passwords.min-length"); value.Exists() {
 		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
 	}
@@ -6574,6 +6688,20 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit"); value.Exists() {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier"); value.Exists() {
+		data.IgmpSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.IgmpSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version"); value.Exists() {
+		data.IgmpSnoopingQuerierVersion = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time"); value.Exists() {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry"); value.Exists() {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:security/passwords/min-length"); value.Exists() {
 		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
@@ -7298,6 +7426,20 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit"); value.Exists() {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier"); value.Exists() {
+		data.IgmpSnoopingQuerier = types.BoolValue(true)
+	} else {
+		data.IgmpSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version"); value.Exists() {
+		data.IgmpSnoopingQuerierVersion = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time"); value.Exists() {
+		data.IgmpSnoopingQuerierMaxResponseTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry"); value.Exists() {
+		data.IgmpSnoopingQuerierTimerExpiry = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:security/passwords/min-length"); value.Exists() {
 		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
 	}
@@ -7551,6 +7693,18 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.SecurityPasswordsMinLength.IsNull() && data.SecurityPasswordsMinLength.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:security/passwords/min-length", state.getPath()))
+	}
+	if !state.IgmpSnoopingQuerierTimerExpiry.IsNull() && data.IgmpSnoopingQuerierTimerExpiry.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry", state.getPath()))
+	}
+	if !state.IgmpSnoopingQuerierMaxResponseTime.IsNull() && data.IgmpSnoopingQuerierMaxResponseTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time", state.getPath()))
+	}
+	if !state.IgmpSnoopingQuerierVersion.IsNull() && data.IgmpSnoopingQuerierVersion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version", state.getPath()))
+	}
+	if !state.IgmpSnoopingQuerier.IsNull() && data.IgmpSnoopingQuerier.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier", state.getPath()))
 	}
 	if !state.IpMulticastRouteLimit.IsNull() && data.IpMulticastRouteLimit.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", state.getPath()))
@@ -8462,6 +8616,18 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	if !state.SecurityPasswordsMinLength.IsNull() && data.SecurityPasswordsMinLength.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:security/passwords/min-length")
 	}
+	if !state.IgmpSnoopingQuerierTimerExpiry.IsNull() && data.IgmpSnoopingQuerierTimerExpiry.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry")
+	}
+	if !state.IgmpSnoopingQuerierMaxResponseTime.IsNull() && data.IgmpSnoopingQuerierMaxResponseTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time")
+	}
+	if !state.IgmpSnoopingQuerierVersion.IsNull() && data.IgmpSnoopingQuerierVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version")
+	}
+	if !state.IgmpSnoopingQuerier.IsNull() && data.IgmpSnoopingQuerier.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier")
+	}
 	if !state.IpMulticastRouteLimit.IsNull() && data.IpMulticastRouteLimit.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit")
 	}
@@ -9324,6 +9490,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.IpCefLoadSharingAlgorithmIncludePortsSource.IsNull() && !data.IpCefLoadSharingAlgorithmIncludePortsSource.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source", data.getPath()))
 	}
+	if !data.IgmpSnoopingQuerier.IsNull() && !data.IgmpSnoopingQuerier.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier", data.getPath()))
+	}
 
 	for i := range data.TrackObjects {
 		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
@@ -9488,6 +9657,18 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.SecurityPasswordsMinLength.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:security/passwords/min-length", data.getPath()))
+	}
+	if !data.IgmpSnoopingQuerierTimerExpiry.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry", data.getPath()))
+	}
+	if !data.IgmpSnoopingQuerierMaxResponseTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time", data.getPath()))
+	}
+	if !data.IgmpSnoopingQuerierVersion.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version", data.getPath()))
+	}
+	if !data.IgmpSnoopingQuerier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier", data.getPath()))
 	}
 	if !data.IpMulticastRouteLimit.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", data.getPath()))
@@ -9973,6 +10154,18 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.SecurityPasswordsMinLength.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:security/passwords/min-length")
+	}
+	if !data.IgmpSnoopingQuerierTimerExpiry.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry")
+	}
+	if !data.IgmpSnoopingQuerierMaxResponseTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time")
+	}
+	if !data.IgmpSnoopingQuerierVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version")
+	}
+	if !data.IgmpSnoopingQuerier.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier")
 	}
 	if !data.IpMulticastRouteLimit.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit")

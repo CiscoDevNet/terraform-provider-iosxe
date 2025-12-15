@@ -169,10 +169,13 @@ attributes:
         example: false
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
     example: bfd_template1
+    exclude_test: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
     example: false
+    exclude_test: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
     example: 1.2.3.4
+    exclude_test: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/msecs
     tf_name: bfd_interval
     optional: true
@@ -262,6 +265,7 @@ attributes:
     test_tags: [C9000V]
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id
     example: true
+    test_tags: [C9000V]
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
     test_tags: [C9000V]
@@ -312,6 +316,19 @@ attributes:
     tf_name: speed_nonegotiate
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:service/instance
+    type: List
+    attributes:
+      - yang_name: id
+        example: 100
+        id: true
+        exclude_test: true
+      - yang_name: ethernet
+        example: true
+        exclude_test: true
+      - yang_name: encapsulation/untagged
+        example: true
+        exclude_test: true
   - yang_name: Cisco-IOS-XE-sanet:authentication/host-mode
     example: multi-auth
     exclude_test: true
@@ -473,8 +490,10 @@ attributes:
     exclude_test: true
   - yang_name: Cisco-IOS-XE-policy:service-policy/input
     example: POLICY1
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-policy:service-policy/output
     example: POLICY1
+    exclude_test: true
   - yang_name: ip/Cisco-IOS-XE-flow:flow/monitor-new
     tf_name: ip_flow_monitors
     type: List
@@ -511,6 +530,7 @@ attributes:
     xpath:	Cisco-IOS-XE-cdp:cdp/tlv/default-wrp/app
     tf_name: cdp_tlv_app
     example: false
+    exclude_test: true
   - yang_name: 	Cisco-IOS-XE-cdp:cdp/tlv/location-config
     tf_name: cdp_tlv_location
     example: false

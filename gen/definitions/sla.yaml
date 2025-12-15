@@ -30,6 +30,12 @@ attributes:
         type: String
         description: Source Address
         example: 192.168.1.1
+      - yang_name: sla-param/icmp-echo-case/icmp-echo/frequency
+        xpath: icmp-echo/frequency
+        tf_name: icmp_echo_frequency
+        type: Int64
+        description: Frequency of an operation
+        example: 10
   - yang_name: schedule
     xpath: schedule
     tf_name: schedules

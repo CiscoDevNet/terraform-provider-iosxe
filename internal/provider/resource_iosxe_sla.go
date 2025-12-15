@@ -93,6 +93,10 @@ func (r *SLAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							MarkdownDescription: helpers.NewAttributeDescription("Source Address").String,
 							Optional:            true,
 						},
+						"icmp_echo_frequency": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Frequency of an operation").String,
+							Optional:            true,
+						},
 					},
 				},
 			},
