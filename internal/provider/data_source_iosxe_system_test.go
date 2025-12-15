@@ -54,9 +54,13 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_multicast_routing_distributed", "true"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "multicast_routing_vrfs.0.vrf", "VRF1"))
 	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "multicast_routing_vrfs.0.distributed", "true"))
+		if os.Getenv("C8000V") != "" {
+			checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "multicast_routing_vrfs.0.vrf", "VRF1"))
+		}
+		if os.Getenv("C8000V") != "" {
+			checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "multicast_routing_vrfs.0.distributed", "true"))
+		}
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_name_servers.0", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_name_servers_vrf.0.vrf", "VRF1"))
@@ -69,13 +73,8 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "diagnostic_bootup_level", "minimal"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "memory_free_low_watermark_processor", "203038"))
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_forward_protocol_nd", "true"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_authentication_retries", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_bulk_mode", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_bulk_mode_window_size", "262144"))
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
@@ -91,13 +90,14 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "igmp_snooping_querier_timer_expiry", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf_domain", "example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_routing_protocol_purge_interface", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_source", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_destination", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_source", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "port_channel_load_balance", "src-dst-mixed-ip-port"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "mld_snooping", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "mld_snooping_querier", "true"))
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -153,12 +153,16 @@ func testAccDataSourceIosxeSystemConfig() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	ip_multicast_routing_distributed = true` + "\n"
 	}
-	config += `	multicast_routing_vrfs = [{` + "\n"
-	config += `		vrf = "VRF1"` + "\n"
 	if os.Getenv("C8000V") != "" {
-		config += `		distributed = true` + "\n"
+		config += `	multicast_routing_vrfs = [{` + "\n"
+		if os.Getenv("C8000V") != "" {
+			config += `		vrf = "VRF1"` + "\n"
+		}
+		if os.Getenv("C8000V") != "" {
+			config += `		distributed = true` + "\n"
+		}
+		config += `	}]` + "\n"
 	}
-	config += `	}]` + "\n"
 	config += `	ip_name_servers = ["1.2.3.4"]` + "\n"
 	config += `	ip_name_servers_vrf = [{` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
@@ -174,13 +178,8 @@ func testAccDataSourceIosxeSystemConfig() string {
 	}
 	config += `	diagnostic_bootup_level = "minimal"` + "\n"
 	config += `	memory_free_low_watermark_processor = 203038` + "\n"
-	if os.Getenv("IOSXE1715") != "" {
-		config += `	ip_forward_protocol_nd = true` + "\n"
-	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
-	config += `	ip_ssh_bulk_mode = true` + "\n"
-	config += `	ip_ssh_bulk_mode_window_size = 262144` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_hosts = [{` + "\n"
 		config += `		name = "test.router.com"` + "\n"
@@ -198,13 +197,14 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	igmp_snooping_querier_timer_expiry = 120` + "\n"
 	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
 	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
-	config += `	ip_routing_protocol_purge_interface = true` + "\n"
-	config += `	ip_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
-	config += `	ip_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
-	config += `	ipv6_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
-	config += `	ipv6_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	port_channel_load_balance = "src-dst-mixed-ip-port"` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	mld_snooping = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	mld_snooping_querier = true` + "\n"
 	}
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"

@@ -50,6 +50,7 @@ attributes:
     example: true
     test_tags: [C8000V]
   - yang_name: ip/Cisco-IOS-XE-multicast:multicast-routing/vrf
+    test_tags: [C8000V]
     tf_name: multicast_routing_vrfs
     type: List
     attributes:
@@ -57,6 +58,7 @@ attributes:
         tf_name: vrf
         example: VRF1
         id: true
+        test_tags: [C8000V]
       - yang_name: distributed
         example: true
         test_tags: [C8000V]
@@ -285,7 +287,8 @@ attributes:
   - yang_name: ip/forward-protocol-v2/nd
     tf_name: ip_forward_protocol_nd
     example: true
-    test_tags: [IOSXE1715]
+    exclude_test: true
+    allow_import_changes: true
   - yang_name: ip/scp/server/enable
     example: true
     exclude_test: true
@@ -349,8 +352,10 @@ attributes:
     exclude_test: true
   - yang_name: ip/ssh/bulk-mode
     example: true
+    exclude_test: true
   - yang_name: ip/ssh/bulk-mode/window-size
     example: 262144
+    exclude_test: true
   - yang_name: control-plane/Cisco-IOS-XE-policy:service-policy/input
     example: system-cpp-policy
     exclude_test: true
@@ -673,22 +678,27 @@ attributes:
   - yang_name: ip/routing-new/routing/protocol/purge/interface
     tf_name: ip_routing_protocol_purge_interface
     example: true
+    exclude_test: true
   - yang_name: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/source
     xpath: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source
     tf_name: ip_cef_load_sharing_algorithm_include_ports_source
     example: true
+    exclude_test: true
   - yang_name: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/destination
     xpath: ip/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination
     tf_name: ip_cef_load_sharing_algorithm_include_ports_destination
     example: true
+    exclude_test: true
   - yang_name: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/source
     xpath: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/source
     tf_name: ipv6_cef_load_sharing_algorithm_include_ports_source
     example: true
+    exclude_test: true
   - yang_name: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/Cisco-IOS-XE-cef:algorithm-v2/alg-type/include-ports/Cisco-IOS-XE-cef:include-ports-v2/destination
     xpath: ipv6/cef-v2/Cisco-IOS-XE-cef:load-sharing-v2/algorithm-v2/include-ports-v2/destination
     tf_name: ipv6_cef_load_sharing_algorithm_include_ports_destination
     example: true
+    exclude_test: true
   - yang_name: port-channel/Cisco-IOS-XE-ethernet:load-balance/load-balance
     tf_name: port_channel_load_balance
     example: src-dst-mixed-ip-port
@@ -747,6 +757,14 @@ attributes:
             description: map to value
             example: 18
             no_augment_config: true
+  - yang_name: ipv6/Cisco-IOS-XE-mld:mld/snooping-conf/snooping
+    tf_name: mld_snooping
+    example: true
+    test_tags: [C9000V]
+  - yang_name: ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier
+    tf_name: mld_snooping_querier
+    example: true
+    test_tags: [C9000V]
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

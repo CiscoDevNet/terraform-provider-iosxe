@@ -152,6 +152,8 @@ data "iosxe_system" "example" {
 - `login_on_success` (Boolean) Set options for successful login attempt
 - `login_on_success_log` (Boolean) Generate syslogs on successful logins
 - `memory_free_low_watermark_processor` (Number) low water mark of memory in KB
+- `mld_snooping` (Boolean) Global MLD Snooping enable for Catalyst Vlans
+- `mld_snooping_querier` (Boolean) MLD querier disable/enable
 - `mtu` (Number)
 - `multicast_routing_switch` (Boolean) Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))

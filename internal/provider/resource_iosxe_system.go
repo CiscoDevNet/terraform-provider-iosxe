@@ -1032,6 +1032,14 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
+			"mld_snooping": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Global MLD Snooping enable for Catalyst Vlans").String,
+				Optional:            true,
+			},
+			"mld_snooping_querier": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("MLD querier disable/enable").String,
+				Optional:            true,
+			},
 		},
 	}
 }
