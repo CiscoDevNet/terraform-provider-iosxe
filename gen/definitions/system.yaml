@@ -622,6 +622,22 @@ attributes:
   - yang_name: ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit
     tf_name: ip_multicast_route_limit
     example: 200000
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-conf/querier
+    tf_name: igmp_snooping_querier
+    description: IGMP Snooping Querier disable/enable
+    example: true
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/version
+    tf_name: igmp_snooping_querier_version
+    description: IGMP Snooping Querier version
+    example: 2
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/max-response-time
+    tf_name: igmp_snooping_querier_max_response_time
+    description: IGMP Snooping Querier maximum response time (sec)
+    example: 10
+  - yang_name: ip/Cisco-IOS-XE-igmp:igmp/snooping-entry/snooping/querier-entry/timer/expiry
+    tf_name: igmp_snooping_querier_timer_expiry
+    description: IGMP Snooping Querier time out (sec)
+    example: 120
   - yang_name: Cisco-IOS-XE-aaa:security/passwords/min-length
     tf_name: security_passwords_min_length
     example: 8
