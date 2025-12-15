@@ -9,12 +9,16 @@ attributes:
     xpath: monitor-config/common-config/monitor/severity
     tf_name: monitor_severity
     example: informational
-  - yang_name: buffered/size-value
+  - yang_name: buffered-config/config-options/common-case/common-config/buffered/size-value
+    xpath: buffered-config/common-config/buffered/size-value
     tf_name: buffered_size
     example: 16000
-  - yang_name: buffered/severity-level
+    test_tags: [IOSXE1715]
+  - yang_name: buffered-config/config-options/common-case/common-config/buffered/severity-level
+    xpath: buffered-config/common-config/buffered/severity-level
     tf_name: buffered_severity
     example: informational
+    test_tags: [IOSXE1715]
   - yang_name: console-config/config-options/common-case/common-config/console/severity
     xpath: console-config/common-config/console/severity
     tf_name: console_severity

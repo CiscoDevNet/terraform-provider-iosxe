@@ -1,15 +1,13 @@
 resource "iosxe_logging" "example" {
-  monitor_severity  = "informational"
-  buffered_size     = 16000
-  buffered_severity = "informational"
-  facility          = "local0"
-  history_size      = 100
-  history_severity  = "informational"
-  trap              = true
-  trap_severity     = "informational"
-  origin_id_type    = "hostname"
-  source_interface  = "Loopback0"
-  console           = true
+  monitor_severity = "informational"
+  facility         = "local0"
+  history_size     = 100
+  history_severity = "informational"
+  trap             = true
+  trap_severity    = "informational"
+  origin_id_type   = "hostname"
+  source_interface = "Loopback0"
+  console          = true
   source_interfaces_vrf = [
     {
       vrf            = "VRF1"

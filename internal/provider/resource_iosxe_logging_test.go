@@ -36,8 +36,12 @@ import (
 func TestAccIosxeLogging(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "monitor_severity", "informational"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "buffered_size", "16000"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "buffered_severity", "informational"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "buffered_size", "16000"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "buffered_severity", "informational"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "facility", "local0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "history_size", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "history_severity", "informational"))
@@ -140,8 +144,12 @@ func testAccIosxeLoggingConfig_minimum() string {
 func testAccIosxeLoggingConfig_all() string {
 	config := `resource "iosxe_logging" "test" {` + "\n"
 	config += `	monitor_severity = "informational"` + "\n"
-	config += `	buffered_size = 16000` + "\n"
-	config += `	buffered_severity = "informational"` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	buffered_size = 16000` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	buffered_severity = "informational"` + "\n"
+	}
 	config += `	facility = "local0"` + "\n"
 	config += `	history_size = 100` + "\n"
 	config += `	history_severity = "informational"` + "\n"

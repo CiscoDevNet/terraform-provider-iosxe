@@ -260,10 +260,10 @@ func (data Logging) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"monitor-config.common-config.monitor.severity", data.MonitorSeverity.ValueString())
 	}
 	if !data.BufferedSize.IsNull() && !data.BufferedSize.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"buffered.size-value", strconv.FormatInt(data.BufferedSize.ValueInt64(), 10))
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"buffered-config.common-config.buffered.size-value", strconv.FormatInt(data.BufferedSize.ValueInt64(), 10))
 	}
 	if !data.BufferedSeverity.IsNull() && !data.BufferedSeverity.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"buffered.severity-level", data.BufferedSeverity.ValueString())
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"buffered-config.common-config.buffered.severity-level", data.BufferedSeverity.ValueString())
 	}
 	if !data.ConsoleSeverity.IsNull() && !data.ConsoleSeverity.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console-config.common-config.console.severity", data.ConsoleSeverity.ValueString())
@@ -570,10 +570,10 @@ func (data Logging) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/monitor-config/common-config/monitor/severity", data.MonitorSeverity.ValueString())
 	}
 	if !data.BufferedSize.IsNull() && !data.BufferedSize.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/buffered/size-value", strconv.FormatInt(data.BufferedSize.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/buffered-config/common-config/buffered/size-value", strconv.FormatInt(data.BufferedSize.ValueInt64(), 10))
 	}
 	if !data.BufferedSeverity.IsNull() && !data.BufferedSeverity.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/buffered/severity-level", data.BufferedSeverity.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/buffered-config/common-config/buffered/severity-level", data.BufferedSeverity.ValueString())
 	}
 	if !data.ConsoleSeverity.IsNull() && !data.ConsoleSeverity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/console-config/common-config/console/severity", data.ConsoleSeverity.ValueString())
@@ -919,12 +919,12 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MonitorSeverity = types.StringNull()
 	}
-	if value := res.Get(prefix + "buffered.size-value"); value.Exists() && !data.BufferedSize.IsNull() {
+	if value := res.Get(prefix + "buffered-config.common-config.buffered.size-value"); value.Exists() && !data.BufferedSize.IsNull() {
 		data.BufferedSize = types.Int64Value(value.Int())
 	} else {
 		data.BufferedSize = types.Int64Null()
 	}
-	if value := res.Get(prefix + "buffered.severity-level"); value.Exists() && !data.BufferedSeverity.IsNull() {
+	if value := res.Get(prefix + "buffered-config.common-config.buffered.severity-level"); value.Exists() && !data.BufferedSeverity.IsNull() {
 		data.BufferedSeverity = types.StringValue(value.String())
 	} else {
 		data.BufferedSeverity = types.StringNull()
@@ -1762,12 +1762,12 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MonitorSeverity = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/size-value"); value.Exists() && !data.BufferedSize.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered-config/common-config/buffered/size-value"); value.Exists() && !data.BufferedSize.IsNull() {
 		data.BufferedSize = types.Int64Value(value.Int())
 	} else {
 		data.BufferedSize = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/severity-level"); value.Exists() && !data.BufferedSeverity.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered-config/common-config/buffered/severity-level"); value.Exists() && !data.BufferedSeverity.IsNull() {
 		data.BufferedSeverity = types.StringValue(value.String())
 	} else {
 		data.BufferedSeverity = types.StringNull()
@@ -2607,10 +2607,10 @@ func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "monitor-config.common-config.monitor.severity"); value.Exists() {
 		data.MonitorSeverity = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "buffered.size-value"); value.Exists() {
+	if value := res.Get(prefix + "buffered-config.common-config.buffered.size-value"); value.Exists() {
 		data.BufferedSize = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "buffered.severity-level"); value.Exists() {
+	if value := res.Get(prefix + "buffered-config.common-config.buffered.severity-level"); value.Exists() {
 		data.BufferedSeverity = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "console-config.common-config.console.severity"); value.Exists() {
@@ -2984,10 +2984,10 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "monitor-config.common-config.monitor.severity"); value.Exists() {
 		data.MonitorSeverity = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "buffered.size-value"); value.Exists() {
+	if value := res.Get(prefix + "buffered-config.common-config.buffered.size-value"); value.Exists() {
 		data.BufferedSize = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "buffered.severity-level"); value.Exists() {
+	if value := res.Get(prefix + "buffered-config.common-config.buffered.severity-level"); value.Exists() {
 		data.BufferedSeverity = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "console-config.common-config.console.severity"); value.Exists() {
@@ -3357,10 +3357,10 @@ func (data *Logging) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/monitor-config/common-config/monitor/severity"); value.Exists() {
 		data.MonitorSeverity = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/size-value"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered-config/common-config/buffered/size-value"); value.Exists() {
 		data.BufferedSize = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/severity-level"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered-config/common-config/buffered/severity-level"); value.Exists() {
 		data.BufferedSeverity = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/common-config/console/severity"); value.Exists() {
@@ -3730,10 +3730,10 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/monitor-config/common-config/monitor/severity"); value.Exists() {
 		data.MonitorSeverity = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/size-value"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered-config/common-config/buffered/size-value"); value.Exists() {
 		data.BufferedSize = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered/severity-level"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/buffered-config/common-config/buffered/severity-level"); value.Exists() {
 		data.BufferedSeverity = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console-config/common-config/console/severity"); value.Exists() {
@@ -4753,10 +4753,10 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/console-config/common-config/console/severity", state.getPath()))
 	}
 	if !state.BufferedSeverity.IsNull() && data.BufferedSeverity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/buffered/severity-level", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/buffered-config/common-config/buffered/severity-level", state.getPath()))
 	}
 	if !state.BufferedSize.IsNull() && data.BufferedSize.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/buffered/size-value", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/buffered-config/common-config/buffered/size-value", state.getPath()))
 	}
 	if !state.MonitorSeverity.IsNull() && data.MonitorSeverity.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/monitor-config/common-config/monitor/severity", state.getPath()))
@@ -5528,10 +5528,10 @@ func (data *Logging) addDeletedItemsXML(ctx context.Context, state Logging, body
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/console-config/common-config/console/severity")
 	}
 	if !state.BufferedSeverity.IsNull() && data.BufferedSeverity.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered/severity-level")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered-config/common-config/buffered/severity-level")
 	}
 	if !state.BufferedSize.IsNull() && data.BufferedSize.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered/size-value")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/buffered-config/common-config/buffered/size-value")
 	}
 	if !state.MonitorSeverity.IsNull() && data.MonitorSeverity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/monitor-config/common-config/monitor/severity")
@@ -5706,10 +5706,10 @@ func (data *Logging) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/console-config/common-config/console/severity", data.getPath()))
 	}
 	if !data.BufferedSeverity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/buffered/severity-level", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/buffered-config/common-config/buffered/severity-level", data.getPath()))
 	}
 	if !data.BufferedSize.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/buffered/size-value", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/buffered-config/common-config/buffered/size-value", data.getPath()))
 	}
 	if !data.MonitorSeverity.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/monitor-config/common-config/monitor/severity", data.getPath()))
@@ -5902,10 +5902,10 @@ func (data *Logging) addDeletePathsXML(ctx context.Context, body string) string 
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/console-config/common-config/console/severity")
 	}
 	if !data.BufferedSeverity.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/buffered/severity-level")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/buffered-config/common-config/buffered/severity-level")
 	}
 	if !data.BufferedSize.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/buffered/size-value")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/buffered-config/common-config/buffered/size-value")
 	}
 	if !data.MonitorSeverity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/monitor-config/common-config/monitor/severity")
