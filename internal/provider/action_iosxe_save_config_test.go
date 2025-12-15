@@ -26,7 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestActionAccIosxeCommit(t *testing.T) {
+func TestActionAccIosxeSaveConfig(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_14_0),
@@ -35,15 +35,15 @@ func TestActionAccIosxeCommit(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testActionAccIosxeCommit(),
+				Config: testActionAccIosxeSaveConfig(),
 			},
 		},
 	})
 }
 
-func testActionAccIosxeCommit() string {
+func testActionAccIosxeSaveConfig() string {
 	return `
-	action "iosxe_commit" "test" {
+	action "iosxe_save_config" "test" {
 	}
 	`
 }

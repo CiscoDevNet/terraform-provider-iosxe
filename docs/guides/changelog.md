@@ -11,6 +11,7 @@ description: |-
 
 - Add `icmp_echo_frequency` attribute to `iosxe_sla` resource and data source
 - Add `iosxe_commit` action
+- Add `iosxe_save_config` action
 
 ## 0.13.0
 

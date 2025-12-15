@@ -624,6 +624,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 func (p *IosxeProvider) Actions(_ context.Context) []func() action.Action {
 	return []func() action.Action{
 		NewCommitAction,
+		NewSaveConfigAction,
 	}
 }
 
