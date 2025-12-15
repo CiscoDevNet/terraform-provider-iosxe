@@ -33,6 +33,7 @@ import (
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -42,6 +43,9 @@ import (
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/go-restconf"
 )
+
+var _ provider.Provider = &IosxeProvider{}
+var _ provider.ProviderWithActions = &IosxeProvider{}
 
 const (
 	YangPatch = false
@@ -596,7 +600,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	resp.ResourceData = &data
 }
 
-func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resource {
+func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewYangResource,
 		NewSaveConfigResource,
@@ -718,7 +722,7 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 	}
 }
 
-func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
+func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewYangDataSource,
 		NewAAADataSource,
@@ -834,6 +838,13 @@ func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.Dat
 		NewVLANGroupDataSource,
 		NewVRFDataSource,
 		NewVTPDataSource,
+	}
+}
+
+func (p *IosxeProvider) Actions(_ context.Context) []func() action.Action {
+	return []func() action.Action{
+		NewCommitAction,
+		NewSaveConfigAction,
 	}
 }
 

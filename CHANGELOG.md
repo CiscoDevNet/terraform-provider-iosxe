@@ -1,3 +1,9 @@
+## Unreleased
+
+- Add `icmp_echo_frequency` attribute to `iosxe_sla` resource and data source
+- Add `iosxe_commit` action
+- Add `iosxe_save_config` action
+
 ## 0.13.0
 
 - Add `stopbits` attribute to `iosxe_line` resource and data source

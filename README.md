@@ -32,6 +32,14 @@ As this is a community-driven project, support is provided by the community. If 
 
 We welcome contributions from the community! If you'd like to contribute, please follow our [contribution guidelines](https://github.com/CiscoDevNet/terraform-provider-iosxe/blob/main/CONTRIBUTING.md). Whether it's reporting bugs, suggesting features, or submitting pull requests, your involvement helps improve the project for everyone.
 
+## Security
+
+### Reporting Vulnerabilities
+Please see our [security policy](SECURITY.md) for reporting vulnerabilities.
+
+### Software Bill of Materials (SBOM)
+This project provides machine-readable SBOMs (Software Bill of Materials) in SPDX and CycloneDX formats for dependency transparency and vulnerability tracking. Find the latest SBOM in the `sbom/latest/` directory or attached to [GitHub Releases](https://github.com/CiscoDevNet/terraform-provider-iosxe/releases). See [SBOM.md](SBOM.md) for usage instructions and examples.
+
 ## Building The Provider
 
 1. Clone the repository
