@@ -745,6 +745,22 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Maximum number of multicast routes",
 				Computed:            true,
 			},
+			"igmp_snooping_querier": schema.BoolAttribute{
+				MarkdownDescription: "IGMP Snooping Querier disable/enable",
+				Computed:            true,
+			},
+			"igmp_snooping_querier_version": schema.Int64Attribute{
+				MarkdownDescription: "IGMP Snooping Querier version",
+				Computed:            true,
+			},
+			"igmp_snooping_querier_max_response_time": schema.Int64Attribute{
+				MarkdownDescription: "IGMP Snooping Querier maximum response time (sec)",
+				Computed:            true,
+			},
+			"igmp_snooping_querier_timer_expiry": schema.Int64Attribute{
+				MarkdownDescription: "IGMP Snooping Querier time out (sec)",
+				Computed:            true,
+			},
 			"security_passwords_min_length": schema.Int64Attribute{
 				MarkdownDescription: "Minimum length of passwords",
 				Computed:            true,

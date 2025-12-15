@@ -87,6 +87,10 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "call_home_cisco_tac_1_destination_transport_method", "email"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_nbar_classification_dns_classify_by_domain", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_multicast_route_limit", "200000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "igmp_snooping_querier", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "igmp_snooping_querier_version", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "igmp_snooping_querier_max_response_time", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "igmp_snooping_querier_timer_expiry", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_list_vrf_domain", "example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_list_vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_routing_protocol_purge_interface", "true"))
@@ -223,6 +227,10 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	call_home_cisco_tac_1_destination_transport_method = "email"` + "\n"
 	config += `	ip_nbar_classification_dns_classify_by_domain = true` + "\n"
 	config += `	ip_multicast_route_limit = 200000` + "\n"
+	config += `	igmp_snooping_querier = true` + "\n"
+	config += `	igmp_snooping_querier_version = 2` + "\n"
+	config += `	igmp_snooping_querier_max_response_time = 10` + "\n"
+	config += `	igmp_snooping_querier_timer_expiry = 120` + "\n"
 	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
 	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
 	config += `	ip_routing_protocol_purge_interface = true` + "\n"

@@ -44,6 +44,19 @@ data "iosxe_interface_switchport" "example" {
 - `mode_trunk` (Boolean) Set trunking mode to TRUNK unconditionally
 - `nonegotiate` (Boolean) Device will not engage in negotiation protocol on this interface
 - `trunk_allowed_vlans` (String)
+- `trunk_allowed_vlans_add` (Attributes List) (see [below for nested schema](#nestedatt--trunk_allowed_vlans_add))
+- `trunk_allowed_vlans_all` (Boolean) all VLANs
+- `trunk_allowed_vlans_except` (String) all VLANs except the following
+- `trunk_allowed_vlans_legacy` (String)
 - `trunk_allowed_vlans_none` (Boolean) no VLANs
+- `trunk_allowed_vlans_none_legacy` (Boolean) no VLANs
+- `trunk_allowed_vlans_remove` (String) VLAN IDs of disallowed VLANs when this port is in trunking mode
 - `trunk_native_vlan` (Number)
 - `trunk_native_vlan_tag` (Boolean)
+
+<a id="nestedatt--trunk_allowed_vlans_add"></a>
+### Nested Schema for `trunk_allowed_vlans_add`
+
+Read-Only:
+
+- `vlans` (String)
