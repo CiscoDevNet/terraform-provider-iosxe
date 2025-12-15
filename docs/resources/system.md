@@ -51,6 +51,10 @@ resource "iosxe_system" "example" {
   call_home_cisco_tac_1_destination_transport_method        = "email"
   ip_nbar_classification_dns_classify_by_domain             = true
   ip_multicast_route_limit                                  = 200000
+  igmp_snooping_querier                                     = true
+  igmp_snooping_querier_version                             = 2
+  igmp_snooping_querier_max_response_time                   = 10
+  igmp_snooping_querier_timer_expiry                        = 120
   ip_domain_list_vrf_domain                                 = "example.com"
   ip_domain_list_vrf                                        = "VRF1"
   ip_routing_protocol_purge_interface                       = true
