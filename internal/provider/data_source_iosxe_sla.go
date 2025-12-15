@@ -85,6 +85,10 @@ func (d *SLADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "Source Address",
 							Computed:            true,
 						},
+						"icmp_echo_frequency": schema.Int64Attribute{
+							MarkdownDescription: "Frequency of an operation",
+							Computed:            true,
+						},
 					},
 				},
 			},

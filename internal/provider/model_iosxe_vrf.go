@@ -67,6 +67,7 @@ type VRF struct {
 	Ipv6RouteTargetExportStitching                  []VRFIpv6RouteTargetExportStitching `tfsdk:"ipv6_route_target_export_stitching"`
 	Ipv6ImportMap                                   types.String                        `tfsdk:"ipv6_import_map"`
 	Ipv6ExportMap                                   types.String                        `tfsdk:"ipv6_export_map"`
+	Vnid                                            []VRFVnid                           `tfsdk:"vnid"`
 	Ipv4MdtDefaultAddress                           types.String                        `tfsdk:"ipv4_mdt_default_address"`
 	Ipv4MdtAutoDiscoveryVxlan                       types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_vxlan"`
 	Ipv4MdtAutoDiscoveryVxlanInterAs                types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_vxlan_inter_as"`
@@ -111,6 +112,7 @@ type VRFData struct {
 	Ipv6RouteTargetExportStitching                  []VRFIpv6RouteTargetExportStitching `tfsdk:"ipv6_route_target_export_stitching"`
 	Ipv6ImportMap                                   types.String                        `tfsdk:"ipv6_import_map"`
 	Ipv6ExportMap                                   types.String                        `tfsdk:"ipv6_export_map"`
+	Vnid                                            []VRFVnid                           `tfsdk:"vnid"`
 	Ipv4MdtDefaultAddress                           types.String                        `tfsdk:"ipv4_mdt_default_address"`
 	Ipv4MdtAutoDiscoveryVxlan                       types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_vxlan"`
 	Ipv4MdtAutoDiscoveryVxlanInterAs                types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_vxlan_inter_as"`
@@ -170,10 +172,18 @@ type VRFIpv6RouteTargetExportStitching struct {
 	Value     types.String `tfsdk:"value"`
 	Stitching types.Bool   `tfsdk:"stitching"`
 }
+type VRFVnid struct {
+	VnidValue       types.Int64              `tfsdk:"vnid_value"`
+	EvpnInstanceVni []VRFVnidEvpnInstanceVni `tfsdk:"evpn_instance_vni"`
+}
 type VRFIpv4MdtDataMulticast struct {
 	Address  types.String `tfsdk:"address"`
 	Wildcard types.String `tfsdk:"wildcard"`
 	List     types.String `tfsdk:"list"`
+}
+type VRFVnidEvpnInstanceVni struct {
+	VniNum   types.Int64 `tfsdk:"vni_num"`
+	CoreVlan types.Int64 `tfsdk:"core_vlan"`
 }
 
 // End of section. //template:end types
@@ -443,6 +453,25 @@ func (data VRF) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.Vnid) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid", []interface{}{})
+		for index, item := range data.Vnid {
+			if !item.VnidValue.IsNull() && !item.VnidValue.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid"+"."+strconv.Itoa(index)+"."+"vnid-value", strconv.FormatInt(item.VnidValue.ValueInt64(), 10))
+			}
+			if len(item.EvpnInstanceVni) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid"+"."+strconv.Itoa(index)+"."+"evpn-instance.vni.vni-num", []interface{}{})
+				for cindex, citem := range item.EvpnInstanceVni {
+					if !citem.VniNum.IsNull() && !citem.VniNum.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid"+"."+strconv.Itoa(index)+"."+"evpn-instance.vni.vni-num"+"."+strconv.Itoa(cindex)+"."+"vni-num", strconv.FormatInt(citem.VniNum.ValueInt64(), 10))
+					}
+					if !citem.CoreVlan.IsNull() && !citem.CoreVlan.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vnid"+"."+strconv.Itoa(index)+"."+"evpn-instance.vni.vni-num"+"."+strconv.Itoa(cindex)+"."+"core-vlan", strconv.FormatInt(citem.CoreVlan.ValueInt64(), 10))
+					}
+				}
+			}
+		}
+	}
 	if len(data.Ipv4MdtDataMulticast) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-family.ipv4.mdt.data.multicast", []interface{}{})
 		for index, item := range data.Ipv4MdtDataMulticast {
@@ -661,6 +690,27 @@ func (data VRF) toBodyXML(ctx context.Context) string {
 	}
 	if !data.Ipv6ExportMap.IsNull() && !data.Ipv6ExportMap.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv6/export/map", data.Ipv6ExportMap.ValueString())
+	}
+	if len(data.Vnid) > 0 {
+		for _, item := range data.Vnid {
+			cBody := netconf.Body{}
+			if !item.VnidValue.IsNull() && !item.VnidValue.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vnid-value", strconv.FormatInt(item.VnidValue.ValueInt64(), 10))
+			}
+			if len(item.EvpnInstanceVni) > 0 {
+				for _, citem := range item.EvpnInstanceVni {
+					ccBody := netconf.Body{}
+					if !citem.VniNum.IsNull() && !citem.VniNum.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "vni-num", strconv.FormatInt(citem.VniNum.ValueInt64(), 10))
+					}
+					if !citem.CoreVlan.IsNull() && !citem.CoreVlan.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "core-vlan", strconv.FormatInt(citem.CoreVlan.ValueInt64(), 10))
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "evpn-instance/vni/vni-num", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vnid", cBody.Res())
+		}
 	}
 	if !data.Ipv4MdtDefaultAddress.IsNull() && !data.Ipv4MdtDefaultAddress.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/mdt/default/address", data.Ipv4MdtDefaultAddress.ValueString())
@@ -1218,6 +1268,69 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.Ipv6ExportMap = types.StringValue(value.String())
 	} else {
 		data.Ipv6ExportMap = types.StringNull()
+	}
+	for i := range data.Vnid {
+		keys := [...]string{"vnid-value"}
+		keyValues := [...]string{strconv.FormatInt(data.Vnid[i].VnidValue.ValueInt64(), 10)}
+
+		var r gjson.Result
+		res.Get(prefix + "vnid").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("vnid-value"); value.Exists() && !data.Vnid[i].VnidValue.IsNull() {
+			data.Vnid[i].VnidValue = types.Int64Value(value.Int())
+		} else {
+			data.Vnid[i].VnidValue = types.Int64Null()
+		}
+		for ci := range data.Vnid[i].EvpnInstanceVni {
+			keys := [...]string{"vni-num"}
+			keyValues := [...]string{strconv.FormatInt(data.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("evpn-instance.vni.vni-num").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("vni-num"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].VniNum.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Value(value.Int())
+			} else {
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Null()
+			}
+			if value := cr.Get("core-vlan"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Value(value.Int())
+			} else {
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Null()
+			}
+		}
 	}
 	if value := res.Get(prefix + "address-family.ipv4.mdt.default.address"); value.Exists() && !data.Ipv4MdtDefaultAddress.IsNull() {
 		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
@@ -1823,6 +1936,69 @@ func (data *VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Ipv6ExportMap = types.StringNull()
 	}
+	for i := range data.Vnid {
+		keys := [...]string{"vnid-value"}
+		keyValues := [...]string{strconv.FormatInt(data.Vnid[i].VnidValue.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "vnid-value"); value.Exists() && !data.Vnid[i].VnidValue.IsNull() {
+			data.Vnid[i].VnidValue = types.Int64Value(value.Int())
+		} else {
+			data.Vnid[i].VnidValue = types.Int64Null()
+		}
+		for ci := range data.Vnid[i].EvpnInstanceVni {
+			keys := [...]string{"vni-num"}
+			keyValues := [...]string{strconv.FormatInt(data.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "evpn-instance/vni/vni-num").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "vni-num"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].VniNum.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Value(value.Int())
+			} else {
+				data.Vnid[i].EvpnInstanceVni[ci].VniNum = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "core-vlan"); value.Exists() && !data.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() {
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Value(value.Int())
+			} else {
+				data.Vnid[i].EvpnInstanceVni[ci].CoreVlan = types.Int64Null()
+			}
+		}
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/default/address"); value.Exists() && !data.Ipv4MdtDefaultAddress.IsNull() {
 		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
 	} else {
@@ -2172,6 +2348,31 @@ func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "address-family.ipv6.export.map"); value.Exists() {
 		data.Ipv6ExportMap = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "vnid"); value.Exists() {
+		data.Vnid = make([]VRFVnid, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFVnid{}
+			if cValue := v.Get("vnid-value"); cValue.Exists() {
+				item.VnidValue = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("evpn-instance.vni.vni-num"); cValue.Exists() {
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := VRFVnidEvpnInstanceVni{}
+					if ccValue := cv.Get("vni-num"); ccValue.Exists() {
+						cItem.VniNum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("core-vlan"); ccValue.Exists() {
+						cItem.CoreVlan = types.Int64Value(ccValue.Int())
+					}
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
+					return true
+				})
+			}
+			data.Vnid = append(data.Vnid, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "address-family.ipv4.mdt.default.address"); value.Exists() {
 		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
 	}
@@ -2455,6 +2656,31 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "address-family.ipv6.export.map"); value.Exists() {
 		data.Ipv6ExportMap = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "vnid"); value.Exists() {
+		data.Vnid = make([]VRFVnid, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFVnid{}
+			if cValue := v.Get("vnid-value"); cValue.Exists() {
+				item.VnidValue = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("evpn-instance.vni.vni-num"); cValue.Exists() {
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := VRFVnidEvpnInstanceVni{}
+					if ccValue := cv.Get("vni-num"); ccValue.Exists() {
+						cItem.VniNum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("core-vlan"); ccValue.Exists() {
+						cItem.CoreVlan = types.Int64Value(ccValue.Int())
+					}
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
+					return true
+				})
+			}
+			data.Vnid = append(data.Vnid, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "address-family.ipv4.mdt.default.address"); value.Exists() {
 		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
 	}
@@ -2733,6 +2959,31 @@ func (data *VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/export/map"); value.Exists() {
 		data.Ipv6ExportMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid"); value.Exists() {
+		data.Vnid = make([]VRFVnid, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFVnid{}
+			if cValue := helpers.GetFromXPath(v, "vnid-value"); cValue.Exists() {
+				item.VnidValue = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "evpn-instance/vni/vni-num"); cValue.Exists() {
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := VRFVnidEvpnInstanceVni{}
+					if ccValue := helpers.GetFromXPath(cv, "vni-num"); ccValue.Exists() {
+						cItem.VniNum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "core-vlan"); ccValue.Exists() {
+						cItem.CoreVlan = types.Int64Value(ccValue.Int())
+					}
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
+					return true
+				})
+			}
+			data.Vnid = append(data.Vnid, item)
+			return true
+		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/default/address"); value.Exists() {
 		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
@@ -3013,6 +3264,31 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/export/map"); value.Exists() {
 		data.Ipv6ExportMap = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid"); value.Exists() {
+		data.Vnid = make([]VRFVnid, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRFVnid{}
+			if cValue := helpers.GetFromXPath(v, "vnid-value"); cValue.Exists() {
+				item.VnidValue = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "evpn-instance/vni/vni-num"); cValue.Exists() {
+				item.EvpnInstanceVni = make([]VRFVnidEvpnInstanceVni, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := VRFVnidEvpnInstanceVni{}
+					if ccValue := helpers.GetFromXPath(cv, "vni-num"); ccValue.Exists() {
+						cItem.VniNum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "core-vlan"); ccValue.Exists() {
+						cItem.CoreVlan = types.Int64Value(ccValue.Int())
+					}
+					item.EvpnInstanceVni = append(item.EvpnInstanceVni, cItem)
+					return true
+				})
+			}
+			data.Vnid = append(data.Vnid, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/default/address"); value.Exists() {
 		data.Ipv4MdtDefaultAddress = types.StringValue(value.String())
 	}
@@ -3179,6 +3455,59 @@ func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
 	}
 	if !state.Ipv4MdtDefaultAddress.IsNull() && data.Ipv4MdtDefaultAddress.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/mdt/default/address", state.getPath()))
+	}
+	for i := range state.Vnid {
+		stateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].VnidValue.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vnid[i].VnidValue.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vnid {
+			found = true
+			if state.Vnid[i].VnidValue.ValueInt64() != data.Vnid[j].VnidValue.ValueInt64() {
+				found = false
+			}
+			if found {
+				for ci := range state.Vnid[i].EvpnInstanceVni {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vnid[j].EvpnInstanceVni {
+						found = true
+						if state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64() != data.Vnid[j].EvpnInstanceVni[cj].VniNum.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() && data.Vnid[j].EvpnInstanceVni[cj].CoreVlan.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vnid=%v/evpn-instance/vni/vni-num=%v/core-vlan", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vnid=%v/evpn-instance/vni/vni-num=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/vnid=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	if !state.Ipv6ExportMap.IsNull() && data.Ipv6ExportMap.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/export/map", state.getPath()))
@@ -3605,6 +3934,69 @@ func (data *VRF) addDeletedItemsXML(ctx context.Context, state VRF, body string)
 	}
 	if !state.Ipv4MdtDefaultAddress.IsNull() && data.Ipv4MdtDefaultAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/mdt/default/address")
+	}
+	for i := range state.Vnid {
+		stateKeys := [...]string{"vnid-value"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].VnidValue.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vnid[i].VnidValue.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vnid {
+			found = true
+			if state.Vnid[i].VnidValue.ValueInt64() != data.Vnid[j].VnidValue.ValueInt64() {
+				found = false
+			}
+			if found {
+				for ci := range state.Vnid[i].EvpnInstanceVni {
+					cstateKeys := [...]string{"vni-num"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vnid[j].EvpnInstanceVni {
+						found = true
+						if state.Vnid[i].EvpnInstanceVni[ci].VniNum.ValueInt64() != data.Vnid[j].EvpnInstanceVni[cj].VniNum.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Vnid[i].EvpnInstanceVni[ci].CoreVlan.IsNull() && data.Vnid[j].EvpnInstanceVni[cj].CoreVlan.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vnid%v/evpn-instance/vni/vni-num%v/core-vlan", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vnid%v/evpn-instance/vni/vni-num%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vnid%v", predicates))
+		}
 	}
 	if !state.Ipv6ExportMap.IsNull() && data.Ipv6ExportMap.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv6/export/map")
@@ -4141,6 +4533,11 @@ func (data *VRF) getDeletePaths(ctx context.Context) []string {
 	if !data.Ipv4MdtDefaultAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv4/mdt/default/address", data.getPath()))
 	}
+	for i := range data.Vnid {
+		keyValues := [...]string{strconv.FormatInt(data.Vnid[i].VnidValue.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vnid=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	if !data.Ipv6ExportMap.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-family/ipv6/export/map", data.getPath()))
 	}
@@ -4293,6 +4690,16 @@ func (data *VRF) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.Ipv4MdtDefaultAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/mdt/default/address")
+	}
+	for i := range data.Vnid {
+		keys := [...]string{"vnid-value"}
+		keyValues := [...]string{strconv.FormatInt(data.Vnid[i].VnidValue.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vnid%v", predicates))
 	}
 	if !data.Ipv6ExportMap.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv6/export/map")

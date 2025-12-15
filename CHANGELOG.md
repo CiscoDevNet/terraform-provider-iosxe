@@ -1,3 +1,9 @@
+## Unreleased
+
+- Add `icmp_echo_frequency` attribute to `iosxe_sla` resource and data source
+- Add `iosxe_commit` action
+- Add `iosxe_save_config` action
+
 ## 0.13.0
 
 - Add `stopbits` attribute to `iosxe_line` resource and data source
@@ -15,6 +21,7 @@
 
 ## 0.12.0
 
+- Add `igmp_snooping_querier`, `igmp_snooping_querier_version`, `igmp_snooping_querier_max_response_time`, and `igmp_snooping_querier_timer_expiry` attributes to `iosxe_system` resource and data source
 - Add `iosxe_l2_vfi` resource and data source
 - Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data source
 - Add `iosxe_crypto` resource and data source
