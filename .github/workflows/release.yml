@@ -36,11 +36,15 @@ jobs:
       - name: Generate SPDX SBOM
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          syft packages dir:. -o spdx-json=terraform-provider-iosxe_${VERSION}_sbom.spdx.json
+          syft scan dir:. -o spdx-json=terraform-provider-iosxe_${VERSION}_sbom.spdx.json \
+            --source-name terraform-provider-iosxe \
+            --source-version ${VERSION}
       - name: Generate CycloneDX SBOM
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          syft packages dir:. -o cyclonedx-json=terraform-provider-iosxe_${VERSION}_sbom.cyclonedx.json
+          syft scan dir:. -o cyclonedx-json=terraform-provider-iosxe_${VERSION}_sbom.cyclonedx.json \
+            --source-name terraform-provider-iosxe \
+            --source-version ${VERSION}
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6.4.0
         with:
