@@ -85,8 +85,8 @@ jobs:
           cp terraform-provider-iosxe_${VERSION}_sbom.spdx.json sbom/latest/sbom.spdx.json
           cp terraform-provider-iosxe_${VERSION}_sbom.cyclonedx.json sbom/latest/sbom.cyclonedx.json
 
-          # Get Syft version for metadata
-          SYFT_VERSION=$(grep -o "anchore/sbom-action/download-syft@.*#.*" .github/workflows/release.yml | cut -d'#' -f2 | tr -d ' ')
+          # Get Syft version from the SBOM file itself (contains tool metadata)
+          SYFT_VERSION=$(jq -r '.creationInfo.creators[1]' sbom/latest/sbom.spdx.json | sed 's/Tool: syft-/v/')
 
           # Update README.md with version information (using awk to avoid sed escaping issues)
           awk -v ver="${VERSION}" '/^\*\*Provider Version\*\*:/ {print "**Provider Version**: " ver; next} {print}' sbom/latest/README.md > sbom/latest/README.md.tmp && mv sbom/latest/README.md.tmp sbom/latest/README.md

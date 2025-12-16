@@ -44,8 +44,7 @@ git push
 
 **Provider Version**: v0.14.3
 **Generated**: 2025-12-16
-**Syft Version**: v0.20.11
-.*".github/workflows/release.yml|cut-d'
+**Syft Version**: v1.38.2
 
 ## Usage
 
