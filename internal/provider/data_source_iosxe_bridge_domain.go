@@ -76,7 +76,7 @@ func (d *BridgeDomainDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"member_interface": schema.ListNestedAttribute{
+			"member_interfaces": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -85,7 +85,7 @@ func (d *BridgeDomainDataSource) Schema(ctx context.Context, req datasource.Sche
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"service_instance": schema.ListNestedAttribute{
+						"service_instances": schema.ListNestedAttribute{
 							MarkdownDescription: "ethernet service instance",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{

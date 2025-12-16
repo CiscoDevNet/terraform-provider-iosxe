@@ -1,7 +1,7 @@
 ---
 name: Bridge Domain
 path: /Cisco-IOS-XE-native:native/bridge-domain/Cisco-IOS-XE-bridge-domain:brd-id[bridge-domain-id=%s]
-doc_category: Bridge Domain
+doc_category: Switching
 no_delete:
 attributes:
   - yang_name: bridge-domain-id
@@ -9,14 +9,14 @@ attributes:
   - yang_name: member/vni
     example: 10100
   - yang_name: member/member-interface
-    tf_name: member_interface
+    tf_name: member_interfaces
     type: List
     attributes:
       - yang_name: interface
         example: GigabitEthernet2
         id: true
       - yang_name: service-instance-list
-        tf_name: service_instance
+        tf_name: service_instances
         type: List
         attributes:
           - yang_name: instance-id

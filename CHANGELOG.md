@@ -1,14 +1,15 @@
 ## Unreleased
 
-- Add `mld_snooping` and `mld_snooping_querier` attributes to the `iosxe_system` resource and data sources.
-- Add `iosxe_interface_bdi` resource and data sources with `name` and `mac_address` attributes.
-- Add `service_instance` attribute to `iosxe_interface_ethernet` resource and data sources.
-- Add `iosxe_bridge_domain` resource and data sources with `bridge_domain_id`, `member_vni`, and `member_interface` attributes.
+- Add `mld_snooping` and `mld_snooping_querier` attributes to the `iosxe_system` resource and data sources
+- Add `iosxe_interface_bdi` resource and data sources
+- Add `service_instance` attribute to `iosxe_interface_ethernet` resource and data sources
+- Add `iosxe_bridge_domain` resource and data sources
 - Add `trunk_allowed_vlans_all`, `trunk_allowed_vlans_none`, `trunk_allowed_vlans_add`, `trunk_allowed_vlans_except`, and `trunk_allowed_vlans_remove` attributes to `iosxe_interface_switchport` resource and data source using non-deprecated YANG vlan-v2 paths
 - Add `trunk_allowed_vlans_legacy` and `trunk_allowed_vlans_none_legacy` attributes to `iosxe_interface_switchport` resource and data source for backward compatibility with deprecated YANG paths
 - Add `icmp_echo_frequency` attribute to `iosxe_sla` resource and data source
 - Add `iosxe_commit` action
 - Add `iosxe_save_config` action
+- Add `igmp_snooping_querier`, `igmp_snooping_querier_version`, `igmp_snooping_querier_max_response_time`, and `igmp_snooping_querier_timer_expiry` attributes to `iosxe_system` resource and data source
 
 ## 0.13.0
 
@@ -28,7 +29,6 @@
 
 ## 0.12.0
 
-- Add `igmp_snooping_querier`, `igmp_snooping_querier_version`, `igmp_snooping_querier_max_response_time`, and `igmp_snooping_querier_timer_expiry` attributes to `iosxe_system` resource and data source
 - Add `iosxe_l2_vfi` resource and data source
 - Add `ip_local_proxy_arp` attribute to `iosxe_interface_vlan` resource and data source
 - Add `iosxe_crypto` resource and data source
