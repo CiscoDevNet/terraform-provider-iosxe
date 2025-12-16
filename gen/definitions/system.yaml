@@ -548,6 +548,16 @@ attributes:
   - yang_name: call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method
     tf_name: call_home_cisco_tac_1_destination_transport_method
     example: email
+  - yang_name: ip/tcp/path-mtu-discovery
+    description: Enable path-MTU discovery on new TCP connections
+    example: true
+  - yang_name: ip/tcp/mss
+    description: TCP initial maximum segment size
+    example: 1460
+  - yang_name: ip/tcp/window-size
+    description: TCP window size. Note - IOS-XE 17.15.1 and later uses a default of 131072 when not specified. For consistent behavior across mixed-version environments, always specify this value explicitly.
+    allow_import_changes: true
+    example: 65536
   - yang_name: ip/ftp/passive-enable
     tf_name: ip_ftp_passive
     example: true

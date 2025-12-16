@@ -669,6 +669,18 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "To specify transport method for this profile",
 				Computed:            true,
 			},
+			"ip_tcp_path_mtu_discovery": schema.BoolAttribute{
+				MarkdownDescription: "Enable path-MTU discovery on new TCP connections",
+				Computed:            true,
+			},
+			"ip_tcp_mss": schema.Int64Attribute{
+				MarkdownDescription: "TCP initial maximum segment size",
+				Computed:            true,
+			},
+			"ip_tcp_window_size": schema.Int64Attribute{
+				MarkdownDescription: "TCP window size. Note - IOS-XE 17.15.1 and later uses a default of 131072 when not specified. For consistent behavior across mixed-version environments, always specify this value explicitly.",
+				Computed:            true,
+			},
 			"ip_ftp_passive": schema.BoolAttribute{
 				MarkdownDescription: "Connect using passive mode",
 				Computed:            true,

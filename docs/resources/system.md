@@ -42,6 +42,9 @@ resource "iosxe_system" "example" {
   call_home_contact_email                            = "email@test.com"
   call_home_cisco_tac_1_profile_active               = true
   call_home_cisco_tac_1_destination_transport_method = "email"
+  ip_tcp_path_mtu_discovery                          = true
+  ip_tcp_mss                                         = 1460
+  ip_tcp_window_size                                 = 65536
   ip_nbar_classification_dns_classify_by_domain      = true
   ip_multicast_route_limit                           = 200000
   igmp_snooping_querier                              = true
@@ -203,6 +206,11 @@ resource "iosxe_system" "example" {
 - `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
   - Range: `0`-`65535`
 - `ip_tacacs_source_interface_vrf` (String) VPN Routing/Forwarding parameters
+- `ip_tcp_mss` (Number) TCP initial maximum segment size
+  - Range: `0`-`10000`
+- `ip_tcp_path_mtu_discovery` (Boolean) Enable path-MTU discovery on new TCP connections
+- `ip_tcp_window_size` (Number) TCP window size. Note - IOS-XE 17.15.1 and later uses a default of 131072 when not specified. For consistent behavior across mixed-version environments, always specify this value explicitly.
+  - Range: `0`-`1073741823`
 - `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
 - `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean)
 - `ipv6_multicast_routing` (Boolean) Enable IPV6 multicast forwarding
