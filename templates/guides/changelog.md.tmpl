@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## Unreleased
+## 0.14.4
 
 - Remove SBOM from GitHub Releases
 
