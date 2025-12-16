@@ -276,21 +276,21 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Route-map based VRF export for IPv6",
 				Computed:            true,
 			},
-			"vnid": schema.ListNestedAttribute{
+			"vnids": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify VNID for route-target auto generation",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"vnid_value": schema.Int64Attribute{
+						"vnid": schema.Int64Attribute{
 							MarkdownDescription: "VNID value for route-target auto generation",
 							Computed:            true,
 						},
-						"evpn_instance_vni": schema.ListNestedAttribute{
+						"evpn_instance_vnis": schema.ListNestedAttribute{
 							MarkdownDescription: "Specify explicit NVE L3 VNI number",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
-									"vni_num": schema.Int64Attribute{
+									"vni": schema.Int64Attribute{
 										MarkdownDescription: "The NVE L3 VNI number",
 										Computed:            true,
 									},

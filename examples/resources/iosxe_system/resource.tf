@@ -27,6 +27,9 @@ resource "iosxe_system" "example" {
   call_home_contact_email                            = "email@test.com"
   call_home_cisco_tac_1_profile_active               = true
   call_home_cisco_tac_1_destination_transport_method = "email"
+  ip_tcp_path_mtu_discovery                          = true
+  ip_tcp_mss                                         = 1460
+  ip_tcp_window_size                                 = 65536
   ip_nbar_classification_dns_classify_by_domain      = true
   ip_multicast_route_limit                           = 200000
   igmp_snooping_querier                              = true

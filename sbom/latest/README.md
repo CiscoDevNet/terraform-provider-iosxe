@@ -42,9 +42,9 @@ git push
 
 ## Current Version
 
-**Provider Version**: (To be updated after first release with SBOM)
-**Generated**: (To be updated after first release with SBOM)
-**Syft Version**: (To be updated after first release with SBOM)
+**Provider Version**: v0.14.4
+**Generated**: 2025-12-16
+**Syft Version**: v1.38.2
 
 ## Usage
 
@@ -52,4 +52,6 @@ For usage instructions and examples, see [SBOM.md](../../SBOM.md) in the reposit
 
 ## Historical Versions
 
-For SBOMs from previous releases, visit the [GitHub Releases page](https://github.com/CiscoDevNet/terraform-provider-iosxe/releases).
+All version-specific SBOMs are stored in the repository at `sbom/{version}/`:
+- Browse all versions: https://github.com/CiscoDevNet/terraform-provider-iosxe/tree/main/sbom
+- Example: `sbom/v0.14.3/sbom.spdx.json`

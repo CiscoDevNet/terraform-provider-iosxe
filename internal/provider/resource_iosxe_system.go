@@ -793,6 +793,24 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.OneOf("email", "http"),
 				},
 			},
+			"ip_tcp_path_mtu_discovery": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable path-MTU discovery on new TCP connections").String,
+				Optional:            true,
+			},
+			"ip_tcp_mss": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("TCP initial maximum segment size").AddIntegerRangeDescription(0, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 10000),
+				},
+			},
+			"ip_tcp_window_size": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("TCP window size. Note - IOS-XE 17.15.1 and later uses a default of 131072 when not specified. For consistent behavior across mixed-version environments, always specify this value explicitly.").AddIntegerRangeDescription(0, 1073741823).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 1073741823),
+				},
+			},
 			"ip_ftp_passive": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Connect using passive mode").String,
 				Optional:            true,

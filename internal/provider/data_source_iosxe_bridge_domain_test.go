@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,10 +32,13 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeBridgeDomain(t *testing.T) {
+	if os.Getenv("C8000V") == "" {
+		t.Skip("skipping test, set environment variable C8000V")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bridge_domain.test", "member_vni", "10100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bridge_domain.test", "member_interface.0.interface", "GigabitEthernet2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bridge_domain.test", "member_interface.0.service_instance.0.instance_id", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bridge_domain.test", "member_interfaces.0.interface", "GigabitEthernet2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bridge_domain.test", "member_interfaces.0.service_instances.0.instance_id", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -59,9 +63,9 @@ func testAccDataSourceIosxeBridgeDomainConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	bridge_domain_id = 100` + "\n"
 	config += `	member_vni = 10100` + "\n"
-	config += `	member_interface = [{` + "\n"
+	config += `	member_interfaces = [{` + "\n"
 	config += `		interface = "GigabitEthernet2"` + "\n"
-	config += `		service_instance = [{` + "\n"
+	config += `		service_instances = [{` + "\n"
 	config += `			instance_id = 100` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"

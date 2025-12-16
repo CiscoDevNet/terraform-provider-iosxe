@@ -106,7 +106,7 @@ func (r *BridgeDomainResource) Schema(ctx context.Context, req resource.SchemaRe
 					int64validator.Between(4096, 16777215),
 				},
 			},
-			"member_interface": schema.ListNestedAttribute{
+			"member_interfaces": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -118,7 +118,7 @@ func (r *BridgeDomainResource) Schema(ctx context.Context, req resource.SchemaRe
 								stringvalidator.RegexMatches(regexp.MustCompile(`([Ff][Aa][Ss][Tt][Ee][Tt][Hh][Ee][Rr][Nn][Ee][Tt]|[Gg][Ii][Gg][Aa][Bb][Ii][Tt][Ee][Tt][Hh][Ee][Rr][Nn][Ee][Tt]|[Tt][Ww][Oo][Gg][Ii][Gg][Aa][Bb][Ii][Tt][Ee][Tt][Hh][Ee][Rr][Nn][Ee][Tt]|[Ff][Ii][Vv][Ee][Gg][Ii][Gg][Aa][Bb][Ii][Tt][Ee][Tt][Hh][Ee][Rr][Nn][Ee][Tt]|[Aa][Pp][Pp][Gg][Ii][Gg][Aa][Bb][Ii][Tt][Ee][Tt][Hh][Ee][Rr][Nn][Ee][Tt]|[Tt][Ee][Nn][Gg][Ii][Gg][Aa][Bb][Ii][Tt][Ee][Tt][Hh][Ee][Rr][Nn][Ee][Tt]|[Tt][Ww][Ee][Nn][Tt][Yy][Ff][Ii][Vv][Ee][Gg][Ii][Gg][Ee]|[Ff][Oo][Rr][Tt][Yy][Gg][Ii][Gg][Aa][Bb][Ii][Tt][Ee][Tt][Hh][Ee][Rr][Nn][Ee][Tt]|[Hh][Uu][Nn][Dd][Rr][Ee][Dd][Gg][Ii][Gg][Ee]|[Pp][Oo][Rr][Tt]-[Cc][Hh][Aa][Nn][Nn][Ee][Ll]|VirtualPortGroup|Virtual-Template|Vlan).*`), ""),
 							},
 						},
-						"service_instance": schema.ListNestedAttribute{
+						"service_instances": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("ethernet service instance").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{

@@ -38,3 +38,6 @@ website/vendor
 
 gen/full_definitions
 test-epic-*.tf
+
+# SBOM files generated during release
+*_sbom.*.json

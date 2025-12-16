@@ -142,6 +142,9 @@ data "iosxe_system" "example" {
 - `ip_tacacs_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
 - `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
 - `ip_tacacs_source_interface_vrf` (String) VPN Routing/Forwarding parameters
+- `ip_tcp_mss` (Number) TCP initial maximum segment size
+- `ip_tcp_path_mtu_discovery` (Boolean) Enable path-MTU discovery on new TCP connections
+- `ip_tcp_window_size` (Number) TCP window size. Note - IOS-XE 17.15.1 and later uses a default of 131072 when not specified. For consistent behavior across mixed-version environments, always specify this value explicitly.
 - `ipv6_cef_load_sharing_algorithm_include_ports_destination` (Boolean)
 - `ipv6_cef_load_sharing_algorithm_include_ports_source` (Boolean)
 - `ipv6_multicast_routing` (Boolean) Enable IPV6 multicast forwarding

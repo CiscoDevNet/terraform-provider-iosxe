@@ -14,15 +14,17 @@ This resource can manage the Logging configuration.
 
 ```terraform
 resource "iosxe_logging" "example" {
-  monitor_severity = "informational"
-  facility         = "local0"
-  history_size     = 100
-  history_severity = "informational"
-  trap             = true
-  trap_severity    = "informational"
-  origin_id_type   = "hostname"
-  source_interface = "Loopback0"
-  console          = true
+  monitor_severity         = "informational"
+  buffered_size_legacy     = 16000
+  buffered_severity_legacy = "informational"
+  facility                 = "local0"
+  history_size             = 100
+  history_severity         = "informational"
+  trap                     = true
+  trap_severity            = "informational"
+  origin_id_type           = "hostname"
+  source_interface         = "Loopback0"
+  console                  = true
   source_interfaces_vrf = [
     {
       vrf            = "VRF1"
@@ -63,7 +65,10 @@ resource "iosxe_logging" "example" {
 ### Optional
 
 - `buffered_severity` (String) Logging severity level
+- `buffered_severity_legacy` (String) DEPRECATED. Logging severity level
 - `buffered_size` (Number) Logging buffer size
+  - Range: `4096`-`2147483647`
+- `buffered_size_legacy` (Number) DEPRECATED. Logging buffer size
   - Range: `4096`-`2147483647`
 - `console` (Boolean) Set console logging parameters
 - `console_severity` (String)

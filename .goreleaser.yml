@@ -29,16 +29,16 @@ builds:
   ignore:
     - goos: darwin
       goarch: '386'
+    - goos: windows
+      goarch: arm
   binary: '{{ .ProjectName }}_v{{ .Version }}'
 archives:
-- format: zip
+- formats: zip
   name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 checksum:
   extra_files:
     - glob: 'terraform-registry-manifest.json'
       name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
-    - glob: '*.spdx.json'
-    - glob: '*.cyclonedx.json'
   name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 signs:
@@ -57,8 +57,6 @@ release:
   extra_files:
     - glob: 'terraform-registry-manifest.json'
       name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
-    - glob: '*.spdx.json'
-    - glob: '*.cyclonedx.json'
   # If you want to manually examine the release before its live, uncomment this line:
   # draft: true
 changelog:
