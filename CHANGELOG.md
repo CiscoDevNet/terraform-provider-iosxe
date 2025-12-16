@@ -1,4 +1,4 @@
-## Unreleased
+## 0.14.1
 
 - Fix SBOM creation process
 
