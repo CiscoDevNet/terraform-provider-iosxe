@@ -1,3 +1,7 @@
+## Unreleased
+
+- Remove SBOM from GitHub Releases
+
 ## 0.14.3
 
 - Fix SBOM creation process
