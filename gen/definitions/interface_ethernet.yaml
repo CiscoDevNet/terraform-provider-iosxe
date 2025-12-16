@@ -319,17 +319,15 @@ attributes:
   - yang_name: Cisco-IOS-XE-ethernet:service/instance
     tf_name: service_instances
     type: List
+    exclude_test: true
     attributes:
       - yang_name: id
         example: 100
         id: true
-        exclude_test: true
       - yang_name: ethernet
         example: true
-        exclude_test: true
       - yang_name: encapsulation/untagged
         example: true
-        exclude_test: true
   - yang_name: Cisco-IOS-XE-sanet:authentication/host-mode
     example: multi-auth
     exclude_test: true

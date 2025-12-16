@@ -230,8 +230,6 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}
 	config += `	negotiation_auto = false` + "\n"
-	config += `	service_instances = [{` + "\n"
-	config += `	}]` + "\n"
 	config += `	ip_flow_monitors = [{` + "\n"
 	config += `		name = "MON1"` + "\n"
 	config += `		direction = "input"` + "\n"
