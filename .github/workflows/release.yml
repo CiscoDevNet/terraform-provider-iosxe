@@ -88,10 +88,10 @@ jobs:
           # Get Syft version for metadata
           SYFT_VERSION=$(grep -o "anchore/sbom-action/download-syft@.*#.*" .github/workflows/release.yml | cut -d'#' -f2 | tr -d ' ')
 
-          # Update README.md with version information
-          sed -i "s|\*\*Provider Version\*\*:.*|\*\*Provider Version\*\*: ${VERSION}|" sbom/latest/README.md
-          sed -i "s|\*\*Generated\*\*:.*|\*\*Generated\*\*: $(date -u +%Y-%m-%d)|" sbom/latest/README.md
-          sed -i "s|\*\*Syft Version\*\*:.*|\*\*Syft Version\*\*: ${SYFT_VERSION}|" sbom/latest/README.md
+          # Update README.md with version information (using [*] to avoid escaping issues)
+          sed -i "s|^[*][*]Provider Version[*][*]:.*|**Provider Version**: ${VERSION}|" sbom/latest/README.md
+          sed -i "s|^[*][*]Generated[*][*]:.*|**Generated**: $(date -u +%Y-%m-%d)|" sbom/latest/README.md
+          sed -i "s|^[*][*]Syft Version[*][*]:.*|**Syft Version**: ${SYFT_VERSION}|" sbom/latest/README.md
       - name: Commit and push SBOM updates
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
