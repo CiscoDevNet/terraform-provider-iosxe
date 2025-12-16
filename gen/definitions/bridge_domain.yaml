@@ -2,7 +2,7 @@
 name: Bridge Domain
 path: /Cisco-IOS-XE-native:native/bridge-domain/Cisco-IOS-XE-bridge-domain:brd-id[bridge-domain-id=%s]
 doc_category: Switching
-no_delete:
+test_tags: [C8000V]
 attributes:
   - yang_name: bridge-domain-id
     example: 100
