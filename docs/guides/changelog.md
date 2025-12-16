@@ -23,6 +23,7 @@ description: |-
 - BREAKING CHANGE: Rename `buffered_severity` attribute of `iosxe_logging` resource to `buffered_severity_legacy`
 - Add `buffered_size` and `buffered_severity` attributes to `iosxe_logging` resource and data source
 - Add `vnids` attribute to `iosxe_vrf` resource and data source
+- Add `iosxe_evpn_profile` resource and data source
 
 ## 0.13.0
 

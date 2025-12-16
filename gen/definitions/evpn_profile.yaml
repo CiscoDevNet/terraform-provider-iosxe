@@ -8,8 +8,6 @@ attributes:
     id: true
     example: MY_EVPN_PROFILE
   - yang_name: evi-base
-    tf_name: evi_base
     example: 1000
   - yang_name: l2vni-base
-    tf_name: l2vni_base
     example: 10000
