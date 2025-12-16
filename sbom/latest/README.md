@@ -52,4 +52,6 @@ For usage instructions and examples, see [SBOM.md](../../SBOM.md) in the reposit
 
 ## Historical Versions
 
-For SBOMs from previous releases, visit the [GitHub Releases page](https://github.com/CiscoDevNet/terraform-provider-iosxe/releases).
+All version-specific SBOMs are stored in the repository at `sbom/{version}/`:
+- Browse all versions: https://github.com/CiscoDevNet/terraform-provider-iosxe/tree/main/sbom
+- Example: `sbom/v0.14.3/sbom.spdx.json`
