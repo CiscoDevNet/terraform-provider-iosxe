@@ -436,7 +436,7 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"service_instance": schema.ListNestedAttribute{
+			"service_instances": schema.ListNestedAttribute{
 				MarkdownDescription: "Configure Ether Service Instance",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

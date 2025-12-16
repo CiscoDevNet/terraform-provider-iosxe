@@ -317,6 +317,7 @@ attributes:
     example: true
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ethernet:service/instance
+    tf_name: service_instances
     type: List
     attributes:
       - yang_name: id

@@ -53,7 +53,7 @@ resource "iosxe_interface_ethernet" "example" {
   spanning_tree_portfast_trunk   = true
   spanning_tree_portfast_edge    = false
   negotiation_auto               = false
-  service_instance = [
+  service_instances = [
     {
     }
   ]

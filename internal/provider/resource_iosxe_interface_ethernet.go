@@ -529,7 +529,7 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
-			"service_instance": schema.ListNestedAttribute{
+			"service_instances": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure Ether Service Instance").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

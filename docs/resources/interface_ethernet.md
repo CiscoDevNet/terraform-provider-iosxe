@@ -68,7 +68,7 @@ resource "iosxe_interface_ethernet" "example" {
   spanning_tree_portfast_trunk   = true
   spanning_tree_portfast_edge    = false
   negotiation_auto               = false
-  service_instance = [
+  service_instances = [
     {
     }
   ]
@@ -248,7 +248,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
   - Range: `64`-`18000`
 - `negotiation_auto` (Boolean) Enable link autonegotiation
-- `service_instance` (Attributes List) Configure Ether Service Instance (see [below for nested schema](#nestedatt--service_instance))
+- `service_instances` (Attributes List) Configure Ether Service Instance (see [below for nested schema](#nestedatt--service_instances))
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
@@ -365,8 +365,8 @@ Optional:
 - `link_local` (Boolean) Use link-local address
 
 
-<a id="nestedatt--service_instance"></a>
-### Nested Schema for `service_instance`
+<a id="nestedatt--service_instances"></a>
+### Nested Schema for `service_instances`
 
 Required:
 

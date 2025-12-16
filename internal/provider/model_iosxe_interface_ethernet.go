@@ -120,7 +120,7 @@ type InterfaceEthernet struct {
 	Speed100000                                         types.Bool                                        `tfsdk:"speed_100000"`
 	NegotiationAuto                                     types.Bool                                        `tfsdk:"negotiation_auto"`
 	SpeedNonegotiate                                    types.Bool                                        `tfsdk:"speed_nonegotiate"`
-	ServiceInstance                                     []InterfaceEthernetServiceInstance                `tfsdk:"service_instance"`
+	ServiceInstances                                    []InterfaceEthernetServiceInstances               `tfsdk:"service_instances"`
 	AuthenticationHostMode                              types.String                                      `tfsdk:"authentication_host_mode"`
 	AuthenticationOrderDot1x                            types.Bool                                        `tfsdk:"authentication_order_dot1x"`
 	AuthenticationOrderDot1xMab                         types.Bool                                        `tfsdk:"authentication_order_dot1x_mab"`
@@ -263,7 +263,7 @@ type InterfaceEthernetData struct {
 	Speed100000                                         types.Bool                                        `tfsdk:"speed_100000"`
 	NegotiationAuto                                     types.Bool                                        `tfsdk:"negotiation_auto"`
 	SpeedNonegotiate                                    types.Bool                                        `tfsdk:"speed_nonegotiate"`
-	ServiceInstance                                     []InterfaceEthernetServiceInstance                `tfsdk:"service_instance"`
+	ServiceInstances                                    []InterfaceEthernetServiceInstances               `tfsdk:"service_instances"`
 	AuthenticationHostMode                              types.String                                      `tfsdk:"authentication_host_mode"`
 	AuthenticationOrderDot1x                            types.Bool                                        `tfsdk:"authentication_order_dot1x"`
 	AuthenticationOrderDot1xMab                         types.Bool                                        `tfsdk:"authentication_order_dot1x_mab"`
@@ -347,7 +347,7 @@ type InterfaceEthernetIpv6FlowMonitors struct {
 	Name      types.String `tfsdk:"name"`
 	Direction types.String `tfsdk:"direction"`
 }
-type InterfaceEthernetServiceInstance struct {
+type InterfaceEthernetServiceInstances struct {
 	Id                    types.Int64 `tfsdk:"id"`
 	Ethernet              types.Bool  `tfsdk:"ethernet"`
 	EncapsulationUntagged types.Bool  `tfsdk:"encapsulation_untagged"`
@@ -984,9 +984,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.ServiceInstance) > 0 {
+	if len(data.ServiceInstances) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:service.instance", []interface{}{})
-		for index, item := range data.ServiceInstance {
+		for index, item := range data.ServiceInstances {
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:service.instance"+"."+strconv.Itoa(index)+"."+"id", strconv.FormatInt(item.Id.ValueInt64(), 10))
 			}
@@ -1486,8 +1486,8 @@ func (data InterfaceEthernet) toBodyXML(ctx context.Context) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ethernet:speed/nonegotiate")
 		}
 	}
-	if len(data.ServiceInstance) > 0 {
-		for _, item := range data.ServiceInstance {
+	if len(data.ServiceInstances) > 0 {
+		for _, item := range data.ServiceInstances {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.Id.ValueInt64(), 10))
@@ -2549,9 +2549,9 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.SpeedNonegotiate = types.BoolNull()
 	}
-	for i := range data.ServiceInstance {
+	for i := range data.ServiceInstances {
 		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.ServiceInstance[i].Id.ValueInt64(), 10)}
+		keyValues := [...]string{strconv.FormatInt(data.ServiceInstances[i].Id.ValueInt64(), 10)}
 
 		var r gjson.Result
 		res.Get(prefix + "Cisco-IOS-XE-ethernet:service.instance").ForEach(
@@ -2572,28 +2572,28 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 				return true
 			},
 		)
-		if value := r.Get("id"); value.Exists() && !data.ServiceInstance[i].Id.IsNull() {
-			data.ServiceInstance[i].Id = types.Int64Value(value.Int())
+		if value := r.Get("id"); value.Exists() && !data.ServiceInstances[i].Id.IsNull() {
+			data.ServiceInstances[i].Id = types.Int64Value(value.Int())
 		} else {
-			data.ServiceInstance[i].Id = types.Int64Null()
+			data.ServiceInstances[i].Id = types.Int64Null()
 		}
-		if value := r.Get("ethernet"); !data.ServiceInstance[i].Ethernet.IsNull() {
+		if value := r.Get("ethernet"); !data.ServiceInstances[i].Ethernet.IsNull() {
 			if value.Exists() {
-				data.ServiceInstance[i].Ethernet = types.BoolValue(true)
+				data.ServiceInstances[i].Ethernet = types.BoolValue(true)
 			} else {
-				data.ServiceInstance[i].Ethernet = types.BoolValue(false)
+				data.ServiceInstances[i].Ethernet = types.BoolValue(false)
 			}
 		} else {
-			data.ServiceInstance[i].Ethernet = types.BoolNull()
+			data.ServiceInstances[i].Ethernet = types.BoolNull()
 		}
-		if value := r.Get("encapsulation.untagged"); !data.ServiceInstance[i].EncapsulationUntagged.IsNull() {
+		if value := r.Get("encapsulation.untagged"); !data.ServiceInstances[i].EncapsulationUntagged.IsNull() {
 			if value.Exists() {
-				data.ServiceInstance[i].EncapsulationUntagged = types.BoolValue(true)
+				data.ServiceInstances[i].EncapsulationUntagged = types.BoolValue(true)
 			} else {
-				data.ServiceInstance[i].EncapsulationUntagged = types.BoolValue(false)
+				data.ServiceInstances[i].EncapsulationUntagged = types.BoolValue(false)
 			}
 		} else {
-			data.ServiceInstance[i].EncapsulationUntagged = types.BoolNull()
+			data.ServiceInstances[i].EncapsulationUntagged = types.BoolNull()
 		}
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.host-mode"); value.Exists() && !data.AuthenticationHostMode.IsNull() {
@@ -3837,9 +3837,9 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.SpeedNonegotiate = types.BoolNull()
 	}
-	for i := range data.ServiceInstance {
+	for i := range data.ServiceInstances {
 		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.ServiceInstance[i].Id.ValueInt64(), 10)}
+		keyValues := [...]string{strconv.FormatInt(data.ServiceInstances[i].Id.ValueInt64(), 10)}
 
 		var r xmldot.Result
 		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance").ForEach(
@@ -3860,28 +3860,28 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 				return true
 			},
 		)
-		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.ServiceInstance[i].Id.IsNull() {
-			data.ServiceInstance[i].Id = types.Int64Value(value.Int())
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.ServiceInstances[i].Id.IsNull() {
+			data.ServiceInstances[i].Id = types.Int64Value(value.Int())
 		} else {
-			data.ServiceInstance[i].Id = types.Int64Null()
+			data.ServiceInstances[i].Id = types.Int64Null()
 		}
-		if value := helpers.GetFromXPath(r, "ethernet"); !data.ServiceInstance[i].Ethernet.IsNull() {
+		if value := helpers.GetFromXPath(r, "ethernet"); !data.ServiceInstances[i].Ethernet.IsNull() {
 			if value.Exists() {
-				data.ServiceInstance[i].Ethernet = types.BoolValue(true)
+				data.ServiceInstances[i].Ethernet = types.BoolValue(true)
 			} else {
-				data.ServiceInstance[i].Ethernet = types.BoolValue(false)
+				data.ServiceInstances[i].Ethernet = types.BoolValue(false)
 			}
 		} else {
-			data.ServiceInstance[i].Ethernet = types.BoolNull()
+			data.ServiceInstances[i].Ethernet = types.BoolNull()
 		}
-		if value := helpers.GetFromXPath(r, "encapsulation/untagged"); !data.ServiceInstance[i].EncapsulationUntagged.IsNull() {
+		if value := helpers.GetFromXPath(r, "encapsulation/untagged"); !data.ServiceInstances[i].EncapsulationUntagged.IsNull() {
 			if value.Exists() {
-				data.ServiceInstance[i].EncapsulationUntagged = types.BoolValue(true)
+				data.ServiceInstances[i].EncapsulationUntagged = types.BoolValue(true)
 			} else {
-				data.ServiceInstance[i].EncapsulationUntagged = types.BoolValue(false)
+				data.ServiceInstances[i].EncapsulationUntagged = types.BoolValue(false)
 			}
 		} else {
-			data.ServiceInstance[i].EncapsulationUntagged = types.BoolNull()
+			data.ServiceInstances[i].EncapsulationUntagged = types.BoolNull()
 		}
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/host-mode"); value.Exists() && !data.AuthenticationHostMode.IsNull() {
@@ -4803,9 +4803,9 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 		data.SpeedNonegotiate = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:service.instance"); value.Exists() {
-		data.ServiceInstance = make([]InterfaceEthernetServiceInstance, 0)
+		data.ServiceInstances = make([]InterfaceEthernetServiceInstances, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceEthernetServiceInstance{}
+			item := InterfaceEthernetServiceInstances{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
@@ -4819,7 +4819,7 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.EncapsulationUntagged = types.BoolValue(false)
 			}
-			data.ServiceInstance = append(data.ServiceInstance, item)
+			data.ServiceInstances = append(data.ServiceInstances, item)
 			return true
 		})
 	}
@@ -5498,9 +5498,9 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 		data.SpeedNonegotiate = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:service.instance"); value.Exists() {
-		data.ServiceInstance = make([]InterfaceEthernetServiceInstance, 0)
+		data.ServiceInstances = make([]InterfaceEthernetServiceInstances, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceEthernetServiceInstance{}
+			item := InterfaceEthernetServiceInstances{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
@@ -5514,7 +5514,7 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 			} else {
 				item.EncapsulationUntagged = types.BoolValue(false)
 			}
-			data.ServiceInstance = append(data.ServiceInstance, item)
+			data.ServiceInstances = append(data.ServiceInstances, item)
 			return true
 		})
 	}
@@ -6189,9 +6189,9 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.SpeedNonegotiate = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance"); value.Exists() {
-		data.ServiceInstance = make([]InterfaceEthernetServiceInstance, 0)
+		data.ServiceInstances = make([]InterfaceEthernetServiceInstances, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceEthernetServiceInstance{}
+			item := InterfaceEthernetServiceInstances{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
@@ -6205,7 +6205,7 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 			} else {
 				item.EncapsulationUntagged = types.BoolValue(false)
 			}
-			data.ServiceInstance = append(data.ServiceInstance, item)
+			data.ServiceInstances = append(data.ServiceInstances, item)
 			return true
 		})
 	}
@@ -6880,9 +6880,9 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 		data.SpeedNonegotiate = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance"); value.Exists() {
-		data.ServiceInstance = make([]InterfaceEthernetServiceInstance, 0)
+		data.ServiceInstances = make([]InterfaceEthernetServiceInstances, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceEthernetServiceInstance{}
+			item := InterfaceEthernetServiceInstances{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
@@ -6896,7 +6896,7 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 			} else {
 				item.EncapsulationUntagged = types.BoolValue(false)
 			}
-			data.ServiceInstance = append(data.ServiceInstance, item)
+			data.ServiceInstances = append(data.ServiceInstances, item)
 			return true
 		})
 	}
@@ -7475,11 +7475,11 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	if !state.AuthenticationHostMode.IsNull() && data.AuthenticationHostMode.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/host-mode", state.getPath()))
 	}
-	for i := range state.ServiceInstance {
-		stateKeyValues := [...]string{strconv.FormatInt(state.ServiceInstance[i].Id.ValueInt64(), 10)}
+	for i := range state.ServiceInstances {
+		stateKeyValues := [...]string{strconv.FormatInt(state.ServiceInstances[i].Id.ValueInt64(), 10)}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.ServiceInstance[i].Id.ValueInt64()).IsZero() {
+		if !reflect.ValueOf(state.ServiceInstances[i].Id.ValueInt64()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -7487,16 +7487,16 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 		}
 
 		found := false
-		for j := range data.ServiceInstance {
+		for j := range data.ServiceInstances {
 			found = true
-			if state.ServiceInstance[i].Id.ValueInt64() != data.ServiceInstance[j].Id.ValueInt64() {
+			if state.ServiceInstances[i].Id.ValueInt64() != data.ServiceInstances[j].Id.ValueInt64() {
 				found = false
 			}
 			if found {
-				if !state.ServiceInstance[i].EncapsulationUntagged.IsNull() && data.ServiceInstance[j].EncapsulationUntagged.IsNull() {
+				if !state.ServiceInstances[i].EncapsulationUntagged.IsNull() && data.ServiceInstances[j].EncapsulationUntagged.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:service/instance=%v/encapsulation/untagged", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.ServiceInstance[i].Ethernet.IsNull() && data.ServiceInstance[j].Ethernet.IsNull() {
+				if !state.ServiceInstances[i].Ethernet.IsNull() && data.ServiceInstances[j].Ethernet.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:service/instance=%v/ethernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -8169,16 +8169,16 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 	if !state.AuthenticationHostMode.IsNull() && data.AuthenticationHostMode.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-sanet:authentication/host-mode")
 	}
-	for i := range state.ServiceInstance {
+	for i := range state.ServiceInstances {
 		stateKeys := [...]string{"id"}
-		stateKeyValues := [...]string{strconv.FormatInt(state.ServiceInstance[i].Id.ValueInt64(), 10)}
+		stateKeyValues := [...]string{strconv.FormatInt(state.ServiceInstances[i].Id.ValueInt64(), 10)}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.ServiceInstance[i].Id.ValueInt64()).IsZero() {
+		if !reflect.ValueOf(state.ServiceInstances[i].Id.ValueInt64()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -8186,16 +8186,16 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 		}
 
 		found := false
-		for j := range data.ServiceInstance {
+		for j := range data.ServiceInstances {
 			found = true
-			if state.ServiceInstance[i].Id.ValueInt64() != data.ServiceInstance[j].Id.ValueInt64() {
+			if state.ServiceInstances[i].Id.ValueInt64() != data.ServiceInstances[j].Id.ValueInt64() {
 				found = false
 			}
 			if found {
-				if !state.ServiceInstance[i].EncapsulationUntagged.IsNull() && data.ServiceInstance[j].EncapsulationUntagged.IsNull() {
+				if !state.ServiceInstances[i].EncapsulationUntagged.IsNull() && data.ServiceInstances[j].EncapsulationUntagged.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance%v/encapsulation/untagged", predicates))
 				}
-				if !state.ServiceInstance[i].Ethernet.IsNull() && data.ServiceInstance[j].Ethernet.IsNull() {
+				if !state.ServiceInstances[i].Ethernet.IsNull() && data.ServiceInstances[j].Ethernet.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-ethernet:service/instance%v/ethernet", predicates))
 				}
 				break
@@ -8679,12 +8679,12 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config", data.getPath()))
 	}
 
-	for i := range data.ServiceInstance {
-		keyValues := [...]string{strconv.FormatInt(data.ServiceInstance[i].Id.ValueInt64(), 10)}
-		if !data.ServiceInstance[i].EncapsulationUntagged.IsNull() && !data.ServiceInstance[i].EncapsulationUntagged.ValueBool() {
+	for i := range data.ServiceInstances {
+		keyValues := [...]string{strconv.FormatInt(data.ServiceInstances[i].Id.ValueInt64(), 10)}
+		if !data.ServiceInstances[i].EncapsulationUntagged.IsNull() && !data.ServiceInstances[i].EncapsulationUntagged.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:service/instance=%v/encapsulation/untagged", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.ServiceInstance[i].Ethernet.IsNull() && !data.ServiceInstance[i].Ethernet.ValueBool() {
+		if !data.ServiceInstances[i].Ethernet.IsNull() && !data.ServiceInstances[i].Ethernet.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:service/instance=%v/ethernet", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
@@ -9028,8 +9028,8 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	if !data.AuthenticationHostMode.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/host-mode", data.getPath()))
 	}
-	for i := range data.ServiceInstance {
-		keyValues := [...]string{strconv.FormatInt(data.ServiceInstance[i].Id.ValueInt64(), 10)}
+	for i := range data.ServiceInstances {
+		keyValues := [...]string{strconv.FormatInt(data.ServiceInstances[i].Id.ValueInt64(), 10)}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:service/instance=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
@@ -9486,9 +9486,9 @@ func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body strin
 	if !data.AuthenticationHostMode.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-sanet:authentication/host-mode")
 	}
-	for i := range data.ServiceInstance {
+	for i := range data.ServiceInstances {
 		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.ServiceInstance[i].Id.ValueInt64(), 10)}
+		keyValues := [...]string{strconv.FormatInt(data.ServiceInstances[i].Id.ValueInt64(), 10)}
 		predicates := ""
 		for i := range keys {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
