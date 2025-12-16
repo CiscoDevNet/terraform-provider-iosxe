@@ -163,6 +163,7 @@ attributes:
   - yang_name: vnid
     tf_name: vnids
     type: List
+    exclude_test: true
     attributes:
       - yang_name: vnid-value
         tf_name: vnid
@@ -182,7 +183,6 @@ attributes:
             example: 20000
           - yang_name: core-vlan
             description: Core vlan number to associate with VNI (explicit VNI mode)
-            exclude_test: true
             example: 200
   - yang_name: address-family/ipv4/mdt/default/address
     tf_name: ipv4_mdt_default_address

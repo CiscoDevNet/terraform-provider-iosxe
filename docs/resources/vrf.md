@@ -71,16 +71,6 @@ resource "iosxe_vrf" "example" {
   ]
   ipv6_import_map = "IMPORT-MAP-1"
   ipv6_export_map = "EXPORT-MAP-1"
-  vnids = [
-    {
-      vnid = 10001
-      evpn_instance_vnis = [
-        {
-          vni = 20000
-        }
-      ]
-    }
-  ]
 }
 ```
 
