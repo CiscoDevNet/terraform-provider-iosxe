@@ -82,6 +82,9 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_contact_email", "email@test.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_cisco_tac_1_profile_active", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_cisco_tac_1_destination_transport_method", "email"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_tcp_path_mtu_discovery", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_tcp_mss", "1460"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_tcp_window_size", "65536"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_nbar_classification_dns_classify_by_domain", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_multicast_route_limit", "200000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "igmp_snooping_querier", "true"))
@@ -189,6 +192,9 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	call_home_contact_email = "email@test.com"` + "\n"
 	config += `	call_home_cisco_tac_1_profile_active = true` + "\n"
 	config += `	call_home_cisco_tac_1_destination_transport_method = "email"` + "\n"
+	config += `	ip_tcp_path_mtu_discovery = true` + "\n"
+	config += `	ip_tcp_mss = 1460` + "\n"
+	config += `	ip_tcp_window_size = 65536` + "\n"
 	config += `	ip_nbar_classification_dns_classify_by_domain = true` + "\n"
 	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	igmp_snooping_querier = true` + "\n"

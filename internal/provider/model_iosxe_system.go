@@ -155,6 +155,9 @@ type System struct {
 	CallHomeContactEmail                                   types.String                                        `tfsdk:"call_home_contact_email"`
 	CallHomeCiscoTac1ProfileActive                         types.Bool                                          `tfsdk:"call_home_cisco_tac_1_profile_active"`
 	CallHomeCiscoTac1DestinationTransportMethod            types.String                                        `tfsdk:"call_home_cisco_tac_1_destination_transport_method"`
+	IpTcpPathMtuDiscovery                                  types.Bool                                          `tfsdk:"ip_tcp_path_mtu_discovery"`
+	IpTcpMss                                               types.Int64                                         `tfsdk:"ip_tcp_mss"`
+	IpTcpWindowSize                                        types.Int64                                         `tfsdk:"ip_tcp_window_size"`
 	IpFtpPassive                                           types.Bool                                          `tfsdk:"ip_ftp_passive"`
 	TftpSourceInterfaceGigabitEthernet                     types.String                                        `tfsdk:"tftp_source_interface_gigabit_ethernet"`
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
@@ -312,6 +315,9 @@ type SystemData struct {
 	CallHomeContactEmail                                   types.String                                        `tfsdk:"call_home_contact_email"`
 	CallHomeCiscoTac1ProfileActive                         types.Bool                                          `tfsdk:"call_home_cisco_tac_1_profile_active"`
 	CallHomeCiscoTac1DestinationTransportMethod            types.String                                        `tfsdk:"call_home_cisco_tac_1_destination_transport_method"`
+	IpTcpPathMtuDiscovery                                  types.Bool                                          `tfsdk:"ip_tcp_path_mtu_discovery"`
+	IpTcpMss                                               types.Int64                                         `tfsdk:"ip_tcp_mss"`
+	IpTcpWindowSize                                        types.Int64                                         `tfsdk:"ip_tcp_window_size"`
 	IpFtpPassive                                           types.Bool                                          `tfsdk:"ip_ftp_passive"`
 	TftpSourceInterfaceGigabitEthernet                     types.String                                        `tfsdk:"tftp_source_interface_gigabit_ethernet"`
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
@@ -813,6 +819,17 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() && !data.CallHomeCiscoTac1DestinationTransportMethod.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.destination.transport-method", data.CallHomeCiscoTac1DestinationTransportMethod.ValueString())
+	}
+	if !data.IpTcpPathMtuDiscovery.IsNull() && !data.IpTcpPathMtuDiscovery.IsUnknown() {
+		if data.IpTcpPathMtuDiscovery.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tcp.path-mtu-discovery", map[string]string{})
+		}
+	}
+	if !data.IpTcpMss.IsNull() && !data.IpTcpMss.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tcp.mss", strconv.FormatInt(data.IpTcpMss.ValueInt64(), 10))
+	}
+	if !data.IpTcpWindowSize.IsNull() && !data.IpTcpWindowSize.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tcp.window-size", strconv.FormatInt(data.IpTcpWindowSize.ValueInt64(), 10))
 	}
 	if !data.IpFtpPassive.IsNull() && !data.IpFtpPassive.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ftp.passive-enable", data.IpFtpPassive.ValueBool())
@@ -1695,6 +1712,19 @@ func (data System) toBodyXML(ctx context.Context) string {
 	}
 	if !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() && !data.CallHomeCiscoTac1DestinationTransportMethod.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method", data.CallHomeCiscoTac1DestinationTransportMethod.ValueString())
+	}
+	if !data.IpTcpPathMtuDiscovery.IsNull() && !data.IpTcpPathMtuDiscovery.IsUnknown() {
+		if data.IpTcpPathMtuDiscovery.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/tcp/path-mtu-discovery", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/tcp/path-mtu-discovery")
+		}
+	}
+	if !data.IpTcpMss.IsNull() && !data.IpTcpMss.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/tcp/mss", strconv.FormatInt(data.IpTcpMss.ValueInt64(), 10))
+	}
+	if !data.IpTcpWindowSize.IsNull() && !data.IpTcpWindowSize.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/tcp/window-size", strconv.FormatInt(data.IpTcpWindowSize.ValueInt64(), 10))
 	}
 	if !data.IpFtpPassive.IsNull() && !data.IpFtpPassive.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/ftp/passive-enable", data.IpFtpPassive.ValueBool())
@@ -2901,6 +2931,25 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
 	} else {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.tcp.path-mtu-discovery"); !data.IpTcpPathMtuDiscovery.IsNull() {
+		if value.Exists() {
+			data.IpTcpPathMtuDiscovery = types.BoolValue(true)
+		} else {
+			data.IpTcpPathMtuDiscovery = types.BoolValue(false)
+		}
+	} else {
+		data.IpTcpPathMtuDiscovery = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.tcp.mss"); value.Exists() && !data.IpTcpMss.IsNull() {
+		data.IpTcpMss = types.Int64Value(value.Int())
+	} else {
+		data.IpTcpMss = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.tcp.window-size"); value.Exists() && !data.IpTcpWindowSize.IsNull() {
+		data.IpTcpWindowSize = types.Int64Value(value.Int())
+	} else {
+		data.IpTcpWindowSize = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ip.ftp.passive-enable"); !data.IpFtpPassive.IsNull() {
 		if value.Exists() {
@@ -4247,6 +4296,25 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/path-mtu-discovery"); !data.IpTcpPathMtuDiscovery.IsNull() {
+		if value.Exists() {
+			data.IpTcpPathMtuDiscovery = types.BoolValue(true)
+		} else {
+			data.IpTcpPathMtuDiscovery = types.BoolValue(false)
+		}
+	} else {
+		data.IpTcpPathMtuDiscovery = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/mss"); value.Exists() && !data.IpTcpMss.IsNull() {
+		data.IpTcpMss = types.Int64Value(value.Int())
+	} else {
+		data.IpTcpMss = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/window-size"); value.Exists() && !data.IpTcpWindowSize.IsNull() {
+		data.IpTcpWindowSize = types.Int64Value(value.Int())
+	} else {
+		data.IpTcpWindowSize = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ftp/passive-enable"); !data.IpFtpPassive.IsNull() {
 		if value.Exists() {
 			data.IpFtpPassive = types.BoolValue(value.Bool())
@@ -5146,6 +5214,17 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.destination.transport-method"); value.Exists() {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.tcp.path-mtu-discovery"); value.Exists() {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(true)
+	} else {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.tcp.mss"); value.Exists() {
+		data.IpTcpMss = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.tcp.window-size"); value.Exists() {
+		data.IpTcpWindowSize = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.ftp.passive-enable"); value.Exists() {
 		data.IpFtpPassive = types.BoolValue(value.Bool())
 	} else {
@@ -5887,6 +5966,17 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.destination.transport-method"); value.Exists() {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.tcp.path-mtu-discovery"); value.Exists() {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(true)
+	} else {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.tcp.mss"); value.Exists() {
+		data.IpTcpMss = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.tcp.window-size"); value.Exists() {
+		data.IpTcpWindowSize = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.ftp.passive-enable"); value.Exists() {
 		data.IpFtpPassive = types.BoolValue(value.Bool())
 	} else {
@@ -6623,6 +6713,17 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method"); value.Exists() {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/path-mtu-discovery"); value.Exists() {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(true)
+	} else {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/mss"); value.Exists() {
+		data.IpTcpMss = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/window-size"); value.Exists() {
+		data.IpTcpWindowSize = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ftp/passive-enable"); value.Exists() {
 		data.IpFtpPassive = types.BoolValue(value.Bool())
@@ -7361,6 +7462,17 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method"); value.Exists() {
 		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/path-mtu-discovery"); value.Exists() {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(true)
+	} else {
+		data.IpTcpPathMtuDiscovery = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/mss"); value.Exists() {
+		data.IpTcpMss = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/tcp/window-size"); value.Exists() {
+		data.IpTcpWindowSize = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ftp/passive-enable"); value.Exists() {
 		data.IpFtpPassive = types.BoolValue(value.Bool())
 	} else {
@@ -7778,6 +7890,15 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.IpFtpPassive.IsNull() && data.IpFtpPassive.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ftp/passive-enable", state.getPath()))
+	}
+	if !state.IpTcpWindowSize.IsNull() && data.IpTcpWindowSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tcp/window-size", state.getPath()))
+	}
+	if !state.IpTcpMss.IsNull() && data.IpTcpMss.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tcp/mss", state.getPath()))
+	}
+	if !state.IpTcpPathMtuDiscovery.IsNull() && data.IpTcpPathMtuDiscovery.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tcp/path-mtu-discovery", state.getPath()))
 	}
 	if !state.CallHomeCiscoTac1DestinationTransportMethod.IsNull() && data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method", state.getPath()))
@@ -8706,6 +8827,15 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	if !state.IpFtpPassive.IsNull() && data.IpFtpPassive.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/ftp/passive-enable")
 	}
+	if !state.IpTcpWindowSize.IsNull() && data.IpTcpWindowSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/tcp/window-size")
+	}
+	if !state.IpTcpMss.IsNull() && data.IpTcpMss.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/tcp/mss")
+	}
+	if !state.IpTcpPathMtuDiscovery.IsNull() && data.IpTcpPathMtuDiscovery.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/tcp/path-mtu-discovery")
+	}
 	if !state.CallHomeCiscoTac1DestinationTransportMethod.IsNull() && data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method")
 	}
@@ -9500,6 +9630,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2=%v/ip/sla/reachability", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+	if !data.IpTcpPathMtuDiscovery.IsNull() && !data.IpTcpPathMtuDiscovery.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/tcp/path-mtu-discovery", data.getPath()))
+	}
 	if !data.SubscriberTemplating.IsNull() && !data.SubscriberTemplating.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber/templating", data.getPath()))
 	}
@@ -9716,6 +9849,15 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpFtpPassive.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ftp/passive-enable", data.getPath()))
+	}
+	if !data.IpTcpWindowSize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tcp/window-size", data.getPath()))
+	}
+	if !data.IpTcpMss.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tcp/mss", data.getPath()))
+	}
+	if !data.IpTcpPathMtuDiscovery.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tcp/path-mtu-discovery", data.getPath()))
 	}
 	if !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method", data.getPath()))
@@ -10218,6 +10360,15 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.IpFtpPassive.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/ftp/passive-enable")
+	}
+	if !data.IpTcpWindowSize.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/tcp/window-size")
+	}
+	if !data.IpTcpMss.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/tcp/mss")
+	}
+	if !data.IpTcpPathMtuDiscovery.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/tcp/path-mtu-discovery")
 	}
 	if !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method")
