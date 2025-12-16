@@ -352,24 +352,24 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("Route-map based VRF export for IPv6").String,
 				Optional:            true,
 			},
-			"vnid": schema.ListNestedAttribute{
+			"vnids": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify VNID for route-target auto generation").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"vnid_value": schema.Int64Attribute{
+						"vnid": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("VNID value for route-target auto generation").AddIntegerRangeDescription(1, 2147483647).String,
 							Required:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(1, 2147483647),
 							},
 						},
-						"evpn_instance_vni": schema.ListNestedAttribute{
+						"evpn_instance_vnis": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify explicit NVE L3 VNI number").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
-									"vni_num": schema.Int64Attribute{
+									"vni": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("The NVE L3 VNI number").AddIntegerRangeDescription(4096, 16777215).String,
 										Required:            true,
 										Validators: []validator.Int64{

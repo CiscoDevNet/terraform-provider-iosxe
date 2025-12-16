@@ -55,8 +55,8 @@ func TestAccIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_route_target_export_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_import_map", "IMPORT-MAP-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "ipv6_export_map", "EXPORT-MAP-1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "vnid.0.vnid_value", "10001"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "vnid.0.evpn_instance_vni.0.vni_num", "20000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "vnids.0.vnid", "10001"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrf.test", "vnids.0.evpn_instance_vnis.0.vni", "20000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -172,10 +172,10 @@ func testAccIosxeVRFConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	ipv6_import_map = "IMPORT-MAP-1"` + "\n"
 	config += `	ipv6_export_map = "EXPORT-MAP-1"` + "\n"
-	config += `	vnid = [{` + "\n"
-	config += `		vnid_value = 10001` + "\n"
-	config += `		evpn_instance_vni = [{` + "\n"
-	config += `			vni_num = 20000` + "\n"
+	config += `	vnids = [{` + "\n"
+	config += `		vnid = 10001` + "\n"
+	config += `		evpn_instance_vnis = [{` + "\n"
+	config += `			vni = 20000` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"

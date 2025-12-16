@@ -71,12 +71,12 @@ resource "iosxe_vrf" "example" {
   ]
   ipv6_import_map = "IMPORT-MAP-1"
   ipv6_export_map = "EXPORT-MAP-1"
-  vnid = [
+  vnids = [
     {
-      vnid_value = 10001
-      evpn_instance_vni = [
+      vnid = 10001
+      evpn_instance_vnis = [
         {
-          vni_num = 20000
+          vni = 20000
         }
       ]
     }
@@ -134,7 +134,7 @@ resource "iosxe_vrf" "example" {
 - `rd_auto` (Boolean) Specify to enable auto Route Distinguisher
 - `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
 - `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
-- `vnid` (Attributes List) Specify VNID for route-target auto generation (see [below for nested schema](#nestedatt--vnid))
+- `vnids` (Attributes List) Specify VNID for route-target auto generation (see [below for nested schema](#nestedatt--vnids))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
 
 ### Read-Only
@@ -275,24 +275,24 @@ Optional:
 - `stitching` (Boolean) VXLAN route target set
 
 
-<a id="nestedatt--vnid"></a>
-### Nested Schema for `vnid`
+<a id="nestedatt--vnids"></a>
+### Nested Schema for `vnids`
 
 Required:
 
-- `vnid_value` (Number) VNID value for route-target auto generation
+- `vnid` (Number) VNID value for route-target auto generation
   - Range: `1`-`2147483647`
 
 Optional:
 
-- `evpn_instance_vni` (Attributes List) Specify explicit NVE L3 VNI number (see [below for nested schema](#nestedatt--vnid--evpn_instance_vni))
+- `evpn_instance_vnis` (Attributes List) Specify explicit NVE L3 VNI number (see [below for nested schema](#nestedatt--vnids--evpn_instance_vnis))
 
-<a id="nestedatt--vnid--evpn_instance_vni"></a>
-### Nested Schema for `vnid.evpn_instance_vni`
+<a id="nestedatt--vnids--evpn_instance_vnis"></a>
+### Nested Schema for `vnids.evpn_instance_vnis`
 
 Required:
 
-- `vni_num` (Number) The NVE L3 VNI number
+- `vni` (Number) The NVE L3 VNI number
   - Range: `4096`-`16777215`
 
 Optional:

@@ -161,30 +161,26 @@ attributes:
     description: Route-map based VRF export for IPv6
     example: EXPORT-MAP-1
   - yang_name: vnid
-    tf_name: vnid
+    tf_name: vnids
     type: List
     attributes:
       - yang_name: vnid-value
-        tf_name: vnid_value
-        type: Int64
+        tf_name: vnid
         id: true
         description: VNID value for route-target auto generation
         example: 10001
       - yang_name: evpn-instance/vni/vni-auto-num/vni-num/vni-num
         xpath: evpn-instance/vni/vni-num
-        tf_name: evpn_instance_vni
+        tf_name: evpn_instance_vnis
         type: List
         description: Specify explicit NVE L3 VNI number
         attributes:
           - yang_name: vni-num
-            tf_name: vni_num
-            type: Int64
+            tf_name: vni
             id: true
             description: The NVE L3 VNI number
             example: 20000
           - yang_name: core-vlan
-            tf_name: core_vlan
-            type: Int64
             description: Core vlan number to associate with VNI (explicit VNI mode)
             exclude_test: true
             example: 200
