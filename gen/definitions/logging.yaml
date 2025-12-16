@@ -9,6 +9,12 @@ attributes:
     xpath: monitor-config/common-config/monitor/severity
     tf_name: monitor_severity
     example: informational
+  - yang_name: buffered/size-value
+    tf_name: buffered_size_legacy
+    example: 16000
+  - yang_name: buffered/severity-level
+    tf_name: buffered_severity_legacy
+    example: informational
   - yang_name: buffered-config/config-options/common-case/common-config/buffered/size-value
     xpath: buffered-config/common-config/buffered/size-value
     tf_name: buffered_size

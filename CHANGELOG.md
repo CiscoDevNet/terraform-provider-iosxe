@@ -10,6 +10,10 @@
 - Add `iosxe_commit` action
 - Add `iosxe_save_config` action
 - Add `igmp_snooping_querier`, `igmp_snooping_querier_version`, `igmp_snooping_querier_max_response_time`, and `igmp_snooping_querier_timer_expiry` attributes to `iosxe_system` resource and data source
+- BREAKING CHANGE: Rename `buffered_size` attribute of `iosxe_logging` resource to `buffered_size_legacy`
+- BREAKING CHANGE: Rename `buffered_severity` attribute of `iosxe_logging` resource to `buffered_severity_legacy`
+- Add `buffered_size` and `buffered_severity` attributes to `iosxe_logging` resource and data source
+- Add `vnids` attribute to `iosxe_vrf` resource and data source
 
 ## 0.13.0
 
