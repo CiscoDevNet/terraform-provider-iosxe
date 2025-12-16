@@ -15,6 +15,7 @@
 - Add `buffered_size` and `buffered_severity` attributes to `iosxe_logging` resource and data source
 - Add `vnids` attribute to `iosxe_vrf` resource and data source
 - Add `iosxe_evpn_profile` resource and data source
+- Add `ip_tcp_path_mtu_discovery`, `ip_tcp_mss` and `ip_tcp_window_size` attributes to `iosxe_system` resource and data source
 
 ## 0.13.0
 
