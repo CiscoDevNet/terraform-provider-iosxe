@@ -1,4 +1,4 @@
-## 0.14.2
+## 0.14.3
 
 - Fix SBOM creation process
 
