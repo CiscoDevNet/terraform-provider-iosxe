@@ -259,6 +259,71 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 											int64validator.Between(100, 512000000),
 										},
 									},
+									"police_target_bitrate_exceed_drop": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("drop packet").String,
+										Optional:            true,
+									},
+									"police_cir": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Committed information rate").AddIntegerRangeDescription(8000, 100000000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(8000, 100000000000),
+										},
+									},
+									"police_bc": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Conform burst").AddIntegerRangeDescription(1000, 512000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1000, 512000000),
+										},
+									},
+									"police_be": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Excess burst").AddIntegerRangeDescription(1000, 512000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1000, 512000000),
+										},
+									},
+									"police_pir": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Peak Information Rate").AddIntegerRangeDescription(8000, 64000000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(8000, 64000000000),
+										},
+									},
+									"police_pir_be": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Excess burst").AddIntegerRangeDescription(1000, 512000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1000, 512000000),
+										},
+									},
+									"police_cir_conform_transmit": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										Optional:            true,
+									},
+									"police_cir_exceed_drop": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("drop packet").String,
+										Optional:            true,
+									},
+									"police_rate_percent": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 100).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 100),
+										},
+									},
+									"queue_buffers_ratio": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Relative buffer size for queue").AddIntegerRangeDescription(0, 100).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 100),
+										},
+									},
+									"set_dscp": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
 								},
 							},
 						},
