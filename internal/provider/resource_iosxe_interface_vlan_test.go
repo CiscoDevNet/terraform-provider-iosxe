@@ -72,7 +72,6 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "mac_address", "0000.dead.beef"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_igmp_version", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_nat_inside", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -89,7 +88,7 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceVLANImportStateIdFunc("iosxe_interface_vlan.test"),
-				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -183,7 +182,6 @@ func testAccIosxeInterfaceVLANConfig_all() string {
 	config += `	mac_address = "0000.dead.beef"` + "\n"
 	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
-	config += `	ip_nat_inside = true` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

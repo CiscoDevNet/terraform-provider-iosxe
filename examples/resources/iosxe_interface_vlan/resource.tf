@@ -45,5 +45,4 @@ resource "iosxe_interface_vlan" "example" {
   mac_address                             = "0000.dead.beef"
   ip_dhcp_relay_information_option_vpn_id = true
   ip_igmp_version                         = 3
-  ip_nat_inside                           = true
 }

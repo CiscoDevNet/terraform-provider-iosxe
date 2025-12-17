@@ -63,7 +63,6 @@ resource "iosxe_interface_tunnel" "example" {
   tunnel_vrf                       = "VRF1"
   ip_igmp_version                  = 3
   ip_tcp_adjust_mss                = 1400
-  ip_nat_inside                    = true
 }
 ```
 

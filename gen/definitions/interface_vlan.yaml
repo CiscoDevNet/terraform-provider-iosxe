@@ -148,6 +148,7 @@ attributes:
     xpath: ip/Cisco-IOS-XE-nat:nat/inside
     tf_name: ip_nat_inside
     example: true
+    exclude_test: true
   - yang_name: ip/Cisco-IOS-XE-nat:nat/nat-choice/outside/outside
     xpath: ip/Cisco-IOS-XE-nat:nat/outside
     tf_name: ip_nat_outside

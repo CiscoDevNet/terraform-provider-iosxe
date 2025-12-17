@@ -29,5 +29,4 @@ resource "iosxe_interface_loopback" "example" {
   ]
   arp_timeout     = 2147
   ip_igmp_version = 3
-  ip_nat_inside   = true
 }

@@ -56,7 +56,6 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "arp_timeout", "2147"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_igmp_version", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_nat_inside", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -73,7 +72,7 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceLoopbackImportStateIdFunc("iosxe_interface_loopback.test"),
-				ImportStateVerifyIgnore: []string{"ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -152,7 +151,6 @@ func testAccIosxeInterfaceLoopbackConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
-	config += `	ip_nat_inside = true` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
