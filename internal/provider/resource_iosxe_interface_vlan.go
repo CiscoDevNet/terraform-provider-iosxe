@@ -322,6 +322,14 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"ip_nat_inside": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
+				Optional:            true,
+			},
+			"ip_nat_outside": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
+				Optional:            true,
+			},
 		},
 	}
 }

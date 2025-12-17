@@ -369,6 +369,14 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					int64validator.Between(500, 1460),
 				},
 			},
+			"ip_nat_inside": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
+				Optional:            true,
+			},
+			"ip_nat_outside": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
+				Optional:            true,
+			},
 		},
 	}
 }

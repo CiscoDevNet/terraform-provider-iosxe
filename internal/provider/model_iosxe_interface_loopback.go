@@ -68,6 +68,8 @@ type InterfaceLoopback struct {
 	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
 	IpIgmpVersion                types.Int64                               `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                 types.String                              `tfsdk:"ip_router_isis"`
+	IpNatInside                  types.Bool                                `tfsdk:"ip_nat_inside"`
+	IpNatOutside                 types.Bool                                `tfsdk:"ip_nat_outside"`
 }
 
 type InterfaceLoopbackData struct {
@@ -96,6 +98,8 @@ type InterfaceLoopbackData struct {
 	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
 	IpIgmpVersion                types.Int64                               `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                 types.String                              `tfsdk:"ip_router_isis"`
+	IpNatInside                  types.Bool                                `tfsdk:"ip_nat_inside"`
+	IpNatOutside                 types.Bool                                `tfsdk:"ip_nat_outside"`
 }
 type InterfaceLoopbackIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -224,6 +228,16 @@ func (data InterfaceLoopback) toBody(ctx context.Context) string {
 	}
 	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.router.Cisco-IOS-XE-isis:isis.tag", data.IpRouterIsis.ValueString())
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.IsUnknown() {
+		if data.IpNatInside.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.inside", map[string]string{})
+		}
+	}
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
+		if data.IpNatOutside.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
+		}
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
@@ -382,6 +396,20 @@ func (data InterfaceLoopback) toBodyXML(ctx context.Context) string {
 	}
 	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag", data.IpRouterIsis.ValueString())
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.IsUnknown() {
+		if data.IpNatInside.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
+		}
+	}
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
+		if data.IpNatOutside.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -614,6 +642,24 @@ func (data *InterfaceLoopback) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpRouterIsis = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); !data.IpNatInside.IsNull() {
+		if value.Exists() {
+			data.IpNatInside = types.BoolValue(true)
+		} else {
+			data.IpNatInside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatInside = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); !data.IpNatOutside.IsNull() {
+		if value.Exists() {
+			data.IpNatOutside = types.BoolValue(true)
+		} else {
+			data.IpNatOutside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatOutside = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -836,6 +882,24 @@ func (data *InterfaceLoopback) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.IpRouterIsis = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside"); !data.IpNatInside.IsNull() {
+		if value.Exists() {
+			data.IpNatInside = types.BoolValue(true)
+		} else {
+			data.IpNatInside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatInside = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside"); !data.IpNatOutside.IsNull() {
+		if value.Exists() {
+			data.IpNatOutside = types.BoolValue(true)
+		} else {
+			data.IpNatOutside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatOutside = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -958,6 +1022,16 @@ func (data *InterfaceLoopback) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
 	}
 }
 
@@ -1082,6 +1156,16 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1200,6 +1284,16 @@ func (data *InterfaceLoopback) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
 	}
 }
 
@@ -1320,6 +1414,16 @@ func (data *InterfaceLoopbackData) fromBodyXML(ctx context.Context, res xmldot.R
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1328,6 +1432,12 @@ func (data *InterfaceLoopbackData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *InterfaceLoopback) getDeletedItems(ctx context.Context, state InterfaceLoopback) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
+	}
+	if !state.IpNatInside.IsNull() && data.IpNatInside.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", state.getPath()))
+	}
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", state.getPath()))
 	}
@@ -1454,6 +1564,12 @@ func (data *InterfaceLoopback) getDeletedItems(ctx context.Context, state Interf
 
 func (data *InterfaceLoopback) addDeletedItemsXML(ctx context.Context, state InterfaceLoopback, body string) string {
 	b := netconf.NewBody(body)
+	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+	}
+	if !state.IpNatInside.IsNull() && data.IpNatInside.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
+	}
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
 	}
@@ -1591,6 +1707,12 @@ func (data *InterfaceLoopback) addDeletedItemsXML(ctx context.Context, state Int
 
 func (data *InterfaceLoopback) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", data.getPath()))
+	}
 
 	for i := range data.Ipv6Addresses {
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
@@ -1636,6 +1758,12 @@ func (data *InterfaceLoopback) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpNatOutside.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
+	}
+	if !data.IpNatInside.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", data.getPath()))
+	}
 	if !data.IpRouterIsis.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", data.getPath()))
 	}
@@ -1716,6 +1844,12 @@ func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceLoopback) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.IpNatOutside.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+	}
+	if !data.IpNatInside.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
+	}
 	if !data.IpRouterIsis.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
 	}

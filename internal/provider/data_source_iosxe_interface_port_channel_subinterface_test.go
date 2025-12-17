@@ -64,6 +64,7 @@ func TestAccDataSourceIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "arp_timeout", "2147"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_igmp_version", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_nat_inside", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -169,6 +170,7 @@ func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
+	config += `	ip_nat_inside = true` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 

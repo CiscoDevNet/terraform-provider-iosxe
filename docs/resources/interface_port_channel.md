@@ -59,6 +59,7 @@ resource "iosxe_interface_port_channel" "example" {
   load_interval                    = 30
   logging_event_link_status_enable = false
   ip_igmp_version                  = 3
+  ip_nat_inside                    = true
 }
 ```
 
@@ -113,6 +114,8 @@ resource "iosxe_interface_port_channel" "example" {
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
+- `ip_nat_inside` (Boolean) Inside interface for address translation
+- `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)

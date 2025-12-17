@@ -103,6 +103,8 @@ type InterfacePortChannel struct {
 	EvpnEthernetSegments           []InterfacePortChannelEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
 	IpIgmpVersion                  types.Int64                                          `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                   types.String                                         `tfsdk:"ip_router_isis"`
+	IpNatInside                    types.Bool                                           `tfsdk:"ip_nat_inside"`
+	IpNatOutside                   types.Bool                                           `tfsdk:"ip_nat_outside"`
 }
 
 type InterfacePortChannelData struct {
@@ -166,6 +168,8 @@ type InterfacePortChannelData struct {
 	EvpnEthernetSegments           []InterfacePortChannelEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
 	IpIgmpVersion                  types.Int64                                          `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                   types.String                                         `tfsdk:"ip_router_isis"`
+	IpNatInside                    types.Bool                                           `tfsdk:"ip_nat_inside"`
+	IpNatOutside                   types.Bool                                           `tfsdk:"ip_nat_outside"`
 }
 type InterfacePortChannelHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -431,6 +435,16 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 	}
 	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.router.Cisco-IOS-XE-isis:isis.tag", data.IpRouterIsis.ValueString())
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.IsUnknown() {
+		if data.IpNatInside.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.inside", map[string]string{})
+		}
+	}
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
+		if data.IpNatOutside.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
+		}
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -814,6 +828,20 @@ func (data InterfacePortChannel) toBodyXML(ctx context.Context) string {
 	}
 	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag", data.IpRouterIsis.ValueString())
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.IsUnknown() {
+		if data.IpNatInside.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
+		}
+	}
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
+		if data.IpNatOutside.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1379,6 +1407,24 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.IpRouterIsis = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); !data.IpNatInside.IsNull() {
+		if value.Exists() {
+			data.IpNatInside = types.BoolValue(true)
+		} else {
+			data.IpNatInside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatInside = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); !data.IpNatOutside.IsNull() {
+		if value.Exists() {
+			data.IpNatOutside = types.BoolValue(true)
+		} else {
+			data.IpNatOutside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatOutside = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1934,6 +1980,24 @@ func (data *InterfacePortChannel) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.IpRouterIsis = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside"); !data.IpNatInside.IsNull() {
+		if value.Exists() {
+			data.IpNatInside = types.BoolValue(true)
+		} else {
+			data.IpNatInside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatInside = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside"); !data.IpNatOutside.IsNull() {
+		if value.Exists() {
+			data.IpNatOutside = types.BoolValue(true)
+		} else {
+			data.IpNatOutside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatOutside = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -2235,6 +2299,16 @@ func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result
 	}
 	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
 	}
 }
 
@@ -2538,6 +2612,16 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2835,6 +2919,16 @@ func (data *InterfacePortChannel) fromBodyXML(ctx context.Context, res xmldot.Re
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
 	}
 }
 
@@ -3134,6 +3228,16 @@ func (data *InterfacePortChannelData) fromBodyXML(ctx context.Context, res xmldo
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -3142,6 +3246,12 @@ func (data *InterfacePortChannelData) fromBodyXML(ctx context.Context, res xmldo
 
 func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state InterfacePortChannel) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
+	}
+	if !state.IpNatInside.IsNull() && data.IpNatInside.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", state.getPath()))
+	}
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", state.getPath()))
 	}
@@ -3442,6 +3552,12 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 
 func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state InterfacePortChannel, body string) string {
 	b := netconf.NewBody(body)
+	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+	}
+	if !state.IpNatInside.IsNull() && data.IpNatInside.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
+	}
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
 	}
@@ -3768,6 +3884,12 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 
 func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", data.getPath()))
+	}
 
 	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
@@ -3866,6 +3988,12 @@ func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpNatOutside.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
+	}
+	if !data.IpNatInside.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", data.getPath()))
+	}
 	if !data.IpRouterIsis.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", data.getPath()))
 	}
@@ -4054,6 +4182,12 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfacePortChannel) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.IpNatOutside.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+	}
+	if !data.IpNatInside.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/inside")
+	}
 	if !data.IpRouterIsis.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
 	}
