@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `ip_nat_inside` and `ip_nat_outside` attributes to `iosxe_interface_tunnel`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources
+
 ## 0.14.4
 
 - Remove SBOM from GitHub Releases
