@@ -42,13 +42,12 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type L2VFI struct {
-	Device     types.String     `tfsdk:"device"`
-	Id         types.String     `tfsdk:"id"`
-	DeleteMode types.String     `tfsdk:"delete_mode"`
-	Name       types.String     `tfsdk:"name"`
-	Mode       types.String     `tfsdk:"mode"`
-	VpnId      types.Int64      `tfsdk:"vpn_id"`
-	Neighbors  []L2VFINeighbors `tfsdk:"neighbors"`
+	Device    types.String     `tfsdk:"device"`
+	Id        types.String     `tfsdk:"id"`
+	Name      types.String     `tfsdk:"name"`
+	Mode      types.String     `tfsdk:"mode"`
+	VpnId     types.Int64      `tfsdk:"vpn_id"`
+	Neighbors []L2VFINeighbors `tfsdk:"neighbors"`
 }
 
 type L2VFIData struct {

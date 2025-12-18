@@ -4,6 +4,7 @@ path: /Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]
 test_tags: [IOSXE1715]
 doc_category: L2VPN
 skip_minimum_test: true
+no_delete_attributes: true
 attributes:
   - yang_name: name
     example: TENANT-A
