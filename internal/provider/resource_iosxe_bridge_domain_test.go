@@ -38,10 +38,10 @@ func TestAccIosxeBridgeDomain(t *testing.T) {
 		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bridge_domain.test", "bridge_domain_id", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bridge_domain.test", "member_vni", "10100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bridge_domain.test", "bridge_domain_id", "836"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bridge_domain.test", "member_vni", "10800"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bridge_domain.test", "member_interfaces.0.interface", "GigabitEthernet2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bridge_domain.test", "member_interfaces.0.service_instances.0.instance_id", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bridge_domain.test", "member_interfaces.0.service_instances.0.instance_id", "836"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -87,7 +87,7 @@ func iosxeBridgeDomainImportStateIdFunc(resourceName string) resource.ImportStat
 
 func testAccIosxeBridgeDomainConfig_minimum() string {
 	config := `resource "iosxe_bridge_domain" "test" {` + "\n"
-	config += `	bridge_domain_id = 100` + "\n"
+	config += `	bridge_domain_id = 836` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -98,12 +98,12 @@ func testAccIosxeBridgeDomainConfig_minimum() string {
 
 func testAccIosxeBridgeDomainConfig_all() string {
 	config := `resource "iosxe_bridge_domain" "test" {` + "\n"
-	config += `	bridge_domain_id = 100` + "\n"
-	config += `	member_vni = 10100` + "\n"
+	config += `	bridge_domain_id = 836` + "\n"
+	config += `	member_vni = 10800` + "\n"
 	config += `	member_interfaces = [{` + "\n"
 	config += `		interface = "GigabitEthernet2"` + "\n"
 	config += `		service_instances = [{` + "\n"
-	config += `			instance_id = 100` + "\n"
+	config += `			instance_id = 836` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

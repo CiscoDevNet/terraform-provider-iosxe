@@ -5,9 +5,9 @@ doc_category: Switching
 test_tags: [C8000V]
 attributes:
   - yang_name: bridge-domain-id
-    example: 100
+    example: 836
   - yang_name: member/vni
-    example: 10100
+    example: 10800
   - yang_name: member/member-interface
     tf_name: member_interfaces
     type: List
@@ -20,5 +20,5 @@ attributes:
         type: List
         attributes:
           - yang_name: instance-id
-            example: 100
+            example: 836
             id: true
