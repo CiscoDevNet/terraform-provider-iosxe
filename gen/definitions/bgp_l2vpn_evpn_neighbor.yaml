@@ -52,7 +52,7 @@ test_prerequisites:
       - name: remote-as
         value: 65000
     dependencies: [0]
-  - path: Cisco-IOS-XE-native:native/route-map=[name=RM1]
+  - path: /Cisco-IOS-XE-native:native/route-map[name=RM1]
     attributes:
       - name: name
         value: RM1
