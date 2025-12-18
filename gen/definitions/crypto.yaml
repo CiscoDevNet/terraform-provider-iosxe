@@ -1,6 +1,6 @@
 ---
 name: Crypto
-path: Cisco-IOS-XE-native:native/crypto
+path: /Cisco-IOS-XE-native:native/crypto
 no_delete: true
 doc_category: Crypto
 attributes:

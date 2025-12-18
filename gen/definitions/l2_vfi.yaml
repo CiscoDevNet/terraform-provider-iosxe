@@ -1,6 +1,6 @@
 ---
 name: L2 VFI
-path: Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]
+path: /Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]
 test_tags: [IOSXE1715]
 doc_category: L2VPN
 skip_minimum_test: true

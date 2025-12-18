@@ -89,13 +89,13 @@ func (data L2VFI) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data L2VFI) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data L2VFIData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }

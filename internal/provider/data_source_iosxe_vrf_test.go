@@ -69,7 +69,7 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeVRFPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -78,7 +78,7 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/route-map[name=RM1]"
+	path = "/Cisco-IOS-XE-native:native/route-map[name=RM1]"
 	attributes = {
 		"name" = "RM1"
 	}

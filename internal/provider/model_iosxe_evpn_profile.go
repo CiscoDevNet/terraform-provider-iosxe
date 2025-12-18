@@ -81,13 +81,13 @@ func (data EVPNProfile) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data EVPNProfile) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data EVPNProfileData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
