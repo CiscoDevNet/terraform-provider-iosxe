@@ -2239,3 +2239,69 @@ func TestIsGetConfigResponseEmpty_WithIsListPath(t *testing.T) {
 		})
 	}
 }
+
+// TestSetRawFromXPath_MultipleSiblingsWithNamespaces tests that multiple sibling elements
+// each get their own namespace declaration when using namespace prefixes.
+// This reproduces the CDP tlv-list issue where the second tlv-list was missing xmlns.
+func TestSetRawFromXPath_MultipleSiblingsWithNamespaces(t *testing.T) {
+	body := netconf.Body{}
+
+	// Simulate CDP configuration with multiple tlv-list elements
+	tlvList1 := `<name>TLIST</name><vtp-mgmt-domain operation="remove"></vtp-mgmt-domain><cos></cos>`
+	tlvList2 := `<name>TLIST2</name><vtp-mgmt-domain></vtp-mgmt-domain><cos operation="remove"></cos>`
+
+	// Add first tlv-list with namespace prefix
+	body = SetRawFromXPath(body, "/Cisco-IOS-XE-native:native/cdp/Cisco-IOS-XE-cdp:tlv-list", tlvList1)
+	// Add second tlv-list with namespace prefix
+	body = SetRawFromXPath(body, "/Cisco-IOS-XE-native:native/cdp/Cisco-IOS-XE-cdp:tlv-list", tlvList2)
+
+	if err := body.Err(); err != nil {
+		t.Fatalf("SetRawFromXPath() returned error: %v", err)
+	}
+
+	resultXML := body.Res()
+	t.Logf("Generated XML:\n%s", resultXML)
+
+	// Verify both tlv-list elements exist
+	name1 := xmldot.Get(resultXML, "native.cdp.tlv-list.0.name").String()
+	name2 := xmldot.Get(resultXML, "native.cdp.tlv-list.1.name").String()
+
+	if name1 != "TLIST" {
+		t.Errorf("First tlv-list name = %q, want %q", name1, "TLIST")
+	}
+	if name2 != "TLIST2" {
+		t.Errorf("Second tlv-list name = %q, want %q", name2, "TLIST2")
+	}
+
+	// Verify namespace declaration on native element
+	nativeXmlns := xmldot.Get(resultXML, "native.@xmlns").String()
+	if nativeXmlns != "http://cisco.com/ns/yang/Cisco-IOS-XE-native" {
+		t.Errorf("native xmlns = %q, want %q", nativeXmlns, "http://cisco.com/ns/yang/Cisco-IOS-XE-native")
+	}
+
+	// Verify namespace declaration on BOTH tlv-list elements
+	tlvList1Xmlns := xmldot.Get(resultXML, "native.cdp.tlv-list.0.@xmlns").String()
+	tlvList2Xmlns := xmldot.Get(resultXML, "native.cdp.tlv-list.1.@xmlns").String()
+
+	expectedCdpNs := "http://cisco.com/ns/yang/Cisco-IOS-XE-cdp"
+
+	if tlvList1Xmlns != expectedCdpNs {
+		t.Errorf("First tlv-list xmlns = %q, want %q", tlvList1Xmlns, expectedCdpNs)
+	}
+	if tlvList2Xmlns != expectedCdpNs {
+		t.Errorf("Second tlv-list xmlns = %q, want %q", tlvList2Xmlns, expectedCdpNs)
+	}
+
+	// Verify the XML contains properly formatted elements with namespaces
+	if !strings.Contains(resultXML, `<tlv-list xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-cdp">`) {
+		t.Error("Generated XML missing tlv-list elements with namespace declarations")
+	}
+
+	// Count how many times the tlv-list xmlns appears - should be 2 (one for each element)
+	xmlnsCount := strings.Count(resultXML, `<tlv-list xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-cdp">`)
+	if xmlnsCount != 2 {
+		t.Errorf("Found %d tlv-list elements with xmlns, want 2", xmlnsCount)
+	}
+
+	t.Log("✓ Multiple sibling elements with namespaces verified successfully")
+}

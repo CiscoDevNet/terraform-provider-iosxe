@@ -345,6 +345,7 @@ func setWithNamespaces(body netconf.Body, fullPath string, value any) netconf.Bo
 
 // augmentNamespaces walks through the path and adds namespace declarations
 // to elements where prefixes appear, checking the current body to avoid duplicates.
+// When multiple sibling elements exist at the same path, adds namespace to all of them.
 func augmentNamespaces(body netconf.Body, path string) netconf.Body {
 	segments := strings.Split(path, ".")
 	pathWithoutPrefix := make([]string, 0, len(segments))
@@ -371,9 +372,24 @@ func augmentNamespaces(body netconf.Body, path string) netconf.Body {
 				namespace = namespaceBaseURL + prefix
 			}
 
-			xmlnsPath := currentPath + ".@xmlns"
-			if !xmldot.Get(body.Res(), xmlnsPath).Exists() {
-				body = body.Set(xmlnsPath, namespace)
+			// Check if there are multiple elements at this path
+			countPath := currentPath + ".#"
+			count := xmldot.Get(body.Res(), countPath).Int()
+
+			if count > 1 {
+				// Multiple elements - add namespace to all that don't have it
+				for i := 0; i < int(count); i++ {
+					indexedXmlnsPath := fmt.Sprintf("%s.%d.@xmlns", currentPath, i)
+					if !xmldot.Get(body.Res(), indexedXmlnsPath).Exists() {
+						body = body.Set(indexedXmlnsPath, namespace)
+					}
+				}
+			} else {
+				// Single element or first element
+				xmlnsPath := currentPath + ".@xmlns"
+				if !xmldot.Get(body.Res(), xmlnsPath).Exists() {
+					body = body.Set(xmlnsPath, namespace)
+				}
 			}
 		}
 	}
