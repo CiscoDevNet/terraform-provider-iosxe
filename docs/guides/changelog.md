@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## Unreleased
+## 0.14.6
 
 - Do not read `pac_key_encryption` attribute of `iosxe_radius` resource and data source to avoid drift detection
 - Do not read `encryption` attribute of `iosxe_snmp_server` resource and data source to avoid drift detection
