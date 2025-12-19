@@ -7,6 +7,12 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Do not read `pac_key_encryption` attribute of `iosxe_radius` resource and data source to avoid drift detection
+- Do not read `encryption` attribute of `iosxe_snmp_server` resource and data source to avoid drift detection
+- Do not read `secret_encryption` attribute of `iosxe_username` resource and data source to avoid drift detection
+
 ## 0.14.5
 
 - Various fixes related to creating and reading NETCONF payloads

@@ -60,3 +60,4 @@ attributes:
     example: 0
     test_tags: [IOSXE1712]
     delete_parent: true
+    write_only: true

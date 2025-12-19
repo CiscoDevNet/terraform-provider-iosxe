@@ -3473,11 +3473,6 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Hosts[i].Version = types.StringNull()
 		}
-		if value := r.Get("encryption"); value.Exists() && !data.Hosts[i].Encryption.IsNull() {
-			data.Hosts[i].Encryption = types.StringValue(value.String())
-		} else {
-			data.Hosts[i].Encryption = types.StringNull()
-		}
 		if value := r.Get("security-level"); value.Exists() && !data.Hosts[i].SecurityLevel.IsNull() {
 			data.Hosts[i].SecurityLevel = types.StringValue(value.String())
 		} else {
@@ -3521,11 +3516,6 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.VrfHosts[i].Version = types.StringValue(value.String())
 		} else {
 			data.VrfHosts[i].Version = types.StringNull()
-		}
-		if value := r.Get("encryption"); value.Exists() && !data.VrfHosts[i].Encryption.IsNull() {
-			data.VrfHosts[i].Encryption = types.StringValue(value.String())
-		} else {
-			data.VrfHosts[i].Encryption = types.StringNull()
 		}
 		if value := r.Get("security-level"); value.Exists() && !data.VrfHosts[i].SecurityLevel.IsNull() {
 			data.VrfHosts[i].SecurityLevel = types.StringValue(value.String())
@@ -5542,11 +5532,6 @@ func (data *SNMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Result
 		} else {
 			data.Hosts[i].Version = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "encryption"); value.Exists() && !data.Hosts[i].Encryption.IsNull() {
-			data.Hosts[i].Encryption = types.StringValue(value.String())
-		} else {
-			data.Hosts[i].Encryption = types.StringNull()
-		}
 		if value := helpers.GetFromXPath(r, "security-level"); value.Exists() && !data.Hosts[i].SecurityLevel.IsNull() {
 			data.Hosts[i].SecurityLevel = types.StringValue(value.String())
 		} else {
@@ -5590,11 +5575,6 @@ func (data *SNMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Result
 			data.VrfHosts[i].Version = types.StringValue(value.String())
 		} else {
 			data.VrfHosts[i].Version = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "encryption"); value.Exists() && !data.VrfHosts[i].Encryption.IsNull() {
-			data.VrfHosts[i].Encryption = types.StringValue(value.String())
-		} else {
-			data.VrfHosts[i].Encryption = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "security-level"); value.Exists() && !data.VrfHosts[i].SecurityLevel.IsNull() {
 			data.VrfHosts[i].SecurityLevel = types.StringValue(value.String())

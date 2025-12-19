@@ -61,6 +61,7 @@ attributes:
         example: 2c
       - yang_name: encryption
         example: 7
+        write_only: true
       - yang_name: security-level
         example: priv
         exclude_test: true
@@ -83,6 +84,7 @@ attributes:
         example: 2c
       - yang_name: encryption
         example: 7
+        write_only: true
       - yang_name: security-level
         example: priv
         exclude_test: true

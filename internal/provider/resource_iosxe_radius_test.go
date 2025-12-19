@@ -45,9 +45,6 @@ func TestAccIosxeRadius(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_ignore_acct_port", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_ignore_auth_port", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_probe_on_config", "true"))
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key_encryption", "0"))
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
