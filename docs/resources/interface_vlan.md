@@ -96,6 +96,8 @@ resource "iosxe_interface_vlan" "example" {
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
 - `ip_local_proxy_arp` (Boolean) Enable local-proxy ARP
+- `ip_nat_inside` (Boolean) Inside interface for address translation
+- `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)

@@ -223,6 +223,16 @@ attributes:
     tf_name: ip_router_isis
     example: TEST
     exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-nat:nat/nat-choice/inside/inside
+    xpath: ip/Cisco-IOS-XE-nat:nat/inside
+    tf_name: ip_nat_inside
+    example: true
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-nat:nat/nat-choice/outside/outside
+    xpath: ip/Cisco-IOS-XE-nat:nat/outside
+    tf_name: ip_nat_outside
+    example: true
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

@@ -102,6 +102,8 @@ resource "iosxe_interface_tunnel" "example" {
   - Range: `1`-`3`
 - `ip_mtu` (Number) Set IP Maximum Transmission Unit
   - Range: `68`-`18000`
+- `ip_nat_inside` (Boolean) Inside interface for address translation
+- `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)

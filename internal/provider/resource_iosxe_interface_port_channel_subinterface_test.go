@@ -83,7 +83,7 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfacePortChannelSubinterfaceImportStateIdFunc("iosxe_interface_port_channel_subinterface.test"),
-				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust"},
+				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

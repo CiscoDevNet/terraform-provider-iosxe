@@ -39,6 +39,8 @@ data "iosxe_interface_loopback" "example" {
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_igmp_version` (Number) IGMP version
+- `ip_nat_inside` (Boolean) Inside interface for address translation
+- `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)

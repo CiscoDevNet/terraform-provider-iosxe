@@ -296,6 +296,14 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"ip_nat_inside": schema.BoolAttribute{
+				MarkdownDescription: "Inside interface for address translation",
+				Computed:            true,
+			},
+			"ip_nat_outside": schema.BoolAttribute{
+				MarkdownDescription: "Outside interface for address translation",
+				Computed:            true,
+			},
 		},
 	}
 }

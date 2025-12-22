@@ -256,6 +256,14 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"ip_nat_inside": schema.BoolAttribute{
+				MarkdownDescription: "Inside interface for address translation",
+				Computed:            true,
+			},
+			"ip_nat_outside": schema.BoolAttribute{
+				MarkdownDescription: "Outside interface for address translation",
+				Computed:            true,
+			},
 		},
 	}
 }

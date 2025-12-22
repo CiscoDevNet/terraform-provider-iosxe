@@ -88,7 +88,7 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceVLANImportStateIdFunc("iosxe_interface_vlan.test"),
-				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default"},
+				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

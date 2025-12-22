@@ -72,7 +72,7 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceLoopbackImportStateIdFunc("iosxe_interface_loopback.test"),
-				ImportStateVerifyIgnore: []string{"ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default"},
+				ImportStateVerifyIgnore: []string{"ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
