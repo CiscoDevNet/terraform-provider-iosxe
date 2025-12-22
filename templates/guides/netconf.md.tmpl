@@ -9,27 +9,35 @@ description: |-
 
 ## Overview
 
-The IOSXE provider supports both **RESTCONF** (HTTPS-based) and **NETCONF** (SSH-based) protocols for device communication. NETCONF support was introduced in version 0.10.0 and provides additional capabilities, particularly for transactional configuration management using the candidate datastore.
+The IOSXE provider uses **NETCONF** (SSH-based) as the default protocol for device communication. NETCONF support was introduced in version 0.10.0 and became the default in version 0.15.0.
 
-### Key Benefits of NETCONF
+### Key NETCONF Features
 
 - **Transactional Commits**: Stage multiple configuration changes in the candidate datastore and commit them atomically
 - **Connection Reuse**: Keep SSH connections open between operations for improved performance
 - **Standardized Protocol**: Industry-standard NETCONF protocol (RFC 6241) over SSH
+- **Better Error Handling**: More detailed error messages and validation
 
 ## Device Configuration
 
 ### Enabling NETCONF on IOS-XE
 
-To use the NETCONF protocol, you must enable it on your IOS-XE device:
+To use the NETCONF protocol, enable it on your IOS-XE device:
 
 ```
 configure terminal
 netconf-yang
+```
+
+### Optional: Candidate Datastore for Transactional Commits
+
+For transactional commits using the candidate datastore, also enable the candidate datastore feature:
+
+```
 netconf-yang feature candidate-datastore
 ```
 
-The `candidate-datastore` feature enables the candidate configuration datastore, which allows you to stage configuration changes before committing them to the running configuration.
+The candidate datastore allows you to stage multiple configuration changes and commit them atomically as a single transaction. Without this feature, the provider will edit the running configuration directly.
 
 ### Verifying NETCONF Capabilities
 
@@ -44,14 +52,14 @@ show netconf-yang sessions
 
 ### Basic NETCONF Configuration
 
-Configure the provider to use NETCONF protocol:
+NETCONF is the default protocol, so you can use the provider without explicitly specifying `protocol`:
 
 ```terraform
 provider "iosxe" {
   username = "admin"
   password = "password"
   host     = "10.1.1.1"
-  protocol = "netconf"
+  # protocol = "netconf"  # Optional - this is the default
 }
 ```
 
@@ -61,27 +69,22 @@ The following provider attributes control NETCONF behavior:
 
 | Attribute | Description | Default | Environment Variable |
 |-----------|-------------|---------|----------------------|
-| `protocol` | Protocol to use: `restconf` or `netconf` | `restconf` | `IOSXE_PROTOCOL` |
-| `host` | Device hostname/IP address. Optionally add `:port` | Required | `IOSXE_HOST` |
+| `host` | Device hostname/IP address. Optionally add `:port` (default: 830) | Required | `IOSXE_HOST` |
 | `username` | Device username | Required | `IOSXE_USERNAME` |
 | `password` | Device password | Required | `IOSXE_PASSWORD` |
 | `insecure` | Skip SSH host key verification | `true` | `IOSXE_INSECURE` |
-| `retries` | Number of retries for operations | `3` (NETCONF) | `IOSXE_RETRIES` |
+| `retries` | Number of retries for operations | `3` | `IOSXE_RETRIES` |
 | `lock_release_timeout` | Seconds to wait for datastore lock release | `120` | `IOSXE_LOCK_RELEASE_TIMEOUT` |
 | `reuse_connection` | Keep SSH connections open between operations | `true` | `IOSXE_REUSE_CONNECTION` |
 | `auto_commit` | Automatically commit changes after each operation | `true` | `IOSXE_AUTO_COMMIT` |
 
 ### Port Configuration
 
-- **Default NETCONF Port**: 830 (SSH)
-- **Default RESTCONF Port**: 443 (HTTPS)
-
-You can specify a custom port in the `host` attribute:
+The default NETCONF port is **830** (SSH). You can specify a custom port in the `host` attribute:
 
 ```terraform
 provider "iosxe" {
-  host     = "10.1.1.1:2830"  # Custom NETCONF port
-  protocol = "netconf"
+  host = "10.1.1.1:2830"  # Custom NETCONF port
 }
 ```
 
@@ -257,70 +260,52 @@ This combines commit and save operations in a single transaction, ensuring your 
 ### Important Notes
 
 1. **No effect with auto_commit=true**: If `auto_commit` is enabled, the commit resource has no practical effect since changes are already committed automatically
-2. **No effect with RESTCONF**: The commit resource only works with NETCONF protocol
+2. **Requires candidate datastore**: The commit resource only works when the device supports the candidate datastore capability
 3. **Use depends_on**: Always use `depends_on` to ensure resources are created/updated before committing
 4. **Destroy Behavior**: When the `iosxe_commit` resource is destroyed (e.g., during `terraform destroy`), it automatically enables auto-commit mode for subsequent resource deletions. This ensures that deletion operations commit their changes and prevents uncommitted configuration from remaining in the candidate datastore
 5. **Saving Configuration**: Set `save_config = true` to persist changes to startup-config in the same transaction, eliminating the need for a separate `iosxe_save_config` resource
 
-## Migration from RESTCONF to NETCONF
+## Migration to NETCONF (from versions < 0.15.0)
 
-### Step 1: Enable NETCONF on Device
+If you're upgrading from a version before 0.15.0 where RESTCONF was the default:
 
-```
-configure terminal
-netconf-yang
-netconf-yang feature candidate-datastore
-```
+### Option 1: Adopt NETCONF (Recommended)
 
-### Step 2: Update Provider Configuration
+1. **Enable NETCONF on your devices**:
+   ```
+   configure terminal
+   netconf-yang
+   ```
 
-```terraform
-provider "iosxe" {
-  # username = "admin"  # Unchanged
-  # password = "password"  # Unchanged
+   Optionally, enable the candidate datastore for transactional commits:
+   ```
+   netconf-yang feature candidate-datastore
+   ```
 
-  # Change from deprecated 'url' to 'host'
-  # url      = "https://10.1.1.1"  # Old
-  host     = "10.1.1.1"            # New
+2. **Remove explicit `protocol = "restconf"` from your configuration** (if present)
 
-  # Add protocol configuration
-  protocol = "netconf"
-}
-```
+3. **Test the migration**:
+   ```bash
+   terraform plan
+   ```
 
-### Step 3: Test Configuration
+4. **Verify no resources need replacement** - the provider protocol change should not require recreating resources
 
-Run `terraform plan` to verify the migration doesn't require resource replacement:
+### Option 2: Continue Using RESTCONF
 
-```bash
-terraform plan
-```
+If you need to continue using RESTCONF:
 
-### Step 4: Optional - Enable Manual Commits
+1. **Explicitly set `protocol = "restconf"` in your provider configuration**:
+   ```terraform
+   provider "iosxe" {
+     username = "admin"
+     password = "password"
+     host     = "10.1.1.1"
+     protocol = "restconf"  # Maintain RESTCONF behavior
+   }
+   ```
 
-If you want transactional commits:
-
-```terraform
-provider "iosxe" {
-  host        = "10.1.1.1"
-  protocol    = "netconf"
-  auto_commit = false
-}
-
-# Add iosxe_commit resources where needed
-```
-
-## Comparison: NETCONF vs RESTCONF
-
-| Feature | NETCONF | RESTCONF |
-|---------|---------|----------|
-| **Protocol** | SSH (Port 830) | HTTPS (Port 443) |
-| **Data Format** | XML | JSON/XML |
-| **Transaction Support** | Yes (candidate datastore) | No |
-| **Connection Reuse** | Yes (configurable) | N/A (stateless HTTP) |
-| **Atomic Commits** | Yes | No |
-| **Default Retries** | 3 | 10 |
-| **Use Case** | Transactional changes, complex workflows | Simple operations, REST-friendly environments |
+2. **No other changes required** - your existing configurations will continue to work
 
 ## Additional Resources
 

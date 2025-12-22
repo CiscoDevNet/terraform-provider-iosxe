@@ -8,29 +8,36 @@ description: |-
 
 # IOSXE Provider
 
-The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. The provider supports both **RESTCONF** (HTTPS-based) and **NETCONF** (SSH-based) protocols for device communication.
+The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. The provider supports both **NETCONF** (SSH-based, default) and **RESTCONF** (HTTPS-based) protocols for device communication.
 
 ## Device Configuration
 
-### RESTCONF (Default)
+### NETCONF (Default)
 
-RESTCONF is the default protocol and requires the following device configuration:
+NETCONF is the default protocol. Enable it on your IOS-XE device:
+
+```
+netconf-yang
+```
+
+Optionally, enable the candidate datastore for transactional commits:
+
+```
+netconf-yang feature candidate-datastore
+```
+
+See the **[NETCONF Guide](guides/netconf)** for detailed information on using NETCONF protocol, including configuration commit modes and transactional workflows.
+
+### RESTCONF
+
+RESTCONF requires the following device configuration:
 
 ```
 ip http secure-server
 restconf
 ```
 
-### NETCONF
-
-NETCONF protocol provides additional capabilities including transactional commits with the candidate datastore:
-
-```
-netconf-yang
-netconf-yang feature candidate-datastore
-```
-
-See the **[NETCONF Guide](guides/netconf)** for detailed information on using NETCONF protocol, including configuration commit modes and transactional workflows.
+To use RESTCONF instead of the default NETCONF, explicitly set `protocol = "restconf"` in your provider configuration.
 
 All resources and data sources have been tested with the following releases.
 

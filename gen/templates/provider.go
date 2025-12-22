@@ -129,7 +129,7 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 				Optional:            true,
 			},
 			"protocol": schema.StringAttribute{
-				MarkdownDescription: "Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `restconf`.",
+				MarkdownDescription: "Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `netconf`.",
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("restconf", "netconf"),
@@ -272,7 +272,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	if config.Protocol.IsNull() {
 		protocol = os.Getenv("IOSXE_PROTOCOL")
 		if protocol == "" {
-			protocol = "restconf" // default
+			protocol = "netconf" // default
 		}
 	} else {
 		protocol = config.Protocol.ValueString()

@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- BREAKING CHANGE: Change default protocol from RESTCONF to NETCONF. Existing users can set `protocol = "restconf"` to maintain current behavior. See [migration guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/netconf#migration-to-netconf-from-versions--0150) for details.
 - Add support for type `FiftyGigabitEthernet` to various interface resources
 - Add `ip_nat_inside` and `ip_nat_outside` attributes to `iosxe_interface_tunnel`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources
 

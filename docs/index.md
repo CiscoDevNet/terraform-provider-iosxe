@@ -8,29 +8,36 @@ description: |-
 
 # IOSXE Provider
 
-The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. The provider supports both **RESTCONF** (HTTPS-based) and **NETCONF** (SSH-based) protocols for device communication.
+The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. The provider supports both **NETCONF** (SSH-based, default) and **RESTCONF** (HTTPS-based) protocols for device communication.
 
 ## Device Configuration
 
-### RESTCONF (Default)
+### NETCONF (Default)
 
-RESTCONF is the default protocol and requires the following device configuration:
+NETCONF is the default protocol. Enable it on your IOS-XE device:
+
+```
+netconf-yang
+```
+
+Optionally, enable the candidate datastore for transactional commits:
+
+```
+netconf-yang feature candidate-datastore
+```
+
+See the **[NETCONF Guide](guides/netconf)** for detailed information on using NETCONF protocol, including configuration commit modes and transactional workflows.
+
+### RESTCONF
+
+RESTCONF requires the following device configuration:
 
 ```
 ip http secure-server
 restconf
 ```
 
-### NETCONF
-
-NETCONF protocol provides additional capabilities including transactional commits with the candidate datastore:
-
-```
-netconf-yang
-netconf-yang feature candidate-datastore
-```
-
-See the **[NETCONF Guide](guides/netconf)** for detailed information on using NETCONF protocol, including configuration commit modes and transactional workflows.
+To use RESTCONF instead of the default NETCONF, explicitly set `protocol = "restconf"` in your provider configuration.
 
 All resources and data sources have been tested with the following releases.
 
@@ -72,7 +79,7 @@ provider "iosxe" {
 - `insecure` (Boolean) Allow insecure HTTPS client. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.
 - `lock_release_timeout` (Number) Number of seconds to wait for the device database lock to be released. This can also be set as the IOSXE_LOCK_RELEASE_TIMEOUT environment variable. Defaults to `120`.
 - `password` (String, Sensitive) Password for the IOS-XE device. This can also be set as the IOSXE_PASSWORD environment variable.
-- `protocol` (String) Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `restconf`.
+- `protocol` (String) Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `netconf`.
 - `retries` (Number) Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10` for RESTCONF and `3` for NETCONF.
 - `reuse_connection` (Boolean) Keep NETCONF connections open between operations for better performance. **Required when auto_commit=false** - Manual commit mode requires persistent connections to maintain staged candidate configuration changes. When disabled, connections are closed and reopened for each operation. Only applies to NETCONF protocol. This can also be set as the IOSXE_REUSE_CONNECTION environment variable. Defaults to `true`.
 - `selected_devices` (List of String) This can be used to select a list of devices to manage from the `devices` list. Selected devices will be managed while other devices will be skipped and their state will be frozen. This can be used to deploy changes to a subset of devices. Defaults to all devices.
