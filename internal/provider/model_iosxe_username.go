@@ -187,11 +187,6 @@ func (data *Username) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Description = types.StringNull()
 	}
-	if value := res.Get(prefix + "secret.encryption"); value.Exists() && !data.SecretEncryption.IsNull() {
-		data.SecretEncryption = types.StringValue(value.String())
-	} else {
-		data.SecretEncryption = types.StringNull()
-	}
 }
 
 // End of section. //template:end updateFromBody
@@ -213,11 +208,6 @@ func (data *Username) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		data.Description = types.StringValue(value.String())
 	} else {
 		data.Description = types.StringNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/secret/encryption"); value.Exists() && !data.SecretEncryption.IsNull() {
-		data.SecretEncryption = types.StringValue(value.String())
-	} else {
-		data.SecretEncryption = types.StringNull()
 	}
 }
 

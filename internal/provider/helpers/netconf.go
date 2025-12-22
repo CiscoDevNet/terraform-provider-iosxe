@@ -345,6 +345,7 @@ func setWithNamespaces(body netconf.Body, fullPath string, value any) netconf.Bo
 
 // augmentNamespaces walks through the path and adds namespace declarations
 // to elements where prefixes appear, checking the current body to avoid duplicates.
+// When multiple sibling elements exist at the same path, adds namespace to all of them.
 func augmentNamespaces(body netconf.Body, path string) netconf.Body {
 	segments := strings.Split(path, ".")
 	pathWithoutPrefix := make([]string, 0, len(segments))
@@ -371,9 +372,24 @@ func augmentNamespaces(body netconf.Body, path string) netconf.Body {
 				namespace = namespaceBaseURL + prefix
 			}
 
-			xmlnsPath := currentPath + ".@xmlns"
-			if !xmldot.Get(body.Res(), xmlnsPath).Exists() {
-				body = body.Set(xmlnsPath, namespace)
+			// Check if there are multiple elements at this path
+			countPath := currentPath + ".#"
+			count := xmldot.Get(body.Res(), countPath).Int()
+
+			if count > 1 {
+				// Multiple elements - add namespace to all that don't have it
+				for i := 0; i < int(count); i++ {
+					indexedXmlnsPath := fmt.Sprintf("%s.%d.@xmlns", currentPath, i)
+					if !xmldot.Get(body.Res(), indexedXmlnsPath).Exists() {
+						body = body.Set(indexedXmlnsPath, namespace)
+					}
+				}
+			} else {
+				// Single element or first element
+				xmlnsPath := currentPath + ".@xmlns"
+				if !xmldot.Get(body.Res(), xmlnsPath).Exists() {
+					body = body.Set(xmlnsPath, namespace)
+				}
 			}
 		}
 	}
@@ -849,6 +865,104 @@ func AppendFromXPath(body netconf.Body, xPath string, value any) netconf.Body {
 	return body
 }
 
+// extractAndReplaceElements parses root-level XML elements in order and replaces all instances
+// of targetElementName with replacementXML, preserving all other elements.
+// This is used when appending siblings with single-segment paths to preserve other root content.
+func extractAndReplaceElements(xml, targetElementName, replacementXML string) string {
+	if xml == "" {
+		return replacementXML
+	}
+
+	var result strings.Builder
+	remaining := strings.TrimSpace(xml)
+	foundTarget := false
+
+	for len(remaining) > 0 {
+		remaining = strings.TrimSpace(remaining)
+		if len(remaining) == 0 {
+			break
+		}
+
+		// Must start with opening tag
+		if !strings.HasPrefix(remaining, "<") {
+			break
+		}
+
+		// Find the end of the opening tag
+		endOfOpenTag := strings.Index(remaining, ">")
+		if endOfOpenTag == -1 {
+			break
+		}
+
+		// Extract element name from opening tag (handle attributes, namespaces, self-closing)
+		openTag := remaining[1:endOfOpenTag]
+		isSelfClosing := strings.HasSuffix(openTag, "/")
+		if isSelfClosing {
+			openTag = strings.TrimSuffix(openTag, "/")
+		}
+
+		// Extract element name (before space or attributes)
+		elementName := strings.TrimSpace(openTag)
+		if spaceIdx := strings.IndexAny(elementName, " \t\n"); spaceIdx != -1 {
+			elementName = elementName[:spaceIdx]
+		}
+
+		// Remove namespace prefix if present
+		if colonIdx := strings.Index(elementName, ":"); colonIdx != -1 {
+			elementName = elementName[colonIdx+1:]
+		}
+
+		// Check if this is the target element
+		if elementName == targetElementName {
+			// Skip all instances of target element (we'll replace them all at once)
+			if !foundTarget {
+				result.WriteString(replacementXML)
+				foundTarget = true
+			}
+
+			// Find and skip this target element
+			if isSelfClosing {
+				remaining = remaining[endOfOpenTag+1:]
+			} else {
+				closingTag := "</" + elementName + ">"
+				closingIdx := strings.Index(remaining, closingTag)
+				if closingIdx == -1 {
+					// Malformed XML, try with original element name
+					closingTag = "</" + strings.Split(openTag, " ")[0] + ">"
+					closingIdx = strings.Index(remaining, closingTag)
+					if closingIdx == -1 {
+						break
+					}
+				}
+				remaining = remaining[closingIdx+len(closingTag):]
+			}
+		} else {
+			// Keep this element as-is
+			if isSelfClosing {
+				fullElement := remaining[:endOfOpenTag+1]
+				result.WriteString(fullElement)
+				remaining = remaining[endOfOpenTag+1:]
+			} else {
+				closingTag := "</" + elementName + ">"
+				closingIdx := strings.Index(remaining, closingTag)
+				if closingIdx == -1 {
+					break
+				}
+				fullElement := remaining[:closingIdx+len(closingTag)]
+				result.WriteString(fullElement)
+				remaining = remaining[closingIdx+len(closingTag):]
+			}
+		}
+	}
+
+	// If we never found the target element, append the replacement at the end
+	if !foundTarget {
+		result.WriteString(replacementXML)
+	}
+
+	return result.String()
+}
+
 // SetRawFromXPath creates all elements in an XPath, including keys and namespace declarations,
 // then inserts raw XML content at the final path location. This is useful when you have
 // pre-formatted XML that needs to be inserted as child elements.
@@ -948,15 +1062,32 @@ func SetRawFromXPath(body netconf.Body, xPath string, value string) netconf.Body
 			innerContent = tempBody.Res() + value
 		}
 
-		// Use the element name as the dotPath for SetRaw
-		// SetRaw will create <finalElementClean>innerContent</finalElementClean>
-		// Check if this element already exists at the root
-		existingXML := xmldot.Get(body.Res(), finalElementClean).Raw
-		if existingXML != "" {
-			// Append as sibling - need to wrap each occurrence
+		// Check if multiple elements already exist at this path
+		countPath := finalElementClean + ".#"
+		count := xmldot.Get(body.Res(), countPath).Int()
+
+		if count > 0 {
+			// Elements already exist - need to append as sibling
+			// Get the current XML body
+			currentXML := body.Res()
+
+			// Wrap the new content as a complete element
 			wrappedNew := "<" + finalElementClean + ">" + innerContent + "</" + finalElementClean + ">"
-			combinedXML := existingXML + wrappedNew
-			body = body.SetRaw(finalElementClean, combinedXML)
+
+			// Build reconstructed target elements (all existing + new)
+			var reconstructedElements string
+			for i := 0; i < int(count); i++ {
+				elementPath := fmt.Sprintf("%s.%d", finalElementClean, i)
+				elementContent := xmldot.Get(currentXML, elementPath).Raw
+				reconstructedElements += "<" + finalElementClean + ">" + elementContent + "</" + finalElementClean + ">"
+			}
+			reconstructedElements += wrappedNew
+
+			// Extract ALL root-level elements in order, replacing target element instances
+			finalXML := extractAndReplaceElements(currentXML, finalElementClean, reconstructedElements)
+
+			// Create a new body with all elements preserved
+			body = netconf.NewBody(finalXML)
 		} else {
 			// First element at this path - SetRaw will wrap it
 			body = body.SetRaw(finalElementClean, innerContent)
@@ -992,9 +1123,8 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 	segments := splitXPathSegments(xPath)
 
 	// Use manual filtering to handle both single and multiple elements with predicates.
-	// xmldot's #() filter syntax doesn't work reliably with single elements, so we
-	// always use the manual path which correctly handles both cases.
-	xml := res.Raw
+	// Work with the Result directly to properly handle both absolute and relative paths.
+	current := res
 	pathSoFar := make([]string, 0, len(segments))
 
 	for _, segment := range segments {
@@ -1007,9 +1137,16 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 		// Build current path
 		currentPath := strings.Join(pathSoFar, ".")
 
-		// Check if there are multiple sibling elements using absolute path
+		// Check if there are multiple sibling elements
 		countPath := currentPath + ".#"
-		count := xmldot.Get(xml, countPath).Int()
+		var count int64
+		if len(pathSoFar) == 1 {
+			// For single-segment paths, check count on the current result directly
+			count = current.Get(elementName + ".#").Int()
+		} else {
+			// For multi-segment paths, check from the original result
+			count = res.Get(countPath).Int()
+		}
 
 		// Apply filtering if keys exist
 		if len(keys) > 0 {
@@ -1017,8 +1154,13 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 			if count > 1 {
 				// Multiple elements - iterate using numeric indices
 				for idx := 0; idx < int(count); idx++ {
-					indexedPath := fmt.Sprintf("%s.%d", currentPath, idx)
-					item := xmldot.Get(xml, indexedPath)
+					var item xmldot.Result
+					if len(pathSoFar) == 1 {
+						item = current.Get(fmt.Sprintf("%s.%d", elementName, idx))
+					} else {
+						indexedPath := fmt.Sprintf("%s.%d", currentPath, idx)
+						item = res.Get(indexedPath)
+					}
 
 					allMatch := true
 					for _, kv := range keys {
@@ -1034,13 +1176,20 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 					if allMatch {
 						// Update currentPath to point to the matched item
 						pathSoFar[len(pathSoFar)-1] = fmt.Sprintf("%s.%d", elementName, idx)
+						current = item
 						found = true
 						break
 					}
 				}
 			} else {
 				// Single element - check directly
-				currentResult := xmldot.Get(xml, currentPath)
+				var currentResult xmldot.Result
+				if len(pathSoFar) == 1 {
+					currentResult = current.Get(elementName)
+				} else {
+					currentResult = res.Get(currentPath)
+				}
+
 				allMatch := true
 				for _, kv := range keys {
 					// Remove namespace prefix from key name
@@ -1052,10 +1201,20 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 					}
 				}
 				found = allMatch
+				if found {
+					current = currentResult
+				}
 			}
 
 			if !found {
 				return xmldot.Result{}
+			}
+		} else {
+			// No keys - just navigate to the element
+			if len(pathSoFar) == 1 {
+				current = current.Get(elementName)
+			} else {
+				current = res.Get(currentPath)
 			}
 		}
 	}
@@ -1063,23 +1222,26 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 	// Return the final result
 	finalPath := strings.Join(pathSoFar, ".")
 
-	// Check if the final path points to multiple elements (array)
-	// If so, use the #. syntax to return an array result that ForEach can iterate over
-	countPath := finalPath + ".#"
-	count := xmldot.Get(xml, countPath).Int()
-	if count > 1 {
-		// Multiple elements exist - use #. syntax to get array result
-		// Split the path to insert #. before the last segment
-		if len(pathSoFar) >= 2 {
-			// Build parent path and use #. syntax: parent.#.child
+	// Check if the final path points to multiple elements
+	// If so, use #. syntax to return an Array result that ForEach can iterate over
+	// With xmldot v0.5.1+, res.Get("#.element") works correctly on multi-root fragments
+	var count int64
+	if len(pathSoFar) == 1 {
+		elementName := pathSoFar[0]
+		count = res.Get(elementName + ".#").Int()
+		if count > 1 {
+			return res.Get("#." + elementName)
+		}
+		return current
+	} else {
+		count = res.Get(finalPath + ".#").Int()
+		if count > 1 {
 			parentPath := strings.Join(pathSoFar[:len(pathSoFar)-1], ".")
 			childName := pathSoFar[len(pathSoFar)-1]
-			arrayPath := parentPath + ".#." + childName
-			return xmldot.Get(xml, arrayPath)
+			return res.Get(parentPath + ".#." + childName)
 		}
+		return res.Get(finalPath)
 	}
-
-	return xmldot.Get(xml, finalPath)
 }
 
 // IsListPath checks if an XPath represents a list item (ends with a predicate).

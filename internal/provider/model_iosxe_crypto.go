@@ -74,12 +74,12 @@ func (data Crypto) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Crypto) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/crypto"
+	path := "/Cisco-IOS-XE-native:native/crypto"
 	return path
 }
 
 func (data CryptoData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/crypto"
+	path := "/Cisco-IOS-XE-native:native/crypto"
 	return path
 }
 

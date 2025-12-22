@@ -2239,3 +2239,191 @@ func TestIsGetConfigResponseEmpty_WithIsListPath(t *testing.T) {
 		})
 	}
 }
+
+// TestSetRawFromXPath_MultipleSiblingsWithNamespaces tests that multiple sibling elements
+// each get their own namespace declaration when using namespace prefixes.
+// This reproduces the CDP tlv-list issue where the second tlv-list was missing xmlns.
+func TestSetRawFromXPath_MultipleSiblingsWithNamespaces(t *testing.T) {
+	body := netconf.Body{}
+
+	// Simulate CDP configuration with multiple tlv-list elements
+	tlvList1 := `<name>TLIST</name><vtp-mgmt-domain operation="remove"></vtp-mgmt-domain><cos></cos>`
+	tlvList2 := `<name>TLIST2</name><vtp-mgmt-domain></vtp-mgmt-domain><cos operation="remove"></cos>`
+
+	// Add first tlv-list with namespace prefix
+	body = SetRawFromXPath(body, "/Cisco-IOS-XE-native:native/cdp/Cisco-IOS-XE-cdp:tlv-list", tlvList1)
+	// Add second tlv-list with namespace prefix
+	body = SetRawFromXPath(body, "/Cisco-IOS-XE-native:native/cdp/Cisco-IOS-XE-cdp:tlv-list", tlvList2)
+
+	if err := body.Err(); err != nil {
+		t.Fatalf("SetRawFromXPath() returned error: %v", err)
+	}
+
+	resultXML := body.Res()
+	t.Logf("Generated XML:\n%s", resultXML)
+
+	// Verify both tlv-list elements exist
+	name1 := xmldot.Get(resultXML, "native.cdp.tlv-list.0.name").String()
+	name2 := xmldot.Get(resultXML, "native.cdp.tlv-list.1.name").String()
+
+	if name1 != "TLIST" {
+		t.Errorf("First tlv-list name = %q, want %q", name1, "TLIST")
+	}
+	if name2 != "TLIST2" {
+		t.Errorf("Second tlv-list name = %q, want %q", name2, "TLIST2")
+	}
+
+	// Verify namespace declaration on native element
+	nativeXmlns := xmldot.Get(resultXML, "native.@xmlns").String()
+	if nativeXmlns != "http://cisco.com/ns/yang/Cisco-IOS-XE-native" {
+		t.Errorf("native xmlns = %q, want %q", nativeXmlns, "http://cisco.com/ns/yang/Cisco-IOS-XE-native")
+	}
+
+	// Verify namespace declaration on BOTH tlv-list elements
+	tlvList1Xmlns := xmldot.Get(resultXML, "native.cdp.tlv-list.0.@xmlns").String()
+	tlvList2Xmlns := xmldot.Get(resultXML, "native.cdp.tlv-list.1.@xmlns").String()
+
+	expectedCdpNs := "http://cisco.com/ns/yang/Cisco-IOS-XE-cdp"
+
+	if tlvList1Xmlns != expectedCdpNs {
+		t.Errorf("First tlv-list xmlns = %q, want %q", tlvList1Xmlns, expectedCdpNs)
+	}
+	if tlvList2Xmlns != expectedCdpNs {
+		t.Errorf("Second tlv-list xmlns = %q, want %q", tlvList2Xmlns, expectedCdpNs)
+	}
+
+	// Verify the XML contains properly formatted elements with namespaces
+	if !strings.Contains(resultXML, `<tlv-list xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-cdp">`) {
+		t.Error("Generated XML missing tlv-list elements with namespace declarations")
+	}
+
+	// Count how many times the tlv-list xmlns appears - should be 2 (one for each element)
+	xmlnsCount := strings.Count(resultXML, `<tlv-list xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-cdp">`)
+	if xmlnsCount != 2 {
+		t.Errorf("Found %d tlv-list elements with xmlns, want 2", xmlnsCount)
+	}
+
+	t.Log("✓ Multiple sibling elements with namespaces verified successfully")
+}
+
+// TestSetRawFromXPath_SingleSegmentMultipleSiblings tests that multiple sibling elements
+// are created correctly with single-segment paths (not nested).
+// This reproduces the ARP inspection filter vlan issue where multiple vlans within a filter
+// were being nested instead of created as siblings.
+func TestSetRawFromXPath_SingleSegmentMultipleSiblings(t *testing.T) {
+	body := netconf.Body{}
+
+	// Simulate ARP inspection filter with multiple vlan elements
+	vlan1 := `<vlan-range>10</vlan-range><static></static>`
+	vlan2 := `<vlan-range>100</vlan-range><static operation="remove"></static>`
+
+	// Add first vlan (single-segment path)
+	body = SetRawFromXPath(body, "vlan", vlan1)
+	// Add second vlan (single-segment path)
+	body = SetRawFromXPath(body, "vlan", vlan2)
+
+	if err := body.Err(); err != nil {
+		t.Fatalf("SetRawFromXPath() returned error: %v", err)
+	}
+
+	resultXML := body.Res()
+	t.Logf("Generated XML:\n%s", resultXML)
+
+	// Verify both vlan elements exist as SIBLINGS, not nested
+	vlanRange1 := xmldot.Get(resultXML, "vlan.0.vlan-range").String()
+	vlanRange2 := xmldot.Get(resultXML, "vlan.1.vlan-range").String()
+
+	if vlanRange1 != "10" {
+		t.Errorf("First vlan vlan-range = %q, want %q", vlanRange1, "10")
+	}
+	if vlanRange2 != "100" {
+		t.Errorf("Second vlan vlan-range = %q, want %q", vlanRange2, "100")
+	}
+
+	// Verify static attributes
+	static1Exists := xmldot.Get(resultXML, "vlan.0.static").Exists()
+	static2Op := xmldot.Get(resultXML, "vlan.1.static.@operation").String()
+
+	if !static1Exists {
+		t.Error("First vlan static element missing")
+	}
+	if static2Op != "remove" {
+		t.Errorf("Second vlan static operation = %q, want %q", static2Op, "remove")
+	}
+
+	// Verify NO nesting - the second vlan should NOT be inside the first vlan
+	// Check that vlan.0.vlan does NOT exist (which would indicate nesting)
+	nestedVlan := xmldot.Get(resultXML, "vlan.0.vlan")
+	if nestedVlan.Exists() {
+		t.Error("Found nested vlan inside first vlan - vlans should be siblings, not nested")
+	}
+
+	// Count vlan elements - should be exactly 2 at the root level
+	vlanCount := xmldot.Get(resultXML, "vlan.#").Int()
+	if vlanCount != 2 {
+		t.Errorf("Found %d vlan elements, want 2", vlanCount)
+	}
+
+	t.Log("✓ Multiple sibling elements with single-segment paths verified successfully")
+}
+
+// TestSetRawFromXPath_PreserveOtherRootElements tests that when appending siblings with
+// single-segment paths, other root-level elements are preserved.
+// This reproduces the ARP filter issue where arpacl was lost when adding multiple vlans.
+func TestSetRawFromXPath_PreserveOtherRootElements(t *testing.T) {
+	body := netconf.Body{}
+
+	// Simulate ARP filter: first add arpacl, then add multiple vlans
+	body = SetFromXPath(body, "arpacl", "FILTER2")
+
+	vlan1 := `<vlan-range>10</vlan-range><static></static>`
+	vlan2 := `<vlan-range>100</vlan-range><static operation="remove"></static>`
+
+	// Add first vlan
+	body = SetRawFromXPath(body, "vlan", vlan1)
+	// Add second vlan - this should preserve the arpacl
+	body = SetRawFromXPath(body, "vlan", vlan2)
+
+	if err := body.Err(); err != nil {
+		t.Fatalf("SetRawFromXPath() returned error: %v", err)
+	}
+
+	resultXML := body.Res()
+	t.Logf("Generated XML:\n%s", resultXML)
+
+	// Verify arpacl is still present
+	arpacl := xmldot.Get(resultXML, "arpacl").String()
+	if arpacl != "FILTER2" {
+		t.Errorf("arpacl = %q, want %q (element was lost!)", arpacl, "FILTER2")
+	}
+
+	// Verify both vlan elements exist
+	vlanCount := xmldot.Get(resultXML, "vlan.#").Int()
+	if vlanCount != 2 {
+		t.Errorf("Found %d vlan elements, want 2", vlanCount)
+	}
+
+	vlanRange1 := xmldot.Get(resultXML, "vlan.0.vlan-range").String()
+	vlanRange2 := xmldot.Get(resultXML, "vlan.1.vlan-range").String()
+
+	if vlanRange1 != "10" {
+		t.Errorf("First vlan vlan-range = %q, want %q", vlanRange1, "10")
+	}
+	if vlanRange2 != "100" {
+		t.Errorf("Second vlan vlan-range = %q, want %q", vlanRange2, "100")
+	}
+
+	// Verify the XML structure: arpacl should come before vlans
+	if !strings.Contains(resultXML, "<arpacl>FILTER2</arpacl>") {
+		t.Error("arpacl element not found in XML")
+	}
+
+	// Check that arpacl appears before the first vlan in the string
+	arpclIdx := strings.Index(resultXML, "<arpacl>")
+	vlanIdx := strings.Index(resultXML, "<vlan>")
+	if arpclIdx == -1 || vlanIdx == -1 || arpclIdx > vlanIdx {
+		t.Error("arpacl should appear before vlan elements")
+	}
+
+	t.Log("✓ Other root elements preserved successfully when appending siblings")
+}

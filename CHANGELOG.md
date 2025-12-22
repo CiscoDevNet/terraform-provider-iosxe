@@ -2,6 +2,16 @@
 
 - Add `ip_nat_inside` and `ip_nat_outside` attributes to `iosxe_interface_tunnel`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources
 
+## 0.14.6
+
+- Do not read `pac_key_encryption` attribute of `iosxe_radius` resource and data source to avoid drift detection
+- Do not read `encryption` attribute of `iosxe_snmp_server` resource and data source to avoid drift detection
+- Do not read `secret_encryption` attribute of `iosxe_username` resource and data source to avoid drift detection
+
+## 0.14.5
+
+- Various fixes related to creating and reading NETCONF payloads
+
 ## 0.14.4
 
 - Remove SBOM from GitHub Releases

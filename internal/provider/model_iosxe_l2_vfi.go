@@ -42,13 +42,12 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type L2VFI struct {
-	Device     types.String     `tfsdk:"device"`
-	Id         types.String     `tfsdk:"id"`
-	DeleteMode types.String     `tfsdk:"delete_mode"`
-	Name       types.String     `tfsdk:"name"`
-	Mode       types.String     `tfsdk:"mode"`
-	VpnId      types.Int64      `tfsdk:"vpn_id"`
-	Neighbors  []L2VFINeighbors `tfsdk:"neighbors"`
+	Device    types.String     `tfsdk:"device"`
+	Id        types.String     `tfsdk:"id"`
+	Name      types.String     `tfsdk:"name"`
+	Mode      types.String     `tfsdk:"mode"`
+	VpnId     types.Int64      `tfsdk:"vpn_id"`
+	Neighbors []L2VFINeighbors `tfsdk:"neighbors"`
 }
 
 type L2VFIData struct {
@@ -89,13 +88,13 @@ func (data L2VFI) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data L2VFI) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data L2VFIData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }

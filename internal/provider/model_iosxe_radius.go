@@ -321,11 +321,6 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AutomateTesterIdleTime = types.Int64Null()
 	}
-	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() && !data.PacKeyEncryption.IsNull() {
-		data.PacKeyEncryption = types.StringValue(value.String())
-	} else {
-		data.PacKeyEncryption = types.StringNull()
-	}
 }
 
 // End of section. //template:end updateFromBody
@@ -399,11 +394,6 @@ func (data *Radius) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.AutomateTesterIdleTime = types.Int64Value(value.Int())
 	} else {
 		data.AutomateTesterIdleTime = types.Int64Null()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pac/key/encryption"); value.Exists() && !data.PacKeyEncryption.IsNull() {
-		data.PacKeyEncryption = types.StringValue(value.String())
-	} else {
-		data.PacKeyEncryption = types.StringNull()
 	}
 }
 

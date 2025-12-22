@@ -1,6 +1,6 @@
 ---
 name: MPLS
-path: Cisco-IOS-XE-native:native/mpls
+path: /Cisco-IOS-XE-native:native/mpls
 doc_category: MPLS
 test_tags: [IOSXE1715]
 attributes:

@@ -1,6 +1,6 @@
 ---
 name: Multicast
-path: Cisco-IOS-XE-native:native/ip/multicast
+path: /Cisco-IOS-XE-native:native/ip/multicast
 doc_category: Multicast
 attributes:
   - yang_name: Cisco-IOS-XE-multicast:multipath

@@ -87,12 +87,12 @@ func (data Multicast) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Multicast) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/ip/multicast"
+	path := "/Cisco-IOS-XE-native:native/ip/multicast"
 	return path
 }
 
 func (data MulticastData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/ip/multicast"
+	path := "/Cisco-IOS-XE-native:native/ip/multicast"
 	return path
 }
 

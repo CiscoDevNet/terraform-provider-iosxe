@@ -61,7 +61,6 @@ func TestAccDataSourceIosxeL2VFI(t *testing.T) {
 
 func testAccDataSourceIosxeL2VFIConfig() string {
 	config := `resource "iosxe_l2_vfi" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "TENANT-A"` + "\n"
 	config += `	mode = "manual"` + "\n"
 	config += `	vpn_id = 20001` + "\n"

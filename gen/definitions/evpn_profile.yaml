@@ -1,6 +1,6 @@
 ---
 name: EVPN Profile
-path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list[name=%v]
+path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list[name=%v]
 doc_category: EVPN
 test_tags: [IOSXE1715]
 attributes:

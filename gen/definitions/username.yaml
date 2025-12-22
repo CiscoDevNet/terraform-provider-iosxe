@@ -19,6 +19,7 @@ attributes:
     sensitive: true
     example: MyPassword
   - yang_name: secret/encryption
+    write_only: true
     example: 0
     exclude_test: true
   - yang_name: secret/secret

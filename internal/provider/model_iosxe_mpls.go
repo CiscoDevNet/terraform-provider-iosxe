@@ -99,12 +99,12 @@ func (data MPLS) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data MPLS) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/mpls"
+	path := "/Cisco-IOS-XE-native:native/mpls"
 	return path
 }
 
 func (data MPLSData) getXPath() string {
-	path := "Cisco-IOS-XE-native:native/mpls"
+	path := "/Cisco-IOS-XE-native:native/mpls"
 	return path
 }
 

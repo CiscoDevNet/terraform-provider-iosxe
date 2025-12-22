@@ -291,14 +291,14 @@ attributes:
     exclude_test: true
     example: ::ff
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/route-map[name=RM1]
+  - path: /Cisco-IOS-XE-native:native/route-map[name=RM1]
     attributes:
       - name: name
         value: RM1
