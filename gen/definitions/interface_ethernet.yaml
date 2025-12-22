@@ -19,6 +19,7 @@ attributes:
       - TenGigabitEthernet
       - TwentyFiveGigE
       - FortyGigabitEthernet
+      - FiftyGigabitEthernet
       - HundredGigE
       - TwoHundredGigE
       - FourHundredGigE
