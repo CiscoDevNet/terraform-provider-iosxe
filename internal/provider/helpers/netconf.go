@@ -1210,38 +1210,44 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 				return xmldot.Result{}
 			}
 		} else {
-			// No keys - just navigate to the element
-			if len(pathSoFar) == 1 {
-				current = current.Get(elementName)
-			} else {
-				current = res.Get(currentPath)
-			}
+			// No keys - navigate to the element using current (which may be
+			// an indexed result from predicate matching like extended.0)
+			current = current.Get(elementName)
 		}
 	}
 
 	// Return the final result
-	finalPath := strings.Join(pathSoFar, ".")
+	// We need to check if the final element has siblings (is part of an array)
+	// Since current is already pointing to the (first) element, we need to
+	// check the parent for the count of this element type
 
-	// Check if the final path points to multiple elements
-	// If so, use #. syntax to return an Array result that ForEach can iterate over
-	// With xmldot v0.5.1+, res.Get("#.element") works correctly on multi-root fragments
-	var count int64
-	if len(pathSoFar) == 1 {
-		elementName := pathSoFar[0]
-		count = res.Get(elementName + ".#").Int()
-		if count > 1 {
-			return res.Get("#." + elementName)
+	// Get the element name of the last segment (without any numeric index)
+	lastElementName := pathSoFar[len(pathSoFar)-1]
+	if dotIdx := strings.LastIndex(lastElementName, "."); dotIdx >= 0 {
+		if _, err := fmt.Sscanf(lastElementName[dotIdx+1:], "%d", new(int)); err == nil {
+			lastElementName = lastElementName[:dotIdx]
 		}
-		return current
-	} else {
-		count = res.Get(finalPath + ".#").Int()
-		if count > 1 {
-			parentPath := strings.Join(pathSoFar[:len(pathSoFar)-1], ".")
-			childName := pathSoFar[len(pathSoFar)-1]
-			return res.Get(parentPath + ".#." + childName)
-		}
-		return res.Get(finalPath)
 	}
+
+	// To check for siblings, we need the parent result
+	// Build parent path from all segments except the last
+	var parentResult xmldot.Result
+	if len(pathSoFar) == 1 {
+		parentResult = res
+	} else {
+		parentPath := strings.Join(pathSoFar[:len(pathSoFar)-1], ".")
+		parentResult = res.Get(parentPath)
+	}
+
+	// Check count of elements with this name under the parent
+	count := parentResult.Get(lastElementName + ".#").Int()
+	if count > 1 {
+		// Multiple elements - return array result using #. syntax
+		return parentResult.Get("#." + lastElementName)
+	}
+
+	// Single element or no element found
+	return current
 }
 
 // IsListPath checks if an XPath represents a list item (ends with a predicate).
