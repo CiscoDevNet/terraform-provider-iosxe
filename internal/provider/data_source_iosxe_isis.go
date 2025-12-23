@@ -30,6 +30,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
 )
 
 // End of section. //template:end imports
@@ -158,11 +159,31 @@ func (d *ISISDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-		filter := helpers.GetXpathFilter(config.getXPath())
-		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-			return
+		// Try to use cached configuration if available
+		var res netconf.Res
+		if device.NetconfReadCache.IsEnabled() {
+			cachedConfig, cacheHit := device.NetconfReadCache.Get(ctx)
+			if cacheHit {
+				// Use cached configuration
+				res.Res = cachedConfig
+			} else {
+				// Cache miss - populate cache with full configuration
+				cachedConfig, err := device.NetconfReadCache.Populate(ctx, device.NetconfClient)
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to populate NETCONF cache (%s), got error: %s", config.getPath(), err))
+					return
+				}
+				res.Res = cachedConfig
+			}
+		} else {
+			// Cache disabled - fetch with XPath filter
+			filter := helpers.GetXpathFilter(config.getXPath())
+			var err error
+			res, err = device.NetconfClient.GetConfig(ctx, "running", filter)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+				return
+			}
 		}
 
 		config.fromBodyXML(ctx, res.Res)

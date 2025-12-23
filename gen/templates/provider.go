@@ -31,6 +31,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/cache"
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -71,6 +72,7 @@ type IosxeProviderModel struct {
 	LockReleaseTimeout types.Int64                `tfsdk:"lock_release_timeout"`
 	ReuseConnection    types.Bool                 `tfsdk:"reuse_connection"`
 	AutoCommit         types.Bool                 `tfsdk:"auto_commit"`
+	ReadCache          types.Bool                 `tfsdk:"read_cache"`
 	SelectedDevices    types.List                 `tfsdk:"selected_devices"`
 	Devices            []IosxeProviderModelDevice `tfsdk:"devices"`
 }
@@ -89,13 +91,14 @@ type IosxeProviderData struct {
 }
 
 type IosxeProviderDataDevice struct {
-	RestconfClient  *restconf.Client
-	NetconfClient   *netconf.Client
-	Protocol        string
-	ReuseConnection bool
-	AutoCommit      bool
-	Managed         bool
-	NetconfOpMutex  sync.Mutex // Serializes NETCONF operations (all ops when reuse disabled, writes only when reuse enabled)
+	RestconfClient   *restconf.Client
+	NetconfClient    *netconf.Client
+	Protocol         string
+	ReuseConnection  bool
+	AutoCommit       bool
+	Managed          bool
+	NetconfOpMutex   sync.Mutex              // Serializes NETCONF operations (all ops when reuse disabled, writes only when reuse enabled)
+	NetconfReadCache *cache.NetconfReadCache // Per-device cache for NETCONF read operations
 }
 
 func (p *IosxeProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -155,6 +158,10 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 			},
 			"auto_commit": schema.BoolAttribute{
 				MarkdownDescription: "Automatically commit configuration changes after each resource operation. When `true` (default), each resource commits its changes immediately. When `false`, changes are left in the candidate datastore and must be explicitly committed using the `iosxe_commit` resource. **Requires reuse_connection=true when disabled**. Only applies to NETCONF protocol with candidate datastore support. This can also be set as the IOSXE_AUTO_COMMIT environment variable. Defaults to `true`.",
+				Optional:            true,
+			},
+			"read_cache": schema.BoolAttribute{
+				MarkdownDescription: "Enable caching of NETCONF read operations. When enabled, the provider fetches the complete device configuration once on the first read and serves subsequent read operations from the cache. The cache is automatically invalidated after any write operation (Create/Update/Delete). Only applies to NETCONF protocol. **Note**: This is experimental and may improve performance only for very large deployments (1000+ resources). For smaller deployments, individual filtered queries are typically faster. This can also be set as the IOSXE_READ_CACHE environment variable. Defaults to `false`.",
 				Optional:            true,
 			},
 			"selected_devices": schema.ListAttribute{
@@ -419,6 +426,26 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		autoCommit = config.AutoCommit.ValueBool()
 	}
 
+	var readCache bool
+	if config.ReadCache.IsUnknown() {
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as readCache",
+		)
+		return
+	}
+
+	if config.ReadCache.IsNull() {
+		readCacheStr := os.Getenv("IOSXE_READ_CACHE")
+		if readCacheStr == "" {
+			readCache = false // Default to false - cache adds parsing overhead for smaller deployments
+		} else {
+			readCache, _ = strconv.ParseBool(readCacheStr)
+		}
+	} else {
+		readCache = config.ReadCache.ValueBool()
+	}
+
 	var selectedDevices []string
 	if config.SelectedDevices.IsUnknown() {
 		// Cannot connect to client with an unknown value
@@ -493,7 +520,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
+		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true, NetconfReadCache: cache.New(false)}
 	} else {
 		// NETCONF
 		logger := helpers.NewTflogAdapter(host)
@@ -515,7 +542,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
+		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true, NetconfReadCache: cache.New(readCache)}
 	}
 
 	for _, device := range config.Devices {
@@ -568,7 +595,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed, NetconfReadCache: cache.New(false)}
 		} else {
 			// NETCONF
 			// Use device name as identifier for better log correlation
@@ -592,7 +619,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed, NetconfReadCache: cache.New(readCache)}
 		}
 	}
 

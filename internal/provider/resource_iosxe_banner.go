@@ -184,6 +184,9 @@ func (r *BannerResource) Create(ctx context.Context, req resource.CreateRequest,
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
+
+			// Invalidate cache after successful write
+			device.NetconfReadCache.Invalidate(ctx)
 		}
 	}
 
@@ -250,11 +253,37 @@ func (r *BannerResource) Read(ctx context.Context, req resource.ReadRequest, res
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			filter := helpers.GetXpathFilter(state.getXPath())
-			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
-				return
+			// Try to use cached configuration if available
+			var res netconf.Res
+			if device.NetconfReadCache.IsEnabled() {
+				cachedConfig, cacheHit := device.NetconfReadCache.Get(ctx)
+				if cacheHit {
+					// Use cached configuration
+					res.Res = cachedConfig
+				} else {
+					// Cache miss - populate cache with full configuration
+					cachedConfig, err := device.NetconfReadCache.Populate(ctx, device.NetconfClient)
+					if err != nil {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to populate NETCONF cache (%s), got error: %s", state.getPath(), err))
+						return
+					}
+					res.Res = cachedConfig
+				}
+			} else {
+				// Cache disabled - fetch with XPath filter
+				filter := helpers.GetXpathFilter(state.getXPath())
+				var err error
+				res, err = device.NetconfClient.GetConfig(ctx, "running", filter)
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
+					return
+				}
+			}
+
+			// Debug: Log whether we're using cached or direct query
+			if device.NetconfReadCache.IsEnabled() {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Using cached config for read (cache enabled)", state.Id.ValueString()),
+					map[string]any{"xpath": state.getXPath(), "config_size": len(res.Res.Raw)})
 			}
 
 			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
@@ -372,6 +401,9 @@ func (r *BannerResource) Update(ctx context.Context, req resource.UpdateRequest,
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
 			}
+
+			// Invalidate cache after successful write
+			device.NetconfReadCache.Invalidate(ctx)
 		}
 	}
 
@@ -433,6 +465,9 @@ func (r *BannerResource) Delete(ctx context.Context, req resource.DeleteRequest,
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}
+
+				// Invalidate cache after successful write
+				device.NetconfReadCache.Invalidate(ctx)
 			}
 		} else {
 			if device.Protocol == "restconf" {
@@ -471,6 +506,9 @@ func (r *BannerResource) Delete(ctx context.Context, req resource.DeleteRequest,
 					resp.Diagnostics.AddError("Client Error", err.Error())
 					return
 				}
+
+				// Invalidate cache after successful write
+				device.NetconfReadCache.Invalidate(ctx)
 			}
 		}
 	}
