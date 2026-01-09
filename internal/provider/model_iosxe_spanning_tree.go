@@ -1015,11 +1015,6 @@ func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Vlans {
-		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
 	for i := range data.MstInstances {
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 
@@ -1050,16 +1045,6 @@ func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 
 func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	for i := range data.Vlans {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
-		}
-
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
-	}
 	for i := range data.MstInstances {
 		keys := [...]string{"id"}
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
