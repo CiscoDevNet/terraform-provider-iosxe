@@ -1279,6 +1279,39 @@ func IsListPath(xPath string) bool {
 	return strings.HasSuffix(xPath, "]")
 }
 
+// TrimNetconfTrailingWhitespace trims trailing whitespace from each line in a string.
+// This is used to normalize multi-line string values returned by NETCONF, which may
+// have trailing spaces that differ from the original configuration.
+//
+// IOS-XE NETCONF responses often include trailing whitespace on each line of multi-line
+// strings (like banners), causing Terraform to detect false drift when comparing the
+// configured value with the value read from the device.
+//
+// This function processes the string line by line, trimming trailing whitespace from
+// each line while preserving leading whitespace and the overall structure.
+//
+// Parameters:
+//   - s: The string to process
+//
+// Returns:
+//   - The string with trailing whitespace removed from each line
+//
+// Example:
+//
+//	input:  "Line 1   \nLine 2\t\nLine 3  "
+//	output: "Line 1\nLine 2\nLine 3"
+func TrimNetconfTrailingWhitespace(s string) string {
+	if s == "" {
+		return s
+	}
+
+	lines := strings.Split(s, "\n")
+	for i, line := range lines {
+		lines[i] = strings.TrimRight(line, " \t\r")
+	}
+	return strings.Join(lines, "\n")
+}
+
 // IsGetConfigResponseEmpty checks if a GetConfig response has an empty <data> element.
 // Returns true if the response contains <data></data> with no child elements,
 // indicating that the requested configuration does not exist on the device.

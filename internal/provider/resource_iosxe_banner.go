@@ -41,7 +41,9 @@ import (
 
 // End of section. //template:end imports
 
-// Section below is generated&owned by "gen/generator.go". //template:begin model
+// Section below is manually maintained to add plan modifiers for banner attributes.
+// This prevents Terraform drift caused by trailing whitespace in NETCONF responses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
@@ -88,18 +90,30 @@ func (r *BannerResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"exec_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					helpers.UseNetconfTrailingWhitespaceTrimming(),
+				},
 			},
 			"login_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					helpers.UseNetconfTrailingWhitespaceTrimming(),
+				},
 			},
 			"prompt_timeout_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					helpers.UseNetconfTrailingWhitespaceTrimming(),
+				},
 			},
 			"motd_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					helpers.UseNetconfTrailingWhitespaceTrimming(),
+				},
 			},
 		},
 	}
@@ -113,7 +127,7 @@ func (r *BannerResource) Configure(_ context.Context, req resource.ConfigureRequ
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
-// End of section. //template:end model
+// End of manually maintained section.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
