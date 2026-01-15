@@ -2467,7 +2467,7 @@ func TestTrimNetconfTrailingWhitespace(t *testing.T) {
 			expected: "  Line 1\n\tLine 2\n  Line 3",
 		},
 		{
-			name:     "Multi-line with empty lines",
+			name:     "Multi-line with internal empty lines preserved",
 			input:    "Line 1   \n   \nLine 3  ",
 			expected: "Line 1\n\nLine 3",
 		},
@@ -2479,6 +2479,21 @@ func TestTrimNetconfTrailingWhitespace(t *testing.T) {
 		{
 			name:     "Handles carriage return",
 			input:    "Line 1  \r\nLine 2\r",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Removes trailing newline (YAML block scalar)",
+			input:    "Line 1\nLine 2\nLine 3\n",
+			expected: "Line 1\nLine 2\nLine 3",
+		},
+		{
+			name:     "Removes multiple trailing newlines",
+			input:    "Line 1\nLine 2\n\n\n",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Handles trailing whitespace and trailing newlines together",
+			input:    "Line 1  \nLine 2  \n\n",
 			expected: "Line 1\nLine 2",
 		},
 	}
@@ -2499,7 +2514,7 @@ func TestTrimNetconfTrailingWhitespace_BannerScenarios(t *testing.T) {
 	tests := []struct {
 		name         string
 		netconfValue string // Value as returned by NETCONF (with trailing whitespace)
-		stateValue   string // Value as stored in Terraform state
+		stateValue   string // Value as stored in Terraform state (often from YAML with trailing newline)
 		shouldMatch  bool   // After normalization, should they match?
 	}{
 		{
@@ -2510,6 +2525,26 @@ func TestTrimNetconfTrailingWhitespace_BannerScenarios(t *testing.T) {
 			stateValue: "***************************************************************************\n" +
 				"*                       EXEC SESSION STARTED                              *\n" +
 				"***************************************************************************",
+			shouldMatch: true,
+		},
+		{
+			name: "Multi-line banner: YAML block scalar (trailing newline) vs NETCONF (no trailing newline)",
+			netconfValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************\n", // YAML | adds trailing newline
+			shouldMatch: true,
+		},
+		{
+			name: "Multi-line banner: NETCONF trailing spaces + YAML trailing newline",
+			netconfValue: "***************************************************************************   \n" +
+				"*                       EXEC SESSION STARTED                              *   \n" +
+				"***************************************************************************   ",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************\n", // YAML | adds trailing newline
 			shouldMatch: true,
 		},
 		{

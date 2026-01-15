@@ -1279,13 +1279,18 @@ func IsListPath(xPath string) bool {
 	return strings.HasSuffix(xPath, "]")
 }
 
-// TrimNetconfTrailingWhitespace trims trailing whitespace from each line in a string.
+// TrimNetconfTrailingWhitespace trims trailing whitespace from each line in a string
+// and removes trailing empty lines from the end of the string.
 // This is used to normalize multi-line string values returned by NETCONF, which may
 // have trailing spaces that differ from the original configuration.
 //
 // IOS-XE NETCONF responses often include trailing whitespace on each line of multi-line
 // strings (like banners), causing Terraform to detect false drift when comparing the
 // configured value with the value read from the device.
+//
+// Additionally, YAML block scalars (using |) include a trailing newline by default,
+// while NETCONF responses may not. This function normalizes both by removing trailing
+// empty lines after trimming each line.
 //
 // This function processes the string line by line, trimming trailing whitespace from
 // each line while preserving leading whitespace and the overall structure.
@@ -1294,11 +1299,11 @@ func IsListPath(xPath string) bool {
 //   - s: The string to process
 //
 // Returns:
-//   - The string with trailing whitespace removed from each line
+//   - The string with trailing whitespace removed from each line and trailing empty lines removed
 //
 // Example:
 //
-//	input:  "Line 1   \nLine 2\t\nLine 3  "
+//	input:  "Line 1   \nLine 2\t\nLine 3  \n"
 //	output: "Line 1\nLine 2\nLine 3"
 func TrimNetconfTrailingWhitespace(s string) string {
 	if s == "" {
@@ -1309,6 +1314,12 @@ func TrimNetconfTrailingWhitespace(s string) string {
 	for i, line := range lines {
 		lines[i] = strings.TrimRight(line, " \t\r")
 	}
+
+	// Remove trailing empty lines
+	for len(lines) > 0 && lines[len(lines)-1] == "" {
+		lines = lines[:len(lines)-1]
+	}
+
 	return strings.Join(lines, "\n")
 }
 
