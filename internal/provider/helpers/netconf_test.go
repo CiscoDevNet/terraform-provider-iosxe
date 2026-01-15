@@ -2570,7 +2570,7 @@ func TestTrimNetconfTrailingWhitespace_BannerScenarios(t *testing.T) {
 			shouldMatch:  true,
 		},
 		{
-			name: "Different content should not match",
+			name:         "Different content should not match",
 			netconfValue: "Banner A   ",
 			stateValue:   "Banner B",
 			shouldMatch:  false,
