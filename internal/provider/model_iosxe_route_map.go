@@ -47,13 +47,6 @@ type RouteMap struct {
 	Name    types.String      `tfsdk:"name"`
 	Entries []RouteMapEntries `tfsdk:"entries"`
 }
-
-type RouteMapData struct {
-	Device  types.String      `tfsdk:"device"`
-	Id      types.String      `tfsdk:"id"`
-	Name    types.String      `tfsdk:"name"`
-	Entries []RouteMapEntries `tfsdk:"entries"`
-}
 type RouteMapEntries struct {
 	Seq                                    types.Int64                         `tfsdk:"seq"`
 	Operation                              types.String                        `tfsdk:"operation"`
@@ -162,6 +155,120 @@ type RouteMapEntriesSetAsPathReplaceAs struct {
 	AsNumber types.String `tfsdk:"as_number"`
 }
 
+type RouteMapData struct {
+	Device  types.String          `tfsdk:"device"`
+	Id      types.String          `tfsdk:"id"`
+	Name    types.String          `tfsdk:"name"`
+	Entries []RouteMapEntriesData `tfsdk:"entries"`
+}
+type RouteMapEntriesData struct {
+	Seq                                    types.Int64                             `tfsdk:"seq"`
+	Operation                              types.String                            `tfsdk:"operation"`
+	Description                            types.String                            `tfsdk:"description"`
+	Continue                               types.Bool                              `tfsdk:"continue"`
+	ContinueSequenceNumber                 types.Int64                             `tfsdk:"continue_sequence_number"`
+	MatchInterfaces                        types.List                              `tfsdk:"match_interfaces"`
+	MatchIpAddressAccessLists              types.List                              `tfsdk:"match_ip_address_access_lists"`
+	MatchIpAddressPrefixLists              types.List                              `tfsdk:"match_ip_address_prefix_lists"`
+	MatchIpNextHopAccessLists              types.List                              `tfsdk:"match_ip_next_hop_access_lists"`
+	MatchIpNextHopPrefixLists              types.List                              `tfsdk:"match_ip_next_hop_prefix_lists"`
+	MatchIpv6AddressAccessLists            types.String                            `tfsdk:"match_ipv6_address_access_lists"`
+	MatchIpv6AddressPrefixLists            types.String                            `tfsdk:"match_ipv6_address_prefix_lists"`
+	MatchIpv6NextHopAccessLists            types.String                            `tfsdk:"match_ipv6_next_hop_access_lists"`
+	MatchIpv6NextHopPrefixLists            types.String                            `tfsdk:"match_ipv6_next_hop_prefix_lists"`
+	MatchRouteTypeExternal                 types.Bool                              `tfsdk:"match_route_type_external"`
+	MatchRouteTypeExternalType1            types.Bool                              `tfsdk:"match_route_type_external_type_1"`
+	MatchRouteTypeExternalType2            types.Bool                              `tfsdk:"match_route_type_external_type_2"`
+	MatchRouteTypeInternal                 types.Bool                              `tfsdk:"match_route_type_internal"`
+	MatchRouteTypeLevel1                   types.Bool                              `tfsdk:"match_route_type_level_1"`
+	MatchRouteTypeLevel2                   types.Bool                              `tfsdk:"match_route_type_level_2"`
+	MatchRouteTypeLocalLegacy              types.Bool                              `tfsdk:"match_route_type_local_legacy"`
+	MatchRouteTypeLocal                    types.Bool                              `tfsdk:"match_route_type_local"`
+	MatchSourceProtocolBgp                 types.List                              `tfsdk:"match_source_protocol_bgp"`
+	MatchSourceProtocolConnected           types.Bool                              `tfsdk:"match_source_protocol_connected"`
+	MatchSourceProtocolEigrp               types.List                              `tfsdk:"match_source_protocol_eigrp"`
+	MatchSourceProtocolIsis                types.Bool                              `tfsdk:"match_source_protocol_isis"`
+	MatchSourceProtocolLisp                types.Bool                              `tfsdk:"match_source_protocol_lisp"`
+	MatchSourceProtocolOspf                types.List                              `tfsdk:"match_source_protocol_ospf"`
+	MatchSourceProtocolOspfv3              types.List                              `tfsdk:"match_source_protocol_ospfv3"`
+	MatchSourceProtocolRip                 types.Bool                              `tfsdk:"match_source_protocol_rip"`
+	MatchSourceProtocolStatic              types.Bool                              `tfsdk:"match_source_protocol_static"`
+	MatchTags                              types.List                              `tfsdk:"match_tags"`
+	MatchTrack                             types.Int64                             `tfsdk:"match_track"`
+	MatchAsPathsLegacy                     types.List                              `tfsdk:"match_as_paths_legacy"`
+	MatchCommunityListsLegacy              types.List                              `tfsdk:"match_community_lists_legacy"`
+	MatchExtcommunityListsLegacy           types.List                              `tfsdk:"match_extcommunity_lists_legacy"`
+	MatchLocalPreferencesLegacy            types.List                              `tfsdk:"match_local_preferences_legacy"`
+	MatchAsPaths                           types.List                              `tfsdk:"match_as_paths"`
+	MatchCommunityLists                    types.List                              `tfsdk:"match_community_lists"`
+	MatchCommunityListExactMatch           types.Bool                              `tfsdk:"match_community_list_exact_match"`
+	MatchExtcommunityLists                 types.List                              `tfsdk:"match_extcommunity_lists"`
+	MatchLocalPreferences                  types.List                              `tfsdk:"match_local_preferences"`
+	SetDefaultInterfaces                   types.List                              `tfsdk:"set_default_interfaces"`
+	SetGlobal                              types.Bool                              `tfsdk:"set_global"`
+	SetInterfaces                          types.List                              `tfsdk:"set_interfaces"`
+	SetIpAddress                           types.String                            `tfsdk:"set_ip_address"`
+	SetIpDefaultGlobalNextHopAddress       types.List                              `tfsdk:"set_ip_default_global_next_hop_address"`
+	SetIpDefaultNextHopAddress             types.List                              `tfsdk:"set_ip_default_next_hop_address"`
+	SetIpGlobalNextHopAddress              types.List                              `tfsdk:"set_ip_global_next_hop_address"`
+	SetIpNextHopAddress                    types.List                              `tfsdk:"set_ip_next_hop_address"`
+	SetIpNextHopSelf                       types.Bool                              `tfsdk:"set_ip_next_hop_self"`
+	SetIpNextHopUnchanged                  types.Bool                              `tfsdk:"set_ip_next_hop_unchanged"`
+	SetIpQosGroup                          types.Int64                             `tfsdk:"set_ip_qos_group"`
+	SetIpv6Address                         types.List                              `tfsdk:"set_ipv6_address"`
+	SetIpv6DefaultGlobalNextHop            types.String                            `tfsdk:"set_ipv6_default_global_next_hop"`
+	SetIpv6DefaultNextHop                  types.List                              `tfsdk:"set_ipv6_default_next_hop"`
+	SetIpv6NextHop                         types.List                              `tfsdk:"set_ipv6_next_hop"`
+	SetLevel1                              types.Bool                              `tfsdk:"set_level_1"`
+	SetLevel12                             types.Bool                              `tfsdk:"set_level_1_2"`
+	SetLevel2                              types.Bool                              `tfsdk:"set_level_2"`
+	SetMetricChange                        types.String                            `tfsdk:"set_metric_change"`
+	SetMetricValue                         types.Int64                             `tfsdk:"set_metric_value"`
+	SetMetricDelay                         types.String                            `tfsdk:"set_metric_delay"`
+	SetMetricReliability                   types.Int64                             `tfsdk:"set_metric_reliability"`
+	SetMetricLoading                       types.Int64                             `tfsdk:"set_metric_loading"`
+	SetMetricMtu                           types.Int64                             `tfsdk:"set_metric_mtu"`
+	SetMetricType                          types.String                            `tfsdk:"set_metric_type"`
+	SetTag                                 types.Int64                             `tfsdk:"set_tag"`
+	SetVrf                                 types.String                            `tfsdk:"set_vrf"`
+	SetAsPathPrependAsLegacy               types.String                            `tfsdk:"set_as_path_prepend_as_legacy"`
+	SetAsPathPrependLastAsLegacy           types.Int64                             `tfsdk:"set_as_path_prepend_last_as_legacy"`
+	SetAsPathTagLegacy                     types.Bool                              `tfsdk:"set_as_path_tag_legacy"`
+	SetCommunityNoneLegacy                 types.Bool                              `tfsdk:"set_community_none_legacy"`
+	SetCommunitiesLegacy                   types.List                              `tfsdk:"set_communities_legacy"`
+	SetCommunitiesAdditiveLegacy           types.Bool                              `tfsdk:"set_communities_additive_legacy"`
+	SetCommunityListDeleteLegacy           types.Bool                              `tfsdk:"set_community_list_delete_legacy"`
+	SetCommunityListStandardLegacy         types.Int64                             `tfsdk:"set_community_list_standard_legacy"`
+	SetCommunityListExpandedLegacy         types.Int64                             `tfsdk:"set_community_list_expanded_legacy"`
+	SetCommunityListNameLegacy             types.String                            `tfsdk:"set_community_list_name_legacy"`
+	SetExtcomunityRtLegacy                 types.List                              `tfsdk:"set_extcomunity_rt_legacy"`
+	SetExtcomunitySooLegacy                types.String                            `tfsdk:"set_extcomunity_soo_legacy"`
+	SetExtcomunityVpnDistinguisherLegacy   types.String                            `tfsdk:"set_extcomunity_vpn_distinguisher_legacy"`
+	SetLocalPreferenceLegacy               types.Int64                             `tfsdk:"set_local_preference_legacy"`
+	SetWeightLegacy                        types.Int64                             `tfsdk:"set_weight_legacy"`
+	SetAsPathPrependAs                     types.String                            `tfsdk:"set_as_path_prepend_as"`
+	SetAsPathPrependLastAs                 types.Int64                             `tfsdk:"set_as_path_prepend_last_as"`
+	SetAsPathTag                           types.Bool                              `tfsdk:"set_as_path_tag"`
+	SetAsPathReplaceAny                    types.Bool                              `tfsdk:"set_as_path_replace_any"`
+	SetAsPathReplaceAs                     []RouteMapEntriesSetAsPathReplaceAsData `tfsdk:"set_as_path_replace_as"`
+	SetCommunityNone                       types.Bool                              `tfsdk:"set_community_none"`
+	SetCommunities                         types.List                              `tfsdk:"set_communities"`
+	SetCommunitiesAdditive                 types.Bool                              `tfsdk:"set_communities_additive"`
+	SetCommunityListDelete                 types.Bool                              `tfsdk:"set_community_list_delete"`
+	SetCommunityListStandard               types.Int64                             `tfsdk:"set_community_list_standard"`
+	SetCommunityListExpanded               types.Int64                             `tfsdk:"set_community_list_expanded"`
+	SetCommunityListName                   types.String                            `tfsdk:"set_community_list_name"`
+	SetExtcomunityRt                       types.List                              `tfsdk:"set_extcomunity_rt"`
+	SetExtcomunitySoo                      types.String                            `tfsdk:"set_extcomunity_soo"`
+	SetExtcomunityVpnDistinguisher         types.String                            `tfsdk:"set_extcomunity_vpn_distinguisher"`
+	SetExtcomunityVpnDistinguisherAdditive types.Bool                              `tfsdk:"set_extcomunity_vpn_distinguisher_additive"`
+	SetLocalPreference                     types.Int64                             `tfsdk:"set_local_preference"`
+	SetWeight                              types.Int64                             `tfsdk:"set_weight"`
+}
+type RouteMapEntriesSetAsPathReplaceAsData struct {
+	AsNumber types.String `tfsdk:"as_number"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -202,7 +309,7 @@ func (data RouteMapData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data RouteMap) toBody(ctx context.Context) string {
+func (data RouteMap) toBody(ctx context.Context, config RouteMap) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -654,7 +761,7 @@ func (data RouteMap) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data RouteMap) toBodyXML(ctx context.Context) string {
+func (data RouteMap) toBodyXML(ctx context.Context, config RouteMap) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -3091,9 +3198,9 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-route-map:route-map-without-order-seq"); value.Exists() {
-		data.Entries = make([]RouteMapEntries, 0)
+		data.Entries = make([]RouteMapEntriesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := RouteMapEntries{}
+			item := RouteMapEntriesData{}
 			if cValue := v.Get("seq_no"); cValue.Exists() {
 				item.Seq = types.Int64Value(cValue.Int())
 			}
@@ -3471,9 +3578,9 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 				item.SetAsPathReplaceAny = types.BoolValue(false)
 			}
 			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.as-path.replace.as-container"); cValue.Exists() {
-				item.SetAsPathReplaceAs = make([]RouteMapEntriesSetAsPathReplaceAs, 0)
+				item.SetAsPathReplaceAs = make([]RouteMapEntriesSetAsPathReplaceAsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := RouteMapEntriesSetAsPathReplaceAs{}
+					cItem := RouteMapEntriesSetAsPathReplaceAsData{}
 					if ccValue := cv.Get("as-number"); ccValue.Exists() {
 						cItem.AsNumber = types.StringValue(ccValue.String())
 					}
@@ -3997,9 +4104,9 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq"); value.Exists() {
-		data.Entries = make([]RouteMapEntries, 0)
+		data.Entries = make([]RouteMapEntriesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := RouteMapEntries{}
+			item := RouteMapEntriesData{}
 			if cValue := helpers.GetFromXPath(v, "seq_no"); cValue.Exists() {
 				item.Seq = types.Int64Value(cValue.Int())
 			}
@@ -4377,9 +4484,9 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.SetAsPathReplaceAny = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/as-container"); cValue.Exists() {
-				item.SetAsPathReplaceAs = make([]RouteMapEntriesSetAsPathReplaceAs, 0)
+				item.SetAsPathReplaceAs = make([]RouteMapEntriesSetAsPathReplaceAsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := RouteMapEntriesSetAsPathReplaceAs{}
+					cItem := RouteMapEntriesSetAsPathReplaceAsData{}
 					if ccValue := helpers.GetFromXPath(cv, "as-number"); ccValue.Exists() {
 						cItem.AsNumber = types.StringValue(ccValue.String())
 					}

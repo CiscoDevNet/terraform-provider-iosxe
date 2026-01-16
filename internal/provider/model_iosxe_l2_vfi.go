@@ -49,16 +49,20 @@ type L2VFI struct {
 	VpnId     types.Int64      `tfsdk:"vpn_id"`
 	Neighbors []L2VFINeighbors `tfsdk:"neighbors"`
 }
+type L2VFINeighbors struct {
+	IpAddress     types.String `tfsdk:"ip_address"`
+	Encapsulation types.String `tfsdk:"encapsulation"`
+}
 
 type L2VFIData struct {
-	Device    types.String     `tfsdk:"device"`
-	Id        types.String     `tfsdk:"id"`
-	Name      types.String     `tfsdk:"name"`
-	Mode      types.String     `tfsdk:"mode"`
-	VpnId     types.Int64      `tfsdk:"vpn_id"`
-	Neighbors []L2VFINeighbors `tfsdk:"neighbors"`
+	Device    types.String         `tfsdk:"device"`
+	Id        types.String         `tfsdk:"id"`
+	Name      types.String         `tfsdk:"name"`
+	Mode      types.String         `tfsdk:"mode"`
+	VpnId     types.Int64          `tfsdk:"vpn_id"`
+	Neighbors []L2VFINeighborsData `tfsdk:"neighbors"`
 }
-type L2VFINeighbors struct {
+type L2VFINeighborsData struct {
 	IpAddress     types.String `tfsdk:"ip_address"`
 	Encapsulation types.String `tfsdk:"encapsulation"`
 }
@@ -103,7 +107,7 @@ func (data L2VFIData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data L2VFI) toBody(ctx context.Context) string {
+func (data L2VFI) toBody(ctx context.Context, config L2VFI) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -132,7 +136,7 @@ func (data L2VFI) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data L2VFI) toBodyXML(ctx context.Context) string {
+func (data L2VFI) toBodyXML(ctx context.Context, config L2VFI) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -325,9 +329,9 @@ func (data *L2VFIData) fromBody(ctx context.Context, res gjson.Result) {
 		data.VpnId = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "neighbor"); value.Exists() {
-		data.Neighbors = make([]L2VFINeighbors, 0)
+		data.Neighbors = make([]L2VFINeighborsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := L2VFINeighbors{}
+			item := L2VFINeighborsData{}
 			if cValue := v.Get("router-id"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -379,9 +383,9 @@ func (data *L2VFIData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.VpnId = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/neighbor"); value.Exists() {
-		data.Neighbors = make([]L2VFINeighbors, 0)
+		data.Neighbors = make([]L2VFINeighborsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := L2VFINeighbors{}
+			item := L2VFINeighborsData{}
 			if cValue := helpers.GetFromXPath(v, "router-id"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}

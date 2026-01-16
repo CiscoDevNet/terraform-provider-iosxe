@@ -60,26 +60,6 @@ type PIM struct {
 	RpCandidates                    []PIMRpCandidates `tfsdk:"rp_candidates"`
 	Vrfs                            []PIMVrfs         `tfsdk:"vrfs"`
 }
-
-type PIMData struct {
-	Device                          types.String      `tfsdk:"device"`
-	Id                              types.String      `tfsdk:"id"`
-	Autorp                          types.Bool        `tfsdk:"autorp"`
-	AutorpListener                  types.Bool        `tfsdk:"autorp_listener"`
-	BsrCandidateLoopback            types.Int64       `tfsdk:"bsr_candidate_loopback"`
-	BsrCandidateMask                types.Int64       `tfsdk:"bsr_candidate_mask"`
-	BsrCandidatePriority            types.Int64       `tfsdk:"bsr_candidate_priority"`
-	BsrCandidateAcceptRpCandidate   types.String      `tfsdk:"bsr_candidate_accept_rp_candidate"`
-	RegisterSourceInterfaceLoopback types.Int64       `tfsdk:"register_source_interface_loopback"`
-	SsmRange                        types.String      `tfsdk:"ssm_range"`
-	SsmDefault                      types.Bool        `tfsdk:"ssm_default"`
-	RpAddress                       types.String      `tfsdk:"rp_address"`
-	RpAddressOverride               types.Bool        `tfsdk:"rp_address_override"`
-	RpAddressBidir                  types.Bool        `tfsdk:"rp_address_bidir"`
-	RpAddresses                     []PIMRpAddresses  `tfsdk:"rp_addresses"`
-	RpCandidates                    []PIMRpCandidates `tfsdk:"rp_candidates"`
-	Vrfs                            []PIMVrfs         `tfsdk:"vrfs"`
-}
 type PIMRpAddresses struct {
 	AccessList types.String `tfsdk:"access_list"`
 	RpAddress  types.String `tfsdk:"rp_address"`
@@ -125,6 +105,70 @@ type PIMVrfsRpCandidates struct {
 	Bidir     types.Bool   `tfsdk:"bidir"`
 }
 
+type PIMData struct {
+	Device                          types.String          `tfsdk:"device"`
+	Id                              types.String          `tfsdk:"id"`
+	Autorp                          types.Bool            `tfsdk:"autorp"`
+	AutorpListener                  types.Bool            `tfsdk:"autorp_listener"`
+	BsrCandidateLoopback            types.Int64           `tfsdk:"bsr_candidate_loopback"`
+	BsrCandidateMask                types.Int64           `tfsdk:"bsr_candidate_mask"`
+	BsrCandidatePriority            types.Int64           `tfsdk:"bsr_candidate_priority"`
+	BsrCandidateAcceptRpCandidate   types.String          `tfsdk:"bsr_candidate_accept_rp_candidate"`
+	RegisterSourceInterfaceLoopback types.Int64           `tfsdk:"register_source_interface_loopback"`
+	SsmRange                        types.String          `tfsdk:"ssm_range"`
+	SsmDefault                      types.Bool            `tfsdk:"ssm_default"`
+	RpAddress                       types.String          `tfsdk:"rp_address"`
+	RpAddressOverride               types.Bool            `tfsdk:"rp_address_override"`
+	RpAddressBidir                  types.Bool            `tfsdk:"rp_address_bidir"`
+	RpAddresses                     []PIMRpAddressesData  `tfsdk:"rp_addresses"`
+	RpCandidates                    []PIMRpCandidatesData `tfsdk:"rp_candidates"`
+	Vrfs                            []PIMVrfsData         `tfsdk:"vrfs"`
+}
+type PIMRpAddressesData struct {
+	AccessList types.String `tfsdk:"access_list"`
+	RpAddress  types.String `tfsdk:"rp_address"`
+	Override   types.Bool   `tfsdk:"override"`
+	Bidir      types.Bool   `tfsdk:"bidir"`
+}
+type PIMRpCandidatesData struct {
+	Interface types.String `tfsdk:"interface"`
+	GroupList types.String `tfsdk:"group_list"`
+	Interval  types.Int64  `tfsdk:"interval"`
+	Priority  types.Int64  `tfsdk:"priority"`
+	Bidir     types.Bool   `tfsdk:"bidir"`
+}
+type PIMVrfsData struct {
+	Vrf                             types.String              `tfsdk:"vrf"`
+	Autorp                          types.Bool                `tfsdk:"autorp"`
+	AutorpListener                  types.Bool                `tfsdk:"autorp_listener"`
+	BsrCandidateLoopback            types.Int64               `tfsdk:"bsr_candidate_loopback"`
+	BsrCandidateMask                types.Int64               `tfsdk:"bsr_candidate_mask"`
+	BsrCandidatePriority            types.Int64               `tfsdk:"bsr_candidate_priority"`
+	BsrCandidateAcceptRpCandidate   types.String              `tfsdk:"bsr_candidate_accept_rp_candidate"`
+	RegisterSourceInterfaceLoopback types.Int64               `tfsdk:"register_source_interface_loopback"`
+	SsmRange                        types.String              `tfsdk:"ssm_range"`
+	SsmDefault                      types.Bool                `tfsdk:"ssm_default"`
+	RpAddress                       types.String              `tfsdk:"rp_address"`
+	RpAddressOverride               types.Bool                `tfsdk:"rp_address_override"`
+	RpAddressBidir                  types.Bool                `tfsdk:"rp_address_bidir"`
+	CacheRpfOif                     types.Bool                `tfsdk:"cache_rpf_oif"`
+	RpAddresses                     []PIMVrfsRpAddressesData  `tfsdk:"rp_addresses"`
+	RpCandidates                    []PIMVrfsRpCandidatesData `tfsdk:"rp_candidates"`
+}
+type PIMVrfsRpAddressesData struct {
+	AccessList types.String `tfsdk:"access_list"`
+	RpAddress  types.String `tfsdk:"rp_address"`
+	Override   types.Bool   `tfsdk:"override"`
+	Bidir      types.Bool   `tfsdk:"bidir"`
+}
+type PIMVrfsRpCandidatesData struct {
+	Interface types.String `tfsdk:"interface"`
+	GroupList types.String `tfsdk:"group_list"`
+	Interval  types.Int64  `tfsdk:"interval"`
+	Priority  types.Int64  `tfsdk:"priority"`
+	Bidir     types.Bool   `tfsdk:"bidir"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -163,7 +207,7 @@ func (data PIMData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data PIM) toBody(ctx context.Context) string {
+func (data PIM) toBody(ctx context.Context, config PIM) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Autorp.IsNull() && !data.Autorp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:autorp-container.autorp", data.Autorp.ValueBool())
@@ -359,7 +403,7 @@ func (data PIM) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data PIM) toBodyXML(ctx context.Context) string {
+func (data PIM) toBodyXML(ctx context.Context, config PIM) string {
 	body := netconf.Body{}
 	if !data.Autorp.IsNull() && !data.Autorp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp", data.Autorp.ValueBool())
@@ -1689,9 +1733,9 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 		data.RpAddressBidir = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address-list"); value.Exists() {
-		data.RpAddresses = make([]PIMRpAddresses, 0)
+		data.RpAddresses = make([]PIMRpAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := PIMRpAddresses{}
+			item := PIMRpAddressesData{}
 			if cValue := v.Get("access-list"); cValue.Exists() {
 				item.AccessList = types.StringValue(cValue.String())
 			}
@@ -1713,9 +1757,9 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-candidate"); value.Exists() {
-		data.RpCandidates = make([]PIMRpCandidates, 0)
+		data.RpCandidates = make([]PIMRpCandidatesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := PIMRpCandidates{}
+			item := PIMRpCandidatesData{}
 			if cValue := v.Get("interface"); cValue.Exists() {
 				item.Interface = types.StringValue(cValue.String())
 			}
@@ -1738,9 +1782,9 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]PIMVrfs, 0)
+		data.Vrfs = make([]PIMVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := PIMVrfs{}
+			item := PIMVrfsData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -1796,9 +1840,9 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 				item.CacheRpfOif = types.BoolValue(false)
 			}
 			if cValue := v.Get("rp-address-list"); cValue.Exists() {
-				item.RpAddresses = make([]PIMVrfsRpAddresses, 0)
+				item.RpAddresses = make([]PIMVrfsRpAddressesData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := PIMVrfsRpAddresses{}
+					cItem := PIMVrfsRpAddressesData{}
 					if ccValue := cv.Get("access-list"); ccValue.Exists() {
 						cItem.AccessList = types.StringValue(ccValue.String())
 					}
@@ -1820,9 +1864,9 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("rp-candidate"); cValue.Exists() {
-				item.RpCandidates = make([]PIMVrfsRpCandidates, 0)
+				item.RpCandidates = make([]PIMVrfsRpCandidatesData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := PIMVrfsRpCandidates{}
+					cItem := PIMVrfsRpCandidatesData{}
 					if ccValue := cv.Get("interface"); ccValue.Exists() {
 						cItem.Interface = types.StringValue(ccValue.String())
 					}
@@ -2115,9 +2159,9 @@ func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.RpAddressBidir = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address-list"); value.Exists() {
-		data.RpAddresses = make([]PIMRpAddresses, 0)
+		data.RpAddresses = make([]PIMRpAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PIMRpAddresses{}
+			item := PIMRpAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "access-list"); cValue.Exists() {
 				item.AccessList = types.StringValue(cValue.String())
 			}
@@ -2139,9 +2183,9 @@ func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:rp-candidate"); value.Exists() {
-		data.RpCandidates = make([]PIMRpCandidates, 0)
+		data.RpCandidates = make([]PIMRpCandidatesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PIMRpCandidates{}
+			item := PIMRpCandidatesData{}
 			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
 				item.Interface = types.StringValue(cValue.String())
 			}
@@ -2164,9 +2208,9 @@ func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]PIMVrfs, 0)
+		data.Vrfs = make([]PIMVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PIMVrfs{}
+			item := PIMVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -2222,9 +2266,9 @@ func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.CacheRpfOif = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "rp-address-list"); cValue.Exists() {
-				item.RpAddresses = make([]PIMVrfsRpAddresses, 0)
+				item.RpAddresses = make([]PIMVrfsRpAddressesData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := PIMVrfsRpAddresses{}
+					cItem := PIMVrfsRpAddressesData{}
 					if ccValue := helpers.GetFromXPath(cv, "access-list"); ccValue.Exists() {
 						cItem.AccessList = types.StringValue(ccValue.String())
 					}
@@ -2246,9 +2290,9 @@ func (data *PIMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "rp-candidate"); cValue.Exists() {
-				item.RpCandidates = make([]PIMVrfsRpCandidates, 0)
+				item.RpCandidates = make([]PIMVrfsRpCandidatesData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := PIMVrfsRpCandidates{}
+					cItem := PIMVrfsRpCandidatesData{}
 					if ccValue := helpers.GetFromXPath(cv, "interface"); ccValue.Exists() {
 						cItem.Interface = types.StringValue(ccValue.String())
 					}

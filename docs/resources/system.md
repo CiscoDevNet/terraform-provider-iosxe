@@ -61,6 +61,8 @@ resource "iosxe_system" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `access_session_mac_move_deny` (Boolean) Deny MAC moves (clears existing session)
 - `archive_log_config_logging_enable` (Boolean) Enable the config logger
 - `archive_log_config_logging_size` (Number) Maximum number of logged commands that will be kept by the config log
@@ -91,6 +93,8 @@ resource "iosxe_system" "example" {
 - `enable_secret_level` (Number) Set exec level password
   - Range: `0`-`255`
 - `enable_secret_type` (String) - Choices: `0`, `4`, `5`, `8`, `9`
+- `enable_secret_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `enable_secret_wo_version` (Number) The write-only version of the attribute.
 - `epm_logging` (Boolean) Enable EPM logging
 - `ethernet_cfm_alarm_config_delay` (Number) msec (default 2500 msec)
   - Range: `2500`-`10000`

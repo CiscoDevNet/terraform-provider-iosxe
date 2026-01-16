@@ -47,14 +47,18 @@ type CommunityListExpanded struct {
 	Name    types.String                   `tfsdk:"name"`
 	Entries []CommunityListExpandedEntries `tfsdk:"entries"`
 }
+type CommunityListExpandedEntries struct {
+	Action types.String `tfsdk:"action"`
+	Regex  types.String `tfsdk:"regex"`
+}
 
 type CommunityListExpandedData struct {
-	Device  types.String                   `tfsdk:"device"`
-	Id      types.String                   `tfsdk:"id"`
-	Name    types.String                   `tfsdk:"name"`
-	Entries []CommunityListExpandedEntries `tfsdk:"entries"`
+	Device  types.String                       `tfsdk:"device"`
+	Id      types.String                       `tfsdk:"id"`
+	Name    types.String                       `tfsdk:"name"`
+	Entries []CommunityListExpandedEntriesData `tfsdk:"entries"`
 }
-type CommunityListExpandedEntries struct {
+type CommunityListExpandedEntriesData struct {
 	Action types.String `tfsdk:"action"`
 	Regex  types.String `tfsdk:"regex"`
 }
@@ -99,7 +103,7 @@ func (data CommunityListExpandedData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CommunityListExpanded) toBody(ctx context.Context) string {
+func (data CommunityListExpanded) toBody(ctx context.Context, config CommunityListExpanded) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -122,7 +126,7 @@ func (data CommunityListExpanded) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CommunityListExpanded) toBodyXML(ctx context.Context) string {
+func (data CommunityListExpanded) toBodyXML(ctx context.Context, config CommunityListExpanded) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -277,9 +281,9 @@ func (data *CommunityListExpandedData) fromBody(ctx context.Context, res gjson.R
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "extended-grouping.extended_grouping"); value.Exists() {
-		data.Entries = make([]CommunityListExpandedEntries, 0)
+		data.Entries = make([]CommunityListExpandedEntriesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CommunityListExpandedEntries{}
+			item := CommunityListExpandedEntriesData{}
 			if cValue := v.Get("action"); cValue.Exists() {
 				item.Action = types.StringValue(cValue.String())
 			}
@@ -319,9 +323,9 @@ func (data *CommunityListExpanded) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *CommunityListExpandedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
-		data.Entries = make([]CommunityListExpandedEntries, 0)
+		data.Entries = make([]CommunityListExpandedEntriesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CommunityListExpandedEntries{}
+			item := CommunityListExpandedEntriesData{}
 			if cValue := helpers.GetFromXPath(v, "action"); cValue.Exists() {
 				item.Action = types.StringValue(cValue.String())
 			}

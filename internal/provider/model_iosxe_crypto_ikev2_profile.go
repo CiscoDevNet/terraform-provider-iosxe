@@ -65,31 +65,35 @@ type CryptoIKEv2Profile struct {
 	DpdQuery                         types.String                                         `tfsdk:"dpd_query"`
 	ConfigExchangeRequest            types.Bool                                           `tfsdk:"config_exchange_request"`
 }
+type CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses struct {
+	Address types.String `tfsdk:"address"`
+	Mask    types.String `tfsdk:"mask"`
+}
 
 type CryptoIKEv2ProfileData struct {
-	Device                           types.String                                         `tfsdk:"device"`
-	Id                               types.String                                         `tfsdk:"id"`
-	Name                             types.String                                         `tfsdk:"name"`
-	Description                      types.String                                         `tfsdk:"description"`
-	AuthenticationRemotePreShare     types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
-	AuthenticationLocalPreShare      types.Bool                                           `tfsdk:"authentication_local_pre_share"`
-	IdentityLocalAddress             types.String                                         `tfsdk:"identity_local_address"`
-	IdentityLocalKeyId               types.String                                         `tfsdk:"identity_local_key_id"`
-	MatchInboundOnly                 types.Bool                                           `tfsdk:"match_inbound_only"`
-	MatchAddressLocalIp              types.String                                         `tfsdk:"match_address_local_ip"`
-	MatchFvrf                        types.String                                         `tfsdk:"match_fvrf"`
-	MatchFvrfAny                     types.Bool                                           `tfsdk:"match_fvrf_any"`
-	MatchIdentityRemoteIpv4Addresses []CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses `tfsdk:"match_identity_remote_ipv4_addresses"`
-	MatchIdentityRemoteIpv6Prefixes  types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
-	MatchIdentityRemoteKeys          types.List                                           `tfsdk:"match_identity_remote_keys"`
-	KeyringLocal                     types.String                                         `tfsdk:"keyring_local"`
-	Ivrf                             types.String                                         `tfsdk:"ivrf"`
-	DpdInterval                      types.Int64                                          `tfsdk:"dpd_interval"`
-	DpdRetry                         types.Int64                                          `tfsdk:"dpd_retry"`
-	DpdQuery                         types.String                                         `tfsdk:"dpd_query"`
-	ConfigExchangeRequest            types.Bool                                           `tfsdk:"config_exchange_request"`
+	Device                           types.String                                             `tfsdk:"device"`
+	Id                               types.String                                             `tfsdk:"id"`
+	Name                             types.String                                             `tfsdk:"name"`
+	Description                      types.String                                             `tfsdk:"description"`
+	AuthenticationRemotePreShare     types.Bool                                               `tfsdk:"authentication_remote_pre_share"`
+	AuthenticationLocalPreShare      types.Bool                                               `tfsdk:"authentication_local_pre_share"`
+	IdentityLocalAddress             types.String                                             `tfsdk:"identity_local_address"`
+	IdentityLocalKeyId               types.String                                             `tfsdk:"identity_local_key_id"`
+	MatchInboundOnly                 types.Bool                                               `tfsdk:"match_inbound_only"`
+	MatchAddressLocalIp              types.String                                             `tfsdk:"match_address_local_ip"`
+	MatchFvrf                        types.String                                             `tfsdk:"match_fvrf"`
+	MatchFvrfAny                     types.Bool                                               `tfsdk:"match_fvrf_any"`
+	MatchIdentityRemoteIpv4Addresses []CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData `tfsdk:"match_identity_remote_ipv4_addresses"`
+	MatchIdentityRemoteIpv6Prefixes  types.List                                               `tfsdk:"match_identity_remote_ipv6_prefixes"`
+	MatchIdentityRemoteKeys          types.List                                               `tfsdk:"match_identity_remote_keys"`
+	KeyringLocal                     types.String                                             `tfsdk:"keyring_local"`
+	Ivrf                             types.String                                             `tfsdk:"ivrf"`
+	DpdInterval                      types.Int64                                              `tfsdk:"dpd_interval"`
+	DpdRetry                         types.Int64                                              `tfsdk:"dpd_retry"`
+	DpdQuery                         types.String                                             `tfsdk:"dpd_query"`
+	ConfigExchangeRequest            types.Bool                                               `tfsdk:"config_exchange_request"`
 }
-type CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses struct {
+type CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData struct {
 	Address types.String `tfsdk:"address"`
 	Mask    types.String `tfsdk:"mask"`
 }
@@ -134,7 +138,7 @@ func (data CryptoIKEv2ProfileData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CryptoIKEv2Profile) toBody(ctx context.Context) string {
+func (data CryptoIKEv2Profile) toBody(ctx context.Context, config CryptoIKEv2Profile) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -220,7 +224,7 @@ func (data CryptoIKEv2Profile) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CryptoIKEv2Profile) toBodyXML(ctx context.Context) string {
+func (data CryptoIKEv2Profile) toBodyXML(ctx context.Context, config CryptoIKEv2Profile) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -756,9 +760,9 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 		data.MatchFvrfAny = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "match.identity.remote.address.ipv4"); value.Exists() {
-		data.MatchIdentityRemoteIpv4Addresses = make([]CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses, 0)
+		data.MatchIdentityRemoteIpv4Addresses = make([]CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses{}
+			item := CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData{}
 			if cValue := v.Get("ipv4-address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -928,9 +932,9 @@ func (data *CryptoIKEv2ProfileData) fromBodyXML(ctx context.Context, res xmldot.
 		data.MatchFvrfAny = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/identity/remote/address/ipv4"); value.Exists() {
-		data.MatchIdentityRemoteIpv4Addresses = make([]CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses, 0)
+		data.MatchIdentityRemoteIpv4Addresses = make([]CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses{}
+			item := CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData{}
 			if cValue := helpers.GetFromXPath(v, "ipv4-address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}

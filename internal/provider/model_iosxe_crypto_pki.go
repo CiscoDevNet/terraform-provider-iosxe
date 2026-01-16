@@ -46,13 +46,26 @@ type CryptoPKI struct {
 	DeleteMode  types.String           `tfsdk:"delete_mode"`
 	Trustpoints []CryptoPKITrustpoints `tfsdk:"trustpoints"`
 }
+type CryptoPKITrustpoints struct {
+	Id                   types.String `tfsdk:"id"`
+	EnrollmentPkcs12     types.Bool   `tfsdk:"enrollment_pkcs12"`
+	EnrollmentSelfsigned types.Bool   `tfsdk:"enrollment_selfsigned"`
+	EnrollmentModeRa     types.Bool   `tfsdk:"enrollment_mode_ra"`
+	EnrollmentTerminal   types.Bool   `tfsdk:"enrollment_terminal"`
+	RevocationCheck      types.List   `tfsdk:"revocation_check"`
+	SubjectName          types.String `tfsdk:"subject_name"`
+	Rsakeypair           types.String `tfsdk:"rsakeypair"`
+	Usage                types.String `tfsdk:"usage"`
+	SourceInterface      types.String `tfsdk:"source_interface"`
+	Hash                 types.String `tfsdk:"hash"`
+}
 
 type CryptoPKIData struct {
-	Device      types.String           `tfsdk:"device"`
-	Id          types.String           `tfsdk:"id"`
-	Trustpoints []CryptoPKITrustpoints `tfsdk:"trustpoints"`
+	Device      types.String               `tfsdk:"device"`
+	Id          types.String               `tfsdk:"id"`
+	Trustpoints []CryptoPKITrustpointsData `tfsdk:"trustpoints"`
 }
-type CryptoPKITrustpoints struct {
+type CryptoPKITrustpointsData struct {
 	Id                   types.String `tfsdk:"id"`
 	EnrollmentPkcs12     types.Bool   `tfsdk:"enrollment_pkcs12"`
 	EnrollmentSelfsigned types.Bool   `tfsdk:"enrollment_selfsigned"`
@@ -104,7 +117,7 @@ func (data CryptoPKIData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CryptoPKI) toBody(ctx context.Context) string {
+func (data CryptoPKI) toBody(ctx context.Context, config CryptoPKI) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if len(data.Trustpoints) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint", []interface{}{})
@@ -161,7 +174,7 @@ func (data CryptoPKI) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CryptoPKI) toBodyXML(ctx context.Context) string {
+func (data CryptoPKI) toBodyXML(ctx context.Context, config CryptoPKI) string {
 	body := netconf.Body{}
 	if len(data.Trustpoints) > 0 {
 		for _, item := range data.Trustpoints {
@@ -509,9 +522,9 @@ func (data *CryptoPKIData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "trustpoint"); value.Exists() {
-		data.Trustpoints = make([]CryptoPKITrustpoints, 0)
+		data.Trustpoints = make([]CryptoPKITrustpointsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoPKITrustpoints{}
+			item := CryptoPKITrustpointsData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
@@ -625,9 +638,9 @@ func (data *CryptoPKI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *CryptoPKIData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint"); value.Exists() {
-		data.Trustpoints = make([]CryptoPKITrustpoints, 0)
+		data.Trustpoints = make([]CryptoPKITrustpointsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CryptoPKITrustpoints{}
+			item := CryptoPKITrustpointsData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}

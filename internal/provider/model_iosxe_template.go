@@ -122,87 +122,6 @@ type Template struct {
 	CtsManualPropagateSgt                              types.Bool                                   `tfsdk:"cts_manual_propagate_sgt"`
 	CtsRoleBasedEnforcement                            types.Bool                                   `tfsdk:"cts_role_based_enforcement"`
 }
-
-type TemplateData struct {
-	Device                                             types.String                                 `tfsdk:"device"`
-	Id                                                 types.String                                 `tfsdk:"id"`
-	TemplateName                                       types.String                                 `tfsdk:"template_name"`
-	Dot1xPae                                           types.String                                 `tfsdk:"dot1x_pae"`
-	Dot1xMaxReauthReq                                  types.Int64                                  `tfsdk:"dot1x_max_reauth_req"`
-	Dot1xMaxReq                                        types.Int64                                  `tfsdk:"dot1x_max_req"`
-	Dot1xTimeoutTxPeriod                               types.Int64                                  `tfsdk:"dot1x_timeout_tx_period"`
-	Dot1xTimeoutQuietPeriod                            types.Int64                                  `tfsdk:"dot1x_timeout_quiet_period"`
-	Dot1xTimeoutSuppTimeout                            types.Int64                                  `tfsdk:"dot1x_timeout_supp_timeout"`
-	Dot1xTimeoutRatelimitPeriod                        types.Int64                                  `tfsdk:"dot1x_timeout_ratelimit_period"`
-	Dot1xTimeoutServerTimeout                          types.Int64                                  `tfsdk:"dot1x_timeout_server_timeout"`
-	ServicePolicyTypeControlSubscriber                 types.String                                 `tfsdk:"service_policy_type_control_subscriber"`
-	ServicePolicyInput                                 types.String                                 `tfsdk:"service_policy_input"`
-	ServicePolicyOutput                                types.String                                 `tfsdk:"service_policy_output"`
-	SourceTemplate                                     types.String                                 `tfsdk:"source_template"`
-	SwitchportModeTrunk                                types.Bool                                   `tfsdk:"switchport_mode_trunk"`
-	SwitchportModeAccess                               types.Bool                                   `tfsdk:"switchport_mode_access"`
-	SwitchportNonegotiate                              types.Bool                                   `tfsdk:"switchport_nonegotiate"`
-	SwitchportBlockUnicast                             types.Bool                                   `tfsdk:"switchport_block_unicast"`
-	SwitchportPortSecurity                             types.Bool                                   `tfsdk:"switchport_port_security"`
-	SwitchportPortSecurityAgingStatic                  types.Bool                                   `tfsdk:"switchport_port_security_aging_static"`
-	SwitchportPortSecurityAgingTime                    types.Int64                                  `tfsdk:"switchport_port_security_aging_time"`
-	SwitchportPortSecurityAgingType                    types.Bool                                   `tfsdk:"switchport_port_security_aging_type"`
-	SwitchportPortSecurityAgingTypeInactivity          types.Bool                                   `tfsdk:"switchport_port_security_aging_type_inactivity"`
-	SwitchportPortSecurityMaximumRange                 []TemplateSwitchportPortSecurityMaximumRange `tfsdk:"switchport_port_security_maximum_range"`
-	SwitchportPortSecurityViolationProtect             types.Bool                                   `tfsdk:"switchport_port_security_violation_protect"`
-	SwitchportPortSecurityViolationRestrict            types.Bool                                   `tfsdk:"switchport_port_security_violation_restrict"`
-	SwitchportPortSecurityViolationShutdown            types.Bool                                   `tfsdk:"switchport_port_security_violation_shutdown"`
-	SwitchportAccessVlan                               types.Int64                                  `tfsdk:"switchport_access_vlan"`
-	SwitchportVoiceVlan                                types.Int64                                  `tfsdk:"switchport_voice_vlan"`
-	SwitchportPrivateVlanHostAssociationPrimaryRange   types.Int64                                  `tfsdk:"switchport_private_vlan_host_association_primary_range"`
-	SwitchportPrivateVlanHostAssociationSecondaryRange types.Int64                                  `tfsdk:"switchport_private_vlan_host_association_secondary_range"`
-	SwitchportTrunkAllowedVlans                        types.String                                 `tfsdk:"switchport_trunk_allowed_vlans"`
-	SwitchportTrunkAllowedVlansNone                    types.Bool                                   `tfsdk:"switchport_trunk_allowed_vlans_none"`
-	SwitchportTrunkAllowedVlansAll                     types.Bool                                   `tfsdk:"switchport_trunk_allowed_vlans_all"`
-	SwitchportTrunkNativeVlanTag                       types.Bool                                   `tfsdk:"switchport_trunk_native_vlan_tag"`
-	SwitchportTrunkNativeVlanVlanId                    types.Int64                                  `tfsdk:"switchport_trunk_native_vlan_vlan_id"`
-	Mab                                                types.Bool                                   `tfsdk:"mab"`
-	MabEap                                             types.Bool                                   `tfsdk:"mab_eap"`
-	AccessSessionClosed                                types.Bool                                   `tfsdk:"access_session_closed"`
-	AccessSessionMonitor                               types.Bool                                   `tfsdk:"access_session_monitor"`
-	AccessSessionPortControl                           types.String                                 `tfsdk:"access_session_port_control"`
-	AccessSessionControlDirection                      types.String                                 `tfsdk:"access_session_control_direction"`
-	AccessSessionHostMode                              types.String                                 `tfsdk:"access_session_host_mode"`
-	AccessSessionInterfaceTemplateSticky               types.Bool                                   `tfsdk:"access_session_interface_template_sticky"`
-	AccessSessionInterfaceTemplateStickyTimer          types.Int64                                  `tfsdk:"access_session_interface_template_sticky_timer"`
-	AuthenticationPeriodic                             types.Bool                                   `tfsdk:"authentication_periodic"`
-	AuthenticationTimerReauthenticateServer            types.Bool                                   `tfsdk:"authentication_timer_reauthenticate_server"`
-	AuthenticationTimerReauthenticateRange             types.Int64                                  `tfsdk:"authentication_timer_reauthenticate_range"`
-	SpanningTreeBpduguardEnable                        types.Bool                                   `tfsdk:"spanning_tree_bpduguard_enable"`
-	SpanningTreeServicePolicy                          types.Bool                                   `tfsdk:"spanning_tree_service_policy"`
-	SpanningTreePortfast                               types.Bool                                   `tfsdk:"spanning_tree_portfast"`
-	SpanningTreePortfastDisable                        types.Bool                                   `tfsdk:"spanning_tree_portfast_disable"`
-	SpanningTreePortfastEdge                           types.Bool                                   `tfsdk:"spanning_tree_portfast_edge"`
-	SpanningTreePortfastNetwork                        types.Bool                                   `tfsdk:"spanning_tree_portfast_network"`
-	StormControlBroadcastLevelPpsThreshold             types.String                                 `tfsdk:"storm_control_broadcast_level_pps_threshold"`
-	StormControlBroadcastLevelBpsThreshold             types.Float64                                `tfsdk:"storm_control_broadcast_level_bps_threshold"`
-	StormControlBroadcastLevelThreshold                types.Float64                                `tfsdk:"storm_control_broadcast_level_threshold"`
-	StormControlMulticastLevelPpsThreshold             types.String                                 `tfsdk:"storm_control_multicast_level_pps_threshold"`
-	StormControlMulticastLevelBpsThreshold             types.Float64                                `tfsdk:"storm_control_multicast_level_bps_threshold"`
-	StormControlMulticastLevelThreshold                types.Float64                                `tfsdk:"storm_control_multicast_level_threshold"`
-	StormControlActionShutdown                         types.Bool                                   `tfsdk:"storm_control_action_shutdown"`
-	StormControlActionTrap                             types.Bool                                   `tfsdk:"storm_control_action_trap"`
-	LoadInterval                                       types.Int64                                  `tfsdk:"load_interval"`
-	IpDhcpSnoopingLimitRate                            types.Int64                                  `tfsdk:"ip_dhcp_snooping_limit_rate"`
-	IpDhcpSnoopingTrust                                types.Bool                                   `tfsdk:"ip_dhcp_snooping_trust"`
-	IpAccessGroup                                      []TemplateIpAccessGroup                      `tfsdk:"ip_access_group"`
-	SubscriberAgingInactivityTimerValue                types.Int64                                  `tfsdk:"subscriber_aging_inactivity_timer_value"`
-	SubscriberAgingInactivityTimerProbe                types.Bool                                   `tfsdk:"subscriber_aging_inactivity_timer_probe"`
-	SubscriberAgingProbe                               types.Bool                                   `tfsdk:"subscriber_aging_probe"`
-	DeviceTracking                                     types.Bool                                   `tfsdk:"device_tracking"`
-	DeviceTrackingAttachPolicy                         []TemplateDeviceTrackingAttachPolicy         `tfsdk:"device_tracking_attach_policy"`
-	DeviceTrackingVlanRange                            types.String                                 `tfsdk:"device_tracking_vlan_range"`
-	CtsManual                                          types.Bool                                   `tfsdk:"cts_manual"`
-	CtsManualPolicyStaticSgt                           types.Int64                                  `tfsdk:"cts_manual_policy_static_sgt"`
-	CtsManualPolicyStaticTrusted                       types.Bool                                   `tfsdk:"cts_manual_policy_static_trusted"`
-	CtsManualPropagateSgt                              types.Bool                                   `tfsdk:"cts_manual_propagate_sgt"`
-	CtsRoleBasedEnforcement                            types.Bool                                   `tfsdk:"cts_role_based_enforcement"`
-}
 type TemplateSwitchportPortSecurityMaximumRange struct {
 	Range      types.Int64 `tfsdk:"range"`
 	Vlan       types.Bool  `tfsdk:"vlan"`
@@ -213,6 +132,100 @@ type TemplateIpAccessGroup struct {
 	AccessList types.String `tfsdk:"access_list"`
 }
 type TemplateDeviceTrackingAttachPolicy struct {
+	PolicyName types.String `tfsdk:"policy_name"`
+	VlanRange  types.String `tfsdk:"vlan_range"`
+}
+
+type TemplateData struct {
+	Device                                             types.String                                     `tfsdk:"device"`
+	Id                                                 types.String                                     `tfsdk:"id"`
+	TemplateName                                       types.String                                     `tfsdk:"template_name"`
+	Dot1xPae                                           types.String                                     `tfsdk:"dot1x_pae"`
+	Dot1xMaxReauthReq                                  types.Int64                                      `tfsdk:"dot1x_max_reauth_req"`
+	Dot1xMaxReq                                        types.Int64                                      `tfsdk:"dot1x_max_req"`
+	Dot1xTimeoutTxPeriod                               types.Int64                                      `tfsdk:"dot1x_timeout_tx_period"`
+	Dot1xTimeoutQuietPeriod                            types.Int64                                      `tfsdk:"dot1x_timeout_quiet_period"`
+	Dot1xTimeoutSuppTimeout                            types.Int64                                      `tfsdk:"dot1x_timeout_supp_timeout"`
+	Dot1xTimeoutRatelimitPeriod                        types.Int64                                      `tfsdk:"dot1x_timeout_ratelimit_period"`
+	Dot1xTimeoutServerTimeout                          types.Int64                                      `tfsdk:"dot1x_timeout_server_timeout"`
+	ServicePolicyTypeControlSubscriber                 types.String                                     `tfsdk:"service_policy_type_control_subscriber"`
+	ServicePolicyInput                                 types.String                                     `tfsdk:"service_policy_input"`
+	ServicePolicyOutput                                types.String                                     `tfsdk:"service_policy_output"`
+	SourceTemplate                                     types.String                                     `tfsdk:"source_template"`
+	SwitchportModeTrunk                                types.Bool                                       `tfsdk:"switchport_mode_trunk"`
+	SwitchportModeAccess                               types.Bool                                       `tfsdk:"switchport_mode_access"`
+	SwitchportNonegotiate                              types.Bool                                       `tfsdk:"switchport_nonegotiate"`
+	SwitchportBlockUnicast                             types.Bool                                       `tfsdk:"switchport_block_unicast"`
+	SwitchportPortSecurity                             types.Bool                                       `tfsdk:"switchport_port_security"`
+	SwitchportPortSecurityAgingStatic                  types.Bool                                       `tfsdk:"switchport_port_security_aging_static"`
+	SwitchportPortSecurityAgingTime                    types.Int64                                      `tfsdk:"switchport_port_security_aging_time"`
+	SwitchportPortSecurityAgingType                    types.Bool                                       `tfsdk:"switchport_port_security_aging_type"`
+	SwitchportPortSecurityAgingTypeInactivity          types.Bool                                       `tfsdk:"switchport_port_security_aging_type_inactivity"`
+	SwitchportPortSecurityMaximumRange                 []TemplateSwitchportPortSecurityMaximumRangeData `tfsdk:"switchport_port_security_maximum_range"`
+	SwitchportPortSecurityViolationProtect             types.Bool                                       `tfsdk:"switchport_port_security_violation_protect"`
+	SwitchportPortSecurityViolationRestrict            types.Bool                                       `tfsdk:"switchport_port_security_violation_restrict"`
+	SwitchportPortSecurityViolationShutdown            types.Bool                                       `tfsdk:"switchport_port_security_violation_shutdown"`
+	SwitchportAccessVlan                               types.Int64                                      `tfsdk:"switchport_access_vlan"`
+	SwitchportVoiceVlan                                types.Int64                                      `tfsdk:"switchport_voice_vlan"`
+	SwitchportPrivateVlanHostAssociationPrimaryRange   types.Int64                                      `tfsdk:"switchport_private_vlan_host_association_primary_range"`
+	SwitchportPrivateVlanHostAssociationSecondaryRange types.Int64                                      `tfsdk:"switchport_private_vlan_host_association_secondary_range"`
+	SwitchportTrunkAllowedVlans                        types.String                                     `tfsdk:"switchport_trunk_allowed_vlans"`
+	SwitchportTrunkAllowedVlansNone                    types.Bool                                       `tfsdk:"switchport_trunk_allowed_vlans_none"`
+	SwitchportTrunkAllowedVlansAll                     types.Bool                                       `tfsdk:"switchport_trunk_allowed_vlans_all"`
+	SwitchportTrunkNativeVlanTag                       types.Bool                                       `tfsdk:"switchport_trunk_native_vlan_tag"`
+	SwitchportTrunkNativeVlanVlanId                    types.Int64                                      `tfsdk:"switchport_trunk_native_vlan_vlan_id"`
+	Mab                                                types.Bool                                       `tfsdk:"mab"`
+	MabEap                                             types.Bool                                       `tfsdk:"mab_eap"`
+	AccessSessionClosed                                types.Bool                                       `tfsdk:"access_session_closed"`
+	AccessSessionMonitor                               types.Bool                                       `tfsdk:"access_session_monitor"`
+	AccessSessionPortControl                           types.String                                     `tfsdk:"access_session_port_control"`
+	AccessSessionControlDirection                      types.String                                     `tfsdk:"access_session_control_direction"`
+	AccessSessionHostMode                              types.String                                     `tfsdk:"access_session_host_mode"`
+	AccessSessionInterfaceTemplateSticky               types.Bool                                       `tfsdk:"access_session_interface_template_sticky"`
+	AccessSessionInterfaceTemplateStickyTimer          types.Int64                                      `tfsdk:"access_session_interface_template_sticky_timer"`
+	AuthenticationPeriodic                             types.Bool                                       `tfsdk:"authentication_periodic"`
+	AuthenticationTimerReauthenticateServer            types.Bool                                       `tfsdk:"authentication_timer_reauthenticate_server"`
+	AuthenticationTimerReauthenticateRange             types.Int64                                      `tfsdk:"authentication_timer_reauthenticate_range"`
+	SpanningTreeBpduguardEnable                        types.Bool                                       `tfsdk:"spanning_tree_bpduguard_enable"`
+	SpanningTreeServicePolicy                          types.Bool                                       `tfsdk:"spanning_tree_service_policy"`
+	SpanningTreePortfast                               types.Bool                                       `tfsdk:"spanning_tree_portfast"`
+	SpanningTreePortfastDisable                        types.Bool                                       `tfsdk:"spanning_tree_portfast_disable"`
+	SpanningTreePortfastEdge                           types.Bool                                       `tfsdk:"spanning_tree_portfast_edge"`
+	SpanningTreePortfastNetwork                        types.Bool                                       `tfsdk:"spanning_tree_portfast_network"`
+	StormControlBroadcastLevelPpsThreshold             types.String                                     `tfsdk:"storm_control_broadcast_level_pps_threshold"`
+	StormControlBroadcastLevelBpsThreshold             types.Float64                                    `tfsdk:"storm_control_broadcast_level_bps_threshold"`
+	StormControlBroadcastLevelThreshold                types.Float64                                    `tfsdk:"storm_control_broadcast_level_threshold"`
+	StormControlMulticastLevelPpsThreshold             types.String                                     `tfsdk:"storm_control_multicast_level_pps_threshold"`
+	StormControlMulticastLevelBpsThreshold             types.Float64                                    `tfsdk:"storm_control_multicast_level_bps_threshold"`
+	StormControlMulticastLevelThreshold                types.Float64                                    `tfsdk:"storm_control_multicast_level_threshold"`
+	StormControlActionShutdown                         types.Bool                                       `tfsdk:"storm_control_action_shutdown"`
+	StormControlActionTrap                             types.Bool                                       `tfsdk:"storm_control_action_trap"`
+	LoadInterval                                       types.Int64                                      `tfsdk:"load_interval"`
+	IpDhcpSnoopingLimitRate                            types.Int64                                      `tfsdk:"ip_dhcp_snooping_limit_rate"`
+	IpDhcpSnoopingTrust                                types.Bool                                       `tfsdk:"ip_dhcp_snooping_trust"`
+	IpAccessGroup                                      []TemplateIpAccessGroupData                      `tfsdk:"ip_access_group"`
+	SubscriberAgingInactivityTimerValue                types.Int64                                      `tfsdk:"subscriber_aging_inactivity_timer_value"`
+	SubscriberAgingInactivityTimerProbe                types.Bool                                       `tfsdk:"subscriber_aging_inactivity_timer_probe"`
+	SubscriberAgingProbe                               types.Bool                                       `tfsdk:"subscriber_aging_probe"`
+	DeviceTracking                                     types.Bool                                       `tfsdk:"device_tracking"`
+	DeviceTrackingAttachPolicy                         []TemplateDeviceTrackingAttachPolicyData         `tfsdk:"device_tracking_attach_policy"`
+	DeviceTrackingVlanRange                            types.String                                     `tfsdk:"device_tracking_vlan_range"`
+	CtsManual                                          types.Bool                                       `tfsdk:"cts_manual"`
+	CtsManualPolicyStaticSgt                           types.Int64                                      `tfsdk:"cts_manual_policy_static_sgt"`
+	CtsManualPolicyStaticTrusted                       types.Bool                                       `tfsdk:"cts_manual_policy_static_trusted"`
+	CtsManualPropagateSgt                              types.Bool                                       `tfsdk:"cts_manual_propagate_sgt"`
+	CtsRoleBasedEnforcement                            types.Bool                                       `tfsdk:"cts_role_based_enforcement"`
+}
+type TemplateSwitchportPortSecurityMaximumRangeData struct {
+	Range      types.Int64 `tfsdk:"range"`
+	Vlan       types.Bool  `tfsdk:"vlan"`
+	VlanAccess types.Bool  `tfsdk:"vlan_access"`
+}
+type TemplateIpAccessGroupData struct {
+	Direction  types.String `tfsdk:"direction"`
+	AccessList types.String `tfsdk:"access_list"`
+}
+type TemplateDeviceTrackingAttachPolicyData struct {
 	PolicyName types.String `tfsdk:"policy_name"`
 	VlanRange  types.String `tfsdk:"vlan_range"`
 }
@@ -257,7 +270,7 @@ func (data TemplateData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Template) toBody(ctx context.Context) string {
+func (data Template) toBody(ctx context.Context, config Template) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.TemplateName.IsNull() && !data.TemplateName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"template_name", data.TemplateName.ValueString())
@@ -591,7 +604,7 @@ func (data Template) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Template) toBodyXML(ctx context.Context) string {
+func (data Template) toBodyXML(ctx context.Context, config Template) string {
 	body := netconf.Body{}
 	if !data.TemplateName.IsNull() && !data.TemplateName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/template_name", data.TemplateName.ValueString())
@@ -2695,9 +2708,9 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "switchport.port-security.maximum.range"); value.Exists() {
-		data.SwitchportPortSecurityMaximumRange = make([]TemplateSwitchportPortSecurityMaximumRange, 0)
+		data.SwitchportPortSecurityMaximumRange = make([]TemplateSwitchportPortSecurityMaximumRangeData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := TemplateSwitchportPortSecurityMaximumRange{}
+			item := TemplateSwitchportPortSecurityMaximumRangeData{}
 			if cValue := v.Get("range"); cValue.Exists() {
 				item.Range = types.Int64Value(cValue.Int())
 			}
@@ -2883,9 +2896,9 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpDhcpSnoopingTrust = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.access-group"); value.Exists() {
-		data.IpAccessGroup = make([]TemplateIpAccessGroup, 0)
+		data.IpAccessGroup = make([]TemplateIpAccessGroupData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := TemplateIpAccessGroup{}
+			item := TemplateIpAccessGroupData{}
 			if cValue := v.Get("direction"); cValue.Exists() {
 				item.Direction = types.StringValue(cValue.String())
 			}
@@ -2915,9 +2928,9 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 		data.DeviceTracking = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "device-tracking.attach-policy.policy-name"); value.Exists() {
-		data.DeviceTrackingAttachPolicy = make([]TemplateDeviceTrackingAttachPolicy, 0)
+		data.DeviceTrackingAttachPolicy = make([]TemplateDeviceTrackingAttachPolicyData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := TemplateDeviceTrackingAttachPolicy{}
+			item := TemplateDeviceTrackingAttachPolicyData{}
 			if cValue := v.Get("policy-name"); cValue.Exists() {
 				item.PolicyName = types.StringValue(cValue.String())
 			}
@@ -3387,9 +3400,9 @@ func (data *TemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/maximum/range"); value.Exists() {
-		data.SwitchportPortSecurityMaximumRange = make([]TemplateSwitchportPortSecurityMaximumRange, 0)
+		data.SwitchportPortSecurityMaximumRange = make([]TemplateSwitchportPortSecurityMaximumRangeData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := TemplateSwitchportPortSecurityMaximumRange{}
+			item := TemplateSwitchportPortSecurityMaximumRangeData{}
 			if cValue := helpers.GetFromXPath(v, "range"); cValue.Exists() {
 				item.Range = types.Int64Value(cValue.Int())
 			}
@@ -3575,9 +3588,9 @@ func (data *TemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpDhcpSnoopingTrust = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group"); value.Exists() {
-		data.IpAccessGroup = make([]TemplateIpAccessGroup, 0)
+		data.IpAccessGroup = make([]TemplateIpAccessGroupData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := TemplateIpAccessGroup{}
+			item := TemplateIpAccessGroupData{}
 			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
 				item.Direction = types.StringValue(cValue.String())
 			}
@@ -3607,9 +3620,9 @@ func (data *TemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.DeviceTracking = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/attach-policy/policy-name"); value.Exists() {
-		data.DeviceTrackingAttachPolicy = make([]TemplateDeviceTrackingAttachPolicy, 0)
+		data.DeviceTrackingAttachPolicy = make([]TemplateDeviceTrackingAttachPolicyData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := TemplateDeviceTrackingAttachPolicy{}
+			item := TemplateDeviceTrackingAttachPolicyData{}
 			if cValue := helpers.GetFromXPath(v, "policy-name"); cValue.Exists() {
 				item.PolicyName = types.StringValue(cValue.String())
 			}

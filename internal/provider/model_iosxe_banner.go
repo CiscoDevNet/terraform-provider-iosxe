@@ -94,7 +94,7 @@ func (data BannerData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Banner) toBody(ctx context.Context) string {
+func (data Banner) toBody(ctx context.Context, config Banner) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.ExecBanner.IsNull() && !data.ExecBanner.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec.banner", data.ExecBanner.ValueString())
@@ -115,7 +115,7 @@ func (data Banner) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Banner) toBodyXML(ctx context.Context) string {
+func (data Banner) toBodyXML(ctx context.Context, config Banner) string {
 	body := netconf.Body{}
 	if !data.ExecBanner.IsNull() && !data.ExecBanner.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/exec/banner", data.ExecBanner.ValueString())

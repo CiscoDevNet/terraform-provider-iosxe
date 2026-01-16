@@ -53,23 +53,33 @@ type InterfaceNVE struct {
 	VniVrfs                     []InterfaceNVEVniVrfs `tfsdk:"vni_vrfs"`
 	Vnis                        []InterfaceNVEVnis    `tfsdk:"vnis"`
 }
-
-type InterfaceNVEData struct {
-	Device                      types.String          `tfsdk:"device"`
-	Id                          types.String          `tfsdk:"id"`
-	Name                        types.Int64           `tfsdk:"name"`
-	Description                 types.String          `tfsdk:"description"`
-	Shutdown                    types.Bool            `tfsdk:"shutdown"`
-	HostReachabilityProtocolBgp types.Bool            `tfsdk:"host_reachability_protocol_bgp"`
-	SourceInterfaceLoopback     types.Int64           `tfsdk:"source_interface_loopback"`
-	VniVrfs                     []InterfaceNVEVniVrfs `tfsdk:"vni_vrfs"`
-	Vnis                        []InterfaceNVEVnis    `tfsdk:"vnis"`
-}
 type InterfaceNVEVniVrfs struct {
 	VniRange types.String `tfsdk:"vni_range"`
 	Vrf      types.String `tfsdk:"vrf"`
 }
 type InterfaceNVEVnis struct {
+	VniRange           types.String `tfsdk:"vni_range"`
+	Ipv4MulticastGroup types.String `tfsdk:"ipv4_multicast_group"`
+	IngressReplication types.Bool   `tfsdk:"ingress_replication"`
+	LocalRouting       types.Bool   `tfsdk:"local_routing"`
+}
+
+type InterfaceNVEData struct {
+	Device                      types.String              `tfsdk:"device"`
+	Id                          types.String              `tfsdk:"id"`
+	Name                        types.Int64               `tfsdk:"name"`
+	Description                 types.String              `tfsdk:"description"`
+	Shutdown                    types.Bool                `tfsdk:"shutdown"`
+	HostReachabilityProtocolBgp types.Bool                `tfsdk:"host_reachability_protocol_bgp"`
+	SourceInterfaceLoopback     types.Int64               `tfsdk:"source_interface_loopback"`
+	VniVrfs                     []InterfaceNVEVniVrfsData `tfsdk:"vni_vrfs"`
+	Vnis                        []InterfaceNVEVnisData    `tfsdk:"vnis"`
+}
+type InterfaceNVEVniVrfsData struct {
+	VniRange types.String `tfsdk:"vni_range"`
+	Vrf      types.String `tfsdk:"vrf"`
+}
+type InterfaceNVEVnisData struct {
 	VniRange           types.String `tfsdk:"vni_range"`
 	Ipv4MulticastGroup types.String `tfsdk:"ipv4_multicast_group"`
 	IngressReplication types.Bool   `tfsdk:"ingress_replication"`
@@ -116,7 +126,7 @@ func (data InterfaceNVEData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceNVE) toBody(ctx context.Context) string {
+func (data InterfaceNVE) toBody(ctx context.Context, config InterfaceNVE) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -176,7 +186,7 @@ func (data InterfaceNVE) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceNVE) toBodyXML(ctx context.Context) string {
+func (data InterfaceNVE) toBodyXML(ctx context.Context, config InterfaceNVE) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -593,9 +603,9 @@ func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "member-in-one-line.member.vni"); value.Exists() {
-		data.VniVrfs = make([]InterfaceNVEVniVrfs, 0)
+		data.VniVrfs = make([]InterfaceNVEVniVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceNVEVniVrfs{}
+			item := InterfaceNVEVniVrfsData{}
 			if cValue := v.Get("vni-range"); cValue.Exists() {
 				item.VniRange = types.StringValue(cValue.String())
 			}
@@ -607,9 +617,9 @@ func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "member.vni"); value.Exists() {
-		data.Vnis = make([]InterfaceNVEVnis, 0)
+		data.Vnis = make([]InterfaceNVEVnisData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceNVEVnis{}
+			item := InterfaceNVEVnisData{}
 			if cValue := v.Get("vni-range"); cValue.Exists() {
 				item.VniRange = types.StringValue(cValue.String())
 			}
@@ -715,9 +725,9 @@ func (data *InterfaceNVEData) fromBodyXML(ctx context.Context, res xmldot.Result
 		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member-in-one-line/member/vni"); value.Exists() {
-		data.VniVrfs = make([]InterfaceNVEVniVrfs, 0)
+		data.VniVrfs = make([]InterfaceNVEVniVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceNVEVniVrfs{}
+			item := InterfaceNVEVniVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "vni-range"); cValue.Exists() {
 				item.VniRange = types.StringValue(cValue.String())
 			}
@@ -729,9 +739,9 @@ func (data *InterfaceNVEData) fromBodyXML(ctx context.Context, res xmldot.Result
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/vni"); value.Exists() {
-		data.Vnis = make([]InterfaceNVEVnis, 0)
+		data.Vnis = make([]InterfaceNVEVnisData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceNVEVnis{}
+			item := InterfaceNVEVnisData{}
 			if cValue := helpers.GetFromXPath(v, "vni-range"); cValue.Exists() {
 				item.VniRange = types.StringValue(cValue.String())
 			}

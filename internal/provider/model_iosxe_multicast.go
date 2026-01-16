@@ -48,15 +48,20 @@ type Multicast struct {
 	MultipathSGHash types.String    `tfsdk:"multipath_s_g_hash"`
 	Vrfs            []MulticastVrfs `tfsdk:"vrfs"`
 }
+type MulticastVrfs struct {
+	Vrf             types.String `tfsdk:"vrf"`
+	Multipath       types.Bool   `tfsdk:"multipath"`
+	MultipathSGHash types.String `tfsdk:"multipath_s_g_hash"`
+}
 
 type MulticastData struct {
-	Device          types.String    `tfsdk:"device"`
-	Id              types.String    `tfsdk:"id"`
-	Multipath       types.Bool      `tfsdk:"multipath"`
-	MultipathSGHash types.String    `tfsdk:"multipath_s_g_hash"`
-	Vrfs            []MulticastVrfs `tfsdk:"vrfs"`
+	Device          types.String        `tfsdk:"device"`
+	Id              types.String        `tfsdk:"id"`
+	Multipath       types.Bool          `tfsdk:"multipath"`
+	MultipathSGHash types.String        `tfsdk:"multipath_s_g_hash"`
+	Vrfs            []MulticastVrfsData `tfsdk:"vrfs"`
 }
-type MulticastVrfs struct {
+type MulticastVrfsData struct {
 	Vrf             types.String `tfsdk:"vrf"`
 	Multipath       types.Bool   `tfsdk:"multipath"`
 	MultipathSGHash types.String `tfsdk:"multipath_s_g_hash"`
@@ -100,7 +105,7 @@ func (data MulticastData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Multicast) toBody(ctx context.Context) string {
+func (data Multicast) toBody(ctx context.Context, config Multicast) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Multipath.IsNull() && !data.Multipath.IsUnknown() {
 		if data.Multipath.ValueBool() {
@@ -133,7 +138,7 @@ func (data Multicast) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Multicast) toBodyXML(ctx context.Context) string {
+func (data Multicast) toBodyXML(ctx context.Context, config Multicast) string {
 	body := netconf.Body{}
 	if !data.Multipath.IsNull() && !data.Multipath.IsUnknown() {
 		if data.Multipath.ValueBool() {
@@ -359,9 +364,9 @@ func (data *MulticastData) fromBody(ctx context.Context, res gjson.Result) {
 		data.MultipathSGHash = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]MulticastVrfs, 0)
+		data.Vrfs = make([]MulticastVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := MulticastVrfs{}
+			item := MulticastVrfsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -427,9 +432,9 @@ func (data *MulticastData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MultipathSGHash = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]MulticastVrfs, 0)
+		data.Vrfs = make([]MulticastVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := MulticastVrfs{}
+			item := MulticastVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}

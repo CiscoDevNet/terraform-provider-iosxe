@@ -55,22 +55,6 @@ type EEM struct {
 	DetectorRoutingBootupDelay        types.Float64             `tfsdk:"detector_routing_bootup_delay"`
 	Applets                           []EEMApplets              `tfsdk:"applets"`
 }
-
-type EEMData struct {
-	Device                            types.String              `tfsdk:"device"`
-	Id                                types.String              `tfsdk:"id"`
-	EnvironmentVariables              []EEMEnvironmentVariables `tfsdk:"environment_variables"`
-	SessionCliUsername                types.String              `tfsdk:"session_cli_username"`
-	SessionCliUsernamePrivilege       types.Int64               `tfsdk:"session_cli_username_privilege"`
-	HistorySizeEvents                 types.Int64               `tfsdk:"history_size_events"`
-	HistorySizeTraps                  types.Int64               `tfsdk:"history_size_traps"`
-	DirectoryUserPolicy               types.String              `tfsdk:"directory_user_policy"`
-	SchedulerAppletThreadClassDefault types.Bool                `tfsdk:"scheduler_applet_thread_class_default"`
-	SchedulerAppletThreadClassNumber  types.Int64               `tfsdk:"scheduler_applet_thread_class_number"`
-	DetectorRpcMaxSessions            types.Int64               `tfsdk:"detector_rpc_max_sessions"`
-	DetectorRoutingBootupDelay        types.Float64             `tfsdk:"detector_routing_bootup_delay"`
-	Applets                           []EEMApplets              `tfsdk:"applets"`
-}
 type EEMEnvironmentVariables struct {
 	Name  types.String `tfsdk:"name"`
 	Value types.String `tfsdk:"value"`
@@ -99,6 +83,120 @@ type EEMApplets struct {
 	EventSyslogPeriod           types.Float64       `tfsdk:"event_syslog_period"`
 }
 type EEMAppletsActions struct {
+	Name                            types.String `tfsdk:"name"`
+	CliCommand                      types.String `tfsdk:"cli_command"`
+	RegexpStringPattern             types.String `tfsdk:"regexp_string_pattern"`
+	RegexpStringInput               types.String `tfsdk:"regexp_string_input"`
+	RegexpStringMatch               types.String `tfsdk:"regexp_string_match"`
+	RegexpStringMatch1              types.String `tfsdk:"regexp_string_match1"`
+	RegexpStringMatch2              types.String `tfsdk:"regexp_string_match2"`
+	RegexpStringMatch3              types.String `tfsdk:"regexp_string_match3"`
+	SyslogFacility                  types.String `tfsdk:"syslog_facility"`
+	SyslogMsg                       types.String `tfsdk:"syslog_msg"`
+	SyslogPriority                  types.String `tfsdk:"syslog_priority"`
+	SetVarname                      types.String `tfsdk:"set_varname"`
+	SetValue                        types.String `tfsdk:"set_value"`
+	IfStringOp1                     types.String `tfsdk:"if_string_op_1"`
+	IfKeyword                       types.String `tfsdk:"if_keyword"`
+	IfStringOp2                     types.String `tfsdk:"if_string_op_2"`
+	IfGoto                          types.String `tfsdk:"if_goto"`
+	ElseifOperand1                  types.String `tfsdk:"elseif_operand1"`
+	ElseifOperation                 types.String `tfsdk:"elseif_operation"`
+	ElseifOperand2                  types.String `tfsdk:"elseif_operand2"`
+	Else                            types.Bool   `tfsdk:"else"`
+	WhileOperand1                   types.String `tfsdk:"while_operand1"`
+	WhileOperation                  types.String `tfsdk:"while_operation"`
+	WhileOperand2                   types.String `tfsdk:"while_operand2"`
+	Break                           types.Bool   `tfsdk:"break"`
+	Continue                        types.Bool   `tfsdk:"continue"`
+	IncrementVarname                types.String `tfsdk:"increment_varname"`
+	IncrementValue                  types.String `tfsdk:"increment_value"`
+	DecrementVarname                types.String `tfsdk:"decrement_varname"`
+	DecrementValue                  types.String `tfsdk:"decrement_value"`
+	AppendVarname                   types.String `tfsdk:"append_varname"`
+	AppendValue                     types.String `tfsdk:"append_value"`
+	DivideOperand1                  types.String `tfsdk:"divide_operand1"`
+	DivideOperand2                  types.String `tfsdk:"divide_operand2"`
+	ForeachLoopvar                  types.String `tfsdk:"foreach_loopvar"`
+	ForeachIterator                 types.String `tfsdk:"foreach_iterator"`
+	ForeachDelimiter                types.String `tfsdk:"foreach_delimiter"`
+	Gets                            types.String `tfsdk:"gets"`
+	Puts                            types.String `tfsdk:"puts"`
+	Wait                            types.Int64  `tfsdk:"wait"`
+	End                             types.Bool   `tfsdk:"end"`
+	Exit                            types.Bool   `tfsdk:"exit"`
+	Reload                          types.Bool   `tfsdk:"reload"`
+	ContextRetrieveKey              types.String `tfsdk:"context_retrieve_key"`
+	ContextRetrieveVariable         types.String `tfsdk:"context_retrieve_variable"`
+	ContextSaveKey                  types.String `tfsdk:"context_save_key"`
+	ContextSaveVariable             types.String `tfsdk:"context_save_variable"`
+	StringTrim                      types.String `tfsdk:"string_trim"`
+	InfoTypeSnmpTrapEnterpriseOid   types.String `tfsdk:"info_type_snmp_trap_enterprise_oid"`
+	InfoTypeSnmpTrapGenericTrapnum  types.Int64  `tfsdk:"info_type_snmp_trap_generic_trapnum"`
+	InfoTypeSnmpTrapSpecificTrapnum types.Int64  `tfsdk:"info_type_snmp_trap_specific_trapnum"`
+	InfoTypeSnmpTrapTrapOid         types.String `tfsdk:"info_type_snmp_trap_trap_oid"`
+	InfoTypeSnmpTrapTrapVar         types.String `tfsdk:"info_type_snmp_trap_trap_var"`
+	HandleErrorType                 types.String `tfsdk:"handle_error_type"`
+	CounterName                     types.String `tfsdk:"counter_name"`
+	CounterValue                    types.Int64  `tfsdk:"counter_value"`
+	CounterOpDec                    types.Bool   `tfsdk:"counter_op_dec"`
+	CounterOpInc                    types.Bool   `tfsdk:"counter_op_inc"`
+	CounterOpSet                    types.Bool   `tfsdk:"counter_op_set"`
+	CounterOpNop                    types.Bool   `tfsdk:"counter_op_nop"`
+	SnmpTrapIntdata1                types.Int64  `tfsdk:"snmp_trap_intdata1"`
+	SnmpTrapIntdata2                types.Int64  `tfsdk:"snmp_trap_intdata2"`
+	SnmpTrapStrdata                 types.String `tfsdk:"snmp_trap_strdata"`
+	InfoTypeSnmpVar                 types.String `tfsdk:"info_type_snmp_var"`
+	InfoTypeSnmpVarOid              types.String `tfsdk:"info_type_snmp_var_oid"`
+	InfoTypeSnmpVarOidType          types.String `tfsdk:"info_type_snmp_var_oid_type"`
+	InfoTypeSnmpVarOidTypeValue     types.String `tfsdk:"info_type_snmp_var_oid_type_value"`
+	StringFirstStringOp1            types.String `tfsdk:"string_first_string_op_1"`
+	StringFirstStringOp2            types.String `tfsdk:"string_first_string_op_2"`
+}
+
+type EEMData struct {
+	Device                            types.String                  `tfsdk:"device"`
+	Id                                types.String                  `tfsdk:"id"`
+	EnvironmentVariables              []EEMEnvironmentVariablesData `tfsdk:"environment_variables"`
+	SessionCliUsername                types.String                  `tfsdk:"session_cli_username"`
+	SessionCliUsernamePrivilege       types.Int64                   `tfsdk:"session_cli_username_privilege"`
+	HistorySizeEvents                 types.Int64                   `tfsdk:"history_size_events"`
+	HistorySizeTraps                  types.Int64                   `tfsdk:"history_size_traps"`
+	DirectoryUserPolicy               types.String                  `tfsdk:"directory_user_policy"`
+	SchedulerAppletThreadClassDefault types.Bool                    `tfsdk:"scheduler_applet_thread_class_default"`
+	SchedulerAppletThreadClassNumber  types.Int64                   `tfsdk:"scheduler_applet_thread_class_number"`
+	DetectorRpcMaxSessions            types.Int64                   `tfsdk:"detector_rpc_max_sessions"`
+	DetectorRoutingBootupDelay        types.Float64                 `tfsdk:"detector_routing_bootup_delay"`
+	Applets                           []EEMAppletsData              `tfsdk:"applets"`
+}
+type EEMEnvironmentVariablesData struct {
+	Name  types.String `tfsdk:"name"`
+	Value types.String `tfsdk:"value"`
+}
+type EEMAppletsData struct {
+	Name                        types.String            `tfsdk:"name"`
+	Authorization               types.String            `tfsdk:"authorization"`
+	Class                       types.String            `tfsdk:"class"`
+	Description                 types.String            `tfsdk:"description"`
+	EventCliPattern             types.String            `tfsdk:"event_cli_pattern"`
+	EventCliSync                types.String            `tfsdk:"event_cli_sync"`
+	EventCliSkip                types.String            `tfsdk:"event_cli_skip"`
+	Actions                     []EEMAppletsActionsData `tfsdk:"actions"`
+	EventTimerWatchdogTime      types.Float64           `tfsdk:"event_timer_watchdog_time"`
+	EventTimerWatchdogName      types.String            `tfsdk:"event_timer_watchdog_name"`
+	EventTimerWatchdogMaxrun    types.Float64           `tfsdk:"event_timer_watchdog_maxrun"`
+	EventTimerWatchdogRatelimit types.Float64           `tfsdk:"event_timer_watchdog_ratelimit"`
+	EventTimerCronEntry         types.String            `tfsdk:"event_timer_cron_entry"`
+	EventTimerCronName          types.String            `tfsdk:"event_timer_cron_name"`
+	EventTimerCronMaxrun        types.Float64           `tfsdk:"event_timer_cron_maxrun"`
+	EventTimerCronRatelimit     types.Float64           `tfsdk:"event_timer_cron_ratelimit"`
+	EventSyslogPattern          types.String            `tfsdk:"event_syslog_pattern"`
+	EventSyslogOccurs           types.Int64             `tfsdk:"event_syslog_occurs"`
+	EventSyslogMaxrun           types.Float64           `tfsdk:"event_syslog_maxrun"`
+	EventSyslogRatelimit        types.Float64           `tfsdk:"event_syslog_ratelimit"`
+	EventSyslogPeriod           types.Float64           `tfsdk:"event_syslog_period"`
+}
+type EEMAppletsActionsData struct {
 	Name                            types.String `tfsdk:"name"`
 	CliCommand                      types.String `tfsdk:"cli_command"`
 	RegexpStringPattern             types.String `tfsdk:"regexp_string_pattern"`
@@ -208,7 +306,7 @@ func (data EEMData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data EEM) toBody(ctx context.Context) string {
+func (data EEM) toBody(ctx context.Context, config EEM) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.SessionCliUsername.IsNull() && !data.SessionCliUsername.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"session.cli.username.username_in_word_set", data.SessionCliUsername.ValueString())
@@ -554,7 +652,7 @@ func (data EEM) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data EEM) toBodyXML(ctx context.Context) string {
+func (data EEM) toBodyXML(ctx context.Context, config EEM) string {
 	body := netconf.Body{}
 	if len(data.EnvironmentVariables) > 0 {
 		for _, item := range data.EnvironmentVariables {
@@ -2542,9 +2640,9 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "environment"); value.Exists() {
-		data.EnvironmentVariables = make([]EEMEnvironmentVariables, 0)
+		data.EnvironmentVariables = make([]EEMEnvironmentVariablesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := EEMEnvironmentVariables{}
+			item := EEMEnvironmentVariablesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2585,9 +2683,9 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
 	}
 	if value := res.Get(prefix + "applet"); value.Exists() {
-		data.Applets = make([]EEMApplets, 0)
+		data.Applets = make([]EEMAppletsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := EEMApplets{}
+			item := EEMAppletsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2610,9 +2708,9 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 				item.EventCliSkip = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("action-config.action"); cValue.Exists() {
-				item.Actions = make([]EEMAppletsActions, 0)
+				item.Actions = make([]EEMAppletsActionsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := EEMAppletsActions{}
+					cItem := EEMAppletsActionsData{}
 					if ccValue := cv.Get("name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -3248,9 +3346,9 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/environment"); value.Exists() {
-		data.EnvironmentVariables = make([]EEMEnvironmentVariables, 0)
+		data.EnvironmentVariables = make([]EEMEnvironmentVariablesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := EEMEnvironmentVariables{}
+			item := EEMEnvironmentVariablesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3291,9 +3389,9 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/applet"); value.Exists() {
-		data.Applets = make([]EEMApplets, 0)
+		data.Applets = make([]EEMAppletsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := EEMApplets{}
+			item := EEMAppletsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3316,9 +3414,9 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.EventCliSkip = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "action-config/action"); cValue.Exists() {
-				item.Actions = make([]EEMAppletsActions, 0)
+				item.Actions = make([]EEMAppletsActionsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := EEMAppletsActions{}
+					cItem := EEMAppletsActionsData{}
 					if ccValue := helpers.GetFromXPath(cv, "name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}

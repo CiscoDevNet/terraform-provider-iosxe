@@ -97,7 +97,7 @@ func (data BGPIPv4MVPNNeighborData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPIPv4MVPNNeighbor) toBody(ctx context.Context) string {
+func (data BGPIPv4MVPNNeighbor) toBody(ctx context.Context, config BGPIPv4MVPNNeighbor) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
@@ -117,7 +117,7 @@ func (data BGPIPv4MVPNNeighbor) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPIPv4MVPNNeighbor) toBodyXML(ctx context.Context) string {
+func (data BGPIPv4MVPNNeighbor) toBodyXML(ctx context.Context, config BGPIPv4MVPNNeighbor) string {
 	body := netconf.Body{}
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Ip.ValueString())

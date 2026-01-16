@@ -59,24 +59,6 @@ type BGPAddressFamilyIPv4 struct {
 	Ipv4UnicastMaximumPathsEbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ebgp"`
 	Ipv4UnicastMaximumPathsIbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ibgp"`
 }
-
-type BGPAddressFamilyIPv4Data struct {
-	Device                           types.String                                        `tfsdk:"device"`
-	Id                               types.String                                        `tfsdk:"id"`
-	Asn                              types.String                                        `tfsdk:"asn"`
-	AfName                           types.String                                        `tfsdk:"af_name"`
-	Ipv4UnicastRedistributeConnected types.Bool                                          `tfsdk:"ipv4_unicast_redistribute_connected"`
-	Ipv4UnicastRedistributeStatic    types.Bool                                          `tfsdk:"ipv4_unicast_redistribute_static"`
-	Ipv4UnicastAggregateAddresses    []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses `tfsdk:"ipv4_unicast_aggregate_addresses"`
-	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMask       `tfsdk:"ipv4_unicast_networks_mask"`
-	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworks           `tfsdk:"ipv4_unicast_networks"`
-	Ipv4UnicastAdminDistances        []BGPAddressFamilyIPv4Ipv4UnicastAdminDistances     `tfsdk:"ipv4_unicast_admin_distances"`
-	Ipv4UnicastDistanceBgpExternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_external"`
-	Ipv4UnicastDistanceBgpInternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_internal"`
-	Ipv4UnicastDistanceBgpLocal      types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_local"`
-	Ipv4UnicastMaximumPathsEbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ebgp"`
-	Ipv4UnicastMaximumPathsIbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ibgp"`
-}
 type BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses struct {
 	Ipv4Address types.String `tfsdk:"ipv4_address"`
 	Ipv4Mask    types.String `tfsdk:"ipv4_mask"`
@@ -93,6 +75,45 @@ type BGPAddressFamilyIPv4Ipv4UnicastNetworks struct {
 	Backdoor types.Bool   `tfsdk:"backdoor"`
 }
 type BGPAddressFamilyIPv4Ipv4UnicastAdminDistances struct {
+	Distance types.Int64  `tfsdk:"distance"`
+	SourceIp types.String `tfsdk:"source_ip"`
+	Wildcard types.String `tfsdk:"wildcard"`
+	Acl      types.String `tfsdk:"acl"`
+}
+
+type BGPAddressFamilyIPv4Data struct {
+	Device                           types.String                                            `tfsdk:"device"`
+	Id                               types.String                                            `tfsdk:"id"`
+	Asn                              types.String                                            `tfsdk:"asn"`
+	AfName                           types.String                                            `tfsdk:"af_name"`
+	Ipv4UnicastRedistributeConnected types.Bool                                              `tfsdk:"ipv4_unicast_redistribute_connected"`
+	Ipv4UnicastRedistributeStatic    types.Bool                                              `tfsdk:"ipv4_unicast_redistribute_static"`
+	Ipv4UnicastAggregateAddresses    []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddressesData `tfsdk:"ipv4_unicast_aggregate_addresses"`
+	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMaskData       `tfsdk:"ipv4_unicast_networks_mask"`
+	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworksData           `tfsdk:"ipv4_unicast_networks"`
+	Ipv4UnicastAdminDistances        []BGPAddressFamilyIPv4Ipv4UnicastAdminDistancesData     `tfsdk:"ipv4_unicast_admin_distances"`
+	Ipv4UnicastDistanceBgpExternal   types.Int64                                             `tfsdk:"ipv4_unicast_distance_bgp_external"`
+	Ipv4UnicastDistanceBgpInternal   types.Int64                                             `tfsdk:"ipv4_unicast_distance_bgp_internal"`
+	Ipv4UnicastDistanceBgpLocal      types.Int64                                             `tfsdk:"ipv4_unicast_distance_bgp_local"`
+	Ipv4UnicastMaximumPathsEbgp      types.Int64                                             `tfsdk:"ipv4_unicast_maximum_paths_ebgp"`
+	Ipv4UnicastMaximumPathsIbgp      types.Int64                                             `tfsdk:"ipv4_unicast_maximum_paths_ibgp"`
+}
+type BGPAddressFamilyIPv4Ipv4UnicastAggregateAddressesData struct {
+	Ipv4Address types.String `tfsdk:"ipv4_address"`
+	Ipv4Mask    types.String `tfsdk:"ipv4_mask"`
+}
+type BGPAddressFamilyIPv4Ipv4UnicastNetworksMaskData struct {
+	Network  types.String `tfsdk:"network"`
+	Mask     types.String `tfsdk:"mask"`
+	RouteMap types.String `tfsdk:"route_map"`
+	Backdoor types.Bool   `tfsdk:"backdoor"`
+}
+type BGPAddressFamilyIPv4Ipv4UnicastNetworksData struct {
+	Network  types.String `tfsdk:"network"`
+	RouteMap types.String `tfsdk:"route_map"`
+	Backdoor types.Bool   `tfsdk:"backdoor"`
+}
+type BGPAddressFamilyIPv4Ipv4UnicastAdminDistancesData struct {
 	Distance types.Int64  `tfsdk:"distance"`
 	SourceIp types.String `tfsdk:"source_ip"`
 	Wildcard types.String `tfsdk:"wildcard"`
@@ -139,7 +160,7 @@ func (data BGPAddressFamilyIPv4Data) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPAddressFamilyIPv4) toBody(ctx context.Context) string {
+func (data BGPAddressFamilyIPv4) toBody(ctx context.Context, config BGPAddressFamilyIPv4) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
@@ -239,7 +260,7 @@ func (data BGPAddressFamilyIPv4) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPAddressFamilyIPv4) toBodyXML(ctx context.Context) string {
+func (data BGPAddressFamilyIPv4) toBodyXML(ctx context.Context, config BGPAddressFamilyIPv4) string {
 	body := netconf.Body{}
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/af-name", data.AfName.ValueString())
@@ -934,9 +955,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 		data.Ipv4UnicastRedistributeStatic = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv4-unicast.aggregate-address"); value.Exists() {
-		data.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses, 0)
+		data.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4Ipv4UnicastAggregateAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastAggregateAddressesData{}
 			if cValue := v.Get("ipv4-address"); cValue.Exists() {
 				item.Ipv4Address = types.StringValue(cValue.String())
 			}
@@ -948,9 +969,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 		})
 	}
 	if value := res.Get(prefix + "ipv4-unicast.network.with-mask"); value.Exists() {
-		data.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworksMask, 0)
+		data.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworksMaskData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastNetworksMask{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastNetworksMaskData{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Network = types.StringValue(cValue.String())
 			}
@@ -970,9 +991,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 		})
 	}
 	if value := res.Get(prefix + "ipv4-unicast.network.no-mask"); value.Exists() {
-		data.Ipv4UnicastNetworks = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworks, 0)
+		data.Ipv4UnicastNetworks = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworksData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastNetworks{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastNetworksData{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Network = types.StringValue(cValue.String())
 			}
@@ -989,9 +1010,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 		})
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.adm-distance"); value.Exists() {
-		data.Ipv4UnicastAdminDistances = make([]BGPAddressFamilyIPv4Ipv4UnicastAdminDistances, 0)
+		data.Ipv4UnicastAdminDistances = make([]BGPAddressFamilyIPv4Ipv4UnicastAdminDistancesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastAdminDistances{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastAdminDistancesData{}
 			if cValue := v.Get("distance"); cValue.Exists() {
 				item.Distance = types.Int64Value(cValue.Int())
 			}
@@ -1148,9 +1169,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBodyXML(ctx context.Context, res xmldo
 		data.Ipv4UnicastRedistributeStatic = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv4-unicast/aggregate-address"); value.Exists() {
-		data.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses, 0)
+		data.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4Ipv4UnicastAggregateAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastAggregateAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "ipv4-address"); cValue.Exists() {
 				item.Ipv4Address = types.StringValue(cValue.String())
 			}
@@ -1162,9 +1183,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBodyXML(ctx context.Context, res xmldo
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv4-unicast/network/with-mask"); value.Exists() {
-		data.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworksMask, 0)
+		data.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworksMaskData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastNetworksMask{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastNetworksMaskData{}
 			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
 				item.Network = types.StringValue(cValue.String())
 			}
@@ -1184,9 +1205,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBodyXML(ctx context.Context, res xmldo
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv4-unicast/network/no-mask"); value.Exists() {
-		data.Ipv4UnicastNetworks = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworks, 0)
+		data.Ipv4UnicastNetworks = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworksData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastNetworks{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastNetworksData{}
 			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
 				item.Network = types.StringValue(cValue.String())
 			}
@@ -1203,9 +1224,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBodyXML(ctx context.Context, res xmldo
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv4-unicast/distance/adm-distance"); value.Exists() {
-		data.Ipv4UnicastAdminDistances = make([]BGPAddressFamilyIPv4Ipv4UnicastAdminDistances, 0)
+		data.Ipv4UnicastAdminDistances = make([]BGPAddressFamilyIPv4Ipv4UnicastAdminDistancesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastAdminDistances{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastAdminDistancesData{}
 			if cValue := helpers.GetFromXPath(v, "distance"); cValue.Exists() {
 				item.Distance = types.Int64Value(cValue.Int())
 			}
