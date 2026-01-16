@@ -48,6 +48,8 @@ type TACACSServer struct {
 	DirectedRequestNoTruncate types.Bool   `tfsdk:"directed_request_no_truncate"`
 	Encryption                types.String `tfsdk:"encryption"`
 	Key                       types.String `tfsdk:"key"`
+	KeyWO                     types.String `tfsdk:"key_wo"`
+	KeyWOVersion              types.Int64  `tfsdk:"key_wo_version"`
 	AttributeAllowUnknown     types.Bool   `tfsdk:"attribute_allow_unknown"`
 }
 
@@ -101,7 +103,7 @@ func (data TACACSServerData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data TACACSServer) toBody(ctx context.Context) string {
+func (data TACACSServer) toBody(ctx context.Context, config TACACSServer) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
@@ -125,7 +127,11 @@ func (data TACACSServer) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:key.encryption", data.Encryption.ValueString())
 	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:key.key", data.Key.ValueString())
+		if !config.KeyWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:key.key", config.KeyWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:key.key", data.Key.ValueString())
+		}
 	}
 	if !data.AttributeAllowUnknown.IsNull() && !data.AttributeAllowUnknown.IsUnknown() {
 		if data.AttributeAllowUnknown.ValueBool() {
@@ -139,7 +145,7 @@ func (data TACACSServer) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data TACACSServer) toBodyXML(ctx context.Context) string {
+func (data TACACSServer) toBodyXML(ctx context.Context, config TACACSServer) string {
 	body := netconf.Body{}
 	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
@@ -169,7 +175,11 @@ func (data TACACSServer) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:key/encryption", data.Encryption.ValueString())
 	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:key/key", data.Key.ValueString())
+		if !config.KeyWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:key/key", config.KeyWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:key/key", data.Key.ValueString())
+		}
 	}
 	if !data.AttributeAllowUnknown.IsNull() && !data.AttributeAllowUnknown.IsUnknown() {
 		if data.AttributeAllowUnknown.ValueBool() {

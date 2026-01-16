@@ -97,7 +97,7 @@ func (data InterfaceMPLSData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceMPLS) toBody(ctx context.Context) string {
+func (data InterfaceMPLS) toBody(ctx context.Context, config InterfaceMPLS) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		if data.Ip.ValueBool() {
@@ -114,7 +114,7 @@ func (data InterfaceMPLS) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceMPLS) toBodyXML(ctx context.Context) string {
+func (data InterfaceMPLS) toBodyXML(ctx context.Context, config InterfaceMPLS) string {
 	body := netconf.Body{}
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		if data.Ip.ValueBool() {

@@ -108,7 +108,7 @@ func (data BGPPeerSessionTemplateData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPPeerSessionTemplate) toBody(ctx context.Context) string {
+func (data BGPPeerSessionTemplate) toBody(ctx context.Context, config BGPPeerSessionTemplate) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.TemplateName.IsNull() && !data.TemplateName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.TemplateName.ValueString())
@@ -145,7 +145,7 @@ func (data BGPPeerSessionTemplate) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPPeerSessionTemplate) toBodyXML(ctx context.Context) string {
+func (data BGPPeerSessionTemplate) toBodyXML(ctx context.Context, config BGPPeerSessionTemplate) string {
 	body := netconf.Body{}
 	if !data.TemplateName.IsNull() && !data.TemplateName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.TemplateName.ValueString())

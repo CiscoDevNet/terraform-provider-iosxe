@@ -54,21 +54,26 @@ type MDTSubscription struct {
 	FilterXpath          types.String               `tfsdk:"filter_xpath"`
 	Receivers            []MDTSubscriptionReceivers `tfsdk:"receivers"`
 }
+type MDTSubscriptionReceivers struct {
+	Address  types.String `tfsdk:"address"`
+	Port     types.Int64  `tfsdk:"port"`
+	Protocol types.String `tfsdk:"protocol"`
+}
 
 type MDTSubscriptionData struct {
-	Device               types.String               `tfsdk:"device"`
-	Id                   types.String               `tfsdk:"id"`
-	SubscriptionId       types.Int64                `tfsdk:"subscription_id"`
-	Stream               types.String               `tfsdk:"stream"`
-	Encoding             types.String               `tfsdk:"encoding"`
-	SourceVrf            types.String               `tfsdk:"source_vrf"`
-	SourceAddress        types.String               `tfsdk:"source_address"`
-	UpdatePolicyPeriodic types.Int64                `tfsdk:"update_policy_periodic"`
-	UpdatePolicyOnChange types.Bool                 `tfsdk:"update_policy_on_change"`
-	FilterXpath          types.String               `tfsdk:"filter_xpath"`
-	Receivers            []MDTSubscriptionReceivers `tfsdk:"receivers"`
+	Device               types.String                   `tfsdk:"device"`
+	Id                   types.String                   `tfsdk:"id"`
+	SubscriptionId       types.Int64                    `tfsdk:"subscription_id"`
+	Stream               types.String                   `tfsdk:"stream"`
+	Encoding             types.String                   `tfsdk:"encoding"`
+	SourceVrf            types.String                   `tfsdk:"source_vrf"`
+	SourceAddress        types.String                   `tfsdk:"source_address"`
+	UpdatePolicyPeriodic types.Int64                    `tfsdk:"update_policy_periodic"`
+	UpdatePolicyOnChange types.Bool                     `tfsdk:"update_policy_on_change"`
+	FilterXpath          types.String                   `tfsdk:"filter_xpath"`
+	Receivers            []MDTSubscriptionReceiversData `tfsdk:"receivers"`
 }
-type MDTSubscriptionReceivers struct {
+type MDTSubscriptionReceiversData struct {
 	Address  types.String `tfsdk:"address"`
 	Port     types.Int64  `tfsdk:"port"`
 	Protocol types.String `tfsdk:"protocol"`
@@ -114,7 +119,7 @@ func (data MDTSubscriptionData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data MDTSubscription) toBody(ctx context.Context) string {
+func (data MDTSubscription) toBody(ctx context.Context, config MDTSubscription) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.SubscriptionId.IsNull() && !data.SubscriptionId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"subscription-id", strconv.FormatInt(data.SubscriptionId.ValueInt64(), 10))
@@ -161,7 +166,7 @@ func (data MDTSubscription) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data MDTSubscription) toBodyXML(ctx context.Context) string {
+func (data MDTSubscription) toBodyXML(ctx context.Context, config MDTSubscription) string {
 	body := netconf.Body{}
 	if !data.SubscriptionId.IsNull() && !data.SubscriptionId.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/subscription-id", strconv.FormatInt(data.SubscriptionId.ValueInt64(), 10))
@@ -473,9 +478,9 @@ func (data *MDTSubscriptionData) fromBody(ctx context.Context, res gjson.Result)
 		data.FilterXpath = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "mdt-receivers"); value.Exists() {
-		data.Receivers = make([]MDTSubscriptionReceivers, 0)
+		data.Receivers = make([]MDTSubscriptionReceiversData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := MDTSubscriptionReceivers{}
+			item := MDTSubscriptionReceiversData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -567,9 +572,9 @@ func (data *MDTSubscriptionData) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.FilterXpath = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdt-receivers"); value.Exists() {
-		data.Receivers = make([]MDTSubscriptionReceivers, 0)
+		data.Receivers = make([]MDTSubscriptionReceiversData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := MDTSubscriptionReceivers{}
+			item := MDTSubscriptionReceiversData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}

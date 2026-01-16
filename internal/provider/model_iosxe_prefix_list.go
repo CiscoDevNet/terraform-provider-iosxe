@@ -46,13 +46,6 @@ type PrefixList struct {
 	Prefixes              []PrefixListPrefixes              `tfsdk:"prefixes"`
 	PrefixListDescription []PrefixListPrefixListDescription `tfsdk:"prefix_list_description"`
 }
-
-type PrefixListData struct {
-	Device                types.String                      `tfsdk:"device"`
-	Id                    types.String                      `tfsdk:"id"`
-	Prefixes              []PrefixListPrefixes              `tfsdk:"prefixes"`
-	PrefixListDescription []PrefixListPrefixListDescription `tfsdk:"prefix_list_description"`
-}
 type PrefixListPrefixes struct {
 	Name   types.String `tfsdk:"name"`
 	Seq    types.Int64  `tfsdk:"seq"`
@@ -62,6 +55,25 @@ type PrefixListPrefixes struct {
 	Le     types.Int64  `tfsdk:"le"`
 }
 type PrefixListPrefixListDescription struct {
+	Name        types.String `tfsdk:"name"`
+	Description types.String `tfsdk:"description"`
+}
+
+type PrefixListData struct {
+	Device                types.String                          `tfsdk:"device"`
+	Id                    types.String                          `tfsdk:"id"`
+	Prefixes              []PrefixListPrefixesData              `tfsdk:"prefixes"`
+	PrefixListDescription []PrefixListPrefixListDescriptionData `tfsdk:"prefix_list_description"`
+}
+type PrefixListPrefixesData struct {
+	Name   types.String `tfsdk:"name"`
+	Seq    types.Int64  `tfsdk:"seq"`
+	Action types.String `tfsdk:"action"`
+	Ip     types.String `tfsdk:"ip"`
+	Ge     types.Int64  `tfsdk:"ge"`
+	Le     types.Int64  `tfsdk:"le"`
+}
+type PrefixListPrefixListDescriptionData struct {
 	Name        types.String `tfsdk:"name"`
 	Description types.String `tfsdk:"description"`
 }
@@ -104,7 +116,7 @@ func (data PrefixListData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data PrefixList) toBody(ctx context.Context) string {
+func (data PrefixList) toBody(ctx context.Context, config PrefixList) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if len(data.Prefixes) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prefixes", []interface{}{})
@@ -147,7 +159,7 @@ func (data PrefixList) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data PrefixList) toBodyXML(ctx context.Context) string {
+func (data PrefixList) toBodyXML(ctx context.Context, config PrefixList) string {
 	body := netconf.Body{}
 	if len(data.Prefixes) > 0 {
 		for _, item := range data.Prefixes {
@@ -447,9 +459,9 @@ func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "prefixes"); value.Exists() {
-		data.Prefixes = make([]PrefixListPrefixes, 0)
+		data.Prefixes = make([]PrefixListPrefixesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := PrefixListPrefixes{}
+			item := PrefixListPrefixesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -473,9 +485,9 @@ func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "prefix-list-description"); value.Exists() {
-		data.PrefixListDescription = make([]PrefixListPrefixListDescription, 0)
+		data.PrefixListDescription = make([]PrefixListPrefixListDescriptionData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := PrefixListPrefixListDescription{}
+			item := PrefixListPrefixListDescriptionData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -541,9 +553,9 @@ func (data *PrefixList) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *PrefixListData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prefixes"); value.Exists() {
-		data.Prefixes = make([]PrefixListPrefixes, 0)
+		data.Prefixes = make([]PrefixListPrefixesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PrefixListPrefixes{}
+			item := PrefixListPrefixesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -567,9 +579,9 @@ func (data *PrefixListData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prefix-list-description"); value.Exists() {
-		data.PrefixListDescription = make([]PrefixListPrefixListDescription, 0)
+		data.PrefixListDescription = make([]PrefixListPrefixListDescriptionData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PrefixListPrefixListDescription{}
+			item := PrefixListPrefixListDescriptionData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}

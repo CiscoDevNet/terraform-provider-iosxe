@@ -127,30 +127,84 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Optional:            true,
 							Sensitive:           true,
 						},
+						"md5_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"md5_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"cmac_aes_128": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("CMAC-AES-128 (digest length = 128 bits,  key length = [16 or 32] bytes)").String,
 							Optional:            true,
 							Sensitive:           true,
+						},
+						"cmac_aes_128_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"cmac_aes_128_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"hmac_sha1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("HMAC-SHA1 (digest length = 160 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
 							Sensitive:           true,
 						},
+						"hmac_sha1_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"hmac_sha1_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"hmac_sha2_256": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("HMAC-SHA2-256 (digest length = 256 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
 							Sensitive:           true,
+						},
+						"hmac_sha2_256_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"hmac_sha2_256_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"sha1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SHA1 (digest length = 160 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
 							Sensitive:           true,
 						},
+						"sha1_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"sha1_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"sha2": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SHA-256 (digest length = 256 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
 							Sensitive:           true,
+						},
+						"sha2_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"sha2_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"encryption_type": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication key encryption type").AddIntegerRangeDescription(0, 4294967295).String,
@@ -443,10 +497,17 @@ func (r *NTPResource) Configure(_ context.Context, req resource.ConfigureRequest
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *NTPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan NTP
+	var plan, config NTP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -463,7 +524,7 @@ func (r *NTPResource) Create(ctx context.Context, req resource.CreateRequest, re
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -503,7 +564,7 @@ func (r *NTPResource) Create(ctx context.Context, req resource.CreateRequest, re
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -610,7 +671,7 @@ func (r *NTPResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *NTPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state NTP
+	var plan, state, config NTP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -626,6 +687,13 @@ func (r *NTPResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -636,7 +704,7 @@ func (r *NTPResource) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -690,7 +758,7 @@ func (r *NTPResource) Update(ctx context.Context, req resource.UpdateRequest, re
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

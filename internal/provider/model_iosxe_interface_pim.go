@@ -109,7 +109,7 @@ func (data InterfacePIMData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfacePIM) toBody(ctx context.Context) string {
+func (data InterfacePIM) toBody(ctx context.Context, config InterfacePIM) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Passive.IsNull() && !data.Passive.IsUnknown() {
 		if data.Passive.ValueBool() {
@@ -156,7 +156,7 @@ func (data InterfacePIM) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfacePIM) toBodyXML(ctx context.Context) string {
+func (data InterfacePIM) toBodyXML(ctx context.Context, config InterfacePIM) string {
 	body := netconf.Body{}
 	if !data.Passive.IsNull() && !data.Passive.IsUnknown() {
 		if data.Passive.ValueBool() {

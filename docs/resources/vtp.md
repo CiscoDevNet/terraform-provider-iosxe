@@ -29,6 +29,8 @@ resource "iosxe_vtp" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
@@ -55,6 +57,10 @@ resource "iosxe_vtp" "example" {
 - `password` (String, Sensitive) The ascii password for the VTP administrative domain
 - `password_hidden` (Boolean) Set the VTP password hidden option
 - `password_secret` (Boolean, Sensitive) Specify the vtp password in encrypted form
+- `password_secret_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_secret_wo_version` (Number) The write-only version of the attribute.
+- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo_version` (Number) The write-only version of the attribute.
 - `pruning` (Boolean) Set the administrative domain to permit pruning
 - `version` (Number) Set the administrative domain to VTP version
   - Range: `1`-`3`

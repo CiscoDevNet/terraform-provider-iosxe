@@ -48,14 +48,6 @@ type Line struct {
 	Vty        []LineVty     `tfsdk:"vty"`
 	Aux        []LineAux     `tfsdk:"aux"`
 }
-
-type LineData struct {
-	Device  types.String  `tfsdk:"device"`
-	Id      types.String  `tfsdk:"id"`
-	Console []LineConsole `tfsdk:"console"`
-	Vty     []LineVty     `tfsdk:"vty"`
-	Aux     []LineAux     `tfsdk:"aux"`
-}
 type LineConsole struct {
 	First               types.String `tfsdk:"first"`
 	ExecTimeoutMinutes  types.Int64  `tfsdk:"exec_timeout_minutes"`
@@ -67,6 +59,8 @@ type LineConsole struct {
 	PasswordLevel       types.Int64  `tfsdk:"password_level"`
 	PasswordType        types.String `tfsdk:"password_type"`
 	Password            types.String `tfsdk:"password"`
+	PasswordWO          types.String `tfsdk:"password_wo"`
+	PasswordWOVersion   types.Int64  `tfsdk:"password_wo_version"`
 	EscapeCharacter     types.String `tfsdk:"escape_character"`
 	LoggingSynchronous  types.Bool   `tfsdk:"logging_synchronous"`
 	TransportOutputAll  types.Bool   `tfsdk:"transport_output_all"`
@@ -82,6 +76,8 @@ type LineVty struct {
 	PasswordLevel              types.Int64            `tfsdk:"password_level"`
 	PasswordType               types.String           `tfsdk:"password_type"`
 	Password                   types.String           `tfsdk:"password"`
+	PasswordWO                 types.String           `tfsdk:"password_wo"`
+	PasswordWOVersion          types.Int64            `tfsdk:"password_wo_version"`
 	LoginAuthentication        types.String           `tfsdk:"login_authentication"`
 	TransportPreferredProtocol types.String           `tfsdk:"transport_preferred_protocol"`
 	EscapeCharacter            types.String           `tfsdk:"escape_character"`
@@ -109,6 +105,71 @@ type LineAux struct {
 	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
 }
 type LineVtyAccessClasses struct {
+	Direction  types.String `tfsdk:"direction"`
+	AccessList types.String `tfsdk:"access_list"`
+	VrfAlso    types.Bool   `tfsdk:"vrf_also"`
+}
+
+type LineData struct {
+	Device  types.String      `tfsdk:"device"`
+	Id      types.String      `tfsdk:"id"`
+	Console []LineConsoleData `tfsdk:"console"`
+	Vty     []LineVtyData     `tfsdk:"vty"`
+	Aux     []LineAuxData     `tfsdk:"aux"`
+}
+type LineConsoleData struct {
+	First               types.String `tfsdk:"first"`
+	ExecTimeoutMinutes  types.Int64  `tfsdk:"exec_timeout_minutes"`
+	ExecTimeoutSeconds  types.Int64  `tfsdk:"exec_timeout_seconds"`
+	LoginLocal          types.Bool   `tfsdk:"login_local"`
+	LoginAuthentication types.String `tfsdk:"login_authentication"`
+	PrivilegeLevel      types.Int64  `tfsdk:"privilege_level"`
+	Stopbits            types.String `tfsdk:"stopbits"`
+	PasswordLevel       types.Int64  `tfsdk:"password_level"`
+	PasswordType        types.String `tfsdk:"password_type"`
+	Password            types.String `tfsdk:"password"`
+	EscapeCharacter     types.String `tfsdk:"escape_character"`
+	LoggingSynchronous  types.Bool   `tfsdk:"logging_synchronous"`
+	TransportOutputAll  types.Bool   `tfsdk:"transport_output_all"`
+	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
+	TransportOutput     types.List   `tfsdk:"transport_output"`
+}
+type LineVtyData struct {
+	First                      types.Int64                `tfsdk:"first"`
+	Last                       types.Int64                `tfsdk:"last"`
+	AccessClasses              []LineVtyAccessClassesData `tfsdk:"access_classes"`
+	ExecTimeoutMinutes         types.Int64                `tfsdk:"exec_timeout_minutes"`
+	ExecTimeoutSeconds         types.Int64                `tfsdk:"exec_timeout_seconds"`
+	PasswordLevel              types.Int64                `tfsdk:"password_level"`
+	PasswordType               types.String               `tfsdk:"password_type"`
+	Password                   types.String               `tfsdk:"password"`
+	LoginAuthentication        types.String               `tfsdk:"login_authentication"`
+	TransportPreferredProtocol types.String               `tfsdk:"transport_preferred_protocol"`
+	EscapeCharacter            types.String               `tfsdk:"escape_character"`
+	AuthorizationExec          types.String               `tfsdk:"authorization_exec"`
+	AuthorizationExecDefault   types.Bool                 `tfsdk:"authorization_exec_default"`
+	TransportInputAll          types.Bool                 `tfsdk:"transport_input_all"`
+	TransportInputNone         types.Bool                 `tfsdk:"transport_input_none"`
+	TransportInput             types.List                 `tfsdk:"transport_input"`
+	Monitor                    types.Bool                 `tfsdk:"monitor"`
+	SessionTimeout             types.Int64                `tfsdk:"session_timeout"`
+	Stopbits                   types.String               `tfsdk:"stopbits"`
+	LoggingSynchronous         types.Bool                 `tfsdk:"logging_synchronous"`
+	TransportOutputAll         types.Bool                 `tfsdk:"transport_output_all"`
+	TransportOutputNone        types.Bool                 `tfsdk:"transport_output_none"`
+	TransportOutput            types.List                 `tfsdk:"transport_output"`
+}
+type LineAuxData struct {
+	First               types.String `tfsdk:"first"`
+	EscapeCharacter     types.String `tfsdk:"escape_character"`
+	LoggingSynchronous  types.Bool   `tfsdk:"logging_synchronous"`
+	ExecTimeoutMinutes  types.Int64  `tfsdk:"exec_timeout_minutes"`
+	ExecTimeoutSeconds  types.Int64  `tfsdk:"exec_timeout_seconds"`
+	Monitor             types.Bool   `tfsdk:"monitor"`
+	Stopbits            types.String `tfsdk:"stopbits"`
+	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
+}
+type LineVtyAccessClassesData struct {
 	Direction  types.String `tfsdk:"direction"`
 	AccessList types.String `tfsdk:"access_list"`
 	VrfAlso    types.Bool   `tfsdk:"vrf_also"`
@@ -152,11 +213,19 @@ func (data LineData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Line) toBody(ctx context.Context) string {
+func (data Line) toBody(ctx context.Context, config Line) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if len(data.Console) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console", []interface{}{})
 		for index, item := range data.Console {
+			var configItem LineConsole
+			for _, ci := range config.Console {
+				if ci.First.ValueString() != item.First.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.First.IsNull() && !item.First.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"first", item.First.ValueString())
 			}
@@ -187,7 +256,11 @@ func (data Line) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.type", item.PasswordType.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.secret", configItem.PasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
+				}
 			}
 			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"escape-character.char", item.EscapeCharacter.ValueString())
@@ -217,6 +290,14 @@ func (data Line) toBody(ctx context.Context) string {
 	if len(data.Vty) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty", []interface{}{})
 		for index, item := range data.Vty {
+			var configItem LineVty
+			for _, ci := range config.Vty {
+				if ci.First.ValueInt64() != item.First.ValueInt64() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.First.IsNull() && !item.First.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"first", strconv.FormatInt(item.First.ValueInt64(), 10))
 			}
@@ -236,7 +317,11 @@ func (data Line) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"password.type", item.PasswordType.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"password.secret", configItem.PasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
+				}
 			}
 			if !item.LoginAuthentication.IsNull() && !item.LoginAuthentication.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"login.authentication", item.LoginAuthentication.ValueString())
@@ -361,10 +446,18 @@ func (data Line) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Line) toBodyXML(ctx context.Context) string {
+func (data Line) toBodyXML(ctx context.Context, config Line) string {
 	body := netconf.Body{}
 	if len(data.Console) > 0 {
 		for _, item := range data.Console {
+			var configItem LineConsole
+			for _, ci := range config.Console {
+				if ci.First.ValueString() != item.First.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.First.IsNull() && !item.First.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "first", item.First.ValueString())
@@ -398,7 +491,11 @@ func (data Line) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "password/type", item.PasswordType.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", configItem.PasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+				}
 			}
 			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "escape-character/char", item.EscapeCharacter.ValueString())
@@ -436,6 +533,14 @@ func (data Line) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.Vty) > 0 {
 		for _, item := range data.Vty {
+			var configItem LineVty
+			for _, ci := range config.Vty {
+				if ci.First.ValueInt64() != item.First.ValueInt64() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.First.IsNull() && !item.First.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "first", strconv.FormatInt(item.First.ValueInt64(), 10))
@@ -475,7 +580,11 @@ func (data Line) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "password/type", item.PasswordType.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", configItem.PasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+				}
 			}
 			if !item.LoginAuthentication.IsNull() && !item.LoginAuthentication.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "login/authentication", item.LoginAuthentication.ValueString())
@@ -1613,9 +1722,9 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "console"); value.Exists() {
-		data.Console = make([]LineConsole, 0)
+		data.Console = make([]LineConsoleData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LineConsole{}
+			item := LineConsoleData{}
 			if cValue := v.Get("first"); cValue.Exists() {
 				item.First = types.StringValue(cValue.String())
 			}
@@ -1676,9 +1785,9 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "vty"); value.Exists() {
-		data.Vty = make([]LineVty, 0)
+		data.Vty = make([]LineVtyData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LineVty{}
+			item := LineVtyData{}
 			if cValue := v.Get("first"); cValue.Exists() {
 				item.First = types.Int64Value(cValue.Int())
 			}
@@ -1686,9 +1795,9 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Last = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("access-class.acccess-list"); cValue.Exists() {
-				item.AccessClasses = make([]LineVtyAccessClasses, 0)
+				item.AccessClasses = make([]LineVtyAccessClassesData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LineVtyAccessClasses{}
+					cItem := LineVtyAccessClassesData{}
 					if ccValue := cv.Get("direction"); ccValue.Exists() {
 						cItem.Direction = types.StringValue(ccValue.String())
 					}
@@ -1787,9 +1896,9 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "aux"); value.Exists() {
-		data.Aux = make([]LineAux, 0)
+		data.Aux = make([]LineAuxData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LineAux{}
+			item := LineAuxData{}
 			if cValue := v.Get("first"); cValue.Exists() {
 				item.First = types.StringValue(cValue.String())
 			}
@@ -2051,9 +2160,9 @@ func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console"); value.Exists() {
-		data.Console = make([]LineConsole, 0)
+		data.Console = make([]LineConsoleData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LineConsole{}
+			item := LineConsoleData{}
 			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
 				item.First = types.StringValue(cValue.String())
 			}
@@ -2114,9 +2223,9 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vty"); value.Exists() {
-		data.Vty = make([]LineVty, 0)
+		data.Vty = make([]LineVtyData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LineVty{}
+			item := LineVtyData{}
 			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
 				item.First = types.Int64Value(cValue.Int())
 			}
@@ -2124,9 +2233,9 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.Last = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "access-class/acccess-list"); cValue.Exists() {
-				item.AccessClasses = make([]LineVtyAccessClasses, 0)
+				item.AccessClasses = make([]LineVtyAccessClassesData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LineVtyAccessClasses{}
+					cItem := LineVtyAccessClassesData{}
 					if ccValue := helpers.GetFromXPath(cv, "direction"); ccValue.Exists() {
 						cItem.Direction = types.StringValue(ccValue.String())
 					}
@@ -2225,9 +2334,9 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/aux"); value.Exists() {
-		data.Aux = make([]LineAux, 0)
+		data.Aux = make([]LineAuxData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LineAux{}
+			item := LineAuxData{}
 			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
 				item.First = types.StringValue(cValue.String())
 			}

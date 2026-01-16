@@ -137,6 +137,15 @@ func (r *MSDPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Required:            true,
 							Sensitive:           true,
 						},
+						"password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 					},
 				},
 			},
@@ -200,6 +209,15 @@ func (r *MSDPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 										Required:            true,
 										Sensitive:           true,
 									},
+									"password_wo": schema.StringAttribute{
+										MarkdownDescription: "The write-only value of the attribute.",
+										WriteOnly:           true,
+										Optional:            true,
+									},
+									"password_wo_version": schema.Int64Attribute{
+										MarkdownDescription: "The write-only version of the attribute.",
+										Optional:            true,
+									},
 								},
 							},
 						},
@@ -223,10 +241,17 @@ func (r *MSDPResource) Configure(_ context.Context, req resource.ConfigureReques
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *MSDPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan MSDP
+	var plan, config MSDP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -243,7 +268,7 @@ func (r *MSDPResource) Create(ctx context.Context, req resource.CreateRequest, r
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -283,7 +308,7 @@ func (r *MSDPResource) Create(ctx context.Context, req resource.CreateRequest, r
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -390,7 +415,7 @@ func (r *MSDPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *MSDPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state MSDP
+	var plan, state, config MSDP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -406,6 +431,13 @@ func (r *MSDPResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -416,7 +448,7 @@ func (r *MSDPResource) Update(ctx context.Context, req resource.UpdateRequest, r
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -470,7 +502,7 @@ func (r *MSDPResource) Update(ctx context.Context, req resource.UpdateRequest, r
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

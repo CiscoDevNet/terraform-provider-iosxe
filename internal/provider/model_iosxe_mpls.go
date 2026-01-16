@@ -112,7 +112,7 @@ func (data MPLSData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data MPLS) toBody(ctx context.Context) string {
+func (data MPLS) toBody(ctx context.Context, config MPLS) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.LabelProtocol.IsNull() && !data.LabelProtocol.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-mpls:label.protocol", data.LabelProtocol.ValueString())
@@ -184,7 +184,7 @@ func (data MPLS) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data MPLS) toBodyXML(ctx context.Context) string {
+func (data MPLS) toBodyXML(ctx context.Context, config MPLS) string {
 	body := netconf.Body{}
 	if !data.LabelProtocol.IsNull() && !data.LabelProtocol.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-mpls:label/protocol", data.LabelProtocol.ValueString())

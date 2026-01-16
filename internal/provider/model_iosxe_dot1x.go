@@ -57,24 +57,35 @@ type Dot1x struct {
 	CriticalEapol                 types.Bool         `tfsdk:"critical_eapol"`
 	CriticalEapolBlock            types.Bool         `tfsdk:"critical_eapol_block"`
 }
+type Dot1xCredentials struct {
+	ProfileName       types.String `tfsdk:"profile_name"`
+	Description       types.String `tfsdk:"description"`
+	Username          types.String `tfsdk:"username"`
+	PasswordType      types.String `tfsdk:"password_type"`
+	Password          types.String `tfsdk:"password"`
+	PasswordWO        types.String `tfsdk:"password_wo"`
+	PasswordWOVersion types.Int64  `tfsdk:"password_wo_version"`
+	PkiTrustpoint     types.String `tfsdk:"pki_trustpoint"`
+	AnonymousId       types.String `tfsdk:"anonymous_id"`
+}
 
 type Dot1xData struct {
-	Device                        types.String       `tfsdk:"device"`
-	Id                            types.String       `tfsdk:"id"`
-	AuthFailEapol                 types.Bool         `tfsdk:"auth_fail_eapol"`
-	Credentials                   []Dot1xCredentials `tfsdk:"credentials"`
-	CriticalEapolConfigBlock      types.Bool         `tfsdk:"critical_eapol_config_block"`
-	CriticalRecoveryDelay         types.Int64        `tfsdk:"critical_recovery_delay"`
-	TestTimeout                   types.Int64        `tfsdk:"test_timeout"`
-	LoggingVerbose                types.Bool         `tfsdk:"logging_verbose"`
-	SupplicantControlledTransient types.Bool         `tfsdk:"supplicant_controlled_transient"`
-	SupplicantForceMulticast      types.Bool         `tfsdk:"supplicant_force_multicast"`
-	SystemAuthControl             types.Bool         `tfsdk:"system_auth_control"`
-	GuestVlanSupplicant           types.Bool         `tfsdk:"guest_vlan_supplicant"`
-	CriticalEapol                 types.Bool         `tfsdk:"critical_eapol"`
-	CriticalEapolBlock            types.Bool         `tfsdk:"critical_eapol_block"`
+	Device                        types.String           `tfsdk:"device"`
+	Id                            types.String           `tfsdk:"id"`
+	AuthFailEapol                 types.Bool             `tfsdk:"auth_fail_eapol"`
+	Credentials                   []Dot1xCredentialsData `tfsdk:"credentials"`
+	CriticalEapolConfigBlock      types.Bool             `tfsdk:"critical_eapol_config_block"`
+	CriticalRecoveryDelay         types.Int64            `tfsdk:"critical_recovery_delay"`
+	TestTimeout                   types.Int64            `tfsdk:"test_timeout"`
+	LoggingVerbose                types.Bool             `tfsdk:"logging_verbose"`
+	SupplicantControlledTransient types.Bool             `tfsdk:"supplicant_controlled_transient"`
+	SupplicantForceMulticast      types.Bool             `tfsdk:"supplicant_force_multicast"`
+	SystemAuthControl             types.Bool             `tfsdk:"system_auth_control"`
+	GuestVlanSupplicant           types.Bool             `tfsdk:"guest_vlan_supplicant"`
+	CriticalEapol                 types.Bool             `tfsdk:"critical_eapol"`
+	CriticalEapolBlock            types.Bool             `tfsdk:"critical_eapol_block"`
 }
-type Dot1xCredentials struct {
+type Dot1xCredentialsData struct {
 	ProfileName   types.String `tfsdk:"profile_name"`
 	Description   types.String `tfsdk:"description"`
 	Username      types.String `tfsdk:"username"`
@@ -122,7 +133,7 @@ func (data Dot1xData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Dot1x) toBody(ctx context.Context) string {
+func (data Dot1x) toBody(ctx context.Context, config Dot1x) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AuthFailEapol.IsNull() && !data.AuthFailEapol.IsUnknown() {
 		if data.AuthFailEapol.ValueBool() {
@@ -178,6 +189,14 @@ func (data Dot1x) toBody(ctx context.Context) string {
 	if len(data.Credentials) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:credentials", []interface{}{})
 		for index, item := range data.Credentials {
+			var configItem Dot1xCredentials
+			for _, ci := range config.Credentials {
+				if ci.ProfileName.ValueString() != item.ProfileName.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.ProfileName.IsNull() && !item.ProfileName.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:credentials"+"."+strconv.Itoa(index)+"."+"profile-name", item.ProfileName.ValueString())
 			}
@@ -191,7 +210,11 @@ func (data Dot1x) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:credentials"+"."+strconv.Itoa(index)+"."+"password.type", item.PasswordType.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:credentials"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:credentials"+"."+strconv.Itoa(index)+"."+"password.secret", configItem.PasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:credentials"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
+				}
 			}
 			if !item.PkiTrustpoint.IsNull() && !item.PkiTrustpoint.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:credentials"+"."+strconv.Itoa(index)+"."+"pki-trustpoint", item.PkiTrustpoint.ValueString())
@@ -208,7 +231,7 @@ func (data Dot1x) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Dot1x) toBodyXML(ctx context.Context) string {
+func (data Dot1x) toBodyXML(ctx context.Context, config Dot1x) string {
 	body := netconf.Body{}
 	if !data.AuthFailEapol.IsNull() && !data.AuthFailEapol.IsUnknown() {
 		if data.AuthFailEapol.ValueBool() {
@@ -219,6 +242,14 @@ func (data Dot1x) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.Credentials) > 0 {
 		for _, item := range data.Credentials {
+			var configItem Dot1xCredentials
+			for _, ci := range config.Credentials {
+				if ci.ProfileName.ValueString() != item.ProfileName.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.ProfileName.IsNull() && !item.ProfileName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "profile-name", item.ProfileName.ValueString())
@@ -233,7 +264,11 @@ func (data Dot1x) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "password/type", item.PasswordType.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", configItem.PasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+				}
 			}
 			if !item.PkiTrustpoint.IsNull() && !item.PkiTrustpoint.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "pki-trustpoint", item.PkiTrustpoint.ValueString())
@@ -717,9 +752,9 @@ func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 		data.AuthFailEapol = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:credentials"); value.Exists() {
-		data.Credentials = make([]Dot1xCredentials, 0)
+		data.Credentials = make([]Dot1xCredentialsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := Dot1xCredentials{}
+			item := Dot1xCredentialsData{}
 			if cValue := v.Get("profile-name"); cValue.Exists() {
 				item.ProfileName = types.StringValue(cValue.String())
 			}
@@ -891,9 +926,9 @@ func (data *Dot1xData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.AuthFailEapol = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dot1x:credentials"); value.Exists() {
-		data.Credentials = make([]Dot1xCredentials, 0)
+		data.Credentials = make([]Dot1xCredentialsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := Dot1xCredentials{}
+			item := Dot1xCredentialsData{}
 			if cValue := helpers.GetFromXPath(v, "profile-name"); cValue.Exists() {
 				item.ProfileName = types.StringValue(cValue.String())
 			}

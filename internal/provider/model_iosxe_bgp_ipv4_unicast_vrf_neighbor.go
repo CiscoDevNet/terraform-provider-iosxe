@@ -55,52 +55,8 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	LogNeighborChangesDisable           types.Bool                           `tfsdk:"log_neighbor_changes_disable"`
 	PasswordType                        types.Int64                          `tfsdk:"password_type"`
 	Password                            types.String                         `tfsdk:"password"`
-	TimersKeepaliveInterval             types.Int64                          `tfsdk:"timers_keepalive_interval"`
-	TimersHoldtime                      types.Int64                          `tfsdk:"timers_holdtime"`
-	TimersMinimumNeighborHold           types.Int64                          `tfsdk:"timers_minimum_neighbor_hold"`
-	Version                             types.Int64                          `tfsdk:"version"`
-	FallOverDefaultRouteMap             types.String                         `tfsdk:"fall_over_default_route_map"`
-	FallOverBfd                         types.Bool                           `tfsdk:"fall_over_bfd"`
-	FallOverBfdMultiHop                 types.Bool                           `tfsdk:"fall_over_bfd_multi_hop"`
-	FallOverBfdSingleHop                types.Bool                           `tfsdk:"fall_over_bfd_single_hop"`
-	FallOverBfdCheckControlPlaneFailure types.Bool                           `tfsdk:"fall_over_bfd_check_control_plane_failure"`
-	FallOverBfdStrictMode               types.Bool                           `tfsdk:"fall_over_bfd_strict_mode"`
-	FallOverMaximumMetricRouteMap       types.String                         `tfsdk:"fall_over_maximum_metric_route_map"`
-	DisableConnectedCheck               types.Bool                           `tfsdk:"disable_connected_check"`
-	TtlSecurityHops                     types.Int64                          `tfsdk:"ttl_security_hops"`
-	LocalAs                             types.String                         `tfsdk:"local_as"`
-	LocalAsNoPrepend                    types.Bool                           `tfsdk:"local_as_no_prepend"`
-	LocalAsReplaceAs                    types.Bool                           `tfsdk:"local_as_replace_as"`
-	LocalAsDualAs                       types.Bool                           `tfsdk:"local_as_dual_as"`
-	UpdateSourceInterfaceLoopback       types.Int64                          `tfsdk:"update_source_interface_loopback"`
-	Activate                            types.Bool                           `tfsdk:"activate"`
-	SendCommunity                       types.String                         `tfsdk:"send_community"`
-	RouteReflectorClient                types.Bool                           `tfsdk:"route_reflector_client"`
-	SoftReconfiguration                 types.String                         `tfsdk:"soft_reconfiguration"`
-	DefaultOriginate                    types.Bool                           `tfsdk:"default_originate"`
-	DefaultOriginateRouteMap            types.String                         `tfsdk:"default_originate_route_map"`
-	RouteMaps                           []BGPIPv4UnicastVRFNeighborRouteMaps `tfsdk:"route_maps"`
-	EbgpMultihop                        types.Bool                           `tfsdk:"ebgp_multihop"`
-	EbgpMultihopMaxHop                  types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
-	HaModeGracefulRestart               types.Bool                           `tfsdk:"ha_mode_graceful_restart"`
-	NextHopSelf                         types.Bool                           `tfsdk:"next_hop_self"`
-	NextHopSelfAll                      types.Bool                           `tfsdk:"next_hop_self_all"`
-	AdvertisementInterval               types.Int64                          `tfsdk:"advertisement_interval"`
-}
-
-type BGPIPv4UnicastVRFNeighborData struct {
-	Device                              types.String                         `tfsdk:"device"`
-	Id                                  types.String                         `tfsdk:"id"`
-	Asn                                 types.String                         `tfsdk:"asn"`
-	Vrf                                 types.String                         `tfsdk:"vrf"`
-	Ip                                  types.String                         `tfsdk:"ip"`
-	RemoteAs                            types.String                         `tfsdk:"remote_as"`
-	Description                         types.String                         `tfsdk:"description"`
-	Shutdown                            types.Bool                           `tfsdk:"shutdown"`
-	ClusterId                           types.String                         `tfsdk:"cluster_id"`
-	LogNeighborChangesDisable           types.Bool                           `tfsdk:"log_neighbor_changes_disable"`
-	PasswordType                        types.Int64                          `tfsdk:"password_type"`
-	Password                            types.String                         `tfsdk:"password"`
+	PasswordWO                          types.String                         `tfsdk:"password_wo"`
+	PasswordWOVersion                   types.Int64                          `tfsdk:"password_wo_version"`
 	TimersKeepaliveInterval             types.Int64                          `tfsdk:"timers_keepalive_interval"`
 	TimersHoldtime                      types.Int64                          `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64                          `tfsdk:"timers_minimum_neighbor_hold"`
@@ -134,6 +90,56 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	AdvertisementInterval               types.Int64                          `tfsdk:"advertisement_interval"`
 }
 type BGPIPv4UnicastVRFNeighborRouteMaps struct {
+	InOut        types.String `tfsdk:"in_out"`
+	RouteMapName types.String `tfsdk:"route_map_name"`
+}
+
+type BGPIPv4UnicastVRFNeighborData struct {
+	Device                              types.String                             `tfsdk:"device"`
+	Id                                  types.String                             `tfsdk:"id"`
+	Asn                                 types.String                             `tfsdk:"asn"`
+	Vrf                                 types.String                             `tfsdk:"vrf"`
+	Ip                                  types.String                             `tfsdk:"ip"`
+	RemoteAs                            types.String                             `tfsdk:"remote_as"`
+	Description                         types.String                             `tfsdk:"description"`
+	Shutdown                            types.Bool                               `tfsdk:"shutdown"`
+	ClusterId                           types.String                             `tfsdk:"cluster_id"`
+	LogNeighborChangesDisable           types.Bool                               `tfsdk:"log_neighbor_changes_disable"`
+	PasswordType                        types.Int64                              `tfsdk:"password_type"`
+	Password                            types.String                             `tfsdk:"password"`
+	TimersKeepaliveInterval             types.Int64                              `tfsdk:"timers_keepalive_interval"`
+	TimersHoldtime                      types.Int64                              `tfsdk:"timers_holdtime"`
+	TimersMinimumNeighborHold           types.Int64                              `tfsdk:"timers_minimum_neighbor_hold"`
+	Version                             types.Int64                              `tfsdk:"version"`
+	FallOverDefaultRouteMap             types.String                             `tfsdk:"fall_over_default_route_map"`
+	FallOverBfd                         types.Bool                               `tfsdk:"fall_over_bfd"`
+	FallOverBfdMultiHop                 types.Bool                               `tfsdk:"fall_over_bfd_multi_hop"`
+	FallOverBfdSingleHop                types.Bool                               `tfsdk:"fall_over_bfd_single_hop"`
+	FallOverBfdCheckControlPlaneFailure types.Bool                               `tfsdk:"fall_over_bfd_check_control_plane_failure"`
+	FallOverBfdStrictMode               types.Bool                               `tfsdk:"fall_over_bfd_strict_mode"`
+	FallOverMaximumMetricRouteMap       types.String                             `tfsdk:"fall_over_maximum_metric_route_map"`
+	DisableConnectedCheck               types.Bool                               `tfsdk:"disable_connected_check"`
+	TtlSecurityHops                     types.Int64                              `tfsdk:"ttl_security_hops"`
+	LocalAs                             types.String                             `tfsdk:"local_as"`
+	LocalAsNoPrepend                    types.Bool                               `tfsdk:"local_as_no_prepend"`
+	LocalAsReplaceAs                    types.Bool                               `tfsdk:"local_as_replace_as"`
+	LocalAsDualAs                       types.Bool                               `tfsdk:"local_as_dual_as"`
+	UpdateSourceInterfaceLoopback       types.Int64                              `tfsdk:"update_source_interface_loopback"`
+	Activate                            types.Bool                               `tfsdk:"activate"`
+	SendCommunity                       types.String                             `tfsdk:"send_community"`
+	RouteReflectorClient                types.Bool                               `tfsdk:"route_reflector_client"`
+	SoftReconfiguration                 types.String                             `tfsdk:"soft_reconfiguration"`
+	DefaultOriginate                    types.Bool                               `tfsdk:"default_originate"`
+	DefaultOriginateRouteMap            types.String                             `tfsdk:"default_originate_route_map"`
+	RouteMaps                           []BGPIPv4UnicastVRFNeighborRouteMapsData `tfsdk:"route_maps"`
+	EbgpMultihop                        types.Bool                               `tfsdk:"ebgp_multihop"`
+	EbgpMultihopMaxHop                  types.Int64                              `tfsdk:"ebgp_multihop_max_hop"`
+	HaModeGracefulRestart               types.Bool                               `tfsdk:"ha_mode_graceful_restart"`
+	NextHopSelf                         types.Bool                               `tfsdk:"next_hop_self"`
+	NextHopSelfAll                      types.Bool                               `tfsdk:"next_hop_self_all"`
+	AdvertisementInterval               types.Int64                              `tfsdk:"advertisement_interval"`
+}
+type BGPIPv4UnicastVRFNeighborRouteMapsData struct {
 	InOut        types.String `tfsdk:"in_out"`
 	RouteMapName types.String `tfsdk:"route_map_name"`
 }
@@ -178,7 +184,7 @@ func (data BGPIPv4UnicastVRFNeighborData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
+func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context, config BGPIPv4UnicastVRFNeighbor) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
@@ -206,7 +212,11 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.enctype", strconv.FormatInt(data.PasswordType.ValueInt64(), 10))
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", config.PasswordWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", data.Password.ValueString())
+		}
 	}
 	if !data.TimersKeepaliveInterval.IsNull() && !data.TimersKeepaliveInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timers.keepalive-interval", strconv.FormatInt(data.TimersKeepaliveInterval.ValueInt64(), 10))
@@ -348,7 +358,7 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPIPv4UnicastVRFNeighbor) toBodyXML(ctx context.Context) string {
+func (data BGPIPv4UnicastVRFNeighbor) toBodyXML(ctx context.Context, config BGPIPv4UnicastVRFNeighbor) string {
 	body := netconf.Body{}
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Ip.ValueString())
@@ -380,7 +390,11 @@ func (data BGPIPv4UnicastVRFNeighbor) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/password/enctype", strconv.FormatInt(data.PasswordType.ValueInt64(), 10))
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/password/text", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/password/text", config.PasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/password/text", data.Password.ValueString())
+		}
 	}
 	if !data.TimersKeepaliveInterval.IsNull() && !data.TimersKeepaliveInterval.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/timers/keepalive-interval", strconv.FormatInt(data.TimersKeepaliveInterval.ValueInt64(), 10))
@@ -1448,9 +1462,9 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 		data.DefaultOriginateRouteMap = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPIPv4UnicastVRFNeighborRouteMaps, 0)
+		data.RouteMaps = make([]BGPIPv4UnicastVRFNeighborRouteMapsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPIPv4UnicastVRFNeighborRouteMaps{}
+			item := BGPIPv4UnicastVRFNeighborRouteMapsData{}
 			if cValue := v.Get("inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -1784,9 +1798,9 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBodyXML(ctx context.Context, res 
 		data.DefaultOriginateRouteMap = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPIPv4UnicastVRFNeighborRouteMaps, 0)
+		data.RouteMaps = make([]BGPIPv4UnicastVRFNeighborRouteMapsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPIPv4UnicastVRFNeighborRouteMaps{}
+			item := BGPIPv4UnicastVRFNeighborRouteMapsData{}
 			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}

@@ -40,15 +40,17 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type TACACS struct {
-	Device      types.String `tfsdk:"device"`
-	Id          types.String `tfsdk:"id"`
-	DeleteMode  types.String `tfsdk:"delete_mode"`
-	Name        types.String `tfsdk:"name"`
-	AddressIpv4 types.String `tfsdk:"address_ipv4"`
-	Timeout     types.Int64  `tfsdk:"timeout"`
-	Port        types.Int64  `tfsdk:"port"`
-	Encryption  types.String `tfsdk:"encryption"`
-	Key         types.String `tfsdk:"key"`
+	Device       types.String `tfsdk:"device"`
+	Id           types.String `tfsdk:"id"`
+	DeleteMode   types.String `tfsdk:"delete_mode"`
+	Name         types.String `tfsdk:"name"`
+	AddressIpv4  types.String `tfsdk:"address_ipv4"`
+	Timeout      types.Int64  `tfsdk:"timeout"`
+	Port         types.Int64  `tfsdk:"port"`
+	Encryption   types.String `tfsdk:"encryption"`
+	Key          types.String `tfsdk:"key"`
+	KeyWO        types.String `tfsdk:"key_wo"`
+	KeyWOVersion types.Int64  `tfsdk:"key_wo_version"`
 }
 
 type TACACSData struct {
@@ -102,7 +104,7 @@ func (data TACACSData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data TACACS) toBody(ctx context.Context) string {
+func (data TACACS) toBody(ctx context.Context, config TACACS) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -120,7 +122,11 @@ func (data TACACS) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.encryption", data.Encryption.ValueString())
 	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
+		if !config.KeyWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", config.KeyWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
+		}
 	}
 	return body
 }
@@ -129,7 +135,7 @@ func (data TACACS) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data TACACS) toBodyXML(ctx context.Context) string {
+func (data TACACS) toBodyXML(ctx context.Context, config TACACS) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -147,7 +153,11 @@ func (data TACACS) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/key/encryption", data.Encryption.ValueString())
 	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", data.Key.ValueString())
+		if !config.KeyWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", config.KeyWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", data.Key.ValueString())
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {

@@ -104,7 +104,7 @@ func (data InterfaceOSPFv3Data) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceOSPFv3) toBody(ctx context.Context) string {
+func (data InterfaceOSPFv3) toBody(ctx context.Context, config InterfaceOSPFv3) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.IsUnknown() {
 		if data.NetworkTypeBroadcast.ValueBool() {
@@ -136,7 +136,7 @@ func (data InterfaceOSPFv3) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceOSPFv3) toBodyXML(ctx context.Context) string {
+func (data InterfaceOSPFv3) toBodyXML(ctx context.Context, config InterfaceOSPFv3) string {
 	body := netconf.Body{}
 	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.IsUnknown() {
 		if data.NetworkTypeBroadcast.ValueBool() {

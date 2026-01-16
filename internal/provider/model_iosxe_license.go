@@ -119,7 +119,7 @@ func (data LicenseData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data License) toBody(ctx context.Context) string {
+func (data License) toBody(ctx context.Context, config License) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.BootLevelNetworkAdvantage.IsNull() && !data.BootLevelNetworkAdvantage.IsUnknown() {
 		if data.BootLevelNetworkAdvantage.ValueBool() {
@@ -188,7 +188,7 @@ func (data License) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data License) toBodyXML(ctx context.Context) string {
+func (data License) toBodyXML(ctx context.Context, config License) string {
 	body := netconf.Body{}
 	if !data.BootLevelNetworkAdvantage.IsNull() && !data.BootLevelNetworkAdvantage.IsUnknown() {
 		if data.BootLevelNetworkAdvantage.ValueBool() {

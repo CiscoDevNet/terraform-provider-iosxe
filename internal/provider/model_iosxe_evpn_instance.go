@@ -65,35 +65,41 @@ type EVPNInstance struct {
 	VlanBasedReOriginateRouteType5   types.Bool                                `tfsdk:"vlan_based_re_originate_route_type5"`
 	VlanBasedMulticastAdvertise      types.String                              `tfsdk:"vlan_based_multicast_advertise"`
 }
-
-type EVPNInstanceData struct {
-	Device                           types.String                              `tfsdk:"device"`
-	Id                               types.String                              `tfsdk:"id"`
-	EvpnInstanceNum                  types.Int64                               `tfsdk:"evpn_instance_num"`
-	VlanBasedReplicationTypeIngress  types.Bool                                `tfsdk:"vlan_based_replication_type_ingress"`
-	VlanBasedReplicationTypeStatic   types.Bool                                `tfsdk:"vlan_based_replication_type_static"`
-	VlanBasedReplicationTypeP2mp     types.Bool                                `tfsdk:"vlan_based_replication_type_p2mp"`
-	VlanBasedReplicationTypeMp2mp    types.Bool                                `tfsdk:"vlan_based_replication_type_mp2mp"`
-	VlanBasedEncapsulation           types.String                              `tfsdk:"vlan_based_encapsulation"`
-	VlanBasedAutoRouteTargetLegacy   types.Bool                                `tfsdk:"vlan_based_auto_route_target_legacy"`
-	VlanBasedAutoRouteTarget         types.Bool                                `tfsdk:"vlan_based_auto_route_target"`
-	VlanBasedRd                      types.String                              `tfsdk:"vlan_based_rd"`
-	VlanBasedRouteTargetLegacy       types.String                              `tfsdk:"vlan_based_route_target_legacy"`
-	VlanBasedRouteTargetBothLegacy   types.String                              `tfsdk:"vlan_based_route_target_both_legacy"`
-	VlanBasedRouteTargetImportLegacy types.String                              `tfsdk:"vlan_based_route_target_import_legacy"`
-	VlanBasedRouteTargetExportLegacy types.String                              `tfsdk:"vlan_based_route_target_export_legacy"`
-	VlanBasedRouteTargetExports      []EVPNInstanceVlanBasedRouteTargetExports `tfsdk:"vlan_based_route_target_exports"`
-	VlanBasedRouteTargetImports      []EVPNInstanceVlanBasedRouteTargetImports `tfsdk:"vlan_based_route_target_imports"`
-	VlanBasedIpLocalLearningDisable  types.Bool                                `tfsdk:"vlan_based_ip_local_learning_disable"`
-	VlanBasedIpLocalLearningEnable   types.Bool                                `tfsdk:"vlan_based_ip_local_learning_enable"`
-	VlanBasedDefaultGatewayAdvertise types.String                              `tfsdk:"vlan_based_default_gateway_advertise"`
-	VlanBasedReOriginateRouteType5   types.Bool                                `tfsdk:"vlan_based_re_originate_route_type5"`
-	VlanBasedMulticastAdvertise      types.String                              `tfsdk:"vlan_based_multicast_advertise"`
-}
 type EVPNInstanceVlanBasedRouteTargetExports struct {
 	RouteTarget types.String `tfsdk:"route_target"`
 }
 type EVPNInstanceVlanBasedRouteTargetImports struct {
+	RouteTarget types.String `tfsdk:"route_target"`
+}
+
+type EVPNInstanceData struct {
+	Device                           types.String                                  `tfsdk:"device"`
+	Id                               types.String                                  `tfsdk:"id"`
+	EvpnInstanceNum                  types.Int64                                   `tfsdk:"evpn_instance_num"`
+	VlanBasedReplicationTypeIngress  types.Bool                                    `tfsdk:"vlan_based_replication_type_ingress"`
+	VlanBasedReplicationTypeStatic   types.Bool                                    `tfsdk:"vlan_based_replication_type_static"`
+	VlanBasedReplicationTypeP2mp     types.Bool                                    `tfsdk:"vlan_based_replication_type_p2mp"`
+	VlanBasedReplicationTypeMp2mp    types.Bool                                    `tfsdk:"vlan_based_replication_type_mp2mp"`
+	VlanBasedEncapsulation           types.String                                  `tfsdk:"vlan_based_encapsulation"`
+	VlanBasedAutoRouteTargetLegacy   types.Bool                                    `tfsdk:"vlan_based_auto_route_target_legacy"`
+	VlanBasedAutoRouteTarget         types.Bool                                    `tfsdk:"vlan_based_auto_route_target"`
+	VlanBasedRd                      types.String                                  `tfsdk:"vlan_based_rd"`
+	VlanBasedRouteTargetLegacy       types.String                                  `tfsdk:"vlan_based_route_target_legacy"`
+	VlanBasedRouteTargetBothLegacy   types.String                                  `tfsdk:"vlan_based_route_target_both_legacy"`
+	VlanBasedRouteTargetImportLegacy types.String                                  `tfsdk:"vlan_based_route_target_import_legacy"`
+	VlanBasedRouteTargetExportLegacy types.String                                  `tfsdk:"vlan_based_route_target_export_legacy"`
+	VlanBasedRouteTargetExports      []EVPNInstanceVlanBasedRouteTargetExportsData `tfsdk:"vlan_based_route_target_exports"`
+	VlanBasedRouteTargetImports      []EVPNInstanceVlanBasedRouteTargetImportsData `tfsdk:"vlan_based_route_target_imports"`
+	VlanBasedIpLocalLearningDisable  types.Bool                                    `tfsdk:"vlan_based_ip_local_learning_disable"`
+	VlanBasedIpLocalLearningEnable   types.Bool                                    `tfsdk:"vlan_based_ip_local_learning_enable"`
+	VlanBasedDefaultGatewayAdvertise types.String                                  `tfsdk:"vlan_based_default_gateway_advertise"`
+	VlanBasedReOriginateRouteType5   types.Bool                                    `tfsdk:"vlan_based_re_originate_route_type5"`
+	VlanBasedMulticastAdvertise      types.String                                  `tfsdk:"vlan_based_multicast_advertise"`
+}
+type EVPNInstanceVlanBasedRouteTargetExportsData struct {
+	RouteTarget types.String `tfsdk:"route_target"`
+}
+type EVPNInstanceVlanBasedRouteTargetImportsData struct {
 	RouteTarget types.String `tfsdk:"route_target"`
 }
 
@@ -137,7 +143,7 @@ func (data EVPNInstanceData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data EVPNInstance) toBody(ctx context.Context) string {
+func (data EVPNInstance) toBody(ctx context.Context, config EVPNInstance) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.EvpnInstanceNum.IsNull() && !data.EvpnInstanceNum.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"evpn-instance-num", strconv.FormatInt(data.EvpnInstanceNum.ValueInt64(), 10))
@@ -232,7 +238,7 @@ func (data EVPNInstance) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data EVPNInstance) toBodyXML(ctx context.Context) string {
+func (data EVPNInstance) toBodyXML(ctx context.Context, config EVPNInstance) string {
 	body := netconf.Body{}
 	if !data.EvpnInstanceNum.IsNull() && !data.EvpnInstanceNum.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/evpn-instance-num", strconv.FormatInt(data.EvpnInstanceNum.ValueInt64(), 10))
@@ -887,9 +893,9 @@ func (data *EVPNInstanceData) fromBody(ctx context.Context, res gjson.Result) {
 		data.VlanBasedRouteTargetExportLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target-v2.export"); value.Exists() {
-		data.VlanBasedRouteTargetExports = make([]EVPNInstanceVlanBasedRouteTargetExports, 0)
+		data.VlanBasedRouteTargetExports = make([]EVPNInstanceVlanBasedRouteTargetExportsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := EVPNInstanceVlanBasedRouteTargetExports{}
+			item := EVPNInstanceVlanBasedRouteTargetExportsData{}
 			if cValue := v.Get("rt-value"); cValue.Exists() {
 				item.RouteTarget = types.StringValue(cValue.String())
 			}
@@ -898,9 +904,9 @@ func (data *EVPNInstanceData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "vlan-based.route-target-v2.import"); value.Exists() {
-		data.VlanBasedRouteTargetImports = make([]EVPNInstanceVlanBasedRouteTargetImports, 0)
+		data.VlanBasedRouteTargetImports = make([]EVPNInstanceVlanBasedRouteTargetImportsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := EVPNInstanceVlanBasedRouteTargetImports{}
+			item := EVPNInstanceVlanBasedRouteTargetImportsData{}
 			if cValue := v.Get("rt-value"); cValue.Exists() {
 				item.RouteTarget = types.StringValue(cValue.String())
 			}
@@ -1083,9 +1089,9 @@ func (data *EVPNInstanceData) fromBodyXML(ctx context.Context, res xmldot.Result
 		data.VlanBasedRouteTargetExportLegacy = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-based/route-target-v2/export"); value.Exists() {
-		data.VlanBasedRouteTargetExports = make([]EVPNInstanceVlanBasedRouteTargetExports, 0)
+		data.VlanBasedRouteTargetExports = make([]EVPNInstanceVlanBasedRouteTargetExportsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := EVPNInstanceVlanBasedRouteTargetExports{}
+			item := EVPNInstanceVlanBasedRouteTargetExportsData{}
 			if cValue := helpers.GetFromXPath(v, "rt-value"); cValue.Exists() {
 				item.RouteTarget = types.StringValue(cValue.String())
 			}
@@ -1094,9 +1100,9 @@ func (data *EVPNInstanceData) fromBodyXML(ctx context.Context, res xmldot.Result
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-based/route-target-v2/import"); value.Exists() {
-		data.VlanBasedRouteTargetImports = make([]EVPNInstanceVlanBasedRouteTargetImports, 0)
+		data.VlanBasedRouteTargetImports = make([]EVPNInstanceVlanBasedRouteTargetImportsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := EVPNInstanceVlanBasedRouteTargetImports{}
+			item := EVPNInstanceVlanBasedRouteTargetImportsData{}
 			if cValue := helpers.GetFromXPath(v, "rt-value"); cValue.Exists() {
 				item.RouteTarget = types.StringValue(cValue.String())
 			}

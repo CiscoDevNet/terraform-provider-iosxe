@@ -50,16 +50,20 @@ type InterfaceISIS struct {
 	NetworkPointToPoint types.Bool                      `tfsdk:"network_point_to_point"`
 	Ipv4MetricLevels    []InterfaceISISIpv4MetricLevels `tfsdk:"ipv4_metric_levels"`
 }
+type InterfaceISISIpv4MetricLevels struct {
+	Level types.String `tfsdk:"level"`
+	Value types.Int64  `tfsdk:"value"`
+}
 
 type InterfaceISISData struct {
-	Device              types.String                    `tfsdk:"device"`
-	Id                  types.String                    `tfsdk:"id"`
-	Type                types.String                    `tfsdk:"type"`
-	Name                types.String                    `tfsdk:"name"`
-	NetworkPointToPoint types.Bool                      `tfsdk:"network_point_to_point"`
-	Ipv4MetricLevels    []InterfaceISISIpv4MetricLevels `tfsdk:"ipv4_metric_levels"`
+	Device              types.String                        `tfsdk:"device"`
+	Id                  types.String                        `tfsdk:"id"`
+	Type                types.String                        `tfsdk:"type"`
+	Name                types.String                        `tfsdk:"name"`
+	NetworkPointToPoint types.Bool                          `tfsdk:"network_point_to_point"`
+	Ipv4MetricLevels    []InterfaceISISIpv4MetricLevelsData `tfsdk:"ipv4_metric_levels"`
 }
-type InterfaceISISIpv4MetricLevels struct {
+type InterfaceISISIpv4MetricLevelsData struct {
 	Level types.String `tfsdk:"level"`
 	Value types.Int64  `tfsdk:"value"`
 }
@@ -104,7 +108,7 @@ func (data InterfaceISISData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceISIS) toBody(ctx context.Context) string {
+func (data InterfaceISIS) toBody(ctx context.Context, config InterfaceISIS) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.NetworkPointToPoint.IsNull() && !data.NetworkPointToPoint.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-isis:network.point-to-point", data.NetworkPointToPoint.ValueBool())
@@ -127,7 +131,7 @@ func (data InterfaceISIS) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceISIS) toBodyXML(ctx context.Context) string {
+func (data InterfaceISIS) toBodyXML(ctx context.Context, config InterfaceISIS) string {
 	body := netconf.Body{}
 	if !data.NetworkPointToPoint.IsNull() && !data.NetworkPointToPoint.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-isis:network/point-to-point", data.NetworkPointToPoint.ValueBool())
@@ -296,9 +300,9 @@ func (data *InterfaceISISData) fromBody(ctx context.Context, res gjson.Result) {
 		data.NetworkPointToPoint = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-isis:metric.metric-list"); value.Exists() {
-		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevels, 0)
+		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevelsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceISISIpv4MetricLevels{}
+			item := InterfaceISISIpv4MetricLevelsData{}
 			if cValue := v.Get("levels"); cValue.Exists() {
 				item.Level = types.StringValue(cValue.String())
 			}
@@ -348,9 +352,9 @@ func (data *InterfaceISISData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.NetworkPointToPoint = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-isis:metric/metric-list"); value.Exists() {
-		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevels, 0)
+		data.Ipv4MetricLevels = make([]InterfaceISISIpv4MetricLevelsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceISISIpv4MetricLevels{}
+			item := InterfaceISISIpv4MetricLevelsData{}
 			if cValue := helpers.GetFromXPath(v, "levels"); cValue.Exists() {
 				item.Level = types.StringValue(cValue.String())
 			}

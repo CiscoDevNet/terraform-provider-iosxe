@@ -1,3 +1,7 @@
+## Unreleased
+
+- Expose attributes with sensitive values also as write-only attributes
+
 ## 0.15.0
 
 - BREAKING CHANGE: Change default protocol from RESTCONF to NETCONF. Existing users can set `protocol = "restconf"` to maintain current behavior. See [migration guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/netconf#migration-to-netconf-from-versions--0150) for details.

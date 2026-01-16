@@ -46,17 +46,25 @@ type NAT struct {
 	DeleteMode             types.String                `tfsdk:"delete_mode"`
 	InsideSourceInterfaces []NATInsideSourceInterfaces `tfsdk:"inside_source_interfaces"`
 }
-
-type NATData struct {
-	Device                 types.String                `tfsdk:"device"`
-	Id                     types.String                `tfsdk:"id"`
-	InsideSourceInterfaces []NATInsideSourceInterfaces `tfsdk:"inside_source_interfaces"`
-}
 type NATInsideSourceInterfaces struct {
 	Id         types.String                          `tfsdk:"id"`
 	Interfaces []NATInsideSourceInterfacesInterfaces `tfsdk:"interfaces"`
 }
 type NATInsideSourceInterfacesInterfaces struct {
+	Interface types.String `tfsdk:"interface"`
+	Overload  types.Bool   `tfsdk:"overload"`
+}
+
+type NATData struct {
+	Device                 types.String                    `tfsdk:"device"`
+	Id                     types.String                    `tfsdk:"id"`
+	InsideSourceInterfaces []NATInsideSourceInterfacesData `tfsdk:"inside_source_interfaces"`
+}
+type NATInsideSourceInterfacesData struct {
+	Id         types.String                              `tfsdk:"id"`
+	Interfaces []NATInsideSourceInterfacesInterfacesData `tfsdk:"interfaces"`
+}
+type NATInsideSourceInterfacesInterfacesData struct {
 	Interface types.String `tfsdk:"interface"`
 	Overload  types.Bool   `tfsdk:"overload"`
 }
@@ -99,7 +107,7 @@ func (data NATData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data NAT) toBody(ctx context.Context) string {
+func (data NAT) toBody(ctx context.Context, config NAT) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if len(data.InsideSourceInterfaces) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.list-interface.list", []interface{}{})
@@ -129,7 +137,7 @@ func (data NAT) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data NAT) toBodyXML(ctx context.Context) string {
+func (data NAT) toBodyXML(ctx context.Context, config NAT) string {
 	body := netconf.Body{}
 	if len(data.InsideSourceInterfaces) > 0 {
 		for _, item := range data.InsideSourceInterfaces {
@@ -363,16 +371,16 @@ func (data *NATData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "inside.source.list-interface.list"); value.Exists() {
-		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
+		data.InsideSourceInterfaces = make([]NATInsideSourceInterfacesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NATInsideSourceInterfaces{}
+			item := NATInsideSourceInterfacesData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("interface"); cValue.Exists() {
-				item.Interfaces = make([]NATInsideSourceInterfacesInterfaces, 0)
+				item.Interfaces = make([]NATInsideSourceInterfacesInterfacesData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := NATInsideSourceInterfacesInterfaces{}
+					cItem := NATInsideSourceInterfacesInterfacesData{}
 					if ccValue := cv.Get("name"); ccValue.Exists() {
 						cItem.Interface = types.StringValue(ccValue.String())
 					}
@@ -431,16 +439,16 @@ func (data *NAT) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *NATData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list"); value.Exists() {
-		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
+		data.InsideSourceInterfaces = make([]NATInsideSourceInterfacesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := NATInsideSourceInterfaces{}
+			item := NATInsideSourceInterfacesData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "interface"); cValue.Exists() {
-				item.Interfaces = make([]NATInsideSourceInterfacesInterfaces, 0)
+				item.Interfaces = make([]NATInsideSourceInterfacesInterfacesData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := NATInsideSourceInterfacesInterfaces{}
+					cItem := NATInsideSourceInterfacesInterfacesData{}
 					if ccValue := helpers.GetFromXPath(cv, "name"); ccValue.Exists() {
 						cItem.Interface = types.StringValue(ccValue.String())
 					}

@@ -53,19 +53,23 @@ type BGPPeerPolicyTemplate struct {
 	AllowasInAsNumber      types.Int64                      `tfsdk:"allowas_in_as_number"`
 	AsOverrideSplitHorizon types.Bool                       `tfsdk:"as_override_split_horizon"`
 }
+type BGPPeerPolicyTemplateRouteMaps struct {
+	InOut        types.String `tfsdk:"in_out"`
+	RouteMapName types.String `tfsdk:"route_map_name"`
+}
 
 type BGPPeerPolicyTemplateData struct {
-	Device                 types.String                     `tfsdk:"device"`
-	Id                     types.String                     `tfsdk:"id"`
-	Asn                    types.String                     `tfsdk:"asn"`
-	Name                   types.String                     `tfsdk:"name"`
-	RouteReflectorClient   types.Bool                       `tfsdk:"route_reflector_client"`
-	SendCommunity          types.String                     `tfsdk:"send_community"`
-	RouteMaps              []BGPPeerPolicyTemplateRouteMaps `tfsdk:"route_maps"`
-	AllowasInAsNumber      types.Int64                      `tfsdk:"allowas_in_as_number"`
-	AsOverrideSplitHorizon types.Bool                       `tfsdk:"as_override_split_horizon"`
+	Device                 types.String                         `tfsdk:"device"`
+	Id                     types.String                         `tfsdk:"id"`
+	Asn                    types.String                         `tfsdk:"asn"`
+	Name                   types.String                         `tfsdk:"name"`
+	RouteReflectorClient   types.Bool                           `tfsdk:"route_reflector_client"`
+	SendCommunity          types.String                         `tfsdk:"send_community"`
+	RouteMaps              []BGPPeerPolicyTemplateRouteMapsData `tfsdk:"route_maps"`
+	AllowasInAsNumber      types.Int64                          `tfsdk:"allowas_in_as_number"`
+	AsOverrideSplitHorizon types.Bool                           `tfsdk:"as_override_split_horizon"`
 }
-type BGPPeerPolicyTemplateRouteMaps struct {
+type BGPPeerPolicyTemplateRouteMapsData struct {
 	InOut        types.String `tfsdk:"in_out"`
 	RouteMapName types.String `tfsdk:"route_map_name"`
 }
@@ -110,7 +114,7 @@ func (data BGPPeerPolicyTemplateData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPPeerPolicyTemplate) toBody(ctx context.Context) string {
+func (data BGPPeerPolicyTemplate) toBody(ctx context.Context, config BGPPeerPolicyTemplate) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -149,7 +153,7 @@ func (data BGPPeerPolicyTemplate) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPPeerPolicyTemplate) toBodyXML(ctx context.Context) string {
+func (data BGPPeerPolicyTemplate) toBodyXML(ctx context.Context, config BGPPeerPolicyTemplate) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -404,9 +408,9 @@ func (data *BGPPeerPolicyTemplateData) fromBody(ctx context.Context, res gjson.R
 		data.SendCommunity = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "route-map1"); value.Exists() {
-		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMaps, 0)
+		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMapsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPPeerPolicyTemplateRouteMaps{}
+			item := BGPPeerPolicyTemplateRouteMapsData{}
 			if cValue := v.Get("inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -478,9 +482,9 @@ func (data *BGPPeerPolicyTemplateData) fromBodyXML(ctx context.Context, res xmld
 		data.SendCommunity = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map1"); value.Exists() {
-		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMaps, 0)
+		data.RouteMaps = make([]BGPPeerPolicyTemplateRouteMapsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPPeerPolicyTemplateRouteMaps{}
+			item := BGPPeerPolicyTemplateRouteMapsData{}
 			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}

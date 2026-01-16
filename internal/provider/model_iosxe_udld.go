@@ -95,7 +95,7 @@ func (data UDLDData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data UDLD) toBody(ctx context.Context) string {
+func (data UDLD) toBody(ctx context.Context, config UDLD) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Aggressive.IsNull() && !data.Aggressive.IsUnknown() {
 		if data.Aggressive.ValueBool() {
@@ -120,7 +120,7 @@ func (data UDLD) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data UDLD) toBodyXML(ctx context.Context) string {
+func (data UDLD) toBodyXML(ctx context.Context, config UDLD) string {
 	body := netconf.Body{}
 	if !data.Aggressive.IsNull() && !data.Aggressive.IsUnknown() {
 		if data.Aggressive.ValueBool() {

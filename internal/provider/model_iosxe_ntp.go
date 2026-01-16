@@ -70,45 +70,27 @@ type NTP struct {
 	PeerVrfs                      []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
 	TrustedKeys                   []NTPTrustedKeys        `tfsdk:"trusted_keys"`
 }
-
-type NTPData struct {
-	Device                        types.String            `tfsdk:"device"`
-	Id                            types.String            `tfsdk:"id"`
-	Authenticate                  types.Bool              `tfsdk:"authenticate"`
-	Logging                       types.Bool              `tfsdk:"logging"`
-	AccessGroupPeerAcl            types.String            `tfsdk:"access_group_peer_acl"`
-	AccessGroupQueryOnlyAcl       types.String            `tfsdk:"access_group_query_only_acl"`
-	AccessGroupServeAcl           types.String            `tfsdk:"access_group_serve_acl"`
-	AccessGroupServeOnlyAcl       types.String            `tfsdk:"access_group_serve_only_acl"`
-	AuthenticationKeys            []NTPAuthenticationKeys `tfsdk:"authentication_keys"`
-	ClockPeriod                   types.Int64             `tfsdk:"clock_period"`
-	Master                        types.Bool              `tfsdk:"master"`
-	MasterStratum                 types.Int64             `tfsdk:"master_stratum"`
-	Passive                       types.Bool              `tfsdk:"passive"`
-	UpdateCalendar                types.Bool              `tfsdk:"update_calendar"`
-	SourceGigabitEthernet         types.String            `tfsdk:"source_gigabit_ethernet"`
-	SourceTenGigabitEthernet      types.String            `tfsdk:"source_ten_gigabit_ethernet"`
-	SourceFortyGigabitEthernet    types.String            `tfsdk:"source_forty_gigabit_ethernet"`
-	SourceHundredGigabitEthernet  types.String            `tfsdk:"source_hundred_gigabit_ethernet"`
-	SourceLoopback                types.Int64             `tfsdk:"source_loopback"`
-	SourcePortChannel             types.Int64             `tfsdk:"source_port_channel"`
-	SourcePortChannelSubinterface types.String            `tfsdk:"source_port_channel_subinterface"`
-	SourceVlan                    types.Int64             `tfsdk:"source_vlan"`
-	Servers                       []NTPServers            `tfsdk:"servers"`
-	ServerVrfs                    []NTPServerVrfs         `tfsdk:"server_vrfs"`
-	Peers                         []NTPPeers              `tfsdk:"peers"`
-	PeerVrfs                      []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
-	TrustedKeys                   []NTPTrustedKeys        `tfsdk:"trusted_keys"`
-}
 type NTPAuthenticationKeys struct {
-	Number         types.Int64  `tfsdk:"number"`
-	Md5            types.String `tfsdk:"md5"`
-	CmacAes128     types.String `tfsdk:"cmac_aes_128"`
-	HmacSha1       types.String `tfsdk:"hmac_sha1"`
-	HmacSha2256    types.String `tfsdk:"hmac_sha2_256"`
-	Sha1           types.String `tfsdk:"sha1"`
-	Sha2           types.String `tfsdk:"sha2"`
-	EncryptionType types.Int64  `tfsdk:"encryption_type"`
+	Number               types.Int64  `tfsdk:"number"`
+	Md5                  types.String `tfsdk:"md5"`
+	Md5WO                types.String `tfsdk:"md5_wo"`
+	Md5WOVersion         types.Int64  `tfsdk:"md5_wo_version"`
+	CmacAes128           types.String `tfsdk:"cmac_aes_128"`
+	CmacAes128WO         types.String `tfsdk:"cmac_aes_128_wo"`
+	CmacAes128WOVersion  types.Int64  `tfsdk:"cmac_aes_128_wo_version"`
+	HmacSha1             types.String `tfsdk:"hmac_sha1"`
+	HmacSha1WO           types.String `tfsdk:"hmac_sha1_wo"`
+	HmacSha1WOVersion    types.Int64  `tfsdk:"hmac_sha1_wo_version"`
+	HmacSha2256          types.String `tfsdk:"hmac_sha2_256"`
+	HmacSha2256WO        types.String `tfsdk:"hmac_sha2_256_wo"`
+	HmacSha2256WOVersion types.Int64  `tfsdk:"hmac_sha2_256_wo_version"`
+	Sha1                 types.String `tfsdk:"sha1"`
+	Sha1WO               types.String `tfsdk:"sha1_wo"`
+	Sha1WOVersion        types.Int64  `tfsdk:"sha1_wo_version"`
+	Sha2                 types.String `tfsdk:"sha2"`
+	Sha2WO               types.String `tfsdk:"sha2_wo"`
+	Sha2WOVersion        types.Int64  `tfsdk:"sha2_wo_version"`
+	EncryptionType       types.Int64  `tfsdk:"encryption_type"`
 }
 type NTPServers struct {
 	IpAddress types.String `tfsdk:"ip_address"`
@@ -154,6 +136,89 @@ type NTPPeerVrfsPeers struct {
 	Version   types.Int64  `tfsdk:"version"`
 }
 
+type NTPData struct {
+	Device                        types.String                `tfsdk:"device"`
+	Id                            types.String                `tfsdk:"id"`
+	Authenticate                  types.Bool                  `tfsdk:"authenticate"`
+	Logging                       types.Bool                  `tfsdk:"logging"`
+	AccessGroupPeerAcl            types.String                `tfsdk:"access_group_peer_acl"`
+	AccessGroupQueryOnlyAcl       types.String                `tfsdk:"access_group_query_only_acl"`
+	AccessGroupServeAcl           types.String                `tfsdk:"access_group_serve_acl"`
+	AccessGroupServeOnlyAcl       types.String                `tfsdk:"access_group_serve_only_acl"`
+	AuthenticationKeys            []NTPAuthenticationKeysData `tfsdk:"authentication_keys"`
+	ClockPeriod                   types.Int64                 `tfsdk:"clock_period"`
+	Master                        types.Bool                  `tfsdk:"master"`
+	MasterStratum                 types.Int64                 `tfsdk:"master_stratum"`
+	Passive                       types.Bool                  `tfsdk:"passive"`
+	UpdateCalendar                types.Bool                  `tfsdk:"update_calendar"`
+	SourceGigabitEthernet         types.String                `tfsdk:"source_gigabit_ethernet"`
+	SourceTenGigabitEthernet      types.String                `tfsdk:"source_ten_gigabit_ethernet"`
+	SourceFortyGigabitEthernet    types.String                `tfsdk:"source_forty_gigabit_ethernet"`
+	SourceHundredGigabitEthernet  types.String                `tfsdk:"source_hundred_gigabit_ethernet"`
+	SourceLoopback                types.Int64                 `tfsdk:"source_loopback"`
+	SourcePortChannel             types.Int64                 `tfsdk:"source_port_channel"`
+	SourcePortChannelSubinterface types.String                `tfsdk:"source_port_channel_subinterface"`
+	SourceVlan                    types.Int64                 `tfsdk:"source_vlan"`
+	Servers                       []NTPServersData            `tfsdk:"servers"`
+	ServerVrfs                    []NTPServerVrfsData         `tfsdk:"server_vrfs"`
+	Peers                         []NTPPeersData              `tfsdk:"peers"`
+	PeerVrfs                      []NTPPeerVrfsData           `tfsdk:"peer_vrfs"`
+	TrustedKeys                   []NTPTrustedKeysData        `tfsdk:"trusted_keys"`
+}
+type NTPAuthenticationKeysData struct {
+	Number         types.Int64  `tfsdk:"number"`
+	Md5            types.String `tfsdk:"md5"`
+	CmacAes128     types.String `tfsdk:"cmac_aes_128"`
+	HmacSha1       types.String `tfsdk:"hmac_sha1"`
+	HmacSha2256    types.String `tfsdk:"hmac_sha2_256"`
+	Sha1           types.String `tfsdk:"sha1"`
+	Sha2           types.String `tfsdk:"sha2"`
+	EncryptionType types.Int64  `tfsdk:"encryption_type"`
+}
+type NTPServersData struct {
+	IpAddress types.String `tfsdk:"ip_address"`
+	Source    types.String `tfsdk:"source"`
+	Key       types.Int64  `tfsdk:"key"`
+	Prefer    types.Bool   `tfsdk:"prefer"`
+	Version   types.Int64  `tfsdk:"version"`
+	Burst     types.Bool   `tfsdk:"burst"`
+	Iburst    types.Bool   `tfsdk:"iburst"`
+	Periodic  types.Bool   `tfsdk:"periodic"`
+}
+type NTPServerVrfsData struct {
+	Name    types.String               `tfsdk:"name"`
+	Servers []NTPServerVrfsServersData `tfsdk:"servers"`
+}
+type NTPPeersData struct {
+	IpAddress types.String `tfsdk:"ip_address"`
+	Source    types.String `tfsdk:"source"`
+	Key       types.Int64  `tfsdk:"key"`
+	Prefer    types.Bool   `tfsdk:"prefer"`
+	Version   types.Int64  `tfsdk:"version"`
+}
+type NTPPeerVrfsData struct {
+	Name  types.String           `tfsdk:"name"`
+	Peers []NTPPeerVrfsPeersData `tfsdk:"peers"`
+}
+type NTPTrustedKeysData struct {
+	Number types.Int64 `tfsdk:"number"`
+}
+type NTPServerVrfsServersData struct {
+	IpAddress types.String `tfsdk:"ip_address"`
+	Key       types.Int64  `tfsdk:"key"`
+	Prefer    types.Bool   `tfsdk:"prefer"`
+	Version   types.Int64  `tfsdk:"version"`
+	Burst     types.Bool   `tfsdk:"burst"`
+	Iburst    types.Bool   `tfsdk:"iburst"`
+	Periodic  types.Bool   `tfsdk:"periodic"`
+}
+type NTPPeerVrfsPeersData struct {
+	IpAddress types.String `tfsdk:"ip_address"`
+	Key       types.Int64  `tfsdk:"key"`
+	Prefer    types.Bool   `tfsdk:"prefer"`
+	Version   types.Int64  `tfsdk:"version"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -192,7 +257,7 @@ func (data NTPData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data NTP) toBody(ctx context.Context) string {
+func (data NTP) toBody(ctx context.Context, config NTP) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Authenticate.IsNull() && !data.Authenticate.IsUnknown() {
 		if data.Authenticate.ValueBool() {
@@ -264,26 +329,58 @@ func (data NTP) toBody(ctx context.Context) string {
 	if len(data.AuthenticationKeys) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key", []interface{}{})
 		for index, item := range data.AuthenticationKeys {
+			var configItem NTPAuthenticationKeys
+			for _, ci := range config.AuthenticationKeys {
+				if ci.Number.ValueInt64() != item.Number.ValueInt64() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"number", strconv.FormatInt(item.Number.ValueInt64(), 10))
 			}
 			if !item.Md5.IsNull() && !item.Md5.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"md5-cfg", item.Md5.ValueString())
+				if !configItem.Md5WO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"md5-cfg", configItem.Md5WO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"md5-cfg", item.Md5.ValueString())
+				}
 			}
 			if !item.CmacAes128.IsNull() && !item.CmacAes128.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"cmac-aes-128", item.CmacAes128.ValueString())
+				if !configItem.CmacAes128WO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"cmac-aes-128", configItem.CmacAes128WO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"cmac-aes-128", item.CmacAes128.ValueString())
+				}
 			}
 			if !item.HmacSha1.IsNull() && !item.HmacSha1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"hmac-sha1", item.HmacSha1.ValueString())
+				if !configItem.HmacSha1WO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"hmac-sha1", configItem.HmacSha1WO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"hmac-sha1", item.HmacSha1.ValueString())
+				}
 			}
 			if !item.HmacSha2256.IsNull() && !item.HmacSha2256.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"hmac-sha2-256", item.HmacSha2256.ValueString())
+				if !configItem.HmacSha2256WO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"hmac-sha2-256", configItem.HmacSha2256WO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"hmac-sha2-256", item.HmacSha2256.ValueString())
+				}
 			}
 			if !item.Sha1.IsNull() && !item.Sha1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"sha1", item.Sha1.ValueString())
+				if !configItem.Sha1WO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"sha1", configItem.Sha1WO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"sha1", item.Sha1.ValueString())
+				}
 			}
 			if !item.Sha2.IsNull() && !item.Sha2.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"sha2", item.Sha2.ValueString())
+				if !configItem.Sha2WO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"sha2", configItem.Sha2WO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"sha2", item.Sha2.ValueString())
+				}
 			}
 			if !item.EncryptionType.IsNull() && !item.EncryptionType.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key"+"."+strconv.Itoa(index)+"."+"encryption-type", strconv.FormatInt(item.EncryptionType.ValueInt64(), 10))
@@ -433,7 +530,7 @@ func (data NTP) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data NTP) toBodyXML(ctx context.Context) string {
+func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 	body := netconf.Body{}
 	if !data.Authenticate.IsNull() && !data.Authenticate.IsUnknown() {
 		if data.Authenticate.ValueBool() {
@@ -463,27 +560,59 @@ func (data NTP) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.AuthenticationKeys) > 0 {
 		for _, item := range data.AuthenticationKeys {
+			var configItem NTPAuthenticationKeys
+			for _, ci := range config.AuthenticationKeys {
+				if ci.Number.ValueInt64() != item.Number.ValueInt64() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "number", strconv.FormatInt(item.Number.ValueInt64(), 10))
 			}
 			if !item.Md5.IsNull() && !item.Md5.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "md5-cfg", item.Md5.ValueString())
+				if !configItem.Md5WO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "md5-cfg", configItem.Md5WO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "md5-cfg", item.Md5.ValueString())
+				}
 			}
 			if !item.CmacAes128.IsNull() && !item.CmacAes128.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "cmac-aes-128", item.CmacAes128.ValueString())
+				if !configItem.CmacAes128WO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "cmac-aes-128", configItem.CmacAes128WO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "cmac-aes-128", item.CmacAes128.ValueString())
+				}
 			}
 			if !item.HmacSha1.IsNull() && !item.HmacSha1.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "hmac-sha1", item.HmacSha1.ValueString())
+				if !configItem.HmacSha1WO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "hmac-sha1", configItem.HmacSha1WO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "hmac-sha1", item.HmacSha1.ValueString())
+				}
 			}
 			if !item.HmacSha2256.IsNull() && !item.HmacSha2256.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "hmac-sha2-256", item.HmacSha2256.ValueString())
+				if !configItem.HmacSha2256WO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "hmac-sha2-256", configItem.HmacSha2256WO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "hmac-sha2-256", item.HmacSha2256.ValueString())
+				}
 			}
 			if !item.Sha1.IsNull() && !item.Sha1.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "sha1", item.Sha1.ValueString())
+				if !configItem.Sha1WO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "sha1", configItem.Sha1WO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "sha1", item.Sha1.ValueString())
+				}
 			}
 			if !item.Sha2.IsNull() && !item.Sha2.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "sha2", item.Sha2.ValueString())
+				if !configItem.Sha2WO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "sha2", configItem.Sha2WO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "sha2", item.Sha2.ValueString())
+				}
 			}
 			if !item.EncryptionType.IsNull() && !item.EncryptionType.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "encryption-type", strconv.FormatInt(item.EncryptionType.ValueInt64(), 10))
@@ -2003,9 +2132,9 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.AccessGroupServeOnlyAcl = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:authentication-key"); value.Exists() {
-		data.AuthenticationKeys = make([]NTPAuthenticationKeys, 0)
+		data.AuthenticationKeys = make([]NTPAuthenticationKeysData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NTPAuthenticationKeys{}
+			item := NTPAuthenticationKeysData{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.Int64Value(cValue.Int())
 			}
@@ -2080,9 +2209,9 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SourceVlan = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:server.server-list"); value.Exists() {
-		data.Servers = make([]NTPServers, 0)
+		data.Servers = make([]NTPServersData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NTPServers{}
+			item := NTPServersData{}
 			if cValue := v.Get("ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -2120,16 +2249,16 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:server.vrf"); value.Exists() {
-		data.ServerVrfs = make([]NTPServerVrfs, 0)
+		data.ServerVrfs = make([]NTPServerVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NTPServerVrfs{}
+			item := NTPServerVrfsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("server-list"); cValue.Exists() {
-				item.Servers = make([]NTPServerVrfsServers, 0)
+				item.Servers = make([]NTPServerVrfsServersData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := NTPServerVrfsServers{}
+					cItem := NTPServerVrfsServersData{}
 					if ccValue := cv.Get("ip-address"); ccValue.Exists() {
 						cItem.IpAddress = types.StringValue(ccValue.String())
 					}
@@ -2168,9 +2297,9 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:peer.server-list"); value.Exists() {
-		data.Peers = make([]NTPPeers, 0)
+		data.Peers = make([]NTPPeersData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NTPPeers{}
+			item := NTPPeersData{}
 			if cValue := v.Get("ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -2193,16 +2322,16 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:peer.vrf"); value.Exists() {
-		data.PeerVrfs = make([]NTPPeerVrfs, 0)
+		data.PeerVrfs = make([]NTPPeerVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NTPPeerVrfs{}
+			item := NTPPeerVrfsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("server-list"); cValue.Exists() {
-				item.Peers = make([]NTPPeerVrfsPeers, 0)
+				item.Peers = make([]NTPPeerVrfsPeersData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := NTPPeerVrfsPeers{}
+					cItem := NTPPeerVrfsPeersData{}
 					if ccValue := cv.Get("ip-address"); ccValue.Exists() {
 						cItem.IpAddress = types.StringValue(ccValue.String())
 					}
@@ -2226,9 +2355,9 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:trusted-key"); value.Exists() {
-		data.TrustedKeys = make([]NTPTrustedKeys, 0)
+		data.TrustedKeys = make([]NTPTrustedKeysData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NTPTrustedKeys{}
+			item := NTPTrustedKeysData{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.Int64Value(cValue.Int())
 			}
@@ -2529,9 +2658,9 @@ func (data *NTPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.AccessGroupServeOnlyAcl = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:authentication-key"); value.Exists() {
-		data.AuthenticationKeys = make([]NTPAuthenticationKeys, 0)
+		data.AuthenticationKeys = make([]NTPAuthenticationKeysData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := NTPAuthenticationKeys{}
+			item := NTPAuthenticationKeysData{}
 			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
 				item.Number = types.Int64Value(cValue.Int())
 			}
@@ -2606,9 +2735,9 @@ func (data *NTPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SourceVlan = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:server/server-list"); value.Exists() {
-		data.Servers = make([]NTPServers, 0)
+		data.Servers = make([]NTPServersData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := NTPServers{}
+			item := NTPServersData{}
 			if cValue := helpers.GetFromXPath(v, "ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -2646,16 +2775,16 @@ func (data *NTPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:server/vrf"); value.Exists() {
-		data.ServerVrfs = make([]NTPServerVrfs, 0)
+		data.ServerVrfs = make([]NTPServerVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := NTPServerVrfs{}
+			item := NTPServerVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "server-list"); cValue.Exists() {
-				item.Servers = make([]NTPServerVrfsServers, 0)
+				item.Servers = make([]NTPServerVrfsServersData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := NTPServerVrfsServers{}
+					cItem := NTPServerVrfsServersData{}
 					if ccValue := helpers.GetFromXPath(cv, "ip-address"); ccValue.Exists() {
 						cItem.IpAddress = types.StringValue(ccValue.String())
 					}
@@ -2694,9 +2823,9 @@ func (data *NTPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:peer/server-list"); value.Exists() {
-		data.Peers = make([]NTPPeers, 0)
+		data.Peers = make([]NTPPeersData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := NTPPeers{}
+			item := NTPPeersData{}
 			if cValue := helpers.GetFromXPath(v, "ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -2719,16 +2848,16 @@ func (data *NTPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:peer/vrf"); value.Exists() {
-		data.PeerVrfs = make([]NTPPeerVrfs, 0)
+		data.PeerVrfs = make([]NTPPeerVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := NTPPeerVrfs{}
+			item := NTPPeerVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "server-list"); cValue.Exists() {
-				item.Peers = make([]NTPPeerVrfsPeers, 0)
+				item.Peers = make([]NTPPeerVrfsPeersData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := NTPPeerVrfsPeers{}
+					cItem := NTPPeerVrfsPeersData{}
 					if ccValue := helpers.GetFromXPath(cv, "ip-address"); ccValue.Exists() {
 						cItem.IpAddress = types.StringValue(ccValue.String())
 					}
@@ -2752,9 +2881,9 @@ func (data *NTPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:trusted-key"); value.Exists() {
-		data.TrustedKeys = make([]NTPTrustedKeys, 0)
+		data.TrustedKeys = make([]NTPTrustedKeysData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := NTPTrustedKeys{}
+			item := NTPTrustedKeysData{}
 			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
 				item.Number = types.Int64Value(cValue.Int())
 			}
