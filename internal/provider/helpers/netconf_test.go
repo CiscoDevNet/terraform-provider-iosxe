@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"fmt"
 	"reflect"
 	"regexp"
 	"strings"
@@ -2426,4 +2427,204 @@ func TestSetRawFromXPath_PreserveOtherRootElements(t *testing.T) {
 	}
 
 	t.Log("✓ Other root elements preserved successfully when appending siblings")
+}
+
+// TestRemoveFromXPath_MultipleSiblings tests that RemoveFromXPath correctly handles
+// multiple sibling list elements with different keys (e.g., multiple VLANs with different IDs)
+func TestRemoveFromXPath_MultipleSiblings(t *testing.T) {
+	// Start with an empty body
+	body := netconf.Body{}
+
+	// Simulate deleting priority from multiple VLANs (like spanning-tree vlan removal fix)
+	// Use simple paths like other tests - no namespace prefixes needed for testing
+
+	// First VLAN: delete priority for vlan[id='20']
+	body = RemoveFromXPath(body, "/native/vlan[id='20']/priority")
+
+	// Second VLAN: delete priority for vlan[id='30']
+	body = RemoveFromXPath(body, "/native/vlan[id='30']/priority")
+
+	resultXML := body.Res()
+	t.Logf("Result XML:\n%s", resultXML)
+
+	// Verify both vlan elements exist in the XML
+	vlanCount := xmldot.Get(resultXML, "native.vlan.#").Int()
+	if vlanCount != 2 {
+		t.Errorf("Found %d vlan elements, want 2", vlanCount)
+	}
+
+	// Check that we have both IDs
+	vlan0Id := xmldot.Get(resultXML, "native.vlan.0.id").String()
+	vlan1Id := xmldot.Get(resultXML, "native.vlan.1.id").String()
+
+	t.Logf("vlan.0.id = %q, vlan.1.id = %q", vlan0Id, vlan1Id)
+
+	// IDs should be 20 and 30 (order may vary)
+	ids := map[string]bool{vlan0Id: true, vlan1Id: true}
+	if !ids["20"] {
+		t.Errorf("VLAN with id='20' not found in XML")
+	}
+	if !ids["30"] {
+		t.Errorf("VLAN with id='30' not found in XML")
+	}
+
+	// Verify both priority elements have operation="remove"
+	prio0Op := xmldot.Get(resultXML, "native.vlan.0.priority.@operation").String()
+	prio1Op := xmldot.Get(resultXML, "native.vlan.1.priority.@operation").String()
+
+	if prio0Op != "remove" {
+		t.Errorf("First vlan priority operation = %q, want %q", prio0Op, "remove")
+	}
+	if prio1Op != "remove" {
+		t.Errorf("Second vlan priority operation = %q, want %q", prio1Op, "remove")
+	}
+
+	t.Log("✓ Multiple sibling elements with different keys handled correctly")
+}
+
+// TestFindSiblingInfo tests the findSiblingInfo helper function
+func TestFindSiblingInfo(t *testing.T) {
+	tests := []struct {
+		name        string
+		setupBody   func() netconf.Body
+		parentPath  string
+		elementName string
+		keys        []KeyValue
+		wantResult  SiblingResult
+	}{
+		{
+			name: "no existing elements returns SiblingActionNew",
+			setupBody: func() netconf.Body {
+				return netconf.NewBody("")
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "10"}},
+			wantResult:  SiblingResult{Action: SiblingActionNew, Index: -1},
+		},
+		{
+			name: "finds existing element with matching keys",
+			setupBody: func() netconf.Body {
+				body := netconf.NewBody("")
+				body = body.Set("spanning-tree.vlan.id", "10")
+				body = body.Set("spanning-tree.vlan.priority", "4096")
+				return body
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "10"}},
+			wantResult:  SiblingResult{Action: SiblingActionUpdate, Index: 0},
+		},
+		{
+			name: "returns SiblingActionAppend when no match",
+			setupBody: func() netconf.Body {
+				body := netconf.NewBody("")
+				body = body.Set("spanning-tree.vlan.id", "10")
+				return body
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "20"}},
+			wantResult:  SiblingResult{Action: SiblingActionAppend, Index: -1},
+		},
+		{
+			name: "finds correct element among multiple siblings",
+			setupBody: func() netconf.Body {
+				// Use SetRaw to properly create multiple sibling elements
+				// (indexed Set paths don't work with xmldot)
+				body := netconf.NewBody("")
+				body = body.SetRaw("spanning-tree", "<vlan><id>10</id></vlan><vlan><id>20</id></vlan><vlan><id>30</id></vlan>")
+				return body
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "20"}},
+			wantResult:  SiblingResult{Action: SiblingActionUpdate, Index: 1},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body := tt.setupBody()
+			got := findSiblingInfo(body, tt.parentPath, tt.elementName, tt.keys)
+			if got.Action != tt.wantResult.Action || got.Index != tt.wantResult.Index {
+				t.Errorf("findSiblingInfo() = %+v, want %+v", got, tt.wantResult)
+			}
+		})
+	}
+}
+
+// TestRemoveFromXPath_DisabledVlansScenario tests the exact scenario used by disabled_vlans:
+// 1. First add regular vlans with priorities (via SetFromXPath)
+// 2. Then add disabled_vlans with operation="remove" on the vlan element itself (via RemoveFromXPath)
+// This tests that RemoveFromXPath properly appends sibling elements with operation="remove"
+// when there are existing siblings.
+func TestRemoveFromXPath_DisabledVlansScenario(t *testing.T) {
+	body := netconf.Body{}
+	basePath := "/Cisco-IOS-XE-native:native/spanning-tree"
+
+	// Step 1: Add regular vlans with priority (mimics toBodyXML for vlans)
+	// VLAN 10 with priority 4096
+	cBody := netconf.Body{}
+	cBody = SetFromXPath(cBody, "id", "10")
+	cBody = SetFromXPath(cBody, "priority", "4096")
+	body = SetRawFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan", cBody.Res())
+
+	t.Logf("After adding vlan 10:\n%s\n", body.Res())
+
+	// VLAN 20 with priority 8192
+	cBody2 := netconf.Body{}
+	cBody2 = SetFromXPath(cBody2, "id", "20")
+	cBody2 = SetFromXPath(cBody2, "priority", "8192")
+	body = SetRawFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan", cBody2.Res())
+
+	t.Logf("After adding vlan 20:\n%s\n", body.Res())
+
+	// Step 2: Add disabled_vlans with operation="remove" on the vlan element
+	// Disabled VLAN 40 - should have operation="remove" at the vlan level
+	predicates40 := "[id='40']"
+	body = RemoveFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan"+predicates40)
+
+	t.Logf("After disabled_vlan 40:\n%s\n", body.Res())
+
+	// Disabled VLAN 50 - should have operation="remove" at the vlan level
+	predicates50 := "[id='50']"
+	body = RemoveFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan"+predicates50)
+
+	resultXML := body.Res()
+	t.Logf("Final XML:\n%s\n", resultXML)
+
+	// Verification
+	vlanCount := xmldot.Get(resultXML, "native.spanning-tree.vlan.#").Int()
+	t.Logf("Total vlan elements: %d", vlanCount)
+
+	if vlanCount != 4 {
+		t.Errorf("Expected 4 vlan elements, got %d", vlanCount)
+	}
+
+	// Check each vlan element
+	for i := 0; i < int(vlanCount); i++ {
+		id := xmldot.Get(resultXML, fmt.Sprintf("native.spanning-tree.vlan.%d.id", i)).String()
+		op := xmldot.Get(resultXML, fmt.Sprintf("native.spanning-tree.vlan.%d.@operation", i)).String()
+		prio := xmldot.Get(resultXML, fmt.Sprintf("native.spanning-tree.vlan.%d.priority", i)).String()
+		t.Logf("  vlan.%d: id=%s, operation=%q, priority=%s", i, id, op, prio)
+
+		// VLANs 10 and 20 should NOT have operation attribute
+		if id == "10" || id == "20" {
+			if op != "" {
+				t.Errorf("Regular vlan %s should not have operation attribute, got %q", id, op)
+			}
+		}
+		// VLANs 40 and 50 should have operation="remove"
+		if id == "40" || id == "50" {
+			if op != "remove" {
+				t.Errorf("Disabled vlan %s should have operation='remove', got %q", id, op)
+			}
+		}
+	}
+
+	// Additional string-based verification (note: the xmlns attribute may appear after operation)
+	if !strings.Contains(resultXML, `operation="remove"`) {
+		t.Error("Expected at least one element with operation=\"remove\" attribute in output")
+	}
 }
