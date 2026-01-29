@@ -31,6 +31,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-spanning-tree:vlan
     tf_name: vlans
     type: List
+    no_delete: true
     attributes:
       - yang_name: id
         id: true
