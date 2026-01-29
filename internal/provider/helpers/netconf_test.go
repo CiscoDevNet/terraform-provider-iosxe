@@ -2628,3 +2628,89 @@ func TestRemoveFromXPath_DisabledVlansScenario(t *testing.T) {
 		t.Error("Expected at least one element with operation=\"remove\" attribute in output")
 	}
 }
+
+// TestAugmentNamespaces_IPv6ColonHandling tests that colons in IPv6 addresses within predicates
+// are not misinterpreted as YANG namespace separators.
+//
+// This is a defensive test for the sibling handling code path in buildXPathStructure().
+// That code calls augmentNamespaces with the original XPath (including predicates),
+// which could contain IPv6 addresses with colons. Without the fix to augmentNamespaces,
+// these colons could be misinterpreted as namespace separators.
+func TestAugmentNamespaces_IPv6ColonHandling(t *testing.T) {
+	tests := []struct {
+		name             string
+		xPath            string
+		setValue         string
+		shouldNotContain []string // Strings that should NOT appear in output
+		shouldContain    []string // Strings that SHOULD appear in output
+	}{
+		{
+			// Element WITHOUT namespace prefix, but WITH IPv6 in predicate
+			name:     "element without namespace prefix but with IPv6 in predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/ipv6/route/ipv6-route[prefix='2001:db8::1/64']/next-hop",
+			setValue: "10.0.0.1",
+			shouldNotContain: []string{
+				"http://cisco.com/ns/yang/ipv6-route[prefix", // Malformed namespace URL
+			},
+			shouldContain: []string{
+				"2001:db8::1/64", // IPv6 address preserved intact
+			},
+		},
+		{
+			name:     "element without namespace prefix and link-local IPv6",
+			xPath:    "/Cisco-IOS-XE-native:native/ipv6/neighbor/neighbor-entry[address='fe80::1']/interface",
+			setValue: "GigabitEthernet1",
+			shouldNotContain: []string{
+				"http://cisco.com/ns/yang/neighbor-entry[address",
+			},
+			shouldContain: []string{
+				"fe80::1",
+			},
+		},
+		{
+			name:     "RemoveFromXPath with element without namespace and IPv6 predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/ipv6/route/ipv6-route[prefix='2001:db8:abcd::1/128']",
+			setValue: "__REMOVE__",
+			shouldNotContain: []string{
+				"http://cisco.com/ns/yang/ipv6-route[prefix",
+			},
+			shouldContain: []string{
+				"2001:db8:abcd::1/128",
+				`operation="remove"`,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body := netconf.Body{}
+			var result netconf.Body
+
+			if tt.setValue == "__REMOVE__" {
+				result = RemoveFromXPath(body, tt.xPath)
+			} else {
+				result = SetFromXPath(body, tt.xPath, tt.setValue)
+			}
+
+			resultXML := result.Res()
+			t.Logf("XPath: %s", tt.xPath)
+			t.Logf("Generated XML:\n%s", resultXML)
+
+			// Check that invalid namespace patterns are NOT present
+			for _, badPattern := range tt.shouldNotContain {
+				if strings.Contains(resultXML, badPattern) {
+					t.Errorf("Output should NOT contain %q (indicates IPv6 colon was misinterpreted as namespace separator)\nGot:\n%s", badPattern, resultXML)
+				}
+			}
+
+			// Check that expected patterns ARE present
+			for _, goodPattern := range tt.shouldContain {
+				if !strings.Contains(resultXML, goodPattern) {
+					t.Errorf("Output should contain %q\nGot:\n%s", goodPattern, resultXML)
+				}
+			}
+
+			t.Log("✓ IPv6 address colons correctly handled (not misinterpreted as namespace separators)")
+		})
+	}
+}
