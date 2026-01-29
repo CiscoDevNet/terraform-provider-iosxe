@@ -93,7 +93,7 @@ func (data BGPAddressFamilyVPNv6Data) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPAddressFamilyVPNv6) toBody(ctx context.Context) string {
+func (data BGPAddressFamilyVPNv6) toBody(ctx context.Context, config BGPAddressFamilyVPNv6) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
@@ -105,7 +105,7 @@ func (data BGPAddressFamilyVPNv6) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPAddressFamilyVPNv6) toBodyXML(ctx context.Context) string {
+func (data BGPAddressFamilyVPNv6) toBodyXML(ctx context.Context, config BGPAddressFamilyVPNv6) string {
 	body := netconf.Body{}
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/af-name", data.AfName.ValueString())

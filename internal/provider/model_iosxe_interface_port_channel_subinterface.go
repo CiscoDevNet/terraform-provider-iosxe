@@ -95,60 +95,6 @@ type InterfacePortChannelSubinterface struct {
 	IpNatInside                  types.Bool                                               `tfsdk:"ip_nat_inside"`
 	IpNatOutside                 types.Bool                                               `tfsdk:"ip_nat_outside"`
 }
-
-type InterfacePortChannelSubinterfaceData struct {
-	Device                       types.String                                             `tfsdk:"device"`
-	Id                           types.String                                             `tfsdk:"id"`
-	Name                         types.String                                             `tfsdk:"name"`
-	EncapsulationDot1qVlanId     types.Int64                                              `tfsdk:"encapsulation_dot1q_vlan_id"`
-	Description                  types.String                                             `tfsdk:"description"`
-	Shutdown                     types.Bool                                               `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                                               `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                                               `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                                               `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                                             `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                                             `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                                             `tfsdk:"ipv4_address_mask"`
-	IpAccessGroupInEnable        types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable       types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut             types.String                                             `tfsdk:"ip_access_group_out"`
-	AutoQosClassify              types.Bool                                               `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice        types.Bool                                               `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust                 types.Bool                                               `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos              types.Bool                                               `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp             types.Bool                                               `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts              types.Bool                                               `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera         types.Bool                                               `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer      types.Bool                                               `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip                  types.Bool                                               `tfsdk:"auto_qos_voip"`
-	AutoQosVoipCiscoPhone        types.Bool                                               `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone    types.Bool                                               `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust             types.Bool                                               `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice                  types.String                                             `tfsdk:"trust_device"`
-	HelperAddresses              []InterfacePortChannelSubinterfaceHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                  types.String                                             `tfsdk:"bfd_template"`
-	BfdEnable                    types.Bool                                               `tfsdk:"bfd_enable"`
-	BfdLocalAddress              types.String                                             `tfsdk:"bfd_local_address"`
-	BfdInterval                  types.Int64                                              `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx             types.Int64                                              `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier        types.Int64                                              `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                      types.Bool                                               `tfsdk:"bfd_echo"`
-	Ipv6Enable                   types.Bool                                               `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                                              `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                                               `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                                               `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                                               `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfacePortChannelSubinterfaceIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	ArpTimeout                   types.Int64                                              `tfsdk:"arp_timeout"`
-	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
-	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
-	IpIgmpVersion                types.Int64                                              `tfsdk:"ip_igmp_version"`
-	IpRouterIsis                 types.String                                             `tfsdk:"ip_router_isis"`
-	IpNatInside                  types.Bool                                               `tfsdk:"ip_nat_inside"`
-	IpNatOutside                 types.Bool                                               `tfsdk:"ip_nat_outside"`
-}
 type InterfacePortChannelSubinterfaceHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
 	Global  types.Bool   `tfsdk:"global"`
@@ -159,6 +105,73 @@ type InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses struct {
 	LinkLocal types.Bool   `tfsdk:"link_local"`
 }
 type InterfacePortChannelSubinterfaceIpv6Addresses struct {
+	Prefix types.String `tfsdk:"prefix"`
+	Eui64  types.Bool   `tfsdk:"eui_64"`
+}
+
+type InterfacePortChannelSubinterfaceData struct {
+	Device                       types.String                                                 `tfsdk:"device"`
+	Id                           types.String                                                 `tfsdk:"id"`
+	Name                         types.String                                                 `tfsdk:"name"`
+	EncapsulationDot1qVlanId     types.Int64                                                  `tfsdk:"encapsulation_dot1q_vlan_id"`
+	Description                  types.String                                                 `tfsdk:"description"`
+	Shutdown                     types.Bool                                                   `tfsdk:"shutdown"`
+	IpProxyArp                   types.Bool                                                   `tfsdk:"ip_proxy_arp"`
+	IpRedirects                  types.Bool                                                   `tfsdk:"ip_redirects"`
+	IpUnreachables               types.Bool                                                   `tfsdk:"ip_unreachables"`
+	VrfForwarding                types.String                                                 `tfsdk:"vrf_forwarding"`
+	Ipv4Address                  types.String                                                 `tfsdk:"ipv4_address"`
+	Ipv4AddressMask              types.String                                                 `tfsdk:"ipv4_address_mask"`
+	IpAccessGroupInEnable        types.Bool                                                   `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn              types.String                                                 `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable       types.Bool                                                   `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut             types.String                                                 `tfsdk:"ip_access_group_out"`
+	AutoQosClassify              types.Bool                                                   `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice        types.Bool                                                   `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                 types.Bool                                                   `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos              types.Bool                                                   `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp             types.Bool                                                   `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts              types.Bool                                                   `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera         types.Bool                                                   `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer      types.Bool                                                   `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                  types.Bool                                                   `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone        types.Bool                                                   `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone    types.Bool                                                   `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust             types.Bool                                                   `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                  types.String                                                 `tfsdk:"trust_device"`
+	HelperAddresses              []InterfacePortChannelSubinterfaceHelperAddressesData        `tfsdk:"helper_addresses"`
+	BfdTemplate                  types.String                                                 `tfsdk:"bfd_template"`
+	BfdEnable                    types.Bool                                                   `tfsdk:"bfd_enable"`
+	BfdLocalAddress              types.String                                                 `tfsdk:"bfd_local_address"`
+	BfdInterval                  types.Int64                                                  `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx             types.Int64                                                  `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier        types.Int64                                                  `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                      types.Bool                                                   `tfsdk:"bfd_echo"`
+	Ipv6Enable                   types.Bool                                                   `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                      types.Int64                                                  `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll          types.Bool                                                   `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault types.Bool                                                   `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp              types.Bool                                                   `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses       []InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                []InterfacePortChannelSubinterfaceIpv6AddressesData          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                   types.Int64                                                  `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust         types.Bool                                                   `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate     types.Int64                                                  `tfsdk:"ip_arp_inspection_limit_rate"`
+	IpIgmpVersion                types.Int64                                                  `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                 types.String                                                 `tfsdk:"ip_router_isis"`
+	IpNatInside                  types.Bool                                                   `tfsdk:"ip_nat_inside"`
+	IpNatOutside                 types.Bool                                                   `tfsdk:"ip_nat_outside"`
+}
+type InterfacePortChannelSubinterfaceHelperAddressesData struct {
+	Address types.String `tfsdk:"address"`
+	Global  types.Bool   `tfsdk:"global"`
+	Vrf     types.String `tfsdk:"vrf"`
+}
+type InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData struct {
+	Address   types.String `tfsdk:"address"`
+	LinkLocal types.Bool   `tfsdk:"link_local"`
+}
+type InterfacePortChannelSubinterfaceIpv6AddressesData struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
 }
@@ -203,7 +216,7 @@ func (data InterfacePortChannelSubinterfaceData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string {
+func (data InterfacePortChannelSubinterface) toBody(ctx context.Context, config InterfacePortChannelSubinterface) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -436,7 +449,7 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context) string {
+func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context, config InterfacePortChannelSubinterface) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -2009,9 +2022,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 		data.TrustDevice = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.helper-address"); value.Exists() {
-		data.HelperAddresses = make([]InterfacePortChannelSubinterfaceHelperAddresses, 0)
+		data.HelperAddresses = make([]InterfacePortChannelSubinterfaceHelperAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfacePortChannelSubinterfaceHelperAddresses{}
+			item := InterfacePortChannelSubinterfaceHelperAddressesData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2076,9 +2089,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 		data.Ipv6AddressDhcp = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv6.address.link-local-address"); value.Exists() {
-		data.Ipv6LinkLocalAddresses = make([]InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses, 0)
+		data.Ipv6LinkLocalAddresses = make([]InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses{}
+			item := InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2092,9 +2105,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 		})
 	}
 	if value := res.Get(prefix + "ipv6.address.prefix-list"); value.Exists() {
-		data.Ipv6Addresses = make([]InterfacePortChannelSubinterfaceIpv6Addresses, 0)
+		data.Ipv6Addresses = make([]InterfacePortChannelSubinterfaceIpv6AddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfacePortChannelSubinterfaceIpv6Addresses{}
+			item := InterfacePortChannelSubinterfaceIpv6AddressesData{}
 			if cValue := v.Get("prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -2503,9 +2516,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 		data.TrustDevice = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address"); value.Exists() {
-		data.HelperAddresses = make([]InterfacePortChannelSubinterfaceHelperAddresses, 0)
+		data.HelperAddresses = make([]InterfacePortChannelSubinterfaceHelperAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfacePortChannelSubinterfaceHelperAddresses{}
+			item := InterfacePortChannelSubinterfaceHelperAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2570,9 +2583,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 		data.Ipv6AddressDhcp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address"); value.Exists() {
-		data.Ipv6LinkLocalAddresses = make([]InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses, 0)
+		data.Ipv6LinkLocalAddresses = make([]InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses{}
+			item := InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2586,9 +2599,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list"); value.Exists() {
-		data.Ipv6Addresses = make([]InterfacePortChannelSubinterfaceIpv6Addresses, 0)
+		data.Ipv6Addresses = make([]InterfacePortChannelSubinterfaceIpv6AddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfacePortChannelSubinterfaceIpv6Addresses{}
+			item := InterfacePortChannelSubinterfaceIpv6AddressesData{}
 			if cValue := helpers.GetFromXPath(v, "prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}

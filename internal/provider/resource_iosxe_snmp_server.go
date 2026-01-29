@@ -166,6 +166,15 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Required:            true,
 							Sensitive:           true,
 						},
+						"community_or_user_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"community_or_user_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"version": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SNMP version to use for notification messages").AddStringEnumDescription("1", "2c", "3").String,
 							Optional:            true,
@@ -207,6 +216,15 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 							MarkdownDescription: helpers.NewAttributeDescription("SNMPv1/v2c community string or SNMPv3 user name").String,
 							Required:            true,
 							Sensitive:           true,
+						},
+						"community_or_user_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"community_or_user_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"version": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SNMP version to use for notification messages").AddStringEnumDescription("1", "2c", "3").String,
@@ -1060,6 +1078,15 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Required:            true,
 							Sensitive:           true,
 						},
+						"name_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"name_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"view": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Restrict this community to a named MIB view").String,
 							Optional:            true,
@@ -1219,6 +1246,15 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Required:            true,
 							Sensitive:           true,
 						},
+						"v3_auth_password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"v3_auth_password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"v3_auth_priv_aes_algorithm": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("128", "192", "256").String,
 							Optional:            true,
@@ -1230,6 +1266,15 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
 							Optional:            true,
 							Sensitive:           true,
+						},
+						"v3_auth_priv_aes_password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"v3_auth_priv_aes_password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"v3_auth_priv_aes_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
@@ -1257,6 +1302,15 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Optional:            true,
 							Sensitive:           true,
 						},
+						"v3_auth_priv_des_password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"v3_auth_priv_des_password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"v3_auth_priv_des_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
 							Optional:            true,
@@ -1282,6 +1336,15 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
 							Optional:            true,
 							Sensitive:           true,
+						},
+						"v3_auth_priv_des3_password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"v3_auth_priv_des3_password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"v3_auth_priv_des3_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
@@ -1345,10 +1408,17 @@ func (r *SNMPServerResource) Configure(_ context.Context, req resource.Configure
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *SNMPServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan SNMPServer
+	var plan, config SNMPServer
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -1365,7 +1435,7 @@ func (r *SNMPServerResource) Create(ctx context.Context, req resource.CreateRequ
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -1405,7 +1475,7 @@ func (r *SNMPServerResource) Create(ctx context.Context, req resource.CreateRequ
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -1512,7 +1582,7 @@ func (r *SNMPServerResource) Read(ctx context.Context, req resource.ReadRequest,
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *SNMPServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state SNMPServer
+	var plan, state, config SNMPServer
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -1528,6 +1598,13 @@ func (r *SNMPServerResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -1538,7 +1615,7 @@ func (r *SNMPServerResource) Update(ctx context.Context, req resource.UpdateRequ
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -1592,7 +1669,7 @@ func (r *SNMPServerResource) Update(ctx context.Context, req resource.UpdateRequ
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

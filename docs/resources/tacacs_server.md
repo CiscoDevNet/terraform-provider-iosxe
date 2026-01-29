@@ -29,6 +29,8 @@ resource "iosxe_tacacs_server" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `attribute_allow_unknown` (Boolean) Unknown Tacacs+ attributes
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -39,6 +41,8 @@ resource "iosxe_tacacs_server" "example" {
 - `encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
   - Choices: `0`, `6`, `7`
 - `key` (String, Sensitive)
+- `key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `key_wo_version` (Number) The write-only version of the attribute.
 - `timeout` (Number) Time to wait for a TACACS server to reply
   - Range: `1`-`1000`
 

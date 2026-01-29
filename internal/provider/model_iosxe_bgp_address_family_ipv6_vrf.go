@@ -49,14 +49,6 @@ type BGPAddressFamilyIPv6VRF struct {
 	AfName     types.String                  `tfsdk:"af_name"`
 	Vrfs       []BGPAddressFamilyIPv6VRFVrfs `tfsdk:"vrfs"`
 }
-
-type BGPAddressFamilyIPv6VRFData struct {
-	Device types.String                  `tfsdk:"device"`
-	Id     types.String                  `tfsdk:"id"`
-	Asn    types.String                  `tfsdk:"asn"`
-	AfName types.String                  `tfsdk:"af_name"`
-	Vrfs   []BGPAddressFamilyIPv6VRFVrfs `tfsdk:"vrfs"`
-}
 type BGPAddressFamilyIPv6VRFVrfs struct {
 	Name                             types.String                                     `tfsdk:"name"`
 	Ipv6UnicastAdvertiseL2vpnEvpn    types.Bool                                       `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
@@ -65,6 +57,27 @@ type BGPAddressFamilyIPv6VRFVrfs struct {
 	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
 type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks struct {
+	Network  types.String `tfsdk:"network"`
+	RouteMap types.String `tfsdk:"route_map"`
+	Backdoor types.Bool   `tfsdk:"backdoor"`
+	Evpn     types.Bool   `tfsdk:"evpn"`
+}
+
+type BGPAddressFamilyIPv6VRFData struct {
+	Device types.String                      `tfsdk:"device"`
+	Id     types.String                      `tfsdk:"id"`
+	Asn    types.String                      `tfsdk:"asn"`
+	AfName types.String                      `tfsdk:"af_name"`
+	Vrfs   []BGPAddressFamilyIPv6VRFVrfsData `tfsdk:"vrfs"`
+}
+type BGPAddressFamilyIPv6VRFVrfsData struct {
+	Name                             types.String                                         `tfsdk:"name"`
+	Ipv6UnicastAdvertiseL2vpnEvpn    types.Bool                                           `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
+	Ipv6UnicastRedistributeConnected types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeStatic    types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData `tfsdk:"ipv6_unicast_networks"`
+}
+type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData struct {
 	Network  types.String `tfsdk:"network"`
 	RouteMap types.String `tfsdk:"route_map"`
 	Backdoor types.Bool   `tfsdk:"backdoor"`
@@ -111,7 +124,7 @@ func (data BGPAddressFamilyIPv6VRFData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context) string {
+func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context, config BGPAddressFamilyIPv6VRF) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
@@ -167,7 +180,7 @@ func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPAddressFamilyIPv6VRF) toBodyXML(ctx context.Context) string {
+func (data BGPAddressFamilyIPv6VRF) toBodyXML(ctx context.Context, config BGPAddressFamilyIPv6VRF) string {
 	body := netconf.Body{}
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/af-name", data.AfName.ValueString())
@@ -550,9 +563,9 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "vrf"); value.Exists() {
-		data.Vrfs = make([]BGPAddressFamilyIPv6VRFVrfs, 0)
+		data.Vrfs = make([]BGPAddressFamilyIPv6VRFVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv6VRFVrfs{}
+			item := BGPAddressFamilyIPv6VRFVrfsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -572,9 +585,9 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
 			}
 			if cValue := v.Get("ipv6-unicast.network"); cValue.Exists() {
-				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
+				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks{}
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData{}
 					if ccValue := cv.Get("number"); ccValue.Exists() {
 						cItem.Network = types.StringValue(ccValue.String())
 					}
@@ -664,9 +677,9 @@ func (data *BGPAddressFamilyIPv6VRF) fromBodyXML(ctx context.Context, res xmldot
 
 func (data *BGPAddressFamilyIPv6VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() {
-		data.Vrfs = make([]BGPAddressFamilyIPv6VRFVrfs, 0)
+		data.Vrfs = make([]BGPAddressFamilyIPv6VRFVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPAddressFamilyIPv6VRFVrfs{}
+			item := BGPAddressFamilyIPv6VRFVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -686,9 +699,9 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBodyXML(ctx context.Context, res xm
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/network"); cValue.Exists() {
-				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
+				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks{}
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData{}
 					if ccValue := helpers.GetFromXPath(cv, "number"); ccValue.Exists() {
 						cItem.Network = types.StringValue(ccValue.String())
 					}

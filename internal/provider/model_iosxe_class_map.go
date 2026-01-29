@@ -66,33 +66,36 @@ type ClassMap struct {
 	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
 	MatchIpPrecedence                         types.List                               `tfsdk:"match_ip_precedence"`
 }
+type ClassMapMatchActivatedServiceTemplates struct {
+	ServiceName types.String `tfsdk:"service_name"`
+}
 
 type ClassMapData struct {
-	Device                                    types.String                             `tfsdk:"device"`
-	Id                                        types.String                             `tfsdk:"id"`
-	Name                                      types.String                             `tfsdk:"name"`
-	Type                                      types.String                             `tfsdk:"type"`
-	Subscriber                                types.Bool                               `tfsdk:"subscriber"`
-	Prematch                                  types.String                             `tfsdk:"prematch"`
-	MatchAuthorizationStatusAuthorized        types.Bool                               `tfsdk:"match_authorization_status_authorized"`
-	MatchResultTypeAaaTimeout                 types.Bool                               `tfsdk:"match_result_type_aaa_timeout"`
-	MatchAuthorizationStatusUnauthorized      types.Bool                               `tfsdk:"match_authorization_status_unauthorized"`
-	MatchActivatedServiceTemplates            []ClassMapMatchActivatedServiceTemplates `tfsdk:"match_activated_service_templates"`
-	MatchAuthorizingMethodPriorityGreaterThan types.List                               `tfsdk:"match_authorizing_method_priority_greater_than"`
-	MatchMethodDot1x                          types.Bool                               `tfsdk:"match_method_dot1x"`
-	MatchResultTypeMethodDot1xAuthoritative   types.Bool                               `tfsdk:"match_result_type_method_dot1x_authoritative"`
-	MatchResultTypeMethodDot1xAgentNotFound   types.Bool                               `tfsdk:"match_result_type_method_dot1x_agent_not_found"`
-	MatchResultTypeMethodDot1xMethodTimeout   types.Bool                               `tfsdk:"match_result_type_method_dot1x_method_timeout"`
-	MatchMethodMab                            types.Bool                               `tfsdk:"match_method_mab"`
-	MatchResultTypeMethodMabAuthoritative     types.Bool                               `tfsdk:"match_result_type_method_mab_authoritative"`
-	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
-	MatchCos                                  types.List                               `tfsdk:"match_cos"`
-	Description                               types.String                             `tfsdk:"description"`
-	MatchAccessGroupName                      types.List                               `tfsdk:"match_access_group_name"`
-	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
-	MatchIpPrecedence                         types.List                               `tfsdk:"match_ip_precedence"`
+	Device                                    types.String                                 `tfsdk:"device"`
+	Id                                        types.String                                 `tfsdk:"id"`
+	Name                                      types.String                                 `tfsdk:"name"`
+	Type                                      types.String                                 `tfsdk:"type"`
+	Subscriber                                types.Bool                                   `tfsdk:"subscriber"`
+	Prematch                                  types.String                                 `tfsdk:"prematch"`
+	MatchAuthorizationStatusAuthorized        types.Bool                                   `tfsdk:"match_authorization_status_authorized"`
+	MatchResultTypeAaaTimeout                 types.Bool                                   `tfsdk:"match_result_type_aaa_timeout"`
+	MatchAuthorizationStatusUnauthorized      types.Bool                                   `tfsdk:"match_authorization_status_unauthorized"`
+	MatchActivatedServiceTemplates            []ClassMapMatchActivatedServiceTemplatesData `tfsdk:"match_activated_service_templates"`
+	MatchAuthorizingMethodPriorityGreaterThan types.List                                   `tfsdk:"match_authorizing_method_priority_greater_than"`
+	MatchMethodDot1x                          types.Bool                                   `tfsdk:"match_method_dot1x"`
+	MatchResultTypeMethodDot1xAuthoritative   types.Bool                                   `tfsdk:"match_result_type_method_dot1x_authoritative"`
+	MatchResultTypeMethodDot1xAgentNotFound   types.Bool                                   `tfsdk:"match_result_type_method_dot1x_agent_not_found"`
+	MatchResultTypeMethodDot1xMethodTimeout   types.Bool                                   `tfsdk:"match_result_type_method_dot1x_method_timeout"`
+	MatchMethodMab                            types.Bool                                   `tfsdk:"match_method_mab"`
+	MatchResultTypeMethodMabAuthoritative     types.Bool                                   `tfsdk:"match_result_type_method_mab_authoritative"`
+	MatchDscp                                 types.List                                   `tfsdk:"match_dscp"`
+	MatchCos                                  types.List                                   `tfsdk:"match_cos"`
+	Description                               types.String                                 `tfsdk:"description"`
+	MatchAccessGroupName                      types.List                                   `tfsdk:"match_access_group_name"`
+	MatchIpDscp                               types.List                                   `tfsdk:"match_ip_dscp"`
+	MatchIpPrecedence                         types.List                                   `tfsdk:"match_ip_precedence"`
 }
-type ClassMapMatchActivatedServiceTemplates struct {
+type ClassMapMatchActivatedServiceTemplatesData struct {
 	ServiceName types.String `tfsdk:"service_name"`
 }
 
@@ -136,7 +139,7 @@ func (data ClassMapData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data ClassMap) toBody(ctx context.Context) string {
+func (data ClassMap) toBody(ctx context.Context, config ClassMap) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -245,7 +248,7 @@ func (data ClassMap) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data ClassMap) toBodyXML(ctx context.Context) string {
+func (data ClassMap) toBodyXML(ctx context.Context, config ClassMap) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -890,9 +893,9 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "match.activated-service-template"); value.Exists() {
-		data.MatchActivatedServiceTemplates = make([]ClassMapMatchActivatedServiceTemplates, 0)
+		data.MatchActivatedServiceTemplates = make([]ClassMapMatchActivatedServiceTemplatesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ClassMapMatchActivatedServiceTemplates{}
+			item := ClassMapMatchActivatedServiceTemplatesData{}
 			if cValue := v.Get("service-name"); cValue.Exists() {
 				item.ServiceName = types.StringValue(cValue.String())
 			}
@@ -1104,9 +1107,9 @@ func (data *ClassMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/activated-service-template"); value.Exists() {
-		data.MatchActivatedServiceTemplates = make([]ClassMapMatchActivatedServiceTemplates, 0)
+		data.MatchActivatedServiceTemplates = make([]ClassMapMatchActivatedServiceTemplatesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := ClassMapMatchActivatedServiceTemplates{}
+			item := ClassMapMatchActivatedServiceTemplatesData{}
 			if cValue := helpers.GetFromXPath(v, "service-name"); cValue.Exists() {
 				item.ServiceName = types.StringValue(cValue.String())
 			}

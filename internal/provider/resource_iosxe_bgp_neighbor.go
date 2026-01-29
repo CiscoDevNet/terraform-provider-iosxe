@@ -196,6 +196,15 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 				},
 			},
+			"password_wo": schema.StringAttribute{
+				MarkdownDescription: "The write-only value of the attribute.",
+				WriteOnly:           true,
+				Optional:            true,
+			},
+			"password_wo_version": schema.Int64Attribute{
+				MarkdownDescription: "The write-only version of the attribute.",
+				Optional:            true,
+			},
 			"peer_group": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("peer-group name").String,
 				Optional:            true,
@@ -264,10 +273,17 @@ func (r *BGPNeighborResource) Configure(_ context.Context, req resource.Configur
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *BGPNeighborResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan BGPNeighbor
+	var plan, config BGPNeighbor
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -284,7 +300,7 @@ func (r *BGPNeighborResource) Create(ctx context.Context, req resource.CreateReq
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -324,7 +340,7 @@ func (r *BGPNeighborResource) Create(ctx context.Context, req resource.CreateReq
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -431,7 +447,7 @@ func (r *BGPNeighborResource) Read(ctx context.Context, req resource.ReadRequest
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *BGPNeighborResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state BGPNeighbor
+	var plan, state, config BGPNeighbor
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -447,6 +463,13 @@ func (r *BGPNeighborResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -457,7 +480,7 @@ func (r *BGPNeighborResource) Update(ctx context.Context, req resource.UpdateReq
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -511,7 +534,7 @@ func (r *BGPNeighborResource) Update(ctx context.Context, req resource.UpdateReq
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

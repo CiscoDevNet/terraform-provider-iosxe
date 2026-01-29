@@ -117,7 +117,7 @@ func (data EVPNData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data EVPN) toBody(ctx context.Context) string {
+func (data EVPN) toBody(ctx context.Context, config EVPN) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.ReplicationTypeIngress.IsNull() && !data.ReplicationTypeIngress.IsUnknown() {
 		if data.ReplicationTypeIngress.ValueBool() {
@@ -191,7 +191,7 @@ func (data EVPN) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data EVPN) toBodyXML(ctx context.Context) string {
+func (data EVPN) toBodyXML(ctx context.Context, config EVPN) string {
 	body := netconf.Body{}
 	if !data.ReplicationTypeIngress.IsNull() && !data.ReplicationTypeIngress.IsUnknown() {
 		if data.ReplicationTypeIngress.ValueBool() {

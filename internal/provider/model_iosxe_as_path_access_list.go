@@ -47,14 +47,18 @@ type ASPathAccessList struct {
 	Name    types.Int64               `tfsdk:"name"`
 	Entries []ASPathAccessListEntries `tfsdk:"entries"`
 }
+type ASPathAccessListEntries struct {
+	Action types.String `tfsdk:"action"`
+	Regex  types.String `tfsdk:"regex"`
+}
 
 type ASPathAccessListData struct {
-	Device  types.String              `tfsdk:"device"`
-	Id      types.String              `tfsdk:"id"`
-	Name    types.Int64               `tfsdk:"name"`
-	Entries []ASPathAccessListEntries `tfsdk:"entries"`
+	Device  types.String                  `tfsdk:"device"`
+	Id      types.String                  `tfsdk:"id"`
+	Name    types.Int64                   `tfsdk:"name"`
+	Entries []ASPathAccessListEntriesData `tfsdk:"entries"`
 }
-type ASPathAccessListEntries struct {
+type ASPathAccessListEntriesData struct {
 	Action types.String `tfsdk:"action"`
 	Regex  types.String `tfsdk:"regex"`
 }
@@ -99,7 +103,7 @@ func (data ASPathAccessListData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data ASPathAccessList) toBody(ctx context.Context) string {
+func (data ASPathAccessList) toBody(ctx context.Context, config ASPathAccessList) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -122,7 +126,7 @@ func (data ASPathAccessList) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data ASPathAccessList) toBodyXML(ctx context.Context) string {
+func (data ASPathAccessList) toBodyXML(ctx context.Context, config ASPathAccessList) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -277,9 +281,9 @@ func (data *ASPathAccessListData) fromBody(ctx context.Context, res gjson.Result
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "extended-grouping.extended_grouping"); value.Exists() {
-		data.Entries = make([]ASPathAccessListEntries, 0)
+		data.Entries = make([]ASPathAccessListEntriesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ASPathAccessListEntries{}
+			item := ASPathAccessListEntriesData{}
 			if cValue := v.Get("action"); cValue.Exists() {
 				item.Action = types.StringValue(cValue.String())
 			}
@@ -319,9 +323,9 @@ func (data *ASPathAccessList) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *ASPathAccessListData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
-		data.Entries = make([]ASPathAccessListEntries, 0)
+		data.Entries = make([]ASPathAccessListEntriesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := ASPathAccessListEntries{}
+			item := ASPathAccessListEntriesData{}
 			if cValue := helpers.GetFromXPath(v, "action"); cValue.Exists() {
 				item.Action = types.StringValue(cValue.String())
 			}

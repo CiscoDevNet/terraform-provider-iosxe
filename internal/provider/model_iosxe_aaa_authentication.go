@@ -79,45 +79,6 @@ type AAAAuthentication struct {
 	EnableDefaultLineLegacy   types.Bool                `tfsdk:"enable_default_line_legacy"`
 	EnableDefaultNoneLegacy   types.Bool                `tfsdk:"enable_default_none_legacy"`
 }
-
-type AAAAuthenticationData struct {
-	Device                    types.String              `tfsdk:"device"`
-	Id                        types.String              `tfsdk:"id"`
-	Logins                    []AAAAuthenticationLogins `tfsdk:"logins"`
-	Dot1x                     []AAAAuthenticationDot1x  `tfsdk:"dot1x"`
-	Dot1xDefaultA1Group       types.String              `tfsdk:"dot1x_default_a1_group"`
-	Dot1xDefaultA1Local       types.Bool                `tfsdk:"dot1x_default_a1_local"`
-	Dot1xDefaultA2Group       types.String              `tfsdk:"dot1x_default_a2_group"`
-	Dot1xDefaultA2Local       types.Bool                `tfsdk:"dot1x_default_a2_local"`
-	Dot1xDefaultA3Group       types.String              `tfsdk:"dot1x_default_a3_group"`
-	Dot1xDefaultA3Local       types.Bool                `tfsdk:"dot1x_default_a3_local"`
-	Dot1xDefaultA4Group       types.String              `tfsdk:"dot1x_default_a4_group"`
-	Dot1xDefaultA4Local       types.Bool                `tfsdk:"dot1x_default_a4_local"`
-	EnableDefaultGroup1Cache  types.String              `tfsdk:"enable_default_group1_cache"`
-	EnableDefaultGroup1Enable types.Bool                `tfsdk:"enable_default_group1_enable"`
-	EnableDefaultGroup1Group  types.String              `tfsdk:"enable_default_group1_group"`
-	EnableDefaultGroup1Line   types.Bool                `tfsdk:"enable_default_group1_line"`
-	EnableDefaultGroup1None   types.Bool                `tfsdk:"enable_default_group1_none"`
-	EnableDefaultGroup2Cache  types.String              `tfsdk:"enable_default_group2_cache"`
-	EnableDefaultGroup2Enable types.Bool                `tfsdk:"enable_default_group2_enable"`
-	EnableDefaultGroup2Group  types.String              `tfsdk:"enable_default_group2_group"`
-	EnableDefaultGroup2Line   types.Bool                `tfsdk:"enable_default_group2_line"`
-	EnableDefaultGroup2None   types.Bool                `tfsdk:"enable_default_group2_none"`
-	EnableDefaultGroup3Cache  types.String              `tfsdk:"enable_default_group3_cache"`
-	EnableDefaultGroup3Enable types.Bool                `tfsdk:"enable_default_group3_enable"`
-	EnableDefaultGroup3Group  types.String              `tfsdk:"enable_default_group3_group"`
-	EnableDefaultGroup3Line   types.Bool                `tfsdk:"enable_default_group3_line"`
-	EnableDefaultGroup3None   types.Bool                `tfsdk:"enable_default_group3_none"`
-	EnableDefaultGroup4Cache  types.String              `tfsdk:"enable_default_group4_cache"`
-	EnableDefaultGroup4Enable types.Bool                `tfsdk:"enable_default_group4_enable"`
-	EnableDefaultGroup4Group  types.String              `tfsdk:"enable_default_group4_group"`
-	EnableDefaultGroup4Line   types.Bool                `tfsdk:"enable_default_group4_line"`
-	EnableDefaultGroup4None   types.Bool                `tfsdk:"enable_default_group4_none"`
-	EnableDefaultGroupLegacy  types.String              `tfsdk:"enable_default_group_legacy"`
-	EnableDefaultEnableLegacy types.Bool                `tfsdk:"enable_default_enable_legacy"`
-	EnableDefaultLineLegacy   types.Bool                `tfsdk:"enable_default_line_legacy"`
-	EnableDefaultNoneLegacy   types.Bool                `tfsdk:"enable_default_none_legacy"`
-}
 type AAAAuthenticationLogins struct {
 	Name     types.String `tfsdk:"name"`
 	A1None   types.Bool   `tfsdk:"a1_none"`
@@ -142,6 +103,87 @@ type AAAAuthenticationLogins struct {
 	A4Group  types.String `tfsdk:"a4_group"`
 }
 type AAAAuthenticationDot1x struct {
+	Name     types.String `tfsdk:"name"`
+	A1Group  types.String `tfsdk:"a1_group"`
+	A1Local  types.Bool   `tfsdk:"a1_local"`
+	A1Cache  types.String `tfsdk:"a1_cache"`
+	A1Radius types.Bool   `tfsdk:"a1_radius"`
+	A2Group  types.String `tfsdk:"a2_group"`
+	A2Local  types.Bool   `tfsdk:"a2_local"`
+	A2Cache  types.String `tfsdk:"a2_cache"`
+	A2Radius types.Bool   `tfsdk:"a2_radius"`
+	A3Group  types.String `tfsdk:"a3_group"`
+	A3Local  types.Bool   `tfsdk:"a3_local"`
+	A3Cache  types.String `tfsdk:"a3_cache"`
+	A3Radius types.Bool   `tfsdk:"a3_radius"`
+	A4Group  types.String `tfsdk:"a4_group"`
+	A4Local  types.Bool   `tfsdk:"a4_local"`
+	A4Cache  types.String `tfsdk:"a4_cache"`
+	A4Radius types.Bool   `tfsdk:"a4_radius"`
+}
+
+type AAAAuthenticationData struct {
+	Device                    types.String                  `tfsdk:"device"`
+	Id                        types.String                  `tfsdk:"id"`
+	Logins                    []AAAAuthenticationLoginsData `tfsdk:"logins"`
+	Dot1x                     []AAAAuthenticationDot1xData  `tfsdk:"dot1x"`
+	Dot1xDefaultA1Group       types.String                  `tfsdk:"dot1x_default_a1_group"`
+	Dot1xDefaultA1Local       types.Bool                    `tfsdk:"dot1x_default_a1_local"`
+	Dot1xDefaultA2Group       types.String                  `tfsdk:"dot1x_default_a2_group"`
+	Dot1xDefaultA2Local       types.Bool                    `tfsdk:"dot1x_default_a2_local"`
+	Dot1xDefaultA3Group       types.String                  `tfsdk:"dot1x_default_a3_group"`
+	Dot1xDefaultA3Local       types.Bool                    `tfsdk:"dot1x_default_a3_local"`
+	Dot1xDefaultA4Group       types.String                  `tfsdk:"dot1x_default_a4_group"`
+	Dot1xDefaultA4Local       types.Bool                    `tfsdk:"dot1x_default_a4_local"`
+	EnableDefaultGroup1Cache  types.String                  `tfsdk:"enable_default_group1_cache"`
+	EnableDefaultGroup1Enable types.Bool                    `tfsdk:"enable_default_group1_enable"`
+	EnableDefaultGroup1Group  types.String                  `tfsdk:"enable_default_group1_group"`
+	EnableDefaultGroup1Line   types.Bool                    `tfsdk:"enable_default_group1_line"`
+	EnableDefaultGroup1None   types.Bool                    `tfsdk:"enable_default_group1_none"`
+	EnableDefaultGroup2Cache  types.String                  `tfsdk:"enable_default_group2_cache"`
+	EnableDefaultGroup2Enable types.Bool                    `tfsdk:"enable_default_group2_enable"`
+	EnableDefaultGroup2Group  types.String                  `tfsdk:"enable_default_group2_group"`
+	EnableDefaultGroup2Line   types.Bool                    `tfsdk:"enable_default_group2_line"`
+	EnableDefaultGroup2None   types.Bool                    `tfsdk:"enable_default_group2_none"`
+	EnableDefaultGroup3Cache  types.String                  `tfsdk:"enable_default_group3_cache"`
+	EnableDefaultGroup3Enable types.Bool                    `tfsdk:"enable_default_group3_enable"`
+	EnableDefaultGroup3Group  types.String                  `tfsdk:"enable_default_group3_group"`
+	EnableDefaultGroup3Line   types.Bool                    `tfsdk:"enable_default_group3_line"`
+	EnableDefaultGroup3None   types.Bool                    `tfsdk:"enable_default_group3_none"`
+	EnableDefaultGroup4Cache  types.String                  `tfsdk:"enable_default_group4_cache"`
+	EnableDefaultGroup4Enable types.Bool                    `tfsdk:"enable_default_group4_enable"`
+	EnableDefaultGroup4Group  types.String                  `tfsdk:"enable_default_group4_group"`
+	EnableDefaultGroup4Line   types.Bool                    `tfsdk:"enable_default_group4_line"`
+	EnableDefaultGroup4None   types.Bool                    `tfsdk:"enable_default_group4_none"`
+	EnableDefaultGroupLegacy  types.String                  `tfsdk:"enable_default_group_legacy"`
+	EnableDefaultEnableLegacy types.Bool                    `tfsdk:"enable_default_enable_legacy"`
+	EnableDefaultLineLegacy   types.Bool                    `tfsdk:"enable_default_line_legacy"`
+	EnableDefaultNoneLegacy   types.Bool                    `tfsdk:"enable_default_none_legacy"`
+}
+type AAAAuthenticationLoginsData struct {
+	Name     types.String `tfsdk:"name"`
+	A1None   types.Bool   `tfsdk:"a1_none"`
+	A1Line   types.Bool   `tfsdk:"a1_line"`
+	A1Enable types.Bool   `tfsdk:"a1_enable"`
+	A1Local  types.Bool   `tfsdk:"a1_local"`
+	A1Group  types.String `tfsdk:"a1_group"`
+	A2None   types.Bool   `tfsdk:"a2_none"`
+	A2Line   types.Bool   `tfsdk:"a2_line"`
+	A2Enable types.Bool   `tfsdk:"a2_enable"`
+	A2Local  types.Bool   `tfsdk:"a2_local"`
+	A2Group  types.String `tfsdk:"a2_group"`
+	A3None   types.Bool   `tfsdk:"a3_none"`
+	A3Line   types.Bool   `tfsdk:"a3_line"`
+	A3Enable types.Bool   `tfsdk:"a3_enable"`
+	A3Local  types.Bool   `tfsdk:"a3_local"`
+	A3Group  types.String `tfsdk:"a3_group"`
+	A4None   types.Bool   `tfsdk:"a4_none"`
+	A4Line   types.Bool   `tfsdk:"a4_line"`
+	A4Enable types.Bool   `tfsdk:"a4_enable"`
+	A4Local  types.Bool   `tfsdk:"a4_local"`
+	A4Group  types.String `tfsdk:"a4_group"`
+}
+type AAAAuthenticationDot1xData struct {
 	Name     types.String `tfsdk:"name"`
 	A1Group  types.String `tfsdk:"a1_group"`
 	A1Local  types.Bool   `tfsdk:"a1_local"`
@@ -199,7 +241,7 @@ func (data AAAAuthenticationData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data AAAAuthentication) toBody(ctx context.Context) string {
+func (data AAAAuthentication) toBody(ctx context.Context, config AAAAuthentication) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Dot1xDefaultA1Group.IsNull() && !data.Dot1xDefaultA1Group.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a1-config.group", data.Dot1xDefaultA1Group.ValueString())
@@ -514,7 +556,7 @@ func (data AAAAuthentication) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data AAAAuthentication) toBodyXML(ctx context.Context) string {
+func (data AAAAuthentication) toBodyXML(ctx context.Context, config AAAAuthentication) string {
 	body := netconf.Body{}
 	if len(data.Logins) > 0 {
 		for _, item := range data.Logins {
@@ -2408,9 +2450,9 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "login"); value.Exists() {
-		data.Logins = make([]AAAAuthenticationLogins, 0)
+		data.Logins = make([]AAAAuthenticationLoginsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthenticationLogins{}
+			item := AAAAuthenticationLoginsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2511,9 +2553,9 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 		})
 	}
 	if value := res.Get(prefix + "dot1x.dot1x-list"); value.Exists() {
-		data.Dot1x = make([]AAAAuthenticationDot1x, 0)
+		data.Dot1x = make([]AAAAuthenticationDot1xData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthenticationDot1x{}
+			item := AAAAuthenticationDot1xData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3046,9 +3088,9 @@ func (data *AAAAuthentication) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *AAAAuthenticationData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login"); value.Exists() {
-		data.Logins = make([]AAAAuthenticationLogins, 0)
+		data.Logins = make([]AAAAuthenticationLoginsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAuthenticationLogins{}
+			item := AAAAuthenticationLoginsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3149,9 +3191,9 @@ func (data *AAAAuthenticationData) fromBodyXML(ctx context.Context, res xmldot.R
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/dot1x-list"); value.Exists() {
-		data.Dot1x = make([]AAAAuthenticationDot1x, 0)
+		data.Dot1x = make([]AAAAuthenticationDot1xData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAuthenticationDot1x{}
+			item := AAAAuthenticationDot1xData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}

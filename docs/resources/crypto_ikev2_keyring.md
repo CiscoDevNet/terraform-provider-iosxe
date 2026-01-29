@@ -71,8 +71,14 @@ Optional:
 - `pre_shared_key_encryption` (String) - Choices: `0`, `6`
 - `pre_shared_key_local` (String, Sensitive)
 - `pre_shared_key_local_encryption` (String) - Choices: `0`, `6`
+- `pre_shared_key_local_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `pre_shared_key_local_wo_version` (Number) The write-only version of the attribute.
 - `pre_shared_key_remote` (String, Sensitive)
 - `pre_shared_key_remote_encryption` (String) - Choices: `0`, `6`
+- `pre_shared_key_remote_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `pre_shared_key_remote_wo_version` (Number) The write-only version of the attribute.
+- `pre_shared_key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `pre_shared_key_wo_version` (Number) The write-only version of the attribute.
 
 ## Import
 

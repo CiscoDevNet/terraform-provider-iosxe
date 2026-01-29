@@ -149,6 +149,8 @@ Optional:
 
 - `server_key` (String, Sensitive)
 - `server_key_type` (String) - Choices: `0`, `6`, `7`
+- `server_key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `server_key_wo_version` (Number) The write-only version of the attribute.
 
 ## Import
 

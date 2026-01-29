@@ -101,7 +101,7 @@ func (data InterfacePIMIPv6Data) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfacePIMIPv6) toBody(ctx context.Context) string {
+func (data InterfacePIMIPv6) toBody(ctx context.Context, config InterfacePIMIPv6) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Pim.IsNull() && !data.Pim.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:pim-conf.pim", data.Pim.ValueBool())
@@ -126,7 +126,7 @@ func (data InterfacePIMIPv6) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfacePIMIPv6) toBodyXML(ctx context.Context) string {
+func (data InterfacePIMIPv6) toBodyXML(ctx context.Context, config InterfacePIMIPv6) string {
 	body := netconf.Body{}
 	if !data.Pim.IsNull() && !data.Pim.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-conf/pim", data.Pim.ValueBool())

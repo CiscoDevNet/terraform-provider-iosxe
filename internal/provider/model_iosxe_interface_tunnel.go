@@ -93,58 +93,6 @@ type InterfaceTunnel struct {
 	IpNatInside                        types.Bool                              `tfsdk:"ip_nat_inside"`
 	IpNatOutside                       types.Bool                              `tfsdk:"ip_nat_outside"`
 }
-
-type InterfaceTunnelData struct {
-	Device                             types.String                            `tfsdk:"device"`
-	Id                                 types.String                            `tfsdk:"id"`
-	Name                               types.Int64                             `tfsdk:"name"`
-	Description                        types.String                            `tfsdk:"description"`
-	Shutdown                           types.Bool                              `tfsdk:"shutdown"`
-	IpProxyArp                         types.Bool                              `tfsdk:"ip_proxy_arp"`
-	IpRedirects                        types.Bool                              `tfsdk:"ip_redirects"`
-	IpUnreachables                     types.Bool                              `tfsdk:"ip_unreachables"`
-	VrfForwarding                      types.String                            `tfsdk:"vrf_forwarding"`
-	Ipv6Enable                         types.Bool                              `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                            types.Int64                             `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll                types.Bool                              `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault       types.Bool                              `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp                    types.Bool                              `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses             []InterfaceTunnelIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                      []InterfaceTunnelIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	TunnelSource                       types.String                            `tfsdk:"tunnel_source"`
-	TunnelDestinationIpv4              types.String                            `tfsdk:"tunnel_destination_ipv4"`
-	TunnelProtectionIpsecProfileLegacy types.String                            `tfsdk:"tunnel_protection_ipsec_profile_legacy"`
-	TunnelProtectionIpsecProfile       types.String                            `tfsdk:"tunnel_protection_ipsec_profile"`
-	CryptoIpsecDfBit                   types.String                            `tfsdk:"crypto_ipsec_df_bit"`
-	ArpTimeout                         types.Int64                             `tfsdk:"arp_timeout"`
-	Ipv4Address                        types.String                            `tfsdk:"ipv4_address"`
-	Ipv4AddressMask                    types.String                            `tfsdk:"ipv4_address_mask"`
-	Unnumbered                         types.String                            `tfsdk:"unnumbered"`
-	IpMtu                              types.Int64                             `tfsdk:"ip_mtu"`
-	IpDhcpRelaySourceInterface         types.String                            `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupInEnable              types.Bool                              `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn                    types.String                            `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable             types.Bool                              `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut                   types.String                            `tfsdk:"ip_access_group_out"`
-	HelperAddresses                    []InterfaceTunnelHelperAddresses        `tfsdk:"helper_addresses"`
-	TunnelModeIpsecIpv4                types.Bool                              `tfsdk:"tunnel_mode_ipsec_ipv4"`
-	BfdTemplate                        types.String                            `tfsdk:"bfd_template"`
-	BfdEnable                          types.Bool                              `tfsdk:"bfd_enable"`
-	BfdLocalAddress                    types.String                            `tfsdk:"bfd_local_address"`
-	BfdInterval                        types.Int64                             `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx                   types.Int64                             `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier              types.Int64                             `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                            types.Bool                              `tfsdk:"bfd_echo"`
-	LoadInterval                       types.Int64                             `tfsdk:"load_interval"`
-	SnmpTrapLinkStatus                 types.Bool                              `tfsdk:"snmp_trap_link_status"`
-	LoggingEventLinkStatusEnable       types.Bool                              `tfsdk:"logging_event_link_status_enable"`
-	TunnelVrf                          types.String                            `tfsdk:"tunnel_vrf"`
-	IpIgmpVersion                      types.Int64                             `tfsdk:"ip_igmp_version"`
-	IpRouterIsis                       types.String                            `tfsdk:"ip_router_isis"`
-	IpTcpAdjustMss                     types.Int64                             `tfsdk:"ip_tcp_adjust_mss"`
-	IpNatInside                        types.Bool                              `tfsdk:"ip_nat_inside"`
-	IpNatOutside                       types.Bool                              `tfsdk:"ip_nat_outside"`
-}
 type InterfaceTunnelIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
 	LinkLocal types.Bool   `tfsdk:"link_local"`
@@ -154,6 +102,71 @@ type InterfaceTunnelIpv6Addresses struct {
 	Eui64  types.Bool   `tfsdk:"eui_64"`
 }
 type InterfaceTunnelHelperAddresses struct {
+	Address types.String `tfsdk:"address"`
+	Global  types.Bool   `tfsdk:"global"`
+	Vrf     types.String `tfsdk:"vrf"`
+}
+
+type InterfaceTunnelData struct {
+	Device                             types.String                                `tfsdk:"device"`
+	Id                                 types.String                                `tfsdk:"id"`
+	Name                               types.Int64                                 `tfsdk:"name"`
+	Description                        types.String                                `tfsdk:"description"`
+	Shutdown                           types.Bool                                  `tfsdk:"shutdown"`
+	IpProxyArp                         types.Bool                                  `tfsdk:"ip_proxy_arp"`
+	IpRedirects                        types.Bool                                  `tfsdk:"ip_redirects"`
+	IpUnreachables                     types.Bool                                  `tfsdk:"ip_unreachables"`
+	VrfForwarding                      types.String                                `tfsdk:"vrf_forwarding"`
+	Ipv6Enable                         types.Bool                                  `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                            types.Int64                                 `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll                types.Bool                                  `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault       types.Bool                                  `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                    types.Bool                                  `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses             []InterfaceTunnelIpv6LinkLocalAddressesData `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                      []InterfaceTunnelIpv6AddressesData          `tfsdk:"ipv6_addresses"`
+	TunnelSource                       types.String                                `tfsdk:"tunnel_source"`
+	TunnelDestinationIpv4              types.String                                `tfsdk:"tunnel_destination_ipv4"`
+	TunnelProtectionIpsecProfileLegacy types.String                                `tfsdk:"tunnel_protection_ipsec_profile_legacy"`
+	TunnelProtectionIpsecProfile       types.String                                `tfsdk:"tunnel_protection_ipsec_profile"`
+	CryptoIpsecDfBit                   types.String                                `tfsdk:"crypto_ipsec_df_bit"`
+	ArpTimeout                         types.Int64                                 `tfsdk:"arp_timeout"`
+	Ipv4Address                        types.String                                `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                    types.String                                `tfsdk:"ipv4_address_mask"`
+	Unnumbered                         types.String                                `tfsdk:"unnumbered"`
+	IpMtu                              types.Int64                                 `tfsdk:"ip_mtu"`
+	IpDhcpRelaySourceInterface         types.String                                `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupInEnable              types.Bool                                  `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                    types.String                                `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable             types.Bool                                  `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                   types.String                                `tfsdk:"ip_access_group_out"`
+	HelperAddresses                    []InterfaceTunnelHelperAddressesData        `tfsdk:"helper_addresses"`
+	TunnelModeIpsecIpv4                types.Bool                                  `tfsdk:"tunnel_mode_ipsec_ipv4"`
+	BfdTemplate                        types.String                                `tfsdk:"bfd_template"`
+	BfdEnable                          types.Bool                                  `tfsdk:"bfd_enable"`
+	BfdLocalAddress                    types.String                                `tfsdk:"bfd_local_address"`
+	BfdInterval                        types.Int64                                 `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                   types.Int64                                 `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier              types.Int64                                 `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                            types.Bool                                  `tfsdk:"bfd_echo"`
+	LoadInterval                       types.Int64                                 `tfsdk:"load_interval"`
+	SnmpTrapLinkStatus                 types.Bool                                  `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable       types.Bool                                  `tfsdk:"logging_event_link_status_enable"`
+	TunnelVrf                          types.String                                `tfsdk:"tunnel_vrf"`
+	IpIgmpVersion                      types.Int64                                 `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                       types.String                                `tfsdk:"ip_router_isis"`
+	IpTcpAdjustMss                     types.Int64                                 `tfsdk:"ip_tcp_adjust_mss"`
+	IpNatInside                        types.Bool                                  `tfsdk:"ip_nat_inside"`
+	IpNatOutside                       types.Bool                                  `tfsdk:"ip_nat_outside"`
+}
+type InterfaceTunnelIpv6LinkLocalAddressesData struct {
+	Address   types.String `tfsdk:"address"`
+	LinkLocal types.Bool   `tfsdk:"link_local"`
+}
+type InterfaceTunnelIpv6AddressesData struct {
+	Prefix types.String `tfsdk:"prefix"`
+	Eui64  types.Bool   `tfsdk:"eui_64"`
+}
+type InterfaceTunnelHelperAddressesData struct {
 	Address types.String `tfsdk:"address"`
 	Global  types.Bool   `tfsdk:"global"`
 	Vrf     types.String `tfsdk:"vrf"`
@@ -199,7 +212,7 @@ func (data InterfaceTunnelData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceTunnel) toBody(ctx context.Context) string {
+func (data InterfaceTunnel) toBody(ctx context.Context, config InterfaceTunnel) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -402,7 +415,7 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceTunnel) toBodyXML(ctx context.Context) string {
+func (data InterfaceTunnel) toBodyXML(ctx context.Context, config InterfaceTunnel) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -1722,9 +1735,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.Ipv6AddressDhcp = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv6.address.link-local-address"); value.Exists() {
-		data.Ipv6LinkLocalAddresses = make([]InterfaceTunnelIpv6LinkLocalAddresses, 0)
+		data.Ipv6LinkLocalAddresses = make([]InterfaceTunnelIpv6LinkLocalAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceTunnelIpv6LinkLocalAddresses{}
+			item := InterfaceTunnelIpv6LinkLocalAddressesData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -1738,9 +1751,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		})
 	}
 	if value := res.Get(prefix + "ipv6.address.prefix-list"); value.Exists() {
-		data.Ipv6Addresses = make([]InterfaceTunnelIpv6Addresses, 0)
+		data.Ipv6Addresses = make([]InterfaceTunnelIpv6AddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceTunnelIpv6Addresses{}
+			item := InterfaceTunnelIpv6AddressesData{}
 			if cValue := v.Get("prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -1803,9 +1816,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.helper-address"); value.Exists() {
-		data.HelperAddresses = make([]InterfaceTunnelHelperAddresses, 0)
+		data.HelperAddresses = make([]InterfaceTunnelHelperAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceTunnelHelperAddresses{}
+			item := InterfaceTunnelHelperAddressesData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2164,9 +2177,9 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.Ipv6AddressDhcp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address"); value.Exists() {
-		data.Ipv6LinkLocalAddresses = make([]InterfaceTunnelIpv6LinkLocalAddresses, 0)
+		data.Ipv6LinkLocalAddresses = make([]InterfaceTunnelIpv6LinkLocalAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceTunnelIpv6LinkLocalAddresses{}
+			item := InterfaceTunnelIpv6LinkLocalAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2180,9 +2193,9 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list"); value.Exists() {
-		data.Ipv6Addresses = make([]InterfaceTunnelIpv6Addresses, 0)
+		data.Ipv6Addresses = make([]InterfaceTunnelIpv6AddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceTunnelIpv6Addresses{}
+			item := InterfaceTunnelIpv6AddressesData{}
 			if cValue := helpers.GetFromXPath(v, "prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -2245,9 +2258,9 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address"); value.Exists() {
-		data.HelperAddresses = make([]InterfaceTunnelHelperAddresses, 0)
+		data.HelperAddresses = make([]InterfaceTunnelHelperAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceTunnelHelperAddresses{}
+			item := InterfaceTunnelHelperAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}

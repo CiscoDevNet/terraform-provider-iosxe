@@ -64,30 +64,6 @@ type AAAAccounting struct {
 	Dot1xDefaultStartStopGroupLogger    types.Bool                 `tfsdk:"dot1x_default_start_stop_group_logger"`
 	Dot1x                               []AAAAccountingDot1x       `tfsdk:"dot1x"`
 }
-
-type AAAAccountingData struct {
-	Device                              types.String               `tfsdk:"device"`
-	Id                                  types.String               `tfsdk:"id"`
-	UpdateNewinfoPeriodic               types.Int64                `tfsdk:"update_newinfo_periodic"`
-	Identities                          []AAAAccountingIdentities  `tfsdk:"identities"`
-	IdentityDefaultStartStopGroup1      types.String               `tfsdk:"identity_default_start_stop_group1"`
-	IdentityDefaultStartStopGroup2      types.String               `tfsdk:"identity_default_start_stop_group2"`
-	IdentityDefaultStartStopGroup3      types.String               `tfsdk:"identity_default_start_stop_group3"`
-	IdentityDefaultStartStopGroup4      types.String               `tfsdk:"identity_default_start_stop_group4"`
-	Networks                            []AAAAccountingNetworks    `tfsdk:"networks"`
-	SystemGuaranteeFirst                types.Bool                 `tfsdk:"system_guarantee_first"`
-	Commands                            []AAAAccountingCommands    `tfsdk:"commands"`
-	Connections                         []AAAAccountingConnections `tfsdk:"connections"`
-	Execs                               []AAAAccountingExecs       `tfsdk:"execs"`
-	Dot1xDefaultStartStopGroup1         types.String               `tfsdk:"dot1x_default_start_stop_group1"`
-	Dot1xDefaultStartStopGroup2         types.String               `tfsdk:"dot1x_default_start_stop_group2"`
-	Dot1xDefaultStartStopGroup3         types.String               `tfsdk:"dot1x_default_start_stop_group3"`
-	Dot1xDefaultStartStopGroup4         types.String               `tfsdk:"dot1x_default_start_stop_group4"`
-	Dot1xDefaultStartStopBroadcast      types.Bool                 `tfsdk:"dot1x_default_start_stop_broadcast"`
-	Dot1xDefaultStartStopGroupBroadcast types.Bool                 `tfsdk:"dot1x_default_start_stop_group_broadcast"`
-	Dot1xDefaultStartStopGroupLogger    types.Bool                 `tfsdk:"dot1x_default_start_stop_group_logger"`
-	Dot1x                               []AAAAccountingDot1x       `tfsdk:"dot1x"`
-}
 type AAAAccountingIdentities struct {
 	Name                    types.String `tfsdk:"name"`
 	StartStopBroadcast      types.Bool   `tfsdk:"start_stop_broadcast"`
@@ -171,6 +147,112 @@ type AAAAccountingDot1x struct {
 	StartStopGroupLogger    types.Bool   `tfsdk:"start_stop_group_logger"`
 }
 
+type AAAAccountingData struct {
+	Device                              types.String                   `tfsdk:"device"`
+	Id                                  types.String                   `tfsdk:"id"`
+	UpdateNewinfoPeriodic               types.Int64                    `tfsdk:"update_newinfo_periodic"`
+	Identities                          []AAAAccountingIdentitiesData  `tfsdk:"identities"`
+	IdentityDefaultStartStopGroup1      types.String                   `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2      types.String                   `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3      types.String                   `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4      types.String                   `tfsdk:"identity_default_start_stop_group4"`
+	Networks                            []AAAAccountingNetworksData    `tfsdk:"networks"`
+	SystemGuaranteeFirst                types.Bool                     `tfsdk:"system_guarantee_first"`
+	Commands                            []AAAAccountingCommandsData    `tfsdk:"commands"`
+	Connections                         []AAAAccountingConnectionsData `tfsdk:"connections"`
+	Execs                               []AAAAccountingExecsData       `tfsdk:"execs"`
+	Dot1xDefaultStartStopGroup1         types.String                   `tfsdk:"dot1x_default_start_stop_group1"`
+	Dot1xDefaultStartStopGroup2         types.String                   `tfsdk:"dot1x_default_start_stop_group2"`
+	Dot1xDefaultStartStopGroup3         types.String                   `tfsdk:"dot1x_default_start_stop_group3"`
+	Dot1xDefaultStartStopGroup4         types.String                   `tfsdk:"dot1x_default_start_stop_group4"`
+	Dot1xDefaultStartStopBroadcast      types.Bool                     `tfsdk:"dot1x_default_start_stop_broadcast"`
+	Dot1xDefaultStartStopGroupBroadcast types.Bool                     `tfsdk:"dot1x_default_start_stop_group_broadcast"`
+	Dot1xDefaultStartStopGroupLogger    types.Bool                     `tfsdk:"dot1x_default_start_stop_group_logger"`
+	Dot1x                               []AAAAccountingDot1xData       `tfsdk:"dot1x"`
+}
+type AAAAccountingIdentitiesData struct {
+	Name                    types.String `tfsdk:"name"`
+	StartStopBroadcast      types.Bool   `tfsdk:"start_stop_broadcast"`
+	StartStopGroupBroadcast types.Bool   `tfsdk:"start_stop_group_broadcast"`
+	StartStopGroupLogger    types.Bool   `tfsdk:"start_stop_group_logger"`
+	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2         types.String `tfsdk:"start_stop_group2"`
+	StartStopGroup3         types.String `tfsdk:"start_stop_group3"`
+	StartStopGroup4         types.String `tfsdk:"start_stop_group4"`
+}
+type AAAAccountingNetworksData struct {
+	Id              types.String `tfsdk:"id"`
+	StartStopGroup1 types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2 types.String `tfsdk:"start_stop_group2"`
+}
+type AAAAccountingCommandsData struct {
+	Level          types.Int64  `tfsdk:"level"`
+	ListName       types.String `tfsdk:"list_name"`
+	ActionType     types.String `tfsdk:"action_type"`
+	Broadcast      types.Bool   `tfsdk:"broadcast"`
+	GroupBroadcast types.Bool   `tfsdk:"group_broadcast"`
+	GroupLogger    types.Bool   `tfsdk:"group_logger"`
+	Group1Group    types.String `tfsdk:"group1_group"`
+	Group2Group    types.String `tfsdk:"group2_group"`
+	Group3Group    types.String `tfsdk:"group3_group"`
+	Group4Group    types.String `tfsdk:"group4_group"`
+}
+type AAAAccountingConnectionsData struct {
+	Name               types.String `tfsdk:"name"`
+	Default            types.Bool   `tfsdk:"default"`
+	None               types.Bool   `tfsdk:"none"`
+	StartStopBroadcast types.Bool   `tfsdk:"start_stop_broadcast"`
+	StartStopLogger    types.Bool   `tfsdk:"start_stop_logger"`
+	StartStopGroup1    types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2    types.String `tfsdk:"start_stop_group2"`
+	StartStopGroup3    types.String `tfsdk:"start_stop_group3"`
+	StartStopGroup4    types.String `tfsdk:"start_stop_group4"`
+	StopOnlyBroadcast  types.Bool   `tfsdk:"stop_only_broadcast"`
+	StopOnlyLogger     types.Bool   `tfsdk:"stop_only_logger"`
+	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
+	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
+	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
+	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
+	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
+	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
+	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
+	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
+}
+type AAAAccountingExecsData struct {
+	Name               types.String `tfsdk:"name"`
+	None               types.Bool   `tfsdk:"none"`
+	StartStopBroadcast types.Bool   `tfsdk:"start_stop_broadcast"`
+	StartStopLogger    types.Bool   `tfsdk:"start_stop_logger"`
+	StartStopGroup1    types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2    types.String `tfsdk:"start_stop_group2"`
+	StartStopGroup3    types.String `tfsdk:"start_stop_group3"`
+	StartStopGroup4    types.String `tfsdk:"start_stop_group4"`
+	StopOnlyBroadcast  types.Bool   `tfsdk:"stop_only_broadcast"`
+	StopOnlyLogger     types.Bool   `tfsdk:"stop_only_logger"`
+	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
+	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
+	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
+	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
+	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
+	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
+	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
+	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
+}
+type AAAAccountingDot1xData struct {
+	Name                    types.String `tfsdk:"name"`
+	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2         types.String `tfsdk:"start_stop_group2"`
+	StartStopGroup3         types.String `tfsdk:"start_stop_group3"`
+	StartStopGroup4         types.String `tfsdk:"start_stop_group4"`
+	StartStopBroadcast      types.Bool   `tfsdk:"start_stop_broadcast"`
+	StartStopGroupBroadcast types.Bool   `tfsdk:"start_stop_group_broadcast"`
+	StartStopGroupLogger    types.Bool   `tfsdk:"start_stop_group_logger"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -209,7 +291,7 @@ func (data AAAAccountingData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data AAAAccounting) toBody(ctx context.Context) string {
+func (data AAAAccounting) toBody(ctx context.Context, config AAAAccounting) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.UpdateNewinfoPeriodic.IsNull() && !data.UpdateNewinfoPeriodic.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update.newinfo.periodic", strconv.FormatInt(data.UpdateNewinfoPeriodic.ValueInt64(), 10))
@@ -551,7 +633,7 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data AAAAccounting) toBodyXML(ctx context.Context) string {
+func (data AAAAccounting) toBodyXML(ctx context.Context, config AAAAccounting) string {
 	body := netconf.Body{}
 	if !data.UpdateNewinfoPeriodic.IsNull() && !data.UpdateNewinfoPeriodic.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/update/newinfo/periodic", strconv.FormatInt(data.UpdateNewinfoPeriodic.ValueInt64(), 10))
@@ -2686,9 +2768,9 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "identity.accounting-list"); value.Exists() {
-		data.Identities = make([]AAAAccountingIdentities, 0)
+		data.Identities = make([]AAAAccountingIdentitiesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingIdentities{}
+			item := AAAAccountingIdentitiesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2736,9 +2818,9 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Networks = make([]AAAAccountingNetworks, 0)
+		data.Networks = make([]AAAAccountingNetworksData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingNetworks{}
+			item := AAAAccountingNetworksData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
@@ -2758,9 +2840,9 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SystemGuaranteeFirst = types.BoolNull()
 	}
 	if value := res.Get(prefix + "commands"); value.Exists() {
-		data.Commands = make([]AAAAccountingCommands, 0)
+		data.Commands = make([]AAAAccountingCommandsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingCommands{}
+			item := AAAAccountingCommandsData{}
 			if cValue := v.Get("level"); cValue.Exists() {
 				item.Level = types.Int64Value(cValue.Int())
 			}
@@ -2802,9 +2884,9 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "connection"); value.Exists() {
-		data.Connections = make([]AAAAccountingConnections, 0)
+		data.Connections = make([]AAAAccountingConnectionsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingConnections{}
+			item := AAAAccountingConnectionsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2889,9 +2971,9 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "exec"); value.Exists() {
-		data.Execs = make([]AAAAccountingExecs, 0)
+		data.Execs = make([]AAAAccountingExecsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingExecs{}
+			item := AAAAccountingExecsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2998,9 +3080,9 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "dot1x.accounting-list"); value.Exists() {
-		data.Dot1x = make([]AAAAccountingDot1x, 0)
+		data.Dot1x = make([]AAAAccountingDot1xData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingDot1x{}
+			item := AAAAccountingDot1xData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3406,9 +3488,9 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identity/accounting-list"); value.Exists() {
-		data.Identities = make([]AAAAccountingIdentities, 0)
+		data.Identities = make([]AAAAccountingIdentitiesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingIdentities{}
+			item := AAAAccountingIdentitiesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3456,9 +3538,9 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network"); value.Exists() {
-		data.Networks = make([]AAAAccountingNetworks, 0)
+		data.Networks = make([]AAAAccountingNetworksData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingNetworks{}
+			item := AAAAccountingNetworksData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
@@ -3478,9 +3560,9 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.SystemGuaranteeFirst = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/commands"); value.Exists() {
-		data.Commands = make([]AAAAccountingCommands, 0)
+		data.Commands = make([]AAAAccountingCommandsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingCommands{}
+			item := AAAAccountingCommandsData{}
 			if cValue := helpers.GetFromXPath(v, "level"); cValue.Exists() {
 				item.Level = types.Int64Value(cValue.Int())
 			}
@@ -3522,9 +3604,9 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/connection"); value.Exists() {
-		data.Connections = make([]AAAAccountingConnections, 0)
+		data.Connections = make([]AAAAccountingConnectionsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingConnections{}
+			item := AAAAccountingConnectionsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3609,9 +3691,9 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec"); value.Exists() {
-		data.Execs = make([]AAAAccountingExecs, 0)
+		data.Execs = make([]AAAAccountingExecsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingExecs{}
+			item := AAAAccountingExecsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3718,9 +3800,9 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.Dot1xDefaultStartStopGroupLogger = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/accounting-list"); value.Exists() {
-		data.Dot1x = make([]AAAAccountingDot1x, 0)
+		data.Dot1x = make([]AAAAccountingDot1xData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAccountingDot1x{}
+			item := AAAAccountingDot1xData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
