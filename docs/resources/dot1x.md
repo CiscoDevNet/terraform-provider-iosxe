@@ -75,6 +75,8 @@ Optional:
 - `description` (String) Provide a description for the credentials profile
 - `password` (String, Sensitive)
 - `password_type` (String) - Choices: `0`, `7`
+- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo_version` (Number) The write-only version of the attribute.
 - `pki_trustpoint` (String) Set the default pki trustpoint
 - `username` (String) Set the authentication userid
 

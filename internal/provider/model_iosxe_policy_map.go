@@ -50,21 +50,48 @@ type PolicyMap struct {
 	Description types.String       `tfsdk:"description"`
 	Classes     []PolicyMapClasses `tfsdk:"classes"`
 }
-
-type PolicyMapData struct {
-	Device      types.String       `tfsdk:"device"`
-	Id          types.String       `tfsdk:"id"`
-	Name        types.String       `tfsdk:"name"`
-	Type        types.String       `tfsdk:"type"`
-	Subscriber  types.Bool         `tfsdk:"subscriber"`
-	Description types.String       `tfsdk:"description"`
-	Classes     []PolicyMapClasses `tfsdk:"classes"`
-}
 type PolicyMapClasses struct {
 	Name    types.String              `tfsdk:"name"`
 	Actions []PolicyMapClassesActions `tfsdk:"actions"`
 }
 type PolicyMapClassesActions struct {
+	Type                                 types.String `tfsdk:"type"`
+	BandwidthBits                        types.Int64  `tfsdk:"bandwidth_bits"`
+	BandwidthPercent                     types.Int64  `tfsdk:"bandwidth_percent"`
+	BandwidthRemainingOption             types.String `tfsdk:"bandwidth_remaining_option"`
+	BandwidthRemainingPercent            types.Int64  `tfsdk:"bandwidth_remaining_percent"`
+	BandwidthRemainingRatio              types.Int64  `tfsdk:"bandwidth_remaining_ratio"`
+	PriorityLevel                        types.Int64  `tfsdk:"priority_level"`
+	PriorityBurst                        types.Int64  `tfsdk:"priority_burst"`
+	QueueLimit                           types.Int64  `tfsdk:"queue_limit"`
+	QueueLimitType                       types.String `tfsdk:"queue_limit_type"`
+	ShapeAverageBitRate                  types.Int64  `tfsdk:"shape_average_bit_rate"`
+	ShapeAverageBitsPerIntervalSustained types.Int64  `tfsdk:"shape_average_bits_per_interval_sustained"`
+	ShapeAverageBitsPerIntervalExcess    types.Int64  `tfsdk:"shape_average_bits_per_interval_excess"`
+	ShapeAveragePercent                  types.Int64  `tfsdk:"shape_average_percent"`
+	ShapeAverageBurstSizeSustained       types.Int64  `tfsdk:"shape_average_burst_size_sustained"`
+	ShapeAverageMs                       types.Bool   `tfsdk:"shape_average_ms"`
+	PoliceTargetBitrateConformTransmit   types.Bool   `tfsdk:"police_target_bitrate_conform_transmit"`
+	PoliceTargetBitrateExceedTransmit    types.Bool   `tfsdk:"police_target_bitrate_exceed_transmit"`
+	PoliceTargetBitrate                  types.Int64  `tfsdk:"police_target_bitrate"`
+	PoliceTargetBitrateConformBurstByte  types.Int64  `tfsdk:"police_target_bitrate_conform_burst_byte"`
+	PoliceTargetBitrateExcessBurstByte   types.Int64  `tfsdk:"police_target_bitrate_excess_burst_byte"`
+}
+
+type PolicyMapData struct {
+	Device      types.String           `tfsdk:"device"`
+	Id          types.String           `tfsdk:"id"`
+	Name        types.String           `tfsdk:"name"`
+	Type        types.String           `tfsdk:"type"`
+	Subscriber  types.Bool             `tfsdk:"subscriber"`
+	Description types.String           `tfsdk:"description"`
+	Classes     []PolicyMapClassesData `tfsdk:"classes"`
+}
+type PolicyMapClassesData struct {
+	Name    types.String                  `tfsdk:"name"`
+	Actions []PolicyMapClassesActionsData `tfsdk:"actions"`
+}
+type PolicyMapClassesActionsData struct {
 	Type                                 types.String `tfsdk:"type"`
 	BandwidthBits                        types.Int64  `tfsdk:"bandwidth_bits"`
 	BandwidthPercent                     types.Int64  `tfsdk:"bandwidth_percent"`
@@ -128,7 +155,7 @@ func (data PolicyMapData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data PolicyMap) toBody(ctx context.Context) string {
+func (data PolicyMap) toBody(ctx context.Context, config PolicyMap) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -233,7 +260,7 @@ func (data PolicyMap) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data PolicyMap) toBodyXML(ctx context.Context) string {
+func (data PolicyMap) toBodyXML(ctx context.Context, config PolicyMap) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -885,16 +912,16 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "class"); value.Exists() {
-		data.Classes = make([]PolicyMapClasses, 0)
+		data.Classes = make([]PolicyMapClassesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := PolicyMapClasses{}
+			item := PolicyMapClassesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("action-list"); cValue.Exists() {
-				item.Actions = make([]PolicyMapClassesActions, 0)
+				item.Actions = make([]PolicyMapClassesActionsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := PolicyMapClassesActions{}
+					cItem := PolicyMapClassesActionsData{}
 					if ccValue := cv.Get("action-type"); ccValue.Exists() {
 						cItem.Type = types.StringValue(ccValue.String())
 					}
@@ -1097,16 +1124,16 @@ func (data *PolicyMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/class"); value.Exists() {
-		data.Classes = make([]PolicyMapClasses, 0)
+		data.Classes = make([]PolicyMapClassesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PolicyMapClasses{}
+			item := PolicyMapClassesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "action-list"); cValue.Exists() {
-				item.Actions = make([]PolicyMapClassesActions, 0)
+				item.Actions = make([]PolicyMapClassesActionsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := PolicyMapClassesActions{}
+					cItem := PolicyMapClassesActionsData{}
 					if ccValue := helpers.GetFromXPath(cv, "action-type"); ccValue.Exists() {
 						cItem.Type = types.StringValue(ccValue.String())
 					}

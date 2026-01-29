@@ -38,6 +38,8 @@ resource "iosxe_radius" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `accounting_port` (Number) UDP port for RADIUS accounting server (default is 1813)
   - Range: `0`-`65534`
 - `authentication_port` (Number) UDP port for RADIUS authentication server (default is 1812)
@@ -52,9 +54,13 @@ resource "iosxe_radius" "example" {
 - `ipv4_address` (String) IPv4 address or Hostname for radius server
 - `key` (String, Sensitive)
 - `key_encryption` (String) - Choices: `0`, `5`, `6`, `7`
+- `key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `key_wo_version` (Number) The write-only version of the attribute.
 - `pac_key` (String, Sensitive) The UNENCRYPTED (cleartext) server key
 - `pac_key_encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
   - Choices: `0`, `6`, `7`
+- `pac_key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `pac_key_wo_version` (Number) The write-only version of the attribute.
 - `retransmit` (Number) Number of retries to active server (overrides default)
   - Range: `0`-`100`
 - `timeout` (Number) Time to wait for a RADIUS server to reply (overrides default)

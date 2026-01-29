@@ -146,166 +146,8 @@ type System struct {
 	BootSystemFlashFiles                                   []SystemBootSystemFlashFiles                        `tfsdk:"boot_system_flash_files"`
 	BootSystemBootfiles                                    []SystemBootSystemBootfiles                         `tfsdk:"boot_system_bootfiles"`
 	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
-	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
-	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
-	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
-	IpHostsVrf                                             []SystemIpHostsVrf                                  `tfsdk:"ip_hosts_vrf"`
-	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
-	SubscriberTemplating                                   types.Bool                                          `tfsdk:"subscriber_templating"`
-	CallHomeContactEmail                                   types.String                                        `tfsdk:"call_home_contact_email"`
-	CallHomeCiscoTac1ProfileActive                         types.Bool                                          `tfsdk:"call_home_cisco_tac_1_profile_active"`
-	CallHomeCiscoTac1DestinationTransportMethod            types.String                                        `tfsdk:"call_home_cisco_tac_1_destination_transport_method"`
-	IpTcpPathMtuDiscovery                                  types.Bool                                          `tfsdk:"ip_tcp_path_mtu_discovery"`
-	IpTcpMss                                               types.Int64                                         `tfsdk:"ip_tcp_mss"`
-	IpTcpWindowSize                                        types.Int64                                         `tfsdk:"ip_tcp_window_size"`
-	IpFtpPassive                                           types.Bool                                          `tfsdk:"ip_ftp_passive"`
-	TftpSourceInterfaceGigabitEthernet                     types.String                                        `tfsdk:"tftp_source_interface_gigabit_ethernet"`
-	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
-	TftpSourceInterfaceVlan                                types.Int64                                         `tfsdk:"tftp_source_interface_vlan"`
-	TftpSourceInterfaceTwoGigabitEthernet                  types.String                                        `tfsdk:"tftp_source_interface_two_gigabit_ethernet"`
-	TftpSourceInterfaceFiveGigabitEthernet                 types.String                                        `tfsdk:"tftp_source_interface_five_gigabit_ethernet"`
-	TftpSourceInterfaceTenGigabitEthernet                  types.String                                        `tfsdk:"tftp_source_interface_ten_gigabit_ethernet"`
-	TftpSourceInterfaceTwentyFiveGigabitEthernet           types.String                                        `tfsdk:"tftp_source_interface_twenty_five_gigabit_ethernet"`
-	TftpSourceInterfaceFortyGigabitEthernet                types.String                                        `tfsdk:"tftp_source_interface_forty_gigabit_ethernet"`
-	TftpSourceInterfaceHundredGigabitEthernet              types.String                                        `tfsdk:"tftp_source_interface_hundred_gigabit_ethernet"`
-	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
-	Version                                                types.String                                        `tfsdk:"version"`
-	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
-	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
-	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
-	IgmpSnoopingQuerier                                    types.Bool                                          `tfsdk:"igmp_snooping_querier"`
-	IgmpSnoopingQuerierVersion                             types.Int64                                         `tfsdk:"igmp_snooping_querier_version"`
-	IgmpSnoopingQuerierMaxResponseTime                     types.Int64                                         `tfsdk:"igmp_snooping_querier_max_response_time"`
-	IgmpSnoopingQuerierTimerExpiry                         types.Int64                                         `tfsdk:"igmp_snooping_querier_timer_expiry"`
-	SecurityPasswordsMinLength                             types.Int64                                         `tfsdk:"security_passwords_min_length"`
-	IpDomainListNames                                      types.List                                          `tfsdk:"ip_domain_list_names"`
-	IpDomainListVrfDomain                                  types.String                                        `tfsdk:"ip_domain_list_vrf_domain"`
-	IpDomainListVrf                                        types.String                                        `tfsdk:"ip_domain_list_vrf"`
-	EthernetCfmAlarmConfigDelay                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_delay"`
-	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
-	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
-	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
-	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
-	IpCefLoadSharingAlgorithmIncludePortsSource            types.Bool                                          `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_source"`
-	IpCefLoadSharingAlgorithmIncludePortsDestination       types.Bool                                          `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_destination"`
-	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
-	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                          `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
-	PortChannelLoadBalance                                 types.String                                        `tfsdk:"port_channel_load_balance"`
-	AuthenticationMacMovePermit                            types.Bool                                          `tfsdk:"authentication_mac_move_permit"`
-	AuthenticationMacMoveDenyUncontrolled                  types.Bool                                          `tfsdk:"authentication_mac_move_deny_uncontrolled"`
-	IpDefaultGateway                                       types.String                                        `tfsdk:"ip_default_gateway"`
-	DeviceClassifier                                       types.Bool                                          `tfsdk:"device_classifier"`
-	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
-	MldSnooping                                            types.Bool                                          `tfsdk:"mld_snooping"`
-	MldSnoopingQuerier                                     types.Bool                                          `tfsdk:"mld_snooping_querier"`
-}
-
-type SystemData struct {
-	Device                                                 types.String                                        `tfsdk:"device"`
-	Id                                                     types.String                                        `tfsdk:"id"`
-	Hostname                                               types.String                                        `tfsdk:"hostname"`
-	IpBgpCommunityNewFormat                                types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
-	IpRouting                                              types.Bool                                          `tfsdk:"ip_routing"`
-	Ipv6UnicastRouting                                     types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
-	Ipv6MulticastRouting                                   types.Bool                                          `tfsdk:"ipv6_multicast_routing"`
-	Mtu                                                    types.Int64                                         `tfsdk:"mtu"`
-	IpSourceRoute                                          types.Bool                                          `tfsdk:"ip_source_route"`
-	IpDomainLookup                                         types.Bool                                          `tfsdk:"ip_domain_lookup"`
-	IpDomainName                                           types.String                                        `tfsdk:"ip_domain_name"`
-	LoginDelay                                             types.Int64                                         `tfsdk:"login_delay"`
-	LoginOnFailure                                         types.Bool                                          `tfsdk:"login_on_failure"`
-	LoginOnFailureLog                                      types.Bool                                          `tfsdk:"login_on_failure_log"`
-	LoginOnSuccess                                         types.Bool                                          `tfsdk:"login_on_success"`
-	LoginOnSuccessLog                                      types.Bool                                          `tfsdk:"login_on_success_log"`
-	IpMulticastRouting                                     types.Bool                                          `tfsdk:"ip_multicast_routing"`
-	MulticastRoutingSwitch                                 types.Bool                                          `tfsdk:"multicast_routing_switch"`
-	IpMulticastRoutingDistributed                          types.Bool                                          `tfsdk:"ip_multicast_routing_distributed"`
-	MulticastRoutingVrfs                                   []SystemMulticastRoutingVrfs                        `tfsdk:"multicast_routing_vrfs"`
-	IpHttpAccessClass                                      types.Int64                                         `tfsdk:"ip_http_access_class"`
-	IpHttpAuthenticationAaa                                types.Bool                                          `tfsdk:"ip_http_authentication_aaa"`
-	IpHttpAuthenticationAaaExecAuthorization               types.String                                        `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
-	IpHttpAuthenticationAaaLoginAuthentication             types.String                                        `tfsdk:"ip_http_authentication_aaa_login_authentication"`
-	IpHttpAuthenticationAaaCommandAuthorization            []SystemIpHttpAuthenticationAaaCommandAuthorization `tfsdk:"ip_http_authentication_aaa_command_authorization"`
-	IpHttpAuthenticationLocal                              types.Bool                                          `tfsdk:"ip_http_authentication_local"`
-	IpHttpServer                                           types.Bool                                          `tfsdk:"ip_http_server"`
-	IpHttpSecureServer                                     types.Bool                                          `tfsdk:"ip_http_secure_server"`
-	IpHttpSecureTrustpoint                                 types.String                                        `tfsdk:"ip_http_secure_trustpoint"`
-	IpHttpTlsVersion                                       types.String                                        `tfsdk:"ip_http_tls_version"`
-	IpHttpClientSecureTrustpoint                           types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
-	IpHttpClientSourceInterface                            types.String                                        `tfsdk:"ip_http_client_source_interface"`
-	IpHttpSecureActiveSessionModules                       types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
-	IpHttpMaxConnections                                   types.Int64                                         `tfsdk:"ip_http_max_connections"`
-	IpHttpActiveSessionModules                             types.String                                        `tfsdk:"ip_http_active_session_modules"`
-	IpNameServers                                          types.List                                          `tfsdk:"ip_name_servers"`
-	IpNameServersVrf                                       []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
-	IpDomainLookupNsap                                     types.Bool                                          `tfsdk:"ip_domain_lookup_nsap"`
-	IpDomainLookupRecursive                                types.Bool                                          `tfsdk:"ip_domain_lookup_recursive"`
-	IpDomainLookupVrfs                                     []SystemIpDomainLookupVrfs                          `tfsdk:"ip_domain_lookup_vrfs"`
-	IpDomainLookupSourceInterfaceLoopback                  types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_loopback"`
-	IpDomainLookupSourceInterfaceVlan                      types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_vlan"`
-	IpDomainLookupSourceInterfaceGigabitEthernet           types.String                                        `tfsdk:"ip_domain_lookup_source_interface_gigabit_ethernet"`
-	IpDomainLookupSourceInterfaceTwoGigabitEthernet        types.String                                        `tfsdk:"ip_domain_lookup_source_interface_two_gigabit_ethernet"`
-	IpDomainLookupSourceInterfaceFiveGigabitEthernet       types.String                                        `tfsdk:"ip_domain_lookup_source_interface_five_gigabit_ethernet"`
-	IpDomainLookupSourceInterfaceTenGigabitEthernet        types.String                                        `tfsdk:"ip_domain_lookup_source_interface_ten_gigabit_ethernet"`
-	IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet types.String                                        `tfsdk:"ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet"`
-	IpDomainLookupSourceInterfaceFortyGigabitEthernet      types.String                                        `tfsdk:"ip_domain_lookup_source_interface_forty_gigabit_ethernet"`
-	IpDomainLookupSourceInterfaceHundredGigabitEthernet    types.String                                        `tfsdk:"ip_domain_lookup_source_interface_hundred_gigabit_ethernet"`
-	CispEnable                                             types.Bool                                          `tfsdk:"cisp_enable"`
-	EpmLogging                                             types.Bool                                          `tfsdk:"epm_logging"`
-	AccessSessionMacMoveDeny                               types.Bool                                          `tfsdk:"access_session_mac_move_deny"`
-	DiagnosticBootupLevel                                  types.String                                        `tfsdk:"diagnostic_bootup_level"`
-	MemoryFreeLowWatermarkProcessor                        types.Int64                                         `tfsdk:"memory_free_low_watermark_processor"`
-	ArchivePath                                            types.String                                        `tfsdk:"archive_path"`
-	ArchiveMaximum                                         types.Int64                                         `tfsdk:"archive_maximum"`
-	ArchiveWriteMemory                                     types.Bool                                          `tfsdk:"archive_write_memory"`
-	ArchiveTimePeriod                                      types.Int64                                         `tfsdk:"archive_time_period"`
-	ArchiveLogConfigLoggingEnable                          types.Bool                                          `tfsdk:"archive_log_config_logging_enable"`
-	ArchiveLogConfigLoggingSize                            types.Int64                                         `tfsdk:"archive_log_config_logging_size"`
-	Redundancy                                             types.Bool                                          `tfsdk:"redundancy"`
-	RedundancyMode                                         types.String                                        `tfsdk:"redundancy_mode"`
-	TransceiverTypeAllMonitoring                           types.Bool                                          `tfsdk:"transceiver_type_all_monitoring"`
-	IpForwardProtocolNd                                    types.Bool                                          `tfsdk:"ip_forward_protocol_nd"`
-	IpScpServerEnable                                      types.Bool                                          `tfsdk:"ip_scp_server_enable"`
-	IpSshVersion                                           types.String                                        `tfsdk:"ip_ssh_version"`
-	IpSshVersionLegacy                                     types.Int64                                         `tfsdk:"ip_ssh_version_legacy"`
-	IpSshTimeOut                                           types.Int64                                         `tfsdk:"ip_ssh_time_out"`
-	IpSshAuthenticationRetries                             types.Int64                                         `tfsdk:"ip_ssh_authentication_retries"`
-	IpSshSourceInterfaceLoopback                           types.Int64                                         `tfsdk:"ip_ssh_source_interface_loopback"`
-	IpSshSourceInterfaceVlan                               types.Int64                                         `tfsdk:"ip_ssh_source_interface_vlan"`
-	IpSshSourceInterfaceGigabitEthernet                    types.String                                        `tfsdk:"ip_ssh_source_interface_gigabit_ethernet"`
-	IpSshSourceInterfaceTwoGigabitEthernet                 types.String                                        `tfsdk:"ip_ssh_source_interface_two_gigabit_ethernet"`
-	IpSshSourceInterfaceFiveGigabitEthernet                types.String                                        `tfsdk:"ip_ssh_source_interface_five_gigabit_ethernet"`
-	IpSshSourceInterfaceTenGigabitEthernet                 types.String                                        `tfsdk:"ip_ssh_source_interface_ten_gigabit_ethernet"`
-	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                        `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
-	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                        `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
-	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
-	IpSshBulkMode                                          types.Bool                                          `tfsdk:"ip_ssh_bulk_mode"`
-	IpSshBulkModeWindowSize                                types.Int64                                         `tfsdk:"ip_ssh_bulk_mode_window_size"`
-	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
-	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
-	IpTacacsSourceInterfaceLoopback                        types.Int64                                         `tfsdk:"ip_tacacs_source_interface_loopback"`
-	IpTacacsSourceInterfaceVlan                            types.Int64                                         `tfsdk:"ip_tacacs_source_interface_vlan"`
-	IpTacacsSourceInterfaceGigabitEthernet                 types.String                                        `tfsdk:"ip_tacacs_source_interface_gigabit_ethernet"`
-	IpTacacsSourceInterfaceTwoGigabitEthernet              types.String                                        `tfsdk:"ip_tacacs_source_interface_two_gigabit_ethernet"`
-	IpTacacsSourceInterfaceFiveGigabitEthernet             types.String                                        `tfsdk:"ip_tacacs_source_interface_five_gigabit_ethernet"`
-	IpTacacsSourceInterfaceTenGigabitEthernet              types.String                                        `tfsdk:"ip_tacacs_source_interface_ten_gigabit_ethernet"`
-	IpTacacsSourceInterfaceTwentyFiveGigabitEthernet       types.String                                        `tfsdk:"ip_tacacs_source_interface_twenty_five_gigabit_ethernet"`
-	IpTacacsSourceInterfaceFortyGigabitEthernet            types.String                                        `tfsdk:"ip_tacacs_source_interface_forty_gigabit_ethernet"`
-	IpTacacsSourceInterfaceHundredGigabitEthernet          types.String                                        `tfsdk:"ip_tacacs_source_interface_hundred_gigabit_ethernet"`
-	IpTacacsSourceInterfaceVrf                             types.String                                        `tfsdk:"ip_tacacs_source_interface_vrf"`
-	IpRadiusSourceInterfaceLoopback                        types.Int64                                         `tfsdk:"ip_radius_source_interface_loopback"`
-	IpRadiusSourceInterfaceVlan                            types.Int64                                         `tfsdk:"ip_radius_source_interface_vlan"`
-	IpRadiusSourceInterfaceGigabitEthernet                 types.String                                        `tfsdk:"ip_radius_source_interface_gigabit_ethernet"`
-	IpRadiusSourceInterfaceTwoGigabitEthernet              types.String                                        `tfsdk:"ip_radius_source_interface_two_gigabit_ethernet"`
-	IpRadiusSourceInterfaceFiveGigabitEthernet             types.String                                        `tfsdk:"ip_radius_source_interface_five_gigabit_ethernet"`
-	IpRadiusSourceInterfaceTenGigabitEthernet              types.String                                        `tfsdk:"ip_radius_source_interface_ten_gigabit_ethernet"`
-	IpRadiusSourceInterfaceTwentyFiveGigabitEthernet       types.String                                        `tfsdk:"ip_radius_source_interface_twenty_five_gigabit_ethernet"`
-	IpRadiusSourceInterfaceFortyGigabitEthernet            types.String                                        `tfsdk:"ip_radius_source_interface_forty_gigabit_ethernet"`
-	IpRadiusSourceInterfaceHundredGigabitEthernet          types.String                                        `tfsdk:"ip_radius_source_interface_hundred_gigabit_ethernet"`
-	IpRadiusSourceInterfaceVrf                             types.String                                        `tfsdk:"ip_radius_source_interface_vrf"`
-	BootSystemFlashFiles                                   []SystemBootSystemFlashFiles                        `tfsdk:"boot_system_flash_files"`
-	BootSystemBootfiles                                    []SystemBootSystemBootfiles                         `tfsdk:"boot_system_bootfiles"`
-	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
+	EnableSecretWO                                         types.String                                        `tfsdk:"enable_secret_wo"`
+	EnableSecretWOVersion                                  types.Int64                                         `tfsdk:"enable_secret_wo_version"`
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
 	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
@@ -421,6 +263,227 @@ type SystemTableMapsMappings struct {
 	To   types.Int64 `tfsdk:"to"`
 }
 
+type SystemData struct {
+	Device                                                 types.String                                            `tfsdk:"device"`
+	Id                                                     types.String                                            `tfsdk:"id"`
+	Hostname                                               types.String                                            `tfsdk:"hostname"`
+	IpBgpCommunityNewFormat                                types.Bool                                              `tfsdk:"ip_bgp_community_new_format"`
+	IpRouting                                              types.Bool                                              `tfsdk:"ip_routing"`
+	Ipv6UnicastRouting                                     types.Bool                                              `tfsdk:"ipv6_unicast_routing"`
+	Ipv6MulticastRouting                                   types.Bool                                              `tfsdk:"ipv6_multicast_routing"`
+	Mtu                                                    types.Int64                                             `tfsdk:"mtu"`
+	IpSourceRoute                                          types.Bool                                              `tfsdk:"ip_source_route"`
+	IpDomainLookup                                         types.Bool                                              `tfsdk:"ip_domain_lookup"`
+	IpDomainName                                           types.String                                            `tfsdk:"ip_domain_name"`
+	LoginDelay                                             types.Int64                                             `tfsdk:"login_delay"`
+	LoginOnFailure                                         types.Bool                                              `tfsdk:"login_on_failure"`
+	LoginOnFailureLog                                      types.Bool                                              `tfsdk:"login_on_failure_log"`
+	LoginOnSuccess                                         types.Bool                                              `tfsdk:"login_on_success"`
+	LoginOnSuccessLog                                      types.Bool                                              `tfsdk:"login_on_success_log"`
+	IpMulticastRouting                                     types.Bool                                              `tfsdk:"ip_multicast_routing"`
+	MulticastRoutingSwitch                                 types.Bool                                              `tfsdk:"multicast_routing_switch"`
+	IpMulticastRoutingDistributed                          types.Bool                                              `tfsdk:"ip_multicast_routing_distributed"`
+	MulticastRoutingVrfs                                   []SystemMulticastRoutingVrfsData                        `tfsdk:"multicast_routing_vrfs"`
+	IpHttpAccessClass                                      types.Int64                                             `tfsdk:"ip_http_access_class"`
+	IpHttpAuthenticationAaa                                types.Bool                                              `tfsdk:"ip_http_authentication_aaa"`
+	IpHttpAuthenticationAaaExecAuthorization               types.String                                            `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
+	IpHttpAuthenticationAaaLoginAuthentication             types.String                                            `tfsdk:"ip_http_authentication_aaa_login_authentication"`
+	IpHttpAuthenticationAaaCommandAuthorization            []SystemIpHttpAuthenticationAaaCommandAuthorizationData `tfsdk:"ip_http_authentication_aaa_command_authorization"`
+	IpHttpAuthenticationLocal                              types.Bool                                              `tfsdk:"ip_http_authentication_local"`
+	IpHttpServer                                           types.Bool                                              `tfsdk:"ip_http_server"`
+	IpHttpSecureServer                                     types.Bool                                              `tfsdk:"ip_http_secure_server"`
+	IpHttpSecureTrustpoint                                 types.String                                            `tfsdk:"ip_http_secure_trustpoint"`
+	IpHttpTlsVersion                                       types.String                                            `tfsdk:"ip_http_tls_version"`
+	IpHttpClientSecureTrustpoint                           types.String                                            `tfsdk:"ip_http_client_secure_trustpoint"`
+	IpHttpClientSourceInterface                            types.String                                            `tfsdk:"ip_http_client_source_interface"`
+	IpHttpSecureActiveSessionModules                       types.String                                            `tfsdk:"ip_http_secure_active_session_modules"`
+	IpHttpMaxConnections                                   types.Int64                                             `tfsdk:"ip_http_max_connections"`
+	IpHttpActiveSessionModules                             types.String                                            `tfsdk:"ip_http_active_session_modules"`
+	IpNameServers                                          types.List                                              `tfsdk:"ip_name_servers"`
+	IpNameServersVrf                                       []SystemIpNameServersVrfData                            `tfsdk:"ip_name_servers_vrf"`
+	IpDomainLookupNsap                                     types.Bool                                              `tfsdk:"ip_domain_lookup_nsap"`
+	IpDomainLookupRecursive                                types.Bool                                              `tfsdk:"ip_domain_lookup_recursive"`
+	IpDomainLookupVrfs                                     []SystemIpDomainLookupVrfsData                          `tfsdk:"ip_domain_lookup_vrfs"`
+	IpDomainLookupSourceInterfaceLoopback                  types.Int64                                             `tfsdk:"ip_domain_lookup_source_interface_loopback"`
+	IpDomainLookupSourceInterfaceVlan                      types.Int64                                             `tfsdk:"ip_domain_lookup_source_interface_vlan"`
+	IpDomainLookupSourceInterfaceGigabitEthernet           types.String                                            `tfsdk:"ip_domain_lookup_source_interface_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTwoGigabitEthernet        types.String                                            `tfsdk:"ip_domain_lookup_source_interface_two_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceFiveGigabitEthernet       types.String                                            `tfsdk:"ip_domain_lookup_source_interface_five_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTenGigabitEthernet        types.String                                            `tfsdk:"ip_domain_lookup_source_interface_ten_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet types.String                                            `tfsdk:"ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceFortyGigabitEthernet      types.String                                            `tfsdk:"ip_domain_lookup_source_interface_forty_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceHundredGigabitEthernet    types.String                                            `tfsdk:"ip_domain_lookup_source_interface_hundred_gigabit_ethernet"`
+	CispEnable                                             types.Bool                                              `tfsdk:"cisp_enable"`
+	EpmLogging                                             types.Bool                                              `tfsdk:"epm_logging"`
+	AccessSessionMacMoveDeny                               types.Bool                                              `tfsdk:"access_session_mac_move_deny"`
+	DiagnosticBootupLevel                                  types.String                                            `tfsdk:"diagnostic_bootup_level"`
+	MemoryFreeLowWatermarkProcessor                        types.Int64                                             `tfsdk:"memory_free_low_watermark_processor"`
+	ArchivePath                                            types.String                                            `tfsdk:"archive_path"`
+	ArchiveMaximum                                         types.Int64                                             `tfsdk:"archive_maximum"`
+	ArchiveWriteMemory                                     types.Bool                                              `tfsdk:"archive_write_memory"`
+	ArchiveTimePeriod                                      types.Int64                                             `tfsdk:"archive_time_period"`
+	ArchiveLogConfigLoggingEnable                          types.Bool                                              `tfsdk:"archive_log_config_logging_enable"`
+	ArchiveLogConfigLoggingSize                            types.Int64                                             `tfsdk:"archive_log_config_logging_size"`
+	Redundancy                                             types.Bool                                              `tfsdk:"redundancy"`
+	RedundancyMode                                         types.String                                            `tfsdk:"redundancy_mode"`
+	TransceiverTypeAllMonitoring                           types.Bool                                              `tfsdk:"transceiver_type_all_monitoring"`
+	IpForwardProtocolNd                                    types.Bool                                              `tfsdk:"ip_forward_protocol_nd"`
+	IpScpServerEnable                                      types.Bool                                              `tfsdk:"ip_scp_server_enable"`
+	IpSshVersion                                           types.String                                            `tfsdk:"ip_ssh_version"`
+	IpSshVersionLegacy                                     types.Int64                                             `tfsdk:"ip_ssh_version_legacy"`
+	IpSshTimeOut                                           types.Int64                                             `tfsdk:"ip_ssh_time_out"`
+	IpSshAuthenticationRetries                             types.Int64                                             `tfsdk:"ip_ssh_authentication_retries"`
+	IpSshSourceInterfaceLoopback                           types.Int64                                             `tfsdk:"ip_ssh_source_interface_loopback"`
+	IpSshSourceInterfaceVlan                               types.Int64                                             `tfsdk:"ip_ssh_source_interface_vlan"`
+	IpSshSourceInterfaceGigabitEthernet                    types.String                                            `tfsdk:"ip_ssh_source_interface_gigabit_ethernet"`
+	IpSshSourceInterfaceTwoGigabitEthernet                 types.String                                            `tfsdk:"ip_ssh_source_interface_two_gigabit_ethernet"`
+	IpSshSourceInterfaceFiveGigabitEthernet                types.String                                            `tfsdk:"ip_ssh_source_interface_five_gigabit_ethernet"`
+	IpSshSourceInterfaceTenGigabitEthernet                 types.String                                            `tfsdk:"ip_ssh_source_interface_ten_gigabit_ethernet"`
+	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                            `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
+	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                            `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
+	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                            `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
+	IpSshBulkMode                                          types.Bool                                              `tfsdk:"ip_ssh_bulk_mode"`
+	IpSshBulkModeWindowSize                                types.Int64                                             `tfsdk:"ip_ssh_bulk_mode_window_size"`
+	ControlPlaneServicePolicyInput                         types.String                                            `tfsdk:"control_plane_service_policy_input"`
+	PnpProfiles                                            []SystemPnpProfilesData                                 `tfsdk:"pnp_profiles"`
+	IpTacacsSourceInterfaceLoopback                        types.Int64                                             `tfsdk:"ip_tacacs_source_interface_loopback"`
+	IpTacacsSourceInterfaceVlan                            types.Int64                                             `tfsdk:"ip_tacacs_source_interface_vlan"`
+	IpTacacsSourceInterfaceGigabitEthernet                 types.String                                            `tfsdk:"ip_tacacs_source_interface_gigabit_ethernet"`
+	IpTacacsSourceInterfaceTwoGigabitEthernet              types.String                                            `tfsdk:"ip_tacacs_source_interface_two_gigabit_ethernet"`
+	IpTacacsSourceInterfaceFiveGigabitEthernet             types.String                                            `tfsdk:"ip_tacacs_source_interface_five_gigabit_ethernet"`
+	IpTacacsSourceInterfaceTenGigabitEthernet              types.String                                            `tfsdk:"ip_tacacs_source_interface_ten_gigabit_ethernet"`
+	IpTacacsSourceInterfaceTwentyFiveGigabitEthernet       types.String                                            `tfsdk:"ip_tacacs_source_interface_twenty_five_gigabit_ethernet"`
+	IpTacacsSourceInterfaceFortyGigabitEthernet            types.String                                            `tfsdk:"ip_tacacs_source_interface_forty_gigabit_ethernet"`
+	IpTacacsSourceInterfaceHundredGigabitEthernet          types.String                                            `tfsdk:"ip_tacacs_source_interface_hundred_gigabit_ethernet"`
+	IpTacacsSourceInterfaceVrf                             types.String                                            `tfsdk:"ip_tacacs_source_interface_vrf"`
+	IpRadiusSourceInterfaceLoopback                        types.Int64                                             `tfsdk:"ip_radius_source_interface_loopback"`
+	IpRadiusSourceInterfaceVlan                            types.Int64                                             `tfsdk:"ip_radius_source_interface_vlan"`
+	IpRadiusSourceInterfaceGigabitEthernet                 types.String                                            `tfsdk:"ip_radius_source_interface_gigabit_ethernet"`
+	IpRadiusSourceInterfaceTwoGigabitEthernet              types.String                                            `tfsdk:"ip_radius_source_interface_two_gigabit_ethernet"`
+	IpRadiusSourceInterfaceFiveGigabitEthernet             types.String                                            `tfsdk:"ip_radius_source_interface_five_gigabit_ethernet"`
+	IpRadiusSourceInterfaceTenGigabitEthernet              types.String                                            `tfsdk:"ip_radius_source_interface_ten_gigabit_ethernet"`
+	IpRadiusSourceInterfaceTwentyFiveGigabitEthernet       types.String                                            `tfsdk:"ip_radius_source_interface_twenty_five_gigabit_ethernet"`
+	IpRadiusSourceInterfaceFortyGigabitEthernet            types.String                                            `tfsdk:"ip_radius_source_interface_forty_gigabit_ethernet"`
+	IpRadiusSourceInterfaceHundredGigabitEthernet          types.String                                            `tfsdk:"ip_radius_source_interface_hundred_gigabit_ethernet"`
+	IpRadiusSourceInterfaceVrf                             types.String                                            `tfsdk:"ip_radius_source_interface_vrf"`
+	BootSystemFlashFiles                                   []SystemBootSystemFlashFilesData                        `tfsdk:"boot_system_flash_files"`
+	BootSystemBootfiles                                    []SystemBootSystemBootfilesData                         `tfsdk:"boot_system_bootfiles"`
+	EnableSecret                                           types.String                                            `tfsdk:"enable_secret"`
+	EnableSecretType                                       types.String                                            `tfsdk:"enable_secret_type"`
+	EnableSecretLevel                                      types.Int64                                             `tfsdk:"enable_secret_level"`
+	IpHosts                                                []SystemIpHostsData                                     `tfsdk:"ip_hosts"`
+	IpHostsVrf                                             []SystemIpHostsVrfData                                  `tfsdk:"ip_hosts_vrf"`
+	DiagnosticEventLogSize                                 types.Int64                                             `tfsdk:"diagnostic_event_log_size"`
+	SubscriberTemplating                                   types.Bool                                              `tfsdk:"subscriber_templating"`
+	CallHomeContactEmail                                   types.String                                            `tfsdk:"call_home_contact_email"`
+	CallHomeCiscoTac1ProfileActive                         types.Bool                                              `tfsdk:"call_home_cisco_tac_1_profile_active"`
+	CallHomeCiscoTac1DestinationTransportMethod            types.String                                            `tfsdk:"call_home_cisco_tac_1_destination_transport_method"`
+	IpTcpPathMtuDiscovery                                  types.Bool                                              `tfsdk:"ip_tcp_path_mtu_discovery"`
+	IpTcpMss                                               types.Int64                                             `tfsdk:"ip_tcp_mss"`
+	IpTcpWindowSize                                        types.Int64                                             `tfsdk:"ip_tcp_window_size"`
+	IpFtpPassive                                           types.Bool                                              `tfsdk:"ip_ftp_passive"`
+	TftpSourceInterfaceGigabitEthernet                     types.String                                            `tfsdk:"tftp_source_interface_gigabit_ethernet"`
+	TftpSourceInterfaceLoopback                            types.Int64                                             `tfsdk:"tftp_source_interface_loopback"`
+	TftpSourceInterfaceVlan                                types.Int64                                             `tfsdk:"tftp_source_interface_vlan"`
+	TftpSourceInterfaceTwoGigabitEthernet                  types.String                                            `tfsdk:"tftp_source_interface_two_gigabit_ethernet"`
+	TftpSourceInterfaceFiveGigabitEthernet                 types.String                                            `tfsdk:"tftp_source_interface_five_gigabit_ethernet"`
+	TftpSourceInterfaceTenGigabitEthernet                  types.String                                            `tfsdk:"tftp_source_interface_ten_gigabit_ethernet"`
+	TftpSourceInterfaceTwentyFiveGigabitEthernet           types.String                                            `tfsdk:"tftp_source_interface_twenty_five_gigabit_ethernet"`
+	TftpSourceInterfaceFortyGigabitEthernet                types.String                                            `tfsdk:"tftp_source_interface_forty_gigabit_ethernet"`
+	TftpSourceInterfaceHundredGigabitEthernet              types.String                                            `tfsdk:"tftp_source_interface_hundred_gigabit_ethernet"`
+	MultilinkPppBundleName                                 types.String                                            `tfsdk:"multilink_ppp_bundle_name"`
+	Version                                                types.String                                            `tfsdk:"version"`
+	TrackObjects                                           []SystemTrackObjectsData                                `tfsdk:"track_objects"`
+	IpNbarClassificationDnsClassifyByDomain                types.Bool                                              `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
+	IpMulticastRouteLimit                                  types.Int64                                             `tfsdk:"ip_multicast_route_limit"`
+	IgmpSnoopingQuerier                                    types.Bool                                              `tfsdk:"igmp_snooping_querier"`
+	IgmpSnoopingQuerierVersion                             types.Int64                                             `tfsdk:"igmp_snooping_querier_version"`
+	IgmpSnoopingQuerierMaxResponseTime                     types.Int64                                             `tfsdk:"igmp_snooping_querier_max_response_time"`
+	IgmpSnoopingQuerierTimerExpiry                         types.Int64                                             `tfsdk:"igmp_snooping_querier_timer_expiry"`
+	SecurityPasswordsMinLength                             types.Int64                                             `tfsdk:"security_passwords_min_length"`
+	IpDomainListNames                                      types.List                                              `tfsdk:"ip_domain_list_names"`
+	IpDomainListVrfDomain                                  types.String                                            `tfsdk:"ip_domain_list_vrf_domain"`
+	IpDomainListVrf                                        types.String                                            `tfsdk:"ip_domain_list_vrf"`
+	EthernetCfmAlarmConfigDelay                            types.Int64                                             `tfsdk:"ethernet_cfm_alarm_config_delay"`
+	EthernetCfmAlarmConfigReset                            types.Int64                                             `tfsdk:"ethernet_cfm_alarm_config_reset"`
+	StandbyRedirects                                       types.Bool                                              `tfsdk:"standby_redirects"`
+	StandbyRedirectsEnableDisable                          types.String                                            `tfsdk:"standby_redirects_enable_disable"`
+	IpRoutingProtocolPurgeInterface                        types.Bool                                              `tfsdk:"ip_routing_protocol_purge_interface"`
+	IpCefLoadSharingAlgorithmIncludePortsSource            types.Bool                                              `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_source"`
+	IpCefLoadSharingAlgorithmIncludePortsDestination       types.Bool                                              `tfsdk:"ip_cef_load_sharing_algorithm_include_ports_destination"`
+	Ipv6CefLoadSharingAlgorithmIncludePortsSource          types.Bool                                              `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_source"`
+	Ipv6CefLoadSharingAlgorithmIncludePortsDestination     types.Bool                                              `tfsdk:"ipv6_cef_load_sharing_algorithm_include_ports_destination"`
+	PortChannelLoadBalance                                 types.String                                            `tfsdk:"port_channel_load_balance"`
+	AuthenticationMacMovePermit                            types.Bool                                              `tfsdk:"authentication_mac_move_permit"`
+	AuthenticationMacMoveDenyUncontrolled                  types.Bool                                              `tfsdk:"authentication_mac_move_deny_uncontrolled"`
+	IpDefaultGateway                                       types.String                                            `tfsdk:"ip_default_gateway"`
+	DeviceClassifier                                       types.Bool                                              `tfsdk:"device_classifier"`
+	TableMaps                                              []SystemTableMapsData                                   `tfsdk:"table_maps"`
+	MldSnooping                                            types.Bool                                              `tfsdk:"mld_snooping"`
+	MldSnoopingQuerier                                     types.Bool                                              `tfsdk:"mld_snooping_querier"`
+}
+type SystemMulticastRoutingVrfsData struct {
+	Vrf         types.String `tfsdk:"vrf"`
+	Distributed types.Bool   `tfsdk:"distributed"`
+}
+type SystemIpHttpAuthenticationAaaCommandAuthorizationData struct {
+	Level types.Int64  `tfsdk:"level"`
+	Name  types.String `tfsdk:"name"`
+}
+type SystemIpNameServersVrfData struct {
+	Vrf     types.String `tfsdk:"vrf"`
+	Servers types.List   `tfsdk:"servers"`
+}
+type SystemIpDomainLookupVrfsData struct {
+	Vrf                                      types.String `tfsdk:"vrf"`
+	SourceInterfaceLoopback                  types.Int64  `tfsdk:"source_interface_loopback"`
+	SourceInterfaceVlan                      types.Int64  `tfsdk:"source_interface_vlan"`
+	SourceInterfaceGigabitEthernet           types.String `tfsdk:"source_interface_gigabit_ethernet"`
+	SourceInterfaceTwoGigabitEthernet        types.String `tfsdk:"source_interface_two_gigabit_ethernet"`
+	SourceInterfaceFiveGigabitEthernet       types.String `tfsdk:"source_interface_five_gigabit_ethernet"`
+	SourceInterfaceTenGigabitEthernet        types.String `tfsdk:"source_interface_ten_gigabit_ethernet"`
+	SourceInterfaceTwentyFiveGigabitEthernet types.String `tfsdk:"source_interface_twenty_five_gigabit_ethernet"`
+	SourceInterfaceFortyGigabitEthernet      types.String `tfsdk:"source_interface_forty_gigabit_ethernet"`
+	SourceInterfaceHundredGigabitEthernet    types.String `tfsdk:"source_interface_hundred_gigabit_ethernet"`
+}
+type SystemPnpProfilesData struct {
+	Name                          types.String `tfsdk:"name"`
+	TransportHttpsIpv4Ipv4Address types.String `tfsdk:"transport_https_ipv4_ipv4_address"`
+	TransportHttpsIpv4Port        types.Int64  `tfsdk:"transport_https_ipv4_port"`
+}
+type SystemBootSystemFlashFilesData struct {
+	Path types.String `tfsdk:"path"`
+}
+type SystemBootSystemBootfilesData struct {
+	Path types.String `tfsdk:"path"`
+}
+type SystemIpHostsData struct {
+	Name types.String `tfsdk:"name"`
+	Ips  types.List   `tfsdk:"ips"`
+}
+type SystemIpHostsVrfData struct {
+	Vrf   types.String                `tfsdk:"vrf"`
+	Hosts []SystemIpHostsVrfHostsData `tfsdk:"hosts"`
+}
+type SystemTrackObjectsData struct {
+	Number            types.String `tfsdk:"number"`
+	IpSlaNumber       types.Int64  `tfsdk:"ip_sla_number"`
+	IpSlaReachability types.Bool   `tfsdk:"ip_sla_reachability"`
+}
+type SystemTableMapsData struct {
+	Name     types.String                  `tfsdk:"name"`
+	Default  types.String                  `tfsdk:"default"`
+	Mappings []SystemTableMapsMappingsData `tfsdk:"mappings"`
+}
+type SystemIpHostsVrfHostsData struct {
+	Name types.String `tfsdk:"name"`
+	Ips  types.List   `tfsdk:"ips"`
+}
+type SystemTableMapsMappingsData struct {
+	From types.Int64 `tfsdk:"from"`
+	To   types.Int64 `tfsdk:"to"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -459,7 +522,7 @@ func (data SystemData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data System) toBody(ctx context.Context) string {
+func (data System) toBody(ctx context.Context, config System) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Hostname.IsNull() && !data.Hostname.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hostname", data.Hostname.ValueString())
@@ -795,7 +858,11 @@ func (data System) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-aaa:radius.source-interface.vrf", data.IpRadiusSourceInterfaceVrf.ValueString())
 	}
 	if !data.EnableSecret.IsNull() && !data.EnableSecret.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.secret", data.EnableSecret.ValueString())
+		if !config.EnableSecretWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.secret", config.EnableSecretWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.secret", data.EnableSecret.ValueString())
+		}
 	}
 	if !data.EnableSecretType.IsNull() && !data.EnableSecretType.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.type", data.EnableSecretType.ValueString())
@@ -1148,7 +1215,7 @@ func (data System) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data System) toBodyXML(ctx context.Context) string {
+func (data System) toBodyXML(ctx context.Context, config System) string {
 	body := netconf.Body{}
 	if !data.Hostname.IsNull() && !data.Hostname.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/hostname", data.Hostname.ValueString())
@@ -1645,7 +1712,11 @@ func (data System) toBodyXML(ctx context.Context) string {
 		}
 	}
 	if !data.EnableSecret.IsNull() && !data.EnableSecret.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/enable/secret/secret", data.EnableSecret.ValueString())
+		if !config.EnableSecretWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/enable/secret/secret", config.EnableSecretWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/enable/secret/secret", data.EnableSecret.ValueString())
+		}
 	}
 	if !data.EnableSecretType.IsNull() && !data.EnableSecretType.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/enable/secret/type", data.EnableSecretType.ValueString())
@@ -5505,9 +5576,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpMulticastRoutingDistributed = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing.vrf"); value.Exists() {
-		data.MulticastRoutingVrfs = make([]SystemMulticastRoutingVrfs, 0)
+		data.MulticastRoutingVrfs = make([]SystemMulticastRoutingVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemMulticastRoutingVrfs{}
+			item := SystemMulticastRoutingVrfsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -5535,9 +5606,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpHttpAuthenticationAaaLoginAuthentication = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization"); value.Exists() {
-		data.IpHttpAuthenticationAaaCommandAuthorization = make([]SystemIpHttpAuthenticationAaaCommandAuthorization, 0)
+		data.IpHttpAuthenticationAaaCommandAuthorization = make([]SystemIpHttpAuthenticationAaaCommandAuthorizationData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHttpAuthenticationAaaCommandAuthorization{}
+			item := SystemIpHttpAuthenticationAaaCommandAuthorizationData{}
 			if cValue := v.Get("level"); cValue.Exists() {
 				item.Level = types.Int64Value(cValue.Int())
 			}
@@ -5590,9 +5661,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpNameServers = types.ListNull(types.StringType)
 	}
 	if value := res.Get(prefix + "ip.name-server.vrf"); value.Exists() {
-		data.IpNameServersVrf = make([]SystemIpNameServersVrf, 0)
+		data.IpNameServersVrf = make([]SystemIpNameServersVrfData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpNameServersVrf{}
+			item := SystemIpNameServersVrfData{}
 			if cValue := v.Get("word"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -5616,9 +5687,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpDomainLookupRecursive = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.vrf"); value.Exists() {
-		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfs, 0)
+		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpDomainLookupVrfs{}
+			item := SystemIpDomainLookupVrfsData{}
 			if cValue := v.Get("vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -5797,9 +5868,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-pnp:pnp.profile"); value.Exists() {
-		data.PnpProfiles = make([]SystemPnpProfiles, 0)
+		data.PnpProfiles = make([]SystemPnpProfilesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemPnpProfiles{}
+			item := SystemPnpProfilesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -5874,9 +5945,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpRadiusSourceInterfaceVrf = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "boot.system.flash.flash-list-ordered-by-user"); value.Exists() {
-		data.BootSystemFlashFiles = make([]SystemBootSystemFlashFiles, 0)
+		data.BootSystemFlashFiles = make([]SystemBootSystemFlashFilesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemBootSystemFlashFiles{}
+			item := SystemBootSystemFlashFilesData{}
 			if cValue := v.Get("flash-leaf"); cValue.Exists() {
 				item.Path = types.StringValue(cValue.String())
 			}
@@ -5885,9 +5956,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "boot.system.bootfile.filename-list-ordered-by-user"); value.Exists() {
-		data.BootSystemBootfiles = make([]SystemBootSystemBootfiles, 0)
+		data.BootSystemBootfiles = make([]SystemBootSystemBootfilesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemBootSystemBootfiles{}
+			item := SystemBootSystemBootfilesData{}
 			if cValue := v.Get("filename"); cValue.Exists() {
 				item.Path = types.StringValue(cValue.String())
 			}
@@ -5905,9 +5976,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableSecretLevel = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.host.host-list"); value.Exists() {
-		data.IpHosts = make([]SystemIpHosts, 0)
+		data.IpHosts = make([]SystemIpHostsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHosts{}
+			item := SystemIpHostsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -5921,16 +5992,16 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "ip.host.vrf"); value.Exists() {
-		data.IpHostsVrf = make([]SystemIpHostsVrf, 0)
+		data.IpHostsVrf = make([]SystemIpHostsVrfData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHostsVrf{}
+			item := SystemIpHostsVrfData{}
 			if cValue := v.Get("vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("host-name"); cValue.Exists() {
-				item.Hosts = make([]SystemIpHostsVrfHosts, 0)
+				item.Hosts = make([]SystemIpHostsVrfHostsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := SystemIpHostsVrfHosts{}
+					cItem := SystemIpHostsVrfHostsData{}
 					if ccValue := cv.Get("host-name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -6016,9 +6087,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Version = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2"); value.Exists() {
-		data.TrackObjects = make([]SystemTrackObjects, 0)
+		data.TrackObjects = make([]SystemTrackObjectsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemTrackObjects{}
+			item := SystemTrackObjectsData{}
 			if cValue := v.Get("object-number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
 			}
@@ -6131,9 +6202,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.DeviceClassifier = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "table-map"); value.Exists() {
-		data.TableMaps = make([]SystemTableMaps, 0)
+		data.TableMaps = make([]SystemTableMapsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemTableMaps{}
+			item := SystemTableMapsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -6141,9 +6212,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Default = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
-				item.Mappings = make([]SystemTableMapsMappings, 0)
+				item.Mappings = make([]SystemTableMapsMappingsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := SystemTableMapsMappings{}
+					cItem := SystemTableMapsMappingsData{}
 					if ccValue := cv.Get("from"); ccValue.Exists() {
 						cItem.From = types.Int64Value(ccValue.Int())
 					}
@@ -7001,9 +7072,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpMulticastRoutingDistributed = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf"); value.Exists() {
-		data.MulticastRoutingVrfs = make([]SystemMulticastRoutingVrfs, 0)
+		data.MulticastRoutingVrfs = make([]SystemMulticastRoutingVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemMulticastRoutingVrfs{}
+			item := SystemMulticastRoutingVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -7031,9 +7102,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpHttpAuthenticationAaaLoginAuthentication = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization"); value.Exists() {
-		data.IpHttpAuthenticationAaaCommandAuthorization = make([]SystemIpHttpAuthenticationAaaCommandAuthorization, 0)
+		data.IpHttpAuthenticationAaaCommandAuthorization = make([]SystemIpHttpAuthenticationAaaCommandAuthorizationData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemIpHttpAuthenticationAaaCommandAuthorization{}
+			item := SystemIpHttpAuthenticationAaaCommandAuthorizationData{}
 			if cValue := helpers.GetFromXPath(v, "level"); cValue.Exists() {
 				item.Level = types.Int64Value(cValue.Int())
 			}
@@ -7086,9 +7157,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpNameServers = types.ListNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/name-server/vrf"); value.Exists() {
-		data.IpNameServersVrf = make([]SystemIpNameServersVrf, 0)
+		data.IpNameServersVrf = make([]SystemIpNameServersVrfData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemIpNameServersVrf{}
+			item := SystemIpNameServersVrfData{}
 			if cValue := helpers.GetFromXPath(v, "word"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -7112,9 +7183,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpDomainLookupRecursive = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf"); value.Exists() {
-		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfs, 0)
+		data.IpDomainLookupVrfs = make([]SystemIpDomainLookupVrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemIpDomainLookupVrfs{}
+			item := SystemIpDomainLookupVrfsData{}
 			if cValue := helpers.GetFromXPath(v, "vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -7293,9 +7364,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-pnp:pnp/profile"); value.Exists() {
-		data.PnpProfiles = make([]SystemPnpProfiles, 0)
+		data.PnpProfiles = make([]SystemPnpProfilesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemPnpProfiles{}
+			item := SystemPnpProfilesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -7370,9 +7441,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpRadiusSourceInterfaceVrf = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/boot/system/flash/flash-list-ordered-by-user"); value.Exists() {
-		data.BootSystemFlashFiles = make([]SystemBootSystemFlashFiles, 0)
+		data.BootSystemFlashFiles = make([]SystemBootSystemFlashFilesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemBootSystemFlashFiles{}
+			item := SystemBootSystemFlashFilesData{}
 			if cValue := helpers.GetFromXPath(v, "flash-leaf"); cValue.Exists() {
 				item.Path = types.StringValue(cValue.String())
 			}
@@ -7381,9 +7452,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/boot/system/bootfile/filename-list-ordered-by-user"); value.Exists() {
-		data.BootSystemBootfiles = make([]SystemBootSystemBootfiles, 0)
+		data.BootSystemBootfiles = make([]SystemBootSystemBootfilesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemBootSystemBootfiles{}
+			item := SystemBootSystemBootfilesData{}
 			if cValue := helpers.GetFromXPath(v, "filename"); cValue.Exists() {
 				item.Path = types.StringValue(cValue.String())
 			}
@@ -7401,9 +7472,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.EnableSecretLevel = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/host/host-list"); value.Exists() {
-		data.IpHosts = make([]SystemIpHosts, 0)
+		data.IpHosts = make([]SystemIpHostsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemIpHosts{}
+			item := SystemIpHostsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -7417,16 +7488,16 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/host/vrf"); value.Exists() {
-		data.IpHostsVrf = make([]SystemIpHostsVrf, 0)
+		data.IpHostsVrf = make([]SystemIpHostsVrfData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemIpHostsVrf{}
+			item := SystemIpHostsVrfData{}
 			if cValue := helpers.GetFromXPath(v, "vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "host-name"); cValue.Exists() {
-				item.Hosts = make([]SystemIpHostsVrfHosts, 0)
+				item.Hosts = make([]SystemIpHostsVrfHostsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := SystemIpHostsVrfHosts{}
+					cItem := SystemIpHostsVrfHostsData{}
 					if ccValue := helpers.GetFromXPath(cv, "host-name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -7512,9 +7583,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Version = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2"); value.Exists() {
-		data.TrackObjects = make([]SystemTrackObjects, 0)
+		data.TrackObjects = make([]SystemTrackObjectsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemTrackObjects{}
+			item := SystemTrackObjectsData{}
 			if cValue := helpers.GetFromXPath(v, "object-number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
 			}
@@ -7627,9 +7698,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.DeviceClassifier = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/table-map"); value.Exists() {
-		data.TableMaps = make([]SystemTableMaps, 0)
+		data.TableMaps = make([]SystemTableMapsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SystemTableMaps{}
+			item := SystemTableMapsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -7637,9 +7708,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.Default = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "Cisco-IOS-XE-qos:map-list"); cValue.Exists() {
-				item.Mappings = make([]SystemTableMapsMappings, 0)
+				item.Mappings = make([]SystemTableMapsMappingsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := SystemTableMapsMappings{}
+					cItem := SystemTableMapsMappingsData{}
 					if ccValue := helpers.GetFromXPath(cv, "from"); ccValue.Exists() {
 						cItem.From = types.Int64Value(ccValue.Int())
 					}

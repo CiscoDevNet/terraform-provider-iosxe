@@ -50,16 +50,6 @@ type AAAAuthorization struct {
 	ConfigCommands types.Bool                    `tfsdk:"config_commands"`
 	ConfigLists    []AAAAuthorizationConfigLists `tfsdk:"config_lists"`
 }
-
-type AAAAuthorizationData struct {
-	Device         types.String                  `tfsdk:"device"`
-	Id             types.String                  `tfsdk:"id"`
-	Execs          []AAAAuthorizationExecs       `tfsdk:"execs"`
-	Networks       []AAAAuthorizationNetworks    `tfsdk:"networks"`
-	Commands       []AAAAuthorizationCommands    `tfsdk:"commands"`
-	ConfigCommands types.Bool                    `tfsdk:"config_commands"`
-	ConfigLists    []AAAAuthorizationConfigLists `tfsdk:"config_lists"`
-}
 type AAAAuthorizationExecs struct {
 	Name              types.String `tfsdk:"name"`
 	A1Local           types.Bool   `tfsdk:"a1_local"`
@@ -130,6 +120,85 @@ type AAAAuthorizationConfigLists struct {
 	Group1Tacacs types.Bool   `tfsdk:"group1_tacacs"`
 }
 
+type AAAAuthorizationData struct {
+	Device         types.String                      `tfsdk:"device"`
+	Id             types.String                      `tfsdk:"id"`
+	Execs          []AAAAuthorizationExecsData       `tfsdk:"execs"`
+	Networks       []AAAAuthorizationNetworksData    `tfsdk:"networks"`
+	Commands       []AAAAuthorizationCommandsData    `tfsdk:"commands"`
+	ConfigCommands types.Bool                        `tfsdk:"config_commands"`
+	ConfigLists    []AAAAuthorizationConfigListsData `tfsdk:"config_lists"`
+}
+type AAAAuthorizationExecsData struct {
+	Name              types.String `tfsdk:"name"`
+	A1Local           types.Bool   `tfsdk:"a1_local"`
+	A1Group           types.String `tfsdk:"a1_group"`
+	A1Radius          types.Bool   `tfsdk:"a1_radius"`
+	A1Tacacs          types.Bool   `tfsdk:"a1_tacacs"`
+	A1IfAuthenticated types.Bool   `tfsdk:"a1_if_authenticated"`
+	A2Local           types.Bool   `tfsdk:"a2_local"`
+	A2Group           types.String `tfsdk:"a2_group"`
+	A2Radius          types.Bool   `tfsdk:"a2_radius"`
+	A2Tacacs          types.Bool   `tfsdk:"a2_tacacs"`
+	A2IfAuthenticated types.Bool   `tfsdk:"a2_if_authenticated"`
+	A3Local           types.Bool   `tfsdk:"a3_local"`
+	A3Group           types.String `tfsdk:"a3_group"`
+	A3Radius          types.Bool   `tfsdk:"a3_radius"`
+	A3Tacacs          types.Bool   `tfsdk:"a3_tacacs"`
+	A3IfAuthenticated types.Bool   `tfsdk:"a3_if_authenticated"`
+	A4Local           types.Bool   `tfsdk:"a4_local"`
+	A4Group           types.String `tfsdk:"a4_group"`
+	A4Radius          types.Bool   `tfsdk:"a4_radius"`
+	A4Tacacs          types.Bool   `tfsdk:"a4_tacacs"`
+	A4IfAuthenticated types.Bool   `tfsdk:"a4_if_authenticated"`
+}
+type AAAAuthorizationNetworksData struct {
+	Id      types.String `tfsdk:"id"`
+	A1Local types.Bool   `tfsdk:"a1_local"`
+	A1Group types.String `tfsdk:"a1_group"`
+	A2Local types.Bool   `tfsdk:"a2_local"`
+	A2Group types.String `tfsdk:"a2_group"`
+	A3Local types.Bool   `tfsdk:"a3_local"`
+	A3Group types.String `tfsdk:"a3_group"`
+	A4Local types.Bool   `tfsdk:"a4_local"`
+	A4Group types.String `tfsdk:"a4_group"`
+}
+type AAAAuthorizationCommandsData struct {
+	Level             types.Int64  `tfsdk:"level"`
+	ListName          types.String `tfsdk:"list_name"`
+	A1Group           types.String `tfsdk:"a1_group"`
+	A1Local           types.Bool   `tfsdk:"a1_local"`
+	A1IfAuthenticated types.Bool   `tfsdk:"a1_if_authenticated"`
+	A1None            types.Bool   `tfsdk:"a1_none"`
+	A1Radius          types.Bool   `tfsdk:"a1_radius"`
+	A1Tacacs          types.Bool   `tfsdk:"a1_tacacs"`
+	A2Group           types.String `tfsdk:"a2_group"`
+	A2Local           types.Bool   `tfsdk:"a2_local"`
+	A2IfAuthenticated types.Bool   `tfsdk:"a2_if_authenticated"`
+	A2None            types.Bool   `tfsdk:"a2_none"`
+	A2Radius          types.Bool   `tfsdk:"a2_radius"`
+	A2Tacacs          types.Bool   `tfsdk:"a2_tacacs"`
+	A3Group           types.String `tfsdk:"a3_group"`
+	A3Local           types.Bool   `tfsdk:"a3_local"`
+	A3IfAuthenticated types.Bool   `tfsdk:"a3_if_authenticated"`
+	A3None            types.Bool   `tfsdk:"a3_none"`
+	A3Radius          types.Bool   `tfsdk:"a3_radius"`
+	A3Tacacs          types.Bool   `tfsdk:"a3_tacacs"`
+	A4Group           types.String `tfsdk:"a4_group"`
+	A4Local           types.Bool   `tfsdk:"a4_local"`
+	A4IfAuthenticated types.Bool   `tfsdk:"a4_if_authenticated"`
+	A4None            types.Bool   `tfsdk:"a4_none"`
+	A4Radius          types.Bool   `tfsdk:"a4_radius"`
+	A4Tacacs          types.Bool   `tfsdk:"a4_tacacs"`
+}
+type AAAAuthorizationConfigListsData struct {
+	Name         types.String `tfsdk:"name"`
+	Group1Cache  types.String `tfsdk:"group1_cache"`
+	Group1Group  types.String `tfsdk:"group1_group"`
+	Group1Radius types.Bool   `tfsdk:"group1_radius"`
+	Group1Tacacs types.Bool   `tfsdk:"group1_tacacs"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -168,7 +237,7 @@ func (data AAAAuthorizationData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data AAAAuthorization) toBody(ctx context.Context) string {
+func (data AAAAuthorization) toBody(ctx context.Context, config AAAAuthorization) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.ConfigCommands.IsNull() && !data.ConfigCommands.IsUnknown() {
 		if data.ConfigCommands.ValueBool() {
@@ -469,7 +538,7 @@ func (data AAAAuthorization) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data AAAAuthorization) toBodyXML(ctx context.Context) string {
+func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorization) string {
 	body := netconf.Body{}
 	if len(data.Execs) > 0 {
 		for _, item := range data.Execs {
@@ -2359,9 +2428,9 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "exec"); value.Exists() {
-		data.Execs = make([]AAAAuthorizationExecs, 0)
+		data.Execs = make([]AAAAuthorizationExecsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthorizationExecs{}
+			item := AAAAuthorizationExecsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2462,9 +2531,9 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 		})
 	}
 	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Networks = make([]AAAAuthorizationNetworks, 0)
+		data.Networks = make([]AAAAuthorizationNetworksData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthorizationNetworks{}
+			item := AAAAuthorizationNetworksData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
@@ -2505,9 +2574,9 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 		})
 	}
 	if value := res.Get(prefix + "commands"); value.Exists() {
-		data.Commands = make([]AAAAuthorizationCommands, 0)
+		data.Commands = make([]AAAAuthorizationCommandsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthorizationCommands{}
+			item := AAAAuthorizationCommandsData{}
 			if cValue := v.Get("level"); cValue.Exists() {
 				item.Level = types.Int64Value(cValue.Int())
 			}
@@ -2636,9 +2705,9 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 		data.ConfigCommands = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "configuration.config-list"); value.Exists() {
-		data.ConfigLists = make([]AAAAuthorizationConfigLists, 0)
+		data.ConfigLists = make([]AAAAuthorizationConfigListsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthorizationConfigLists{}
+			item := AAAAuthorizationConfigListsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2981,9 +3050,9 @@ func (data *AAAAuthorization) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *AAAAuthorizationData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec"); value.Exists() {
-		data.Execs = make([]AAAAuthorizationExecs, 0)
+		data.Execs = make([]AAAAuthorizationExecsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAuthorizationExecs{}
+			item := AAAAuthorizationExecsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3084,9 +3153,9 @@ func (data *AAAAuthorizationData) fromBodyXML(ctx context.Context, res xmldot.Re
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network"); value.Exists() {
-		data.Networks = make([]AAAAuthorizationNetworks, 0)
+		data.Networks = make([]AAAAuthorizationNetworksData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAuthorizationNetworks{}
+			item := AAAAuthorizationNetworksData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
@@ -3127,9 +3196,9 @@ func (data *AAAAuthorizationData) fromBodyXML(ctx context.Context, res xmldot.Re
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/commands"); value.Exists() {
-		data.Commands = make([]AAAAuthorizationCommands, 0)
+		data.Commands = make([]AAAAuthorizationCommandsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAuthorizationCommands{}
+			item := AAAAuthorizationCommandsData{}
 			if cValue := helpers.GetFromXPath(v, "level"); cValue.Exists() {
 				item.Level = types.Int64Value(cValue.Int())
 			}
@@ -3258,9 +3327,9 @@ func (data *AAAAuthorizationData) fromBodyXML(ctx context.Context, res xmldot.Re
 		data.ConfigCommands = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/configuration/config-list"); value.Exists() {
-		data.ConfigLists = make([]AAAAuthorizationConfigLists, 0)
+		data.ConfigLists = make([]AAAAuthorizationConfigListsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAAuthorizationConfigLists{}
+			item := AAAAuthorizationConfigListsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}

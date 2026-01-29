@@ -48,15 +48,6 @@ type RadiusServer struct {
 	DeadCriteriaTries types.Int64              `tfsdk:"dead_criteria_tries"`
 	Deadtime          types.Int64              `tfsdk:"deadtime"`
 }
-
-type RadiusServerData struct {
-	Device            types.String             `tfsdk:"device"`
-	Id                types.String             `tfsdk:"id"`
-	Attributes        []RadiusServerAttributes `tfsdk:"attributes"`
-	DeadCriteriaTime  types.Int64              `tfsdk:"dead_criteria_time"`
-	DeadCriteriaTries types.Int64              `tfsdk:"dead_criteria_tries"`
-	Deadtime          types.Int64              `tfsdk:"deadtime"`
-}
 type RadiusServerAttributes struct {
 	Number                types.String                                  `tfsdk:"number"`
 	AccessRequestInclude  types.Bool                                    `tfsdk:"access_request_include"`
@@ -64,6 +55,28 @@ type RadiusServerAttributes struct {
 	SendAttributes        types.List                                    `tfsdk:"send_attributes"`
 }
 type RadiusServerAttributesAttribute31Parameters struct {
+	CallingStationId    types.String `tfsdk:"calling_station_id"`
+	IdMacFormat         types.String `tfsdk:"id_mac_format"`
+	IdMacLuCase         types.String `tfsdk:"id_mac_lu_case"`
+	IdSendNasPortDetail types.Bool   `tfsdk:"id_send_nas_port_detail"`
+	IdSendMacOnly       types.Bool   `tfsdk:"id_send_mac_only"`
+}
+
+type RadiusServerData struct {
+	Device            types.String                 `tfsdk:"device"`
+	Id                types.String                 `tfsdk:"id"`
+	Attributes        []RadiusServerAttributesData `tfsdk:"attributes"`
+	DeadCriteriaTime  types.Int64                  `tfsdk:"dead_criteria_time"`
+	DeadCriteriaTries types.Int64                  `tfsdk:"dead_criteria_tries"`
+	Deadtime          types.Int64                  `tfsdk:"deadtime"`
+}
+type RadiusServerAttributesData struct {
+	Number                types.String                                      `tfsdk:"number"`
+	AccessRequestInclude  types.Bool                                        `tfsdk:"access_request_include"`
+	Attribute31Parameters []RadiusServerAttributesAttribute31ParametersData `tfsdk:"attribute_31_parameters"`
+	SendAttributes        types.List                                        `tfsdk:"send_attributes"`
+}
+type RadiusServerAttributesAttribute31ParametersData struct {
 	CallingStationId    types.String `tfsdk:"calling_station_id"`
 	IdMacFormat         types.String `tfsdk:"id_mac_format"`
 	IdMacLuCase         types.String `tfsdk:"id_mac_lu_case"`
@@ -109,7 +122,7 @@ func (data RadiusServerData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data RadiusServer) toBody(ctx context.Context) string {
+func (data RadiusServer) toBody(ctx context.Context, config RadiusServer) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.DeadCriteriaTime.IsNull() && !data.DeadCriteriaTime.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:dead-criteria.time", strconv.FormatInt(data.DeadCriteriaTime.ValueInt64(), 10))
@@ -169,7 +182,7 @@ func (data RadiusServer) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data RadiusServer) toBodyXML(ctx context.Context) string {
+func (data RadiusServer) toBodyXML(ctx context.Context, config RadiusServer) string {
 	body := netconf.Body{}
 	if len(data.Attributes) > 0 {
 		for _, item := range data.Attributes {
@@ -565,9 +578,9 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:attribute"); value.Exists() {
-		data.Attributes = make([]RadiusServerAttributes, 0)
+		data.Attributes = make([]RadiusServerAttributesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := RadiusServerAttributes{}
+			item := RadiusServerAttributesData{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
 			}
@@ -577,9 +590,9 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 				item.AccessRequestInclude = types.BoolValue(false)
 			}
 			if cValue := v.Get("attri31.attri31-list"); cValue.Exists() {
-				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
+				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31ParametersData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := RadiusServerAttributesAttribute31Parameters{}
+					cItem := RadiusServerAttributesAttribute31ParametersData{}
 					if ccValue := cv.Get("calling-station-id"); ccValue.Exists() {
 						cItem.CallingStationId = types.StringValue(ccValue.String())
 					}
@@ -693,9 +706,9 @@ func (data *RadiusServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *RadiusServerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute"); value.Exists() {
-		data.Attributes = make([]RadiusServerAttributes, 0)
+		data.Attributes = make([]RadiusServerAttributesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := RadiusServerAttributes{}
+			item := RadiusServerAttributesData{}
 			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
 			}
@@ -705,9 +718,9 @@ func (data *RadiusServerData) fromBodyXML(ctx context.Context, res xmldot.Result
 				item.AccessRequestInclude = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "attri31/attri31-list"); cValue.Exists() {
-				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
+				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31ParametersData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := RadiusServerAttributesAttribute31Parameters{}
+					cItem := RadiusServerAttributesAttribute31ParametersData{}
 					if ccValue := helpers.GetFromXPath(cv, "calling-station-id"); ccValue.Exists() {
 						cItem.CallingStationId = types.StringValue(ccValue.String())
 					}

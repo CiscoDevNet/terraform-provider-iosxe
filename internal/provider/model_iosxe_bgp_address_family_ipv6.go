@@ -51,17 +51,22 @@ type BGPAddressFamilyIPv6 struct {
 	Ipv6UnicastRedistributeStatic    types.Bool                                `tfsdk:"ipv6_unicast_redistribute_static"`
 	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
+type BGPAddressFamilyIPv6Ipv6UnicastNetworks struct {
+	Network  types.String `tfsdk:"network"`
+	RouteMap types.String `tfsdk:"route_map"`
+	Backdoor types.Bool   `tfsdk:"backdoor"`
+}
 
 type BGPAddressFamilyIPv6Data struct {
-	Device                           types.String                              `tfsdk:"device"`
-	Id                               types.String                              `tfsdk:"id"`
-	Asn                              types.String                              `tfsdk:"asn"`
-	AfName                           types.String                              `tfsdk:"af_name"`
-	Ipv6UnicastRedistributeConnected types.Bool                                `tfsdk:"ipv6_unicast_redistribute_connected"`
-	Ipv6UnicastRedistributeStatic    types.Bool                                `tfsdk:"ipv6_unicast_redistribute_static"`
-	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+	Device                           types.String                                  `tfsdk:"device"`
+	Id                               types.String                                  `tfsdk:"id"`
+	Asn                              types.String                                  `tfsdk:"asn"`
+	AfName                           types.String                                  `tfsdk:"af_name"`
+	Ipv6UnicastRedistributeConnected types.Bool                                    `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeStatic    types.Bool                                    `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6Ipv6UnicastNetworksData `tfsdk:"ipv6_unicast_networks"`
 }
-type BGPAddressFamilyIPv6Ipv6UnicastNetworks struct {
+type BGPAddressFamilyIPv6Ipv6UnicastNetworksData struct {
 	Network  types.String `tfsdk:"network"`
 	RouteMap types.String `tfsdk:"route_map"`
 	Backdoor types.Bool   `tfsdk:"backdoor"`
@@ -107,7 +112,7 @@ func (data BGPAddressFamilyIPv6Data) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPAddressFamilyIPv6) toBody(ctx context.Context) string {
+func (data BGPAddressFamilyIPv6) toBody(ctx context.Context, config BGPAddressFamilyIPv6) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
@@ -145,7 +150,7 @@ func (data BGPAddressFamilyIPv6) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPAddressFamilyIPv6) toBodyXML(ctx context.Context) string {
+func (data BGPAddressFamilyIPv6) toBodyXML(ctx context.Context, config BGPAddressFamilyIPv6) string {
 	body := netconf.Body{}
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/af-name", data.AfName.ValueString())
@@ -400,9 +405,9 @@ func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Re
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv6-unicast.network"); value.Exists() {
-		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworks, 0)
+		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworksData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv6Ipv6UnicastNetworks{}
+			item := BGPAddressFamilyIPv6Ipv6UnicastNetworksData{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Network = types.StringValue(cValue.String())
 			}
@@ -472,9 +477,9 @@ func (data *BGPAddressFamilyIPv6Data) fromBodyXML(ctx context.Context, res xmldo
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/network"); value.Exists() {
-		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworks, 0)
+		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworksData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPAddressFamilyIPv6Ipv6UnicastNetworks{}
+			item := BGPAddressFamilyIPv6Ipv6UnicastNetworksData{}
 			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
 				item.Network = types.StringValue(cValue.String())
 			}

@@ -137,7 +137,7 @@ func (data ClockData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Clock) toBody(ctx context.Context) string {
+func (data Clock) toBody(ctx context.Context, config Clock) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.CalendarValid.IsNull() && !data.CalendarValid.IsUnknown() {
 		if data.CalendarValid.ValueBool() {
@@ -227,7 +227,7 @@ func (data Clock) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Clock) toBodyXML(ctx context.Context) string {
+func (data Clock) toBodyXML(ctx context.Context, config Clock) string {
 	body := netconf.Body{}
 	if !data.CalendarValid.IsNull() && !data.CalendarValid.IsUnknown() {
 		if data.CalendarValid.ValueBool() {

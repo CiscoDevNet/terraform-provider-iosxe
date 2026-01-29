@@ -47,14 +47,40 @@ type CryptoIKEv2Keyring struct {
 	Name   types.String              `tfsdk:"name"`
 	Peers  []CryptoIKEv2KeyringPeers `tfsdk:"peers"`
 }
+type CryptoIKEv2KeyringPeers struct {
+	Name                         types.String `tfsdk:"name"`
+	Description                  types.String `tfsdk:"description"`
+	Hostname                     types.String `tfsdk:"hostname"`
+	Ipv4Address                  types.String `tfsdk:"ipv4_address"`
+	Ipv4Mask                     types.String `tfsdk:"ipv4_mask"`
+	Ipv6Prefix                   types.String `tfsdk:"ipv6_prefix"`
+	IdentityKeyId                types.String `tfsdk:"identity_key_id"`
+	IdentityAddress              types.String `tfsdk:"identity_address"`
+	IdentityEmailName            types.String `tfsdk:"identity_email_name"`
+	IdentityEmailDomain          types.String `tfsdk:"identity_email_domain"`
+	IdentityFqdnName             types.String `tfsdk:"identity_fqdn_name"`
+	IdentityFqdnDomain           types.String `tfsdk:"identity_fqdn_domain"`
+	PreSharedKeyLocalEncryption  types.String `tfsdk:"pre_shared_key_local_encryption"`
+	PreSharedKeyLocal            types.String `tfsdk:"pre_shared_key_local"`
+	PreSharedKeyLocalWO          types.String `tfsdk:"pre_shared_key_local_wo"`
+	PreSharedKeyLocalWOVersion   types.Int64  `tfsdk:"pre_shared_key_local_wo_version"`
+	PreSharedKeyRemoteEncryption types.String `tfsdk:"pre_shared_key_remote_encryption"`
+	PreSharedKeyRemote           types.String `tfsdk:"pre_shared_key_remote"`
+	PreSharedKeyRemoteWO         types.String `tfsdk:"pre_shared_key_remote_wo"`
+	PreSharedKeyRemoteWOVersion  types.Int64  `tfsdk:"pre_shared_key_remote_wo_version"`
+	PreSharedKeyEncryption       types.String `tfsdk:"pre_shared_key_encryption"`
+	PreSharedKey                 types.String `tfsdk:"pre_shared_key"`
+	PreSharedKeyWO               types.String `tfsdk:"pre_shared_key_wo"`
+	PreSharedKeyWOVersion        types.Int64  `tfsdk:"pre_shared_key_wo_version"`
+}
 
 type CryptoIKEv2KeyringData struct {
-	Device types.String              `tfsdk:"device"`
-	Id     types.String              `tfsdk:"id"`
-	Name   types.String              `tfsdk:"name"`
-	Peers  []CryptoIKEv2KeyringPeers `tfsdk:"peers"`
+	Device types.String                  `tfsdk:"device"`
+	Id     types.String                  `tfsdk:"id"`
+	Name   types.String                  `tfsdk:"name"`
+	Peers  []CryptoIKEv2KeyringPeersData `tfsdk:"peers"`
 }
-type CryptoIKEv2KeyringPeers struct {
+type CryptoIKEv2KeyringPeersData struct {
 	Name                         types.String `tfsdk:"name"`
 	Description                  types.String `tfsdk:"description"`
 	Hostname                     types.String `tfsdk:"hostname"`
@@ -115,7 +141,7 @@ func (data CryptoIKEv2KeyringData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CryptoIKEv2Keyring) toBody(ctx context.Context) string {
+func (data CryptoIKEv2Keyring) toBody(ctx context.Context, config CryptoIKEv2Keyring) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -123,6 +149,14 @@ func (data CryptoIKEv2Keyring) toBody(ctx context.Context) string {
 	if len(data.Peers) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer", []interface{}{})
 		for index, item := range data.Peers {
+			var configItem CryptoIKEv2KeyringPeers
+			for _, ci := range config.Peers {
+				if ci.Name.ValueString() != item.Name.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
@@ -163,19 +197,31 @@ func (data CryptoIKEv2Keyring) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.encryption", item.PreSharedKeyLocalEncryption.ValueString())
 			}
 			if !item.PreSharedKeyLocal.IsNull() && !item.PreSharedKeyLocal.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.key", item.PreSharedKeyLocal.ValueString())
+				if !configItem.PreSharedKeyLocalWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.key", configItem.PreSharedKeyLocalWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.key", item.PreSharedKeyLocal.ValueString())
+				}
 			}
 			if !item.PreSharedKeyRemoteEncryption.IsNull() && !item.PreSharedKeyRemoteEncryption.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.remote-option.encryption", item.PreSharedKeyRemoteEncryption.ValueString())
 			}
 			if !item.PreSharedKeyRemote.IsNull() && !item.PreSharedKeyRemote.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.remote-option.key", item.PreSharedKeyRemote.ValueString())
+				if !configItem.PreSharedKeyRemoteWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.remote-option.key", configItem.PreSharedKeyRemoteWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.remote-option.key", item.PreSharedKeyRemote.ValueString())
+				}
 			}
 			if !item.PreSharedKeyEncryption.IsNull() && !item.PreSharedKeyEncryption.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.encryption", item.PreSharedKeyEncryption.ValueString())
 			}
 			if !item.PreSharedKey.IsNull() && !item.PreSharedKey.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.key", item.PreSharedKey.ValueString())
+				if !configItem.PreSharedKeyWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.key", configItem.PreSharedKeyWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.key", item.PreSharedKey.ValueString())
+				}
 			}
 		}
 	}
@@ -186,13 +232,21 @@ func (data CryptoIKEv2Keyring) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CryptoIKEv2Keyring) toBodyXML(ctx context.Context) string {
+func (data CryptoIKEv2Keyring) toBodyXML(ctx context.Context, config CryptoIKEv2Keyring) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
 	}
 	if len(data.Peers) > 0 {
 		for _, item := range data.Peers {
+			var configItem CryptoIKEv2KeyringPeers
+			for _, ci := range config.Peers {
+				if ci.Name.ValueString() != item.Name.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
@@ -234,19 +288,31 @@ func (data CryptoIKEv2Keyring) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/local-option/encryption", item.PreSharedKeyLocalEncryption.ValueString())
 			}
 			if !item.PreSharedKeyLocal.IsNull() && !item.PreSharedKeyLocal.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/local-option/key", item.PreSharedKeyLocal.ValueString())
+				if !configItem.PreSharedKeyLocalWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "pre-shared-key/local-option/key", configItem.PreSharedKeyLocalWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "pre-shared-key/local-option/key", item.PreSharedKeyLocal.ValueString())
+				}
 			}
 			if !item.PreSharedKeyRemoteEncryption.IsNull() && !item.PreSharedKeyRemoteEncryption.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/remote-option/encryption", item.PreSharedKeyRemoteEncryption.ValueString())
 			}
 			if !item.PreSharedKeyRemote.IsNull() && !item.PreSharedKeyRemote.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/remote-option/key", item.PreSharedKeyRemote.ValueString())
+				if !configItem.PreSharedKeyRemoteWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "pre-shared-key/remote-option/key", configItem.PreSharedKeyRemoteWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "pre-shared-key/remote-option/key", item.PreSharedKeyRemote.ValueString())
+				}
 			}
 			if !item.PreSharedKeyEncryption.IsNull() && !item.PreSharedKeyEncryption.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/encryption", item.PreSharedKeyEncryption.ValueString())
 			}
 			if !item.PreSharedKey.IsNull() && !item.PreSharedKey.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "pre-shared-key/key", item.PreSharedKey.ValueString())
+				if !configItem.PreSharedKeyWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "pre-shared-key/key", configItem.PreSharedKeyWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "pre-shared-key/key", item.PreSharedKey.ValueString())
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/peer", cBody.Res())
 		}
@@ -537,9 +603,9 @@ func (data *CryptoIKEv2KeyringData) fromBody(ctx context.Context, res gjson.Resu
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "peer"); value.Exists() {
-		data.Peers = make([]CryptoIKEv2KeyringPeers, 0)
+		data.Peers = make([]CryptoIKEv2KeyringPeersData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2KeyringPeers{}
+			item := CryptoIKEv2KeyringPeersData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -675,9 +741,9 @@ func (data *CryptoIKEv2Keyring) fromBodyXML(ctx context.Context, res xmldot.Resu
 
 func (data *CryptoIKEv2KeyringData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer"); value.Exists() {
-		data.Peers = make([]CryptoIKEv2KeyringPeers, 0)
+		data.Peers = make([]CryptoIKEv2KeyringPeersData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CryptoIKEv2KeyringPeers{}
+			item := CryptoIKEv2KeyringPeersData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}

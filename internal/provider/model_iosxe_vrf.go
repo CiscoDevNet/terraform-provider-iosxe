@@ -86,51 +86,6 @@ type VRF struct {
 	Ipv6EvpnMcastDataAddress                        types.String                        `tfsdk:"ipv6_evpn_mcast_data_address"`
 	Ipv6EvpnMcastDataMaskBits                       types.String                        `tfsdk:"ipv6_evpn_mcast_data_mask_bits"`
 }
-
-type VRFData struct {
-	Device                                          types.String                        `tfsdk:"device"`
-	Id                                              types.String                        `tfsdk:"id"`
-	Name                                            types.String                        `tfsdk:"name"`
-	Description                                     types.String                        `tfsdk:"description"`
-	RdAuto                                          types.Bool                          `tfsdk:"rd_auto"`
-	Rd                                              types.String                        `tfsdk:"rd"`
-	AddressFamilyIpv4                               types.Bool                          `tfsdk:"address_family_ipv4"`
-	AddressFamilyIpv6                               types.Bool                          `tfsdk:"address_family_ipv6"`
-	VpnId                                           types.String                        `tfsdk:"vpn_id"`
-	RouteTargetImport                               []VRFRouteTargetImport              `tfsdk:"route_target_import"`
-	RouteTargetExport                               []VRFRouteTargetExport              `tfsdk:"route_target_export"`
-	Ipv4RouteTargetImport                           []VRFIpv4RouteTargetImport          `tfsdk:"ipv4_route_target_import"`
-	Ipv4RouteTargetImportStitching                  []VRFIpv4RouteTargetImportStitching `tfsdk:"ipv4_route_target_import_stitching"`
-	Ipv4RouteTargetExport                           []VRFIpv4RouteTargetExport          `tfsdk:"ipv4_route_target_export"`
-	Ipv4RouteTargetExportStitching                  []VRFIpv4RouteTargetExportStitching `tfsdk:"ipv4_route_target_export_stitching"`
-	Ipv4RouteReplicate                              []VRFIpv4RouteReplicate             `tfsdk:"ipv4_route_replicate"`
-	Ipv4ImportMap                                   types.String                        `tfsdk:"ipv4_import_map"`
-	Ipv4ExportMap                                   types.String                        `tfsdk:"ipv4_export_map"`
-	Ipv6RouteTargetImport                           []VRFIpv6RouteTargetImport          `tfsdk:"ipv6_route_target_import"`
-	Ipv6RouteTargetImportStitching                  []VRFIpv6RouteTargetImportStitching `tfsdk:"ipv6_route_target_import_stitching"`
-	Ipv6RouteTargetExport                           []VRFIpv6RouteTargetExport          `tfsdk:"ipv6_route_target_export"`
-	Ipv6RouteTargetExportStitching                  []VRFIpv6RouteTargetExportStitching `tfsdk:"ipv6_route_target_export_stitching"`
-	Ipv6ImportMap                                   types.String                        `tfsdk:"ipv6_import_map"`
-	Ipv6ExportMap                                   types.String                        `tfsdk:"ipv6_export_map"`
-	Vnids                                           []VRFVnids                          `tfsdk:"vnids"`
-	Ipv4MdtDefaultAddress                           types.String                        `tfsdk:"ipv4_mdt_default_address"`
-	Ipv4MdtAutoDiscoveryVxlan                       types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_vxlan"`
-	Ipv4MdtAutoDiscoveryVxlanInterAs                types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_vxlan_inter_as"`
-	Ipv4MdtAutoDiscoveryInterworkingVxlanPim        types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_interworking_vxlan_pim"`
-	Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs types.Bool                          `tfsdk:"ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as"`
-	Ipv4MdtOverlayUseBgp                            types.Bool                          `tfsdk:"ipv4_mdt_overlay_use_bgp"`
-	Ipv4MdtOverlayUseBgpSptOnly                     types.Bool                          `tfsdk:"ipv4_mdt_overlay_use_bgp_spt_only"`
-	Ipv4MdtDataMulticast                            []VRFIpv4MdtDataMulticast           `tfsdk:"ipv4_mdt_data_multicast"`
-	Ipv4MdtDataThreshold                            types.Int64                         `tfsdk:"ipv4_mdt_data_threshold"`
-	Ipv4EvpnMcastMdtDefaultAddress                  types.String                        `tfsdk:"ipv4_evpn_mcast_mdt_default_address"`
-	Ipv4EvpnMcastAnycast                            types.String                        `tfsdk:"ipv4_evpn_mcast_anycast"`
-	Ipv4EvpnMcastDataAddress                        types.String                        `tfsdk:"ipv4_evpn_mcast_data_address"`
-	Ipv4EvpnMcastDataMaskBits                       types.String                        `tfsdk:"ipv4_evpn_mcast_data_mask_bits"`
-	Ipv6EvpnMcastMdtDefaultAddress                  types.String                        `tfsdk:"ipv6_evpn_mcast_mdt_default_address"`
-	Ipv6EvpnMcastAnycast                            types.String                        `tfsdk:"ipv6_evpn_mcast_anycast"`
-	Ipv6EvpnMcastDataAddress                        types.String                        `tfsdk:"ipv6_evpn_mcast_data_address"`
-	Ipv6EvpnMcastDataMaskBits                       types.String                        `tfsdk:"ipv6_evpn_mcast_data_mask_bits"`
-}
 type VRFRouteTargetImport struct {
 	Value     types.String `tfsdk:"value"`
 	Stitching types.Bool   `tfsdk:"stitching"`
@@ -186,6 +141,105 @@ type VRFVnidsEvpnInstanceVnis struct {
 	CoreVlan types.Int64 `tfsdk:"core_vlan"`
 }
 
+type VRFData struct {
+	Device                                          types.String                            `tfsdk:"device"`
+	Id                                              types.String                            `tfsdk:"id"`
+	Name                                            types.String                            `tfsdk:"name"`
+	Description                                     types.String                            `tfsdk:"description"`
+	RdAuto                                          types.Bool                              `tfsdk:"rd_auto"`
+	Rd                                              types.String                            `tfsdk:"rd"`
+	AddressFamilyIpv4                               types.Bool                              `tfsdk:"address_family_ipv4"`
+	AddressFamilyIpv6                               types.Bool                              `tfsdk:"address_family_ipv6"`
+	VpnId                                           types.String                            `tfsdk:"vpn_id"`
+	RouteTargetImport                               []VRFRouteTargetImportData              `tfsdk:"route_target_import"`
+	RouteTargetExport                               []VRFRouteTargetExportData              `tfsdk:"route_target_export"`
+	Ipv4RouteTargetImport                           []VRFIpv4RouteTargetImportData          `tfsdk:"ipv4_route_target_import"`
+	Ipv4RouteTargetImportStitching                  []VRFIpv4RouteTargetImportStitchingData `tfsdk:"ipv4_route_target_import_stitching"`
+	Ipv4RouteTargetExport                           []VRFIpv4RouteTargetExportData          `tfsdk:"ipv4_route_target_export"`
+	Ipv4RouteTargetExportStitching                  []VRFIpv4RouteTargetExportStitchingData `tfsdk:"ipv4_route_target_export_stitching"`
+	Ipv4RouteReplicate                              []VRFIpv4RouteReplicateData             `tfsdk:"ipv4_route_replicate"`
+	Ipv4ImportMap                                   types.String                            `tfsdk:"ipv4_import_map"`
+	Ipv4ExportMap                                   types.String                            `tfsdk:"ipv4_export_map"`
+	Ipv6RouteTargetImport                           []VRFIpv6RouteTargetImportData          `tfsdk:"ipv6_route_target_import"`
+	Ipv6RouteTargetImportStitching                  []VRFIpv6RouteTargetImportStitchingData `tfsdk:"ipv6_route_target_import_stitching"`
+	Ipv6RouteTargetExport                           []VRFIpv6RouteTargetExportData          `tfsdk:"ipv6_route_target_export"`
+	Ipv6RouteTargetExportStitching                  []VRFIpv6RouteTargetExportStitchingData `tfsdk:"ipv6_route_target_export_stitching"`
+	Ipv6ImportMap                                   types.String                            `tfsdk:"ipv6_import_map"`
+	Ipv6ExportMap                                   types.String                            `tfsdk:"ipv6_export_map"`
+	Vnids                                           []VRFVnidsData                          `tfsdk:"vnids"`
+	Ipv4MdtDefaultAddress                           types.String                            `tfsdk:"ipv4_mdt_default_address"`
+	Ipv4MdtAutoDiscoveryVxlan                       types.Bool                              `tfsdk:"ipv4_mdt_auto_discovery_vxlan"`
+	Ipv4MdtAutoDiscoveryVxlanInterAs                types.Bool                              `tfsdk:"ipv4_mdt_auto_discovery_vxlan_inter_as"`
+	Ipv4MdtAutoDiscoveryInterworkingVxlanPim        types.Bool                              `tfsdk:"ipv4_mdt_auto_discovery_interworking_vxlan_pim"`
+	Ipv4MdtAutoDiscoveryInterworkingVxlanPimInterAs types.Bool                              `tfsdk:"ipv4_mdt_auto_discovery_interworking_vxlan_pim_inter_as"`
+	Ipv4MdtOverlayUseBgp                            types.Bool                              `tfsdk:"ipv4_mdt_overlay_use_bgp"`
+	Ipv4MdtOverlayUseBgpSptOnly                     types.Bool                              `tfsdk:"ipv4_mdt_overlay_use_bgp_spt_only"`
+	Ipv4MdtDataMulticast                            []VRFIpv4MdtDataMulticastData           `tfsdk:"ipv4_mdt_data_multicast"`
+	Ipv4MdtDataThreshold                            types.Int64                             `tfsdk:"ipv4_mdt_data_threshold"`
+	Ipv4EvpnMcastMdtDefaultAddress                  types.String                            `tfsdk:"ipv4_evpn_mcast_mdt_default_address"`
+	Ipv4EvpnMcastAnycast                            types.String                            `tfsdk:"ipv4_evpn_mcast_anycast"`
+	Ipv4EvpnMcastDataAddress                        types.String                            `tfsdk:"ipv4_evpn_mcast_data_address"`
+	Ipv4EvpnMcastDataMaskBits                       types.String                            `tfsdk:"ipv4_evpn_mcast_data_mask_bits"`
+	Ipv6EvpnMcastMdtDefaultAddress                  types.String                            `tfsdk:"ipv6_evpn_mcast_mdt_default_address"`
+	Ipv6EvpnMcastAnycast                            types.String                            `tfsdk:"ipv6_evpn_mcast_anycast"`
+	Ipv6EvpnMcastDataAddress                        types.String                            `tfsdk:"ipv6_evpn_mcast_data_address"`
+	Ipv6EvpnMcastDataMaskBits                       types.String                            `tfsdk:"ipv6_evpn_mcast_data_mask_bits"`
+}
+type VRFRouteTargetImportData struct {
+	Value     types.String `tfsdk:"value"`
+	Stitching types.Bool   `tfsdk:"stitching"`
+}
+type VRFRouteTargetExportData struct {
+	Value     types.String `tfsdk:"value"`
+	Stitching types.Bool   `tfsdk:"stitching"`
+}
+type VRFIpv4RouteTargetImportData struct {
+	Value types.String `tfsdk:"value"`
+}
+type VRFIpv4RouteTargetImportStitchingData struct {
+	Value     types.String `tfsdk:"value"`
+	Stitching types.Bool   `tfsdk:"stitching"`
+}
+type VRFIpv4RouteTargetExportData struct {
+	Value types.String `tfsdk:"value"`
+}
+type VRFIpv4RouteTargetExportStitchingData struct {
+	Value     types.String `tfsdk:"value"`
+	Stitching types.Bool   `tfsdk:"stitching"`
+}
+type VRFIpv4RouteReplicateData struct {
+	Name               types.String `tfsdk:"name"`
+	UnicastAll         types.Bool   `tfsdk:"unicast_all"`
+	UnicastAllRouteMap types.String `tfsdk:"unicast_all_route_map"`
+}
+type VRFIpv6RouteTargetImportData struct {
+	Value types.String `tfsdk:"value"`
+}
+type VRFIpv6RouteTargetImportStitchingData struct {
+	Value     types.String `tfsdk:"value"`
+	Stitching types.Bool   `tfsdk:"stitching"`
+}
+type VRFIpv6RouteTargetExportData struct {
+	Value types.String `tfsdk:"value"`
+}
+type VRFIpv6RouteTargetExportStitchingData struct {
+	Value     types.String `tfsdk:"value"`
+	Stitching types.Bool   `tfsdk:"stitching"`
+}
+type VRFVnidsData struct {
+	Vnid             types.Int64                    `tfsdk:"vnid"`
+	EvpnInstanceVnis []VRFVnidsEvpnInstanceVnisData `tfsdk:"evpn_instance_vnis"`
+}
+type VRFIpv4MdtDataMulticastData struct {
+	Address  types.String `tfsdk:"address"`
+	Wildcard types.String `tfsdk:"wildcard"`
+	List     types.String `tfsdk:"list"`
+}
+type VRFVnidsEvpnInstanceVnisData struct {
+	Vni      types.Int64 `tfsdk:"vni"`
+	CoreVlan types.Int64 `tfsdk:"core_vlan"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -226,7 +280,7 @@ func (data VRFData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data VRF) toBody(ctx context.Context) string {
+func (data VRF) toBody(ctx context.Context, config VRF) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -493,7 +547,7 @@ func (data VRF) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data VRF) toBodyXML(ctx context.Context) string {
+func (data VRF) toBodyXML(ctx context.Context, config VRF) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -2486,9 +2540,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.VpnId = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "route-target.import"); value.Exists() {
-		data.RouteTargetImport = make([]VRFRouteTargetImport, 0)
+		data.RouteTargetImport = make([]VRFRouteTargetImportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFRouteTargetImport{}
+			item := VRFRouteTargetImportData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2502,9 +2556,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "route-target.export"); value.Exists() {
-		data.RouteTargetExport = make([]VRFRouteTargetExport, 0)
+		data.RouteTargetExport = make([]VRFRouteTargetExportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFRouteTargetExport{}
+			item := VRFRouteTargetExportData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2518,9 +2572,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv4.route-target.import-route-target.without-stitching"); value.Exists() {
-		data.Ipv4RouteTargetImport = make([]VRFIpv4RouteTargetImport, 0)
+		data.Ipv4RouteTargetImport = make([]VRFIpv4RouteTargetImportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv4RouteTargetImport{}
+			item := VRFIpv4RouteTargetImportData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2529,9 +2583,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv4.route-target.import-route-target.with-stitching"); value.Exists() {
-		data.Ipv4RouteTargetImportStitching = make([]VRFIpv4RouteTargetImportStitching, 0)
+		data.Ipv4RouteTargetImportStitching = make([]VRFIpv4RouteTargetImportStitchingData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv4RouteTargetImportStitching{}
+			item := VRFIpv4RouteTargetImportStitchingData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2545,9 +2599,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv4.route-target.export-route-target.without-stitching"); value.Exists() {
-		data.Ipv4RouteTargetExport = make([]VRFIpv4RouteTargetExport, 0)
+		data.Ipv4RouteTargetExport = make([]VRFIpv4RouteTargetExportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv4RouteTargetExport{}
+			item := VRFIpv4RouteTargetExportData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2556,9 +2610,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv4.route-target.export-route-target.with-stitching"); value.Exists() {
-		data.Ipv4RouteTargetExportStitching = make([]VRFIpv4RouteTargetExportStitching, 0)
+		data.Ipv4RouteTargetExportStitching = make([]VRFIpv4RouteTargetExportStitchingData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv4RouteTargetExportStitching{}
+			item := VRFIpv4RouteTargetExportStitchingData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2572,9 +2626,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv4.route-replicate.from.vrf"); value.Exists() {
-		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicate, 0)
+		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicateData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv4RouteReplicate{}
+			item := VRFIpv4RouteReplicateData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -2597,9 +2651,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Ipv4ExportMap = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "address-family.ipv6.route-target.import-route-target.without-stitching"); value.Exists() {
-		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImport, 0)
+		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv6RouteTargetImport{}
+			item := VRFIpv6RouteTargetImportData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2608,9 +2662,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv6.route-target.import-route-target.with-stitching"); value.Exists() {
-		data.Ipv6RouteTargetImportStitching = make([]VRFIpv6RouteTargetImportStitching, 0)
+		data.Ipv6RouteTargetImportStitching = make([]VRFIpv6RouteTargetImportStitchingData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv6RouteTargetImportStitching{}
+			item := VRFIpv6RouteTargetImportStitchingData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2624,9 +2678,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv6.route-target.export-route-target.without-stitching"); value.Exists() {
-		data.Ipv6RouteTargetExport = make([]VRFIpv6RouteTargetExport, 0)
+		data.Ipv6RouteTargetExport = make([]VRFIpv6RouteTargetExportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv6RouteTargetExport{}
+			item := VRFIpv6RouteTargetExportData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2635,9 +2689,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "address-family.ipv6.route-target.export-route-target.with-stitching"); value.Exists() {
-		data.Ipv6RouteTargetExportStitching = make([]VRFIpv6RouteTargetExportStitching, 0)
+		data.Ipv6RouteTargetExportStitching = make([]VRFIpv6RouteTargetExportStitchingData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv6RouteTargetExportStitching{}
+			item := VRFIpv6RouteTargetExportStitchingData{}
 			if cValue := v.Get("asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -2657,16 +2711,16 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Ipv6ExportMap = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vnid"); value.Exists() {
-		data.Vnids = make([]VRFVnids, 0)
+		data.Vnids = make([]VRFVnidsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFVnids{}
+			item := VRFVnidsData{}
 			if cValue := v.Get("vnid-value"); cValue.Exists() {
 				item.Vnid = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("evpn-instance.vni.vni-num"); cValue.Exists() {
-				item.EvpnInstanceVnis = make([]VRFVnidsEvpnInstanceVnis, 0)
+				item.EvpnInstanceVnis = make([]VRFVnidsEvpnInstanceVnisData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := VRFVnidsEvpnInstanceVnis{}
+					cItem := VRFVnidsEvpnInstanceVnisData{}
 					if ccValue := cv.Get("vni-num"); ccValue.Exists() {
 						cItem.Vni = types.Int64Value(ccValue.Int())
 					}
@@ -2715,9 +2769,9 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "address-family.ipv4.mdt.data.multicast"); value.Exists() {
-		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticast, 0)
+		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticastData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := VRFIpv4MdtDataMulticast{}
+			item := VRFIpv4MdtDataMulticastData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -3094,9 +3148,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.VpnId = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/import"); value.Exists() {
-		data.RouteTargetImport = make([]VRFRouteTargetImport, 0)
+		data.RouteTargetImport = make([]VRFRouteTargetImportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFRouteTargetImport{}
+			item := VRFRouteTargetImportData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3110,9 +3164,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-target/export"); value.Exists() {
-		data.RouteTargetExport = make([]VRFRouteTargetExport, 0)
+		data.RouteTargetExport = make([]VRFRouteTargetExportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFRouteTargetExport{}
+			item := VRFRouteTargetExportData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3126,9 +3180,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/without-stitching"); value.Exists() {
-		data.Ipv4RouteTargetImport = make([]VRFIpv4RouteTargetImport, 0)
+		data.Ipv4RouteTargetImport = make([]VRFIpv4RouteTargetImportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv4RouteTargetImport{}
+			item := VRFIpv4RouteTargetImportData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3137,9 +3191,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/import-route-target/with-stitching"); value.Exists() {
-		data.Ipv4RouteTargetImportStitching = make([]VRFIpv4RouteTargetImportStitching, 0)
+		data.Ipv4RouteTargetImportStitching = make([]VRFIpv4RouteTargetImportStitchingData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv4RouteTargetImportStitching{}
+			item := VRFIpv4RouteTargetImportStitchingData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3153,9 +3207,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/without-stitching"); value.Exists() {
-		data.Ipv4RouteTargetExport = make([]VRFIpv4RouteTargetExport, 0)
+		data.Ipv4RouteTargetExport = make([]VRFIpv4RouteTargetExportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv4RouteTargetExport{}
+			item := VRFIpv4RouteTargetExportData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3164,9 +3218,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-target/export-route-target/with-stitching"); value.Exists() {
-		data.Ipv4RouteTargetExportStitching = make([]VRFIpv4RouteTargetExportStitching, 0)
+		data.Ipv4RouteTargetExportStitching = make([]VRFIpv4RouteTargetExportStitchingData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv4RouteTargetExportStitching{}
+			item := VRFIpv4RouteTargetExportStitchingData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3180,9 +3234,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/route-replicate/from/vrf"); value.Exists() {
-		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicate, 0)
+		data.Ipv4RouteReplicate = make([]VRFIpv4RouteReplicateData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv4RouteReplicate{}
+			item := VRFIpv4RouteReplicateData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3205,9 +3259,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Ipv4ExportMap = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/without-stitching"); value.Exists() {
-		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImport, 0)
+		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv6RouteTargetImport{}
+			item := VRFIpv6RouteTargetImportData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3216,9 +3270,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/import-route-target/with-stitching"); value.Exists() {
-		data.Ipv6RouteTargetImportStitching = make([]VRFIpv6RouteTargetImportStitching, 0)
+		data.Ipv6RouteTargetImportStitching = make([]VRFIpv6RouteTargetImportStitchingData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv6RouteTargetImportStitching{}
+			item := VRFIpv6RouteTargetImportStitchingData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3232,9 +3286,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/without-stitching"); value.Exists() {
-		data.Ipv6RouteTargetExport = make([]VRFIpv6RouteTargetExport, 0)
+		data.Ipv6RouteTargetExport = make([]VRFIpv6RouteTargetExportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv6RouteTargetExport{}
+			item := VRFIpv6RouteTargetExportData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3243,9 +3297,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv6/route-target/export-route-target/with-stitching"); value.Exists() {
-		data.Ipv6RouteTargetExportStitching = make([]VRFIpv6RouteTargetExportStitching, 0)
+		data.Ipv6RouteTargetExportStitching = make([]VRFIpv6RouteTargetExportStitchingData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv6RouteTargetExportStitching{}
+			item := VRFIpv6RouteTargetExportStitchingData{}
 			if cValue := helpers.GetFromXPath(v, "asn-ip"); cValue.Exists() {
 				item.Value = types.StringValue(cValue.String())
 			}
@@ -3265,16 +3319,16 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Ipv6ExportMap = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vnid"); value.Exists() {
-		data.Vnids = make([]VRFVnids, 0)
+		data.Vnids = make([]VRFVnidsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFVnids{}
+			item := VRFVnidsData{}
 			if cValue := helpers.GetFromXPath(v, "vnid-value"); cValue.Exists() {
 				item.Vnid = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "evpn-instance/vni/vni-num"); cValue.Exists() {
-				item.EvpnInstanceVnis = make([]VRFVnidsEvpnInstanceVnis, 0)
+				item.EvpnInstanceVnis = make([]VRFVnidsEvpnInstanceVnisData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := VRFVnidsEvpnInstanceVnis{}
+					cItem := VRFVnidsEvpnInstanceVnisData{}
 					if ccValue := helpers.GetFromXPath(cv, "vni-num"); ccValue.Exists() {
 						cItem.Vni = types.Int64Value(ccValue.Int())
 					}
@@ -3323,9 +3377,9 @@ func (data *VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Ipv4MdtOverlayUseBgpSptOnly = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/mdt/data/multicast"); value.Exists() {
-		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticast, 0)
+		data.Ipv4MdtDataMulticast = make([]VRFIpv4MdtDataMulticastData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := VRFIpv4MdtDataMulticast{}
+			item := VRFIpv4MdtDataMulticastData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}

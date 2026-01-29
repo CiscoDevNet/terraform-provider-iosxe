@@ -85,50 +85,6 @@ type InterfaceVLAN struct {
 	IpNatInside                       types.Bool                            `tfsdk:"ip_nat_inside"`
 	IpNatOutside                      types.Bool                            `tfsdk:"ip_nat_outside"`
 }
-
-type InterfaceVLANData struct {
-	Device                            types.String                          `tfsdk:"device"`
-	Id                                types.String                          `tfsdk:"id"`
-	Name                              types.Int64                           `tfsdk:"name"`
-	Autostate                         types.Bool                            `tfsdk:"autostate"`
-	Description                       types.String                          `tfsdk:"description"`
-	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
-	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
-	IpLocalProxyArp                   types.Bool                            `tfsdk:"ip_local_proxy_arp"`
-	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
-	IpUnreachables                    types.Bool                            `tfsdk:"ip_unreachables"`
-	VrfForwarding                     types.String                          `tfsdk:"vrf_forwarding"`
-	Ipv4Address                       types.String                          `tfsdk:"ipv4_address"`
-	Ipv4AddressMask                   types.String                          `tfsdk:"ipv4_address_mask"`
-	Unnumbered                        types.String                          `tfsdk:"unnumbered"`
-	IpDhcpRelaySourceInterface        types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupInEnable             types.Bool                            `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn                   types.String                          `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable            types.Bool                            `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut                  types.String                          `tfsdk:"ip_access_group_out"`
-	HelperAddresses                   []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                       types.String                          `tfsdk:"bfd_template"`
-	BfdEnable                         types.Bool                            `tfsdk:"bfd_enable"`
-	BfdLocalAddress                   types.String                          `tfsdk:"bfd_local_address"`
-	BfdInterval                       types.Int64                           `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx                  types.Int64                           `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier             types.Int64                           `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                           types.Bool                            `tfsdk:"bfd_echo"`
-	Ipv6Enable                        types.Bool                            `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                           types.Int64                           `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll               types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault      types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp                   types.Bool                            `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses            []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                     []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	LoadInterval                      types.Int64                           `tfsdk:"load_interval"`
-	MacAddress                        types.String                          `tfsdk:"mac_address"`
-	IpDhcpRelayInformationOptionVpnId types.Bool                            `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
-	IpIgmpVersion                     types.Int64                           `tfsdk:"ip_igmp_version"`
-	IpRouterIsis                      types.String                          `tfsdk:"ip_router_isis"`
-	IpNatInside                       types.Bool                            `tfsdk:"ip_nat_inside"`
-	IpNatOutside                      types.Bool                            `tfsdk:"ip_nat_outside"`
-}
 type InterfaceVLANHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
 	Global  types.Bool   `tfsdk:"global"`
@@ -139,6 +95,63 @@ type InterfaceVLANIpv6LinkLocalAddresses struct {
 	LinkLocal types.Bool   `tfsdk:"link_local"`
 }
 type InterfaceVLANIpv6Addresses struct {
+	Prefix types.String `tfsdk:"prefix"`
+	Eui64  types.Bool   `tfsdk:"eui_64"`
+}
+
+type InterfaceVLANData struct {
+	Device                            types.String                              `tfsdk:"device"`
+	Id                                types.String                              `tfsdk:"id"`
+	Name                              types.Int64                               `tfsdk:"name"`
+	Autostate                         types.Bool                                `tfsdk:"autostate"`
+	Description                       types.String                              `tfsdk:"description"`
+	Shutdown                          types.Bool                                `tfsdk:"shutdown"`
+	IpProxyArp                        types.Bool                                `tfsdk:"ip_proxy_arp"`
+	IpLocalProxyArp                   types.Bool                                `tfsdk:"ip_local_proxy_arp"`
+	IpRedirects                       types.Bool                                `tfsdk:"ip_redirects"`
+	IpUnreachables                    types.Bool                                `tfsdk:"ip_unreachables"`
+	VrfForwarding                     types.String                              `tfsdk:"vrf_forwarding"`
+	Ipv4Address                       types.String                              `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                   types.String                              `tfsdk:"ipv4_address_mask"`
+	Unnumbered                        types.String                              `tfsdk:"unnumbered"`
+	IpDhcpRelaySourceInterface        types.String                              `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupInEnable             types.Bool                                `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                   types.String                              `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable            types.Bool                                `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                  types.String                              `tfsdk:"ip_access_group_out"`
+	HelperAddresses                   []InterfaceVLANHelperAddressesData        `tfsdk:"helper_addresses"`
+	BfdTemplate                       types.String                              `tfsdk:"bfd_template"`
+	BfdEnable                         types.Bool                                `tfsdk:"bfd_enable"`
+	BfdLocalAddress                   types.String                              `tfsdk:"bfd_local_address"`
+	BfdInterval                       types.Int64                               `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                  types.Int64                               `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier             types.Int64                               `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                           types.Bool                                `tfsdk:"bfd_echo"`
+	Ipv6Enable                        types.Bool                                `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                           types.Int64                               `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll               types.Bool                                `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault      types.Bool                                `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                   types.Bool                                `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses            []InterfaceVLANIpv6LinkLocalAddressesData `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                     []InterfaceVLANIpv6AddressesData          `tfsdk:"ipv6_addresses"`
+	LoadInterval                      types.Int64                               `tfsdk:"load_interval"`
+	MacAddress                        types.String                              `tfsdk:"mac_address"`
+	IpDhcpRelayInformationOptionVpnId types.Bool                                `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
+	IpIgmpVersion                     types.Int64                               `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                      types.String                              `tfsdk:"ip_router_isis"`
+	IpNatInside                       types.Bool                                `tfsdk:"ip_nat_inside"`
+	IpNatOutside                      types.Bool                                `tfsdk:"ip_nat_outside"`
+}
+type InterfaceVLANHelperAddressesData struct {
+	Address types.String `tfsdk:"address"`
+	Global  types.Bool   `tfsdk:"global"`
+	Vrf     types.String `tfsdk:"vrf"`
+}
+type InterfaceVLANIpv6LinkLocalAddressesData struct {
+	Address   types.String `tfsdk:"address"`
+	LinkLocal types.Bool   `tfsdk:"link_local"`
+}
+type InterfaceVLANIpv6AddressesData struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
 }
@@ -183,7 +196,7 @@ func (data InterfaceVLANData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceVLAN) toBody(ctx context.Context) string {
+func (data InterfaceVLAN) toBody(ctx context.Context, config InterfaceVLAN) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -364,7 +377,7 @@ func (data InterfaceVLAN) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceVLAN) toBodyXML(ctx context.Context) string {
+func (data InterfaceVLAN) toBodyXML(ctx context.Context, config InterfaceVLAN) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", strconv.FormatInt(data.Name.ValueInt64(), 10))
@@ -1579,9 +1592,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.helper-address"); value.Exists() {
-		data.HelperAddresses = make([]InterfaceVLANHelperAddresses, 0)
+		data.HelperAddresses = make([]InterfaceVLANHelperAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceVLANHelperAddresses{}
+			item := InterfaceVLANHelperAddressesData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -1646,9 +1659,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Ipv6AddressDhcp = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv6.address.link-local-address"); value.Exists() {
-		data.Ipv6LinkLocalAddresses = make([]InterfaceVLANIpv6LinkLocalAddresses, 0)
+		data.Ipv6LinkLocalAddresses = make([]InterfaceVLANIpv6LinkLocalAddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceVLANIpv6LinkLocalAddresses{}
+			item := InterfaceVLANIpv6LinkLocalAddressesData{}
 			if cValue := v.Get("address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -1662,9 +1675,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "ipv6.address.prefix-list"); value.Exists() {
-		data.Ipv6Addresses = make([]InterfaceVLANIpv6Addresses, 0)
+		data.Ipv6Addresses = make([]InterfaceVLANIpv6AddressesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceVLANIpv6Addresses{}
+			item := InterfaceVLANIpv6AddressesData{}
 			if cValue := v.Get("prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -1973,9 +1986,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/helper-address"); value.Exists() {
-		data.HelperAddresses = make([]InterfaceVLANHelperAddresses, 0)
+		data.HelperAddresses = make([]InterfaceVLANHelperAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceVLANHelperAddresses{}
+			item := InterfaceVLANHelperAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2040,9 +2053,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.Ipv6AddressDhcp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/link-local-address"); value.Exists() {
-		data.Ipv6LinkLocalAddresses = make([]InterfaceVLANIpv6LinkLocalAddresses, 0)
+		data.Ipv6LinkLocalAddresses = make([]InterfaceVLANIpv6LinkLocalAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceVLANIpv6LinkLocalAddresses{}
+			item := InterfaceVLANIpv6LinkLocalAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
@@ -2056,9 +2069,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/address/prefix-list"); value.Exists() {
-		data.Ipv6Addresses = make([]InterfaceVLANIpv6Addresses, 0)
+		data.Ipv6Addresses = make([]InterfaceVLANIpv6AddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceVLANIpv6Addresses{}
+			item := InterfaceVLANIpv6AddressesData{}
 			if cValue := helpers.GetFromXPath(v, "prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}

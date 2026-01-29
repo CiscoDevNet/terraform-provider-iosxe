@@ -92,7 +92,7 @@ func (data VLANFilterData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data VLANFilter) toBody(ctx context.Context) string {
+func (data VLANFilter) toBody(ctx context.Context, config VLANFilter) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Word.IsNull() && !data.Word.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"word", data.Word.ValueString())
@@ -109,7 +109,7 @@ func (data VLANFilter) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data VLANFilter) toBodyXML(ctx context.Context) string {
+func (data VLANFilter) toBodyXML(ctx context.Context, config VLANFilter) string {
 	body := netconf.Body{}
 	if !data.Word.IsNull() && !data.Word.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/word", data.Word.ValueString())

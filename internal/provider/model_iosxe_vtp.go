@@ -39,34 +39,38 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type VTP struct {
-	Device                 types.String `tfsdk:"device"`
-	Id                     types.String `tfsdk:"id"`
-	DeleteMode             types.String `tfsdk:"delete_mode"`
-	File                   types.String `tfsdk:"file"`
-	Version                types.Int64  `tfsdk:"version"`
-	Interface              types.String `tfsdk:"interface"`
-	InterfaceOnly          types.Bool   `tfsdk:"interface_only"`
-	Password               types.String `tfsdk:"password"`
-	PasswordHidden         types.Bool   `tfsdk:"password_hidden"`
-	PasswordSecret         types.Bool   `tfsdk:"password_secret"`
-	Pruning                types.Bool   `tfsdk:"pruning"`
-	Domain                 types.String `tfsdk:"domain"`
-	ModeClient             types.Bool   `tfsdk:"mode_client"`
-	ModeClientMst          types.Bool   `tfsdk:"mode_client_mst"`
-	ModeClientUnknown      types.Bool   `tfsdk:"mode_client_unknown"`
-	ModeClientVlan         types.Bool   `tfsdk:"mode_client_vlan"`
-	ModeOff                types.Bool   `tfsdk:"mode_off"`
-	ModeOffMst             types.Bool   `tfsdk:"mode_off_mst"`
-	ModeOffUnknown         types.Bool   `tfsdk:"mode_off_unknown"`
-	ModeOffVlan            types.Bool   `tfsdk:"mode_off_vlan"`
-	ModeServer             types.Bool   `tfsdk:"mode_server"`
-	ModeServerMst          types.Bool   `tfsdk:"mode_server_mst"`
-	ModeServerUnknown      types.Bool   `tfsdk:"mode_server_unknown"`
-	ModeServerVlan         types.Bool   `tfsdk:"mode_server_vlan"`
-	ModeTransparent        types.Bool   `tfsdk:"mode_transparent"`
-	ModeTransparentMst     types.Bool   `tfsdk:"mode_transparent_mst"`
-	ModeTransparentUnknown types.Bool   `tfsdk:"mode_transparent_unknown"`
-	ModeTransparentVlan    types.Bool   `tfsdk:"mode_transparent_vlan"`
+	Device                  types.String `tfsdk:"device"`
+	Id                      types.String `tfsdk:"id"`
+	DeleteMode              types.String `tfsdk:"delete_mode"`
+	File                    types.String `tfsdk:"file"`
+	Version                 types.Int64  `tfsdk:"version"`
+	Interface               types.String `tfsdk:"interface"`
+	InterfaceOnly           types.Bool   `tfsdk:"interface_only"`
+	Password                types.String `tfsdk:"password"`
+	PasswordWO              types.String `tfsdk:"password_wo"`
+	PasswordWOVersion       types.Int64  `tfsdk:"password_wo_version"`
+	PasswordHidden          types.Bool   `tfsdk:"password_hidden"`
+	PasswordSecret          types.Bool   `tfsdk:"password_secret"`
+	PasswordSecretWO        types.String `tfsdk:"password_secret_wo"`
+	PasswordSecretWOVersion types.Int64  `tfsdk:"password_secret_wo_version"`
+	Pruning                 types.Bool   `tfsdk:"pruning"`
+	Domain                  types.String `tfsdk:"domain"`
+	ModeClient              types.Bool   `tfsdk:"mode_client"`
+	ModeClientMst           types.Bool   `tfsdk:"mode_client_mst"`
+	ModeClientUnknown       types.Bool   `tfsdk:"mode_client_unknown"`
+	ModeClientVlan          types.Bool   `tfsdk:"mode_client_vlan"`
+	ModeOff                 types.Bool   `tfsdk:"mode_off"`
+	ModeOffMst              types.Bool   `tfsdk:"mode_off_mst"`
+	ModeOffUnknown          types.Bool   `tfsdk:"mode_off_unknown"`
+	ModeOffVlan             types.Bool   `tfsdk:"mode_off_vlan"`
+	ModeServer              types.Bool   `tfsdk:"mode_server"`
+	ModeServerMst           types.Bool   `tfsdk:"mode_server_mst"`
+	ModeServerUnknown       types.Bool   `tfsdk:"mode_server_unknown"`
+	ModeServerVlan          types.Bool   `tfsdk:"mode_server_vlan"`
+	ModeTransparent         types.Bool   `tfsdk:"mode_transparent"`
+	ModeTransparentMst      types.Bool   `tfsdk:"mode_transparent_mst"`
+	ModeTransparentUnknown  types.Bool   `tfsdk:"mode_transparent_unknown"`
+	ModeTransparentVlan     types.Bool   `tfsdk:"mode_transparent_vlan"`
 }
 
 type VTPData struct {
@@ -137,7 +141,7 @@ func (data VTPData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data VTP) toBody(ctx context.Context) string {
+func (data VTP) toBody(ctx context.Context, config VTP) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.File.IsNull() && !data.File.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:file", data.File.ValueString())
@@ -154,7 +158,11 @@ func (data VTP) toBody(ctx context.Context) string {
 		}
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:password.password", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:password.password", config.PasswordWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:password.password", data.Password.ValueString())
+		}
 	}
 	if !data.PasswordHidden.IsNull() && !data.PasswordHidden.IsUnknown() {
 		if data.PasswordHidden.ValueBool() {
@@ -261,7 +269,7 @@ func (data VTP) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data VTP) toBodyXML(ctx context.Context) string {
+func (data VTP) toBodyXML(ctx context.Context, config VTP) string {
 	body := netconf.Body{}
 	if !data.File.IsNull() && !data.File.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-vtp:file", data.File.ValueString())
@@ -280,7 +288,11 @@ func (data VTP) toBodyXML(ctx context.Context) string {
 		}
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-vtp:password/password", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-vtp:password/password", config.PasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-vtp:password/password", data.Password.ValueString())
+		}
 	}
 	if !data.PasswordHidden.IsNull() && !data.PasswordHidden.IsUnknown() {
 		if data.PasswordHidden.ValueBool() {

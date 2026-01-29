@@ -47,14 +47,59 @@ type AccessListRoleBased struct {
 	Name    types.String                 `tfsdk:"name"`
 	Entries []AccessListRoleBasedEntries `tfsdk:"entries"`
 }
+type AccessListRoleBasedEntries struct {
+	Sequence         types.Int64  `tfsdk:"sequence"`
+	Remark           types.String `tfsdk:"remark"`
+	AceRuleAction    types.String `tfsdk:"ace_rule_action"`
+	AceRuleProtocol  types.String `tfsdk:"ace_rule_protocol"`
+	Ack              types.Bool   `tfsdk:"ack"`
+	Fin              types.Bool   `tfsdk:"fin"`
+	Psh              types.Bool   `tfsdk:"psh"`
+	Rst              types.Bool   `tfsdk:"rst"`
+	Syn              types.Bool   `tfsdk:"syn"`
+	Urg              types.Bool   `tfsdk:"urg"`
+	Established      types.Bool   `tfsdk:"established"`
+	Dscp             types.String `tfsdk:"dscp"`
+	Fragments        types.Bool   `tfsdk:"fragments"`
+	Option           types.String `tfsdk:"option"`
+	Precedence       types.String `tfsdk:"precedence"`
+	TimeRange        types.String `tfsdk:"time_range"`
+	Tos              types.String `tfsdk:"tos"`
+	Log              types.Bool   `tfsdk:"log"`
+	LogInput         types.Bool   `tfsdk:"log_input"`
+	MatchAllPlusack  types.Bool   `tfsdk:"match_all_plusack"`
+	MatchAllPlusfin  types.Bool   `tfsdk:"match_all_plusfin"`
+	MatchAllPluspsh  types.Bool   `tfsdk:"match_all_pluspsh"`
+	MatchAllPlusrst  types.Bool   `tfsdk:"match_all_plusrst"`
+	MatchAllPlussyn  types.Bool   `tfsdk:"match_all_plussyn"`
+	MatchAllPlusurg  types.Bool   `tfsdk:"match_all_plusurg"`
+	MatchAllMinusack types.Bool   `tfsdk:"match_all_minusack"`
+	MatchAllMinusfin types.Bool   `tfsdk:"match_all_minusfin"`
+	MatchAllMinuspsh types.Bool   `tfsdk:"match_all_minuspsh"`
+	MatchAllMinusrst types.Bool   `tfsdk:"match_all_minusrst"`
+	MatchAllMinussyn types.Bool   `tfsdk:"match_all_minussyn"`
+	MatchAllMinusurg types.Bool   `tfsdk:"match_all_minusurg"`
+	MatchAnyPlusack  types.Bool   `tfsdk:"match_any_plusack"`
+	MatchAnyPlusfin  types.Bool   `tfsdk:"match_any_plusfin"`
+	MatchAnyPluspsh  types.Bool   `tfsdk:"match_any_pluspsh"`
+	MatchAnyPlusrst  types.Bool   `tfsdk:"match_any_plusrst"`
+	MatchAnyPlussyn  types.Bool   `tfsdk:"match_any_plussyn"`
+	MatchAnyPlusurg  types.Bool   `tfsdk:"match_any_plusurg"`
+	MatchAnyMinusack types.Bool   `tfsdk:"match_any_minusack"`
+	MatchAnyMinusfin types.Bool   `tfsdk:"match_any_minusfin"`
+	MatchAnyMinuspsh types.Bool   `tfsdk:"match_any_minuspsh"`
+	MatchAnyMinusrst types.Bool   `tfsdk:"match_any_minusrst"`
+	MatchAnyMinussyn types.Bool   `tfsdk:"match_any_minussyn"`
+	MatchAnyMinusurg types.Bool   `tfsdk:"match_any_minusurg"`
+}
 
 type AccessListRoleBasedData struct {
-	Device  types.String                 `tfsdk:"device"`
-	Id      types.String                 `tfsdk:"id"`
-	Name    types.String                 `tfsdk:"name"`
-	Entries []AccessListRoleBasedEntries `tfsdk:"entries"`
+	Device  types.String                     `tfsdk:"device"`
+	Id      types.String                     `tfsdk:"id"`
+	Name    types.String                     `tfsdk:"name"`
+	Entries []AccessListRoleBasedEntriesData `tfsdk:"entries"`
 }
-type AccessListRoleBasedEntries struct {
+type AccessListRoleBasedEntriesData struct {
 	Sequence         types.Int64  `tfsdk:"sequence"`
 	Remark           types.String `tfsdk:"remark"`
 	AceRuleAction    types.String `tfsdk:"ace_rule_action"`
@@ -140,7 +185,7 @@ func (data AccessListRoleBasedData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data AccessListRoleBased) toBody(ctx context.Context) string {
+func (data AccessListRoleBased) toBody(ctx context.Context, config AccessListRoleBased) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -354,7 +399,7 @@ func (data AccessListRoleBased) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data AccessListRoleBased) toBodyXML(ctx context.Context) string {
+func (data AccessListRoleBased) toBodyXML(ctx context.Context, config AccessListRoleBased) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -1641,9 +1686,9 @@ func (data *AccessListRoleBasedData) fromBody(ctx context.Context, res gjson.Res
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListRoleBasedEntries, 0)
+		data.Entries = make([]AccessListRoleBasedEntriesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AccessListRoleBasedEntries{}
+			item := AccessListRoleBasedEntriesData{}
 			if cValue := v.Get("sequence"); cValue.Exists() {
 				item.Sequence = types.Int64Value(cValue.Int())
 			}
@@ -2065,9 +2110,9 @@ func (data *AccessListRoleBased) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *AccessListRoleBasedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListRoleBasedEntries, 0)
+		data.Entries = make([]AccessListRoleBasedEntriesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AccessListRoleBasedEntries{}
+			item := AccessListRoleBasedEntriesData{}
 			if cValue := helpers.GetFromXPath(v, "sequence"); cValue.Exists() {
 				item.Sequence = types.Int64Value(cValue.Int())
 			}

@@ -52,18 +52,21 @@ type FlowMonitor struct {
 	CacheTimeoutInactive types.Int64            `tfsdk:"cache_timeout_inactive"`
 	Record               types.String           `tfsdk:"record"`
 }
+type FlowMonitorExporters struct {
+	Name types.String `tfsdk:"name"`
+}
 
 type FlowMonitorData struct {
-	Device               types.String           `tfsdk:"device"`
-	Id                   types.String           `tfsdk:"id"`
-	Name                 types.String           `tfsdk:"name"`
-	Description          types.String           `tfsdk:"description"`
-	Exporters            []FlowMonitorExporters `tfsdk:"exporters"`
-	CacheTimeoutActive   types.Int64            `tfsdk:"cache_timeout_active"`
-	CacheTimeoutInactive types.Int64            `tfsdk:"cache_timeout_inactive"`
-	Record               types.String           `tfsdk:"record"`
+	Device               types.String               `tfsdk:"device"`
+	Id                   types.String               `tfsdk:"id"`
+	Name                 types.String               `tfsdk:"name"`
+	Description          types.String               `tfsdk:"description"`
+	Exporters            []FlowMonitorExportersData `tfsdk:"exporters"`
+	CacheTimeoutActive   types.Int64                `tfsdk:"cache_timeout_active"`
+	CacheTimeoutInactive types.Int64                `tfsdk:"cache_timeout_inactive"`
+	Record               types.String               `tfsdk:"record"`
 }
-type FlowMonitorExporters struct {
+type FlowMonitorExportersData struct {
 	Name types.String `tfsdk:"name"`
 }
 
@@ -107,7 +110,7 @@ func (data FlowMonitorData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data FlowMonitor) toBody(ctx context.Context) string {
+func (data FlowMonitor) toBody(ctx context.Context, config FlowMonitor) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -139,7 +142,7 @@ func (data FlowMonitor) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data FlowMonitor) toBodyXML(ctx context.Context) string {
+func (data FlowMonitor) toBodyXML(ctx context.Context, config FlowMonitor) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -345,9 +348,9 @@ func (data *FlowMonitorData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "exporter"); value.Exists() {
-		data.Exporters = make([]FlowMonitorExporters, 0)
+		data.Exporters = make([]FlowMonitorExportersData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := FlowMonitorExporters{}
+			item := FlowMonitorExportersData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -405,9 +408,9 @@ func (data *FlowMonitorData) fromBodyXML(ctx context.Context, res xmldot.Result)
 		data.Description = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exporter"); value.Exists() {
-		data.Exporters = make([]FlowMonitorExporters, 0)
+		data.Exporters = make([]FlowMonitorExportersData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := FlowMonitorExporters{}
+			item := FlowMonitorExportersData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}

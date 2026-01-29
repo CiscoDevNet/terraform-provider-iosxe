@@ -49,6 +49,8 @@ resource "iosxe_bgp_neighbor" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `cluster_id` (String)
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -74,6 +76,8 @@ resource "iosxe_bgp_neighbor" "example" {
 - `password` (String, Sensitive)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
   - Range: `0`-`7`
+- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo_version` (Number) The write-only version of the attribute.
 - `peer_group` (String) peer-group name
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `shutdown` (Boolean) Administratively shut down this neighbor

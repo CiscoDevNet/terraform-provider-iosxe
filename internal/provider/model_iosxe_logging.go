@@ -87,54 +87,6 @@ type Logging struct {
 	RateLimitConsoleAll               types.Int64                    `tfsdk:"rate_limit_console_all"`
 	RateLimitConsoleAllExceptSeverity types.String                   `tfsdk:"rate_limit_console_all_except_severity"`
 }
-
-type LoggingData struct {
-	Device                            types.String                   `tfsdk:"device"`
-	Id                                types.String                   `tfsdk:"id"`
-	MonitorSeverity                   types.String                   `tfsdk:"monitor_severity"`
-	BufferedSizeLegacy                types.Int64                    `tfsdk:"buffered_size_legacy"`
-	BufferedSeverityLegacy            types.String                   `tfsdk:"buffered_severity_legacy"`
-	BufferedSize                      types.Int64                    `tfsdk:"buffered_size"`
-	BufferedSeverity                  types.String                   `tfsdk:"buffered_severity"`
-	ConsoleSeverity                   types.String                   `tfsdk:"console_severity"`
-	Facility                          types.String                   `tfsdk:"facility"`
-	HistorySize                       types.Int64                    `tfsdk:"history_size"`
-	HistorySeverity                   types.String                   `tfsdk:"history_severity"`
-	Trap                              types.Bool                     `tfsdk:"trap"`
-	TrapSeverity                      types.String                   `tfsdk:"trap_severity"`
-	OriginIdType                      types.String                   `tfsdk:"origin_id_type"`
-	OriginIdName                      types.String                   `tfsdk:"origin_id_name"`
-	FileName                          types.String                   `tfsdk:"file_name"`
-	FileMaxSize                       types.Int64                    `tfsdk:"file_max_size"`
-	FileMinSize                       types.Int64                    `tfsdk:"file_min_size"`
-	FileSeverity                      types.String                   `tfsdk:"file_severity"`
-	SourceInterface                   types.String                   `tfsdk:"source_interface"`
-	Console                           types.Bool                     `tfsdk:"console"`
-	SourceInterfacesVrf               []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
-	Ipv4Hosts                         []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
-	Ipv4HostsTransport                []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
-	Ipv4VrfHosts                      []LoggingIpv4VrfHosts          `tfsdk:"ipv4_vrf_hosts"`
-	Ipv4VrfHostsTransport             []LoggingIpv4VrfHostsTransport `tfsdk:"ipv4_vrf_hosts_transport"`
-	Ipv6Hosts                         []LoggingIpv6Hosts             `tfsdk:"ipv6_hosts"`
-	Ipv6HostsTransport                []LoggingIpv6HostsTransport    `tfsdk:"ipv6_hosts_transport"`
-	Ipv6VrfHosts                      []LoggingIpv6VrfHosts          `tfsdk:"ipv6_vrf_hosts"`
-	Ipv6VrfHostsTransport             []LoggingIpv6VrfHostsTransport `tfsdk:"ipv6_vrf_hosts_transport"`
-	LoggingCount                      types.Bool                     `tfsdk:"logging_count"`
-	PersistentUrl                     types.String                   `tfsdk:"persistent_url"`
-	PersistentSize                    types.Int64                    `tfsdk:"persistent_size"`
-	PersistentFilesize                types.Int64                    `tfsdk:"persistent_filesize"`
-	PersistentBatch                   types.Int64                    `tfsdk:"persistent_batch"`
-	PersistentThreshold               types.Int64                    `tfsdk:"persistent_threshold"`
-	PersistentImmediate               types.Bool                     `tfsdk:"persistent_immediate"`
-	PersistentNotify                  types.Bool                     `tfsdk:"persistent_notify"`
-	PersistentProtected               types.Bool                     `tfsdk:"persistent_protected"`
-	RateLimitAll                      types.Int64                    `tfsdk:"rate_limit_all"`
-	RateLimitAllExceptSeverity        types.String                   `tfsdk:"rate_limit_all_except_severity"`
-	RateLimitConsole                  types.Int64                    `tfsdk:"rate_limit_console"`
-	RateLimitConsoleExceptSeverity    types.String                   `tfsdk:"rate_limit_console_except_severity"`
-	RateLimitConsoleAll               types.Int64                    `tfsdk:"rate_limit_console_all"`
-	RateLimitConsoleAllExceptSeverity types.String                   `tfsdk:"rate_limit_console_all_except_severity"`
-}
 type LoggingSourceInterfacesVrf struct {
 	Vrf           types.String `tfsdk:"vrf"`
 	InterfaceName types.String `tfsdk:"interface_name"`
@@ -220,6 +172,138 @@ type LoggingIpv6VrfHostsTransportTransportTlsPorts struct {
 	Profile    types.String `tfsdk:"profile"`
 }
 
+type LoggingData struct {
+	Device                            types.String                       `tfsdk:"device"`
+	Id                                types.String                       `tfsdk:"id"`
+	MonitorSeverity                   types.String                       `tfsdk:"monitor_severity"`
+	BufferedSizeLegacy                types.Int64                        `tfsdk:"buffered_size_legacy"`
+	BufferedSeverityLegacy            types.String                       `tfsdk:"buffered_severity_legacy"`
+	BufferedSize                      types.Int64                        `tfsdk:"buffered_size"`
+	BufferedSeverity                  types.String                       `tfsdk:"buffered_severity"`
+	ConsoleSeverity                   types.String                       `tfsdk:"console_severity"`
+	Facility                          types.String                       `tfsdk:"facility"`
+	HistorySize                       types.Int64                        `tfsdk:"history_size"`
+	HistorySeverity                   types.String                       `tfsdk:"history_severity"`
+	Trap                              types.Bool                         `tfsdk:"trap"`
+	TrapSeverity                      types.String                       `tfsdk:"trap_severity"`
+	OriginIdType                      types.String                       `tfsdk:"origin_id_type"`
+	OriginIdName                      types.String                       `tfsdk:"origin_id_name"`
+	FileName                          types.String                       `tfsdk:"file_name"`
+	FileMaxSize                       types.Int64                        `tfsdk:"file_max_size"`
+	FileMinSize                       types.Int64                        `tfsdk:"file_min_size"`
+	FileSeverity                      types.String                       `tfsdk:"file_severity"`
+	SourceInterface                   types.String                       `tfsdk:"source_interface"`
+	Console                           types.Bool                         `tfsdk:"console"`
+	SourceInterfacesVrf               []LoggingSourceInterfacesVrfData   `tfsdk:"source_interfaces_vrf"`
+	Ipv4Hosts                         []LoggingIpv4HostsData             `tfsdk:"ipv4_hosts"`
+	Ipv4HostsTransport                []LoggingIpv4HostsTransportData    `tfsdk:"ipv4_hosts_transport"`
+	Ipv4VrfHosts                      []LoggingIpv4VrfHostsData          `tfsdk:"ipv4_vrf_hosts"`
+	Ipv4VrfHostsTransport             []LoggingIpv4VrfHostsTransportData `tfsdk:"ipv4_vrf_hosts_transport"`
+	Ipv6Hosts                         []LoggingIpv6HostsData             `tfsdk:"ipv6_hosts"`
+	Ipv6HostsTransport                []LoggingIpv6HostsTransportData    `tfsdk:"ipv6_hosts_transport"`
+	Ipv6VrfHosts                      []LoggingIpv6VrfHostsData          `tfsdk:"ipv6_vrf_hosts"`
+	Ipv6VrfHostsTransport             []LoggingIpv6VrfHostsTransportData `tfsdk:"ipv6_vrf_hosts_transport"`
+	LoggingCount                      types.Bool                         `tfsdk:"logging_count"`
+	PersistentUrl                     types.String                       `tfsdk:"persistent_url"`
+	PersistentSize                    types.Int64                        `tfsdk:"persistent_size"`
+	PersistentFilesize                types.Int64                        `tfsdk:"persistent_filesize"`
+	PersistentBatch                   types.Int64                        `tfsdk:"persistent_batch"`
+	PersistentThreshold               types.Int64                        `tfsdk:"persistent_threshold"`
+	PersistentImmediate               types.Bool                         `tfsdk:"persistent_immediate"`
+	PersistentNotify                  types.Bool                         `tfsdk:"persistent_notify"`
+	PersistentProtected               types.Bool                         `tfsdk:"persistent_protected"`
+	RateLimitAll                      types.Int64                        `tfsdk:"rate_limit_all"`
+	RateLimitAllExceptSeverity        types.String                       `tfsdk:"rate_limit_all_except_severity"`
+	RateLimitConsole                  types.Int64                        `tfsdk:"rate_limit_console"`
+	RateLimitConsoleExceptSeverity    types.String                       `tfsdk:"rate_limit_console_except_severity"`
+	RateLimitConsoleAll               types.Int64                        `tfsdk:"rate_limit_console_all"`
+	RateLimitConsoleAllExceptSeverity types.String                       `tfsdk:"rate_limit_console_all_except_severity"`
+}
+type LoggingSourceInterfacesVrfData struct {
+	Vrf           types.String `tfsdk:"vrf"`
+	InterfaceName types.String `tfsdk:"interface_name"`
+}
+type LoggingIpv4HostsData struct {
+	Ipv4Host types.String `tfsdk:"ipv4_host"`
+}
+type LoggingIpv4HostsTransportData struct {
+	Ipv4Host          types.String                                     `tfsdk:"ipv4_host"`
+	TransportUdpPorts []LoggingIpv4HostsTransportTransportUdpPortsData `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv4HostsTransportTransportTcpPortsData `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv4HostsTransportTransportTlsPortsData `tfsdk:"transport_tls_ports"`
+}
+type LoggingIpv4VrfHostsData struct {
+	Ipv4Host types.String `tfsdk:"ipv4_host"`
+	Vrf      types.String `tfsdk:"vrf"`
+}
+type LoggingIpv4VrfHostsTransportData struct {
+	Ipv4Host          types.String                                        `tfsdk:"ipv4_host"`
+	Vrf               types.String                                        `tfsdk:"vrf"`
+	TransportUdpPorts []LoggingIpv4VrfHostsTransportTransportUdpPortsData `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv4VrfHostsTransportTransportTcpPortsData `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv4VrfHostsTransportTransportTlsPortsData `tfsdk:"transport_tls_ports"`
+}
+type LoggingIpv6HostsData struct {
+	Ipv6Host types.String `tfsdk:"ipv6_host"`
+}
+type LoggingIpv6HostsTransportData struct {
+	Ipv6Host          types.String                                     `tfsdk:"ipv6_host"`
+	TransportUdpPorts []LoggingIpv6HostsTransportTransportUdpPortsData `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv6HostsTransportTransportTcpPortsData `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv6HostsTransportTransportTlsPortsData `tfsdk:"transport_tls_ports"`
+}
+type LoggingIpv6VrfHostsData struct {
+	Ipv6Host types.String `tfsdk:"ipv6_host"`
+	Vrf      types.String `tfsdk:"vrf"`
+}
+type LoggingIpv6VrfHostsTransportData struct {
+	Ipv6Host          types.String                                        `tfsdk:"ipv6_host"`
+	Vrf               types.String                                        `tfsdk:"vrf"`
+	TransportUdpPorts []LoggingIpv6VrfHostsTransportTransportUdpPortsData `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv6VrfHostsTransportTransportTcpPortsData `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv6VrfHostsTransportTransportTlsPortsData `tfsdk:"transport_tls_ports"`
+}
+type LoggingIpv4HostsTransportTransportUdpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4HostsTransportTransportTcpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4HostsTransportTransportTlsPortsData struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
+}
+type LoggingIpv4VrfHostsTransportTransportUdpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4VrfHostsTransportTransportTcpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4VrfHostsTransportTransportTlsPortsData struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
+}
+type LoggingIpv6HostsTransportTransportUdpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6HostsTransportTransportTcpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6HostsTransportTransportTlsPortsData struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
+}
+type LoggingIpv6VrfHostsTransportTransportUdpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6VrfHostsTransportTransportTcpPortsData struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6VrfHostsTransportTransportTlsPortsData struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -258,7 +342,7 @@ func (data LoggingData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Logging) toBody(ctx context.Context) string {
+func (data Logging) toBody(ctx context.Context, config Logging) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.MonitorSeverity.IsNull() && !data.MonitorSeverity.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"monitor-config.common-config.monitor.severity", data.MonitorSeverity.ValueString())
@@ -574,7 +658,7 @@ func (data Logging) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Logging) toBodyXML(ctx context.Context) string {
+func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 	body := netconf.Body{}
 	if !data.MonitorSeverity.IsNull() && !data.MonitorSeverity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/monitor-config/common-config/monitor/severity", data.MonitorSeverity.ValueString())
@@ -3085,9 +3169,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Console = types.BoolNull()
 	}
 	if value := res.Get(prefix + "source-interface-conf.source-interface-vrf"); value.Exists() {
-		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrf, 0)
+		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrfData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingSourceInterfacesVrf{}
+			item := LoggingSourceInterfacesVrfData{}
 			if cValue := v.Get("vrf"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -3099,9 +3183,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv4-host-list"); value.Exists() {
-		data.Ipv4Hosts = make([]LoggingIpv4Hosts, 0)
+		data.Ipv4Hosts = make([]LoggingIpv4HostsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv4Hosts{}
+			item := LoggingIpv4HostsData{}
 			if cValue := v.Get("ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
@@ -3110,16 +3194,16 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv4-host-transport-list"); value.Exists() {
-		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransport, 0)
+		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv4HostsTransport{}
+			item := LoggingIpv4HostsTransportData{}
 			if cValue := v.Get("ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv4HostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv4HostsTransportTransportUdpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3128,9 +3212,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv4HostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv4HostsTransportTransportTcpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3139,9 +3223,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv4HostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv4HostsTransportTransportTlsPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3157,9 +3241,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv4-host-vrf-list"); value.Exists() {
-		data.Ipv4VrfHosts = make([]LoggingIpv4VrfHosts, 0)
+		data.Ipv4VrfHosts = make([]LoggingIpv4VrfHostsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv4VrfHosts{}
+			item := LoggingIpv4VrfHostsData{}
 			if cValue := v.Get("ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
@@ -3171,9 +3255,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv4-host-vrf-transport-list"); value.Exists() {
-		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransport, 0)
+		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv4VrfHostsTransport{}
+			item := LoggingIpv4VrfHostsTransportData{}
 			if cValue := v.Get("ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
@@ -3181,9 +3265,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv4VrfHostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv4VrfHostsTransportTransportUdpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3192,9 +3276,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv4VrfHostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv4VrfHostsTransportTransportTcpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3203,9 +3287,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv4VrfHostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv4VrfHostsTransportTransportTlsPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3221,9 +3305,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv6.ipv6-host-list"); value.Exists() {
-		data.Ipv6Hosts = make([]LoggingIpv6Hosts, 0)
+		data.Ipv6Hosts = make([]LoggingIpv6HostsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv6Hosts{}
+			item := LoggingIpv6HostsData{}
 			if cValue := v.Get("ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
@@ -3232,16 +3316,16 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv6.ipv6-host-transport-list"); value.Exists() {
-		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransport, 0)
+		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv6HostsTransport{}
+			item := LoggingIpv6HostsTransportData{}
 			if cValue := v.Get("ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv6HostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv6HostsTransportTransportUdpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3250,9 +3334,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv6HostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv6HostsTransportTransportTcpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3261,9 +3345,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv6HostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv6HostsTransportTransportTlsPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3279,9 +3363,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv6.ipv6-host-vrf-list"); value.Exists() {
-		data.Ipv6VrfHosts = make([]LoggingIpv6VrfHosts, 0)
+		data.Ipv6VrfHosts = make([]LoggingIpv6VrfHostsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv6VrfHosts{}
+			item := LoggingIpv6VrfHostsData{}
 			if cValue := v.Get("ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
@@ -3293,9 +3377,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "host.ipv6.ipv6-host-vrf-transport-list"); value.Exists() {
-		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransport, 0)
+		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransportData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LoggingIpv6VrfHostsTransport{}
+			item := LoggingIpv6VrfHostsTransportData{}
 			if cValue := v.Get("ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
@@ -3303,9 +3387,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv6VrfHostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv6VrfHostsTransportTransportUdpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3314,9 +3398,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv6VrfHostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv6VrfHostsTransportTransportTcpPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3325,9 +3409,9 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LoggingIpv6VrfHostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv6VrfHostsTransportTransportTlsPortsData{}
 					if ccValue := cv.Get("port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3843,9 +3927,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Console = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/source-interface-vrf"); value.Exists() {
-		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrf, 0)
+		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrfData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingSourceInterfacesVrf{}
+			item := LoggingSourceInterfacesVrfData{}
 			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -3857,9 +3941,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-list"); value.Exists() {
-		data.Ipv4Hosts = make([]LoggingIpv4Hosts, 0)
+		data.Ipv4Hosts = make([]LoggingIpv4HostsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv4Hosts{}
+			item := LoggingIpv4HostsData{}
 			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
@@ -3868,16 +3952,16 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-transport-list"); value.Exists() {
-		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransport, 0)
+		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv4HostsTransport{}
+			item := LoggingIpv4HostsTransportData{}
 			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv4HostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv4HostsTransportTransportUdpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3886,9 +3970,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv4HostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv4HostsTransportTransportTcpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3897,9 +3981,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv4HostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv4HostsTransportTransportTlsPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3915,9 +3999,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-list"); value.Exists() {
-		data.Ipv4VrfHosts = make([]LoggingIpv4VrfHosts, 0)
+		data.Ipv4VrfHosts = make([]LoggingIpv4VrfHostsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv4VrfHosts{}
+			item := LoggingIpv4VrfHostsData{}
 			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
@@ -3929,9 +4013,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-transport-list"); value.Exists() {
-		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransport, 0)
+		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv4VrfHostsTransport{}
+			item := LoggingIpv4VrfHostsTransportData{}
 			if cValue := helpers.GetFromXPath(v, "ipv4-host"); cValue.Exists() {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
@@ -3939,9 +4023,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv4VrfHostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv4VrfHostsTransportTransportUdpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3950,9 +4034,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv4VrfHostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv4VrfHostsTransportTransportTcpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3961,9 +4045,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv4VrfHostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv4VrfHostsTransportTransportTlsPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -3979,9 +4063,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-list"); value.Exists() {
-		data.Ipv6Hosts = make([]LoggingIpv6Hosts, 0)
+		data.Ipv6Hosts = make([]LoggingIpv6HostsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv6Hosts{}
+			item := LoggingIpv6HostsData{}
 			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
@@ -3990,16 +4074,16 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-transport-list"); value.Exists() {
-		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransport, 0)
+		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv6HostsTransport{}
+			item := LoggingIpv6HostsTransportData{}
 			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv6HostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv6HostsTransportTransportUdpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -4008,9 +4092,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv6HostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv6HostsTransportTransportTcpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -4019,9 +4103,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv6HostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv6HostsTransportTransportTlsPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -4037,9 +4121,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-list"); value.Exists() {
-		data.Ipv6VrfHosts = make([]LoggingIpv6VrfHosts, 0)
+		data.Ipv6VrfHosts = make([]LoggingIpv6VrfHostsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv6VrfHosts{}
+			item := LoggingIpv6VrfHostsData{}
 			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
@@ -4051,9 +4135,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list"); value.Exists() {
-		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransport, 0)
+		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransportData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LoggingIpv6VrfHostsTransport{}
+			item := LoggingIpv6VrfHostsTransportData{}
 			if cValue := helpers.GetFromXPath(v, "ipv6-host"); cValue.Exists() {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
@@ -4061,9 +4145,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/udp/port-config"); cValue.Exists() {
-				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPorts, 0)
+				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv6VrfHostsTransportTransportUdpPorts{}
+					cItem := LoggingIpv6VrfHostsTransportTransportUdpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -4072,9 +4156,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tcp/port-config"); cValue.Exists() {
-				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPorts, 0)
+				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv6VrfHostsTransportTransportTcpPorts{}
+					cItem := LoggingIpv6VrfHostsTransportTransportTcpPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}
@@ -4083,9 +4167,9 @@ func (data *LoggingData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/tls/port"); cValue.Exists() {
-				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPorts, 0)
+				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPortsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := LoggingIpv6VrfHostsTransportTransportTlsPorts{}
+					cItem := LoggingIpv6VrfHostsTransportTransportTlsPortsData{}
 					if ccValue := helpers.GetFromXPath(cv, "port-number"); ccValue.Exists() {
 						cItem.PortNumber = types.Int64Value(ccValue.Int())
 					}

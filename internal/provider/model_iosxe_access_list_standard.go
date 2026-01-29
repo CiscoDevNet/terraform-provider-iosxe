@@ -47,14 +47,28 @@ type AccessListStandard struct {
 	Name    types.String                `tfsdk:"name"`
 	Entries []AccessListStandardEntries `tfsdk:"entries"`
 }
+type AccessListStandardEntries struct {
+	Sequence         types.Int64  `tfsdk:"sequence"`
+	Remark           types.String `tfsdk:"remark"`
+	DenyPrefix       types.String `tfsdk:"deny_prefix"`
+	DenyPrefixMask   types.String `tfsdk:"deny_prefix_mask"`
+	DenyAny          types.Bool   `tfsdk:"deny_any"`
+	DenyHost         types.String `tfsdk:"deny_host"`
+	DenyLog          types.Bool   `tfsdk:"deny_log"`
+	PermitPrefix     types.String `tfsdk:"permit_prefix"`
+	PermitPrefixMask types.String `tfsdk:"permit_prefix_mask"`
+	PermitAny        types.Bool   `tfsdk:"permit_any"`
+	PermitHost       types.String `tfsdk:"permit_host"`
+	PermitLog        types.Bool   `tfsdk:"permit_log"`
+}
 
 type AccessListStandardData struct {
-	Device  types.String                `tfsdk:"device"`
-	Id      types.String                `tfsdk:"id"`
-	Name    types.String                `tfsdk:"name"`
-	Entries []AccessListStandardEntries `tfsdk:"entries"`
+	Device  types.String                    `tfsdk:"device"`
+	Id      types.String                    `tfsdk:"id"`
+	Name    types.String                    `tfsdk:"name"`
+	Entries []AccessListStandardEntriesData `tfsdk:"entries"`
 }
-type AccessListStandardEntries struct {
+type AccessListStandardEntriesData struct {
 	Sequence         types.Int64  `tfsdk:"sequence"`
 	Remark           types.String `tfsdk:"remark"`
 	DenyPrefix       types.String `tfsdk:"deny_prefix"`
@@ -109,7 +123,7 @@ func (data AccessListStandardData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data AccessListStandard) toBody(ctx context.Context) string {
+func (data AccessListStandard) toBody(ctx context.Context, config AccessListStandard) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -170,7 +184,7 @@ func (data AccessListStandard) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data AccessListStandard) toBodyXML(ctx context.Context) string {
+func (data AccessListStandard) toBodyXML(ctx context.Context, config AccessListStandard) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -541,9 +555,9 @@ func (data *AccessListStandardData) fromBody(ctx context.Context, res gjson.Resu
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListStandardEntries, 0)
+		data.Entries = make([]AccessListStandardEntriesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AccessListStandardEntries{}
+			item := AccessListStandardEntriesData{}
 			if cValue := v.Get("sequence"); cValue.Exists() {
 				item.Sequence = types.Int64Value(cValue.Int())
 			}
@@ -659,9 +673,9 @@ func (data *AccessListStandard) fromBodyXML(ctx context.Context, res xmldot.Resu
 
 func (data *AccessListStandardData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListStandardEntries, 0)
+		data.Entries = make([]AccessListStandardEntriesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AccessListStandardEntries{}
+			item := AccessListStandardEntriesData{}
 			if cValue := helpers.GetFromXPath(v, "sequence"); cValue.Exists() {
 				item.Sequence = types.Int64Value(cValue.Int())
 			}

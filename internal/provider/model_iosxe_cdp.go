@@ -49,17 +49,25 @@ type CDP struct {
 	FilterTlvList types.String  `tfsdk:"filter_tlv_list"`
 	TlvLists      []CDPTlvLists `tfsdk:"tlv_lists"`
 }
+type CDPTlvLists struct {
+	Name          types.String `tfsdk:"name"`
+	VtpMgmtDomain types.Bool   `tfsdk:"vtp_mgmt_domain"`
+	Cos           types.Bool   `tfsdk:"cos"`
+	Duplex        types.Bool   `tfsdk:"duplex"`
+	Trust         types.Bool   `tfsdk:"trust"`
+	Version       types.Bool   `tfsdk:"version"`
+}
 
 type CDPData struct {
-	Device        types.String  `tfsdk:"device"`
-	Id            types.String  `tfsdk:"id"`
-	Holdtime      types.Int64   `tfsdk:"holdtime"`
-	Timer         types.Int64   `tfsdk:"timer"`
-	Run           types.Bool    `tfsdk:"run"`
-	FilterTlvList types.String  `tfsdk:"filter_tlv_list"`
-	TlvLists      []CDPTlvLists `tfsdk:"tlv_lists"`
+	Device        types.String      `tfsdk:"device"`
+	Id            types.String      `tfsdk:"id"`
+	Holdtime      types.Int64       `tfsdk:"holdtime"`
+	Timer         types.Int64       `tfsdk:"timer"`
+	Run           types.Bool        `tfsdk:"run"`
+	FilterTlvList types.String      `tfsdk:"filter_tlv_list"`
+	TlvLists      []CDPTlvListsData `tfsdk:"tlv_lists"`
 }
-type CDPTlvLists struct {
+type CDPTlvListsData struct {
 	Name          types.String `tfsdk:"name"`
 	VtpMgmtDomain types.Bool   `tfsdk:"vtp_mgmt_domain"`
 	Cos           types.Bool   `tfsdk:"cos"`
@@ -106,7 +114,7 @@ func (data CDPData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CDP) toBody(ctx context.Context) string {
+func (data CDP) toBody(ctx context.Context, config CDP) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Holdtime.IsNull() && !data.Holdtime.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:holdtime", strconv.FormatInt(data.Holdtime.ValueInt64(), 10))
@@ -160,7 +168,7 @@ func (data CDP) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CDP) toBodyXML(ctx context.Context) string {
+func (data CDP) toBodyXML(ctx context.Context, config CDP) string {
 	body := netconf.Body{}
 	if !data.Holdtime.IsNull() && !data.Holdtime.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime", strconv.FormatInt(data.Holdtime.ValueInt64(), 10))
@@ -520,9 +528,9 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.FilterTlvList = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
-		data.TlvLists = make([]CDPTlvLists, 0)
+		data.TlvLists = make([]CDPTlvListsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CDPTlvLists{}
+			item := CDPTlvListsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -634,9 +642,9 @@ func (data *CDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.FilterTlvList = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
-		data.TlvLists = make([]CDPTlvLists, 0)
+		data.TlvLists = make([]CDPTlvListsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CDPTlvLists{}
+			item := CDPTlvListsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}

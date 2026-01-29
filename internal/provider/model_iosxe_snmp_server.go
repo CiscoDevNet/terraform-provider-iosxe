@@ -263,246 +263,29 @@ type SNMPServer struct {
 	Groups                                        []SNMPServerGroups          `tfsdk:"groups"`
 	Users                                         []SNMPServerUsers           `tfsdk:"users"`
 }
-
-type SNMPServerData struct {
-	Device                                        types.String                `tfsdk:"device"`
-	Id                                            types.String                `tfsdk:"id"`
-	ChassisId                                     types.String                `tfsdk:"chassis_id"`
-	Contact                                       types.String                `tfsdk:"contact"`
-	IfindexPersist                                types.Bool                  `tfsdk:"ifindex_persist"`
-	Location                                      types.String                `tfsdk:"location"`
-	Packetsize                                    types.Int64                 `tfsdk:"packetsize"`
-	QueueLength                                   types.Int64                 `tfsdk:"queue_length"`
-	EnableLoggingGetop                            types.Bool                  `tfsdk:"enable_logging_getop"`
-	EnableLoggingSetop                            types.Bool                  `tfsdk:"enable_logging_setop"`
-	EnableInforms                                 types.Bool                  `tfsdk:"enable_informs"`
-	EnableTraps                                   types.Bool                  `tfsdk:"enable_traps"`
-	EnableTrapsSnmpAuthentication                 types.Bool                  `tfsdk:"enable_traps_snmp_authentication"`
-	EnableTrapsSnmpColdstart                      types.Bool                  `tfsdk:"enable_traps_snmp_coldstart"`
-	EnableTrapsSnmpLinkdown                       types.Bool                  `tfsdk:"enable_traps_snmp_linkdown"`
-	EnableTrapsSnmpLinkup                         types.Bool                  `tfsdk:"enable_traps_snmp_linkup"`
-	EnableTrapsSnmpWarmstart                      types.Bool                  `tfsdk:"enable_traps_snmp_warmstart"`
-	Hosts                                         []SNMPServerHosts           `tfsdk:"hosts"`
-	VrfHosts                                      []SNMPServerVrfHosts        `tfsdk:"vrf_hosts"`
-	SystemShutdown                                types.Bool                  `tfsdk:"system_shutdown"`
-	EnableTrapsFlowmon                            types.Bool                  `tfsdk:"enable_traps_flowmon"`
-	EnableTrapsEntityPerfThroughputNotif          types.Bool                  `tfsdk:"enable_traps_entity_perf_throughput_notif"`
-	EnableTrapsCallHomeMessageSendFail            types.Bool                  `tfsdk:"enable_traps_call_home_message_send_fail"`
-	EnableTrapsCallHomeServerFail                 types.Bool                  `tfsdk:"enable_traps_call_home_server_fail"`
-	EnableTrapsTty                                types.Bool                  `tfsdk:"enable_traps_tty"`
-	EnableTrapsOspfv3ConfigStateChange            types.Bool                  `tfsdk:"enable_traps_ospfv3_config_state_change"`
-	EnableTrapsOspfv3ConfigErrors                 types.Bool                  `tfsdk:"enable_traps_ospfv3_config_errors"`
-	EnableTrapsOspfConfigRetransmit               types.Bool                  `tfsdk:"enable_traps_ospf_config_retransmit"`
-	EnableTrapsOspfConfigLsa                      types.Bool                  `tfsdk:"enable_traps_ospf_config_lsa"`
-	EnableTrapsOspfNssaTransChange                types.Bool                  `tfsdk:"enable_traps_ospf_nssa_trans_change"`
-	EnableTrapsOspfShamlinkInterface              types.Bool                  `tfsdk:"enable_traps_ospf_shamlink_interface"`
-	EnableTrapsOspfShamlinkNeighbor               types.Bool                  `tfsdk:"enable_traps_ospf_shamlink_neighbor"`
-	EnableTrapsOspfErrorsEnable                   types.Bool                  `tfsdk:"enable_traps_ospf_errors_enable"`
-	EnableTrapsOspfRetransmitEnable               types.Bool                  `tfsdk:"enable_traps_ospf_retransmit_enable"`
-	EnableTrapsOspfLsaEnable                      types.Bool                  `tfsdk:"enable_traps_ospf_lsa_enable"`
-	EnableTrapsEigrp                              types.Bool                  `tfsdk:"enable_traps_eigrp"`
-	EnableTrapsAuthFrameworkSecViolation          types.Bool                  `tfsdk:"enable_traps_auth_framework_sec_violation"`
-	EnableTrapsRep                                types.Bool                  `tfsdk:"enable_traps_rep"`
-	EnableTrapsVtp                                types.Bool                  `tfsdk:"enable_traps_vtp"`
-	EnableTrapsVlancreate                         types.Bool                  `tfsdk:"enable_traps_vlancreate"`
-	EnableTrapsVlandelete                         types.Bool                  `tfsdk:"enable_traps_vlandelete"`
-	EnableTrapsPortSecurity                       types.Bool                  `tfsdk:"enable_traps_port_security"`
-	EnableTrapsLicense                            types.Bool                  `tfsdk:"enable_traps_license"`
-	EnableTrapsSmartLicense                       types.Bool                  `tfsdk:"enable_traps_smart_license"`
-	EnableTrapsCpuThreshold                       types.Bool                  `tfsdk:"enable_traps_cpu_threshold"`
-	EnableTrapsMemoryBufferpeak                   types.Bool                  `tfsdk:"enable_traps_memory_bufferpeak"`
-	EnableTrapsStackwise                          types.Bool                  `tfsdk:"enable_traps_stackwise"`
-	EnableTrapsUdldLinkFailRpt                    types.Bool                  `tfsdk:"enable_traps_udld_link_fail_rpt"`
-	EnableTrapsUdldStatusChange                   types.Bool                  `tfsdk:"enable_traps_udld_status_change"`
-	EnableTrapsFruCtrl                            types.Bool                  `tfsdk:"enable_traps_fru_ctrl"`
-	EnableTrapsFlashInsertion                     types.Bool                  `tfsdk:"enable_traps_flash_insertion"`
-	EnableTrapsFlashRemoval                       types.Bool                  `tfsdk:"enable_traps_flash_removal"`
-	EnableTrapsFlashLowspace                      types.Bool                  `tfsdk:"enable_traps_flash_lowspace"`
-	EnableTrapsEnergywise                         types.Bool                  `tfsdk:"enable_traps_energywise"`
-	EnableTrapsPowerEthernetGroup                 types.String                `tfsdk:"enable_traps_power_ethernet_group"`
-	EnableTrapsPowerEthernetPolice                types.Bool                  `tfsdk:"enable_traps_power_ethernet_police"`
-	EnableTrapsEntity                             types.Bool                  `tfsdk:"enable_traps_entity"`
-	EnableTrapsPwVc                               types.Bool                  `tfsdk:"enable_traps_pw_vc"`
-	EnableTrapsEnvmon                             types.Bool                  `tfsdk:"enable_traps_envmon"`
-	EnableTrapsCefResourceFailure                 types.Bool                  `tfsdk:"enable_traps_cef_resource_failure"`
-	EnableTrapsCefPeerStateChange                 types.Bool                  `tfsdk:"enable_traps_cef_peer_state_change"`
-	EnableTrapsCefPeerFibStateChange              types.Bool                  `tfsdk:"enable_traps_cef_peer_fib_state_change"`
-	EnableTrapsCefInconsistency                   types.Bool                  `tfsdk:"enable_traps_cef_inconsistency"`
-	EnableTrapsIsis                               types.Bool                  `tfsdk:"enable_traps_isis"`
-	EnableTrapsIpsla                              types.Bool                  `tfsdk:"enable_traps_ipsla"`
-	EnableTrapsEntityDiagBootUpFail               types.Bool                  `tfsdk:"enable_traps_entity_diag_boot_up_fail"`
-	EnableTrapsEntityDiagHmTestRecover            types.Bool                  `tfsdk:"enable_traps_entity_diag_hm_test_recover"`
-	EnableTrapsEntityDiagHmThreshReached          types.Bool                  `tfsdk:"enable_traps_entity_diag_hm_thresh_reached"`
-	EnableTrapsEntityDiagScheduledTestFail        types.Bool                  `tfsdk:"enable_traps_entity_diag_scheduled_test_fail"`
-	EnableTrapsBfd                                types.Bool                  `tfsdk:"enable_traps_bfd"`
-	EnableTrapsIkePolicyAdd                       types.Bool                  `tfsdk:"enable_traps_ike_policy_add"`
-	EnableTrapsIkePolicyDelete                    types.Bool                  `tfsdk:"enable_traps_ike_policy_delete"`
-	EnableTrapsIkeTunnelStart                     types.Bool                  `tfsdk:"enable_traps_ike_tunnel_start"`
-	EnableTrapsIkeTunnelStop                      types.Bool                  `tfsdk:"enable_traps_ike_tunnel_stop"`
-	EnableTrapsIpsecCryptomapAdd                  types.Bool                  `tfsdk:"enable_traps_ipsec_cryptomap_add"`
-	EnableTrapsIpsecCryptomapAttach               types.Bool                  `tfsdk:"enable_traps_ipsec_cryptomap_attach"`
-	EnableTrapsIpsecCryptomapDelete               types.Bool                  `tfsdk:"enable_traps_ipsec_cryptomap_delete"`
-	EnableTrapsIpsecCryptomapDetach               types.Bool                  `tfsdk:"enable_traps_ipsec_cryptomap_detach"`
-	EnableTrapsIpsecTunnelStart                   types.Bool                  `tfsdk:"enable_traps_ipsec_tunnel_start"`
-	EnableTrapsIpsecTunnelStop                    types.Bool                  `tfsdk:"enable_traps_ipsec_tunnel_stop"`
-	EnableTrapsIpsecTooManySas                    types.Bool                  `tfsdk:"enable_traps_ipsec_too_many_sas"`
-	EnableTrapsConfigCopy                         types.Bool                  `tfsdk:"enable_traps_config_copy"`
-	EnableTrapsConfig                             types.Bool                  `tfsdk:"enable_traps_config"`
-	EnableTrapsConfigCtid                         types.Bool                  `tfsdk:"enable_traps_config_ctid"`
-	EnableTrapsDhcp                               types.Bool                  `tfsdk:"enable_traps_dhcp"`
-	EnableTrapsEventManager                       types.Bool                  `tfsdk:"enable_traps_event_manager"`
-	EnableTrapsHsrp                               types.Bool                  `tfsdk:"enable_traps_hsrp"`
-	EnableTrapsIpmulticast                        types.Bool                  `tfsdk:"enable_traps_ipmulticast"`
-	EnableTrapsMsdp                               types.Bool                  `tfsdk:"enable_traps_msdp"`
-	EnableTrapsOspfConfigStateChange              types.Bool                  `tfsdk:"enable_traps_ospf_config_state_change"`
-	EnableTrapsOspfConfigErrors                   types.Bool                  `tfsdk:"enable_traps_ospf_config_errors"`
-	EnableTrapsPimInvalidPimMessage               types.Bool                  `tfsdk:"enable_traps_pim_invalid_pim_message"`
-	EnableTrapsPimNeighborChange                  types.Bool                  `tfsdk:"enable_traps_pim_neighbor_change"`
-	EnableTrapsPimRpMappingChange                 types.Bool                  `tfsdk:"enable_traps_pim_rp_mapping_change"`
-	EnableTrapsBridgeNewroot                      types.Bool                  `tfsdk:"enable_traps_bridge_newroot"`
-	EnableTrapsBridgeTopologychange               types.Bool                  `tfsdk:"enable_traps_bridge_topologychange"`
-	EnableTrapsStpxInconsistency                  types.Bool                  `tfsdk:"enable_traps_stpx_inconsistency"`
-	EnableTrapsStpxRootInconsistency              types.Bool                  `tfsdk:"enable_traps_stpx_root_inconsistency"`
-	EnableTrapsStpxLoopInconsistency              types.Bool                  `tfsdk:"enable_traps_stpx_loop_inconsistency"`
-	EnableTrapsSyslog                             types.Bool                  `tfsdk:"enable_traps_syslog"`
-	EnableTrapsBgpCbgp2                           types.Bool                  `tfsdk:"enable_traps_bgp_cbgp2"`
-	EnableTrapsNhrpNhs                            types.Bool                  `tfsdk:"enable_traps_nhrp_nhs"`
-	EnableTrapsNhrpNhc                            types.Bool                  `tfsdk:"enable_traps_nhrp_nhc"`
-	EnableTrapsNhrpNhp                            types.Bool                  `tfsdk:"enable_traps_nhrp_nhp"`
-	EnableTrapsNhrpQuotaExceeded                  types.Bool                  `tfsdk:"enable_traps_nhrp_quota_exceeded"`
-	EnableTrapsMplsTrafficEng                     types.Bool                  `tfsdk:"enable_traps_mpls_traffic_eng"`
-	EnableTrapsMpls                               types.Bool                  `tfsdk:"enable_traps_mpls"`
-	EnableTrapsMplsVpn                            types.Bool                  `tfsdk:"enable_traps_mpls_vpn"`
-	EnableTrapsMplsRfc                            types.Bool                  `tfsdk:"enable_traps_mpls_rfc"`
-	EnableTrapsMplsRfcLdp                         types.Bool                  `tfsdk:"enable_traps_mpls_rfc_ldp"`
-	EnableTrapsMplsLdp                            types.Bool                  `tfsdk:"enable_traps_mpls_ldp"`
-	EnableTrapsFastRerouteProtected               types.Bool                  `tfsdk:"enable_traps_fast_reroute_protected"`
-	EnableTrapsLocalAuth                          types.Bool                  `tfsdk:"enable_traps_local_auth"`
-	EnableTrapsVlanMembership                     types.Bool                  `tfsdk:"enable_traps_vlan_membership"`
-	EnableTrapsErrdisable                         types.Bool                  `tfsdk:"enable_traps_errdisable"`
-	EnableTrapsRf                                 types.Bool                  `tfsdk:"enable_traps_rf"`
-	EnableTrapsTransceiverAll                     types.Bool                  `tfsdk:"enable_traps_transceiver_all"`
-	EnableTrapsBulkstatCollection                 types.Bool                  `tfsdk:"enable_traps_bulkstat_collection"`
-	EnableTrapsBulkstatTransfer                   types.Bool                  `tfsdk:"enable_traps_bulkstat_transfer"`
-	EnableTrapsMacNotificationChange              types.Bool                  `tfsdk:"enable_traps_mac_notification_change"`
-	EnableTrapsMacNotificationMove                types.Bool                  `tfsdk:"enable_traps_mac_notification_move"`
-	EnableTrapsMacNotificationThreshold           types.Bool                  `tfsdk:"enable_traps_mac_notification_threshold"`
-	EnableTrapsVrfmibVrfUp                        types.Bool                  `tfsdk:"enable_traps_vrfmib_vrf_up"`
-	EnableTrapsVrfmibVrfDown                      types.Bool                  `tfsdk:"enable_traps_vrfmib_vrf_down"`
-	EnableTrapsVrfmibVnetTrunkUp                  types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_up"`
-	EnableTrapsVrfmibVnetTrunkDown                types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_down"`
-	EnableTrapsMvpn                               types.Bool                  `tfsdk:"enable_traps_mvpn"`
-	EnableTrapsLisp                               types.Bool                  `tfsdk:"enable_traps_lisp"`
-	EnableTrapsAaaServer                          types.Bool                  `tfsdk:"enable_traps_aaa_server"`
-	EnableTrapsVdsl2line                          types.Bool                  `tfsdk:"enable_traps_vdsl2line"`
-	EnableTrapsAdslline                           types.Bool                  `tfsdk:"enable_traps_adslline"`
-	EnableTrapsPki                                types.Bool                  `tfsdk:"enable_traps_pki"`
-	EnableTrapsAlarmType                          types.String                `tfsdk:"enable_traps_alarm_type"`
-	EnableTrapsCasa                               types.Bool                  `tfsdk:"enable_traps_casa"`
-	EnableTrapsCnpd                               types.Bool                  `tfsdk:"enable_traps_cnpd"`
-	EnableTrapsDial                               types.Bool                  `tfsdk:"enable_traps_dial"`
-	EnableTrapsDlsw                               types.Bool                  `tfsdk:"enable_traps_dlsw"`
-	EnableTrapsDs1                                types.Bool                  `tfsdk:"enable_traps_ds1"`
-	EnableTrapsDspCardStatus                      types.Bool                  `tfsdk:"enable_traps_dsp_card_status"`
-	EnableTrapsDspOperState                       types.Bool                  `tfsdk:"enable_traps_dsp_oper_state"`
-	EnableTrapsEntitySensor                       types.Bool                  `tfsdk:"enable_traps_entity_sensor"`
-	EnableTrapsEntityState                        types.Bool                  `tfsdk:"enable_traps_entity_state"`
-	EnableTrapsEntityQfpMemResThresh              types.Bool                  `tfsdk:"enable_traps_entity_qfp_mem_res_thresh"`
-	EnableTrapsEntityQfpThroughputNotif           types.Bool                  `tfsdk:"enable_traps_entity_qfp_throughput_notif"`
-	EnableTrapsEtherOam                           types.Bool                  `tfsdk:"enable_traps_ether_oam"`
-	EnableTrapsEthernetCfmAlarm                   types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_alarm"`
-	EnableTrapsEthernetCfmCcConfig                types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_config"`
-	EnableTrapsEthernetCfmCcCrossConnect          types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_cross_connect"`
-	EnableTrapsEthernetCfmCcLoop                  types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_loop"`
-	EnableTrapsEthernetCfmCcMepDown               types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_mep_down"`
-	EnableTrapsEthernetCfmCcMepUp                 types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_mep_up"`
-	EnableTrapsEthernetCfmCrosscheckMepMissing    types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_missing"`
-	EnableTrapsEthernetCfmCrosscheckMepUnknown    types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_unknown"`
-	EnableTrapsEthernetCfmCrosscheckServiceUp     types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_service_up"`
-	EnableTrapsEthernetEvcCreate                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_create"`
-	EnableTrapsEthernetEvcDelete                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_delete"`
-	EnableTrapsEthernetEvcStatus                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_status"`
-	EnableTrapsFirewallServerstatus               types.Bool                  `tfsdk:"enable_traps_firewall_serverstatus"`
-	EnableTrapsFrameRelayConfigOnly               types.Bool                  `tfsdk:"enable_traps_frame_relay_config_only"`
-	EnableTrapsFrameRelayConfigSubifConfigs       types.Bool                  `tfsdk:"enable_traps_frame_relay_config_subif_configs"`
-	EnableTrapsFrameRelaySubifCount               types.Int64                 `tfsdk:"enable_traps_frame_relay_subif_count"`
-	EnableTrapsFrameRelaySubifInterval            types.Int64                 `tfsdk:"enable_traps_frame_relay_subif_interval"`
-	EnableTrapsFrameRelayConfigBundleMismatch     types.Bool                  `tfsdk:"enable_traps_frame_relay_config_bundle_mismatch"`
-	EnableTrapsFrameRelayMultilinkBundleMismatch  types.Bool                  `tfsdk:"enable_traps_frame_relay_multilink_bundle_mismatch"`
-	EnableTrapsIpLocalPool                        types.Bool                  `tfsdk:"enable_traps_ip_local_pool"`
-	EnableTrapsIsdnCallInformation                types.Bool                  `tfsdk:"enable_traps_isdn_call_information"`
-	EnableTrapsIsdnChanNotAvail                   types.Bool                  `tfsdk:"enable_traps_isdn_chan_not_avail"`
-	EnableTrapsIsdnIetf                           types.Bool                  `tfsdk:"enable_traps_isdn_ietf"`
-	EnableTrapsIsdnLayer2                         types.Bool                  `tfsdk:"enable_traps_isdn_layer2"`
-	EnableTrapsL2tunSession                       types.Bool                  `tfsdk:"enable_traps_l2tun_session"`
-	EnableTrapsL2tunTunnel                        types.Bool                  `tfsdk:"enable_traps_l2tun_tunnel"`
-	EnableTrapsL2tunPseudowireStatus              types.Bool                  `tfsdk:"enable_traps_l2tun_pseudowire_status"`
-	EnableTrapsPimstdmibNeighborLoss              types.Bool                  `tfsdk:"enable_traps_pimstdmib_neighbor_loss"`
-	EnableTrapsPimstdmibInvalidRegister           types.Bool                  `tfsdk:"enable_traps_pimstdmib_invalid_register"`
-	EnableTrapsPimstdmibInvalidJoinPrune          types.Bool                  `tfsdk:"enable_traps_pimstdmib_invalid_join_prune"`
-	EnableTrapsPimstdmibRpMappingChange           types.Bool                  `tfsdk:"enable_traps_pimstdmib_rp_mapping_change"`
-	EnableTrapsPimstdmibInterfaceElection         types.Bool                  `tfsdk:"enable_traps_pimstdmib_interface_election"`
-	EnableTrapsPfr                                types.Bool                  `tfsdk:"enable_traps_pfr"`
-	EnableTrapsPppoe                              types.Bool                  `tfsdk:"enable_traps_pppoe"`
-	EnableTrapsResourcePolicy                     types.Bool                  `tfsdk:"enable_traps_resource_policy"`
-	EnableTrapsRsvp                               types.Bool                  `tfsdk:"enable_traps_rsvp"`
-	EnableTrapsVrrp                               types.Bool                  `tfsdk:"enable_traps_vrrp"`
-	EnableTrapsSonet                              types.Bool                  `tfsdk:"enable_traps_sonet"`
-	EnableTrapsSrp                                types.Bool                  `tfsdk:"enable_traps_srp"`
-	EnableTrapsVoice                              types.Bool                  `tfsdk:"enable_traps_voice"`
-	EnableTrapsBgp                                types.Bool                  `tfsdk:"enable_traps_bgp"`
-	EnableTrapsCbgp2                              types.Bool                  `tfsdk:"enable_traps_cbgp2"`
-	EnableTrapsBgpCbgp2StateChanges               types.List                  `tfsdk:"enable_traps_bgp_cbgp2_state_changes"`
-	EnableTrapsBgpCbgp2ThresholdPrefix            types.Bool                  `tfsdk:"enable_traps_bgp_cbgp2_threshold_prefix"`
-	EnableTrapsOspfv3Errors                       types.Bool                  `tfsdk:"enable_traps_ospfv3_errors"`
-	EnableTrapsOspfv3StateChange                  types.Bool                  `tfsdk:"enable_traps_ospfv3_state_change"`
-	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
-	SourceInterfaceInformsTenGigabitEthernet      types.String                `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
-	SourceInterfaceInformsFortyGigabitEthernet    types.String                `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
-	SourceInterfaceInformsHundredGigE             types.String                `tfsdk:"source_interface_informs_hundred_gig_e"`
-	SourceInterfaceInformsLoopback                types.Int64                 `tfsdk:"source_interface_informs_loopback"`
-	SourceInterfaceInformsPortChannel             types.Int64                 `tfsdk:"source_interface_informs_port_channel"`
-	SourceInterfaceInformsPortChannelSubinterface types.String                `tfsdk:"source_interface_informs_port_channel_subinterface"`
-	SourceInterfaceInformsVlan                    types.Int64                 `tfsdk:"source_interface_informs_vlan"`
-	SourceInterfaceTrapsGigabitEthernet           types.String                `tfsdk:"source_interface_traps_gigabit_ethernet"`
-	SourceInterfaceTrapsTenGigabitEthernet        types.String                `tfsdk:"source_interface_traps_ten_gigabit_ethernet"`
-	SourceInterfaceTrapsFortyGigabitEthernet      types.String                `tfsdk:"source_interface_traps_forty_gigabit_ethernet"`
-	SourceInterfaceTrapsHundredGigE               types.String                `tfsdk:"source_interface_traps_hundred_gig_e"`
-	SourceInterfaceTrapsLoopback                  types.Int64                 `tfsdk:"source_interface_traps_loopback"`
-	SourceInterfaceTrapsPortChannel               types.Int64                 `tfsdk:"source_interface_traps_port_channel"`
-	SourceInterfaceTrapsPortChannelSubinterface   types.String                `tfsdk:"source_interface_traps_port_channel_subinterface"`
-	SourceInterfaceTrapsVlan                      types.Int64                 `tfsdk:"source_interface_traps_vlan"`
-	TrapSourceGigabitEthernet                     types.String                `tfsdk:"trap_source_gigabit_ethernet"`
-	TrapSourceTenGigabitEthernet                  types.String                `tfsdk:"trap_source_ten_gigabit_ethernet"`
-	TrapSourceFortyGigabitEthernet                types.String                `tfsdk:"trap_source_forty_gigabit_ethernet"`
-	TrapSourceHundredGigE                         types.String                `tfsdk:"trap_source_hundred_gig_e"`
-	TrapSourceLoopback                            types.Int64                 `tfsdk:"trap_source_loopback"`
-	TrapSourcePortChannel                         types.Int64                 `tfsdk:"trap_source_port_channel"`
-	TrapSourcePortChannelSubinterface             types.String                `tfsdk:"trap_source_port_channel_subinterface"`
-	TrapSourceVlan                                types.Int64                 `tfsdk:"trap_source_vlan"`
-	SnmpCommunities                               []SNMPServerSnmpCommunities `tfsdk:"snmp_communities"`
-	Contexts                                      []SNMPServerContexts        `tfsdk:"contexts"`
-	Views                                         []SNMPServerViews           `tfsdk:"views"`
-	Groups                                        []SNMPServerGroups          `tfsdk:"groups"`
-	Users                                         []SNMPServerUsers           `tfsdk:"users"`
-}
 type SNMPServerHosts struct {
-	IpAddress       types.String `tfsdk:"ip_address"`
-	CommunityOrUser types.String `tfsdk:"community_or_user"`
-	Version         types.String `tfsdk:"version"`
-	Encryption      types.String `tfsdk:"encryption"`
-	SecurityLevel   types.String `tfsdk:"security_level"`
+	IpAddress                types.String `tfsdk:"ip_address"`
+	CommunityOrUser          types.String `tfsdk:"community_or_user"`
+	CommunityOrUserWO        types.String `tfsdk:"community_or_user_wo"`
+	CommunityOrUserWOVersion types.Int64  `tfsdk:"community_or_user_wo_version"`
+	Version                  types.String `tfsdk:"version"`
+	Encryption               types.String `tfsdk:"encryption"`
+	SecurityLevel            types.String `tfsdk:"security_level"`
 }
 type SNMPServerVrfHosts struct {
-	IpAddress       types.String `tfsdk:"ip_address"`
-	Vrf             types.String `tfsdk:"vrf"`
-	CommunityOrUser types.String `tfsdk:"community_or_user"`
-	Version         types.String `tfsdk:"version"`
-	Encryption      types.String `tfsdk:"encryption"`
-	SecurityLevel   types.String `tfsdk:"security_level"`
+	IpAddress                types.String `tfsdk:"ip_address"`
+	Vrf                      types.String `tfsdk:"vrf"`
+	CommunityOrUser          types.String `tfsdk:"community_or_user"`
+	CommunityOrUserWO        types.String `tfsdk:"community_or_user_wo"`
+	CommunityOrUserWOVersion types.Int64  `tfsdk:"community_or_user_wo_version"`
+	Version                  types.String `tfsdk:"version"`
+	Encryption               types.String `tfsdk:"encryption"`
+	SecurityLevel            types.String `tfsdk:"security_level"`
 }
 type SNMPServerSnmpCommunities struct {
 	Name           types.String `tfsdk:"name"`
+	NameWO         types.String `tfsdk:"name_wo"`
+	NameWOVersion  types.Int64  `tfsdk:"name_wo_version"`
 	View           types.String `tfsdk:"view"`
 	Permission     types.String `tfsdk:"permission"`
 	Ipv6           types.String `tfsdk:"ipv6"`
@@ -525,6 +308,304 @@ type SNMPServerUsers struct {
 	Grpname                         types.String `tfsdk:"grpname"`
 	V3AuthAlgorithm                 types.String `tfsdk:"v3_auth_algorithm"`
 	V3AuthPassword                  types.String `tfsdk:"v3_auth_password"`
+	V3AuthPasswordWO                types.String `tfsdk:"v3_auth_password_wo"`
+	V3AuthPasswordWOVersion         types.Int64  `tfsdk:"v3_auth_password_wo_version"`
+	V3AuthPrivAesAlgorithm          types.String `tfsdk:"v3_auth_priv_aes_algorithm"`
+	V3AuthPrivAesPassword           types.String `tfsdk:"v3_auth_priv_aes_password"`
+	V3AuthPrivAesPasswordWO         types.String `tfsdk:"v3_auth_priv_aes_password_wo"`
+	V3AuthPrivAesPasswordWOVersion  types.Int64  `tfsdk:"v3_auth_priv_aes_password_wo_version"`
+	V3AuthPrivAesAccessIpv6Acl      types.String `tfsdk:"v3_auth_priv_aes_access_ipv6_acl"`
+	V3AuthPrivAesAccessStandardAcl  types.Int64  `tfsdk:"v3_auth_priv_aes_access_standard_acl"`
+	V3AuthPrivAesAccessAclName      types.String `tfsdk:"v3_auth_priv_aes_access_acl_name"`
+	V3AuthPrivDesPassword           types.String `tfsdk:"v3_auth_priv_des_password"`
+	V3AuthPrivDesPasswordWO         types.String `tfsdk:"v3_auth_priv_des_password_wo"`
+	V3AuthPrivDesPasswordWOVersion  types.Int64  `tfsdk:"v3_auth_priv_des_password_wo_version"`
+	V3AuthPrivDesAccessIpv6Acl      types.String `tfsdk:"v3_auth_priv_des_access_ipv6_acl"`
+	V3AuthPrivDesAccessStandardAcl  types.Int64  `tfsdk:"v3_auth_priv_des_access_standard_acl"`
+	V3AuthPrivDesAccessAclName      types.String `tfsdk:"v3_auth_priv_des_access_acl_name"`
+	V3AuthPrivDes3Password          types.String `tfsdk:"v3_auth_priv_des3_password"`
+	V3AuthPrivDes3PasswordWO        types.String `tfsdk:"v3_auth_priv_des3_password_wo"`
+	V3AuthPrivDes3PasswordWOVersion types.Int64  `tfsdk:"v3_auth_priv_des3_password_wo_version"`
+	V3AuthPrivDes3AccessIpv6Acl     types.String `tfsdk:"v3_auth_priv_des3_access_ipv6_acl"`
+	V3AuthPrivDes3AccessStandardAcl types.Int64  `tfsdk:"v3_auth_priv_des3_access_standard_acl"`
+	V3AuthPrivDes3AccessAclName     types.String `tfsdk:"v3_auth_priv_des3_access_acl_name"`
+	V3AuthAccessIpv6Acl             types.String `tfsdk:"v3_auth_access_ipv6_acl"`
+	V3AuthAccessStandardAcl         types.Int64  `tfsdk:"v3_auth_access_standard_acl"`
+	V3AuthAccessAclName             types.String `tfsdk:"v3_auth_access_acl_name"`
+}
+type SNMPServerGroupsV3Security struct {
+	SecurityLevel     types.String `tfsdk:"security_level"`
+	ContextNode       types.String `tfsdk:"context_node"`
+	MatchNode         types.String `tfsdk:"match_node"`
+	ReadNode          types.String `tfsdk:"read_node"`
+	WriteNode         types.String `tfsdk:"write_node"`
+	NotifyNode        types.String `tfsdk:"notify_node"`
+	AccessIpv6Acl     types.String `tfsdk:"access_ipv6_acl"`
+	AccessStandardAcl types.Int64  `tfsdk:"access_standard_acl"`
+	AccessAclName     types.String `tfsdk:"access_acl_name"`
+}
+
+type SNMPServerData struct {
+	Device                                        types.String                    `tfsdk:"device"`
+	Id                                            types.String                    `tfsdk:"id"`
+	ChassisId                                     types.String                    `tfsdk:"chassis_id"`
+	Contact                                       types.String                    `tfsdk:"contact"`
+	IfindexPersist                                types.Bool                      `tfsdk:"ifindex_persist"`
+	Location                                      types.String                    `tfsdk:"location"`
+	Packetsize                                    types.Int64                     `tfsdk:"packetsize"`
+	QueueLength                                   types.Int64                     `tfsdk:"queue_length"`
+	EnableLoggingGetop                            types.Bool                      `tfsdk:"enable_logging_getop"`
+	EnableLoggingSetop                            types.Bool                      `tfsdk:"enable_logging_setop"`
+	EnableInforms                                 types.Bool                      `tfsdk:"enable_informs"`
+	EnableTraps                                   types.Bool                      `tfsdk:"enable_traps"`
+	EnableTrapsSnmpAuthentication                 types.Bool                      `tfsdk:"enable_traps_snmp_authentication"`
+	EnableTrapsSnmpColdstart                      types.Bool                      `tfsdk:"enable_traps_snmp_coldstart"`
+	EnableTrapsSnmpLinkdown                       types.Bool                      `tfsdk:"enable_traps_snmp_linkdown"`
+	EnableTrapsSnmpLinkup                         types.Bool                      `tfsdk:"enable_traps_snmp_linkup"`
+	EnableTrapsSnmpWarmstart                      types.Bool                      `tfsdk:"enable_traps_snmp_warmstart"`
+	Hosts                                         []SNMPServerHostsData           `tfsdk:"hosts"`
+	VrfHosts                                      []SNMPServerVrfHostsData        `tfsdk:"vrf_hosts"`
+	SystemShutdown                                types.Bool                      `tfsdk:"system_shutdown"`
+	EnableTrapsFlowmon                            types.Bool                      `tfsdk:"enable_traps_flowmon"`
+	EnableTrapsEntityPerfThroughputNotif          types.Bool                      `tfsdk:"enable_traps_entity_perf_throughput_notif"`
+	EnableTrapsCallHomeMessageSendFail            types.Bool                      `tfsdk:"enable_traps_call_home_message_send_fail"`
+	EnableTrapsCallHomeServerFail                 types.Bool                      `tfsdk:"enable_traps_call_home_server_fail"`
+	EnableTrapsTty                                types.Bool                      `tfsdk:"enable_traps_tty"`
+	EnableTrapsOspfv3ConfigStateChange            types.Bool                      `tfsdk:"enable_traps_ospfv3_config_state_change"`
+	EnableTrapsOspfv3ConfigErrors                 types.Bool                      `tfsdk:"enable_traps_ospfv3_config_errors"`
+	EnableTrapsOspfConfigRetransmit               types.Bool                      `tfsdk:"enable_traps_ospf_config_retransmit"`
+	EnableTrapsOspfConfigLsa                      types.Bool                      `tfsdk:"enable_traps_ospf_config_lsa"`
+	EnableTrapsOspfNssaTransChange                types.Bool                      `tfsdk:"enable_traps_ospf_nssa_trans_change"`
+	EnableTrapsOspfShamlinkInterface              types.Bool                      `tfsdk:"enable_traps_ospf_shamlink_interface"`
+	EnableTrapsOspfShamlinkNeighbor               types.Bool                      `tfsdk:"enable_traps_ospf_shamlink_neighbor"`
+	EnableTrapsOspfErrorsEnable                   types.Bool                      `tfsdk:"enable_traps_ospf_errors_enable"`
+	EnableTrapsOspfRetransmitEnable               types.Bool                      `tfsdk:"enable_traps_ospf_retransmit_enable"`
+	EnableTrapsOspfLsaEnable                      types.Bool                      `tfsdk:"enable_traps_ospf_lsa_enable"`
+	EnableTrapsEigrp                              types.Bool                      `tfsdk:"enable_traps_eigrp"`
+	EnableTrapsAuthFrameworkSecViolation          types.Bool                      `tfsdk:"enable_traps_auth_framework_sec_violation"`
+	EnableTrapsRep                                types.Bool                      `tfsdk:"enable_traps_rep"`
+	EnableTrapsVtp                                types.Bool                      `tfsdk:"enable_traps_vtp"`
+	EnableTrapsVlancreate                         types.Bool                      `tfsdk:"enable_traps_vlancreate"`
+	EnableTrapsVlandelete                         types.Bool                      `tfsdk:"enable_traps_vlandelete"`
+	EnableTrapsPortSecurity                       types.Bool                      `tfsdk:"enable_traps_port_security"`
+	EnableTrapsLicense                            types.Bool                      `tfsdk:"enable_traps_license"`
+	EnableTrapsSmartLicense                       types.Bool                      `tfsdk:"enable_traps_smart_license"`
+	EnableTrapsCpuThreshold                       types.Bool                      `tfsdk:"enable_traps_cpu_threshold"`
+	EnableTrapsMemoryBufferpeak                   types.Bool                      `tfsdk:"enable_traps_memory_bufferpeak"`
+	EnableTrapsStackwise                          types.Bool                      `tfsdk:"enable_traps_stackwise"`
+	EnableTrapsUdldLinkFailRpt                    types.Bool                      `tfsdk:"enable_traps_udld_link_fail_rpt"`
+	EnableTrapsUdldStatusChange                   types.Bool                      `tfsdk:"enable_traps_udld_status_change"`
+	EnableTrapsFruCtrl                            types.Bool                      `tfsdk:"enable_traps_fru_ctrl"`
+	EnableTrapsFlashInsertion                     types.Bool                      `tfsdk:"enable_traps_flash_insertion"`
+	EnableTrapsFlashRemoval                       types.Bool                      `tfsdk:"enable_traps_flash_removal"`
+	EnableTrapsFlashLowspace                      types.Bool                      `tfsdk:"enable_traps_flash_lowspace"`
+	EnableTrapsEnergywise                         types.Bool                      `tfsdk:"enable_traps_energywise"`
+	EnableTrapsPowerEthernetGroup                 types.String                    `tfsdk:"enable_traps_power_ethernet_group"`
+	EnableTrapsPowerEthernetPolice                types.Bool                      `tfsdk:"enable_traps_power_ethernet_police"`
+	EnableTrapsEntity                             types.Bool                      `tfsdk:"enable_traps_entity"`
+	EnableTrapsPwVc                               types.Bool                      `tfsdk:"enable_traps_pw_vc"`
+	EnableTrapsEnvmon                             types.Bool                      `tfsdk:"enable_traps_envmon"`
+	EnableTrapsCefResourceFailure                 types.Bool                      `tfsdk:"enable_traps_cef_resource_failure"`
+	EnableTrapsCefPeerStateChange                 types.Bool                      `tfsdk:"enable_traps_cef_peer_state_change"`
+	EnableTrapsCefPeerFibStateChange              types.Bool                      `tfsdk:"enable_traps_cef_peer_fib_state_change"`
+	EnableTrapsCefInconsistency                   types.Bool                      `tfsdk:"enable_traps_cef_inconsistency"`
+	EnableTrapsIsis                               types.Bool                      `tfsdk:"enable_traps_isis"`
+	EnableTrapsIpsla                              types.Bool                      `tfsdk:"enable_traps_ipsla"`
+	EnableTrapsEntityDiagBootUpFail               types.Bool                      `tfsdk:"enable_traps_entity_diag_boot_up_fail"`
+	EnableTrapsEntityDiagHmTestRecover            types.Bool                      `tfsdk:"enable_traps_entity_diag_hm_test_recover"`
+	EnableTrapsEntityDiagHmThreshReached          types.Bool                      `tfsdk:"enable_traps_entity_diag_hm_thresh_reached"`
+	EnableTrapsEntityDiagScheduledTestFail        types.Bool                      `tfsdk:"enable_traps_entity_diag_scheduled_test_fail"`
+	EnableTrapsBfd                                types.Bool                      `tfsdk:"enable_traps_bfd"`
+	EnableTrapsIkePolicyAdd                       types.Bool                      `tfsdk:"enable_traps_ike_policy_add"`
+	EnableTrapsIkePolicyDelete                    types.Bool                      `tfsdk:"enable_traps_ike_policy_delete"`
+	EnableTrapsIkeTunnelStart                     types.Bool                      `tfsdk:"enable_traps_ike_tunnel_start"`
+	EnableTrapsIkeTunnelStop                      types.Bool                      `tfsdk:"enable_traps_ike_tunnel_stop"`
+	EnableTrapsIpsecCryptomapAdd                  types.Bool                      `tfsdk:"enable_traps_ipsec_cryptomap_add"`
+	EnableTrapsIpsecCryptomapAttach               types.Bool                      `tfsdk:"enable_traps_ipsec_cryptomap_attach"`
+	EnableTrapsIpsecCryptomapDelete               types.Bool                      `tfsdk:"enable_traps_ipsec_cryptomap_delete"`
+	EnableTrapsIpsecCryptomapDetach               types.Bool                      `tfsdk:"enable_traps_ipsec_cryptomap_detach"`
+	EnableTrapsIpsecTunnelStart                   types.Bool                      `tfsdk:"enable_traps_ipsec_tunnel_start"`
+	EnableTrapsIpsecTunnelStop                    types.Bool                      `tfsdk:"enable_traps_ipsec_tunnel_stop"`
+	EnableTrapsIpsecTooManySas                    types.Bool                      `tfsdk:"enable_traps_ipsec_too_many_sas"`
+	EnableTrapsConfigCopy                         types.Bool                      `tfsdk:"enable_traps_config_copy"`
+	EnableTrapsConfig                             types.Bool                      `tfsdk:"enable_traps_config"`
+	EnableTrapsConfigCtid                         types.Bool                      `tfsdk:"enable_traps_config_ctid"`
+	EnableTrapsDhcp                               types.Bool                      `tfsdk:"enable_traps_dhcp"`
+	EnableTrapsEventManager                       types.Bool                      `tfsdk:"enable_traps_event_manager"`
+	EnableTrapsHsrp                               types.Bool                      `tfsdk:"enable_traps_hsrp"`
+	EnableTrapsIpmulticast                        types.Bool                      `tfsdk:"enable_traps_ipmulticast"`
+	EnableTrapsMsdp                               types.Bool                      `tfsdk:"enable_traps_msdp"`
+	EnableTrapsOspfConfigStateChange              types.Bool                      `tfsdk:"enable_traps_ospf_config_state_change"`
+	EnableTrapsOspfConfigErrors                   types.Bool                      `tfsdk:"enable_traps_ospf_config_errors"`
+	EnableTrapsPimInvalidPimMessage               types.Bool                      `tfsdk:"enable_traps_pim_invalid_pim_message"`
+	EnableTrapsPimNeighborChange                  types.Bool                      `tfsdk:"enable_traps_pim_neighbor_change"`
+	EnableTrapsPimRpMappingChange                 types.Bool                      `tfsdk:"enable_traps_pim_rp_mapping_change"`
+	EnableTrapsBridgeNewroot                      types.Bool                      `tfsdk:"enable_traps_bridge_newroot"`
+	EnableTrapsBridgeTopologychange               types.Bool                      `tfsdk:"enable_traps_bridge_topologychange"`
+	EnableTrapsStpxInconsistency                  types.Bool                      `tfsdk:"enable_traps_stpx_inconsistency"`
+	EnableTrapsStpxRootInconsistency              types.Bool                      `tfsdk:"enable_traps_stpx_root_inconsistency"`
+	EnableTrapsStpxLoopInconsistency              types.Bool                      `tfsdk:"enable_traps_stpx_loop_inconsistency"`
+	EnableTrapsSyslog                             types.Bool                      `tfsdk:"enable_traps_syslog"`
+	EnableTrapsBgpCbgp2                           types.Bool                      `tfsdk:"enable_traps_bgp_cbgp2"`
+	EnableTrapsNhrpNhs                            types.Bool                      `tfsdk:"enable_traps_nhrp_nhs"`
+	EnableTrapsNhrpNhc                            types.Bool                      `tfsdk:"enable_traps_nhrp_nhc"`
+	EnableTrapsNhrpNhp                            types.Bool                      `tfsdk:"enable_traps_nhrp_nhp"`
+	EnableTrapsNhrpQuotaExceeded                  types.Bool                      `tfsdk:"enable_traps_nhrp_quota_exceeded"`
+	EnableTrapsMplsTrafficEng                     types.Bool                      `tfsdk:"enable_traps_mpls_traffic_eng"`
+	EnableTrapsMpls                               types.Bool                      `tfsdk:"enable_traps_mpls"`
+	EnableTrapsMplsVpn                            types.Bool                      `tfsdk:"enable_traps_mpls_vpn"`
+	EnableTrapsMplsRfc                            types.Bool                      `tfsdk:"enable_traps_mpls_rfc"`
+	EnableTrapsMplsRfcLdp                         types.Bool                      `tfsdk:"enable_traps_mpls_rfc_ldp"`
+	EnableTrapsMplsLdp                            types.Bool                      `tfsdk:"enable_traps_mpls_ldp"`
+	EnableTrapsFastRerouteProtected               types.Bool                      `tfsdk:"enable_traps_fast_reroute_protected"`
+	EnableTrapsLocalAuth                          types.Bool                      `tfsdk:"enable_traps_local_auth"`
+	EnableTrapsVlanMembership                     types.Bool                      `tfsdk:"enable_traps_vlan_membership"`
+	EnableTrapsErrdisable                         types.Bool                      `tfsdk:"enable_traps_errdisable"`
+	EnableTrapsRf                                 types.Bool                      `tfsdk:"enable_traps_rf"`
+	EnableTrapsTransceiverAll                     types.Bool                      `tfsdk:"enable_traps_transceiver_all"`
+	EnableTrapsBulkstatCollection                 types.Bool                      `tfsdk:"enable_traps_bulkstat_collection"`
+	EnableTrapsBulkstatTransfer                   types.Bool                      `tfsdk:"enable_traps_bulkstat_transfer"`
+	EnableTrapsMacNotificationChange              types.Bool                      `tfsdk:"enable_traps_mac_notification_change"`
+	EnableTrapsMacNotificationMove                types.Bool                      `tfsdk:"enable_traps_mac_notification_move"`
+	EnableTrapsMacNotificationThreshold           types.Bool                      `tfsdk:"enable_traps_mac_notification_threshold"`
+	EnableTrapsVrfmibVrfUp                        types.Bool                      `tfsdk:"enable_traps_vrfmib_vrf_up"`
+	EnableTrapsVrfmibVrfDown                      types.Bool                      `tfsdk:"enable_traps_vrfmib_vrf_down"`
+	EnableTrapsVrfmibVnetTrunkUp                  types.Bool                      `tfsdk:"enable_traps_vrfmib_vnet_trunk_up"`
+	EnableTrapsVrfmibVnetTrunkDown                types.Bool                      `tfsdk:"enable_traps_vrfmib_vnet_trunk_down"`
+	EnableTrapsMvpn                               types.Bool                      `tfsdk:"enable_traps_mvpn"`
+	EnableTrapsLisp                               types.Bool                      `tfsdk:"enable_traps_lisp"`
+	EnableTrapsAaaServer                          types.Bool                      `tfsdk:"enable_traps_aaa_server"`
+	EnableTrapsVdsl2line                          types.Bool                      `tfsdk:"enable_traps_vdsl2line"`
+	EnableTrapsAdslline                           types.Bool                      `tfsdk:"enable_traps_adslline"`
+	EnableTrapsPki                                types.Bool                      `tfsdk:"enable_traps_pki"`
+	EnableTrapsAlarmType                          types.String                    `tfsdk:"enable_traps_alarm_type"`
+	EnableTrapsCasa                               types.Bool                      `tfsdk:"enable_traps_casa"`
+	EnableTrapsCnpd                               types.Bool                      `tfsdk:"enable_traps_cnpd"`
+	EnableTrapsDial                               types.Bool                      `tfsdk:"enable_traps_dial"`
+	EnableTrapsDlsw                               types.Bool                      `tfsdk:"enable_traps_dlsw"`
+	EnableTrapsDs1                                types.Bool                      `tfsdk:"enable_traps_ds1"`
+	EnableTrapsDspCardStatus                      types.Bool                      `tfsdk:"enable_traps_dsp_card_status"`
+	EnableTrapsDspOperState                       types.Bool                      `tfsdk:"enable_traps_dsp_oper_state"`
+	EnableTrapsEntitySensor                       types.Bool                      `tfsdk:"enable_traps_entity_sensor"`
+	EnableTrapsEntityState                        types.Bool                      `tfsdk:"enable_traps_entity_state"`
+	EnableTrapsEntityQfpMemResThresh              types.Bool                      `tfsdk:"enable_traps_entity_qfp_mem_res_thresh"`
+	EnableTrapsEntityQfpThroughputNotif           types.Bool                      `tfsdk:"enable_traps_entity_qfp_throughput_notif"`
+	EnableTrapsEtherOam                           types.Bool                      `tfsdk:"enable_traps_ether_oam"`
+	EnableTrapsEthernetCfmAlarm                   types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_alarm"`
+	EnableTrapsEthernetCfmCcConfig                types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_cc_config"`
+	EnableTrapsEthernetCfmCcCrossConnect          types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_cc_cross_connect"`
+	EnableTrapsEthernetCfmCcLoop                  types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_cc_loop"`
+	EnableTrapsEthernetCfmCcMepDown               types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_cc_mep_down"`
+	EnableTrapsEthernetCfmCcMepUp                 types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_cc_mep_up"`
+	EnableTrapsEthernetCfmCrosscheckMepMissing    types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_missing"`
+	EnableTrapsEthernetCfmCrosscheckMepUnknown    types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_unknown"`
+	EnableTrapsEthernetCfmCrosscheckServiceUp     types.Bool                      `tfsdk:"enable_traps_ethernet_cfm_crosscheck_service_up"`
+	EnableTrapsEthernetEvcCreate                  types.Bool                      `tfsdk:"enable_traps_ethernet_evc_create"`
+	EnableTrapsEthernetEvcDelete                  types.Bool                      `tfsdk:"enable_traps_ethernet_evc_delete"`
+	EnableTrapsEthernetEvcStatus                  types.Bool                      `tfsdk:"enable_traps_ethernet_evc_status"`
+	EnableTrapsFirewallServerstatus               types.Bool                      `tfsdk:"enable_traps_firewall_serverstatus"`
+	EnableTrapsFrameRelayConfigOnly               types.Bool                      `tfsdk:"enable_traps_frame_relay_config_only"`
+	EnableTrapsFrameRelayConfigSubifConfigs       types.Bool                      `tfsdk:"enable_traps_frame_relay_config_subif_configs"`
+	EnableTrapsFrameRelaySubifCount               types.Int64                     `tfsdk:"enable_traps_frame_relay_subif_count"`
+	EnableTrapsFrameRelaySubifInterval            types.Int64                     `tfsdk:"enable_traps_frame_relay_subif_interval"`
+	EnableTrapsFrameRelayConfigBundleMismatch     types.Bool                      `tfsdk:"enable_traps_frame_relay_config_bundle_mismatch"`
+	EnableTrapsFrameRelayMultilinkBundleMismatch  types.Bool                      `tfsdk:"enable_traps_frame_relay_multilink_bundle_mismatch"`
+	EnableTrapsIpLocalPool                        types.Bool                      `tfsdk:"enable_traps_ip_local_pool"`
+	EnableTrapsIsdnCallInformation                types.Bool                      `tfsdk:"enable_traps_isdn_call_information"`
+	EnableTrapsIsdnChanNotAvail                   types.Bool                      `tfsdk:"enable_traps_isdn_chan_not_avail"`
+	EnableTrapsIsdnIetf                           types.Bool                      `tfsdk:"enable_traps_isdn_ietf"`
+	EnableTrapsIsdnLayer2                         types.Bool                      `tfsdk:"enable_traps_isdn_layer2"`
+	EnableTrapsL2tunSession                       types.Bool                      `tfsdk:"enable_traps_l2tun_session"`
+	EnableTrapsL2tunTunnel                        types.Bool                      `tfsdk:"enable_traps_l2tun_tunnel"`
+	EnableTrapsL2tunPseudowireStatus              types.Bool                      `tfsdk:"enable_traps_l2tun_pseudowire_status"`
+	EnableTrapsPimstdmibNeighborLoss              types.Bool                      `tfsdk:"enable_traps_pimstdmib_neighbor_loss"`
+	EnableTrapsPimstdmibInvalidRegister           types.Bool                      `tfsdk:"enable_traps_pimstdmib_invalid_register"`
+	EnableTrapsPimstdmibInvalidJoinPrune          types.Bool                      `tfsdk:"enable_traps_pimstdmib_invalid_join_prune"`
+	EnableTrapsPimstdmibRpMappingChange           types.Bool                      `tfsdk:"enable_traps_pimstdmib_rp_mapping_change"`
+	EnableTrapsPimstdmibInterfaceElection         types.Bool                      `tfsdk:"enable_traps_pimstdmib_interface_election"`
+	EnableTrapsPfr                                types.Bool                      `tfsdk:"enable_traps_pfr"`
+	EnableTrapsPppoe                              types.Bool                      `tfsdk:"enable_traps_pppoe"`
+	EnableTrapsResourcePolicy                     types.Bool                      `tfsdk:"enable_traps_resource_policy"`
+	EnableTrapsRsvp                               types.Bool                      `tfsdk:"enable_traps_rsvp"`
+	EnableTrapsVrrp                               types.Bool                      `tfsdk:"enable_traps_vrrp"`
+	EnableTrapsSonet                              types.Bool                      `tfsdk:"enable_traps_sonet"`
+	EnableTrapsSrp                                types.Bool                      `tfsdk:"enable_traps_srp"`
+	EnableTrapsVoice                              types.Bool                      `tfsdk:"enable_traps_voice"`
+	EnableTrapsBgp                                types.Bool                      `tfsdk:"enable_traps_bgp"`
+	EnableTrapsCbgp2                              types.Bool                      `tfsdk:"enable_traps_cbgp2"`
+	EnableTrapsBgpCbgp2StateChanges               types.List                      `tfsdk:"enable_traps_bgp_cbgp2_state_changes"`
+	EnableTrapsBgpCbgp2ThresholdPrefix            types.Bool                      `tfsdk:"enable_traps_bgp_cbgp2_threshold_prefix"`
+	EnableTrapsOspfv3Errors                       types.Bool                      `tfsdk:"enable_traps_ospfv3_errors"`
+	EnableTrapsOspfv3StateChange                  types.Bool                      `tfsdk:"enable_traps_ospfv3_state_change"`
+	SourceInterfaceInformsGigabitEthernet         types.String                    `tfsdk:"source_interface_informs_gigabit_ethernet"`
+	SourceInterfaceInformsTenGigabitEthernet      types.String                    `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
+	SourceInterfaceInformsFortyGigabitEthernet    types.String                    `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
+	SourceInterfaceInformsHundredGigE             types.String                    `tfsdk:"source_interface_informs_hundred_gig_e"`
+	SourceInterfaceInformsLoopback                types.Int64                     `tfsdk:"source_interface_informs_loopback"`
+	SourceInterfaceInformsPortChannel             types.Int64                     `tfsdk:"source_interface_informs_port_channel"`
+	SourceInterfaceInformsPortChannelSubinterface types.String                    `tfsdk:"source_interface_informs_port_channel_subinterface"`
+	SourceInterfaceInformsVlan                    types.Int64                     `tfsdk:"source_interface_informs_vlan"`
+	SourceInterfaceTrapsGigabitEthernet           types.String                    `tfsdk:"source_interface_traps_gigabit_ethernet"`
+	SourceInterfaceTrapsTenGigabitEthernet        types.String                    `tfsdk:"source_interface_traps_ten_gigabit_ethernet"`
+	SourceInterfaceTrapsFortyGigabitEthernet      types.String                    `tfsdk:"source_interface_traps_forty_gigabit_ethernet"`
+	SourceInterfaceTrapsHundredGigE               types.String                    `tfsdk:"source_interface_traps_hundred_gig_e"`
+	SourceInterfaceTrapsLoopback                  types.Int64                     `tfsdk:"source_interface_traps_loopback"`
+	SourceInterfaceTrapsPortChannel               types.Int64                     `tfsdk:"source_interface_traps_port_channel"`
+	SourceInterfaceTrapsPortChannelSubinterface   types.String                    `tfsdk:"source_interface_traps_port_channel_subinterface"`
+	SourceInterfaceTrapsVlan                      types.Int64                     `tfsdk:"source_interface_traps_vlan"`
+	TrapSourceGigabitEthernet                     types.String                    `tfsdk:"trap_source_gigabit_ethernet"`
+	TrapSourceTenGigabitEthernet                  types.String                    `tfsdk:"trap_source_ten_gigabit_ethernet"`
+	TrapSourceFortyGigabitEthernet                types.String                    `tfsdk:"trap_source_forty_gigabit_ethernet"`
+	TrapSourceHundredGigE                         types.String                    `tfsdk:"trap_source_hundred_gig_e"`
+	TrapSourceLoopback                            types.Int64                     `tfsdk:"trap_source_loopback"`
+	TrapSourcePortChannel                         types.Int64                     `tfsdk:"trap_source_port_channel"`
+	TrapSourcePortChannelSubinterface             types.String                    `tfsdk:"trap_source_port_channel_subinterface"`
+	TrapSourceVlan                                types.Int64                     `tfsdk:"trap_source_vlan"`
+	SnmpCommunities                               []SNMPServerSnmpCommunitiesData `tfsdk:"snmp_communities"`
+	Contexts                                      []SNMPServerContextsData        `tfsdk:"contexts"`
+	Views                                         []SNMPServerViewsData           `tfsdk:"views"`
+	Groups                                        []SNMPServerGroupsData          `tfsdk:"groups"`
+	Users                                         []SNMPServerUsersData           `tfsdk:"users"`
+}
+type SNMPServerHostsData struct {
+	IpAddress       types.String `tfsdk:"ip_address"`
+	CommunityOrUser types.String `tfsdk:"community_or_user"`
+	Version         types.String `tfsdk:"version"`
+	Encryption      types.String `tfsdk:"encryption"`
+	SecurityLevel   types.String `tfsdk:"security_level"`
+}
+type SNMPServerVrfHostsData struct {
+	IpAddress       types.String `tfsdk:"ip_address"`
+	Vrf             types.String `tfsdk:"vrf"`
+	CommunityOrUser types.String `tfsdk:"community_or_user"`
+	Version         types.String `tfsdk:"version"`
+	Encryption      types.String `tfsdk:"encryption"`
+	SecurityLevel   types.String `tfsdk:"security_level"`
+}
+type SNMPServerSnmpCommunitiesData struct {
+	Name           types.String `tfsdk:"name"`
+	View           types.String `tfsdk:"view"`
+	Permission     types.String `tfsdk:"permission"`
+	Ipv6           types.String `tfsdk:"ipv6"`
+	AccessListName types.String `tfsdk:"access_list_name"`
+}
+type SNMPServerContextsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type SNMPServerViewsData struct {
+	Name   types.String `tfsdk:"name"`
+	Mib    types.String `tfsdk:"mib"`
+	IncExl types.String `tfsdk:"inc_exl"`
+}
+type SNMPServerGroupsData struct {
+	Name       types.String                     `tfsdk:"name"`
+	V3Security []SNMPServerGroupsV3SecurityData `tfsdk:"v3_security"`
+}
+type SNMPServerUsersData struct {
+	Username                        types.String `tfsdk:"username"`
+	Grpname                         types.String `tfsdk:"grpname"`
+	V3AuthAlgorithm                 types.String `tfsdk:"v3_auth_algorithm"`
+	V3AuthPassword                  types.String `tfsdk:"v3_auth_password"`
 	V3AuthPrivAesAlgorithm          types.String `tfsdk:"v3_auth_priv_aes_algorithm"`
 	V3AuthPrivAesPassword           types.String `tfsdk:"v3_auth_priv_aes_password"`
 	V3AuthPrivAesAccessIpv6Acl      types.String `tfsdk:"v3_auth_priv_aes_access_ipv6_acl"`
@@ -542,7 +623,7 @@ type SNMPServerUsers struct {
 	V3AuthAccessStandardAcl         types.Int64  `tfsdk:"v3_auth_access_standard_acl"`
 	V3AuthAccessAclName             types.String `tfsdk:"v3_auth_access_acl_name"`
 }
-type SNMPServerGroupsV3Security struct {
+type SNMPServerGroupsV3SecurityData struct {
 	SecurityLevel     types.String `tfsdk:"security_level"`
 	ContextNode       types.String `tfsdk:"context_node"`
 	MatchNode         types.String `tfsdk:"match_node"`
@@ -592,7 +673,7 @@ func (data SNMPServerData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data SNMPServer) toBody(ctx context.Context) string {
+func (data SNMPServer) toBody(ctx context.Context, config SNMPServer) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.ChassisId.IsNull() && !data.ChassisId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:chassis-id", data.ChassisId.ValueString())
@@ -1582,11 +1663,26 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	if len(data.Hosts) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community", []interface{}{})
 		for index, item := range data.Hosts {
+			var configItem SNMPServerHosts
+			for _, ci := range config.Hosts {
+				if ci.IpAddress.ValueString() != item.IpAddress.ValueString() {
+					continue
+				}
+				if ci.CommunityOrUser.ValueString() != item.CommunityOrUser.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"ip-address", item.IpAddress.ValueString())
 			}
 			if !item.CommunityOrUser.IsNull() && !item.CommunityOrUser.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"community-or-user", item.CommunityOrUser.ValueString())
+				if !configItem.CommunityOrUserWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"community-or-user", configItem.CommunityOrUserWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"community-or-user", item.CommunityOrUser.ValueString())
+				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"version", item.Version.ValueString())
@@ -1602,6 +1698,20 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	if len(data.VrfHosts) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community", []interface{}{})
 		for index, item := range data.VrfHosts {
+			var configItem SNMPServerVrfHosts
+			for _, ci := range config.VrfHosts {
+				if ci.IpAddress.ValueString() != item.IpAddress.ValueString() {
+					continue
+				}
+				if ci.Vrf.ValueString() != item.Vrf.ValueString() {
+					continue
+				}
+				if ci.CommunityOrUser.ValueString() != item.CommunityOrUser.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"ip-address", item.IpAddress.ValueString())
 			}
@@ -1609,7 +1719,11 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"vrf", item.Vrf.ValueString())
 			}
 			if !item.CommunityOrUser.IsNull() && !item.CommunityOrUser.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"community-or-user", item.CommunityOrUser.ValueString())
+				if !configItem.CommunityOrUserWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"community-or-user", configItem.CommunityOrUserWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"community-or-user", item.CommunityOrUser.ValueString())
+				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"version", item.Version.ValueString())
@@ -1625,8 +1739,20 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	if len(data.SnmpCommunities) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:community-config", []interface{}{})
 		for index, item := range data.SnmpCommunities {
+			var configItem SNMPServerSnmpCommunities
+			for _, ci := range config.SnmpCommunities {
+				if ci.Name.ValueString() != item.Name.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:community-config"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+				if !configItem.NameWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:community-config"+"."+strconv.Itoa(index)+"."+"name", configItem.NameWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:community-config"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+				}
 			}
 			if !item.View.IsNull() && !item.View.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:community-config"+"."+strconv.Itoa(index)+"."+"view", item.View.ValueString())
@@ -1707,6 +1833,17 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	if len(data.Users) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names", []interface{}{})
 		for index, item := range data.Users {
+			var configItem SNMPServerUsers
+			for _, ci := range config.Users {
+				if ci.Username.ValueString() != item.Username.ValueString() {
+					continue
+				}
+				if ci.Grpname.ValueString() != item.Grpname.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Username.IsNull() && !item.Username.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"username", item.Username.ValueString())
 			}
@@ -1717,13 +1854,21 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.algorithm", item.V3AuthAlgorithm.ValueString())
 			}
 			if !item.V3AuthPassword.IsNull() && !item.V3AuthPassword.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.password", item.V3AuthPassword.ValueString())
+				if !configItem.V3AuthPasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.password", configItem.V3AuthPasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.password", item.V3AuthPassword.ValueString())
+				}
 			}
 			if !item.V3AuthPrivAesAlgorithm.IsNull() && !item.V3AuthPrivAesAlgorithm.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.algorithm", item.V3AuthPrivAesAlgorithm.ValueString())
 			}
 			if !item.V3AuthPrivAesPassword.IsNull() && !item.V3AuthPrivAesPassword.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.password", item.V3AuthPrivAesPassword.ValueString())
+				if !configItem.V3AuthPrivAesPasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.password", configItem.V3AuthPrivAesPasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.password", item.V3AuthPrivAesPassword.ValueString())
+				}
 			}
 			if !item.V3AuthPrivAesAccessIpv6Acl.IsNull() && !item.V3AuthPrivAesAccessIpv6Acl.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.access-config.ipv6-acl", item.V3AuthPrivAesAccessIpv6Acl.ValueString())
@@ -1735,7 +1880,11 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.access-config.acl-name", item.V3AuthPrivAesAccessAclName.ValueString())
 			}
 			if !item.V3AuthPrivDesPassword.IsNull() && !item.V3AuthPrivDesPassword.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.password", item.V3AuthPrivDesPassword.ValueString())
+				if !configItem.V3AuthPrivDesPasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.password", configItem.V3AuthPrivDesPasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.password", item.V3AuthPrivDesPassword.ValueString())
+				}
 			}
 			if !item.V3AuthPrivDesAccessIpv6Acl.IsNull() && !item.V3AuthPrivDesAccessIpv6Acl.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.access-config.ipv6-acl", item.V3AuthPrivDesAccessIpv6Acl.ValueString())
@@ -1747,7 +1896,11 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.access-config.acl-name", item.V3AuthPrivDesAccessAclName.ValueString())
 			}
 			if !item.V3AuthPrivDes3Password.IsNull() && !item.V3AuthPrivDes3Password.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.password", item.V3AuthPrivDes3Password.ValueString())
+				if !configItem.V3AuthPrivDes3PasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.password", configItem.V3AuthPrivDes3PasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.password", item.V3AuthPrivDes3Password.ValueString())
+				}
 			}
 			if !item.V3AuthPrivDes3AccessIpv6Acl.IsNull() && !item.V3AuthPrivDes3AccessIpv6Acl.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.access-config.ipv6-acl", item.V3AuthPrivDes3AccessIpv6Acl.ValueString())
@@ -1776,7 +1929,7 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data SNMPServer) toBodyXML(ctx context.Context) string {
+func (data SNMPServer) toBodyXML(ctx context.Context, config SNMPServer) string {
 	body := netconf.Body{}
 	if !data.ChassisId.IsNull() && !data.ChassisId.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:chassis-id", data.ChassisId.ValueString())
@@ -1857,12 +2010,27 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.Hosts) > 0 {
 		for _, item := range data.Hosts {
+			var configItem SNMPServerHosts
+			for _, ci := range config.Hosts {
+				if ci.IpAddress.ValueString() != item.IpAddress.ValueString() {
+					continue
+				}
+				if ci.CommunityOrUser.ValueString() != item.CommunityOrUser.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ip-address", item.IpAddress.ValueString())
 			}
 			if !item.CommunityOrUser.IsNull() && !item.CommunityOrUser.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "community-or-user", item.CommunityOrUser.ValueString())
+				if !configItem.CommunityOrUserWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "community-or-user", configItem.CommunityOrUserWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "community-or-user", item.CommunityOrUser.ValueString())
+				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "version", item.Version.ValueString())
@@ -1878,6 +2046,20 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.VrfHosts) > 0 {
 		for _, item := range data.VrfHosts {
+			var configItem SNMPServerVrfHosts
+			for _, ci := range config.VrfHosts {
+				if ci.IpAddress.ValueString() != item.IpAddress.ValueString() {
+					continue
+				}
+				if ci.Vrf.ValueString() != item.Vrf.ValueString() {
+					continue
+				}
+				if ci.CommunityOrUser.ValueString() != item.CommunityOrUser.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ip-address", item.IpAddress.ValueString())
@@ -1886,7 +2068,11 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
 			if !item.CommunityOrUser.IsNull() && !item.CommunityOrUser.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "community-or-user", item.CommunityOrUser.ValueString())
+				if !configItem.CommunityOrUserWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "community-or-user", configItem.CommunityOrUserWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "community-or-user", item.CommunityOrUser.ValueString())
+				}
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "version", item.Version.ValueString())
@@ -3162,9 +3348,21 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.SnmpCommunities) > 0 {
 		for _, item := range data.SnmpCommunities {
+			var configItem SNMPServerSnmpCommunities
+			for _, ci := range config.SnmpCommunities {
+				if ci.Name.ValueString() != item.Name.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+				if !configItem.NameWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "name", configItem.NameWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+				}
 			}
 			if !item.View.IsNull() && !item.View.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "view", item.View.ValueString())
@@ -3249,6 +3447,17 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.Users) > 0 {
 		for _, item := range data.Users {
+			var configItem SNMPServerUsers
+			for _, ci := range config.Users {
+				if ci.Username.ValueString() != item.Username.ValueString() {
+					continue
+				}
+				if ci.Grpname.ValueString() != item.Grpname.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Username.IsNull() && !item.Username.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "username", item.Username.ValueString())
@@ -3260,13 +3469,21 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/algorithm", item.V3AuthAlgorithm.ValueString())
 			}
 			if !item.V3AuthPassword.IsNull() && !item.V3AuthPassword.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/password", item.V3AuthPassword.ValueString())
+				if !configItem.V3AuthPasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/password", configItem.V3AuthPasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/password", item.V3AuthPassword.ValueString())
+				}
 			}
 			if !item.V3AuthPrivAesAlgorithm.IsNull() && !item.V3AuthPrivAesAlgorithm.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/aes/algorithm", item.V3AuthPrivAesAlgorithm.ValueString())
 			}
 			if !item.V3AuthPrivAesPassword.IsNull() && !item.V3AuthPrivAesPassword.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/aes/password", item.V3AuthPrivAesPassword.ValueString())
+				if !configItem.V3AuthPrivAesPasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/aes/password", configItem.V3AuthPrivAesPasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/aes/password", item.V3AuthPrivAesPassword.ValueString())
+				}
 			}
 			if !item.V3AuthPrivAesAccessIpv6Acl.IsNull() && !item.V3AuthPrivAesAccessIpv6Acl.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/aes/access-config/ipv6-acl", item.V3AuthPrivAesAccessIpv6Acl.ValueString())
@@ -3278,7 +3495,11 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/aes/access-config/acl-name", item.V3AuthPrivAesAccessAclName.ValueString())
 			}
 			if !item.V3AuthPrivDesPassword.IsNull() && !item.V3AuthPrivDesPassword.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des/password", item.V3AuthPrivDesPassword.ValueString())
+				if !configItem.V3AuthPrivDesPasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des/password", configItem.V3AuthPrivDesPasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des/password", item.V3AuthPrivDesPassword.ValueString())
+				}
 			}
 			if !item.V3AuthPrivDesAccessIpv6Acl.IsNull() && !item.V3AuthPrivDesAccessIpv6Acl.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des/access-config/ipv6-acl", item.V3AuthPrivDesAccessIpv6Acl.ValueString())
@@ -3290,7 +3511,11 @@ func (data SNMPServer) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des/access-config/acl-name", item.V3AuthPrivDesAccessAclName.ValueString())
 			}
 			if !item.V3AuthPrivDes3Password.IsNull() && !item.V3AuthPrivDes3Password.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des3/password", item.V3AuthPrivDes3Password.ValueString())
+				if !configItem.V3AuthPrivDes3PasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des3/password", configItem.V3AuthPrivDes3PasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des3/password", item.V3AuthPrivDes3Password.ValueString())
+				}
 			}
 			if !item.V3AuthPrivDes3AccessIpv6Acl.IsNull() && !item.V3AuthPrivDes3AccessIpv6Acl.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/priv-config/des3/access-config/ipv6-acl", item.V3AuthPrivDes3AccessIpv6Acl.ValueString())
@@ -8731,9 +8956,9 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableTrapsSnmpWarmstart = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:host-config.ip-community"); value.Exists() {
-		data.Hosts = make([]SNMPServerHosts, 0)
+		data.Hosts = make([]SNMPServerHostsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SNMPServerHosts{}
+			item := SNMPServerHostsData{}
 			if cValue := v.Get("ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -8754,9 +8979,9 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:host-config.ip-vrf-community"); value.Exists() {
-		data.VrfHosts = make([]SNMPServerVrfHosts, 0)
+		data.VrfHosts = make([]SNMPServerVrfHostsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SNMPServerVrfHosts{}
+			item := SNMPServerVrfHostsData{}
 			if cValue := v.Get("ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -9704,9 +9929,9 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		data.TrapSourceVlan = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:community-config"); value.Exists() {
-		data.SnmpCommunities = make([]SNMPServerSnmpCommunities, 0)
+		data.SnmpCommunities = make([]SNMPServerSnmpCommunitiesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SNMPServerSnmpCommunities{}
+			item := SNMPServerSnmpCommunitiesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -9727,9 +9952,9 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:context"); value.Exists() {
-		data.Contexts = make([]SNMPServerContexts, 0)
+		data.Contexts = make([]SNMPServerContextsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SNMPServerContexts{}
+			item := SNMPServerContextsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -9738,9 +9963,9 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:view"); value.Exists() {
-		data.Views = make([]SNMPServerViews, 0)
+		data.Views = make([]SNMPServerViewsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SNMPServerViews{}
+			item := SNMPServerViewsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -9755,16 +9980,16 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:group"); value.Exists() {
-		data.Groups = make([]SNMPServerGroups, 0)
+		data.Groups = make([]SNMPServerGroupsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SNMPServerGroups{}
+			item := SNMPServerGroupsData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("v3.security-level-list"); cValue.Exists() {
-				item.V3Security = make([]SNMPServerGroupsV3Security, 0)
+				item.V3Security = make([]SNMPServerGroupsV3SecurityData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := SNMPServerGroupsV3Security{}
+					cItem := SNMPServerGroupsV3SecurityData{}
 					if ccValue := cv.Get("security-level"); ccValue.Exists() {
 						cItem.SecurityLevel = types.StringValue(ccValue.String())
 					}
@@ -9801,9 +10026,9 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:user.names"); value.Exists() {
-		data.Users = make([]SNMPServerUsers, 0)
+		data.Users = make([]SNMPServerUsersData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SNMPServerUsers{}
+			item := SNMPServerUsersData{}
 			if cValue := v.Get("username"); cValue.Exists() {
 				item.Username = types.StringValue(cValue.String())
 			}
@@ -11151,9 +11376,9 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		data.EnableTrapsSnmpWarmstart = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:host-config/ip-community"); value.Exists() {
-		data.Hosts = make([]SNMPServerHosts, 0)
+		data.Hosts = make([]SNMPServerHostsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SNMPServerHosts{}
+			item := SNMPServerHostsData{}
 			if cValue := helpers.GetFromXPath(v, "ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -11174,9 +11399,9 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:host-config/ip-vrf-community"); value.Exists() {
-		data.VrfHosts = make([]SNMPServerVrfHosts, 0)
+		data.VrfHosts = make([]SNMPServerVrfHostsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SNMPServerVrfHosts{}
+			item := SNMPServerVrfHostsData{}
 			if cValue := helpers.GetFromXPath(v, "ip-address"); cValue.Exists() {
 				item.IpAddress = types.StringValue(cValue.String())
 			}
@@ -12124,9 +12349,9 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		data.TrapSourceVlan = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:community-config"); value.Exists() {
-		data.SnmpCommunities = make([]SNMPServerSnmpCommunities, 0)
+		data.SnmpCommunities = make([]SNMPServerSnmpCommunitiesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SNMPServerSnmpCommunities{}
+			item := SNMPServerSnmpCommunitiesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -12147,9 +12372,9 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:context"); value.Exists() {
-		data.Contexts = make([]SNMPServerContexts, 0)
+		data.Contexts = make([]SNMPServerContextsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SNMPServerContexts{}
+			item := SNMPServerContextsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -12158,9 +12383,9 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:view"); value.Exists() {
-		data.Views = make([]SNMPServerViews, 0)
+		data.Views = make([]SNMPServerViewsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SNMPServerViews{}
+			item := SNMPServerViewsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -12175,16 +12400,16 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:group"); value.Exists() {
-		data.Groups = make([]SNMPServerGroups, 0)
+		data.Groups = make([]SNMPServerGroupsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SNMPServerGroups{}
+			item := SNMPServerGroupsData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "v3/security-level-list"); cValue.Exists() {
-				item.V3Security = make([]SNMPServerGroupsV3Security, 0)
+				item.V3Security = make([]SNMPServerGroupsV3SecurityData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := SNMPServerGroupsV3Security{}
+					cItem := SNMPServerGroupsV3SecurityData{}
 					if ccValue := helpers.GetFromXPath(cv, "security-level"); ccValue.Exists() {
 						cItem.SecurityLevel = types.StringValue(ccValue.String())
 					}
@@ -12221,9 +12446,9 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:user/names"); value.Exists() {
-		data.Users = make([]SNMPServerUsers, 0)
+		data.Users = make([]SNMPServerUsersData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SNMPServerUsers{}
+			item := SNMPServerUsersData{}
 			if cValue := helpers.GetFromXPath(v, "username"); cValue.Exists() {
 				item.Username = types.StringValue(cValue.String())
 			}

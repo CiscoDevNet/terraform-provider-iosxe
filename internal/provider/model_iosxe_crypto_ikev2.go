@@ -97,7 +97,7 @@ func (data CryptoIKEv2Data) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CryptoIKEv2) toBody(ctx context.Context) string {
+func (data CryptoIKEv2) toBody(ctx context.Context, config CryptoIKEv2) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.NatKeepalive.IsNull() && !data.NatKeepalive.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nat.keepalive", strconv.FormatInt(data.NatKeepalive.ValueInt64(), 10))
@@ -121,7 +121,7 @@ func (data CryptoIKEv2) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CryptoIKEv2) toBodyXML(ctx context.Context) string {
+func (data CryptoIKEv2) toBodyXML(ctx context.Context, config CryptoIKEv2) string {
 	body := netconf.Body{}
 	if !data.NatKeepalive.IsNull() && !data.NatKeepalive.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/nat/keepalive", strconv.FormatInt(data.NatKeepalive.ValueInt64(), 10))

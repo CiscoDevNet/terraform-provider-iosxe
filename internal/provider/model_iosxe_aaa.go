@@ -53,24 +53,12 @@ type AAA struct {
 	LocalAuthorization                 types.String                          `tfsdk:"local_authorization"`
 	LocalAuthenticationMaxFailAttempts types.Int64                           `tfsdk:"local_authentication_max_fail_attempts"`
 }
-
-type AAAData struct {
-	Device                             types.String                          `tfsdk:"device"`
-	Id                                 types.String                          `tfsdk:"id"`
-	NewModel                           types.Bool                            `tfsdk:"new_model"`
-	ServerRadiusDynamicAuthor          types.Bool                            `tfsdk:"server_radius_dynamic_author"`
-	SessionId                          types.String                          `tfsdk:"session_id"`
-	ServerRadiusDynamicAuthorClients   []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
-	GroupServerRadius                  []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
-	GroupServerTacacsplus              []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
-	LocalAuthenticationType            types.String                          `tfsdk:"local_authentication_type"`
-	LocalAuthorization                 types.String                          `tfsdk:"local_authorization"`
-	LocalAuthenticationMaxFailAttempts types.Int64                           `tfsdk:"local_authentication_max_fail_attempts"`
-}
 type AAAServerRadiusDynamicAuthorClients struct {
-	Ip            types.String `tfsdk:"ip"`
-	ServerKeyType types.String `tfsdk:"server_key_type"`
-	ServerKey     types.String `tfsdk:"server_key"`
+	Ip                 types.String `tfsdk:"ip"`
+	ServerKeyType      types.String `tfsdk:"server_key_type"`
+	ServerKey          types.String `tfsdk:"server_key"`
+	ServerKeyWO        types.String `tfsdk:"server_key_wo"`
+	ServerKeyWOVersion types.Int64  `tfsdk:"server_key_wo_version"`
 }
 type AAAGroupServerRadius struct {
 	Name                                             types.String                      `tfsdk:"name"`
@@ -104,6 +92,59 @@ type AAAGroupServerRadiusServerNames struct {
 	Name types.String `tfsdk:"name"`
 }
 type AAAGroupServerTacacsplusServerNames struct {
+	Name types.String `tfsdk:"name"`
+}
+
+type AAAData struct {
+	Device                             types.String                              `tfsdk:"device"`
+	Id                                 types.String                              `tfsdk:"id"`
+	NewModel                           types.Bool                                `tfsdk:"new_model"`
+	ServerRadiusDynamicAuthor          types.Bool                                `tfsdk:"server_radius_dynamic_author"`
+	SessionId                          types.String                              `tfsdk:"session_id"`
+	ServerRadiusDynamicAuthorClients   []AAAServerRadiusDynamicAuthorClientsData `tfsdk:"server_radius_dynamic_author_clients"`
+	GroupServerRadius                  []AAAGroupServerRadiusData                `tfsdk:"group_server_radius"`
+	GroupServerTacacsplus              []AAAGroupServerTacacsplusData            `tfsdk:"group_server_tacacsplus"`
+	LocalAuthenticationType            types.String                              `tfsdk:"local_authentication_type"`
+	LocalAuthorization                 types.String                              `tfsdk:"local_authorization"`
+	LocalAuthenticationMaxFailAttempts types.Int64                               `tfsdk:"local_authentication_max_fail_attempts"`
+}
+type AAAServerRadiusDynamicAuthorClientsData struct {
+	Ip            types.String `tfsdk:"ip"`
+	ServerKeyType types.String `tfsdk:"server_key_type"`
+	ServerKey     types.String `tfsdk:"server_key"`
+}
+type AAAGroupServerRadiusData struct {
+	Name                                             types.String                          `tfsdk:"name"`
+	Deadtime                                         types.Int64                           `tfsdk:"deadtime"`
+	ServerNames                                      []AAAGroupServerRadiusServerNamesData `tfsdk:"server_names"`
+	IpRadiusSourceInterfaceLoopback                  types.Int64                           `tfsdk:"ip_radius_source_interface_loopback"`
+	IpRadiusSourceInterfaceVlan                      types.Int64                           `tfsdk:"ip_radius_source_interface_vlan"`
+	IpRadiusSourceInterfaceGigabitEthernet           types.String                          `tfsdk:"ip_radius_source_interface_gigabit_ethernet"`
+	IpRadiusSourceInterfaceTwoGigabitEthernet        types.String                          `tfsdk:"ip_radius_source_interface_two_gigabit_ethernet"`
+	IpRadiusSourceInterfaceFiveGigabitEthernet       types.String                          `tfsdk:"ip_radius_source_interface_five_gigabit_ethernet"`
+	IpRadiusSourceInterfaceTenGigabitEthernet        types.String                          `tfsdk:"ip_radius_source_interface_ten_gigabit_ethernet"`
+	IpRadiusSourceInterfaceTwentyFiveGigabitEthernet types.String                          `tfsdk:"ip_radius_source_interface_twenty_five_gigabit_ethernet"`
+	IpRadiusSourceInterfaceFortyGigabitEthernet      types.String                          `tfsdk:"ip_radius_source_interface_forty_gigabit_ethernet"`
+	IpRadiusSourceInterfaceHundredGigabitEthernet    types.String                          `tfsdk:"ip_radius_source_interface_hundred_gigabit_ethernet"`
+}
+type AAAGroupServerTacacsplusData struct {
+	Name                                             types.String                              `tfsdk:"name"`
+	ServerNames                                      []AAAGroupServerTacacsplusServerNamesData `tfsdk:"server_names"`
+	IpTacacsSourceInterfaceLoopback                  types.Int64                               `tfsdk:"ip_tacacs_source_interface_loopback"`
+	IpTacacsSourceInterfaceVlan                      types.Int64                               `tfsdk:"ip_tacacs_source_interface_vlan"`
+	IpTacacsSourceInterfaceGigabitEthernet           types.String                              `tfsdk:"ip_tacacs_source_interface_gigabit_ethernet"`
+	IpTacacsSourceInterfaceTwoGigabitEthernet        types.String                              `tfsdk:"ip_tacacs_source_interface_two_gigabit_ethernet"`
+	IpTacacsSourceInterfaceFiveGigabitEthernet       types.String                              `tfsdk:"ip_tacacs_source_interface_five_gigabit_ethernet"`
+	IpTacacsSourceInterfaceTenGigabitEthernet        types.String                              `tfsdk:"ip_tacacs_source_interface_ten_gigabit_ethernet"`
+	IpTacacsSourceInterfaceTwentyFiveGigabitEthernet types.String                              `tfsdk:"ip_tacacs_source_interface_twenty_five_gigabit_ethernet"`
+	IpTacacsSourceInterfaceFortyGigabitEthernet      types.String                              `tfsdk:"ip_tacacs_source_interface_forty_gigabit_ethernet"`
+	IpTacacsSourceInterfaceHundredGigabitEthernet    types.String                              `tfsdk:"ip_tacacs_source_interface_hundred_gigabit_ethernet"`
+	Vrf                                              types.String                              `tfsdk:"vrf"`
+}
+type AAAGroupServerRadiusServerNamesData struct {
+	Name types.String `tfsdk:"name"`
+}
+type AAAGroupServerTacacsplusServerNamesData struct {
 	Name types.String `tfsdk:"name"`
 }
 
@@ -145,7 +186,7 @@ func (data AAAData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data AAA) toBody(ctx context.Context) string {
+func (data AAA) toBody(ctx context.Context, config AAA) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.NewModel.IsNull() && !data.NewModel.IsUnknown() {
 		if data.NewModel.ValueBool() {
@@ -172,6 +213,14 @@ func (data AAA) toBody(ctx context.Context) string {
 	if len(data.ServerRadiusDynamicAuthorClients) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client", []interface{}{})
 		for index, item := range data.ServerRadiusDynamicAuthorClients {
+			var configItem AAAServerRadiusDynamicAuthorClients
+			for _, ci := range config.ServerRadiusDynamicAuthorClients {
+				if ci.Ip.ValueString() != item.Ip.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client"+"."+strconv.Itoa(index)+"."+"ip", item.Ip.ValueString())
 			}
@@ -179,7 +228,11 @@ func (data AAA) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client"+"."+strconv.Itoa(index)+"."+"server-key.key", item.ServerKeyType.ValueString())
 			}
 			if !item.ServerKey.IsNull() && !item.ServerKey.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client"+"."+strconv.Itoa(index)+"."+"server-key.string", item.ServerKey.ValueString())
+				if !configItem.ServerKeyWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client"+"."+strconv.Itoa(index)+"."+"server-key.string", configItem.ServerKeyWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client"+"."+strconv.Itoa(index)+"."+"server-key.string", item.ServerKey.ValueString())
+				}
 			}
 		}
 	}
@@ -282,7 +335,7 @@ func (data AAA) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data AAA) toBodyXML(ctx context.Context) string {
+func (data AAA) toBodyXML(ctx context.Context, config AAA) string {
 	body := netconf.Body{}
 	if !data.NewModel.IsNull() && !data.NewModel.IsUnknown() {
 		if data.NewModel.ValueBool() {
@@ -303,6 +356,14 @@ func (data AAA) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.ServerRadiusDynamicAuthorClients) > 0 {
 		for _, item := range data.ServerRadiusDynamicAuthorClients {
+			var configItem AAAServerRadiusDynamicAuthorClients
+			for _, ci := range config.ServerRadiusDynamicAuthorClients {
+				if ci.Ip.ValueString() != item.Ip.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
@@ -311,7 +372,11 @@ func (data AAA) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "server-key/key", item.ServerKeyType.ValueString())
 			}
 			if !item.ServerKey.IsNull() && !item.ServerKey.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "server-key/string", item.ServerKey.ValueString())
+				if !configItem.ServerKeyWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "server-key/string", configItem.ServerKeyWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "server-key/string", item.ServerKey.ValueString())
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client", cBody.Res())
 		}
@@ -1189,9 +1254,9 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SessionId = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:server.radius.dynamic-author.client"); value.Exists() {
-		data.ServerRadiusDynamicAuthorClients = make([]AAAServerRadiusDynamicAuthorClients, 0)
+		data.ServerRadiusDynamicAuthorClients = make([]AAAServerRadiusDynamicAuthorClientsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAServerRadiusDynamicAuthorClients{}
+			item := AAAServerRadiusDynamicAuthorClientsData{}
 			if cValue := v.Get("ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -1206,9 +1271,9 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:group.server.radius"); value.Exists() {
-		data.GroupServerRadius = make([]AAAGroupServerRadius, 0)
+		data.GroupServerRadius = make([]AAAGroupServerRadiusData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAGroupServerRadius{}
+			item := AAAGroupServerRadiusData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -1216,9 +1281,9 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Deadtime = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("server.name"); cValue.Exists() {
-				item.ServerNames = make([]AAAGroupServerRadiusServerNames, 0)
+				item.ServerNames = make([]AAAGroupServerRadiusServerNamesData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := AAAGroupServerRadiusServerNames{}
+					cItem := AAAGroupServerRadiusServerNamesData{}
 					if ccValue := cv.Get("name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -1258,16 +1323,16 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:group.server.tacacsplus"); value.Exists() {
-		data.GroupServerTacacsplus = make([]AAAGroupServerTacacsplus, 0)
+		data.GroupServerTacacsplus = make([]AAAGroupServerTacacsplusData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAGroupServerTacacsplus{}
+			item := AAAGroupServerTacacsplusData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("server.name"); cValue.Exists() {
-				item.ServerNames = make([]AAAGroupServerTacacsplusServerNames, 0)
+				item.ServerNames = make([]AAAGroupServerTacacsplusServerNamesData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := AAAGroupServerTacacsplusServerNames{}
+					cItem := AAAGroupServerTacacsplusServerNamesData{}
 					if ccValue := cv.Get("name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -1489,9 +1554,9 @@ func (data *AAAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SessionId = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client"); value.Exists() {
-		data.ServerRadiusDynamicAuthorClients = make([]AAAServerRadiusDynamicAuthorClients, 0)
+		data.ServerRadiusDynamicAuthorClients = make([]AAAServerRadiusDynamicAuthorClientsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAServerRadiusDynamicAuthorClients{}
+			item := AAAServerRadiusDynamicAuthorClientsData{}
 			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -1506,9 +1571,9 @@ func (data *AAAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius"); value.Exists() {
-		data.GroupServerRadius = make([]AAAGroupServerRadius, 0)
+		data.GroupServerRadius = make([]AAAGroupServerRadiusData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAGroupServerRadius{}
+			item := AAAGroupServerRadiusData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -1516,9 +1581,9 @@ func (data *AAAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.Deadtime = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "server/name"); cValue.Exists() {
-				item.ServerNames = make([]AAAGroupServerRadiusServerNames, 0)
+				item.ServerNames = make([]AAAGroupServerRadiusServerNamesData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := AAAGroupServerRadiusServerNames{}
+					cItem := AAAGroupServerRadiusServerNamesData{}
 					if ccValue := helpers.GetFromXPath(cv, "name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -1558,16 +1623,16 @@ func (data *AAAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus"); value.Exists() {
-		data.GroupServerTacacsplus = make([]AAAGroupServerTacacsplus, 0)
+		data.GroupServerTacacsplus = make([]AAAGroupServerTacacsplusData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AAAGroupServerTacacsplus{}
+			item := AAAGroupServerTacacsplusData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "server/name"); cValue.Exists() {
-				item.ServerNames = make([]AAAGroupServerTacacsplusServerNames, 0)
+				item.ServerNames = make([]AAAGroupServerTacacsplusServerNamesData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := AAAGroupServerTacacsplusServerNames{}
+					cItem := AAAGroupServerTacacsplusServerNamesData{}
 					if ccValue := helpers.GetFromXPath(cv, "name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}

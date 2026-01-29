@@ -67,33 +67,36 @@ type InterfaceSwitchport struct {
 	TrunkNativeVlan             types.Int64                               `tfsdk:"trunk_native_vlan"`
 	Host                        types.Bool                                `tfsdk:"host"`
 }
+type InterfaceSwitchportTrunkAllowedVlansAdd struct {
+	Vlans types.String `tfsdk:"vlans"`
+}
 
 type InterfaceSwitchportData struct {
-	Device                      types.String                              `tfsdk:"device"`
-	Id                          types.String                              `tfsdk:"id"`
-	Type                        types.String                              `tfsdk:"type"`
-	Name                        types.String                              `tfsdk:"name"`
-	ModeAccess                  types.Bool                                `tfsdk:"mode_access"`
-	ModeDot1qTunnel             types.Bool                                `tfsdk:"mode_dot1q_tunnel"`
-	ModePrivateVlanTrunk        types.Bool                                `tfsdk:"mode_private_vlan_trunk"`
-	ModePrivateVlanHost         types.Bool                                `tfsdk:"mode_private_vlan_host"`
-	ModePrivateVlanPromiscuous  types.Bool                                `tfsdk:"mode_private_vlan_promiscuous"`
-	ModeTrunk                   types.Bool                                `tfsdk:"mode_trunk"`
-	Nonegotiate                 types.Bool                                `tfsdk:"nonegotiate"`
-	AccessVlan                  types.String                              `tfsdk:"access_vlan"`
-	TrunkAllowedVlans           types.String                              `tfsdk:"trunk_allowed_vlans"`
-	TrunkAllowedVlansNone       types.Bool                                `tfsdk:"trunk_allowed_vlans_none"`
-	TrunkAllowedVlansAll        types.Bool                                `tfsdk:"trunk_allowed_vlans_all"`
-	TrunkAllowedVlansAdd        []InterfaceSwitchportTrunkAllowedVlansAdd `tfsdk:"trunk_allowed_vlans_add"`
-	TrunkAllowedVlansExcept     types.String                              `tfsdk:"trunk_allowed_vlans_except"`
-	TrunkAllowedVlansRemove     types.String                              `tfsdk:"trunk_allowed_vlans_remove"`
-	TrunkAllowedVlansLegacy     types.String                              `tfsdk:"trunk_allowed_vlans_legacy"`
-	TrunkAllowedVlansNoneLegacy types.Bool                                `tfsdk:"trunk_allowed_vlans_none_legacy"`
-	TrunkNativeVlanTag          types.Bool                                `tfsdk:"trunk_native_vlan_tag"`
-	TrunkNativeVlan             types.Int64                               `tfsdk:"trunk_native_vlan"`
-	Host                        types.Bool                                `tfsdk:"host"`
+	Device                      types.String                                  `tfsdk:"device"`
+	Id                          types.String                                  `tfsdk:"id"`
+	Type                        types.String                                  `tfsdk:"type"`
+	Name                        types.String                                  `tfsdk:"name"`
+	ModeAccess                  types.Bool                                    `tfsdk:"mode_access"`
+	ModeDot1qTunnel             types.Bool                                    `tfsdk:"mode_dot1q_tunnel"`
+	ModePrivateVlanTrunk        types.Bool                                    `tfsdk:"mode_private_vlan_trunk"`
+	ModePrivateVlanHost         types.Bool                                    `tfsdk:"mode_private_vlan_host"`
+	ModePrivateVlanPromiscuous  types.Bool                                    `tfsdk:"mode_private_vlan_promiscuous"`
+	ModeTrunk                   types.Bool                                    `tfsdk:"mode_trunk"`
+	Nonegotiate                 types.Bool                                    `tfsdk:"nonegotiate"`
+	AccessVlan                  types.String                                  `tfsdk:"access_vlan"`
+	TrunkAllowedVlans           types.String                                  `tfsdk:"trunk_allowed_vlans"`
+	TrunkAllowedVlansNone       types.Bool                                    `tfsdk:"trunk_allowed_vlans_none"`
+	TrunkAllowedVlansAll        types.Bool                                    `tfsdk:"trunk_allowed_vlans_all"`
+	TrunkAllowedVlansAdd        []InterfaceSwitchportTrunkAllowedVlansAddData `tfsdk:"trunk_allowed_vlans_add"`
+	TrunkAllowedVlansExcept     types.String                                  `tfsdk:"trunk_allowed_vlans_except"`
+	TrunkAllowedVlansRemove     types.String                                  `tfsdk:"trunk_allowed_vlans_remove"`
+	TrunkAllowedVlansLegacy     types.String                                  `tfsdk:"trunk_allowed_vlans_legacy"`
+	TrunkAllowedVlansNoneLegacy types.Bool                                    `tfsdk:"trunk_allowed_vlans_none_legacy"`
+	TrunkNativeVlanTag          types.Bool                                    `tfsdk:"trunk_native_vlan_tag"`
+	TrunkNativeVlan             types.Int64                                   `tfsdk:"trunk_native_vlan"`
+	Host                        types.Bool                                    `tfsdk:"host"`
 }
-type InterfaceSwitchportTrunkAllowedVlansAdd struct {
+type InterfaceSwitchportTrunkAllowedVlansAddData struct {
 	Vlans types.String `tfsdk:"vlans"`
 }
 
@@ -137,7 +140,7 @@ func (data InterfaceSwitchportData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceSwitchport) toBody(ctx context.Context) string {
+func (data InterfaceSwitchport) toBody(ctx context.Context, config InterfaceSwitchport) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.ModeAccess.IsNull() && !data.ModeAccess.IsUnknown() {
 		if data.ModeAccess.ValueBool() {
@@ -228,7 +231,7 @@ func (data InterfaceSwitchport) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceSwitchport) toBodyXML(ctx context.Context) string {
+func (data InterfaceSwitchport) toBodyXML(ctx context.Context, config InterfaceSwitchport) string {
 	body := netconf.Body{}
 	if !data.ModeAccess.IsNull() && !data.ModeAccess.IsUnknown() {
 		if data.ModeAccess.ValueBool() {
@@ -845,9 +848,9 @@ func (data *InterfaceSwitchportData) fromBody(ctx context.Context, res gjson.Res
 		data.TrunkAllowedVlansAll = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.add-vlans.add"); value.Exists() {
-		data.TrunkAllowedVlansAdd = make([]InterfaceSwitchportTrunkAllowedVlansAdd, 0)
+		data.TrunkAllowedVlansAdd = make([]InterfaceSwitchportTrunkAllowedVlansAddData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceSwitchportTrunkAllowedVlansAdd{}
+			item := InterfaceSwitchportTrunkAllowedVlansAddData{}
 			if cValue := v.Get("vlans"); cValue.Exists() {
 				item.Vlans = types.StringValue(cValue.String())
 			}
@@ -1037,9 +1040,9 @@ func (data *InterfaceSwitchportData) fromBodyXML(ctx context.Context, res xmldot
 		data.TrunkAllowedVlansAll = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/add-vlans/add"); value.Exists() {
-		data.TrunkAllowedVlansAdd = make([]InterfaceSwitchportTrunkAllowedVlansAdd, 0)
+		data.TrunkAllowedVlansAdd = make([]InterfaceSwitchportTrunkAllowedVlansAddData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceSwitchportTrunkAllowedVlansAdd{}
+			item := InterfaceSwitchportTrunkAllowedVlansAddData{}
 			if cValue := helpers.GetFromXPath(v, "vlans"); cValue.Exists() {
 				item.Vlans = types.StringValue(cValue.String())
 			}

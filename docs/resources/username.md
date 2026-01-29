@@ -31,14 +31,20 @@ resource "iosxe_username" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `description` (String) description string with max 128 characters
 - `device` (String) A device name from the provider configuration.
 - `password` (String, Sensitive)
 - `password_encryption` (String) - Choices: `0`, `6`, `7`
+- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo_version` (Number) The write-only version of the attribute.
 - `privilege` (Number) Set user privilege level
   - Range: `0`-`15`
 - `secret` (String, Sensitive)
 - `secret_encryption` (String) - Choices: `0`, `5`, `8`, `9`
+- `secret_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `secret_wo_version` (Number) The write-only version of the attribute.
 
 ### Read-Only
 

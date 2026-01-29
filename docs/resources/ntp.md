@@ -140,13 +140,25 @@ Required:
 Optional:
 
 - `cmac_aes_128` (String, Sensitive) CMAC-AES-128 (digest length = 128 bits,  key length = [16 or 32] bytes)
+- `cmac_aes_128_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `cmac_aes_128_wo_version` (Number) The write-only version of the attribute.
 - `encryption_type` (Number) Authentication key encryption type
   - Range: `0`-`4294967295`
 - `hmac_sha1` (String, Sensitive) HMAC-SHA1 (digest length = 160 bits,  key length = [1-32] bytes)
+- `hmac_sha1_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `hmac_sha1_wo_version` (Number) The write-only version of the attribute.
 - `hmac_sha2_256` (String, Sensitive) HMAC-SHA2-256 (digest length = 256 bits,  key length = [1-32] bytes)
+- `hmac_sha2_256_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `hmac_sha2_256_wo_version` (Number) The write-only version of the attribute.
 - `md5` (String, Sensitive) MD5 authentication
+- `md5_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `md5_wo_version` (Number) The write-only version of the attribute.
 - `sha1` (String, Sensitive) SHA1 (digest length = 160 bits,  key length = [1-32] bytes)
+- `sha1_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `sha1_wo_version` (Number) The write-only version of the attribute.
 - `sha2` (String, Sensitive) SHA-256 (digest length = 256 bits,  key length = [1-32] bytes)
+- `sha2_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `sha2_wo_version` (Number) The write-only version of the attribute.
 
 
 <a id="nestedatt--peer_vrfs"></a>
