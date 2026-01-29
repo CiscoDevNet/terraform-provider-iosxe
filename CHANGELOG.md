@@ -3,6 +3,7 @@
 - Expose attributes with sensitive values also as write-only attributes
 - Fix issue with NETCONF sibling element handling when removing multiple elements from YANG lists (e.g., removing multiple VLAN priorities or helper addresses)
 - Fix `iosxe_spanning_tree` resource to not remove VLANs from STP when VLANs are removed from resource configuration
+- Add `disabled_vlans` attribute to `iosxe_spanning_tree` resource and data source for explicitly disabling STP on specific VLANs
 
 ## 0.15.0
 
