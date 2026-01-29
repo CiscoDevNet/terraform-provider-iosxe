@@ -31,7 +31,9 @@ import (
 
 // End of section. //template:end imports
 
-// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
+// Custom test section - template markers removed to preserve disabled_vlans tests
+// disabled_vlans uses inverse logic and cannot be imported (write-only concept)
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/432
 
 func TestAccIosxeSpanningTree(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -48,6 +50,7 @@ func TestAccIosxeSpanningTree(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "mst_instances.0.vlan_ids.0", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "vlans.0.id", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "vlans.0.priority", "32768"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "disabled_vlans.0.id", "20"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -64,14 +67,12 @@ func TestAccIosxeSpanningTree(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeSpanningTreeImportStateIdFunc("iosxe_spanning_tree.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"disabled_vlans"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
 }
-
-// End of section. //template:end testAcc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
@@ -97,7 +98,8 @@ func testAccIosxeSpanningTreeConfig_minimum() string {
 
 // End of section. //template:end testAccConfigMinimal
 
-// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
+// Custom config section - template markers removed to preserve disabled_vlans config
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/432
 
 func testAccIosxeSpanningTreeConfig_all() string {
 	config := `resource "iosxe_spanning_tree" "test" {` + "\n"
@@ -115,8 +117,9 @@ func testAccIosxeSpanningTreeConfig_all() string {
 	config += `		id = "10"` + "\n"
 	config += `		priority = 32768` + "\n"
 	config += `	}]` + "\n"
+	config += `	disabled_vlans = [{` + "\n"
+	config += `		id = "20"` + "\n"
+	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config
 }
-
-// End of section. //template:end testAccConfigAll
