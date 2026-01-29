@@ -708,36 +708,6 @@ func appendSiblingElement(body netconf.Body, parentPathSegments []string, remain
 	return body, resultPathSegments
 }
 
-// findSiblingIndex finds the correct array index for a list element with given keys.
-// Returns -1 if no elements exist yet (use non-indexed path).
-// Returns the index of an existing element with matching keys.
-// Returns the next available index if elements exist but none match the keys.
-// Deprecated: Use findSiblingInfo instead for proper sibling handling.
-func findSiblingIndex(body netconf.Body, parentPath, elementName string, keys []KeyValue) int {
-	result := findSiblingInfo(body, parentPath, elementName, keys)
-	switch result.Action {
-	case SiblingActionNew:
-		return -1
-	case SiblingActionUpdate:
-		return result.Index
-	case SiblingActionAppend:
-		// For backward compatibility, return count as the next index
-		// But note: using indexed paths with Set() won't work
-		basePath := elementName
-		if parentPath != "" {
-			basePath = parentPath + "." + elementName
-		}
-		count := xmldot.Get(body.Res(), basePath+".#").Int()
-		if count == 0 {
-			// Single element exists but doesn't match - return 1 as next index
-			return 1
-		}
-		return int(count)
-	default:
-		return -1
-	}
-}
-
 // parseXPathSegment parses an XPath segment with single or multiple keys
 // Supports formats:
 //   - element[key='value']

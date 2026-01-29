@@ -2482,25 +2482,25 @@ func TestRemoveFromXPath_MultipleSiblings(t *testing.T) {
 	t.Log("✓ Multiple sibling elements with different keys handled correctly")
 }
 
-// TestFindSiblingIndex tests the findSiblingIndex helper function
-func TestFindSiblingIndex(t *testing.T) {
+// TestFindSiblingInfo tests the findSiblingInfo helper function
+func TestFindSiblingInfo(t *testing.T) {
 	tests := []struct {
 		name        string
 		setupBody   func() netconf.Body
 		parentPath  string
 		elementName string
 		keys        []KeyValue
-		wantIndex   int
+		wantResult  SiblingResult
 	}{
 		{
-			name: "no existing elements returns -1",
+			name: "no existing elements returns SiblingActionNew",
 			setupBody: func() netconf.Body {
 				return netconf.NewBody("")
 			},
 			parentPath:  "spanning-tree",
 			elementName: "vlan",
 			keys:        []KeyValue{{Key: "id", Value: "10"}},
-			wantIndex:   -1,
+			wantResult:  SiblingResult{Action: SiblingActionNew, Index: -1},
 		},
 		{
 			name: "finds existing element with matching keys",
@@ -2513,10 +2513,10 @@ func TestFindSiblingIndex(t *testing.T) {
 			parentPath:  "spanning-tree",
 			elementName: "vlan",
 			keys:        []KeyValue{{Key: "id", Value: "10"}},
-			wantIndex:   0,
+			wantResult:  SiblingResult{Action: SiblingActionUpdate, Index: 0},
 		},
 		{
-			name: "returns next index when no match",
+			name: "returns SiblingActionAppend when no match",
 			setupBody: func() netconf.Body {
 				body := netconf.NewBody("")
 				body = body.Set("spanning-tree.vlan.id", "10")
@@ -2525,7 +2525,7 @@ func TestFindSiblingIndex(t *testing.T) {
 			parentPath:  "spanning-tree",
 			elementName: "vlan",
 			keys:        []KeyValue{{Key: "id", Value: "20"}},
-			wantIndex:   1,
+			wantResult:  SiblingResult{Action: SiblingActionAppend, Index: -1},
 		},
 		{
 			name: "finds correct element among multiple siblings",
@@ -2539,16 +2539,16 @@ func TestFindSiblingIndex(t *testing.T) {
 			parentPath:  "spanning-tree",
 			elementName: "vlan",
 			keys:        []KeyValue{{Key: "id", Value: "20"}},
-			wantIndex:   1,
+			wantResult:  SiblingResult{Action: SiblingActionUpdate, Index: 1},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			body := tt.setupBody()
-			gotIndex := findSiblingIndex(body, tt.parentPath, tt.elementName, tt.keys)
-			if gotIndex != tt.wantIndex {
-				t.Errorf("findSiblingIndex() = %d, want %d", gotIndex, tt.wantIndex)
+			got := findSiblingInfo(body, tt.parentPath, tt.elementName, tt.keys)
+			if got.Action != tt.wantResult.Action || got.Index != tt.wantResult.Index {
+				t.Errorf("findSiblingInfo() = %+v, want %+v", got, tt.wantResult)
 			}
 		})
 	}
