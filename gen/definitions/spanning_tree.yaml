@@ -38,15 +38,4 @@ attributes:
         example: "10"
       - yang_name: priority
         example: 32768
-  # disabled_vlans uses INVERSE logic - setting it in config means DELETE from STP
-  # This allows explicitly disabling STP on specific VLANs via "no spanning-tree vlan X"
-  - yang_name: Cisco-IOS-XE-spanning-tree:vlan
-    tf_name: disabled_vlans
-    type: List
-    no_augment_config: true
-    description: "VLANs to explicitly disable from spanning-tree. Uses inverse logic: presence in config sends DELETE operation. Removing from config allows VLANs to revert to default STP behavior."
-    attributes:
-      - yang_name: id
-        id: true
-        example: "99"
     
