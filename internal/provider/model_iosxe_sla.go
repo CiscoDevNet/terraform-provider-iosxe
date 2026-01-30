@@ -46,13 +46,6 @@ type SLA struct {
 	Entries   []SLAEntries   `tfsdk:"entries"`
 	Schedules []SLASchedules `tfsdk:"schedules"`
 }
-
-type SLAData struct {
-	Device    types.String   `tfsdk:"device"`
-	Id        types.String   `tfsdk:"id"`
-	Entries   []SLAEntries   `tfsdk:"entries"`
-	Schedules []SLASchedules `tfsdk:"schedules"`
-}
 type SLAEntries struct {
 	Number              types.Int64  `tfsdk:"number"`
 	IcmpEchoDestination types.String `tfsdk:"icmp_echo_destination"`
@@ -60,6 +53,24 @@ type SLAEntries struct {
 	IcmpEchoFrequency   types.Int64  `tfsdk:"icmp_echo_frequency"`
 }
 type SLASchedules struct {
+	EntryNumber  types.Int64 `tfsdk:"entry_number"`
+	Life         types.Int64 `tfsdk:"life"`
+	StartTimeNow types.Bool  `tfsdk:"start_time_now"`
+}
+
+type SLAData struct {
+	Device    types.String       `tfsdk:"device"`
+	Id        types.String       `tfsdk:"id"`
+	Entries   []SLAEntriesData   `tfsdk:"entries"`
+	Schedules []SLASchedulesData `tfsdk:"schedules"`
+}
+type SLAEntriesData struct {
+	Number              types.Int64  `tfsdk:"number"`
+	IcmpEchoDestination types.String `tfsdk:"icmp_echo_destination"`
+	IcmpEchoSourceIp    types.String `tfsdk:"icmp_echo_source_ip"`
+	IcmpEchoFrequency   types.Int64  `tfsdk:"icmp_echo_frequency"`
+}
+type SLASchedulesData struct {
 	EntryNumber  types.Int64 `tfsdk:"entry_number"`
 	Life         types.Int64 `tfsdk:"life"`
 	StartTimeNow types.Bool  `tfsdk:"start_time_now"`
@@ -103,7 +114,7 @@ func (data SLAData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data SLA) toBody(ctx context.Context) string {
+func (data SLA) toBody(ctx context.Context, config SLA) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if len(data.Entries) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry", []interface{}{})
@@ -145,7 +156,7 @@ func (data SLA) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data SLA) toBodyXML(ctx context.Context) string {
+func (data SLA) toBodyXML(ctx context.Context, config SLA) string {
 	body := netconf.Body{}
 	if len(data.Entries) > 0 {
 		for _, item := range data.Entries {
@@ -443,9 +454,9 @@ func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "entry"); value.Exists() {
-		data.Entries = make([]SLAEntries, 0)
+		data.Entries = make([]SLAEntriesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SLAEntries{}
+			item := SLAEntriesData{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.Int64Value(cValue.Int())
 			}
@@ -463,9 +474,9 @@ func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "schedule"); value.Exists() {
-		data.Schedules = make([]SLASchedules, 0)
+		data.Schedules = make([]SLASchedulesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SLASchedules{}
+			item := SLASchedulesData{}
 			if cValue := v.Get("entry-number"); cValue.Exists() {
 				item.EntryNumber = types.Int64Value(cValue.Int())
 			}
@@ -535,9 +546,9 @@ func (data *SLA) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *SLAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry"); value.Exists() {
-		data.Entries = make([]SLAEntries, 0)
+		data.Entries = make([]SLAEntriesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SLAEntries{}
+			item := SLAEntriesData{}
 			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
 				item.Number = types.Int64Value(cValue.Int())
 			}
@@ -555,9 +566,9 @@ func (data *SLAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule"); value.Exists() {
-		data.Schedules = make([]SLASchedules, 0)
+		data.Schedules = make([]SLASchedulesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SLASchedules{}
+			item := SLASchedulesData{}
 			if cValue := helpers.GetFromXPath(v, "entry-number"); cValue.Exists() {
 				item.EntryNumber = types.Int64Value(cValue.Int())
 			}

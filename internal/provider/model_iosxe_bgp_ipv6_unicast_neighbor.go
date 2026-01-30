@@ -55,21 +55,25 @@ type BGPIPv6UnicastNeighbor struct {
 	DefaultOriginateRouteMap types.String                      `tfsdk:"default_originate_route_map"`
 	RouteMaps                []BGPIPv6UnicastNeighborRouteMaps `tfsdk:"route_maps"`
 }
+type BGPIPv6UnicastNeighborRouteMaps struct {
+	InOut        types.String `tfsdk:"in_out"`
+	RouteMapName types.String `tfsdk:"route_map_name"`
+}
 
 type BGPIPv6UnicastNeighborData struct {
-	Device                   types.String                      `tfsdk:"device"`
-	Id                       types.String                      `tfsdk:"id"`
-	Asn                      types.String                      `tfsdk:"asn"`
-	Ip                       types.String                      `tfsdk:"ip"`
-	Activate                 types.Bool                        `tfsdk:"activate"`
-	SendCommunity            types.String                      `tfsdk:"send_community"`
-	RouteReflectorClient     types.Bool                        `tfsdk:"route_reflector_client"`
-	SoftReconfiguration      types.String                      `tfsdk:"soft_reconfiguration"`
-	DefaultOriginate         types.Bool                        `tfsdk:"default_originate"`
-	DefaultOriginateRouteMap types.String                      `tfsdk:"default_originate_route_map"`
-	RouteMaps                []BGPIPv6UnicastNeighborRouteMaps `tfsdk:"route_maps"`
+	Device                   types.String                          `tfsdk:"device"`
+	Id                       types.String                          `tfsdk:"id"`
+	Asn                      types.String                          `tfsdk:"asn"`
+	Ip                       types.String                          `tfsdk:"ip"`
+	Activate                 types.Bool                            `tfsdk:"activate"`
+	SendCommunity            types.String                          `tfsdk:"send_community"`
+	RouteReflectorClient     types.Bool                            `tfsdk:"route_reflector_client"`
+	SoftReconfiguration      types.String                          `tfsdk:"soft_reconfiguration"`
+	DefaultOriginate         types.Bool                            `tfsdk:"default_originate"`
+	DefaultOriginateRouteMap types.String                          `tfsdk:"default_originate_route_map"`
+	RouteMaps                []BGPIPv6UnicastNeighborRouteMapsData `tfsdk:"route_maps"`
 }
-type BGPIPv6UnicastNeighborRouteMaps struct {
+type BGPIPv6UnicastNeighborRouteMapsData struct {
 	InOut        types.String `tfsdk:"in_out"`
 	RouteMapName types.String `tfsdk:"route_map_name"`
 }
@@ -114,7 +118,7 @@ func (data BGPIPv6UnicastNeighborData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPIPv6UnicastNeighbor) toBody(ctx context.Context) string {
+func (data BGPIPv6UnicastNeighbor) toBody(ctx context.Context, config BGPIPv6UnicastNeighbor) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
@@ -161,7 +165,7 @@ func (data BGPIPv6UnicastNeighbor) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPIPv6UnicastNeighbor) toBodyXML(ctx context.Context) string {
+func (data BGPIPv6UnicastNeighbor) toBodyXML(ctx context.Context, config BGPIPv6UnicastNeighbor) string {
 	body := netconf.Body{}
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Ip.ValueString())
@@ -478,9 +482,9 @@ func (data *BGPIPv6UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 		data.DefaultOriginateRouteMap = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPIPv6UnicastNeighborRouteMaps, 0)
+		data.RouteMaps = make([]BGPIPv6UnicastNeighborRouteMapsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPIPv6UnicastNeighborRouteMaps{}
+			item := BGPIPv6UnicastNeighborRouteMapsData{}
 			if cValue := v.Get("inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -568,9 +572,9 @@ func (data *BGPIPv6UnicastNeighborData) fromBodyXML(ctx context.Context, res xml
 		data.DefaultOriginateRouteMap = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPIPv6UnicastNeighborRouteMaps, 0)
+		data.RouteMaps = make([]BGPIPv6UnicastNeighborRouteMapsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPIPv6UnicastNeighborRouteMaps{}
+			item := BGPIPv6UnicastNeighborRouteMapsData{}
 			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}

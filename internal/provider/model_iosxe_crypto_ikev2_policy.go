@@ -51,18 +51,21 @@ type CryptoIKEv2Policy struct {
 	MatchFvrfAny        types.Bool                   `tfsdk:"match_fvrf_any"`
 	Proposals           []CryptoIKEv2PolicyProposals `tfsdk:"proposals"`
 }
+type CryptoIKEv2PolicyProposals struct {
+	Proposals types.String `tfsdk:"proposals"`
+}
 
 type CryptoIKEv2PolicyData struct {
-	Device              types.String                 `tfsdk:"device"`
-	Id                  types.String                 `tfsdk:"id"`
-	Name                types.String                 `tfsdk:"name"`
-	MatchInboundOnly    types.Bool                   `tfsdk:"match_inbound_only"`
-	MatchAddressLocalIp types.List                   `tfsdk:"match_address_local_ip"`
-	MatchFvrf           types.String                 `tfsdk:"match_fvrf"`
-	MatchFvrfAny        types.Bool                   `tfsdk:"match_fvrf_any"`
-	Proposals           []CryptoIKEv2PolicyProposals `tfsdk:"proposals"`
+	Device              types.String                     `tfsdk:"device"`
+	Id                  types.String                     `tfsdk:"id"`
+	Name                types.String                     `tfsdk:"name"`
+	MatchInboundOnly    types.Bool                       `tfsdk:"match_inbound_only"`
+	MatchAddressLocalIp types.List                       `tfsdk:"match_address_local_ip"`
+	MatchFvrf           types.String                     `tfsdk:"match_fvrf"`
+	MatchFvrfAny        types.Bool                       `tfsdk:"match_fvrf_any"`
+	Proposals           []CryptoIKEv2PolicyProposalsData `tfsdk:"proposals"`
 }
-type CryptoIKEv2PolicyProposals struct {
+type CryptoIKEv2PolicyProposalsData struct {
 	Proposals types.String `tfsdk:"proposals"`
 }
 
@@ -106,7 +109,7 @@ func (data CryptoIKEv2PolicyData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CryptoIKEv2Policy) toBody(ctx context.Context) string {
+func (data CryptoIKEv2Policy) toBody(ctx context.Context, config CryptoIKEv2Policy) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -144,7 +147,7 @@ func (data CryptoIKEv2Policy) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CryptoIKEv2Policy) toBodyXML(ctx context.Context) string {
+func (data CryptoIKEv2Policy) toBodyXML(ctx context.Context, config CryptoIKEv2Policy) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -399,9 +402,9 @@ func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Resul
 		data.MatchFvrfAny = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "proposal"); value.Exists() {
-		data.Proposals = make([]CryptoIKEv2PolicyProposals, 0)
+		data.Proposals = make([]CryptoIKEv2PolicyProposalsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2PolicyProposals{}
+			item := CryptoIKEv2PolicyProposalsData{}
 			if cValue := v.Get("proposals"); cValue.Exists() {
 				item.Proposals = types.StringValue(cValue.String())
 			}
@@ -471,9 +474,9 @@ func (data *CryptoIKEv2PolicyData) fromBodyXML(ctx context.Context, res xmldot.R
 		data.MatchFvrfAny = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/proposal"); value.Exists() {
-		data.Proposals = make([]CryptoIKEv2PolicyProposals, 0)
+		data.Proposals = make([]CryptoIKEv2PolicyProposalsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CryptoIKEv2PolicyProposals{}
+			item := CryptoIKEv2PolicyProposalsData{}
 			if cValue := helpers.GetFromXPath(v, "proposals"); cValue.Exists() {
 				item.Proposals = types.StringValue(cValue.String())
 			}

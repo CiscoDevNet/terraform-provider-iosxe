@@ -96,7 +96,7 @@ func (data CryptoIPSecTransformSetData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CryptoIPSecTransformSet) toBody(ctx context.Context) string {
+func (data CryptoIPSecTransformSet) toBody(ctx context.Context, config CryptoIPSecTransformSet) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tag", data.Name.ValueString())
@@ -119,7 +119,7 @@ func (data CryptoIPSecTransformSet) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CryptoIPSecTransformSet) toBodyXML(ctx context.Context) string {
+func (data CryptoIPSecTransformSet) toBodyXML(ctx context.Context, config CryptoIPSecTransformSet) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/tag", data.Name.ValueString())

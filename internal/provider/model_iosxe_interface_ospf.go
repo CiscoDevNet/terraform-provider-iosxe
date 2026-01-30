@@ -61,26 +61,6 @@ type InterfaceOSPF struct {
 	MultiAreaIds                 []InterfaceOSPFMultiAreaIds      `tfsdk:"multi_area_ids"`
 	MessageDigestKeys            []InterfaceOSPFMessageDigestKeys `tfsdk:"message_digest_keys"`
 }
-
-type InterfaceOSPFData struct {
-	Device                       types.String                     `tfsdk:"device"`
-	Id                           types.String                     `tfsdk:"id"`
-	Type                         types.String                     `tfsdk:"type"`
-	Name                         types.String                     `tfsdk:"name"`
-	Cost                         types.Int64                      `tfsdk:"cost"`
-	DeadInterval                 types.Int64                      `tfsdk:"dead_interval"`
-	HelloInterval                types.Int64                      `tfsdk:"hello_interval"`
-	MtuIgnore                    types.Bool                       `tfsdk:"mtu_ignore"`
-	NetworkTypeBroadcast         types.Bool                       `tfsdk:"network_type_broadcast"`
-	NetworkTypeNonBroadcast      types.Bool                       `tfsdk:"network_type_non_broadcast"`
-	NetworkTypePointToMultipoint types.Bool                       `tfsdk:"network_type_point_to_multipoint"`
-	NetworkTypePointToPoint      types.Bool                       `tfsdk:"network_type_point_to_point"`
-	Priority                     types.Int64                      `tfsdk:"priority"`
-	TtlSecurityHops              types.Int64                      `tfsdk:"ttl_security_hops"`
-	ProcessIds                   []InterfaceOSPFProcessIds        `tfsdk:"process_ids"`
-	MultiAreaIds                 []InterfaceOSPFMultiAreaIds      `tfsdk:"multi_area_ids"`
-	MessageDigestKeys            []InterfaceOSPFMessageDigestKeys `tfsdk:"message_digest_keys"`
-}
 type InterfaceOSPFProcessIds struct {
 	Id    types.Int64                    `tfsdk:"id"`
 	Areas []InterfaceOSPFProcessIdsAreas `tfsdk:"areas"`
@@ -89,11 +69,48 @@ type InterfaceOSPFMultiAreaIds struct {
 	AreaId types.String `tfsdk:"area_id"`
 }
 type InterfaceOSPFMessageDigestKeys struct {
+	Id                  types.Int64  `tfsdk:"id"`
+	Md5AuthKey          types.String `tfsdk:"md5_auth_key"`
+	Md5AuthKeyWO        types.String `tfsdk:"md5_auth_key_wo"`
+	Md5AuthKeyWOVersion types.Int64  `tfsdk:"md5_auth_key_wo_version"`
+	Md5AuthType         types.Int64  `tfsdk:"md5_auth_type"`
+}
+type InterfaceOSPFProcessIdsAreas struct {
+	AreaId types.String `tfsdk:"area_id"`
+}
+
+type InterfaceOSPFData struct {
+	Device                       types.String                         `tfsdk:"device"`
+	Id                           types.String                         `tfsdk:"id"`
+	Type                         types.String                         `tfsdk:"type"`
+	Name                         types.String                         `tfsdk:"name"`
+	Cost                         types.Int64                          `tfsdk:"cost"`
+	DeadInterval                 types.Int64                          `tfsdk:"dead_interval"`
+	HelloInterval                types.Int64                          `tfsdk:"hello_interval"`
+	MtuIgnore                    types.Bool                           `tfsdk:"mtu_ignore"`
+	NetworkTypeBroadcast         types.Bool                           `tfsdk:"network_type_broadcast"`
+	NetworkTypeNonBroadcast      types.Bool                           `tfsdk:"network_type_non_broadcast"`
+	NetworkTypePointToMultipoint types.Bool                           `tfsdk:"network_type_point_to_multipoint"`
+	NetworkTypePointToPoint      types.Bool                           `tfsdk:"network_type_point_to_point"`
+	Priority                     types.Int64                          `tfsdk:"priority"`
+	TtlSecurityHops              types.Int64                          `tfsdk:"ttl_security_hops"`
+	ProcessIds                   []InterfaceOSPFProcessIdsData        `tfsdk:"process_ids"`
+	MultiAreaIds                 []InterfaceOSPFMultiAreaIdsData      `tfsdk:"multi_area_ids"`
+	MessageDigestKeys            []InterfaceOSPFMessageDigestKeysData `tfsdk:"message_digest_keys"`
+}
+type InterfaceOSPFProcessIdsData struct {
+	Id    types.Int64                        `tfsdk:"id"`
+	Areas []InterfaceOSPFProcessIdsAreasData `tfsdk:"areas"`
+}
+type InterfaceOSPFMultiAreaIdsData struct {
+	AreaId types.String `tfsdk:"area_id"`
+}
+type InterfaceOSPFMessageDigestKeysData struct {
 	Id          types.Int64  `tfsdk:"id"`
 	Md5AuthKey  types.String `tfsdk:"md5_auth_key"`
 	Md5AuthType types.Int64  `tfsdk:"md5_auth_type"`
 }
-type InterfaceOSPFProcessIdsAreas struct {
+type InterfaceOSPFProcessIdsAreasData struct {
 	AreaId types.String `tfsdk:"area_id"`
 }
 
@@ -137,7 +154,7 @@ func (data InterfaceOSPFData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data InterfaceOSPF) toBody(ctx context.Context) string {
+func (data InterfaceOSPF) toBody(ctx context.Context, config InterfaceOSPF) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Cost.IsNull() && !data.Cost.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cost", strconv.FormatInt(data.Cost.ValueInt64(), 10))
@@ -204,11 +221,23 @@ func (data InterfaceOSPF) toBody(ctx context.Context) string {
 	if len(data.MessageDigestKeys) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key", []interface{}{})
 		for index, item := range data.MessageDigestKeys {
+			var configItem InterfaceOSPFMessageDigestKeys
+			for _, ci := range config.MessageDigestKeys {
+				if ci.Id.ValueInt64() != item.Id.ValueInt64() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"id", strconv.FormatInt(item.Id.ValueInt64(), 10))
 			}
 			if !item.Md5AuthKey.IsNull() && !item.Md5AuthKey.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"md5.auth-key", item.Md5AuthKey.ValueString())
+				if !configItem.Md5AuthKeyWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"md5.auth-key", configItem.Md5AuthKeyWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"md5.auth-key", item.Md5AuthKey.ValueString())
+				}
 			}
 			if !item.Md5AuthType.IsNull() && !item.Md5AuthType.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"md5.auth-type", strconv.FormatInt(item.Md5AuthType.ValueInt64(), 10))
@@ -222,7 +251,7 @@ func (data InterfaceOSPF) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data InterfaceOSPF) toBodyXML(ctx context.Context) string {
+func (data InterfaceOSPF) toBodyXML(ctx context.Context, config InterfaceOSPF) string {
 	body := netconf.Body{}
 	if !data.Cost.IsNull() && !data.Cost.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/cost", strconv.FormatInt(data.Cost.ValueInt64(), 10))
@@ -299,12 +328,24 @@ func (data InterfaceOSPF) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.MessageDigestKeys) > 0 {
 		for _, item := range data.MessageDigestKeys {
+			var configItem InterfaceOSPFMessageDigestKeys
+			for _, ci := range config.MessageDigestKeys {
+				if ci.Id.ValueInt64() != item.Id.ValueInt64() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.Id.ValueInt64(), 10))
 			}
 			if !item.Md5AuthKey.IsNull() && !item.Md5AuthKey.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "md5/auth-key", item.Md5AuthKey.ValueString())
+				if !configItem.Md5AuthKeyWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "md5/auth-key", configItem.Md5AuthKeyWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "md5/auth-key", item.Md5AuthKey.ValueString())
+				}
 			}
 			if !item.Md5AuthType.IsNull() && !item.Md5AuthType.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "md5/auth-type", strconv.FormatInt(item.Md5AuthType.ValueInt64(), 10))
@@ -856,16 +897,16 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "process-id"); value.Exists() {
-		data.ProcessIds = make([]InterfaceOSPFProcessIds, 0)
+		data.ProcessIds = make([]InterfaceOSPFProcessIdsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceOSPFProcessIds{}
+			item := InterfaceOSPFProcessIdsData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("area"); cValue.Exists() {
-				item.Areas = make([]InterfaceOSPFProcessIdsAreas, 0)
+				item.Areas = make([]InterfaceOSPFProcessIdsAreasData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := InterfaceOSPFProcessIdsAreas{}
+					cItem := InterfaceOSPFProcessIdsAreasData{}
 					if ccValue := cv.Get("area-id"); ccValue.Exists() {
 						cItem.AreaId = types.StringValue(ccValue.String())
 					}
@@ -878,9 +919,9 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "multi-area.multi-area-id"); value.Exists() {
-		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIds, 0)
+		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIdsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceOSPFMultiAreaIds{}
+			item := InterfaceOSPFMultiAreaIdsData{}
 			if cValue := v.Get("area-id"); cValue.Exists() {
 				item.AreaId = types.StringValue(cValue.String())
 			}
@@ -889,9 +930,9 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "message-digest-key"); value.Exists() {
-		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
+		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeysData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceOSPFMessageDigestKeys{}
+			item := InterfaceOSPFMessageDigestKeysData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
@@ -1050,16 +1091,16 @@ func (data *InterfaceOSPFData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id"); value.Exists() {
-		data.ProcessIds = make([]InterfaceOSPFProcessIds, 0)
+		data.ProcessIds = make([]InterfaceOSPFProcessIdsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceOSPFProcessIds{}
+			item := InterfaceOSPFProcessIdsData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "area"); cValue.Exists() {
-				item.Areas = make([]InterfaceOSPFProcessIdsAreas, 0)
+				item.Areas = make([]InterfaceOSPFProcessIdsAreasData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := InterfaceOSPFProcessIdsAreas{}
+					cItem := InterfaceOSPFProcessIdsAreasData{}
 					if ccValue := helpers.GetFromXPath(cv, "area-id"); ccValue.Exists() {
 						cItem.AreaId = types.StringValue(ccValue.String())
 					}
@@ -1072,9 +1113,9 @@ func (data *InterfaceOSPFData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/multi-area/multi-area-id"); value.Exists() {
-		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIds, 0)
+		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIdsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceOSPFMultiAreaIds{}
+			item := InterfaceOSPFMultiAreaIdsData{}
 			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
 				item.AreaId = types.StringValue(cValue.String())
 			}
@@ -1083,9 +1124,9 @@ func (data *InterfaceOSPFData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/message-digest-key"); value.Exists() {
-		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
+		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeysData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := InterfaceOSPFMessageDigestKeys{}
+			item := InterfaceOSPFMessageDigestKeysData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}

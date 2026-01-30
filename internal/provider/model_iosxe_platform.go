@@ -94,7 +94,7 @@ func (data PlatformData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Platform) toBody(ctx context.Context) string {
+func (data Platform) toBody(ctx context.Context, config Platform) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.PuntKeepaliveDisableKernelCore.IsNull() && !data.PuntKeepaliveDisableKernelCore.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-platform:punt-keepalive.disable-kernel-core", data.PuntKeepaliveDisableKernelCore.ValueBool())
@@ -115,7 +115,7 @@ func (data Platform) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Platform) toBodyXML(ctx context.Context) string {
+func (data Platform) toBodyXML(ctx context.Context, config Platform) string {
 	body := netconf.Body{}
 	if !data.PuntKeepaliveDisableKernelCore.IsNull() && !data.PuntKeepaliveDisableKernelCore.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-platform:punt-keepalive/disable-kernel-core", data.PuntKeepaliveDisableKernelCore.ValueBool())

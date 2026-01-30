@@ -52,19 +52,23 @@ type LLDP struct {
 	Ipv6ManagementAddresses types.List        `tfsdk:"ipv6_management_addresses"`
 	SystemNames             []LLDPSystemNames `tfsdk:"system_names"`
 }
+type LLDPSystemNames struct {
+	SwitchId types.Int64  `tfsdk:"switch_id"`
+	Name     types.String `tfsdk:"name"`
+}
 
 type LLDPData struct {
-	Device                  types.String      `tfsdk:"device"`
-	Id                      types.String      `tfsdk:"id"`
-	Run                     types.Bool        `tfsdk:"run"`
-	Holdtime                types.Int64       `tfsdk:"holdtime"`
-	ManagementVlan          types.Int64       `tfsdk:"management_vlan"`
-	Timer                   types.Int64       `tfsdk:"timer"`
-	Ipv4ManagementAddresses types.List        `tfsdk:"ipv4_management_addresses"`
-	Ipv6ManagementAddresses types.List        `tfsdk:"ipv6_management_addresses"`
-	SystemNames             []LLDPSystemNames `tfsdk:"system_names"`
+	Device                  types.String          `tfsdk:"device"`
+	Id                      types.String          `tfsdk:"id"`
+	Run                     types.Bool            `tfsdk:"run"`
+	Holdtime                types.Int64           `tfsdk:"holdtime"`
+	ManagementVlan          types.Int64           `tfsdk:"management_vlan"`
+	Timer                   types.Int64           `tfsdk:"timer"`
+	Ipv4ManagementAddresses types.List            `tfsdk:"ipv4_management_addresses"`
+	Ipv6ManagementAddresses types.List            `tfsdk:"ipv6_management_addresses"`
+	SystemNames             []LLDPSystemNamesData `tfsdk:"system_names"`
 }
-type LLDPSystemNames struct {
+type LLDPSystemNamesData struct {
 	SwitchId types.Int64  `tfsdk:"switch_id"`
 	Name     types.String `tfsdk:"name"`
 }
@@ -107,7 +111,7 @@ func (data LLDPData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data LLDP) toBody(ctx context.Context) string {
+func (data LLDP) toBody(ctx context.Context, config LLDP) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Run.IsNull() && !data.Run.IsUnknown() {
 		if data.Run.ValueBool() {
@@ -151,7 +155,7 @@ func (data LLDP) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data LLDP) toBodyXML(ctx context.Context) string {
+func (data LLDP) toBodyXML(ctx context.Context, config LLDP) string {
 	body := netconf.Body{}
 	if !data.Run.IsNull() && !data.Run.IsUnknown() {
 		if data.Run.ValueBool() {
@@ -439,9 +443,9 @@ func (data *LLDPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
 	}
 	if value := res.Get(prefix + "system-name"); value.Exists() {
-		data.SystemNames = make([]LLDPSystemNames, 0)
+		data.SystemNames = make([]LLDPSystemNamesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := LLDPSystemNames{}
+			item := LLDPSystemNamesData{}
 			if cValue := v.Get("switch-id"); cValue.Exists() {
 				item.SwitchId = types.Int64Value(cValue.Int())
 			}
@@ -529,9 +533,9 @@ func (data *LLDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system-name"); value.Exists() {
-		data.SystemNames = make([]LLDPSystemNames, 0)
+		data.SystemNames = make([]LLDPSystemNamesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := LLDPSystemNames{}
+			item := LLDPSystemNamesData{}
 			if cValue := helpers.GetFromXPath(v, "switch-id"); cValue.Exists() {
 				item.SwitchId = types.Int64Value(cValue.Int())
 			}

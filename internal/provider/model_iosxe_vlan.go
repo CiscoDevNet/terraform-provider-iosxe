@@ -105,7 +105,7 @@ func (data VLANData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data VLAN) toBody(ctx context.Context) string {
+func (data VLAN) toBody(ctx context.Context, config VLAN) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.VlanId.IsNull() && !data.VlanId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", strconv.FormatInt(data.VlanId.ValueInt64(), 10))
@@ -148,7 +148,7 @@ func (data VLAN) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data VLAN) toBodyXML(ctx context.Context) string {
+func (data VLAN) toBodyXML(ctx context.Context, config VLAN) string {
 	body := netconf.Body{}
 	if !data.VlanId.IsNull() && !data.VlanId.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.VlanId.ValueInt64(), 10))

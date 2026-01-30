@@ -80,6 +80,8 @@ Required:
 Optional:
 
 - `encryption` (Number) - Range: `0`-`7`
+- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo_version` (Number) The write-only version of the attribute.
 
 
 <a id="nestedatt--peers"></a>
@@ -121,6 +123,8 @@ Required:
 Optional:
 
 - `encryption` (Number) - Range: `0`-`7`
+- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo_version` (Number) The write-only version of the attribute.
 
 
 <a id="nestedatt--vrfs--peers"></a>

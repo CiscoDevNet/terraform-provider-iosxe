@@ -193,7 +193,7 @@ func (data ErrdisableData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Errdisable) toBody(ctx context.Context) string {
+func (data Errdisable) toBody(ctx context.Context, config Errdisable) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.DetectCauseAll.IsNull() && !data.DetectCauseAll.IsUnknown() {
 		if data.DetectCauseAll.ValueBool() {
@@ -451,7 +451,7 @@ func (data Errdisable) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Errdisable) toBodyXML(ctx context.Context) string {
+func (data Errdisable) toBodyXML(ctx context.Context, config Errdisable) string {
 	body := netconf.Body{}
 	if !data.DetectCauseAll.IsNull() && !data.DetectCauseAll.IsUnknown() {
 		if data.DetectCauseAll.ValueBool() {

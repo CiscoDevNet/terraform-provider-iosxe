@@ -130,6 +130,15 @@ func (r *TACACSResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 				},
 			},
+			"key_wo": schema.StringAttribute{
+				MarkdownDescription: "The write-only value of the attribute.",
+				WriteOnly:           true,
+				Optional:            true,
+			},
+			"key_wo_version": schema.Int64Attribute{
+				MarkdownDescription: "The write-only version of the attribute.",
+				Optional:            true,
+			},
 		},
 	}
 }
@@ -147,10 +156,17 @@ func (r *TACACSResource) Configure(_ context.Context, req resource.ConfigureRequ
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *TACACSResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan TACACS
+	var plan, config TACACS
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -167,7 +183,7 @@ func (r *TACACSResource) Create(ctx context.Context, req resource.CreateRequest,
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -207,7 +223,7 @@ func (r *TACACSResource) Create(ctx context.Context, req resource.CreateRequest,
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -314,7 +330,7 @@ func (r *TACACSResource) Read(ctx context.Context, req resource.ReadRequest, res
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *TACACSResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state TACACS
+	var plan, state, config TACACS
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -330,6 +346,13 @@ func (r *TACACSResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -340,7 +363,7 @@ func (r *TACACSResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -394,7 +417,7 @@ func (r *TACACSResource) Update(ctx context.Context, req resource.UpdateRequest,
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

@@ -47,13 +47,6 @@ type StaticRoutesVRF struct {
 	Vrf    types.String            `tfsdk:"vrf"`
 	Routes []StaticRoutesVRFRoutes `tfsdk:"routes"`
 }
-
-type StaticRoutesVRFData struct {
-	Device types.String            `tfsdk:"device"`
-	Id     types.String            `tfsdk:"id"`
-	Vrf    types.String            `tfsdk:"vrf"`
-	Routes []StaticRoutesVRFRoutes `tfsdk:"routes"`
-}
 type StaticRoutesVRFRoutes struct {
 	Prefix            types.String                             `tfsdk:"prefix"`
 	Mask              types.String                             `tfsdk:"mask"`
@@ -69,6 +62,35 @@ type StaticRoutesVRFRoutesNextHops struct {
 	Tag       types.Int64  `tfsdk:"tag"`
 }
 type StaticRoutesVRFRoutesNextHopsWithTrack struct {
+	NextHop     types.String `tfsdk:"next_hop"`
+	Name        types.String `tfsdk:"name"`
+	TrackIdName types.Int64  `tfsdk:"track_id_name"`
+	Distance    types.Int64  `tfsdk:"distance"`
+	Tag         types.Int64  `tfsdk:"tag"`
+	Permanent   types.Bool   `tfsdk:"permanent"`
+}
+
+type StaticRoutesVRFData struct {
+	Device types.String                `tfsdk:"device"`
+	Id     types.String                `tfsdk:"id"`
+	Vrf    types.String                `tfsdk:"vrf"`
+	Routes []StaticRoutesVRFRoutesData `tfsdk:"routes"`
+}
+type StaticRoutesVRFRoutesData struct {
+	Prefix            types.String                                 `tfsdk:"prefix"`
+	Mask              types.String                                 `tfsdk:"mask"`
+	NextHops          []StaticRoutesVRFRoutesNextHopsData          `tfsdk:"next_hops"`
+	NextHopsWithTrack []StaticRoutesVRFRoutesNextHopsWithTrackData `tfsdk:"next_hops_with_track"`
+}
+type StaticRoutesVRFRoutesNextHopsData struct {
+	NextHop   types.String `tfsdk:"next_hop"`
+	Distance  types.Int64  `tfsdk:"distance"`
+	Global    types.Bool   `tfsdk:"global"`
+	Name      types.String `tfsdk:"name"`
+	Permanent types.Bool   `tfsdk:"permanent"`
+	Tag       types.Int64  `tfsdk:"tag"`
+}
+type StaticRoutesVRFRoutesNextHopsWithTrackData struct {
 	NextHop     types.String `tfsdk:"next_hop"`
 	Name        types.String `tfsdk:"name"`
 	TrackIdName types.Int64  `tfsdk:"track_id_name"`
@@ -117,7 +139,7 @@ func (data StaticRoutesVRFData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data StaticRoutesVRF) toBody(ctx context.Context) string {
+func (data StaticRoutesVRF) toBody(ctx context.Context, config StaticRoutesVRF) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Vrf.IsNull() && !data.Vrf.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Vrf.ValueString())
@@ -192,7 +214,7 @@ func (data StaticRoutesVRF) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data StaticRoutesVRF) toBodyXML(ctx context.Context) string {
+func (data StaticRoutesVRF) toBodyXML(ctx context.Context, config StaticRoutesVRF) string {
 	body := netconf.Body{}
 	if !data.Vrf.IsNull() && !data.Vrf.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Vrf.ValueString())
@@ -705,9 +727,9 @@ func (data *StaticRoutesVRFData) fromBody(ctx context.Context, res gjson.Result)
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "ip-route-interface-forwarding-list"); value.Exists() {
-		data.Routes = make([]StaticRoutesVRFRoutes, 0)
+		data.Routes = make([]StaticRoutesVRFRoutesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := StaticRoutesVRFRoutes{}
+			item := StaticRoutesVRFRoutesData{}
 			if cValue := v.Get("prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -715,9 +737,9 @@ func (data *StaticRoutesVRFData) fromBody(ctx context.Context, res gjson.Result)
 				item.Mask = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("fwd-list"); cValue.Exists() {
-				item.NextHops = make([]StaticRoutesVRFRoutesNextHops, 0)
+				item.NextHops = make([]StaticRoutesVRFRoutesNextHopsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := StaticRoutesVRFRoutesNextHops{}
+					cItem := StaticRoutesVRFRoutesNextHopsData{}
 					if ccValue := cv.Get("fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}
@@ -745,9 +767,9 @@ func (data *StaticRoutesVRFData) fromBody(ctx context.Context, res gjson.Result)
 				})
 			}
 			if cValue := v.Get("fwd-list-with-track"); cValue.Exists() {
-				item.NextHopsWithTrack = make([]StaticRoutesVRFRoutesNextHopsWithTrack, 0)
+				item.NextHopsWithTrack = make([]StaticRoutesVRFRoutesNextHopsWithTrackData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := StaticRoutesVRFRoutesNextHopsWithTrack{}
+					cItem := StaticRoutesVRFRoutesNextHopsWithTrackData{}
 					if ccValue := cv.Get("fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}
@@ -863,9 +885,9 @@ func (data *StaticRoutesVRF) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 func (data *StaticRoutesVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip-route-interface-forwarding-list"); value.Exists() {
-		data.Routes = make([]StaticRoutesVRFRoutes, 0)
+		data.Routes = make([]StaticRoutesVRFRoutesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := StaticRoutesVRFRoutes{}
+			item := StaticRoutesVRFRoutesData{}
 			if cValue := helpers.GetFromXPath(v, "prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -873,9 +895,9 @@ func (data *StaticRoutesVRFData) fromBodyXML(ctx context.Context, res xmldot.Res
 				item.Mask = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "fwd-list"); cValue.Exists() {
-				item.NextHops = make([]StaticRoutesVRFRoutesNextHops, 0)
+				item.NextHops = make([]StaticRoutesVRFRoutesNextHopsData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := StaticRoutesVRFRoutesNextHops{}
+					cItem := StaticRoutesVRFRoutesNextHopsData{}
 					if ccValue := helpers.GetFromXPath(cv, "fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}
@@ -903,9 +925,9 @@ func (data *StaticRoutesVRFData) fromBodyXML(ctx context.Context, res xmldot.Res
 				})
 			}
 			if cValue := helpers.GetFromXPath(v, "fwd-list-with-track"); cValue.Exists() {
-				item.NextHopsWithTrack = make([]StaticRoutesVRFRoutesNextHopsWithTrack, 0)
+				item.NextHopsWithTrack = make([]StaticRoutesVRFRoutesNextHopsWithTrackData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := StaticRoutesVRFRoutesNextHopsWithTrack{}
+					cItem := StaticRoutesVRFRoutesNextHopsWithTrackData{}
 					if ccValue := helpers.GetFromXPath(cv, "fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}

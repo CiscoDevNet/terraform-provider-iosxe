@@ -49,6 +49,8 @@ type Radius struct {
 	Timeout                      types.Int64  `tfsdk:"timeout"`
 	Retransmit                   types.Int64  `tfsdk:"retransmit"`
 	Key                          types.String `tfsdk:"key"`
+	KeyWO                        types.String `tfsdk:"key_wo"`
+	KeyWOVersion                 types.Int64  `tfsdk:"key_wo_version"`
 	KeyEncryption                types.String `tfsdk:"key_encryption"`
 	AutomateTesterUsername       types.String `tfsdk:"automate_tester_username"`
 	AutomateTesterIgnoreAcctPort types.Bool   `tfsdk:"automate_tester_ignore_acct_port"`
@@ -56,6 +58,8 @@ type Radius struct {
 	AutomateTesterProbeOnConfig  types.Bool   `tfsdk:"automate_tester_probe_on_config"`
 	AutomateTesterIdleTime       types.Int64  `tfsdk:"automate_tester_idle_time"`
 	PacKey                       types.String `tfsdk:"pac_key"`
+	PacKeyWO                     types.String `tfsdk:"pac_key_wo"`
+	PacKeyWOVersion              types.Int64  `tfsdk:"pac_key_wo_version"`
 	PacKeyEncryption             types.String `tfsdk:"pac_key_encryption"`
 }
 
@@ -119,7 +123,7 @@ func (data RadiusData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Radius) toBody(ctx context.Context) string {
+func (data Radius) toBody(ctx context.Context, config Radius) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Name.ValueString())
@@ -140,7 +144,11 @@ func (data Radius) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"retransmit", strconv.FormatInt(data.Retransmit.ValueInt64(), 10))
 	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
+		if !config.KeyWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", config.KeyWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
+		}
 	}
 	if !data.KeyEncryption.IsNull() && !data.KeyEncryption.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.encryption", data.KeyEncryption.ValueString())
@@ -167,7 +175,11 @@ func (data Radius) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.idle-time-config", strconv.FormatInt(data.AutomateTesterIdleTime.ValueInt64(), 10))
 	}
 	if !data.PacKey.IsNull() && !data.PacKey.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pac.key.key", data.PacKey.ValueString())
+		if !config.PacKeyWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pac.key.key", config.PacKeyWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pac.key.key", data.PacKey.ValueString())
+		}
 	}
 	if !data.PacKeyEncryption.IsNull() && !data.PacKeyEncryption.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pac.key.encryption", data.PacKeyEncryption.ValueString())
@@ -179,7 +191,7 @@ func (data Radius) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Radius) toBodyXML(ctx context.Context) string {
+func (data Radius) toBodyXML(ctx context.Context, config Radius) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Name.ValueString())
@@ -200,7 +212,11 @@ func (data Radius) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/retransmit", strconv.FormatInt(data.Retransmit.ValueInt64(), 10))
 	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", data.Key.ValueString())
+		if !config.KeyWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", config.KeyWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", data.Key.ValueString())
+		}
 	}
 	if !data.KeyEncryption.IsNull() && !data.KeyEncryption.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/key/encryption", data.KeyEncryption.ValueString())
@@ -233,7 +249,11 @@ func (data Radius) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/idle-time-config", strconv.FormatInt(data.AutomateTesterIdleTime.ValueInt64(), 10))
 	}
 	if !data.PacKey.IsNull() && !data.PacKey.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/pac/key/key", data.PacKey.ValueString())
+		if !config.PacKeyWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/pac/key/key", config.PacKeyWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/pac/key/key", data.PacKey.ValueString())
+		}
 	}
 	if !data.PacKeyEncryption.IsNull() && !data.PacKeyEncryption.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/pac/key/encryption", data.PacKeyEncryption.ValueString())

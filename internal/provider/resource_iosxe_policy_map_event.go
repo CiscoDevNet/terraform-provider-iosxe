@@ -330,10 +330,17 @@ func (r *PolicyMapEventResource) Configure(_ context.Context, req resource.Confi
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *PolicyMapEventResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan PolicyMapEvent
+	var plan, config PolicyMapEvent
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -350,7 +357,7 @@ func (r *PolicyMapEventResource) Create(ctx context.Context, req resource.Create
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -390,7 +397,7 @@ func (r *PolicyMapEventResource) Create(ctx context.Context, req resource.Create
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -497,7 +504,7 @@ func (r *PolicyMapEventResource) Read(ctx context.Context, req resource.ReadRequ
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *PolicyMapEventResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state PolicyMapEvent
+	var plan, state, config PolicyMapEvent
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -513,6 +520,13 @@ func (r *PolicyMapEventResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -523,7 +537,7 @@ func (r *PolicyMapEventResource) Update(ctx context.Context, req resource.Update
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -577,7 +591,7 @@ func (r *PolicyMapEventResource) Update(ctx context.Context, req resource.Update
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

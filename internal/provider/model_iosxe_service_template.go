@@ -68,34 +68,6 @@ type ServiceTemplate struct {
 	Tags                    []ServiceTemplateTags               `tfsdk:"tags"`
 	MdnsServicePolicy       types.String                        `tfsdk:"mdns_service_policy"`
 }
-
-type ServiceTemplateData struct {
-	Device                  types.String                        `tfsdk:"device"`
-	Id                      types.String                        `tfsdk:"id"`
-	Name                    types.String                        `tfsdk:"name"`
-	AccessGroups            []ServiceTemplateAccessGroups       `tfsdk:"access_groups"`
-	InactivityTimer         types.Int64                         `tfsdk:"inactivity_timer"`
-	InactivityTimerProbe    types.Bool                          `tfsdk:"inactivity_timer_probe"`
-	Vlan                    types.Int64                         `tfsdk:"vlan"`
-	VoiceVlan               types.Bool                          `tfsdk:"voice_vlan"`
-	LinksecPolicy           types.String                        `tfsdk:"linksec_policy"`
-	Sgt                     types.Int64                         `tfsdk:"sgt"`
-	AbsoluteTimer           types.Int64                         `tfsdk:"absolute_timer"`
-	Description             types.String                        `tfsdk:"description"`
-	InterfaceTemplates      []ServiceTemplateInterfaceTemplates `tfsdk:"interface_templates"`
-	TunnelCapwapName        types.String                        `tfsdk:"tunnel_capwap_name"`
-	Vnid                    types.String                        `tfsdk:"vnid"`
-	RedirectAppendClientMac types.String                        `tfsdk:"redirect_append_client_mac"`
-	RedirectAppendSwitchMac types.String                        `tfsdk:"redirect_append_switch_mac"`
-	RedirectUrl             types.String                        `tfsdk:"redirect_url"`
-	RedirectUrlMatchAcl     types.String                        `tfsdk:"redirect_url_match_acl"`
-	RedirectUrlMatchAction  types.String                        `tfsdk:"redirect_url_match_action"`
-	DnsAclPreauth           types.String                        `tfsdk:"dns_acl_preauth"`
-	ServicePolicyQosInput   types.String                        `tfsdk:"service_policy_qos_input"`
-	ServicePolicyQosOutput  types.String                        `tfsdk:"service_policy_qos_output"`
-	Tags                    []ServiceTemplateTags               `tfsdk:"tags"`
-	MdnsServicePolicy       types.String                        `tfsdk:"mdns_service_policy"`
-}
 type ServiceTemplateAccessGroups struct {
 	Name types.String `tfsdk:"name"`
 }
@@ -103,6 +75,43 @@ type ServiceTemplateInterfaceTemplates struct {
 	Name types.String `tfsdk:"name"`
 }
 type ServiceTemplateTags struct {
+	Name types.String `tfsdk:"name"`
+}
+
+type ServiceTemplateData struct {
+	Device                  types.String                            `tfsdk:"device"`
+	Id                      types.String                            `tfsdk:"id"`
+	Name                    types.String                            `tfsdk:"name"`
+	AccessGroups            []ServiceTemplateAccessGroupsData       `tfsdk:"access_groups"`
+	InactivityTimer         types.Int64                             `tfsdk:"inactivity_timer"`
+	InactivityTimerProbe    types.Bool                              `tfsdk:"inactivity_timer_probe"`
+	Vlan                    types.Int64                             `tfsdk:"vlan"`
+	VoiceVlan               types.Bool                              `tfsdk:"voice_vlan"`
+	LinksecPolicy           types.String                            `tfsdk:"linksec_policy"`
+	Sgt                     types.Int64                             `tfsdk:"sgt"`
+	AbsoluteTimer           types.Int64                             `tfsdk:"absolute_timer"`
+	Description             types.String                            `tfsdk:"description"`
+	InterfaceTemplates      []ServiceTemplateInterfaceTemplatesData `tfsdk:"interface_templates"`
+	TunnelCapwapName        types.String                            `tfsdk:"tunnel_capwap_name"`
+	Vnid                    types.String                            `tfsdk:"vnid"`
+	RedirectAppendClientMac types.String                            `tfsdk:"redirect_append_client_mac"`
+	RedirectAppendSwitchMac types.String                            `tfsdk:"redirect_append_switch_mac"`
+	RedirectUrl             types.String                            `tfsdk:"redirect_url"`
+	RedirectUrlMatchAcl     types.String                            `tfsdk:"redirect_url_match_acl"`
+	RedirectUrlMatchAction  types.String                            `tfsdk:"redirect_url_match_action"`
+	DnsAclPreauth           types.String                            `tfsdk:"dns_acl_preauth"`
+	ServicePolicyQosInput   types.String                            `tfsdk:"service_policy_qos_input"`
+	ServicePolicyQosOutput  types.String                            `tfsdk:"service_policy_qos_output"`
+	Tags                    []ServiceTemplateTagsData               `tfsdk:"tags"`
+	MdnsServicePolicy       types.String                            `tfsdk:"mdns_service_policy"`
+}
+type ServiceTemplateAccessGroupsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type ServiceTemplateInterfaceTemplatesData struct {
+	Name types.String `tfsdk:"name"`
+}
+type ServiceTemplateTagsData struct {
 	Name types.String `tfsdk:"name"`
 }
 
@@ -146,7 +155,7 @@ func (data ServiceTemplateData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data ServiceTemplate) toBody(ctx context.Context) string {
+func (data ServiceTemplate) toBody(ctx context.Context, config ServiceTemplate) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"word", data.Name.ValueString())
@@ -243,7 +252,7 @@ func (data ServiceTemplate) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data ServiceTemplate) toBodyXML(ctx context.Context) string {
+func (data ServiceTemplate) toBodyXML(ctx context.Context, config ServiceTemplate) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/word", data.Name.ValueString())
@@ -870,9 +879,9 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "access-group-config"); value.Exists() {
-		data.AccessGroups = make([]ServiceTemplateAccessGroups, 0)
+		data.AccessGroups = make([]ServiceTemplateAccessGroupsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ServiceTemplateAccessGroups{}
+			item := ServiceTemplateAccessGroupsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -909,9 +918,9 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		data.Description = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "interface-template"); value.Exists() {
-		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplates, 0)
+		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplatesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ServiceTemplateInterfaceTemplates{}
+			item := ServiceTemplateInterfaceTemplatesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -950,9 +959,9 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		data.ServicePolicyQosOutput = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "tag-config"); value.Exists() {
-		data.Tags = make([]ServiceTemplateTags, 0)
+		data.Tags = make([]ServiceTemplateTagsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ServiceTemplateTags{}
+			item := ServiceTemplateTagsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -1072,9 +1081,9 @@ func (data *ServiceTemplate) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 func (data *ServiceTemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-group-config"); value.Exists() {
-		data.AccessGroups = make([]ServiceTemplateAccessGroups, 0)
+		data.AccessGroups = make([]ServiceTemplateAccessGroupsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := ServiceTemplateAccessGroups{}
+			item := ServiceTemplateAccessGroupsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -1111,9 +1120,9 @@ func (data *ServiceTemplateData) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.Description = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interface-template"); value.Exists() {
-		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplates, 0)
+		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplatesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := ServiceTemplateInterfaceTemplates{}
+			item := ServiceTemplateInterfaceTemplatesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -1152,9 +1161,9 @@ func (data *ServiceTemplateData) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.ServicePolicyQosOutput = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag-config"); value.Exists() {
-		data.Tags = make([]ServiceTemplateTags, 0)
+		data.Tags = make([]ServiceTemplateTagsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := ServiceTemplateTags{}
+			item := ServiceTemplateTagsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
