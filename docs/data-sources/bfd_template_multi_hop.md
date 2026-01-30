@@ -33,7 +33,7 @@ data "iosxe_bfd_template_multi_hop" "example" {
 
 - `authentication_md5_keychain` (String) keychain name
 - `authentication_meticulous_md5_keychain` (String) keychain name
-- `authentication_meticulous_sha_1keychain` (String) keychain name
+- `authentication_meticulous_sha_1_keychain` (String) keychain name
 - `authentication_sha_1_keychain` (String) keychain name
 - `dampening_down_monitoring` (Boolean) down monitoring
 - `dampening_half_time` (Number) Half-life time for the penalty
