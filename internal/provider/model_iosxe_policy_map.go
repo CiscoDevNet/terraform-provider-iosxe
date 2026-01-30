@@ -124,6 +124,17 @@ type PolicyMapClassesActionsData struct {
 	PoliceTargetBitrate                  types.Int64  `tfsdk:"police_target_bitrate"`
 	PoliceTargetBitrateConformBurstByte  types.Int64  `tfsdk:"police_target_bitrate_conform_burst_byte"`
 	PoliceTargetBitrateExcessBurstByte   types.Int64  `tfsdk:"police_target_bitrate_excess_burst_byte"`
+	PoliceTargetBitrateExceedDrop        types.Bool   `tfsdk:"police_target_bitrate_exceed_drop"`
+	PoliceCir                            types.Int64  `tfsdk:"police_cir"`
+	PoliceBc                             types.Int64  `tfsdk:"police_bc"`
+	PoliceBe                             types.Int64  `tfsdk:"police_be"`
+	PolicePir                            types.Int64  `tfsdk:"police_pir"`
+	PolicePirBe                          types.Int64  `tfsdk:"police_pir_be"`
+	PoliceCirConformTransmit             types.Bool   `tfsdk:"police_cir_conform_transmit"`
+	PoliceCirExceedDrop                  types.Bool   `tfsdk:"police_cir_exceed_drop"`
+	PoliceRatePercent                    types.Int64  `tfsdk:"police_rate_percent"`
+	QueueBuffersRatio                    types.Int64  `tfsdk:"queue_buffers_ratio"`
+	SetDscp                              types.String `tfsdk:"set_dscp"`
 }
 
 // End of section. //template:end types
