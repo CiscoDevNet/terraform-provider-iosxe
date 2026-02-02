@@ -106,7 +106,8 @@ type AAAAccountingConnections struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+}
 type AAAAccountingExecs struct {
 	Name               types.String `tfsdk:"name"`
 	None               types.Bool   `tfsdk:"none"`
@@ -121,7 +122,8 @@ type AAAAccountingExecs struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+}
 type AAAAccountingDot1x struct {
 	Name                    types.String `tfsdk:"name"`
 	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
@@ -198,7 +200,8 @@ type AAAAccountingConnectionsData struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+}
 type AAAAccountingExecsData struct {
 	Name               types.String `tfsdk:"name"`
 	None               types.Bool   `tfsdk:"none"`
@@ -213,7 +216,8 @@ type AAAAccountingExecsData struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+}
 type AAAAccountingDot1xData struct {
 	Name                    types.String `tfsdk:"name"`
 	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
