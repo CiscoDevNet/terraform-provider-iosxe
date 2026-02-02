@@ -106,14 +106,7 @@ type AAAAccountingConnections struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
-	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
-	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
-	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
-	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
-	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
-	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
-}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
 type AAAAccountingExecs struct {
 	Name               types.String `tfsdk:"name"`
 	None               types.Bool   `tfsdk:"none"`
@@ -128,14 +121,7 @@ type AAAAccountingExecs struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
-	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
-	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
-	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
-	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
-	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
-	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
-}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
 type AAAAccountingDot1x struct {
 	Name                    types.String `tfsdk:"name"`
 	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
@@ -212,14 +198,7 @@ type AAAAccountingConnectionsData struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
-	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
-	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
-	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
-	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
-	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
-	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
-}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
 type AAAAccountingExecsData struct {
 	Name               types.String `tfsdk:"name"`
 	None               types.Bool   `tfsdk:"none"`
@@ -234,14 +213,7 @@ type AAAAccountingExecsData struct {
 	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
 	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
 	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
-	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
-	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
-	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
-	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
-	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
-	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
-	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
-}
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`}
 type AAAAccountingDot1xData struct {
 	Name                    types.String `tfsdk:"name"`
 	StartStopGroup1         types.String `tfsdk:"start_stop_group1"`
@@ -488,28 +460,6 @@ func (data AAAAccounting) toBody(ctx context.Context, config AAAAccounting) stri
 			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"stop-only.group4.group", item.StopOnlyGroup4.ValueString())
 			}
-			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
-				if item.WaitStartBroadcast.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.broadcast", map[string]string{})
-				}
-			}
-			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
-				if item.WaitStartLogger.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.logger", map[string]string{})
-				}
-			}
-			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group1.group", item.WaitStartGroup1.ValueString())
-			}
-			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group2.group", item.WaitStartGroup2.ValueString())
-			}
-			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group3.group", item.WaitStartGroup3.ValueString())
-			}
-			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group4.group", item.WaitStartGroup4.ValueString())
-			}
 		}
 	}
 	if len(data.Execs) > 0 {
@@ -566,28 +516,6 @@ func (data AAAAccounting) toBody(ctx context.Context, config AAAAccounting) stri
 			}
 			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"stop-only.group4.group", item.StopOnlyGroup4.ValueString())
-			}
-			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
-				if item.WaitStartBroadcast.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.broadcast", map[string]string{})
-				}
-			}
-			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
-				if item.WaitStartLogger.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.logger", map[string]string{})
-				}
-			}
-			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group1.group", item.WaitStartGroup1.ValueString())
-			}
-			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group2.group", item.WaitStartGroup2.ValueString())
-			}
-			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group3.group", item.WaitStartGroup3.ValueString())
-			}
-			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group4.group", item.WaitStartGroup4.ValueString())
 			}
 		}
 	}
@@ -830,32 +758,6 @@ func (data AAAAccounting) toBodyXML(ctx context.Context, config AAAAccounting) s
 			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "stop-only/group4/group", item.StopOnlyGroup4.ValueString())
 			}
-			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
-				if item.WaitStartBroadcast.ValueBool() {
-					cBody = helpers.SetFromXPath(cBody, "wait-start/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "wait-start/broadcast")
-				}
-			}
-			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
-				if item.WaitStartLogger.ValueBool() {
-					cBody = helpers.SetFromXPath(cBody, "wait-start/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "wait-start/logger")
-				}
-			}
-			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group1/group", item.WaitStartGroup1.ValueString())
-			}
-			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group2/group", item.WaitStartGroup2.ValueString())
-			}
-			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group3/group", item.WaitStartGroup3.ValueString())
-			}
-			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group4/group", item.WaitStartGroup4.ValueString())
-			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/connection", cBody.Res())
 		}
 	}
@@ -923,32 +825,6 @@ func (data AAAAccounting) toBodyXML(ctx context.Context, config AAAAccounting) s
 			}
 			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "stop-only/group4/group", item.StopOnlyGroup4.ValueString())
-			}
-			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
-				if item.WaitStartBroadcast.ValueBool() {
-					cBody = helpers.SetFromXPath(cBody, "wait-start/broadcast", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "wait-start/broadcast")
-				}
-			}
-			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
-				if item.WaitStartLogger.ValueBool() {
-					cBody = helpers.SetFromXPath(cBody, "wait-start/logger", "")
-				} else {
-					cBody = helpers.RemoveFromXPath(cBody, "wait-start/logger")
-				}
-			}
-			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group1/group", item.WaitStartGroup1.ValueString())
-			}
-			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group2/group", item.WaitStartGroup2.ValueString())
-			}
-			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group3/group", item.WaitStartGroup3.ValueString())
-			}
-			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "wait-start/group4/group", item.WaitStartGroup4.ValueString())
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exec", cBody.Res())
 		}
@@ -1399,44 +1275,6 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 		} else {
 			data.Connections[i].StopOnlyGroup4 = types.StringNull()
 		}
-		if value := r.Get("wait-start.broadcast"); !data.Connections[i].WaitStartBroadcast.IsNull() {
-			if value.Exists() {
-				data.Connections[i].WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				data.Connections[i].WaitStartBroadcast = types.BoolValue(false)
-			}
-		} else {
-			data.Connections[i].WaitStartBroadcast = types.BoolNull()
-		}
-		if value := r.Get("wait-start.logger"); !data.Connections[i].WaitStartLogger.IsNull() {
-			if value.Exists() {
-				data.Connections[i].WaitStartLogger = types.BoolValue(true)
-			} else {
-				data.Connections[i].WaitStartLogger = types.BoolValue(false)
-			}
-		} else {
-			data.Connections[i].WaitStartLogger = types.BoolNull()
-		}
-		if value := r.Get("wait-start.group1.group"); value.Exists() && !data.Connections[i].WaitStartGroup1.IsNull() {
-			data.Connections[i].WaitStartGroup1 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup1 = types.StringNull()
-		}
-		if value := r.Get("wait-start.group2.group"); value.Exists() && !data.Connections[i].WaitStartGroup2.IsNull() {
-			data.Connections[i].WaitStartGroup2 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup2 = types.StringNull()
-		}
-		if value := r.Get("wait-start.group3.group"); value.Exists() && !data.Connections[i].WaitStartGroup3.IsNull() {
-			data.Connections[i].WaitStartGroup3 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup3 = types.StringNull()
-		}
-		if value := r.Get("wait-start.group4.group"); value.Exists() && !data.Connections[i].WaitStartGroup4.IsNull() {
-			data.Connections[i].WaitStartGroup4 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup4 = types.StringNull()
-		}
 	}
 	for i := range data.Execs {
 		keys := [...]string{"name"}
@@ -1550,44 +1388,6 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 			data.Execs[i].StopOnlyGroup4 = types.StringValue(value.String())
 		} else {
 			data.Execs[i].StopOnlyGroup4 = types.StringNull()
-		}
-		if value := r.Get("wait-start.broadcast"); !data.Execs[i].WaitStartBroadcast.IsNull() {
-			if value.Exists() {
-				data.Execs[i].WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				data.Execs[i].WaitStartBroadcast = types.BoolValue(false)
-			}
-		} else {
-			data.Execs[i].WaitStartBroadcast = types.BoolNull()
-		}
-		if value := r.Get("wait-start.logger"); !data.Execs[i].WaitStartLogger.IsNull() {
-			if value.Exists() {
-				data.Execs[i].WaitStartLogger = types.BoolValue(true)
-			} else {
-				data.Execs[i].WaitStartLogger = types.BoolValue(false)
-			}
-		} else {
-			data.Execs[i].WaitStartLogger = types.BoolNull()
-		}
-		if value := r.Get("wait-start.group1.group"); value.Exists() && !data.Execs[i].WaitStartGroup1.IsNull() {
-			data.Execs[i].WaitStartGroup1 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup1 = types.StringNull()
-		}
-		if value := r.Get("wait-start.group2.group"); value.Exists() && !data.Execs[i].WaitStartGroup2.IsNull() {
-			data.Execs[i].WaitStartGroup2 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup2 = types.StringNull()
-		}
-		if value := r.Get("wait-start.group3.group"); value.Exists() && !data.Execs[i].WaitStartGroup3.IsNull() {
-			data.Execs[i].WaitStartGroup3 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup3 = types.StringNull()
-		}
-		if value := r.Get("wait-start.group4.group"); value.Exists() && !data.Execs[i].WaitStartGroup4.IsNull() {
-			data.Execs[i].WaitStartGroup4 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup4 = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "dot1x.default.start-stop.group-config.group1.group"); value.Exists() && !data.Dot1xDefaultStartStopGroup1.IsNull() {
@@ -2075,44 +1875,6 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		} else {
 			data.Connections[i].StopOnlyGroup4 = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "wait-start/broadcast"); !data.Connections[i].WaitStartBroadcast.IsNull() {
-			if value.Exists() {
-				data.Connections[i].WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				data.Connections[i].WaitStartBroadcast = types.BoolValue(false)
-			}
-		} else {
-			data.Connections[i].WaitStartBroadcast = types.BoolNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/logger"); !data.Connections[i].WaitStartLogger.IsNull() {
-			if value.Exists() {
-				data.Connections[i].WaitStartLogger = types.BoolValue(true)
-			} else {
-				data.Connections[i].WaitStartLogger = types.BoolValue(false)
-			}
-		} else {
-			data.Connections[i].WaitStartLogger = types.BoolNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group1/group"); value.Exists() && !data.Connections[i].WaitStartGroup1.IsNull() {
-			data.Connections[i].WaitStartGroup1 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup1 = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group2/group"); value.Exists() && !data.Connections[i].WaitStartGroup2.IsNull() {
-			data.Connections[i].WaitStartGroup2 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup2 = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group3/group"); value.Exists() && !data.Connections[i].WaitStartGroup3.IsNull() {
-			data.Connections[i].WaitStartGroup3 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup3 = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group4/group"); value.Exists() && !data.Connections[i].WaitStartGroup4.IsNull() {
-			data.Connections[i].WaitStartGroup4 = types.StringValue(value.String())
-		} else {
-			data.Connections[i].WaitStartGroup4 = types.StringNull()
-		}
 	}
 	for i := range data.Execs {
 		keys := [...]string{"name"}
@@ -2226,44 +1988,6 @@ func (data *AAAAccounting) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			data.Execs[i].StopOnlyGroup4 = types.StringValue(value.String())
 		} else {
 			data.Execs[i].StopOnlyGroup4 = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/broadcast"); !data.Execs[i].WaitStartBroadcast.IsNull() {
-			if value.Exists() {
-				data.Execs[i].WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				data.Execs[i].WaitStartBroadcast = types.BoolValue(false)
-			}
-		} else {
-			data.Execs[i].WaitStartBroadcast = types.BoolNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/logger"); !data.Execs[i].WaitStartLogger.IsNull() {
-			if value.Exists() {
-				data.Execs[i].WaitStartLogger = types.BoolValue(true)
-			} else {
-				data.Execs[i].WaitStartLogger = types.BoolValue(false)
-			}
-		} else {
-			data.Execs[i].WaitStartLogger = types.BoolNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group1/group"); value.Exists() && !data.Execs[i].WaitStartGroup1.IsNull() {
-			data.Execs[i].WaitStartGroup1 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup1 = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group2/group"); value.Exists() && !data.Execs[i].WaitStartGroup2.IsNull() {
-			data.Execs[i].WaitStartGroup2 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup2 = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group3/group"); value.Exists() && !data.Execs[i].WaitStartGroup3.IsNull() {
-			data.Execs[i].WaitStartGroup3 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup3 = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "wait-start/group4/group"); value.Exists() && !data.Execs[i].WaitStartGroup4.IsNull() {
-			data.Execs[i].WaitStartGroup4 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].WaitStartGroup4 = types.StringNull()
 		}
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/start-stop/group-config/group1/group"); value.Exists() && !data.Dot1xDefaultStartStopGroup1.IsNull() {
@@ -2580,28 +2304,6 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
-			}
 			data.Connections = append(data.Connections, item)
 			return true
 		})
@@ -2661,28 +2363,6 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
 			}
 			data.Execs = append(data.Execs, item)
 			return true
@@ -2944,28 +2624,6 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
-			}
 			data.Connections = append(data.Connections, item)
 			return true
 		})
@@ -3025,28 +2683,6 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
 			}
 			data.Execs = append(data.Execs, item)
 			return true
@@ -3304,28 +2940,6 @@ func (data *AAAAccounting) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
-			}
 			data.Connections = append(data.Connections, item)
 			return true
 		})
@@ -3385,28 +2999,6 @@ func (data *AAAAccounting) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
 			}
 			data.Execs = append(data.Execs, item)
 			return true
@@ -3664,28 +3256,6 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
-			}
 			data.Connections = append(data.Connections, item)
 			return true
 		})
@@ -3745,28 +3315,6 @@ func (data *AAAAccountingData) fromBodyXML(ctx context.Context, res xmldot.Resul
 			}
 			if cValue := helpers.GetFromXPath(v, "stop-only/group4/group"); cValue.Exists() {
 				item.StopOnlyGroup4 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/broadcast"); cValue.Exists() {
-				item.WaitStartBroadcast = types.BoolValue(true)
-			} else {
-				item.WaitStartBroadcast = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/logger"); cValue.Exists() {
-				item.WaitStartLogger = types.BoolValue(true)
-			} else {
-				item.WaitStartLogger = types.BoolValue(false)
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group1/group"); cValue.Exists() {
-				item.WaitStartGroup1 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group2/group"); cValue.Exists() {
-				item.WaitStartGroup2 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group3/group"); cValue.Exists() {
-				item.WaitStartGroup3 = types.StringValue(cValue.String())
-			}
-			if cValue := helpers.GetFromXPath(v, "wait-start/group4/group"); cValue.Exists() {
-				item.WaitStartGroup4 = types.StringValue(cValue.String())
 			}
 			data.Execs = append(data.Execs, item)
 			return true
@@ -3930,24 +3478,6 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 				found = false
 			}
 			if found {
-				if !state.Execs[i].WaitStartGroup4.IsNull() && data.Execs[j].WaitStartGroup4.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].WaitStartGroup3.IsNull() && data.Execs[j].WaitStartGroup3.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].WaitStartGroup2.IsNull() && data.Execs[j].WaitStartGroup2.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].WaitStartGroup1.IsNull() && data.Execs[j].WaitStartGroup1.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].WaitStartLogger.IsNull() && data.Execs[j].WaitStartLogger.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].WaitStartBroadcast.IsNull() && data.Execs[j].WaitStartBroadcast.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				if !state.Execs[i].StopOnlyGroup4.IsNull() && data.Execs[j].StopOnlyGroup4.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/stop-only/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -4012,24 +3542,6 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 				found = false
 			}
 			if found {
-				if !state.Connections[i].WaitStartGroup4.IsNull() && data.Connections[j].WaitStartGroup4.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Connections[i].WaitStartGroup3.IsNull() && data.Connections[j].WaitStartGroup3.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Connections[i].WaitStartGroup2.IsNull() && data.Connections[j].WaitStartGroup2.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Connections[i].WaitStartGroup1.IsNull() && data.Connections[j].WaitStartGroup1.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Connections[i].WaitStartLogger.IsNull() && data.Connections[j].WaitStartLogger.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Connections[i].WaitStartBroadcast.IsNull() && data.Connections[j].WaitStartBroadcast.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				if !state.Connections[i].StopOnlyGroup4.IsNull() && data.Connections[j].StopOnlyGroup4.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/stop-only/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -4334,24 +3846,6 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Execs[i].WaitStartGroup4.IsNull() && data.Execs[j].WaitStartGroup4.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group4/group", predicates))
-				}
-				if !state.Execs[i].WaitStartGroup3.IsNull() && data.Execs[j].WaitStartGroup3.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group3/group", predicates))
-				}
-				if !state.Execs[i].WaitStartGroup2.IsNull() && data.Execs[j].WaitStartGroup2.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group2/group", predicates))
-				}
-				if !state.Execs[i].WaitStartGroup1.IsNull() && data.Execs[j].WaitStartGroup1.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/group1/group", predicates))
-				}
-				if !state.Execs[i].WaitStartLogger.IsNull() && data.Execs[j].WaitStartLogger.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/logger", predicates))
-				}
-				if !state.Execs[i].WaitStartBroadcast.IsNull() && data.Execs[j].WaitStartBroadcast.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/wait-start/broadcast", predicates))
-				}
 				if !state.Execs[i].StopOnlyGroup4.IsNull() && data.Execs[j].StopOnlyGroup4.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/exec%v/stop-only/group4/group", predicates))
 				}
@@ -4421,24 +3915,6 @@ func (data *AAAAccounting) addDeletedItemsXML(ctx context.Context, state AAAAcco
 				found = false
 			}
 			if found {
-				if !state.Connections[i].WaitStartGroup4.IsNull() && data.Connections[j].WaitStartGroup4.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group4/group", predicates))
-				}
-				if !state.Connections[i].WaitStartGroup3.IsNull() && data.Connections[j].WaitStartGroup3.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group3/group", predicates))
-				}
-				if !state.Connections[i].WaitStartGroup2.IsNull() && data.Connections[j].WaitStartGroup2.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group2/group", predicates))
-				}
-				if !state.Connections[i].WaitStartGroup1.IsNull() && data.Connections[j].WaitStartGroup1.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/group1/group", predicates))
-				}
-				if !state.Connections[i].WaitStartLogger.IsNull() && data.Connections[j].WaitStartLogger.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/logger", predicates))
-				}
-				if !state.Connections[i].WaitStartBroadcast.IsNull() && data.Connections[j].WaitStartBroadcast.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/wait-start/broadcast", predicates))
-				}
 				if !state.Connections[i].StopOnlyGroup4.IsNull() && data.Connections[j].StopOnlyGroup4.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/connection%v/stop-only/group4/group", predicates))
 				}
@@ -4689,12 +4165,6 @@ func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Execs {
 		keyValues := [...]string{data.Execs[i].Name.ValueString()}
-		if !data.Execs[i].WaitStartLogger.IsNull() && !data.Execs[i].WaitStartLogger.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/wait-start/logger", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].WaitStartBroadcast.IsNull() && !data.Execs[i].WaitStartBroadcast.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/wait-start/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
 		if !data.Execs[i].StopOnlyLogger.IsNull() && !data.Execs[i].StopOnlyLogger.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/stop-only/logger", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
@@ -4714,12 +4184,6 @@ func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Connections {
 		keyValues := [...]string{data.Connections[i].Name.ValueString()}
-		if !data.Connections[i].WaitStartLogger.IsNull() && !data.Connections[i].WaitStartLogger.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/wait-start/logger", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Connections[i].WaitStartBroadcast.IsNull() && !data.Connections[i].WaitStartBroadcast.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/wait-start/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
 		if !data.Connections[i].StopOnlyLogger.IsNull() && !data.Connections[i].StopOnlyLogger.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/stop-only/logger", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
