@@ -119,12 +119,6 @@ Optional:
 - `stop_only_group3` (String) Use Server-group
 - `stop_only_group4` (String) Use Server-group
 - `stop_only_logger` (Boolean) Use system logger for Accounting
-- `wait_start_broadcast` (Boolean) Use Broadcast for Accounting
-- `wait_start_group1` (String) Use Server-group
-- `wait_start_group2` (String) Use Server-group
-- `wait_start_group3` (String) Use Server-group
-- `wait_start_group4` (String) Use Server-group
-- `wait_start_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--dot1x"></a>
@@ -167,12 +161,6 @@ Optional:
 - `stop_only_group3` (String) Use Server-group
 - `stop_only_group4` (String) Use Server-group
 - `stop_only_logger` (Boolean) Use system logger for Accounting
-- `wait_start_broadcast` (Boolean) Use Broadcast for Accounting
-- `wait_start_group1` (String) Use Server-group
-- `wait_start_group2` (String) Use Server-group
-- `wait_start_group3` (String) Use Server-group
-- `wait_start_group4` (String) Use Server-group
-- `wait_start_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--identities"></a>

@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Expose attributes with sensitive values also as write-only attributes
+- BREAKING CHANGE: Remove `wait_start_*` attributes from `iosxe_aaa_accounting` resource and data source (`connections` and `execs` blocks). IOS-XE silently converts `wait-start` to `start-stop` on all supported versions, causing Terraform idempotency issues. Use the equivalent `start_stop_*` attributes instead.
 
 ## 0.15.0
 
