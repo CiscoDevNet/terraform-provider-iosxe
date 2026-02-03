@@ -169,32 +169,34 @@ func (data *Banner) updateFromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end updateFromBody
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
+// This prevents Terraform drift caused by trailing whitespace in NETCONF responses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
 func (data *Banner) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec/banner"); value.Exists() && !data.ExecBanner.IsNull() {
-		data.ExecBanner = types.StringValue(value.String())
+		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.ExecBanner = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login/banner"); value.Exists() && !data.LoginBanner.IsNull() {
-		data.LoginBanner = types.StringValue(value.String())
+		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.LoginBanner = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prompt-timeout/banner"); value.Exists() && !data.PromptTimeoutBanner.IsNull() {
-		data.PromptTimeoutBanner = types.StringValue(value.String())
+		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.PromptTimeoutBanner = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/motd/banner"); value.Exists() && !data.MotdBanner.IsNull() {
-		data.MotdBanner = types.StringValue(value.String())
+		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.MotdBanner = types.StringNull()
 	}
 }
 
-// End of section. //template:end updateFromBodyXML
+// End of manually maintained section.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -242,43 +244,47 @@ func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
+// This prevents Terraform drift caused by trailing whitespace in NETCONF responses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
 func (data *Banner) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec/banner"); value.Exists() {
-		data.ExecBanner = types.StringValue(value.String())
+		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login/banner"); value.Exists() {
-		data.LoginBanner = types.StringValue(value.String())
+		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prompt-timeout/banner"); value.Exists() {
-		data.PromptTimeoutBanner = types.StringValue(value.String())
+		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/motd/banner"); value.Exists() {
-		data.MotdBanner = types.StringValue(value.String())
+		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 }
 
-// End of section. //template:end fromBodyXML
+// End of manually maintained section.
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
+// This prevents Terraform drift caused by trailing whitespace in NETCONF responses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
 func (data *BannerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec/banner"); value.Exists() {
-		data.ExecBanner = types.StringValue(value.String())
+		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login/banner"); value.Exists() {
-		data.LoginBanner = types.StringValue(value.String())
+		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prompt-timeout/banner"); value.Exists() {
-		data.PromptTimeoutBanner = types.StringValue(value.String())
+		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/motd/banner"); value.Exists() {
-		data.MotdBanner = types.StringValue(value.String())
+		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 }
 
-// End of section. //template:end fromBodyDataXML
+// End of manually maintained section.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
