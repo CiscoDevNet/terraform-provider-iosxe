@@ -2,6 +2,7 @@
 
 - Expose attributes with sensitive values also as write-only attributes
 - Fix issue with NETCONF sibling element handling when removing multiple elements from YANG lists (e.g., removing multiple VLAN priorities or helper addresses)
+- Mark `trunk_allowed_vlans_add`, `trunk_allowed_vlans_except`, and `trunk_allowed_vlans_remove` attributes of `iosxe_interface_switchport` resource as write-only to avoid drift detection
 
 ## 0.15.0
 
