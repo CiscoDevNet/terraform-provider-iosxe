@@ -31,6 +31,7 @@ attribute:
   sensitive: bool(required=False)  # Set to true if the attribute is sensitive, meaning it should not show up in clear-text in plan and logs
   exclude_test: bool(required=False)  # Set to true if the attribute should be excluded from the test
   exclude_example: bool(required=False)  # Set to true if the attribute should be excluded from the example
+  example_only: bool(required=False)  # Set to true if the attribute should only be included in examples and documentation, but not in code generation
   description: str(required=False)  # Description of the attribute
   example: any(str(), int(), bool(), required=False)  # Example value for the attribute
   allow_import_changes: bool(required=False)  # Set to true if the attribute should be allowed to change during import

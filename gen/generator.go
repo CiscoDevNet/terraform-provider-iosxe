@@ -133,6 +133,7 @@ type YamlConfigAttribute struct {
 	Sensitive          bool                  `yaml:"sensitive"`
 	ExcludeTest        bool                  `yaml:"exclude_test"`
 	ExcludeExample     bool                  `yaml:"exclude_example"`
+	ExampleOnly        bool                  `yaml:"example_only"`
 	Description        string                `yaml:"description"`
 	Example            string                `yaml:"example"`
 	AllowImportChanges bool                  `yaml:"allow_import_changes"`

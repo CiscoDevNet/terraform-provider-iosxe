@@ -93,6 +93,7 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 			},
 			{{- end}}
 			{{- range  .Attributes}}
+			{{- if not .ExampleOnly}}
 			"{{.TfName}}": schema.{{if eq .Type "List"}}ListNested{{else if eq .Type "Set"}}SetNested{{else if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}Set{{else}}{{.Type}}{{end}}Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("{{.Description}}")
 					{{- if len .EnumValues -}}
@@ -318,6 +319,7 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: "The write-only version of the attribute.",
 				Optional:            true,
 			},
+			{{- end}}
 			{{- end}}
 			{{- end}}
 		},

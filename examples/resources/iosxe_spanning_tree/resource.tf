@@ -17,9 +17,4 @@ resource "iosxe_spanning_tree" "example" {
       priority = 32768
     }
   ]
-  disabled_vlans = [
-    {
-      id = "20"
-    }
-  ]
 }
