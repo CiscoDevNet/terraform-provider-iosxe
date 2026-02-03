@@ -135,7 +135,7 @@ func (data ServiceData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Service) toBody(ctx context.Context) string {
+func (data Service) toBody(ctx context.Context, config Service) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Pad.IsNull() && !data.Pad.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pad-conf.pad", data.Pad.ValueBool())
@@ -263,7 +263,7 @@ func (data Service) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Service) toBodyXML(ctx context.Context) string {
+func (data Service) toBodyXML(ctx context.Context, config Service) string {
 	body := netconf.Body{}
 	if !data.Pad.IsNull() && !data.Pad.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/pad-conf/pad", data.Pad.ValueBool())

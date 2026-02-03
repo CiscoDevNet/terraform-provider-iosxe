@@ -52,24 +52,32 @@ type SpanningTree struct {
 	MstInstances             []SpanningTreeMstInstances `tfsdk:"mst_instances"`
 	Vlans                    []SpanningTreeVlans        `tfsdk:"vlans"`
 }
-
-type SpanningTreeData struct {
-	Device                   types.String               `tfsdk:"device"`
-	Id                       types.String               `tfsdk:"id"`
-	Mode                     types.String               `tfsdk:"mode"`
-	Logging                  types.Bool                 `tfsdk:"logging"`
-	LoopguardDefault         types.Bool                 `tfsdk:"loopguard_default"`
-	PortfastDefault          types.Bool                 `tfsdk:"portfast_default"`
-	PortfastBpduguardDefault types.Bool                 `tfsdk:"portfast_bpduguard_default"`
-	ExtendSystemId           types.Bool                 `tfsdk:"extend_system_id"`
-	MstInstances             []SpanningTreeMstInstances `tfsdk:"mst_instances"`
-	Vlans                    []SpanningTreeVlans        `tfsdk:"vlans"`
-}
 type SpanningTreeMstInstances struct {
 	Id      types.Int64 `tfsdk:"id"`
 	VlanIds types.List  `tfsdk:"vlan_ids"`
 }
 type SpanningTreeVlans struct {
+	Id       types.String `tfsdk:"id"`
+	Priority types.Int64  `tfsdk:"priority"`
+}
+
+type SpanningTreeData struct {
+	Device                   types.String                   `tfsdk:"device"`
+	Id                       types.String                   `tfsdk:"id"`
+	Mode                     types.String                   `tfsdk:"mode"`
+	Logging                  types.Bool                     `tfsdk:"logging"`
+	LoopguardDefault         types.Bool                     `tfsdk:"loopguard_default"`
+	PortfastDefault          types.Bool                     `tfsdk:"portfast_default"`
+	PortfastBpduguardDefault types.Bool                     `tfsdk:"portfast_bpduguard_default"`
+	ExtendSystemId           types.Bool                     `tfsdk:"extend_system_id"`
+	MstInstances             []SpanningTreeMstInstancesData `tfsdk:"mst_instances"`
+	Vlans                    []SpanningTreeVlansData        `tfsdk:"vlans"`
+}
+type SpanningTreeMstInstancesData struct {
+	Id      types.Int64 `tfsdk:"id"`
+	VlanIds types.List  `tfsdk:"vlan_ids"`
+}
+type SpanningTreeVlansData struct {
 	Id       types.String `tfsdk:"id"`
 	Priority types.Int64  `tfsdk:"priority"`
 }
@@ -112,7 +120,7 @@ func (data SpanningTreeData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data SpanningTree) toBody(ctx context.Context) string {
+func (data SpanningTree) toBody(ctx context.Context, config SpanningTree) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Mode.IsNull() && !data.Mode.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:mode", data.Mode.ValueString())
@@ -173,7 +181,7 @@ func (data SpanningTree) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data SpanningTree) toBodyXML(ctx context.Context) string {
+func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) string {
 	body := netconf.Body{}
 	if !data.Mode.IsNull() && !data.Mode.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode", data.Mode.ValueString())
@@ -609,9 +617,9 @@ func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
 		data.ExtendSystemId = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mst.configuration.instance"); value.Exists() {
-		data.MstInstances = make([]SpanningTreeMstInstances, 0)
+		data.MstInstances = make([]SpanningTreeMstInstancesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SpanningTreeMstInstances{}
+			item := SpanningTreeMstInstancesData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
@@ -625,9 +633,9 @@ func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
-		data.Vlans = make([]SpanningTreeVlans, 0)
+		data.Vlans = make([]SpanningTreeVlansData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SpanningTreeVlans{}
+			item := SpanningTreeVlansData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
@@ -739,9 +747,9 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 		data.ExtendSystemId = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance"); value.Exists() {
-		data.MstInstances = make([]SpanningTreeMstInstances, 0)
+		data.MstInstances = make([]SpanningTreeMstInstancesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SpanningTreeMstInstances{}
+			item := SpanningTreeMstInstancesData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.Int64Value(cValue.Int())
 			}
@@ -755,9 +763,9 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
-		data.Vlans = make([]SpanningTreeVlans, 0)
+		data.Vlans = make([]SpanningTreeVlansData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := SpanningTreeVlans{}
+			item := SpanningTreeVlansData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}

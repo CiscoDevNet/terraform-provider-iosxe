@@ -87,7 +87,7 @@ func (data CryptoData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Crypto) toBody(ctx context.Context) string {
+func (data Crypto) toBody(ctx context.Context, config Crypto) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.EngineComplianceShieldDisable.IsNull() && !data.EngineComplianceShieldDisable.IsUnknown() {
 		if data.EngineComplianceShieldDisable.ValueBool() {
@@ -101,7 +101,7 @@ func (data Crypto) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Crypto) toBodyXML(ctx context.Context) string {
+func (data Crypto) toBodyXML(ctx context.Context, config Crypto) string {
 	body := netconf.Body{}
 	if !data.EngineComplianceShieldDisable.IsNull() && !data.EngineComplianceShieldDisable.IsUnknown() {
 		if data.EngineComplianceShieldDisable.ValueBool() {

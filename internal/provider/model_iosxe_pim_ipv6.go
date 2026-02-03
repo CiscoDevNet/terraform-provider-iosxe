@@ -49,16 +49,22 @@ type PIMIPv6 struct {
 	RpAddressBidir      types.Bool    `tfsdk:"rp_address_bidir"`
 	Vrfs                []PIMIPv6Vrfs `tfsdk:"vrfs"`
 }
+type PIMIPv6Vrfs struct {
+	Vrf                 types.String `tfsdk:"vrf"`
+	RpAddress           types.String `tfsdk:"rp_address"`
+	RpAddressAccessList types.String `tfsdk:"rp_address_access_list"`
+	RpAddressBidir      types.Bool   `tfsdk:"rp_address_bidir"`
+}
 
 type PIMIPv6Data struct {
-	Device              types.String  `tfsdk:"device"`
-	Id                  types.String  `tfsdk:"id"`
-	RpAddress           types.String  `tfsdk:"rp_address"`
-	RpAddressAccessList types.String  `tfsdk:"rp_address_access_list"`
-	RpAddressBidir      types.Bool    `tfsdk:"rp_address_bidir"`
-	Vrfs                []PIMIPv6Vrfs `tfsdk:"vrfs"`
+	Device              types.String      `tfsdk:"device"`
+	Id                  types.String      `tfsdk:"id"`
+	RpAddress           types.String      `tfsdk:"rp_address"`
+	RpAddressAccessList types.String      `tfsdk:"rp_address_access_list"`
+	RpAddressBidir      types.Bool        `tfsdk:"rp_address_bidir"`
+	Vrfs                []PIMIPv6VrfsData `tfsdk:"vrfs"`
 }
-type PIMIPv6Vrfs struct {
+type PIMIPv6VrfsData struct {
 	Vrf                 types.String `tfsdk:"vrf"`
 	RpAddress           types.String `tfsdk:"rp_address"`
 	RpAddressAccessList types.String `tfsdk:"rp_address_access_list"`
@@ -103,7 +109,7 @@ func (data PIMIPv6Data) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data PIMIPv6) toBody(ctx context.Context) string {
+func (data PIMIPv6) toBody(ctx context.Context, config PIMIPv6) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.RpAddress.IsNull() && !data.RpAddress.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:rp-address.address", data.RpAddress.ValueString())
@@ -142,7 +148,7 @@ func (data PIMIPv6) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data PIMIPv6) toBodyXML(ctx context.Context) string {
+func (data PIMIPv6) toBodyXML(ctx context.Context, config PIMIPv6) string {
 	body := netconf.Body{}
 	if !data.RpAddress.IsNull() && !data.RpAddress.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:rp-address/address", data.RpAddress.ValueString())
@@ -403,9 +409,9 @@ func (data *PIMIPv6Data) fromBody(ctx context.Context, res gjson.Result) {
 		data.RpAddressBidir = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]PIMIPv6Vrfs, 0)
+		data.Vrfs = make([]PIMIPv6VrfsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := PIMIPv6Vrfs{}
+			item := PIMIPv6VrfsData{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
@@ -483,9 +489,9 @@ func (data *PIMIPv6Data) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.RpAddressBidir = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]PIMIPv6Vrfs, 0)
+		data.Vrfs = make([]PIMIPv6VrfsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PIMIPv6Vrfs{}
+			item := PIMIPv6VrfsData{}
 			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}

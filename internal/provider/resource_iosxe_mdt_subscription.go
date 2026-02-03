@@ -161,10 +161,17 @@ func (r *MDTSubscriptionResource) Configure(_ context.Context, req resource.Conf
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *MDTSubscriptionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan MDTSubscription
+	var plan, config MDTSubscription
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -181,7 +188,7 @@ func (r *MDTSubscriptionResource) Create(ctx context.Context, req resource.Creat
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -221,7 +228,7 @@ func (r *MDTSubscriptionResource) Create(ctx context.Context, req resource.Creat
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -328,7 +335,7 @@ func (r *MDTSubscriptionResource) Read(ctx context.Context, req resource.ReadReq
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *MDTSubscriptionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state MDTSubscription
+	var plan, state, config MDTSubscription
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -344,6 +351,13 @@ func (r *MDTSubscriptionResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -354,7 +368,7 @@ func (r *MDTSubscriptionResource) Update(ctx context.Context, req resource.Updat
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -408,7 +422,7 @@ func (r *MDTSubscriptionResource) Update(ctx context.Context, req resource.Updat
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

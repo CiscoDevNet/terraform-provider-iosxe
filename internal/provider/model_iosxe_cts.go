@@ -49,26 +49,8 @@ type CTS struct {
 	SxpEnable                           types.Bool                     `tfsdk:"sxp_enable"`
 	SxpDefaultPasswordType              types.String                   `tfsdk:"sxp_default_password_type"`
 	SxpDefaultPassword                  types.String                   `tfsdk:"sxp_default_password"`
-	SxpRetryPeriod                      types.Int64                    `tfsdk:"sxp_retry_period"`
-	SxpConnectionPeersIpv4              []CTSSxpConnectionPeersIpv4    `tfsdk:"sxp_connection_peers_ipv4"`
-	SxpConnectionPeersIpv4Vrf           []CTSSxpConnectionPeersIpv4Vrf `tfsdk:"sxp_connection_peers_ipv4_vrf"`
-	SxpSpeakerHoldTime                  types.Int64                    `tfsdk:"sxp_speaker_hold_time"`
-	SxpListenerHoldMinTime              types.Int64                    `tfsdk:"sxp_listener_hold_min_time"`
-	SxpListenerHoldMaxTime              types.Int64                    `tfsdk:"sxp_listener_hold_max_time"`
-	RoleBasedEnforcement                types.Bool                     `tfsdk:"role_based_enforcement"`
-	RoleBasedEnforcementLoggingInterval types.Int64                    `tfsdk:"role_based_enforcement_logging_interval"`
-	RoleBasedEnforcementVlanLists       types.List                     `tfsdk:"role_based_enforcement_vlan_lists"`
-	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
-}
-
-type CTSData struct {
-	Device                              types.String                   `tfsdk:"device"`
-	Id                                  types.String                   `tfsdk:"id"`
-	AuthorizationList                   types.String                   `tfsdk:"authorization_list"`
-	Sgt                                 types.Int64                    `tfsdk:"sgt"`
-	SxpEnable                           types.Bool                     `tfsdk:"sxp_enable"`
-	SxpDefaultPasswordType              types.String                   `tfsdk:"sxp_default_password_type"`
-	SxpDefaultPassword                  types.String                   `tfsdk:"sxp_default_password"`
+	SxpDefaultPasswordWO                types.String                   `tfsdk:"sxp_default_password_wo"`
+	SxpDefaultPasswordWOVersion         types.Int64                    `tfsdk:"sxp_default_password_wo_version"`
 	SxpRetryPeriod                      types.Int64                    `tfsdk:"sxp_retry_period"`
 	SxpConnectionPeersIpv4              []CTSSxpConnectionPeersIpv4    `tfsdk:"sxp_connection_peers_ipv4"`
 	SxpConnectionPeersIpv4Vrf           []CTSSxpConnectionPeersIpv4Vrf `tfsdk:"sxp_connection_peers_ipv4_vrf"`
@@ -81,6 +63,49 @@ type CTSData struct {
 	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
 }
 type CTSSxpConnectionPeersIpv4 struct {
+	Ip                types.String `tfsdk:"ip"`
+	SourceIp          types.String `tfsdk:"source_ip"`
+	Password          types.String `tfsdk:"password"`
+	PasswordWO        types.String `tfsdk:"password_wo"`
+	PasswordWOVersion types.Int64  `tfsdk:"password_wo_version"`
+	ConnectionMode    types.String `tfsdk:"connection_mode"`
+	Option            types.String `tfsdk:"option"`
+	HoldTime          types.Int64  `tfsdk:"hold_time"`
+	MaxTime           types.Int64  `tfsdk:"max_time"`
+}
+type CTSSxpConnectionPeersIpv4Vrf struct {
+	Ip                types.String `tfsdk:"ip"`
+	Vrf               types.String `tfsdk:"vrf"`
+	SourceIp          types.String `tfsdk:"source_ip"`
+	Password          types.String `tfsdk:"password"`
+	PasswordWO        types.String `tfsdk:"password_wo"`
+	PasswordWOVersion types.Int64  `tfsdk:"password_wo_version"`
+	ConnectionMode    types.String `tfsdk:"connection_mode"`
+	Option            types.String `tfsdk:"option"`
+	HoldTime          types.Int64  `tfsdk:"hold_time"`
+	MaxTime           types.Int64  `tfsdk:"max_time"`
+}
+
+type CTSData struct {
+	Device                              types.String                       `tfsdk:"device"`
+	Id                                  types.String                       `tfsdk:"id"`
+	AuthorizationList                   types.String                       `tfsdk:"authorization_list"`
+	Sgt                                 types.Int64                        `tfsdk:"sgt"`
+	SxpEnable                           types.Bool                         `tfsdk:"sxp_enable"`
+	SxpDefaultPasswordType              types.String                       `tfsdk:"sxp_default_password_type"`
+	SxpDefaultPassword                  types.String                       `tfsdk:"sxp_default_password"`
+	SxpRetryPeriod                      types.Int64                        `tfsdk:"sxp_retry_period"`
+	SxpConnectionPeersIpv4              []CTSSxpConnectionPeersIpv4Data    `tfsdk:"sxp_connection_peers_ipv4"`
+	SxpConnectionPeersIpv4Vrf           []CTSSxpConnectionPeersIpv4VrfData `tfsdk:"sxp_connection_peers_ipv4_vrf"`
+	SxpSpeakerHoldTime                  types.Int64                        `tfsdk:"sxp_speaker_hold_time"`
+	SxpListenerHoldMinTime              types.Int64                        `tfsdk:"sxp_listener_hold_min_time"`
+	SxpListenerHoldMaxTime              types.Int64                        `tfsdk:"sxp_listener_hold_max_time"`
+	RoleBasedEnforcement                types.Bool                         `tfsdk:"role_based_enforcement"`
+	RoleBasedEnforcementLoggingInterval types.Int64                        `tfsdk:"role_based_enforcement_logging_interval"`
+	RoleBasedEnforcementVlanLists       types.List                         `tfsdk:"role_based_enforcement_vlan_lists"`
+	RoleBasedPermissionsDefaultAclName  types.List                         `tfsdk:"role_based_permissions_default_acl_name"`
+}
+type CTSSxpConnectionPeersIpv4Data struct {
 	Ip             types.String `tfsdk:"ip"`
 	SourceIp       types.String `tfsdk:"source_ip"`
 	Password       types.String `tfsdk:"password"`
@@ -89,7 +114,7 @@ type CTSSxpConnectionPeersIpv4 struct {
 	HoldTime       types.Int64  `tfsdk:"hold_time"`
 	MaxTime        types.Int64  `tfsdk:"max_time"`
 }
-type CTSSxpConnectionPeersIpv4Vrf struct {
+type CTSSxpConnectionPeersIpv4VrfData struct {
 	Ip             types.String `tfsdk:"ip"`
 	Vrf            types.String `tfsdk:"vrf"`
 	SourceIp       types.String `tfsdk:"source_ip"`
@@ -138,7 +163,7 @@ func (data CTSData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data CTS) toBody(ctx context.Context) string {
+func (data CTS) toBody(ctx context.Context, config CTS) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AuthorizationList.IsNull() && !data.AuthorizationList.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:authorization.list", data.AuthorizationList.ValueString())
@@ -153,7 +178,11 @@ func (data CTS) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.default.password.type", data.SxpDefaultPasswordType.ValueString())
 	}
 	if !data.SxpDefaultPassword.IsNull() && !data.SxpDefaultPassword.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.default.password.secret", data.SxpDefaultPassword.ValueString())
+		if !config.SxpDefaultPasswordWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.default.password.secret", config.SxpDefaultPasswordWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.default.password.secret", data.SxpDefaultPassword.ValueString())
+		}
 	}
 	if !data.SxpRetryPeriod.IsNull() && !data.SxpRetryPeriod.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.retry.period", strconv.FormatInt(data.SxpRetryPeriod.ValueInt64(), 10))
@@ -188,6 +217,14 @@ func (data CTS) toBody(ctx context.Context) string {
 	if len(data.SxpConnectionPeersIpv4) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf", []interface{}{})
 		for index, item := range data.SxpConnectionPeersIpv4 {
+			var configItem CTSSxpConnectionPeersIpv4
+			for _, ci := range config.SxpConnectionPeersIpv4 {
+				if ci.Ip.ValueString() != item.Ip.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"+"."+strconv.Itoa(index)+"."+"ipv4", item.Ip.ValueString())
 			}
@@ -195,7 +232,11 @@ func (data CTS) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"+"."+strconv.Itoa(index)+"."+"source", item.SourceIp.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"+"."+strconv.Itoa(index)+"."+"password", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"+"."+strconv.Itoa(index)+"."+"password", configItem.PasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"+"."+strconv.Itoa(index)+"."+"password", item.Password.ValueString())
+				}
 			}
 			if !item.ConnectionMode.IsNull() && !item.ConnectionMode.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"+"."+strconv.Itoa(index)+"."+"mode", item.ConnectionMode.ValueString())
@@ -214,6 +255,17 @@ func (data CTS) toBody(ctx context.Context) string {
 	if len(data.SxpConnectionPeersIpv4Vrf) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf", []interface{}{})
 		for index, item := range data.SxpConnectionPeersIpv4Vrf {
+			var configItem CTSSxpConnectionPeersIpv4Vrf
+			for _, ci := range config.SxpConnectionPeersIpv4Vrf {
+				if ci.Ip.ValueString() != item.Ip.ValueString() {
+					continue
+				}
+				if ci.Vrf.ValueString() != item.Vrf.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"ipv4", item.Ip.ValueString())
 			}
@@ -224,7 +276,11 @@ func (data CTS) toBody(ctx context.Context) string {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"source", item.SourceIp.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"password", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"password", configItem.PasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"password", item.Password.ValueString())
+				}
 			}
 			if !item.ConnectionMode.IsNull() && !item.ConnectionMode.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"mode", item.ConnectionMode.ValueString())
@@ -247,7 +303,7 @@ func (data CTS) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data CTS) toBodyXML(ctx context.Context) string {
+func (data CTS) toBodyXML(ctx context.Context, config CTS) string {
 	body := netconf.Body{}
 	if !data.AuthorizationList.IsNull() && !data.AuthorizationList.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:authorization/list", data.AuthorizationList.ValueString())
@@ -262,13 +318,25 @@ func (data CTS) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/type", data.SxpDefaultPasswordType.ValueString())
 	}
 	if !data.SxpDefaultPassword.IsNull() && !data.SxpDefaultPassword.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret", data.SxpDefaultPassword.ValueString())
+		if !config.SxpDefaultPasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret", config.SxpDefaultPasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret", data.SxpDefaultPassword.ValueString())
+		}
 	}
 	if !data.SxpRetryPeriod.IsNull() && !data.SxpRetryPeriod.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period", strconv.FormatInt(data.SxpRetryPeriod.ValueInt64(), 10))
 	}
 	if len(data.SxpConnectionPeersIpv4) > 0 {
 		for _, item := range data.SxpConnectionPeersIpv4 {
+			var configItem CTSSxpConnectionPeersIpv4
+			for _, ci := range config.SxpConnectionPeersIpv4 {
+				if ci.Ip.ValueString() != item.Ip.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv4", item.Ip.ValueString())
@@ -277,7 +345,11 @@ func (data CTS) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "source", item.SourceIp.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "password", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "password", configItem.PasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "password", item.Password.ValueString())
+				}
 			}
 			if !item.ConnectionMode.IsNull() && !item.ConnectionMode.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "mode", item.ConnectionMode.ValueString())
@@ -296,6 +368,17 @@ func (data CTS) toBodyXML(ctx context.Context) string {
 	}
 	if len(data.SxpConnectionPeersIpv4Vrf) > 0 {
 		for _, item := range data.SxpConnectionPeersIpv4Vrf {
+			var configItem CTSSxpConnectionPeersIpv4Vrf
+			for _, ci := range config.SxpConnectionPeersIpv4Vrf {
+				if ci.Ip.ValueString() != item.Ip.ValueString() {
+					continue
+				}
+				if ci.Vrf.ValueString() != item.Vrf.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv4", item.Ip.ValueString())
@@ -307,7 +390,11 @@ func (data CTS) toBodyXML(ctx context.Context) string {
 				cBody = helpers.SetFromXPath(cBody, "source", item.SourceIp.ValueString())
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "password", item.Password.ValueString())
+				if !configItem.PasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "password", configItem.PasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "password", item.Password.ValueString())
+				}
 			}
 			if !item.ConnectionMode.IsNull() && !item.ConnectionMode.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "mode", item.ConnectionMode.ValueString())
@@ -879,9 +966,9 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"); value.Exists() {
-		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4, 0)
+		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4Data, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSSxpConnectionPeersIpv4{}
+			item := CTSSxpConnectionPeersIpv4Data{}
 			if cValue := v.Get("ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -908,9 +995,9 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"); value.Exists() {
-		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4Vrf, 0)
+		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4VrfData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSSxpConnectionPeersIpv4Vrf{}
+			item := CTSSxpConnectionPeersIpv4VrfData{}
 			if cValue := v.Get("ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -1109,9 +1196,9 @@ func (data *CTSData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf"); value.Exists() {
-		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4, 0)
+		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4Data, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CTSSxpConnectionPeersIpv4{}
+			item := CTSSxpConnectionPeersIpv4Data{}
 			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -1138,9 +1225,9 @@ func (data *CTSData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf"); value.Exists() {
-		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4Vrf, 0)
+		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4VrfData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := CTSSxpConnectionPeersIpv4Vrf{}
+			item := CTSSxpConnectionPeersIpv4VrfData{}
 			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}

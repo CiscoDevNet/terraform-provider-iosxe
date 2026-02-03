@@ -47,8 +47,12 @@ type Username struct {
 	Description        types.String `tfsdk:"description"`
 	PasswordEncryption types.String `tfsdk:"password_encryption"`
 	Password           types.String `tfsdk:"password"`
+	PasswordWO         types.String `tfsdk:"password_wo"`
+	PasswordWOVersion  types.Int64  `tfsdk:"password_wo_version"`
 	SecretEncryption   types.String `tfsdk:"secret_encryption"`
 	Secret             types.String `tfsdk:"secret"`
+	SecretWO           types.String `tfsdk:"secret_wo"`
+	SecretWOVersion    types.Int64  `tfsdk:"secret_wo_version"`
 }
 
 type UsernameData struct {
@@ -103,7 +107,7 @@ func (data UsernameData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data Username) toBody(ctx context.Context) string {
+func (data Username) toBody(ctx context.Context, config Username) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -118,13 +122,21 @@ func (data Username) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.encryption", data.PasswordEncryption.ValueString())
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.password", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.password", config.PasswordWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.password", data.Password.ValueString())
+		}
 	}
 	if !data.SecretEncryption.IsNull() && !data.SecretEncryption.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"secret.encryption", data.SecretEncryption.ValueString())
 	}
 	if !data.Secret.IsNull() && !data.Secret.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"secret.secret", data.Secret.ValueString())
+		if !config.SecretWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"secret.secret", config.SecretWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"secret.secret", data.Secret.ValueString())
+		}
 	}
 	return body
 }
@@ -133,7 +145,7 @@ func (data Username) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data Username) toBodyXML(ctx context.Context) string {
+func (data Username) toBodyXML(ctx context.Context, config Username) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -148,13 +160,21 @@ func (data Username) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/password/encryption", data.PasswordEncryption.ValueString())
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/password/password", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/password/password", config.PasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/password/password", data.Password.ValueString())
+		}
 	}
 	if !data.SecretEncryption.IsNull() && !data.SecretEncryption.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/secret/encryption", data.SecretEncryption.ValueString())
 	}
 	if !data.Secret.IsNull() && !data.Secret.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/secret/secret", data.Secret.ValueString())
+		if !config.SecretWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/secret/secret", config.SecretWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/secret/secret", data.Secret.ValueString())
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {

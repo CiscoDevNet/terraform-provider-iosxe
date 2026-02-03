@@ -50,17 +50,22 @@ type EVPNEthernetSegment struct {
 	RedundancySingleActive types.Bool                           `tfsdk:"redundancy_single_active"`
 	IdentifierTypes        []EVPNEthernetSegmentIdentifierTypes `tfsdk:"identifier_types"`
 }
+type EVPNEthernetSegmentIdentifierTypes struct {
+	Type      types.Int64  `tfsdk:"type"`
+	HexString types.String `tfsdk:"hex_string"`
+	SystemMac types.String `tfsdk:"system_mac"`
+}
 
 type EVPNEthernetSegmentData struct {
-	Device                 types.String                         `tfsdk:"device"`
-	Id                     types.String                         `tfsdk:"id"`
-	EsValue                types.Int64                          `tfsdk:"es_value"`
-	DfElectionWaitTime     types.Int64                          `tfsdk:"df_election_wait_time"`
-	RedundancyAllActive    types.Bool                           `tfsdk:"redundancy_all_active"`
-	RedundancySingleActive types.Bool                           `tfsdk:"redundancy_single_active"`
-	IdentifierTypes        []EVPNEthernetSegmentIdentifierTypes `tfsdk:"identifier_types"`
+	Device                 types.String                             `tfsdk:"device"`
+	Id                     types.String                             `tfsdk:"id"`
+	EsValue                types.Int64                              `tfsdk:"es_value"`
+	DfElectionWaitTime     types.Int64                              `tfsdk:"df_election_wait_time"`
+	RedundancyAllActive    types.Bool                               `tfsdk:"redundancy_all_active"`
+	RedundancySingleActive types.Bool                               `tfsdk:"redundancy_single_active"`
+	IdentifierTypes        []EVPNEthernetSegmentIdentifierTypesData `tfsdk:"identifier_types"`
 }
-type EVPNEthernetSegmentIdentifierTypes struct {
+type EVPNEthernetSegmentIdentifierTypesData struct {
 	Type      types.Int64  `tfsdk:"type"`
 	HexString types.String `tfsdk:"hex_string"`
 	SystemMac types.String `tfsdk:"system_mac"`
@@ -106,7 +111,7 @@ func (data EVPNEthernetSegmentData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data EVPNEthernetSegment) toBody(ctx context.Context) string {
+func (data EVPNEthernetSegment) toBody(ctx context.Context, config EVPNEthernetSegment) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.EsValue.IsNull() && !data.EsValue.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"es-value", strconv.FormatInt(data.EsValue.ValueInt64(), 10))
@@ -145,7 +150,7 @@ func (data EVPNEthernetSegment) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data EVPNEthernetSegment) toBodyXML(ctx context.Context) string {
+func (data EVPNEthernetSegment) toBodyXML(ctx context.Context, config EVPNEthernetSegment) string {
 	body := netconf.Body{}
 	if !data.EsValue.IsNull() && !data.EsValue.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/es-value", strconv.FormatInt(data.EsValue.ValueInt64(), 10))
@@ -405,9 +410,9 @@ func (data *EVPNEthernetSegmentData) fromBody(ctx context.Context, res gjson.Res
 		data.RedundancySingleActive = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "identifier.type"); value.Exists() {
-		data.IdentifierTypes = make([]EVPNEthernetSegmentIdentifierTypes, 0)
+		data.IdentifierTypes = make([]EVPNEthernetSegmentIdentifierTypesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := EVPNEthernetSegmentIdentifierTypes{}
+			item := EVPNEthernetSegmentIdentifierTypesData{}
 			if cValue := v.Get("identifier-type"); cValue.Exists() {
 				item.Type = types.Int64Value(cValue.Int())
 			}
@@ -479,9 +484,9 @@ func (data *EVPNEthernetSegmentData) fromBodyXML(ctx context.Context, res xmldot
 		data.RedundancySingleActive = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/identifier/type"); value.Exists() {
-		data.IdentifierTypes = make([]EVPNEthernetSegmentIdentifierTypes, 0)
+		data.IdentifierTypes = make([]EVPNEthernetSegmentIdentifierTypesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := EVPNEthernetSegmentIdentifierTypes{}
+			item := EVPNEthernetSegmentIdentifierTypesData{}
 			if cValue := helpers.GetFromXPath(v, "identifier-type"); cValue.Exists() {
 				item.Type = types.Int64Value(cValue.Int())
 			}

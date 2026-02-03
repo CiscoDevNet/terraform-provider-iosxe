@@ -64,6 +64,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `activate` (Boolean) Enable the address family for this neighbor
   - Default value: `true`
 - `advertisement_interval` (Number) Minimum interval between sending BGP routing updates
@@ -96,6 +98,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `password` (String, Sensitive)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
   - Range: `0`-`7`
+- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo_version` (Number) The write-only version of the attribute.
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client

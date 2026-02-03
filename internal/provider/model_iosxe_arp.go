@@ -57,28 +57,36 @@ type ARP struct {
 	InspectionLogBufferLogsInterval types.Int64            `tfsdk:"inspection_log_buffer_logs_interval"`
 	InspectionVlan                  types.String           `tfsdk:"inspection_vlan"`
 }
-
-type ARPData struct {
-	Device                          types.String           `tfsdk:"device"`
-	Id                              types.String           `tfsdk:"id"`
-	IncompleteEntries               types.Int64            `tfsdk:"incomplete_entries"`
-	ProxyDisable                    types.Bool             `tfsdk:"proxy_disable"`
-	EntryLearn                      types.Int64            `tfsdk:"entry_learn"`
-	InspectionFilters               []ARPInspectionFilters `tfsdk:"inspection_filters"`
-	InspectionValidateSrcMac        types.Bool             `tfsdk:"inspection_validate_src_mac"`
-	InspectionValidateDstMac        types.Bool             `tfsdk:"inspection_validate_dst_mac"`
-	InspectionValidateIp            types.Bool             `tfsdk:"inspection_validate_ip"`
-	InspectionValidateAllowZeros    types.Bool             `tfsdk:"inspection_validate_allow_zeros"`
-	InspectionLogBufferEntries      types.Int64            `tfsdk:"inspection_log_buffer_entries"`
-	InspectionLogBufferLogsEntries  types.Int64            `tfsdk:"inspection_log_buffer_logs_entries"`
-	InspectionLogBufferLogsInterval types.Int64            `tfsdk:"inspection_log_buffer_logs_interval"`
-	InspectionVlan                  types.String           `tfsdk:"inspection_vlan"`
-}
 type ARPInspectionFilters struct {
 	Name  types.String                `tfsdk:"name"`
 	Vlans []ARPInspectionFiltersVlans `tfsdk:"vlans"`
 }
 type ARPInspectionFiltersVlans struct {
+	VlanRange types.String `tfsdk:"vlan_range"`
+	Static    types.Bool   `tfsdk:"static"`
+}
+
+type ARPData struct {
+	Device                          types.String               `tfsdk:"device"`
+	Id                              types.String               `tfsdk:"id"`
+	IncompleteEntries               types.Int64                `tfsdk:"incomplete_entries"`
+	ProxyDisable                    types.Bool                 `tfsdk:"proxy_disable"`
+	EntryLearn                      types.Int64                `tfsdk:"entry_learn"`
+	InspectionFilters               []ARPInspectionFiltersData `tfsdk:"inspection_filters"`
+	InspectionValidateSrcMac        types.Bool                 `tfsdk:"inspection_validate_src_mac"`
+	InspectionValidateDstMac        types.Bool                 `tfsdk:"inspection_validate_dst_mac"`
+	InspectionValidateIp            types.Bool                 `tfsdk:"inspection_validate_ip"`
+	InspectionValidateAllowZeros    types.Bool                 `tfsdk:"inspection_validate_allow_zeros"`
+	InspectionLogBufferEntries      types.Int64                `tfsdk:"inspection_log_buffer_entries"`
+	InspectionLogBufferLogsEntries  types.Int64                `tfsdk:"inspection_log_buffer_logs_entries"`
+	InspectionLogBufferLogsInterval types.Int64                `tfsdk:"inspection_log_buffer_logs_interval"`
+	InspectionVlan                  types.String               `tfsdk:"inspection_vlan"`
+}
+type ARPInspectionFiltersData struct {
+	Name  types.String                    `tfsdk:"name"`
+	Vlans []ARPInspectionFiltersVlansData `tfsdk:"vlans"`
+}
+type ARPInspectionFiltersVlansData struct {
 	VlanRange types.String `tfsdk:"vlan_range"`
 	Static    types.Bool   `tfsdk:"static"`
 }
@@ -121,7 +129,7 @@ func (data ARPData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data ARP) toBody(ctx context.Context) string {
+func (data ARP) toBody(ctx context.Context, config ARP) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.IncompleteEntries.IsNull() && !data.IncompleteEntries.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"incomplete.entries", strconv.FormatInt(data.IncompleteEntries.ValueInt64(), 10))
@@ -194,7 +202,7 @@ func (data ARP) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data ARP) toBodyXML(ctx context.Context) string {
+func (data ARP) toBodyXML(ctx context.Context, config ARP) string {
 	body := netconf.Body{}
 	if !data.IncompleteEntries.IsNull() && !data.IncompleteEntries.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/incomplete/entries", strconv.FormatInt(data.IncompleteEntries.ValueInt64(), 10))
@@ -685,16 +693,16 @@ func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.EntryLearn = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "inspection.filter"); value.Exists() {
-		data.InspectionFilters = make([]ARPInspectionFilters, 0)
+		data.InspectionFilters = make([]ARPInspectionFiltersData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ARPInspectionFilters{}
+			item := ARPInspectionFiltersData{}
 			if cValue := v.Get("arpacl"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("vlan"); cValue.Exists() {
-				item.Vlans = make([]ARPInspectionFiltersVlans, 0)
+				item.Vlans = make([]ARPInspectionFiltersVlansData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := ARPInspectionFiltersVlans{}
+					cItem := ARPInspectionFiltersVlansData{}
 					if ccValue := cv.Get("vlan-range"); ccValue.Exists() {
 						cItem.VlanRange = types.StringValue(ccValue.String())
 					}
@@ -839,16 +847,16 @@ func (data *ARPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.EntryLearn = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/filter"); value.Exists() {
-		data.InspectionFilters = make([]ARPInspectionFilters, 0)
+		data.InspectionFilters = make([]ARPInspectionFiltersData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := ARPInspectionFilters{}
+			item := ARPInspectionFiltersData{}
 			if cValue := helpers.GetFromXPath(v, "arpacl"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "vlan"); cValue.Exists() {
-				item.Vlans = make([]ARPInspectionFiltersVlans, 0)
+				item.Vlans = make([]ARPInspectionFiltersVlansData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := ARPInspectionFiltersVlans{}
+					cItem := ARPInspectionFiltersVlansData{}
 					if ccValue := helpers.GetFromXPath(cv, "vlan-range"); ccValue.Exists() {
 						cItem.VlanRange = types.StringValue(ccValue.String())
 					}

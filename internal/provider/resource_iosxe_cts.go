@@ -120,6 +120,15 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.LengthBetween(1, 162),
 				},
 			},
+			"sxp_default_password_wo": schema.StringAttribute{
+				MarkdownDescription: "The write-only value of the attribute.",
+				WriteOnly:           true,
+				Optional:            true,
+			},
+			"sxp_default_password_wo_version": schema.Int64Attribute{
+				MarkdownDescription: "The write-only version of the attribute.",
+				Optional:            true,
+			},
 			"sxp_retry_period": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enter retry period value for sxp connection in seconds").AddIntegerRangeDescription(0, 64000).String,
 				Optional:            true,
@@ -153,6 +162,15 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Validators: []validator.String{
 								stringvalidator.OneOf("default", "key-chain", "none"),
 							},
+						},
+						"password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"connection_mode": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Mode of connection").AddStringEnumDescription("local", "peer").String,
@@ -215,6 +233,15 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							Validators: []validator.String{
 								stringvalidator.OneOf("default", "key-chain", "none"),
 							},
+						},
+						"password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"connection_mode": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Mode of connection").AddStringEnumDescription("local", "peer").String,
@@ -306,10 +333,17 @@ func (r *CTSResource) Configure(_ context.Context, req resource.ConfigureRequest
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *CTSResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan CTS
+	var plan, config CTS
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Read config
+	diags = req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -326,7 +360,7 @@ func (r *CTSResource) Create(ctx context.Context, req resource.CreateRequest, re
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
@@ -366,7 +400,7 @@ func (r *CTSResource) Create(ctx context.Context, req resource.CreateRequest, re
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -473,7 +507,7 @@ func (r *CTSResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *CTSResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state CTS
+	var plan, state, config CTS
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -489,6 +523,13 @@ func (r *CTSResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
+	// Read config
+	diags = req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
@@ -499,7 +540,7 @@ func (r *CTSResource) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	if device.Managed {
 		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
+			body := plan.toBody(ctx, config)
 
 			deletedItems := plan.getDeletedItems(ctx, state)
 			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
@@ -553,7 +594,7 @@ func (r *CTSResource) Update(ctx context.Context, req resource.UpdateRequest, re
 			}
 			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
+			body := plan.toBodyXML(ctx, config)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {

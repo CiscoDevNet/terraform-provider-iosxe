@@ -66,6 +66,8 @@ type BGPNeighbor struct {
 	LogNeighborChanges                  types.Bool   `tfsdk:"log_neighbor_changes"`
 	PasswordType                        types.Int64  `tfsdk:"password_type"`
 	Password                            types.String `tfsdk:"password"`
+	PasswordWO                          types.String `tfsdk:"password_wo"`
+	PasswordWOVersion                   types.Int64  `tfsdk:"password_wo_version"`
 	PeerGroup                           types.String `tfsdk:"peer_group"`
 	TimersKeepaliveInterval             types.Int64  `tfsdk:"timers_keepalive_interval"`
 	TimersHoldtime                      types.Int64  `tfsdk:"timers_holdtime"`
@@ -154,7 +156,7 @@ func (data BGPNeighborData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPNeighbor) toBody(ctx context.Context) string {
+func (data BGPNeighbor) toBody(ctx context.Context, config BGPNeighbor) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
@@ -244,7 +246,11 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.enctype", strconv.FormatInt(data.PasswordType.ValueInt64(), 10))
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", config.PasswordWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", data.Password.ValueString())
+		}
 	}
 	if !data.PeerGroup.IsNull() && !data.PeerGroup.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer-group.peer-group-name", data.PeerGroup.ValueString())
@@ -282,7 +288,7 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPNeighbor) toBodyXML(ctx context.Context) string {
+func (data BGPNeighbor) toBodyXML(ctx context.Context, config BGPNeighbor) string {
 	body := netconf.Body{}
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Ip.ValueString())
@@ -396,7 +402,11 @@ func (data BGPNeighbor) toBodyXML(ctx context.Context) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/password/enctype", strconv.FormatInt(data.PasswordType.ValueInt64(), 10))
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/password/text", data.Password.ValueString())
+		if !config.PasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/password/text", config.PasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/password/text", data.Password.ValueString())
+		}
 	}
 	if !data.PeerGroup.IsNull() && !data.PeerGroup.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/peer-group/peer-group-name", data.PeerGroup.ValueString())

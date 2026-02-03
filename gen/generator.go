@@ -235,6 +235,22 @@ func HasId(attributes []YamlConfigAttribute) bool {
 	return false
 }
 
+// Templating helper function to check if any attribute is sensitive (recursive)
+func HasSensitiveAttr(attributes []YamlConfigAttribute) bool {
+	for _, attr := range attributes {
+		if attr.Sensitive {
+			return true
+		}
+		// Recursively check nested list/set attributes
+		if (attr.Type == "List" || attr.Type == "Set") && len(attr.Attributes) > 0 {
+			if HasSensitiveAttr(attr.Attributes) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 // Templating helper function to remove last element of path
 func RemoveLastPathElement(p string) string {
 	return path.Dir(p)
@@ -304,6 +320,7 @@ var functions = template.FuncMap{
 	"camelCase":         CamelCase,
 	"snakeCase":         SnakeCase,
 	"hasId":             HasId,
+	"hasSensitiveAttr":  HasSensitiveAttr,
 	"add":               Add,
 	"getImportExcludes": GetImportExcludes,
 	"importAttributes":  ImportAttributes,

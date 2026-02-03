@@ -53,19 +53,22 @@ type ISIS struct {
 	LogAdjacencyChanges    types.Bool   `tfsdk:"log_adjacency_changes"`
 	LogAdjacencyChangesAll types.Bool   `tfsdk:"log_adjacency_changes_all"`
 }
+type ISISNets struct {
+	Tag types.String `tfsdk:"tag"`
+}
 
 type ISISData struct {
-	Device                 types.String `tfsdk:"device"`
-	Id                     types.String `tfsdk:"id"`
-	AreaTag                types.String `tfsdk:"area_tag"`
-	Nets                   []ISISNets   `tfsdk:"nets"`
-	MetricStyleWide        types.Bool   `tfsdk:"metric_style_wide"`
-	MetricStyleNarrow      types.Bool   `tfsdk:"metric_style_narrow"`
-	MetricStyleTransition  types.Bool   `tfsdk:"metric_style_transition"`
-	LogAdjacencyChanges    types.Bool   `tfsdk:"log_adjacency_changes"`
-	LogAdjacencyChangesAll types.Bool   `tfsdk:"log_adjacency_changes_all"`
+	Device                 types.String   `tfsdk:"device"`
+	Id                     types.String   `tfsdk:"id"`
+	AreaTag                types.String   `tfsdk:"area_tag"`
+	Nets                   []ISISNetsData `tfsdk:"nets"`
+	MetricStyleWide        types.Bool     `tfsdk:"metric_style_wide"`
+	MetricStyleNarrow      types.Bool     `tfsdk:"metric_style_narrow"`
+	MetricStyleTransition  types.Bool     `tfsdk:"metric_style_transition"`
+	LogAdjacencyChanges    types.Bool     `tfsdk:"log_adjacency_changes"`
+	LogAdjacencyChangesAll types.Bool     `tfsdk:"log_adjacency_changes_all"`
 }
-type ISISNets struct {
+type ISISNetsData struct {
 	Tag types.String `tfsdk:"tag"`
 }
 
@@ -109,7 +112,7 @@ func (data ISISData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data ISIS) toBody(ctx context.Context) string {
+func (data ISIS) toBody(ctx context.Context, config ISIS) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AreaTag.IsNull() && !data.AreaTag.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area-tag", data.AreaTag.ValueString())
@@ -152,7 +155,7 @@ func (data ISIS) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data ISIS) toBodyXML(ctx context.Context) string {
+func (data ISIS) toBodyXML(ctx context.Context, config ISIS) string {
 	body := netconf.Body{}
 	if !data.AreaTag.IsNull() && !data.AreaTag.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/area-tag", data.AreaTag.ValueString())
@@ -433,9 +436,9 @@ func (data *ISISData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "net"); value.Exists() {
-		data.Nets = make([]ISISNets, 0)
+		data.Nets = make([]ISISNetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ISISNets{}
+			item := ISISNetsData{}
 			if cValue := v.Get("tag"); cValue.Exists() {
 				item.Tag = types.StringValue(cValue.String())
 			}
@@ -519,9 +522,9 @@ func (data *ISIS) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *ISISData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/net"); value.Exists() {
-		data.Nets = make([]ISISNets, 0)
+		data.Nets = make([]ISISNetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := ISISNets{}
+			item := ISISNetsData{}
 			if cValue := helpers.GetFromXPath(v, "tag"); cValue.Exists() {
 				item.Tag = types.StringValue(cValue.String())
 			}

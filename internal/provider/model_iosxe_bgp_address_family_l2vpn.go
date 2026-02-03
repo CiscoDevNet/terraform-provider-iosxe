@@ -98,7 +98,7 @@ func (data BGPAddressFamilyL2VPNData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPAddressFamilyL2VPN) toBody(ctx context.Context) string {
+func (data BGPAddressFamilyL2VPN) toBody(ctx context.Context, config BGPAddressFamilyL2VPN) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
@@ -118,7 +118,7 @@ func (data BGPAddressFamilyL2VPN) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPAddressFamilyL2VPN) toBodyXML(ctx context.Context) string {
+func (data BGPAddressFamilyL2VPN) toBodyXML(ctx context.Context, config BGPAddressFamilyL2VPN) string {
 	body := netconf.Body{}
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/af-name", data.AfName.ValueString())

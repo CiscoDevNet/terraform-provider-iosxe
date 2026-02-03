@@ -54,20 +54,24 @@ type BGPL2VPNEVPNNeighbor struct {
 	RouteMaps            []BGPL2VPNEVPNNeighborRouteMaps `tfsdk:"route_maps"`
 	InheritPeerPolicy    types.String                    `tfsdk:"inherit_peer_policy"`
 }
+type BGPL2VPNEVPNNeighborRouteMaps struct {
+	InOut        types.String `tfsdk:"in_out"`
+	RouteMapName types.String `tfsdk:"route_map_name"`
+}
 
 type BGPL2VPNEVPNNeighborData struct {
-	Device               types.String                    `tfsdk:"device"`
-	Id                   types.String                    `tfsdk:"id"`
-	Asn                  types.String                    `tfsdk:"asn"`
-	Ip                   types.String                    `tfsdk:"ip"`
-	Activate             types.Bool                      `tfsdk:"activate"`
-	SendCommunity        types.String                    `tfsdk:"send_community"`
-	RouteReflectorClient types.Bool                      `tfsdk:"route_reflector_client"`
-	SoftReconfiguration  types.String                    `tfsdk:"soft_reconfiguration"`
-	RouteMaps            []BGPL2VPNEVPNNeighborRouteMaps `tfsdk:"route_maps"`
-	InheritPeerPolicy    types.String                    `tfsdk:"inherit_peer_policy"`
+	Device               types.String                        `tfsdk:"device"`
+	Id                   types.String                        `tfsdk:"id"`
+	Asn                  types.String                        `tfsdk:"asn"`
+	Ip                   types.String                        `tfsdk:"ip"`
+	Activate             types.Bool                          `tfsdk:"activate"`
+	SendCommunity        types.String                        `tfsdk:"send_community"`
+	RouteReflectorClient types.Bool                          `tfsdk:"route_reflector_client"`
+	SoftReconfiguration  types.String                        `tfsdk:"soft_reconfiguration"`
+	RouteMaps            []BGPL2VPNEVPNNeighborRouteMapsData `tfsdk:"route_maps"`
+	InheritPeerPolicy    types.String                        `tfsdk:"inherit_peer_policy"`
 }
-type BGPL2VPNEVPNNeighborRouteMaps struct {
+type BGPL2VPNEVPNNeighborRouteMapsData struct {
 	InOut        types.String `tfsdk:"in_out"`
 	RouteMapName types.String `tfsdk:"route_map_name"`
 }
@@ -112,7 +116,7 @@ func (data BGPL2VPNEVPNNeighborData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGPL2VPNEVPNNeighbor) toBody(ctx context.Context) string {
+func (data BGPL2VPNEVPNNeighbor) toBody(ctx context.Context, config BGPL2VPNEVPNNeighbor) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
@@ -154,7 +158,7 @@ func (data BGPL2VPNEVPNNeighbor) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGPL2VPNEVPNNeighbor) toBodyXML(ctx context.Context) string {
+func (data BGPL2VPNEVPNNeighbor) toBodyXML(ctx context.Context, config BGPL2VPNEVPNNeighbor) string {
 	body := netconf.Body{}
 	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Ip.ValueString())
@@ -433,9 +437,9 @@ func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Re
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMaps, 0)
+		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMapsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPL2VPNEVPNNeighborRouteMaps{}
+			item := BGPL2VPNEVPNNeighborRouteMapsData{}
 			if cValue := v.Get("inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}
@@ -513,9 +517,9 @@ func (data *BGPL2VPNEVPNNeighborData) fromBodyXML(ctx context.Context, res xmldo
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMaps, 0)
+		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMapsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := BGPL2VPNEVPNNeighborRouteMaps{}
+			item := BGPL2VPNEVPNNeighborRouteMapsData{}
 			if cValue := helpers.GetFromXPath(v, "inout"); cValue.Exists() {
 				item.InOut = types.StringValue(cValue.String())
 			}

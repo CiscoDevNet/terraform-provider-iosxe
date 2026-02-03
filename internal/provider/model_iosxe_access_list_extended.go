@@ -47,14 +47,66 @@ type AccessListExtended struct {
 	Name    types.String                `tfsdk:"name"`
 	Entries []AccessListExtendedEntries `tfsdk:"entries"`
 }
+type AccessListExtendedEntries struct {
+	Sequence                   types.Int64  `tfsdk:"sequence"`
+	Remark                     types.String `tfsdk:"remark"`
+	AceRuleAction              types.String `tfsdk:"ace_rule_action"`
+	AceRuleProtocol            types.String `tfsdk:"ace_rule_protocol"`
+	ServiceObjectGroup         types.String `tfsdk:"service_object_group"`
+	SourcePrefix               types.String `tfsdk:"source_prefix"`
+	SourcePrefixMask           types.String `tfsdk:"source_prefix_mask"`
+	SourceAny                  types.Bool   `tfsdk:"source_any"`
+	SourceHost                 types.String `tfsdk:"source_host"`
+	SourceObjectGroup          types.String `tfsdk:"source_object_group"`
+	SourcePortEqual            types.String `tfsdk:"source_port_equal"`
+	SourcePortGreaterThan      types.String `tfsdk:"source_port_greater_than"`
+	SourcePortLesserThan       types.String `tfsdk:"source_port_lesser_than"`
+	SourcePortRangeFrom        types.String `tfsdk:"source_port_range_from"`
+	SourcePortRangeTo          types.String `tfsdk:"source_port_range_to"`
+	DestinationPrefix          types.String `tfsdk:"destination_prefix"`
+	DestinationPrefixMask      types.String `tfsdk:"destination_prefix_mask"`
+	DestinationAny             types.Bool   `tfsdk:"destination_any"`
+	DestinationHost            types.String `tfsdk:"destination_host"`
+	DestinationObjectGroup     types.String `tfsdk:"destination_object_group"`
+	DestinationPortEqual       types.String `tfsdk:"destination_port_equal"`
+	DestinationPortGreaterThan types.String `tfsdk:"destination_port_greater_than"`
+	DestinationPortLesserThan  types.String `tfsdk:"destination_port_lesser_than"`
+	DestinationPortRangeFrom   types.String `tfsdk:"destination_port_range_from"`
+	DestinationPortRangeTo     types.String `tfsdk:"destination_port_range_to"`
+	Ack                        types.Bool   `tfsdk:"ack"`
+	Fin                        types.Bool   `tfsdk:"fin"`
+	Psh                        types.Bool   `tfsdk:"psh"`
+	Rst                        types.Bool   `tfsdk:"rst"`
+	Syn                        types.Bool   `tfsdk:"syn"`
+	Urg                        types.Bool   `tfsdk:"urg"`
+	Established                types.Bool   `tfsdk:"established"`
+	Dscp                       types.String `tfsdk:"dscp"`
+	Fragments                  types.Bool   `tfsdk:"fragments"`
+	Precedence                 types.String `tfsdk:"precedence"`
+	Tos                        types.String `tfsdk:"tos"`
+	Log                        types.Bool   `tfsdk:"log"`
+	LogInput                   types.Bool   `tfsdk:"log_input"`
+	IcmpNamedMsgType           types.String `tfsdk:"icmp_named_msg_type"`
+	DestinationPortEqual2      types.String `tfsdk:"destination_port_equal_2"`
+	DestinationPortEqual3      types.String `tfsdk:"destination_port_equal_3"`
+	DestinationPortEqual4      types.String `tfsdk:"destination_port_equal_4"`
+	DestinationPortEqual5      types.String `tfsdk:"destination_port_equal_5"`
+	DestinationPortEqual6      types.String `tfsdk:"destination_port_equal_6"`
+	DestinationPortEqual7      types.String `tfsdk:"destination_port_equal_7"`
+	DestinationPortEqual8      types.String `tfsdk:"destination_port_equal_8"`
+	DestinationPortEqual9      types.String `tfsdk:"destination_port_equal_9"`
+	DestinationPortEqual10     types.String `tfsdk:"destination_port_equal_10"`
+	IcmpMsgType                types.Int64  `tfsdk:"icmp_msg_type"`
+	IcmpMsgCode                types.Int64  `tfsdk:"icmp_msg_code"`
+}
 
 type AccessListExtendedData struct {
-	Device  types.String                `tfsdk:"device"`
-	Id      types.String                `tfsdk:"id"`
-	Name    types.String                `tfsdk:"name"`
-	Entries []AccessListExtendedEntries `tfsdk:"entries"`
+	Device  types.String                    `tfsdk:"device"`
+	Id      types.String                    `tfsdk:"id"`
+	Name    types.String                    `tfsdk:"name"`
+	Entries []AccessListExtendedEntriesData `tfsdk:"entries"`
 }
-type AccessListExtendedEntries struct {
+type AccessListExtendedEntriesData struct {
 	Sequence                   types.Int64  `tfsdk:"sequence"`
 	Remark                     types.String `tfsdk:"remark"`
 	AceRuleAction              types.String `tfsdk:"ace_rule_action"`
@@ -147,7 +199,7 @@ func (data AccessListExtendedData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data AccessListExtended) toBody(ctx context.Context) string {
+func (data AccessListExtended) toBody(ctx context.Context, config AccessListExtended) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -338,7 +390,7 @@ func (data AccessListExtended) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data AccessListExtended) toBodyXML(ctx context.Context) string {
+func (data AccessListExtended) toBodyXML(ctx context.Context, config AccessListExtended) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -1429,9 +1481,9 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListExtendedEntries, 0)
+		data.Entries = make([]AccessListExtendedEntriesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AccessListExtendedEntries{}
+			item := AccessListExtendedEntriesData{}
 			if cValue := v.Get("sequence"); cValue.Exists() {
 				item.Sequence = types.Int64Value(cValue.Int())
 			}
@@ -1807,9 +1859,9 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 
 func (data *AccessListExtendedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListExtendedEntries, 0)
+		data.Entries = make([]AccessListExtendedEntriesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := AccessListExtendedEntries{}
+			item := AccessListExtendedEntriesData{}
 			if cValue := helpers.GetFromXPath(v, "sequence"); cValue.Exists() {
 				item.Sequence = types.Int64Value(cValue.Int())
 			}

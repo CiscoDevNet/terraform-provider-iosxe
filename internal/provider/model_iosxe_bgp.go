@@ -104,7 +104,7 @@ func (data BGPData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data BGP) toBody(ctx context.Context) string {
+func (data BGP) toBody(ctx context.Context, config BGP) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Asn.IsNull() && !data.Asn.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Asn.ValueString())
@@ -136,7 +136,7 @@ func (data BGP) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data BGP) toBodyXML(ctx context.Context) string {
+func (data BGP) toBodyXML(ctx context.Context, config BGP) string {
 	body := netconf.Body{}
 	if !data.Asn.IsNull() && !data.Asn.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Asn.ValueString())

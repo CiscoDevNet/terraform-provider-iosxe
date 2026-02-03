@@ -94,59 +94,6 @@ type OSPFVRF struct {
 	PassiveInterfaceDisablePortChannels                []OSPFVRFPassiveInterfaceDisablePortChannels                `tfsdk:"passive_interface_disable_port_channels"`
 	PassiveInterfaceDisablePortChannelSubinterfaces    []OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces    `tfsdk:"passive_interface_disable_port_channel_subinterfaces"`
 }
-
-type OSPFVRFData struct {
-	Device                                             types.String                                                `tfsdk:"device"`
-	Id                                                 types.String                                                `tfsdk:"id"`
-	ProcessId                                          types.Int64                                                 `tfsdk:"process_id"`
-	Vrf                                                types.String                                                `tfsdk:"vrf"`
-	BfdAllInterfaces                                   types.Bool                                                  `tfsdk:"bfd_all_interfaces"`
-	DefaultInformationOriginate                        types.Bool                                                  `tfsdk:"default_information_originate"`
-	DefaultInformationOriginateAlways                  types.Bool                                                  `tfsdk:"default_information_originate_always"`
-	DefaultMetric                                      types.Int64                                                 `tfsdk:"default_metric"`
-	Distance                                           types.Int64                                                 `tfsdk:"distance"`
-	DomainTag                                          types.Int64                                                 `tfsdk:"domain_tag"`
-	LogAdjacencyChanges                                types.Bool                                                  `tfsdk:"log_adjacency_changes"`
-	LogAdjacencyChangesDetail                          types.Bool                                                  `tfsdk:"log_adjacency_changes_detail"`
-	NsfCisco                                           types.Bool                                                  `tfsdk:"nsf_cisco"`
-	NsfCiscoEnforceGlobal                              types.Bool                                                  `tfsdk:"nsf_cisco_enforce_global"`
-	NsfIetf                                            types.Bool                                                  `tfsdk:"nsf_ietf"`
-	NsfIetfRestartInterval                             types.Int64                                                 `tfsdk:"nsf_ietf_restart_interval"`
-	MaxMetricRouterLsa                                 types.Bool                                                  `tfsdk:"max_metric_router_lsa"`
-	MaxMetricRouterLsaSummaryLsaMetric                 types.Int64                                                 `tfsdk:"max_metric_router_lsa_summary_lsa_metric"`
-	MaxMetricRouterLsaExternalLsaMetric                types.Int64                                                 `tfsdk:"max_metric_router_lsa_external_lsa_metric"`
-	MaxMetricRouterLsaIncludeStub                      types.Bool                                                  `tfsdk:"max_metric_router_lsa_include_stub"`
-	MaxMetricRouterLsaOnStartupTime                    types.Int64                                                 `tfsdk:"max_metric_router_lsa_on_startup_time"`
-	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                                  `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
-	RedistributeStaticSubnets                          types.Bool                                                  `tfsdk:"redistribute_static_subnets"`
-	RedistributeConnectedSubnets                       types.Bool                                                  `tfsdk:"redistribute_connected_subnets"`
-	MplsLdpAutoconfig                                  types.Bool                                                  `tfsdk:"mpls_ldp_autoconfig"`
-	MplsLdpSync                                        types.Bool                                                  `tfsdk:"mpls_ldp_sync"`
-	Neighbor                                           []OSPFVRFNeighbor                                           `tfsdk:"neighbor"`
-	Network                                            []OSPFVRFNetwork                                            `tfsdk:"network"`
-	Priority                                           types.Int64                                                 `tfsdk:"priority"`
-	RouterId                                           types.String                                                `tfsdk:"router_id"`
-	Shutdown                                           types.Bool                                                  `tfsdk:"shutdown"`
-	SummaryAddress                                     []OSPFVRFSummaryAddress                                     `tfsdk:"summary_address"`
-	Areas                                              []OSPFVRFAreas                                              `tfsdk:"areas"`
-	AutoCostReferenceBandwidth                         types.Int64                                                 `tfsdk:"auto_cost_reference_bandwidth"`
-	PassiveInterfaceDefault                            types.Bool                                                  `tfsdk:"passive_interface_default"`
-	PassiveInterface                                   types.List                                                  `tfsdk:"passive_interface"`
-	PassiveInterfaceDisableGigabitEthernets            []OSPFVRFPassiveInterfaceDisableGigabitEthernets            `tfsdk:"passive_interface_disable_gigabit_ethernets"`
-	PassiveInterfaceDisableTwoGigabitEthernets         []OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets         `tfsdk:"passive_interface_disable_two_gigabit_ethernets"`
-	PassiveInterfaceDisableFiveGigabitEthernets        []OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets        `tfsdk:"passive_interface_disable_five_gigabit_ethernets"`
-	PassiveInterfaceDisableTenGigabitEthernets         []OSPFVRFPassiveInterfaceDisableTenGigabitEthernets         `tfsdk:"passive_interface_disable_ten_gigabit_ethernets"`
-	PassiveInterfaceDisableTwentyFiveGigabitEthernets  []OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets  `tfsdk:"passive_interface_disable_twenty_five_gigabit_ethernets"`
-	PassiveInterfaceDisableFortyGigabitEthernets       []OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets       `tfsdk:"passive_interface_disable_forty_gigabit_ethernets"`
-	PassiveInterfaceDisableHundredGigabitEthernets     []OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets     `tfsdk:"passive_interface_disable_hundred_gigabit_ethernets"`
-	PassiveInterfaceDisableTwoHundredGigabitEthernets  []OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets  `tfsdk:"passive_interface_disable_two_hundred_gigabit_ethernets"`
-	PassiveInterfaceDisableFourHundredGigabitEthernets []OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets `tfsdk:"passive_interface_disable_four_hundred_gigabit_ethernets"`
-	PassiveInterfaceDisableLoopbacks                   []OSPFVRFPassiveInterfaceDisableLoopbacks                   `tfsdk:"passive_interface_disable_loopbacks"`
-	PassiveInterfaceDisableVlans                       []OSPFVRFPassiveInterfaceDisableVlans                       `tfsdk:"passive_interface_disable_vlans"`
-	PassiveInterfaceDisableTunnels                     []OSPFVRFPassiveInterfaceDisableTunnels                     `tfsdk:"passive_interface_disable_tunnels"`
-	PassiveInterfaceDisablePortChannels                []OSPFVRFPassiveInterfaceDisablePortChannels                `tfsdk:"passive_interface_disable_port_channels"`
-	PassiveInterfaceDisablePortChannelSubinterfaces    []OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces    `tfsdk:"passive_interface_disable_port_channel_subinterfaces"`
-}
 type OSPFVRFNeighbor struct {
 	Ip       types.String `tfsdk:"ip"`
 	Priority types.Int64  `tfsdk:"priority"`
@@ -214,6 +161,125 @@ type OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces struct {
 	Name types.String `tfsdk:"name"`
 }
 
+type OSPFVRFData struct {
+	Device                                             types.String                                                    `tfsdk:"device"`
+	Id                                                 types.String                                                    `tfsdk:"id"`
+	ProcessId                                          types.Int64                                                     `tfsdk:"process_id"`
+	Vrf                                                types.String                                                    `tfsdk:"vrf"`
+	BfdAllInterfaces                                   types.Bool                                                      `tfsdk:"bfd_all_interfaces"`
+	DefaultInformationOriginate                        types.Bool                                                      `tfsdk:"default_information_originate"`
+	DefaultInformationOriginateAlways                  types.Bool                                                      `tfsdk:"default_information_originate_always"`
+	DefaultMetric                                      types.Int64                                                     `tfsdk:"default_metric"`
+	Distance                                           types.Int64                                                     `tfsdk:"distance"`
+	DomainTag                                          types.Int64                                                     `tfsdk:"domain_tag"`
+	LogAdjacencyChanges                                types.Bool                                                      `tfsdk:"log_adjacency_changes"`
+	LogAdjacencyChangesDetail                          types.Bool                                                      `tfsdk:"log_adjacency_changes_detail"`
+	NsfCisco                                           types.Bool                                                      `tfsdk:"nsf_cisco"`
+	NsfCiscoEnforceGlobal                              types.Bool                                                      `tfsdk:"nsf_cisco_enforce_global"`
+	NsfIetf                                            types.Bool                                                      `tfsdk:"nsf_ietf"`
+	NsfIetfRestartInterval                             types.Int64                                                     `tfsdk:"nsf_ietf_restart_interval"`
+	MaxMetricRouterLsa                                 types.Bool                                                      `tfsdk:"max_metric_router_lsa"`
+	MaxMetricRouterLsaSummaryLsaMetric                 types.Int64                                                     `tfsdk:"max_metric_router_lsa_summary_lsa_metric"`
+	MaxMetricRouterLsaExternalLsaMetric                types.Int64                                                     `tfsdk:"max_metric_router_lsa_external_lsa_metric"`
+	MaxMetricRouterLsaIncludeStub                      types.Bool                                                      `tfsdk:"max_metric_router_lsa_include_stub"`
+	MaxMetricRouterLsaOnStartupTime                    types.Int64                                                     `tfsdk:"max_metric_router_lsa_on_startup_time"`
+	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                                      `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
+	RedistributeStaticSubnets                          types.Bool                                                      `tfsdk:"redistribute_static_subnets"`
+	RedistributeConnectedSubnets                       types.Bool                                                      `tfsdk:"redistribute_connected_subnets"`
+	MplsLdpAutoconfig                                  types.Bool                                                      `tfsdk:"mpls_ldp_autoconfig"`
+	MplsLdpSync                                        types.Bool                                                      `tfsdk:"mpls_ldp_sync"`
+	Neighbor                                           []OSPFVRFNeighborData                                           `tfsdk:"neighbor"`
+	Network                                            []OSPFVRFNetworkData                                            `tfsdk:"network"`
+	Priority                                           types.Int64                                                     `tfsdk:"priority"`
+	RouterId                                           types.String                                                    `tfsdk:"router_id"`
+	Shutdown                                           types.Bool                                                      `tfsdk:"shutdown"`
+	SummaryAddress                                     []OSPFVRFSummaryAddressData                                     `tfsdk:"summary_address"`
+	Areas                                              []OSPFVRFAreasData                                              `tfsdk:"areas"`
+	AutoCostReferenceBandwidth                         types.Int64                                                     `tfsdk:"auto_cost_reference_bandwidth"`
+	PassiveInterfaceDefault                            types.Bool                                                      `tfsdk:"passive_interface_default"`
+	PassiveInterface                                   types.List                                                      `tfsdk:"passive_interface"`
+	PassiveInterfaceDisableGigabitEthernets            []OSPFVRFPassiveInterfaceDisableGigabitEthernetsData            `tfsdk:"passive_interface_disable_gigabit_ethernets"`
+	PassiveInterfaceDisableTwoGigabitEthernets         []OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData         `tfsdk:"passive_interface_disable_two_gigabit_ethernets"`
+	PassiveInterfaceDisableFiveGigabitEthernets        []OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData        `tfsdk:"passive_interface_disable_five_gigabit_ethernets"`
+	PassiveInterfaceDisableTenGigabitEthernets         []OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData         `tfsdk:"passive_interface_disable_ten_gigabit_ethernets"`
+	PassiveInterfaceDisableTwentyFiveGigabitEthernets  []OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData  `tfsdk:"passive_interface_disable_twenty_five_gigabit_ethernets"`
+	PassiveInterfaceDisableFortyGigabitEthernets       []OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData       `tfsdk:"passive_interface_disable_forty_gigabit_ethernets"`
+	PassiveInterfaceDisableHundredGigabitEthernets     []OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData     `tfsdk:"passive_interface_disable_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableTwoHundredGigabitEthernets  []OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData  `tfsdk:"passive_interface_disable_two_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableFourHundredGigabitEthernets []OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData `tfsdk:"passive_interface_disable_four_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableLoopbacks                   []OSPFVRFPassiveInterfaceDisableLoopbacksData                   `tfsdk:"passive_interface_disable_loopbacks"`
+	PassiveInterfaceDisableVlans                       []OSPFVRFPassiveInterfaceDisableVlansData                       `tfsdk:"passive_interface_disable_vlans"`
+	PassiveInterfaceDisableTunnels                     []OSPFVRFPassiveInterfaceDisableTunnelsData                     `tfsdk:"passive_interface_disable_tunnels"`
+	PassiveInterfaceDisablePortChannels                []OSPFVRFPassiveInterfaceDisablePortChannelsData                `tfsdk:"passive_interface_disable_port_channels"`
+	PassiveInterfaceDisablePortChannelSubinterfaces    []OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData    `tfsdk:"passive_interface_disable_port_channel_subinterfaces"`
+}
+type OSPFVRFNeighborData struct {
+	Ip       types.String `tfsdk:"ip"`
+	Priority types.Int64  `tfsdk:"priority"`
+	Cost     types.Int64  `tfsdk:"cost"`
+}
+type OSPFVRFNetworkData struct {
+	Ip       types.String `tfsdk:"ip"`
+	Wildcard types.String `tfsdk:"wildcard"`
+	Area     types.String `tfsdk:"area"`
+}
+type OSPFVRFSummaryAddressData struct {
+	Ip   types.String `tfsdk:"ip"`
+	Mask types.String `tfsdk:"mask"`
+}
+type OSPFVRFAreasData struct {
+	AreaId                                    types.String `tfsdk:"area_id"`
+	AuthenticationMessageDigest               types.Bool   `tfsdk:"authentication_message_digest"`
+	Nssa                                      types.Bool   `tfsdk:"nssa"`
+	NssaDefaultInformationOriginate           types.Bool   `tfsdk:"nssa_default_information_originate"`
+	NssaDefaultInformationOriginateMetric     types.Int64  `tfsdk:"nssa_default_information_originate_metric"`
+	NssaDefaultInformationOriginateMetricType types.Int64  `tfsdk:"nssa_default_information_originate_metric_type"`
+	NssaNoSummary                             types.Bool   `tfsdk:"nssa_no_summary"`
+	NssaNoRedistribution                      types.Bool   `tfsdk:"nssa_no_redistribution"`
+}
+type OSPFVRFPassiveInterfaceDisableGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableLoopbacksData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableVlansData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisableTunnelsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisablePortChannelsData struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData struct {
+	Name types.String `tfsdk:"name"`
+}
+
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
@@ -254,7 +320,7 @@ func (data OSPFVRFData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data OSPFVRF) toBody(ctx context.Context) string {
+func (data OSPFVRF) toBody(ctx context.Context, config OSPFVRF) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.ProcessId.IsNull() && !data.ProcessId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", strconv.FormatInt(data.ProcessId.ValueInt64(), 10))
@@ -573,7 +639,7 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data OSPFVRF) toBodyXML(ctx context.Context) string {
+func (data OSPFVRF) toBodyXML(ctx context.Context, config OSPFVRF) string {
 	body := netconf.Body{}
 	if !data.ProcessId.IsNull() && !data.ProcessId.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.ProcessId.ValueInt64(), 10))
@@ -3077,9 +3143,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.MplsLdpSync = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "neighbor"); value.Exists() {
-		data.Neighbor = make([]OSPFVRFNeighbor, 0)
+		data.Neighbor = make([]OSPFVRFNeighborData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFNeighbor{}
+			item := OSPFVRFNeighborData{}
 			if cValue := v.Get("ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -3094,9 +3160,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Network = make([]OSPFVRFNetwork, 0)
+		data.Network = make([]OSPFVRFNetworkData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFNetwork{}
+			item := OSPFVRFNetworkData{}
 			if cValue := v.Get("ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -3122,9 +3188,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Shutdown = types.BoolNull()
 	}
 	if value := res.Get(prefix + "summary-address"); value.Exists() {
-		data.SummaryAddress = make([]OSPFVRFSummaryAddress, 0)
+		data.SummaryAddress = make([]OSPFVRFSummaryAddressData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFSummaryAddress{}
+			item := OSPFVRFSummaryAddressData{}
 			if cValue := v.Get("ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -3136,9 +3202,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "area"); value.Exists() {
-		data.Areas = make([]OSPFVRFAreas, 0)
+		data.Areas = make([]OSPFVRFAreasData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFAreas{}
+			item := OSPFVRFAreasData{}
 			if cValue := v.Get("area-id"); cValue.Exists() {
 				item.AreaId = types.StringValue(cValue.String())
 			}
@@ -3191,9 +3257,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernets, 0)
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3202,9 +3268,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3213,9 +3279,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.FiveGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3224,9 +3290,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.TenGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3235,9 +3301,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwentyFiveGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3246,9 +3312,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.FortyGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3257,9 +3323,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.HundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3268,9 +3334,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3279,9 +3345,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.FourHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3290,9 +3356,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.Loopback"); value.Exists() {
-		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacks, 0)
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacksData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableLoopbacks{}
+			item := OSPFVRFPassiveInterfaceDisableLoopbacksData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3301,9 +3367,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.Vlan"); value.Exists() {
-		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlans, 0)
+		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlansData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableVlans{}
+			item := OSPFVRFPassiveInterfaceDisableVlansData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3312,9 +3378,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.Tunnel"); value.Exists() {
-		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnels, 0)
+		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnelsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTunnels{}
+			item := OSPFVRFPassiveInterfaceDisableTunnelsData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3323,9 +3389,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannelsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
+			item := OSPFVRFPassiveInterfaceDisablePortChannelsData{}
 			if cValue := v.Get(""); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3334,9 +3400,9 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3819,9 +3885,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MplsLdpSync = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/neighbor"); value.Exists() {
-		data.Neighbor = make([]OSPFVRFNeighbor, 0)
+		data.Neighbor = make([]OSPFVRFNeighborData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFNeighbor{}
+			item := OSPFVRFNeighborData{}
 			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -3836,9 +3902,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network"); value.Exists() {
-		data.Network = make([]OSPFVRFNetwork, 0)
+		data.Network = make([]OSPFVRFNetworkData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFNetwork{}
+			item := OSPFVRFNetworkData{}
 			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -3864,9 +3930,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Shutdown = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summary-address"); value.Exists() {
-		data.SummaryAddress = make([]OSPFVRFSummaryAddress, 0)
+		data.SummaryAddress = make([]OSPFVRFSummaryAddressData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFSummaryAddress{}
+			item := OSPFVRFSummaryAddressData{}
 			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -3878,9 +3944,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/area"); value.Exists() {
-		data.Areas = make([]OSPFVRFAreas, 0)
+		data.Areas = make([]OSPFVRFAreasData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFAreas{}
+			item := OSPFVRFAreasData{}
 			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
 				item.AreaId = types.StringValue(cValue.String())
 			}
@@ -3933,9 +3999,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernets, 0)
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3944,9 +4010,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3955,9 +4021,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3966,9 +4032,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3977,9 +4043,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3988,9 +4054,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -3999,9 +4065,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -4010,9 +4076,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -4021,9 +4087,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -4032,9 +4098,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Loopback"); value.Exists() {
-		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacks, 0)
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacksData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableLoopbacks{}
+			item := OSPFVRFPassiveInterfaceDisableLoopbacksData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -4043,9 +4109,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Vlan"); value.Exists() {
-		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlans, 0)
+		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlansData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableVlans{}
+			item := OSPFVRFPassiveInterfaceDisableVlansData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -4054,9 +4120,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Tunnel"); value.Exists() {
-		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnels, 0)
+		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnelsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTunnels{}
+			item := OSPFVRFPassiveInterfaceDisableTunnelsData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -4065,9 +4131,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannelsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
+			item := OSPFVRFPassiveInterfaceDisablePortChannelsData{}
 			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -4076,9 +4142,9 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
