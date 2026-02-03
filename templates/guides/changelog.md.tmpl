@@ -10,6 +10,7 @@ description: |-
 ## Unreleased
 
 - Expose attributes with sensitive values also as write-only attributes
+- Mark `trunk_allowed_vlans_add`, `trunk_allowed_vlans_except`, and `trunk_allowed_vlans_remove` attributes of `iosxe_interface_switchport` resource as write-only to avoid drift detection
 
 ## 0.15.0
 
