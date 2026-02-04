@@ -10,6 +10,8 @@ description: |-
 ## Unreleased
 
 - Expose attributes with sensitive values also as write-only attributes
+- BREAKING CHANGE: Rename `authentication_meticulous_sha_1keychain` to `authentication_meticulous_sha_1_keychain` in `iosxe_bfd_template_multi_hop` resource and data source
+- Fix incorrect xpath for `authentication_meticulous_sha_1_keychain` attribute in `iosxe_bfd_template_multi_hop` resource and data source
 
 ## 0.15.0
 
