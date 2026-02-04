@@ -55,7 +55,7 @@ type BFDTemplateMultiHop struct {
 	IntervalMicrosecondsMultiplier       types.Int64  `tfsdk:"interval_microseconds_multiplier"`
 	AuthenticationMd5Keychain            types.String `tfsdk:"authentication_md5_keychain"`
 	AuthenticationMeticulousMd5Keychain  types.String `tfsdk:"authentication_meticulous_md5_keychain"`
-	AuthenticationMeticulousSha1keychain types.String `tfsdk:"authentication_meticulous_sha_1keychain"`
+	AuthenticationMeticulousSha1Keychain types.String `tfsdk:"authentication_meticulous_sha_1_keychain"`
 	AuthenticationSha1Keychain           types.String `tfsdk:"authentication_sha_1_keychain"`
 	DampeningHalfTime                    types.Int64  `tfsdk:"dampening_half_time"`
 	DampeningUnsuppressTime              types.Int64  `tfsdk:"dampening_unsuppress_time"`
@@ -81,7 +81,7 @@ type BFDTemplateMultiHopData struct {
 	IntervalMicrosecondsMultiplier       types.Int64  `tfsdk:"interval_microseconds_multiplier"`
 	AuthenticationMd5Keychain            types.String `tfsdk:"authentication_md5_keychain"`
 	AuthenticationMeticulousMd5Keychain  types.String `tfsdk:"authentication_meticulous_md5_keychain"`
-	AuthenticationMeticulousSha1keychain types.String `tfsdk:"authentication_meticulous_sha_1keychain"`
+	AuthenticationMeticulousSha1Keychain types.String `tfsdk:"authentication_meticulous_sha_1_keychain"`
 	AuthenticationSha1Keychain           types.String `tfsdk:"authentication_sha_1_keychain"`
 	DampeningHalfTime                    types.Int64  `tfsdk:"dampening_half_time"`
 	DampeningUnsuppressTime              types.Int64  `tfsdk:"dampening_unsuppress_time"`
@@ -176,8 +176,8 @@ func (data BFDTemplateMultiHop) toBody(ctx context.Context, config BFDTemplateMu
 	if !data.AuthenticationMeticulousMd5Keychain.IsNull() && !data.AuthenticationMeticulousMd5Keychain.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.meticulous-md5.keychain", data.AuthenticationMeticulousMd5Keychain.ValueString())
 	}
-	if !data.AuthenticationMeticulousSha1keychain.IsNull() && !data.AuthenticationMeticulousSha1keychain.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.meticulous-sha-1_keychain", data.AuthenticationMeticulousSha1keychain.ValueString())
+	if !data.AuthenticationMeticulousSha1Keychain.IsNull() && !data.AuthenticationMeticulousSha1Keychain.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.meticulous-sha-1.keychain", data.AuthenticationMeticulousSha1Keychain.ValueString())
 	}
 	if !data.AuthenticationSha1Keychain.IsNull() && !data.AuthenticationSha1Keychain.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.sha-1.keychain", data.AuthenticationSha1Keychain.ValueString())
@@ -258,8 +258,8 @@ func (data BFDTemplateMultiHop) toBodyXML(ctx context.Context, config BFDTemplat
 	if !data.AuthenticationMeticulousMd5Keychain.IsNull() && !data.AuthenticationMeticulousMd5Keychain.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/meticulous-md5/keychain", data.AuthenticationMeticulousMd5Keychain.ValueString())
 	}
-	if !data.AuthenticationMeticulousSha1keychain.IsNull() && !data.AuthenticationMeticulousSha1keychain.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/meticulous-sha-1_keychain", data.AuthenticationMeticulousSha1keychain.ValueString())
+	if !data.AuthenticationMeticulousSha1Keychain.IsNull() && !data.AuthenticationMeticulousSha1Keychain.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/meticulous-sha-1/keychain", data.AuthenticationMeticulousSha1Keychain.ValueString())
 	}
 	if !data.AuthenticationSha1Keychain.IsNull() && !data.AuthenticationSha1Keychain.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/sha-1/keychain", data.AuthenticationSha1Keychain.ValueString())
@@ -375,10 +375,10 @@ func (data *BFDTemplateMultiHop) updateFromBody(ctx context.Context, res gjson.R
 	} else {
 		data.AuthenticationMeticulousMd5Keychain = types.StringNull()
 	}
-	if value := res.Get(prefix + "authentication.meticulous-sha-1_keychain"); value.Exists() && !data.AuthenticationMeticulousSha1keychain.IsNull() {
-		data.AuthenticationMeticulousSha1keychain = types.StringValue(value.String())
+	if value := res.Get(prefix + "authentication.meticulous-sha-1.keychain"); value.Exists() && !data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
 	} else {
-		data.AuthenticationMeticulousSha1keychain = types.StringNull()
+		data.AuthenticationMeticulousSha1Keychain = types.StringNull()
 	}
 	if value := res.Get(prefix + "authentication.sha-1.keychain"); value.Exists() && !data.AuthenticationSha1Keychain.IsNull() {
 		data.AuthenticationSha1Keychain = types.StringValue(value.String())
@@ -499,10 +499,10 @@ func (data *BFDTemplateMultiHop) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.AuthenticationMeticulousMd5Keychain = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1_keychain"); value.Exists() && !data.AuthenticationMeticulousSha1keychain.IsNull() {
-		data.AuthenticationMeticulousSha1keychain = types.StringValue(value.String())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1/keychain"); value.Exists() && !data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
 	} else {
-		data.AuthenticationMeticulousSha1keychain = types.StringNull()
+		data.AuthenticationMeticulousSha1Keychain = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/sha-1/keychain"); value.Exists() && !data.AuthenticationSha1Keychain.IsNull() {
 		data.AuthenticationSha1Keychain = types.StringValue(value.String())
@@ -594,8 +594,8 @@ func (data *BFDTemplateMultiHop) fromBody(ctx context.Context, res gjson.Result)
 	if value := res.Get(prefix + "authentication.meticulous-md5.keychain"); value.Exists() {
 		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "authentication.meticulous-sha-1_keychain"); value.Exists() {
-		data.AuthenticationMeticulousSha1keychain = types.StringValue(value.String())
+	if value := res.Get(prefix + "authentication.meticulous-sha-1.keychain"); value.Exists() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "authentication.sha-1.keychain"); value.Exists() {
 		data.AuthenticationSha1Keychain = types.StringValue(value.String())
@@ -671,8 +671,8 @@ func (data *BFDTemplateMultiHopData) fromBody(ctx context.Context, res gjson.Res
 	if value := res.Get(prefix + "authentication.meticulous-md5.keychain"); value.Exists() {
 		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "authentication.meticulous-sha-1_keychain"); value.Exists() {
-		data.AuthenticationMeticulousSha1keychain = types.StringValue(value.String())
+	if value := res.Get(prefix + "authentication.meticulous-sha-1.keychain"); value.Exists() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "authentication.sha-1.keychain"); value.Exists() {
 		data.AuthenticationSha1Keychain = types.StringValue(value.String())
@@ -744,8 +744,8 @@ func (data *BFDTemplateMultiHop) fromBodyXML(ctx context.Context, res xmldot.Res
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-md5/keychain"); value.Exists() {
 		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1_keychain"); value.Exists() {
-		data.AuthenticationMeticulousSha1keychain = types.StringValue(value.String())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1/keychain"); value.Exists() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/sha-1/keychain"); value.Exists() {
 		data.AuthenticationSha1Keychain = types.StringValue(value.String())
@@ -817,8 +817,8 @@ func (data *BFDTemplateMultiHopData) fromBodyXML(ctx context.Context, res xmldot
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-md5/keychain"); value.Exists() {
 		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1_keychain"); value.Exists() {
-		data.AuthenticationMeticulousSha1keychain = types.StringValue(value.String())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/meticulous-sha-1/keychain"); value.Exists() {
+		data.AuthenticationMeticulousSha1Keychain = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/sha-1/keychain"); value.Exists() {
 		data.AuthenticationSha1Keychain = types.StringValue(value.String())
@@ -872,8 +872,8 @@ func (data *BFDTemplateMultiHop) getDeletedItems(ctx context.Context, state BFDT
 	if !state.AuthenticationSha1Keychain.IsNull() && data.AuthenticationSha1Keychain.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/sha-1/keychain", state.getPath()))
 	}
-	if !state.AuthenticationMeticulousSha1keychain.IsNull() && data.AuthenticationMeticulousSha1keychain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/meticulous-sha-1_keychain", state.getPath()))
+	if !state.AuthenticationMeticulousSha1Keychain.IsNull() && data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/meticulous-sha-1/keychain", state.getPath()))
 	}
 	if !state.AuthenticationMeticulousMd5Keychain.IsNull() && data.AuthenticationMeticulousMd5Keychain.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/meticulous-md5/keychain", state.getPath()))
@@ -942,8 +942,8 @@ func (data *BFDTemplateMultiHop) addDeletedItemsXML(ctx context.Context, state B
 	if !state.AuthenticationSha1Keychain.IsNull() && data.AuthenticationSha1Keychain.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/sha-1/keychain")
 	}
-	if !state.AuthenticationMeticulousSha1keychain.IsNull() && data.AuthenticationMeticulousSha1keychain.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/meticulous-sha-1_keychain")
+	if !state.AuthenticationMeticulousSha1Keychain.IsNull() && data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/meticulous-sha-1/keychain")
 	}
 	if !state.AuthenticationMeticulousMd5Keychain.IsNull() && data.AuthenticationMeticulousMd5Keychain.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/meticulous-md5/keychain")
@@ -1032,8 +1032,8 @@ func (data *BFDTemplateMultiHop) getDeletePaths(ctx context.Context) []string {
 	if !data.AuthenticationSha1Keychain.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/sha-1/keychain", data.getPath()))
 	}
-	if !data.AuthenticationMeticulousSha1keychain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/meticulous-sha-1_keychain", data.getPath()))
+	if !data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/meticulous-sha-1/keychain", data.getPath()))
 	}
 	if !data.AuthenticationMeticulousMd5Keychain.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/meticulous-md5/keychain", data.getPath()))
@@ -1102,8 +1102,8 @@ func (data *BFDTemplateMultiHop) addDeletePathsXML(ctx context.Context, body str
 	if !data.AuthenticationSha1Keychain.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/sha-1/keychain")
 	}
-	if !data.AuthenticationMeticulousSha1keychain.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/meticulous-sha-1_keychain")
+	if !data.AuthenticationMeticulousSha1Keychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/meticulous-sha-1/keychain")
 	}
 	if !data.AuthenticationMeticulousMd5Keychain.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/meticulous-md5/keychain")
