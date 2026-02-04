@@ -441,45 +441,6 @@ func (data *InterfaceSwitchport) updateFromBody(ctx context.Context, res gjson.R
 	} else {
 		data.TrunkAllowedVlansAll = types.BoolNull()
 	}
-	for i := range data.TrunkAllowedVlansAdd {
-		keys := [...]string{"vlans"}
-		keyValues := [...]string{data.TrunkAllowedVlansAdd[i].Vlans.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.add-vlans.add").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("vlans"); value.Exists() && !data.TrunkAllowedVlansAdd[i].Vlans.IsNull() {
-			data.TrunkAllowedVlansAdd[i].Vlans = types.StringValue(value.String())
-		} else {
-			data.TrunkAllowedVlansAdd[i].Vlans = types.StringNull()
-		}
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.except"); value.Exists() && !data.TrunkAllowedVlansExcept.IsNull() {
-		data.TrunkAllowedVlansExcept = types.StringValue(value.String())
-	} else {
-		data.TrunkAllowedVlansExcept = types.StringNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.remove"); value.Exists() && !data.TrunkAllowedVlansRemove.IsNull() {
-		data.TrunkAllowedVlansRemove = types.StringValue(value.String())
-	} else {
-		data.TrunkAllowedVlansRemove = types.StringNull()
-	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan.vlans"); value.Exists() && !data.TrunkAllowedVlansLegacy.IsNull() {
 		data.TrunkAllowedVlansLegacy = types.StringValue(value.String())
 	} else {
@@ -610,45 +571,6 @@ func (data *InterfaceSwitchport) updateFromBodyXML(ctx context.Context, res xmld
 		}
 	} else {
 		data.TrunkAllowedVlansAll = types.BoolNull()
-	}
-	for i := range data.TrunkAllowedVlansAdd {
-		keys := [...]string{"vlans"}
-		keyValues := [...]string{data.TrunkAllowedVlansAdd[i].Vlans.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/add-vlans/add").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := helpers.GetFromXPath(r, "vlans"); value.Exists() && !data.TrunkAllowedVlansAdd[i].Vlans.IsNull() {
-			data.TrunkAllowedVlansAdd[i].Vlans = types.StringValue(value.String())
-		} else {
-			data.TrunkAllowedVlansAdd[i].Vlans = types.StringNull()
-		}
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/except"); value.Exists() && !data.TrunkAllowedVlansExcept.IsNull() {
-		data.TrunkAllowedVlansExcept = types.StringValue(value.String())
-	} else {
-		data.TrunkAllowedVlansExcept = types.StringNull()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/remove"); value.Exists() && !data.TrunkAllowedVlansRemove.IsNull() {
-		data.TrunkAllowedVlansRemove = types.StringValue(value.String())
-	} else {
-		data.TrunkAllowedVlansRemove = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan/vlans"); value.Exists() && !data.TrunkAllowedVlansLegacy.IsNull() {
 		data.TrunkAllowedVlansLegacy = types.StringValue(value.String())

@@ -129,6 +129,62 @@ attributes:
             tf_name: police_target_bitrate_excess_burst_byte
             example: 10000
             exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-target-bitrate-case/police-target-bitrate/police/actions/exceed-drop/exceed-action/drop
+            xpath: police-target-bitrate/police/actions/exceed-drop/exceed-action/drop
+            tf_name: police_target_bitrate_exceed_drop
+            example: true
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/cir-bc-choice/cir-bc/cir
+            xpath: police-policy-map/police/cir
+            tf_name: police_cir
+            example: 1000000
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/cir-bc-choice/cir-bc/bc
+            xpath: police-policy-map/police/bc
+            tf_name: police_bc
+            example: 8192
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/be
+            xpath: police-policy-map/police/be
+            tf_name: police_be
+            example: 8192
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/pir
+            xpath: police-policy-map/police/pir
+            tf_name: police_pir
+            example: 2000000
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/pir-be/be
+            xpath: police-policy-map/police/pir-be/be
+            tf_name: police_pir_be
+            example: 8192
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/actions/conform-transmit/conform-action/transmit
+            xpath: police-policy-map/police/actions/conform-transmit/conform-action/transmit
+            tf_name: police_cir_conform_transmit
+            example: true
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/actions/exceed-drop/exceed-action/drop
+            xpath: police-policy-map/police/actions/exceed-drop/exceed-action/drop
+            tf_name: police_cir_exceed_drop
+            example: true
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-rate-percent-case/police-rate-percent/police/rate/percent/percentage
+            xpath: police-rate-percent/police/rate/percent/percentage
+            tf_name: police_rate_percent
+            example: 10
+            exclude_test: true
+          - yang_name: action-param/queue-buffers-case/queue-buffers/ratio
+            xpath: queue-buffers/ratio
+            tf_name: queue_buffers_ratio
+            example: 10
+            test_tags: [C9000V]
+            exclude_test: true
+          - yang_name: action-param/set-case/set/dscp/dscp-val
+            xpath: set/dscp/dscp-val
+            tf_name: set_dscp
+            example: ef
+            exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=CLASS1]
