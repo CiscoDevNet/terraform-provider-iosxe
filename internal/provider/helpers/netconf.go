@@ -361,8 +361,14 @@ func augmentNamespaces(body netconf.Body, path string) netconf.Body {
 		pathWithoutPrefix = append(pathWithoutPrefix, cleanSegment)
 
 		// If this segment has a namespace prefix, add xmlns declaration
-		if idx := strings.Index(segment, ":"); idx != -1 {
-			prefix := segment[:idx]
+		// Only check for namespace prefix before any predicate bracket to avoid
+		// misinterpreting colons in values (like IPv6 addresses) as namespace separators
+		segmentBeforePredicate := segment
+		if bracketIdx := strings.IndexByte(segment, '['); bracketIdx != -1 {
+			segmentBeforePredicate = segment[:bracketIdx]
+		}
+		if idx := strings.Index(segmentBeforePredicate, ":"); idx != -1 {
+			prefix := segmentBeforePredicate[:idx]
 			currentPath := strings.Join(pathWithoutPrefix, ".")
 
 			// Check for namespace exceptions first
@@ -436,6 +442,24 @@ func splitXPathSegments(xPath string) []string {
 	return segments
 }
 
+// SiblingAction represents the type of action needed for handling sibling elements
+type SiblingAction int
+
+const (
+	// SiblingActionNew indicates this is the first element (use normal Set)
+	SiblingActionNew SiblingAction = iota
+	// SiblingActionUpdate indicates we found an existing element with matching keys
+	SiblingActionUpdate
+	// SiblingActionAppend indicates we need to append a new sibling (use SetRaw)
+	SiblingActionAppend
+)
+
+// SiblingResult contains information about how to handle a sibling element
+type SiblingResult struct {
+	Action SiblingAction
+	Index  int // The index of existing element (for Update) or -1
+}
+
 // buildXPathStructure is a helper that creates all elements in an XPath, including keys and namespaces.
 // Returns the body with the structure created and the path segments for further processing.
 // The ensureStructure parameter controls whether an empty element should be created at the final path
@@ -448,22 +472,60 @@ func buildXPathStructure(body netconf.Body, xPath string, ensureStructure bool) 
 	segments := splitXPathSegments(xPath)
 
 	// Build path incrementally, creating each element
+	// pathSegments stores cleaned element names (no namespaces) for xmldot paths
+	// originalSegments stores original element names with namespaces for namespace augmentation
 	pathSegments := make([]string, 0, len(segments))
+	originalSegments := make([]string, 0, len(segments))
 
-	for i, segment := range segments {
+	for segIdx, segment := range segments {
 		// Parse segment: element[key='value'][key2='value2'] -> element, []KeyValue
 		elementName, keys := parseXPathSegment(segment)
+		cleanElementName := removeNamespacePrefix(elementName)
 
-		// Add element name to path (without predicates)
-		pathSegments = append(pathSegments, elementName)
-		fullPath := strings.Join(pathSegments[:i+1], ".")
-
-		// If this segment has keys, set all key values in order
+		// For segments with keys (list elements), handle sibling elements properly
 		if len(keys) > 0 {
-			for _, kv := range keys {
-				keyPath := fullPath + "." + kv.Key
-				body = setWithNamespaces(body, keyPath, kv.Value)
+			parentPath := ""
+			if len(pathSegments) > 0 {
+				parentPath = strings.Join(pathSegments, ".")
 			}
+
+			// Check how to handle this sibling element
+			result := findSiblingInfo(body, parentPath, cleanElementName, keys)
+
+			switch result.Action {
+			case SiblingActionNew:
+				// First element - use element name directly
+				pathSegments = append(pathSegments, cleanElementName)
+				originalSegments = append(originalSegments, elementName)
+				fullPath := strings.Join(pathSegments, ".")
+				originalFullPath := strings.Join(originalSegments, ".")
+
+				// Set all key values using normal Set
+				for _, kv := range keys {
+					keyPath := fullPath + "." + kv.Key
+					originalKeyPath := originalFullPath + "." + kv.Key
+					body = body.Set(dotPath(keyPath), kv.Value)
+					body = augmentNamespaces(body, originalKeyPath)
+				}
+
+			case SiblingActionUpdate:
+				// Found existing element with matching keys - use indexed path
+				pathSegments = append(pathSegments, fmt.Sprintf("%s.%d", cleanElementName, result.Index))
+				originalSegments = append(originalSegments, elementName)
+				// Keys already set, no need to set again
+
+			case SiblingActionAppend:
+				// Need to append a new sibling element using SetRaw
+				// Build the element XML for all remaining segments
+				remainingSegments := segments[segIdx:]
+				body, pathSegments = appendSiblingElement(body, pathSegments, remainingSegments, ensureStructure)
+				// Return early since we've handled all remaining segments
+				return body, pathSegments
+			}
+		} else {
+			// No keys - just add element name
+			pathSegments = append(pathSegments, cleanElementName)
+			originalSegments = append(originalSegments, elementName)
 		}
 	}
 
@@ -471,14 +533,179 @@ func buildXPathStructure(body netconf.Body, xPath string, ensureStructure bool) 
 	// Only create the structure if requested and if it doesn't already exist.
 	if ensureStructure && len(pathSegments) > 0 {
 		fullPath := strings.Join(pathSegments, ".")
+		originalFullPath := strings.Join(originalSegments, ".")
 		existingContent := xmldot.Get(body.Res(), dotPath(fullPath)).String()
 		if existingContent == "" {
-			// Path doesn't exist yet, create it with SetWithNamespaces
-			body = setWithNamespaces(body, fullPath, "")
+			// Path doesn't exist yet, create it and augment namespaces
+			body = body.Set(dotPath(fullPath), "")
+			body = augmentNamespaces(body, originalFullPath)
 		}
 	}
 
 	return body, pathSegments
+}
+
+// findSiblingInfo analyzes the current body to determine how to handle a list element.
+// Returns SiblingResult indicating whether this is a new element, an update to existing, or needs append.
+func findSiblingInfo(body netconf.Body, parentPath, elementName string, keys []KeyValue) SiblingResult {
+	basePath := elementName
+	if parentPath != "" {
+		basePath = parentPath + "." + elementName
+	}
+
+	// Check how many elements exist using the .# syntax
+	countPath := basePath + ".#"
+	count := xmldot.Get(body.Res(), countPath).Int()
+
+	// If count is 0 but element might exist as single (non-array), check directly
+	if count == 0 {
+		// Check if a single element exists by looking for any key
+		if len(keys) > 0 {
+			keyPath := basePath + "." + keys[0].Key
+			if xmldot.Get(body.Res(), keyPath).Exists() {
+				// Single element exists - check if keys match
+				allMatch := true
+				for _, kv := range keys {
+					checkPath := basePath + "." + kv.Key
+					if xmldot.Get(body.Res(), checkPath).String() != kv.Value {
+						allMatch = false
+						break
+					}
+				}
+				if allMatch {
+					// Keys match - this is an update to the existing element
+					return SiblingResult{Action: SiblingActionUpdate, Index: 0}
+				}
+				// Keys don't match - need to append a sibling
+				return SiblingResult{Action: SiblingActionAppend, Index: -1}
+			}
+		}
+		// No existing elements - this will be the first
+		return SiblingResult{Action: SiblingActionNew, Index: -1}
+	}
+
+	// Multiple elements exist - search for matching keys
+	for i := 0; i < int(count); i++ {
+		allKeysMatch := true
+		for _, kv := range keys {
+			keyPath := fmt.Sprintf("%s.%d.%s", basePath, i, kv.Key)
+			existingValue := xmldot.Get(body.Res(), keyPath).String()
+			if existingValue != kv.Value {
+				allKeysMatch = false
+				break
+			}
+		}
+		if allKeysMatch {
+			// Found existing element with matching keys
+			return SiblingResult{Action: SiblingActionUpdate, Index: i}
+		}
+	}
+
+	// No matching element found - need to append a sibling
+	return SiblingResult{Action: SiblingActionAppend, Index: -1}
+}
+
+// appendSiblingElement appends a new sibling element to the parent using SetRaw.
+// This is needed because xmldot doesn't support creating siblings using indexed Set paths.
+func appendSiblingElement(body netconf.Body, parentPathSegments []string, remainingSegments []string, ensureStructure bool) (netconf.Body, []string) {
+	if len(remainingSegments) == 0 {
+		return body, parentPathSegments
+	}
+
+	// Parse the first remaining segment (the sibling element we're adding)
+	firstSegment := remainingSegments[0]
+	elementName, keys := parseXPathSegment(firstSegment)
+	cleanElementName := removeNamespacePrefix(elementName)
+
+	// Build the path segments that will be returned
+	resultPathSegments := make([]string, len(parentPathSegments))
+	copy(resultPathSegments, parentPathSegments)
+
+	// Build the inner XML content for the new element
+	var innerXML strings.Builder
+
+	// Add keys to the inner XML
+	for _, kv := range keys {
+		innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, kv.Value, kv.Key))
+	}
+
+	// Process any nested segments after the first one
+	nestedPathSegments := []string{cleanElementName}
+	if len(remainingSegments) > 1 {
+		// Build nested structure
+		for _, nestedSegment := range remainingSegments[1:] {
+			nestedElementName, nestedKeys := parseXPathSegment(nestedSegment)
+			cleanNestedName := removeNamespacePrefix(nestedElementName)
+			nestedPathSegments = append(nestedPathSegments, cleanNestedName)
+
+			// Start nested element
+			innerXML.WriteString(fmt.Sprintf("<%s>", cleanNestedName))
+
+			// Add nested keys
+			for _, kv := range nestedKeys {
+				innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, kv.Value, kv.Key))
+			}
+		}
+
+		// Close nested elements in reverse order (except the outermost which is closed separately)
+		for i := len(remainingSegments) - 1; i > 0; i-- {
+			nestedElementName, _ := parseXPathSegment(remainingSegments[i])
+			cleanNestedName := removeNamespacePrefix(nestedElementName)
+			innerXML.WriteString(fmt.Sprintf("</%s>", cleanNestedName))
+		}
+	}
+
+	// Build the complete element XML
+	elementXML := fmt.Sprintf("<%s>%s</%s>", cleanElementName, innerXML.String(), cleanElementName)
+
+	// Get the parent path for SetRaw
+	parentPath := ""
+	if len(parentPathSegments) > 0 {
+		parentPath = strings.Join(parentPathSegments, ".")
+	}
+
+	// Get existing content at parent and append the new element
+	if parentPath != "" {
+		existingContent := xmldot.Get(body.Res(), parentPath).Raw
+		newContent := existingContent + elementXML
+		body = body.SetRaw(parentPath, newContent)
+	} else {
+		// No parent - append at root level
+		existingXML := body.Res()
+		if existingXML != "" {
+			body = netconf.NewBody(existingXML + elementXML)
+		} else {
+			body = netconf.NewBody(elementXML)
+		}
+	}
+
+	// Determine the index of the newly added element
+	basePath := cleanElementName
+	if parentPath != "" {
+		basePath = parentPath + "." + cleanElementName
+	}
+	newCount := xmldot.Get(body.Res(), basePath+".#").Int()
+	newIndex := int(newCount) - 1
+	if newIndex < 0 {
+		newIndex = 0
+	}
+
+	// Build the result path with the new element's index
+	resultPathSegments = append(resultPathSegments, fmt.Sprintf("%s.%d", cleanElementName, newIndex))
+
+	// Add nested path segments
+	if len(nestedPathSegments) > 1 {
+		resultPathSegments = append(resultPathSegments, nestedPathSegments[1:]...)
+	}
+
+	// Add namespace declarations
+	fullXPath := strings.Join(remainingSegments, "/")
+	if parentPath != "" {
+		fullXPath = parentPath + "/" + fullXPath
+	}
+	body = augmentNamespaces(body, strings.ReplaceAll(fullXPath, "/", "."))
+
+	return body, resultPathSegments
 }
 
 // parseXPathSegment parses an XPath segment with single or multiple keys
@@ -540,11 +767,42 @@ func RemoveFromXPath(body netconf.Body, xPath string) netconf.Body {
 	if len(pathSegments) > 0 {
 		targetPath := strings.Join(pathSegments, ".")
 		operationPath := targetPath + ".@operation"
-		body = setWithNamespaces(body, operationPath, "remove")
+		// Set the operation attribute using cleaned path
+		body = body.Set(dotPath(operationPath), "remove")
+		// Add namespace declarations using the original xPath converted to dot path format
+		// augmentNamespaces expects dot-separated paths, not XPath with slashes
+		dotXPath := strings.ReplaceAll(strings.TrimPrefix(xPath, "/"), "/", ".")
+		body = augmentNamespaces(body, dotXPath)
 	}
 
 	// Clean up any redundant child operations
 	body = CleanupRedundantRemoveOperations(body)
+
+	return body
+}
+
+// DeleteFromXPath builds a NETCONF body structure for deleting an element using operation="delete".
+// Unlike RemoveFromXPath (operation="remove"), this will FAIL if the element doesn't exist.
+// This is useful when you need to ensure an element is explicitly deleted (e.g., for IOS-XE
+// spanning-tree VLANs where deleting results in "no spanning-tree vlan X").
+//
+// Example: /native/spanning-tree/vlan[id='40']
+// Creates: <native><spanning-tree><vlan operation="delete"><id>40</id></vlan></spanning-tree></native>
+func DeleteFromXPath(body netconf.Body, xPath string) netconf.Body {
+	// Build the structure and set operation="delete" on the last element
+	body, pathSegments := buildXPathStructure(body, xPath, false)
+
+	// Set operation="delete" on the last element
+	if len(pathSegments) > 0 {
+		targetPath := strings.Join(pathSegments, ".")
+		operationPath := targetPath + ".@operation"
+		// Set the operation attribute using cleaned path
+		body = body.Set(dotPath(operationPath), "delete")
+		// Add namespace declarations using the original xPath converted to dot path format
+		// augmentNamespaces expects dot-separated paths, not XPath with slashes
+		dotXPath := strings.ReplaceAll(strings.TrimPrefix(xPath, "/"), "/", ".")
+		body = augmentNamespaces(body, dotXPath)
+	}
 
 	return body
 }
@@ -827,7 +1085,12 @@ func SetFromXPath(body netconf.Body, xPath string, value any) netconf.Body {
 	// This prevents overwriting key children when no value is needed
 	if hasValue && len(pathSegments) > 0 {
 		fullPath := strings.Join(pathSegments, ".")
-		body = setWithNamespaces(body, fullPath, value)
+		// Set the value using cleaned path
+		body = body.Set(dotPath(fullPath), value)
+		// Add namespace declarations using the original xPath converted to dot path format
+		// augmentNamespaces expects dot-separated paths, not XPath with slashes
+		dotXPath := strings.ReplaceAll(strings.TrimPrefix(xPath, "/"), "/", ".")
+		body = augmentNamespaces(body, dotXPath)
 	}
 
 	return body
