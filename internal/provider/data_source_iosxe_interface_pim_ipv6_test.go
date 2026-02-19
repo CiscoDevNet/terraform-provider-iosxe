@@ -68,6 +68,7 @@ resource "iosxe_yang" "PreReq0" {
 
 func testAccDataSourceIosxeInterfacePIMIPv6Config() string {
 	config := `resource "iosxe_interface_pim_ipv6" "test" {` + "\n"
+	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	pim = true` + "\n"
 	config += `	bfd = false` + "\n"

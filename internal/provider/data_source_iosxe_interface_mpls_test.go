@@ -66,6 +66,7 @@ resource "iosxe_yang" "PreReq0" {
 func testAccDataSourceIosxeInterfaceMPLSConfig() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
+	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	ip = true` + "\n"
 	config += `	mtu = "1200"` + "\n"

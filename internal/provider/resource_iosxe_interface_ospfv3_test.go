@@ -108,6 +108,7 @@ func testAccIosxeInterfaceOSPFv3Config_minimum() string {
 
 func testAccIosxeInterfaceOSPFv3Config_all() string {
 	config := `resource "iosxe_interface_ospfv3" "test" {` + "\n"
+	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	network_type_broadcast = false` + "\n"
 	config += `	network_type_non_broadcast = false` + "\n"

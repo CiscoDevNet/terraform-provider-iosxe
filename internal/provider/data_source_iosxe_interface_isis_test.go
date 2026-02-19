@@ -88,6 +88,7 @@ resource "iosxe_yang" "PreReq1" {
 func testAccDataSourceIosxeInterfaceISISConfig() string {
 	config := `resource "iosxe_interface_isis" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
+	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	ipv4_metric_levels = [{` + "\n"
 	config += `		level = "level-1"` + "\n"

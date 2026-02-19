@@ -156,21 +156,21 @@ func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	{{- end}}
 	{{- range  .Attributes}}
-	{{- if and (not .ExcludeTest) .XPath}}
+	{{- if and (not .ExcludeTest) (or .XPath .Reference)}}
 	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	config += `	{{.TfName}} = [{` + "\n"
 		{{- range  .Attributes}}
-		{{- if and (not .ExcludeTest) .XPath}}
+		{{- if and (not .ExcludeTest) (or .XPath .Reference)}}
 		{{- if or (eq .Type "List") (eq .Type "Set")}}
 		{{- if len .TestTags}}
 		if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		{{- end}}
 	config += `		{{.TfName}} = [{` + "\n"
 			{{- range  .Attributes}}
-			{{- if and (not .ExcludeTest) .XPath}}
+			{{- if and (not .ExcludeTest) (or .XPath .Reference)}}
 			{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		config += `			{{.TfName}} = {{if eq .Type "String"}}"{{.Example}}"{{else if or (eq .Type "StringList") (eq .Type "StringSet")}}["{{.Example}}"]{{else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}[{{.Example}}]{{else}}{{.Example}}{{end}}` + "\n"
