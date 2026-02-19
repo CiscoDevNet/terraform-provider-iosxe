@@ -788,7 +788,10 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+// Custom implementation - template markers removed to preserve changes
+// When a VLAN is removed from config, only delete priority attribute, not entire VLAN
+// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
 
 func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTree) []string {
 	deletedItems := make([]string, 0)
@@ -817,7 +820,11 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
+			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
+			if !state.Vlans[i].Priority.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
 		}
 	}
 	for i := range state.MstInstances {
@@ -885,9 +892,10 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 	return deletedItems
 }
 
-// End of section. //template:end getDeletedItems
-
-// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+// Custom implementation - template markers removed to preserve changes
+// When a VLAN is removed from config, only delete priority attribute, not entire VLAN
+// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
 
 func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state SpanningTree, body string) string {
 	b := netconf.NewBody(body)
@@ -895,8 +903,8 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
 		predicates := ""
-		for i := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		for j := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[j], stateKeyValues[j])
 		}
 
 		emptyKeys := true
@@ -921,7 +929,11 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
+			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
+			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
+			if !state.Vlans[i].Priority.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+			}
 		}
 	}
 	for i := range state.MstInstances {
@@ -999,8 +1011,6 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 	return b.Res()
 }
 
-// End of section. //template:end addDeletedItemsXML
-
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1027,10 +1037,21 @@ func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
 
 // End of section. //template:end getEmptyLeafsDelete
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
+// getDeletePaths returns the RESTCONF paths to delete when destroying the resource.
+// CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
+// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
 func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Vlans {
+		// Only delete priority if it was set - don't delete entire VLAN from STP
+		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
+		if !data.Vlans[i].Priority.IsNull() {
+			keyValues := [...]string{data.Vlans[i].Id.ValueString()}
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		// VLANs without priority have no config to delete - they're already at default
+	}
 	for i := range data.MstInstances {
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 
@@ -1055,18 +1076,33 @@ func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-// End of section. //template:end getDeletePaths
-
-// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
-
+// addDeletePathsXML builds the NETCONF XML for deleting the resource.
+// CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
+// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
 func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.Vlans {
+		// Only delete priority if it was set - don't delete entire VLAN from STP
+		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
+		if !data.Vlans[i].Priority.IsNull() {
+			keys := [...]string{"id"}
+			keyValues := [...]string{data.Vlans[i].Id.ValueString()}
+			predicates := ""
+			for j := range keys {
+				predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
+			}
+
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+		}
+		// VLANs without priority have no config to delete - they're already at default
+	}
 	for i := range data.MstInstances {
 		keys := [...]string{"id"}
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		for j := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))

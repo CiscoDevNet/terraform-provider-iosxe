@@ -2554,6 +2554,86 @@ func TestFindSiblingInfo(t *testing.T) {
 	}
 }
 
+// TestTrimNetconfTrailingWhitespace tests the TrimNetconfTrailingWhitespace helper function
+// which trims trailing whitespace from multi-line strings from NETCONF responses to prevent Terraform drift
+func TestTrimNetconfTrailingWhitespace(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "Empty string",
+			input:    "",
+			expected: "",
+		},
+		{
+			name:     "Single line no whitespace",
+			input:    "Hello World",
+			expected: "Hello World",
+		},
+		{
+			name:     "Single line with trailing spaces",
+			input:    "Hello World   ",
+			expected: "Hello World",
+		},
+		{
+			name:     "Single line with trailing tabs",
+			input:    "Hello World\t\t",
+			expected: "Hello World",
+		},
+		{
+			name:     "Multi-line with trailing whitespace on each line",
+			input:    "Line 1   \nLine 2\t\t\nLine 3  ",
+			expected: "Line 1\nLine 2\nLine 3",
+		},
+		{
+			name:     "Multi-line preserves leading whitespace",
+			input:    "  Line 1   \n\tLine 2\t\t\n  Line 3  ",
+			expected: "  Line 1\n\tLine 2\n  Line 3",
+		},
+		{
+			name:     "Multi-line with internal empty lines preserved",
+			input:    "Line 1   \n   \nLine 3  ",
+			expected: "Line 1\n\nLine 3",
+		},
+		{
+			name:     "Preserves internal whitespace",
+			input:    "Hello   World   ",
+			expected: "Hello   World",
+		},
+		{
+			name:     "Handles carriage return",
+			input:    "Line 1  \r\nLine 2\r",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Removes trailing newline (YAML block scalar)",
+			input:    "Line 1\nLine 2\nLine 3\n",
+			expected: "Line 1\nLine 2\nLine 3",
+		},
+		{
+			name:     "Removes multiple trailing newlines",
+			input:    "Line 1\nLine 2\n\n\n",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Handles trailing whitespace and trailing newlines together",
+			input:    "Line 1  \nLine 2  \n\n",
+			expected: "Line 1\nLine 2",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := TrimNetconfTrailingWhitespace(tt.input)
+			if result != tt.expected {
+				t.Errorf("TrimNetconfTrailingWhitespace() = %q, want %q", result, tt.expected)
+			}
+		})
+	}
+}
+
 // TestRemoveFromXPath_DisabledVlansScenario tests the exact scenario used by disabled_vlans:
 // 1. First add regular vlans with priorities (via SetFromXPath)
 // 2. Then add disabled_vlans with operation="remove" on the vlan element itself (via RemoveFromXPath)
@@ -2711,86 +2791,6 @@ func TestAugmentNamespaces_IPv6ColonHandling(t *testing.T) {
 			}
 
 			t.Log("✓ IPv6 address colons correctly handled (not misinterpreted as namespace separators)")
-		})
-	}
-}
-
-// TestTrimNetconfTrailingWhitespace tests the TrimNetconfTrailingWhitespace helper function
-// which trims trailing whitespace from multi-line strings from NETCONF responses to prevent Terraform drift
-func TestTrimNetconfTrailingWhitespace(t *testing.T) {
-	tests := []struct {
-		name     string
-		input    string
-		expected string
-	}{
-		{
-			name:     "Empty string",
-			input:    "",
-			expected: "",
-		},
-		{
-			name:     "Single line no whitespace",
-			input:    "Hello World",
-			expected: "Hello World",
-		},
-		{
-			name:     "Single line with trailing spaces",
-			input:    "Hello World   ",
-			expected: "Hello World",
-		},
-		{
-			name:     "Single line with trailing tabs",
-			input:    "Hello World\t\t",
-			expected: "Hello World",
-		},
-		{
-			name:     "Multi-line with trailing whitespace on each line",
-			input:    "Line 1   \nLine 2\t\t\nLine 3  ",
-			expected: "Line 1\nLine 2\nLine 3",
-		},
-		{
-			name:     "Multi-line preserves leading whitespace",
-			input:    "  Line 1   \n\tLine 2\t\t\n  Line 3  ",
-			expected: "  Line 1\n\tLine 2\n  Line 3",
-		},
-		{
-			name:     "Multi-line with internal empty lines preserved",
-			input:    "Line 1   \n   \nLine 3  ",
-			expected: "Line 1\n\nLine 3",
-		},
-		{
-			name:     "Preserves internal whitespace",
-			input:    "Hello   World   ",
-			expected: "Hello   World",
-		},
-		{
-			name:     "Handles carriage return",
-			input:    "Line 1  \r\nLine 2\r",
-			expected: "Line 1\nLine 2",
-		},
-		{
-			name:     "Removes trailing newline (YAML block scalar)",
-			input:    "Line 1\nLine 2\nLine 3\n",
-			expected: "Line 1\nLine 2\nLine 3",
-		},
-		{
-			name:     "Removes multiple trailing newlines",
-			input:    "Line 1\nLine 2\n\n\n",
-			expected: "Line 1\nLine 2",
-		},
-		{
-			name:     "Handles trailing whitespace and trailing newlines together",
-			input:    "Line 1  \nLine 2  \n\n",
-			expected: "Line 1\nLine 2",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			result := TrimNetconfTrailingWhitespace(tt.input)
-			if result != tt.expected {
-				t.Errorf("TrimNetconfTrailingWhitespace() = %q, want %q", result, tt.expected)
-			}
 		})
 	}
 }

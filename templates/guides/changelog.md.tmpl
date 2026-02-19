@@ -10,10 +10,10 @@ description: |-
 ## Unreleased
 
 - Expose attributes with sensitive values also as write-only attributes
+- Fix issue with NETCONF sibling element handling when removing multiple elements from YANG lists (e.g., removing multiple VLAN priorities or helper addresses)
 - Mark `trunk_allowed_vlans_add`, `trunk_allowed_vlans_except`, and `trunk_allowed_vlans_remove` attributes of `iosxe_interface_switchport` resource as write-only to avoid drift detection
 - BREAKING CHANGE: Rename `authentication_meticulous_sha_1keychain` to `authentication_meticulous_sha_1_keychain` in `iosxe_bfd_template_multi_hop` resource and data source
 - Fix incorrect xpath for `authentication_meticulous_sha_1_keychain` attribute in `iosxe_bfd_template_multi_hop` resource and data source
-- Fix issue with NETCONF sibling element handling when removing multiple elements from YANG lists (e.g., removing multiple VLAN priorities or helper addresses)
 - Fix `iosxe_spanning_tree` resource to not remove VLANs from STP when VLANs are removed from resource configuration
 - Add `disabled_vlans` attribute to `iosxe_spanning_tree` resource and data source for explicitly disabling STP on specific VLANs
 
