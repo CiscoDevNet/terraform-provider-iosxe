@@ -55,15 +55,26 @@ Read-Only:
 - `bandwidth_remaining_option` (String)
 - `bandwidth_remaining_percent` (Number) % of the remaining bandwidth
 - `bandwidth_remaining_ratio` (Number) ratio for sharing excess bandwidth
+- `police_bc` (Number) Conform burst
+- `police_be` (Number) Excess burst
+- `police_cir` (Number) Committed information rate
+- `police_cir_conform_transmit` (Boolean) transmit packet
+- `police_cir_exceed_drop` (Boolean) drop packet
+- `police_pir` (Number) Peak Information Rate
+- `police_pir_be` (Number) Excess burst
+- `police_rate_percent` (Number)
 - `police_target_bitrate` (Number) Target bit rate (bits per second) (postfix k, m, g optional),decimal point allowed
 - `police_target_bitrate_conform_burst_byte` (Number) Burst Byte
 - `police_target_bitrate_conform_transmit` (Boolean) transmit packet
+- `police_target_bitrate_exceed_drop` (Boolean) drop packet
 - `police_target_bitrate_exceed_transmit` (Boolean) transmit packet
 - `police_target_bitrate_excess_burst_byte` (Number) Burst Byte
 - `priority_burst` (Number)
 - `priority_level` (Number) Multi-Level Priority Queue
+- `queue_buffers_ratio` (Number) Relative buffer size for queue
 - `queue_limit` (Number)
 - `queue_limit_type` (String)
+- `set_dscp` (String)
 - `shape_average_bit_rate` (Number) Target Bit Rate (bits/sec)
 - `shape_average_bits_per_interval_excess` (Number) bits per interval, excess.
 - `shape_average_bits_per_interval_sustained` (Number) bits per interval, sustained. Recommend not to configure, algo finds the best value

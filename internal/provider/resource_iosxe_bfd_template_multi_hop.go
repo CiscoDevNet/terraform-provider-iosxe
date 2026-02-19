@@ -157,7 +157,7 @@ func (r *BFDTemplateMultiHopResource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
 				Optional:            true,
 			},
-			"authentication_meticulous_sha_1keychain": schema.StringAttribute{
+			"authentication_meticulous_sha_1_keychain": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
 				Optional:            true,
 			},
