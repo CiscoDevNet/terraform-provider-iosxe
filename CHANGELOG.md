@@ -5,6 +5,7 @@
 - Mark `trunk_allowed_vlans_add`, `trunk_allowed_vlans_except`, and `trunk_allowed_vlans_remove` attributes of `iosxe_interface_switchport` resource as write-only to avoid drift detection
 - BREAKING CHANGE: Rename `authentication_meticulous_sha_1keychain` to `authentication_meticulous_sha_1_keychain` in `iosxe_bfd_template_multi_hop` resource and data source
 - Fix incorrect xpath for `authentication_meticulous_sha_1_keychain` attribute in `iosxe_bfd_template_multi_hop` resource and data source
+- Fix `iosxe_spanning_tree` resource to not remove VLANs from STP when VLANs are removed from resource configuration
 
 ## 0.15.0
 
