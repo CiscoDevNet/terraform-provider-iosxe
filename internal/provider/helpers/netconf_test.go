@@ -2714,3 +2714,170 @@ func TestAugmentNamespaces_IPv6ColonHandling(t *testing.T) {
 		})
 	}
 }
+
+// TestTrimNetconfTrailingWhitespace tests the TrimNetconfTrailingWhitespace helper function
+// which trims trailing whitespace from multi-line strings from NETCONF responses to prevent Terraform drift
+func TestTrimNetconfTrailingWhitespace(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "Empty string",
+			input:    "",
+			expected: "",
+		},
+		{
+			name:     "Single line no whitespace",
+			input:    "Hello World",
+			expected: "Hello World",
+		},
+		{
+			name:     "Single line with trailing spaces",
+			input:    "Hello World   ",
+			expected: "Hello World",
+		},
+		{
+			name:     "Single line with trailing tabs",
+			input:    "Hello World\t\t",
+			expected: "Hello World",
+		},
+		{
+			name:     "Multi-line with trailing whitespace on each line",
+			input:    "Line 1   \nLine 2\t\t\nLine 3  ",
+			expected: "Line 1\nLine 2\nLine 3",
+		},
+		{
+			name:     "Multi-line preserves leading whitespace",
+			input:    "  Line 1   \n\tLine 2\t\t\n  Line 3  ",
+			expected: "  Line 1\n\tLine 2\n  Line 3",
+		},
+		{
+			name:     "Multi-line with internal empty lines preserved",
+			input:    "Line 1   \n   \nLine 3  ",
+			expected: "Line 1\n\nLine 3",
+		},
+		{
+			name:     "Preserves internal whitespace",
+			input:    "Hello   World   ",
+			expected: "Hello   World",
+		},
+		{
+			name:     "Handles carriage return",
+			input:    "Line 1  \r\nLine 2\r",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Removes trailing newline (YAML block scalar)",
+			input:    "Line 1\nLine 2\nLine 3\n",
+			expected: "Line 1\nLine 2\nLine 3",
+		},
+		{
+			name:     "Removes multiple trailing newlines",
+			input:    "Line 1\nLine 2\n\n\n",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Handles trailing whitespace and trailing newlines together",
+			input:    "Line 1  \nLine 2  \n\n",
+			expected: "Line 1\nLine 2",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := TrimNetconfTrailingWhitespace(tt.input)
+			if result != tt.expected {
+				t.Errorf("TrimNetconfTrailingWhitespace() = %q, want %q", result, tt.expected)
+			}
+		})
+	}
+}
+
+// TestTrimNetconfTrailingWhitespace_BannerScenarios tests real-world banner scenarios
+// that can cause Terraform drift when comparing NETCONF response to state
+func TestTrimNetconfTrailingWhitespace_BannerScenarios(t *testing.T) {
+	tests := []struct {
+		name         string
+		netconfValue string // Value as returned by NETCONF (with trailing whitespace)
+		stateValue   string // Value as stored in Terraform state (often from YAML with trailing newline)
+		shouldMatch  bool   // After normalization, should they match?
+	}{
+		{
+			name: "Multi-line banner with trailing spaces from NETCONF",
+			netconfValue: "***************************************************************************   \n" +
+				"*                       EXEC SESSION STARTED                              *   \n" +
+				"***************************************************************************   ",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************",
+			shouldMatch: true,
+		},
+		{
+			name: "Multi-line banner: YAML block scalar (trailing newline) vs NETCONF (no trailing newline)",
+			netconfValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************\n", // YAML | adds trailing newline
+			shouldMatch: true,
+		},
+		{
+			name: "Multi-line banner: NETCONF trailing spaces + YAML trailing newline",
+			netconfValue: "***************************************************************************   \n" +
+				"*                       EXEC SESSION STARTED                              *   \n" +
+				"***************************************************************************   ",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************\n", // YAML | adds trailing newline
+			shouldMatch: true,
+		},
+		{
+			name:         "Single-line banner with trailing space",
+			netconfValue: "*** AUTHORIZED ACCESS ONLY ***   ",
+			stateValue:   "*** AUTHORIZED ACCESS ONLY ***",
+			shouldMatch:  true,
+		},
+		{
+			name: "Banner with mixed trailing whitespace",
+			netconfValue: "Line 1  \t\n" +
+				"Line 2   \n" +
+				"Line 3\t",
+			stateValue: "Line 1\n" +
+				"Line 2\n" +
+				"Line 3",
+			shouldMatch: true,
+		},
+		{
+			name:         "Banner already normalized (no changes needed)",
+			netconfValue: "Simple banner message",
+			stateValue:   "Simple banner message",
+			shouldMatch:  true,
+		},
+		{
+			name:         "Different content should not match",
+			netconfValue: "Banner A   ",
+			stateValue:   "Banner B",
+			shouldMatch:  false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			normalizedNetconf := TrimNetconfTrailingWhitespace(tt.netconfValue)
+			normalizedState := TrimNetconfTrailingWhitespace(tt.stateValue)
+
+			matches := normalizedNetconf == normalizedState
+			if matches != tt.shouldMatch {
+				if tt.shouldMatch {
+					t.Errorf("Expected values to match after normalization:\nNETCONF: %q\nState:   %q\nNormalized NETCONF: %q\nNormalized State:   %q",
+						tt.netconfValue, tt.stateValue, normalizedNetconf, normalizedState)
+				} else {
+					t.Errorf("Expected values to NOT match, but they did:\nNormalized: %q", normalizedNetconf)
+				}
+			}
+		})
+	}
+}
