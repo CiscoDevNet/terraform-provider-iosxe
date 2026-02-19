@@ -133,7 +133,6 @@ type YamlConfigAttribute struct {
 	Sensitive          bool                  `yaml:"sensitive"`
 	ExcludeTest        bool                  `yaml:"exclude_test"`
 	ExcludeExample     bool                  `yaml:"exclude_example"`
-	ExampleOnly        bool                  `yaml:"example_only"`
 	Description        string                `yaml:"description"`
 	Example            string                `yaml:"example"`
 	AllowImportChanges bool                  `yaml:"allow_import_changes"`
@@ -550,6 +549,12 @@ func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 		if config.Attributes[ia].Id || config.Attributes[ia].Reference || config.Attributes[ia].NoAugmentConfig {
 			continue
 		}
+		// Skip YANG parsing for attributes without yang_name - these are custom attributes
+		// that must have tf_name, type, and description explicitly provided in the YAML.
+		// They will be included in schema/struct generation but skipped in body building/reading.
+		if config.Attributes[ia].YangName == "" {
+			continue
+		}
 		parseAttribute(e, &config.Attributes[ia])
 		if config.Attributes[ia].Type == "List" || config.Attributes[ia].Type == "Set" {
 			el := resolvePath(e, config.Attributes[ia].YangName)
@@ -557,11 +562,19 @@ func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 				if config.Attributes[ia].Attributes[iaa].NoAugmentConfig {
 					continue
 				}
+				// Skip YANG parsing for nested attributes without yang_name
+				if config.Attributes[ia].Attributes[iaa].YangName == "" {
+					continue
+				}
 				parseAttribute(el, &config.Attributes[ia].Attributes[iaa])
 				if config.Attributes[ia].Attributes[iaa].Type == "List" || config.Attributes[ia].Attributes[iaa].Type == "Set" {
 					ell := resolvePath(el, config.Attributes[ia].Attributes[iaa].YangName)
 					for iaaa := range config.Attributes[ia].Attributes[iaa].Attributes {
 						if config.Attributes[ia].Attributes[iaa].Attributes[iaaa].NoAugmentConfig {
+							continue
+						}
+						// Skip YANG parsing for deeply nested attributes without yang_name
+						if config.Attributes[ia].Attributes[iaa].Attributes[iaaa].YangName == "" {
 							continue
 						}
 						parseAttribute(ell, &config.Attributes[ia].Attributes[iaa].Attributes[iaaa])

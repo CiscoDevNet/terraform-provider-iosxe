@@ -108,7 +108,6 @@ func testAccIosxeInterfacePIMIPv6Config_minimum() string {
 
 func testAccIosxeInterfacePIMIPv6Config_all() string {
 	config := `resource "iosxe_interface_pim_ipv6" "test" {` + "\n"
-	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	pim = true` + "\n"
 	config += `	bfd = false` + "\n"

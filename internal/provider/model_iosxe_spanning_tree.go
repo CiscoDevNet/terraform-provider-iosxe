@@ -39,10 +39,7 @@ import (
 
 // End of section. //template:end imports
 
-// Custom types section - template markers removed to preserve DisabledVlans field
-// DisabledVlans uses INVERSE logic and is handled entirely in custom code (not generated)
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
-
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type SpanningTree struct {
 	Device                   types.String                `tfsdk:"device"`
 	Id                       types.String                `tfsdk:"id"`
@@ -64,9 +61,6 @@ type SpanningTreeVlans struct {
 	Id       types.String `tfsdk:"id"`
 	Priority types.Int64  `tfsdk:"priority"`
 }
-
-// SpanningTreeDisabledVlans represents VLANs to explicitly disable from STP.
-// Uses INVERSE logic: presence in config sends DELETE operation to remove the VLAN from STP.
 type SpanningTreeDisabledVlans struct {
 	Id types.String `tfsdk:"id"`
 }
@@ -95,6 +89,8 @@ type SpanningTreeVlansData struct {
 type SpanningTreeDisabledVlansData struct {
 	Id types.String `tfsdk:"id"`
 }
+
+// End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
@@ -191,9 +187,7 @@ func (data SpanningTree) toBody(ctx context.Context, config SpanningTree) string
 
 // End of section. //template:end toBody
 
-// Custom implementation - template markers removed to preserve changes
-// Added disabled_vlans RemoveFromXPath logic for inverse STP VLAN disable
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) string {
 	body := netconf.Body{}
@@ -263,9 +257,6 @@ func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) str
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan", cBody.Res())
 		}
 	}
-	// Note: disabled_vlans are NOT included here - they must be sent as separate NETCONF operations
-	// because IOS-XE doesn't properly process operation="remove" when combined with merge operations
-	// in the same edit-config request. See getDisabledVlansDeleteBodiesXML for NETCONF delete handling.
 	bodyString, err := body.String()
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
@@ -273,52 +264,7 @@ func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) str
 	return bodyString
 }
 
-// DisabledVlansXMLBodies contains the NETCONF bodies needed to disable VLANs from STP.
-// IOS-XE requires a two-step process: first CREATE the vlan entry, then DELETE it.
-// This results in "no spanning-tree vlan X" on the device.
-type DisabledVlansXMLBodies struct {
-	CreateBodies []string // Bodies with operation="create" to create vlan entries
-	DeleteBodies []string // Bodies with operation="delete" to delete them (triggers "no spanning-tree vlan X")
-}
-
-// getDisabledVlansXMLBodies returns NETCONF bodies for disabling VLANs from STP.
-// IOS-XE requires a two-step process to disable STP for a VLAN:
-// 1. First CREATE a vlan entry (with operation="create")
-// 2. Then DELETE it (with operation="delete")
-// This results in "no spanning-tree vlan X" on the device.
-// Note: operation="remove" does NOT work because it silently succeeds if the entry doesn't exist.
-func (data SpanningTree) getDisabledVlansXMLBodies(ctx context.Context) DisabledVlansXMLBodies {
-	var result DisabledVlansXMLBodies
-	if len(data.DisabledVlans) > 0 {
-		for _, item := range data.DisabledVlans {
-			if !item.Id.IsNull() && !item.Id.IsUnknown() {
-				vlanId := item.Id.ValueString()
-
-				// Create body - creates the vlan entry
-				createBody := netconf.Body{}
-				createBody = helpers.SetFromXPath(createBody, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan/id", vlanId)
-				createBodyString, err := createBody.String()
-				if err != nil {
-					tflog.Error(ctx, fmt.Sprintf("Error converting disabled_vlans create body to string: %s", err))
-					continue
-				}
-				result.CreateBodies = append(result.CreateBodies, createBodyString)
-
-				// Delete body - deletes the vlan entry with operation="delete"
-				deleteBody := netconf.Body{}
-				predicates := fmt.Sprintf("[id='%s']", vlanId)
-				deleteBody = helpers.DeleteFromXPath(deleteBody, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
-				deleteBodyString, err := deleteBody.String()
-				if err != nil {
-					tflog.Error(ctx, fmt.Sprintf("Error converting disabled_vlans delete body to string: %s", err))
-					continue
-				}
-				result.DeleteBodies = append(result.DeleteBodies, deleteBodyString)
-			}
-		}
-	}
-	return result
-}
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -842,10 +788,7 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 // End of section. //template:end fromBodyDataXML
 
-// Custom implementation - template markers removed to preserve changes
-// When a VLAN is removed from config, only delete priority attribute, not entire VLAN
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTree) []string {
 	deletedItems := make([]string, 0)
@@ -874,11 +817,7 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 			}
 		}
 		if !found {
-			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
-			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
-			if !state.Vlans[i].Priority.IsNull() {
-				deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-			}
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.MstInstances {
@@ -946,10 +885,9 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 	return deletedItems
 }
 
-// Custom implementation - template markers removed to preserve changes
-// When a VLAN is removed from config, only delete priority attribute, not entire VLAN
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state SpanningTree, body string) string {
 	b := netconf.NewBody(body)
@@ -957,8 +895,8 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
 		predicates := ""
-		for j := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[j], stateKeyValues[j])
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
@@ -983,11 +921,7 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			}
 		}
 		if !found {
-			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
-			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
-			if !state.Vlans[i].Priority.IsNull() {
-				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
-			}
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
 		}
 	}
 	for i := range state.MstInstances {
@@ -1065,6 +999,8 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 	return b.Res()
 }
 
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1091,21 +1027,10 @@ func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
 
 // End of section. //template:end getEmptyLeafsDelete
 
-// getDeletePaths returns the RESTCONF paths to delete when destroying the resource.
-// CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
+
 func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Vlans {
-		// Only delete priority if it was set - don't delete entire VLAN from STP
-		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
-		if !data.Vlans[i].Priority.IsNull() {
-			keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-			deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		// VLANs without priority have no config to delete - they're already at default
-	}
 	for i := range data.MstInstances {
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 
@@ -1130,33 +1055,18 @@ func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-// addDeletePathsXML builds the NETCONF XML for deleting the resource.
-// CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
 func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	for i := range data.Vlans {
-		// Only delete priority if it was set - don't delete entire VLAN from STP
-		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
-		if !data.Vlans[i].Priority.IsNull() {
-			keys := [...]string{"id"}
-			keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-			predicates := ""
-			for j := range keys {
-				predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
-			}
-
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
-		}
-		// VLANs without priority have no config to delete - they're already at default
-	}
 	for i := range data.MstInstances {
 		keys := [...]string{"id"}
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 		predicates := ""
-		for j := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
@@ -1181,129 +1091,140 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 	return b.Res()
 }
 
-// getDisabledVlansDeletePaths returns the RESTCONF paths to delete for disabled_vlans.
-// This implements INVERSE logic: setting disabled_vlans in config means DELETE the VLAN from STP.
+// End of section. //template:end addDeletePathsXML
+
+// ============================================================================
+// Custom code for disabled_vlans handling - NOT generated by templates
+// disabled_vlans uses INVERSE logic: presence in config sends DELETE operation
+// to disable STP on the VLAN (no spanning-tree vlan X).
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/432
+// ============================================================================
+
+// getDisabledVlansDeletePaths returns RESTCONF paths to DELETE for disabled VLANs.
+// IOS-XE requires a two-step process: CREATE the VLAN entry, then DELETE it.
 func (data *SpanningTree) getDisabledVlansDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.DisabledVlans {
-		if !data.DisabledVlans[i].Id.IsNull() && !data.DisabledVlans[i].Id.IsUnknown() {
-			keyValues := [...]string{data.DisabledVlans[i].Id.ValueString()}
-			deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	for _, item := range data.DisabledVlans {
+		if !item.Id.IsNull() && !item.Id.IsUnknown() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", data.getPath(), item.Id.ValueString()))
 		}
 	}
 	return deletePaths
 }
 
-// getDisabledVlansRestconfCreateBody returns RESTCONF body to create disabled_vlans entries.
-// IOS-XE RESTCONF requires a two-step process to disable STP for a VLAN:
-// 1. First CREATE a vlan entry (via PATCH with this body)
-// 2. Then DELETE it (via DELETE to the path)
-// This results in "no spanning-tree vlan X" on the device.
-// Note: Simply deleting a non-existent VLAN entry does nothing.
-func (data *SpanningTree) getDisabledVlansRestconfCreateBody(ctx context.Context) string {
+// getDisabledVlansCreateBody returns RESTCONF body to CREATE VLANs before deleting them.
+// This is needed because DELETE on a non-existent VLAN silently succeeds.
+func (data *SpanningTree) getDisabledVlansCreateBody(ctx context.Context) string {
 	if len(data.DisabledVlans) == 0 {
 		return ""
 	}
-
-	var vlansToCreate []string
-	for _, item := range data.DisabledVlans {
-		if !item.Id.IsNull() && !item.Id.IsUnknown() {
-			vlansToCreate = append(vlansToCreate, item.Id.ValueString())
-		}
-	}
-
-	if len(vlansToCreate) == 0 {
-		return ""
-	}
-
-	// Build RESTCONF body to create the VLANs in STP (so they can be deleted)
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan", []interface{}{})
-	for index, vlanId := range vlansToCreate {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", vlanId)
+	for index, item := range data.DisabledVlans {
+		if !item.Id.IsNull() && !item.Id.IsUnknown() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
+		}
 	}
-
-	tflog.Debug(ctx, fmt.Sprintf("VLANs to create before disabling from STP: %v", vlansToCreate))
 	return body
 }
 
-// getRemovedDisabledVlansRestconfBody returns RESTCONF body to re-add VLANs that were removed from disabled_vlans.
-// When a VLAN is removed from disabled_vlans, it should be re-created in STP to restore default behavior.
-// This is the INVERSE of getDisabledVlansDeletePaths.
-func (plan *SpanningTree) getRemovedDisabledVlansRestconfBody(ctx context.Context, state SpanningTree) string {
-	var vlansToReAdd []string
+// DisabledVlansXMLBodies contains NETCONF bodies for the two-step disable process.
+type DisabledVlansXMLBodies struct {
+	CreateBody string
+	DeleteBody string
+}
 
-	// Find VLANs that were in state.DisabledVlans but are NOT in plan.DisabledVlans
-	for _, stateItem := range state.DisabledVlans {
-		if stateItem.Id.IsNull() || stateItem.Id.IsUnknown() {
-			continue
+// getDisabledVlansXMLBodies returns NETCONF bodies for disabling VLANs from STP.
+// Uses two-step process: CREATE then DELETE.
+func (data *SpanningTree) getDisabledVlansXMLBodies(ctx context.Context) DisabledVlansXMLBodies {
+	var result DisabledVlansXMLBodies
+	if len(data.DisabledVlans) == 0 {
+		return result
+	}
+
+	// Create body - add VLANs to STP
+	createBody := netconf.Body{}
+	for _, item := range data.DisabledVlans {
+		if !item.Id.IsNull() && !item.Id.IsUnknown() {
+			cBody := netconf.Body{}
+			cBody = helpers.SetFromXPath(cBody, "id", item.Id.ValueString())
+			createBody = helpers.SetRawFromXPath(createBody, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan", cBody.Res())
 		}
-		stateVlanId := stateItem.Id.ValueString()
+	}
+	createBodyStr, _ := createBody.String()
+	result.CreateBody = createBodyStr
 
+	// Delete body - remove VLANs from STP (triggers "no spanning-tree vlan X")
+	deleteBody := netconf.Body{}
+	for _, item := range data.DisabledVlans {
+		if !item.Id.IsNull() && !item.Id.IsUnknown() {
+			deleteBody = helpers.RemoveFromXPath(deleteBody, fmt.Sprintf("%s/Cisco-IOS-XE-spanning-tree:vlan[id='%s']", data.getXPath(), item.Id.ValueString()))
+		}
+	}
+	deleteBody = helpers.CleanupRedundantRemoveOperations(deleteBody)
+	result.DeleteBody = deleteBody.Res()
+
+	return result
+}
+
+// getRemovedDisabledVlansCreateBody returns RESTCONF body to re-add VLANs that were
+// removed from disabled_vlans (to restore default STP behavior).
+func (data *SpanningTree) getRemovedDisabledVlansCreateBody(ctx context.Context, state SpanningTree) string {
+	// Find VLANs that were in state.DisabledVlans but are not in data.DisabledVlans
+	var removedVlans []string
+	for _, stateItem := range state.DisabledVlans {
 		found := false
-		for _, planItem := range plan.DisabledVlans {
-			if !planItem.Id.IsNull() && !planItem.Id.IsUnknown() && planItem.Id.ValueString() == stateVlanId {
+		for _, dataItem := range data.DisabledVlans {
+			if stateItem.Id.ValueString() == dataItem.Id.ValueString() {
 				found = true
 				break
 			}
 		}
-
-		if !found {
-			// This VLAN was removed from disabled_vlans, need to re-add to STP
-			vlansToReAdd = append(vlansToReAdd, stateVlanId)
+		if !found && !stateItem.Id.IsNull() {
+			removedVlans = append(removedVlans, stateItem.Id.ValueString())
 		}
 	}
 
-	if len(vlansToReAdd) == 0 {
+	if len(removedVlans) == 0 {
 		return ""
 	}
 
-	// Build RESTCONF body to create the VLANs in STP
-	body := `{"` + helpers.LastElement(plan.getPath()) + `":{}}`
-	body, _ = sjson.Set(body, helpers.LastElement(plan.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan", []interface{}{})
-	for index, vlanId := range vlansToReAdd {
-		body, _ = sjson.Set(body, helpers.LastElement(plan.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", vlanId)
+	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
+	body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan", []interface{}{})
+	for index, vlanId := range removedVlans {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", vlanId)
 	}
-
-	tflog.Debug(ctx, fmt.Sprintf("VLANs to re-add to STP (removed from disabled_vlans): %v", vlansToReAdd))
 	return body
 }
 
-// getRemovedDisabledVlansXMLBodies returns NETCONF bodies to re-add VLANs that were removed from disabled_vlans.
-// When a VLAN is removed from disabled_vlans, it should be re-created in STP to restore default behavior.
-// This is the INVERSE of getDisabledVlansXMLBodies.
-func (plan *SpanningTree) getRemovedDisabledVlansXMLBodies(ctx context.Context, state SpanningTree) []string {
-	var bodies []string
-
-	// Find VLANs that were in state.DisabledVlans but are NOT in plan.DisabledVlans
+// getRemovedDisabledVlansXMLBody returns NETCONF body to re-add VLANs that were
+// removed from disabled_vlans (to restore default STP behavior).
+func (data *SpanningTree) getRemovedDisabledVlansXMLBody(ctx context.Context, state SpanningTree) string {
+	// Find VLANs that were in state.DisabledVlans but are not in data.DisabledVlans
+	var removedVlans []string
 	for _, stateItem := range state.DisabledVlans {
-		if stateItem.Id.IsNull() || stateItem.Id.IsUnknown() {
-			continue
-		}
-		stateVlanId := stateItem.Id.ValueString()
-
 		found := false
-		for _, planItem := range plan.DisabledVlans {
-			if !planItem.Id.IsNull() && !planItem.Id.IsUnknown() && planItem.Id.ValueString() == stateVlanId {
+		for _, dataItem := range data.DisabledVlans {
+			if stateItem.Id.ValueString() == dataItem.Id.ValueString() {
 				found = true
 				break
 			}
 		}
-
-		if !found {
-			// This VLAN was removed from disabled_vlans, need to re-add to STP
-			// Create a merge body to create the VLAN entry in STP
-			body := netconf.Body{}
-			body = helpers.SetFromXPath(body, plan.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan/id", stateVlanId)
-			bodyString, err := body.String()
-			if err != nil {
-				tflog.Error(ctx, fmt.Sprintf("Error converting re-add VLAN body to string: %s", err))
-				continue
-			}
-			bodies = append(bodies, bodyString)
-			tflog.Debug(ctx, fmt.Sprintf("VLAN %s to re-add to STP (removed from disabled_vlans)", stateVlanId))
+		if !found && !stateItem.Id.IsNull() {
+			removedVlans = append(removedVlans, stateItem.Id.ValueString())
 		}
 	}
 
-	return bodies
+	if len(removedVlans) == 0 {
+		return ""
+	}
+
+	body := netconf.Body{}
+	for _, vlanId := range removedVlans {
+		cBody := netconf.Body{}
+		cBody = helpers.SetFromXPath(cBody, "id", vlanId)
+		body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan", cBody.Res())
+	}
+	bodyStr, _ := body.String()
+	return bodyStr
 }

@@ -69,7 +69,6 @@ resource "iosxe_yang" "PreReq0" {
 func testAccDataSourceIosxeInterfaceOSPFv3Config() string {
 	config := `resource "iosxe_interface_ospfv3" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	network_type_broadcast = false` + "\n"
 	config += `	network_type_non_broadcast = false` + "\n"

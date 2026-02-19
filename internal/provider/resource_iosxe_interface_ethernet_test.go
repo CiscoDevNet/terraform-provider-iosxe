@@ -213,7 +213,6 @@ func testAccIosxeInterfaceEthernetConfig_minimum() string {
 
 func testAccIosxeInterfaceEthernetConfig_all() string {
 	config := `resource "iosxe_interface_ethernet" "test" {` + "\n"
-	config += `	type = "GigabitEthernet"` + "\n"
 	config += `	name = "3"` + "\n"
 	config += `	mtu = 1600` + "\n"
 	config += `	bandwidth = 1000000` + "\n"

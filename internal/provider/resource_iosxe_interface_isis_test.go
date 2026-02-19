@@ -127,7 +127,6 @@ func testAccIosxeInterfaceISISConfig_minimum() string {
 
 func testAccIosxeInterfaceISISConfig_all() string {
 	config := `resource "iosxe_interface_isis" "test" {` + "\n"
-	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	ipv4_metric_levels = [{` + "\n"
 	config += `		level = "level-1"` + "\n"

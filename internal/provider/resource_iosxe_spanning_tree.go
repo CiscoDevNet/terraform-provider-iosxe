@@ -42,9 +42,7 @@ import (
 
 // End of section. //template:end imports
 
-// Custom implementation - template markers removed to preserve changes
-// Added disabled_vlans schema attribute for inverse STP VLAN disable logic
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// Section below is generated&owned by "gen/generator.go". //template:begin model
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
@@ -148,7 +146,7 @@ func (r *SpanningTreeResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"disabled_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("VLANs to explicitly disable from spanning-tree. Uses inverse logic: presence in config sends DELETE operation (no spanning-tree vlan X). Removing from config allows VLANs to revert to default STP behavior.").String,
+				MarkdownDescription: helpers.NewAttributeDescription("VLANs to explicitly disable from spanning-tree. Uses inverse logic - presence in config sends DELETE operation (no spanning-tree vlan X). Removing from config allows VLANs to revert to default STP behavior.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -171,9 +169,9 @@ func (r *SpanningTreeResource) Configure(_ context.Context, req resource.Configu
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
-// Custom implementation - template markers removed to preserve changes
-// Added disabled_vlans delete logic for inverse STP VLAN disable
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
 
 func (r *SpanningTreeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan, config SpanningTree
@@ -208,25 +206,9 @@ func (r *SpanningTreeResource) Create(ctx context.Context, req resource.CreateRe
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
-			// disabled_vlans uses INVERSE logic - setting it in config means DELETE the VLAN from STP
-			// IOS-XE RESTCONF requires a two-step process:
-			// 1. First CREATE the vlan entries (so they exist)
-			// 2. Then DELETE them (triggers "no spanning-tree vlan X")
-			disabledVlansCreateBody := plan.getDisabledVlansRestconfCreateBody(ctx)
-			disabledVlansDelete := plan.getDisabledVlansDeletePaths(ctx)
-			tflog.Debug(ctx, fmt.Sprintf("Disabled VLANs to delete from STP: %+v", disabledVlansDelete))
-
 			if YangPatch {
 				edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
 				for _, i := range emptyLeafsDelete {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				// Step 1: Create the disabled_vlans entries first (merge)
-				if disabledVlansCreateBody != "" {
-					edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: disabledVlansCreateBody}))
-				}
-				// Step 2: Delete them (remove) - triggers "no spanning-tree vlan X"
-				for _, i := range disabledVlansDelete {
 					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 				}
 				_, err := device.RestconfClient.YangPatchData("", "1", "", edits, restconf.Timeout(1800))
@@ -250,20 +232,29 @@ func (r *SpanningTreeResource) Create(ctx context.Context, req resource.CreateRe
 						return
 					}
 				}
-				// Step 1: Create the disabled_vlans entries first (PATCH)
-				if disabledVlansCreateBody != "" {
-					tflog.Debug(ctx, fmt.Sprintf("Creating disabled_vlans entries: %s", disabledVlansCreateBody))
-					_, err := device.RestconfClient.PatchData(plan.getPathShort(), disabledVlansCreateBody, restconf.Timeout(1800))
+			}
+
+			// Handle disabled_vlans - two-step CREATE then DELETE to disable STP on VLANs
+			if len(plan.DisabledVlans) > 0 {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Processing disabled_vlans (RESTCONF)", plan.getPath()))
+
+				// Step 1: CREATE the VLAN entries (so they exist)
+				createBody := plan.getDisabledVlansCreateBody(ctx)
+				if createBody != "" {
+					_, err := device.RestconfClient.PatchData(plan.getPathShort(), createBody, restconf.Timeout(1800))
 					if err != nil {
-						tflog.Debug(ctx, fmt.Sprintf("Create for disabled_vlans may have failed (expected if already exists): %s", err))
-						// Continue - the entries might already exist, which is fine
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to create disabled VLANs (PATCH), got error: %s", err))
+						return
 					}
 				}
-				// Step 2: Delete the disabled_vlans from STP (triggers "no spanning-tree vlan X")
-				for _, i := range disabledVlansDelete {
-					res, err := device.RestconfClient.DeleteData(i, restconf.Timeout(1800))
+
+				// Step 2: DELETE each VLAN to trigger "no spanning-tree vlan X"
+				deletePaths := plan.getDisabledVlansDeletePaths(ctx)
+				for _, deletePath := range deletePaths {
+					tflog.Debug(ctx, fmt.Sprintf("%s: Deleting VLAN from STP: %s", plan.getPath(), deletePath))
+					res, err := device.RestconfClient.DeleteData(deletePath, restconf.Timeout(1800))
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLAN from STP (%s), got error: %s", i, err))
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLAN from STP (%s), got error: %s", deletePath, err))
 						return
 					}
 				}
@@ -283,26 +274,25 @@ func (r *SpanningTreeResource) Create(ctx context.Context, req resource.CreateRe
 				return
 			}
 
-			// disabled_vlans uses INVERSE logic - setting it in config means DELETE the VLAN from STP
-			// IOS-XE requires a two-step process: first CREATE the vlan entry, then DELETE it
-			// This results in "no spanning-tree vlan X" on the device
-			disabledVlansBodies := plan.getDisabledVlansXMLBodies(ctx)
+			// Handle disabled_vlans - two-step CREATE then DELETE to disable STP on VLANs
+			if len(plan.DisabledVlans) > 0 {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Processing disabled_vlans (NETCONF)", plan.getPath()))
+				xmlBodies := plan.getDisabledVlansXMLBodies(ctx)
 
-			// Step 1: Create the vlan entries (so they exist for deletion)
-			for i, createBody := range disabledVlansBodies.CreateBodies {
-				tflog.Debug(ctx, fmt.Sprintf("Creating disabled_vlan entry %d: %s", i, createBody))
-				if err := helpers.EditConfig(ctx, device.NetconfClient, createBody, device.AutoCommit); err != nil {
-					tflog.Debug(ctx, fmt.Sprintf("Create for disabled_vlan %d may have failed (expected if already exists): %s", i, err))
-					// Continue - the entry might already exist, which is fine
+				// Step 1: CREATE the VLAN entries (so they exist)
+				if xmlBodies.CreateBody != "" {
+					if err := helpers.EditConfig(ctx, device.NetconfClient, xmlBodies.CreateBody, device.AutoCommit); err != nil {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to create disabled VLANs: %s", err.Error()))
+						return
+					}
 				}
-			}
 
-			// Step 2: Delete the vlan entries (triggers "no spanning-tree vlan X")
-			for i, deleteBody := range disabledVlansBodies.DeleteBodies {
-				tflog.Debug(ctx, fmt.Sprintf("Deleting disabled_vlan entry %d: %s", i, deleteBody))
-				if err := helpers.EditConfig(ctx, device.NetconfClient, deleteBody, device.AutoCommit); err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLAN from STP: %s", err))
-					return
+				// Step 2: DELETE to trigger "no spanning-tree vlan X"
+				if xmlBodies.DeleteBody != "" {
+					if err := helpers.EditConfig(ctx, device.NetconfClient, xmlBodies.DeleteBody, device.AutoCommit); err != nil {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLANs from STP: %s", err.Error()))
+						return
+					}
 				}
 			}
 		}
@@ -317,6 +307,8 @@ func (r *SpanningTreeResource) Create(ctx context.Context, req resource.CreateRe
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end create
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
@@ -401,9 +393,7 @@ func (r *SpanningTreeResource) Read(ctx context.Context, req resource.ReadReques
 
 // End of section. //template:end read
 
-// Custom implementation - template markers removed to preserve changes
-// Added disabled_vlans delete logic for inverse STP VLAN disable
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state, config SpanningTree
@@ -447,14 +437,6 @@ func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRe
 			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
-			// disabled_vlans uses INVERSE logic - setting it in config means DELETE the VLAN from STP
-			// IOS-XE RESTCONF requires a two-step process:
-			// 1. First CREATE the vlan entries (so they exist)
-			// 2. Then DELETE them (triggers "no spanning-tree vlan X")
-			disabledVlansCreateBody := plan.getDisabledVlansRestconfCreateBody(ctx)
-			disabledVlansDelete := plan.getDisabledVlansDeletePaths(ctx)
-			tflog.Debug(ctx, fmt.Sprintf("Disabled VLANs to delete from STP: %+v", disabledVlansDelete))
-
 			if YangPatch {
 				var edits []restconf.YangPatchEdit
 				for _, i := range deletedItems {
@@ -463,19 +445,6 @@ func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRe
 				edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
 				for _, i := range emptyLeafsDelete {
 					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				// Step 1: Create the disabled_vlans entries first (merge)
-				if disabledVlansCreateBody != "" {
-					edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: disabledVlansCreateBody}))
-				}
-				// Step 2: Delete them (remove) - triggers "no spanning-tree vlan X"
-				for _, i := range disabledVlansDelete {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				// Add re-add VLANs that were removed from disabled_vlans (restore to STP)
-				reAddBody := plan.getRemovedDisabledVlansRestconfBody(ctx, state)
-				if reAddBody != "" {
-					edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: reAddBody}))
 				}
 				_, err := device.RestconfClient.YangPatchData("", "1", "", edits, restconf.Timeout(1800))
 				if err != nil {
@@ -505,31 +474,40 @@ func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRe
 						return
 					}
 				}
-				// Step 1: Create the disabled_vlans entries first (PATCH)
-				if disabledVlansCreateBody != "" {
-					tflog.Debug(ctx, fmt.Sprintf("Creating disabled_vlans entries: %s", disabledVlansCreateBody))
-					_, err := device.RestconfClient.PatchData(plan.getPathShort(), disabledVlansCreateBody, restconf.Timeout(1800))
-					if err != nil {
-						tflog.Debug(ctx, fmt.Sprintf("Create for disabled_vlans may have failed (expected if already exists): %s", err))
-						// Continue - the entries might already exist, which is fine
-					}
+			}
+
+			// Handle disabled_vlans changes (RESTCONF)
+			// 1. Re-enable VLANs removed from disabled_vlans
+			removedBody := plan.getRemovedDisabledVlansCreateBody(ctx, state)
+			if removedBody != "" {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Re-enabling VLANs removed from disabled_vlans", plan.getPath()))
+				_, err := device.RestconfClient.PatchData(plan.getPathShort(), removedBody, restconf.Timeout(1800))
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to re-enable VLANs, got error: %s", err))
+					return
 				}
-				// Step 2: Delete the disabled_vlans from STP (triggers "no spanning-tree vlan X")
-				for _, i := range disabledVlansDelete {
-					res, err := device.RestconfClient.DeleteData(i, restconf.Timeout(1800))
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLAN from STP (%s), got error: %s", i, err))
+			}
+
+			// 2. Disable new VLANs added to disabled_vlans
+			if len(plan.DisabledVlans) > 0 {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Processing disabled_vlans (RESTCONF Update)", plan.getPath()))
+
+				// Step 1: CREATE the VLAN entries
+				createBody := plan.getDisabledVlansCreateBody(ctx)
+				if createBody != "" {
+					_, err := device.RestconfClient.PatchData(plan.getPathShort(), createBody, restconf.Timeout(1800))
+					if err != nil {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to create disabled VLANs, got error: %s", err))
 						return
 					}
 				}
 
-				// Re-add VLANs that were removed from disabled_vlans (restore to STP)
-				reAddBody := plan.getRemovedDisabledVlansRestconfBody(ctx, state)
-				if reAddBody != "" {
-					tflog.Debug(ctx, fmt.Sprintf("Re-adding VLANs to STP: %s", reAddBody))
-					_, err := device.RestconfClient.PatchData(plan.getPathShort(), reAddBody, restconf.Timeout(1800))
-					if err != nil {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to re-add VLANs to STP: %s", err))
+				// Step 2: DELETE to trigger "no spanning-tree vlan X"
+				deletePaths := plan.getDisabledVlansDeletePaths(ctx)
+				for _, deletePath := range deletePaths {
+					res, err := device.RestconfClient.DeleteData(deletePath, restconf.Timeout(1800))
+					if err != nil && res.StatusCode != 404 {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLAN from STP (%s), got error: %s", deletePath, err))
 						return
 					}
 				}
@@ -550,36 +528,36 @@ func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRe
 				return
 			}
 
-			// disabled_vlans uses INVERSE logic - setting it in config means DELETE the VLAN from STP
-			// IOS-XE requires a two-step process: first CREATE the vlan entry, then DELETE it
-			// This results in "no spanning-tree vlan X" on the device
-			disabledVlansBodies := plan.getDisabledVlansXMLBodies(ctx)
-
-			// Step 1: Create the vlan entries (so they exist for deletion)
-			for i, createBody := range disabledVlansBodies.CreateBodies {
-				tflog.Debug(ctx, fmt.Sprintf("Creating disabled_vlan entry %d: %s", i, createBody))
-				if err := helpers.EditConfig(ctx, device.NetconfClient, createBody, device.AutoCommit); err != nil {
-					tflog.Debug(ctx, fmt.Sprintf("Create for disabled_vlan %d may have failed (expected if already exists): %s", i, err))
-					// Continue - the entry might already exist, which is fine
-				}
-			}
-
-			// Step 2: Delete the vlan entries (triggers "no spanning-tree vlan X")
-			for i, deleteBody := range disabledVlansBodies.DeleteBodies {
-				tflog.Debug(ctx, fmt.Sprintf("Deleting disabled_vlan entry %d: %s", i, deleteBody))
-				if err := helpers.EditConfig(ctx, device.NetconfClient, deleteBody, device.AutoCommit); err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLAN from STP: %s", err))
+			// Handle disabled_vlans changes (NETCONF)
+			// 1. Re-enable VLANs removed from disabled_vlans
+			removedBody := plan.getRemovedDisabledVlansXMLBody(ctx, state)
+			if removedBody != "" {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Re-enabling VLANs removed from disabled_vlans (NETCONF)", plan.getPath()))
+				if err := helpers.EditConfig(ctx, device.NetconfClient, removedBody, device.AutoCommit); err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to re-enable VLANs: %s", err.Error()))
 					return
 				}
 			}
 
-			// Re-add VLANs that were removed from disabled_vlans (restore to STP)
-			reAddBodies := plan.getRemovedDisabledVlansXMLBodies(ctx, state)
-			for i, reAddBody := range reAddBodies {
-				tflog.Debug(ctx, fmt.Sprintf("Re-adding VLAN %d to STP: %s", i, reAddBody))
-				if err := helpers.EditConfig(ctx, device.NetconfClient, reAddBody, device.AutoCommit); err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to re-add VLAN to STP: %s", err))
-					return
+			// 2. Disable new VLANs added to disabled_vlans
+			if len(plan.DisabledVlans) > 0 {
+				tflog.Debug(ctx, fmt.Sprintf("%s: Processing disabled_vlans (NETCONF Update)", plan.getPath()))
+				xmlBodies := plan.getDisabledVlansXMLBodies(ctx)
+
+				// Step 1: CREATE
+				if xmlBodies.CreateBody != "" {
+					if err := helpers.EditConfig(ctx, device.NetconfClient, xmlBodies.CreateBody, device.AutoCommit); err != nil {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to create disabled VLANs: %s", err.Error()))
+						return
+					}
+				}
+
+				// Step 2: DELETE
+				if xmlBodies.DeleteBody != "" {
+					if err := helpers.EditConfig(ctx, device.NetconfClient, xmlBodies.DeleteBody, device.AutoCommit); err != nil {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to disable VLANs from STP: %s", err.Error()))
+						return
+					}
 				}
 			}
 		}
@@ -590,6 +568,8 @@ func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRe
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 }
+
+// End of section. //template:end update
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 

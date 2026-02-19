@@ -107,7 +107,6 @@ func testAccIosxeInterfaceSwitchportConfig_minimum() string {
 
 func testAccIosxeInterfaceSwitchportConfig_all() string {
 	config := `resource "iosxe_interface_switchport" "test" {` + "\n"
-	config += `	type = "GigabitEthernet"` + "\n"
 	config += `	name = "1/0/3"` + "\n"
 	config += `	mode_access = false` + "\n"
 	config += `	mode_dot1q_tunnel = false` + "\n"

@@ -85,7 +85,6 @@ resource "iosxe_yang" "PreReq1" {
 func testAccDataSourceIosxeInterfaceOSPFConfig() string {
 	config := `resource "iosxe_interface_ospf" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	cost = 10` + "\n"
 	config += `	dead_interval = 30` + "\n"

@@ -105,7 +105,6 @@ func testAccIosxeInterfaceMPLSConfig_minimum() string {
 
 func testAccIosxeInterfaceMPLSConfig_all() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
-	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	ip = true` + "\n"
 	config += `	mtu = "1200"` + "\n"

@@ -38,4 +38,17 @@ attributes:
         example: "10"
       - yang_name: priority
         example: 32768
+  # disabled_vlans uses INVERSE logic: presence in config sends DELETE operation
+  # to disable STP on the VLAN (no spanning-tree vlan X). Requires custom code
+  # in model file - no yang_name means it's skipped in standard body building.
+  - tf_name: disabled_vlans
+    type: List
+    description: VLANs to explicitly disable from spanning-tree. Uses inverse logic - presence in config sends DELETE operation (no spanning-tree vlan X). Removing from config allows VLANs to revert to default STP behavior.
+    exclude_test: true
+    attributes:
+      - tf_name: id
+        type: String
+        id: true
+        description: VLAN ID to disable from spanning-tree
+        example: "30"
     

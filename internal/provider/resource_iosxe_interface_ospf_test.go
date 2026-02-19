@@ -124,7 +124,6 @@ func testAccIosxeInterfaceOSPFConfig_minimum() string {
 
 func testAccIosxeInterfaceOSPFConfig_all() string {
 	config := `resource "iosxe_interface_ospf" "test" {` + "\n"
-	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	cost = 10` + "\n"
 	config += `	dead_interval = 30` + "\n"

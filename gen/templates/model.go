@@ -51,7 +51,6 @@ type {{camelCase .Name}} struct {
 	DeleteMode types.String `tfsdk:"delete_mode"`
 {{- end}}
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{toGoName .TfName}} []{{$name}}{{toGoName .TfName}} `tfsdk:"{{.TfName}}"`
 {{- else if or (eq .Type "StringList") (eq .Type "Int64List")}}
@@ -66,16 +65,13 @@ type {{camelCase .Name}} struct {
 	{{- end}}
 {{- end}}
 {{- end}}
-{{- end}}
 }
 
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- $cname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 type {{$name}}{{toGoName .TfName}} struct {
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{toGoName .TfName}} []{{$name}}{{$cname}}{{toGoName .TfName}} `tfsdk:"{{.TfName}}"`
 {{- else if or (eq .Type "StringList") (eq .Type "Int64List")}}
@@ -90,22 +86,17 @@ type {{$name}}{{toGoName .TfName}} struct {
 	{{- end}}
 {{- end}}
 {{- end}}
-{{- end}}
 }
-{{- end}}
 {{- end}}
 {{- end}}
 
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- $cname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 type {{$name}}{{$cname}}{{toGoName .TfName}} struct {
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 	{{toGoName .TfName}} types.List `tfsdk:"{{.TfName}}"`
 {{- else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}
@@ -118,10 +109,7 @@ type {{$name}}{{$cname}}{{toGoName .TfName}} struct {
 	{{- end}}
 {{- end}}
 {{- end}}
-{{- end}}
 }
-{{- end}}
-{{- end}}
 {{- end}}
 {{- end}}
 {{- end}}
@@ -131,7 +119,6 @@ type {{camelCase .Name}}Data struct {
 	Device types.String `tfsdk:"device"`
 	Id     types.String `tfsdk:"id"`
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{toGoName .TfName}} []{{$name}}{{toGoName .TfName}}Data `tfsdk:"{{.TfName}}"`
 {{- else if or (eq .Type "StringList") (eq .Type "Int64List")}}
@@ -142,16 +129,13 @@ type {{camelCase .Name}}Data struct {
 	{{toGoName .TfName}} types.{{.Type}} `tfsdk:"{{.TfName}}"`
 {{- end}}
 {{- end}}
-{{- end}}
 }
 
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- $cname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 type {{$name}}{{toGoName .TfName}}Data struct {
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{toGoName .TfName}} []{{$name}}{{$cname}}{{toGoName .TfName}}Data `tfsdk:"{{.TfName}}"`
 {{- else if or (eq .Type "StringList") (eq .Type "Int64List")}}
@@ -162,22 +146,17 @@ type {{$name}}{{toGoName .TfName}}Data struct {
 	{{toGoName .TfName}} types.{{.Type}} `tfsdk:"{{.TfName}}"`
 {{- end}}
 {{- end}}
-{{- end}}
 }
-{{- end}}
 {{- end}}
 {{- end}}
 
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- $cname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 type {{$name}}{{$cname}}{{toGoName .TfName}}Data struct {
 {{- range .Attributes}}
-{{- if not .ExampleOnly}}
 {{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 	{{toGoName .TfName}} types.List `tfsdk:"{{.TfName}}"`
 {{- else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}
@@ -186,10 +165,7 @@ type {{$name}}{{$cname}}{{toGoName .TfName}}Data struct {
 	{{toGoName .TfName}} types.{{.Type}} `tfsdk:"{{.TfName}}"`
 {{- end}}
 {{- end}}
-{{- end}}
 }
-{{- end}}
-{{- end}}
 {{- end}}
 {{- end}}
 {{- end}}
@@ -250,7 +226,7 @@ func (data {{camelCase .Name}}Data) getXPath() string {
 func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .Name}}) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if and (not .Reference) (ne .Type "List") (ne .Type "Set")}}
 	if !data.{{toGoName .TfName}}.IsNull() && !data.{{toGoName .TfName}}.IsUnknown() {
 		{{- if eq .Type "Int64"}}
@@ -287,7 +263,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 	{{- end}}
 	{{- end}}
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := toDotPath .XPath }}
 	{{- $listGoName := toGoName .TfName }}
@@ -305,7 +281,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 			}
 			{{- end}}
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if and (ne .Type "List") (ne .Type "Set")}}
 			if !item.{{toGoName .TfName}}.IsNull() && !item.{{toGoName .TfName}}.IsUnknown() {
 				{{- if eq .Type "Int64"}}
@@ -342,7 +318,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 			{{- end}}
 			{{- end}}
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if or (eq .Type "List") (eq .Type "Set")}}
 			{{- $clist := toDotPath .XPath }}
 			{{- $clistGoName := toGoName .TfName }}
@@ -360,7 +336,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 					}
 					{{- end}}
 					{{- range .Attributes}}
-					{{- if not .ExampleOnly}}
+					{{- if .XPath}}
 					if !citem.{{toGoName .TfName}}.IsNull() && !citem.{{toGoName .TfName}}.IsUnknown() {
 						{{- if eq .Type "Int64"}}
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"{{$list}}"+"."+strconv.Itoa(index)+"."+"{{$clist}}"+"."+strconv.Itoa(cindex)+"."+"{{toDotPath .XPath}}", strconv.FormatInt(citem.{{toGoName .TfName}}.ValueInt64(), 10))
@@ -414,7 +390,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCase .Name}}) string {
 	body := netconf.Body{}
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if and (not .Reference) (ne .Type "List") (ne .Type "Set")}}
 	if !data.{{toGoName .TfName}}.IsNull() && !data.{{toGoName .TfName}}.IsUnknown() {
 		{{- if eq .Type "Int64"}}
@@ -469,7 +445,7 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 			{{- end}}
 			cBody := netconf.Body{}
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if and (ne .Type "List") (ne .Type "Set")}}
 			if !item.{{toGoName .TfName}}.IsNull() && !item.{{toGoName .TfName}}.IsUnknown() {
 				{{- if eq .Type "Int64"}}
@@ -524,7 +500,7 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 					{{- end}}
 					ccBody := netconf.Body{}
 					{{- range .Attributes}}
-					{{- if not .ExampleOnly}}
+					{{- if .XPath}}
 					if !citem.{{toGoName .TfName}}.IsNull() && !citem.{{toGoName .TfName}}.IsUnknown() {
 						{{- if eq .Type "Int64"}}
 						ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", strconv.FormatInt(citem.{{toGoName .TfName}}.ValueInt64(), 10))
@@ -593,7 +569,7 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 		prefix += "0."
 	}
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if and (not .Reference) (not .WriteOnly)}}
 	{{- if eq .Type "Int64"}}
 	if value := res.Get(prefix+"{{toDotPath .XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
@@ -681,7 +657,7 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 		)
 
 		{{- range .Attributes}}
-		{{- if not .ExampleOnly}}
+		{{- if .XPath}}
 		{{- if not .WriteOnly}}
 		{{- if eq .Type "Int64"}}
 		if value := r.Get("{{toDotPath .XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
@@ -769,7 +745,7 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 			)
 
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if not .WriteOnly}}
 			{{- if eq .Type "Int64"}}
 			if value := cr.Get("{{toDotPath .XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
@@ -851,7 +827,7 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 
 func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if and (not .Reference) (not .WriteOnly)}}
 	{{- if eq .Type "Int64"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
@@ -938,7 +914,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		)
 
 		{{- range .Attributes}}
-		{{- if not .ExampleOnly}}
+		{{- if .XPath}}
 		{{- if not .WriteOnly}}
 		{{- if eq .Type "Int64"}}
 		if value := helpers.GetFromXPath(r, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
@@ -1025,7 +1001,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 			)
 
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if not .WriteOnly}}
 			{{- if eq .Type "Int64"}}
 			if value := helpers.GetFromXPath(cr, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
@@ -1113,7 +1089,7 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 		prefix += "0."
 	}
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- $cname := toGoName .TfName}}
 	{{- if and (not .Reference) (not .Id)}}
 	{{- if eq .Type "Int64"}}
@@ -1172,7 +1148,7 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := {{$name}}{{toGoName .TfName}}{}
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if eq .Type "Int64"}}
 			if cValue := v.Get("{{toDotPath .XPath}}"); cValue.Exists() {
 				item.{{toGoName .TfName}} = types.Int64Value(cValue.Int())
@@ -1229,7 +1205,7 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
 					cItem := {{$name}}{{$cname}}{{toGoName .TfName}}{}
 					{{- range .Attributes}}
-					{{- if not .ExampleOnly}}
+					{{- if .XPath}}
 					{{- if eq .Type "Int64"}}
 					if ccValue := cv.Get("{{toDotPath .XPath}}"); ccValue.Exists() {
 						cItem.{{toGoName .TfName}} = types.Int64Value(ccValue.Int())
@@ -1314,7 +1290,7 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 		prefix += "0."
 	}
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- $cname := toGoName .TfName}}
 	{{- if and (not .Reference) (not .Id)}}
 	{{- if eq .Type "Int64"}}
@@ -1373,7 +1349,7 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := {{$name}}{{toGoName .TfName}}Data{}
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if eq .Type "Int64"}}
 			if cValue := v.Get("{{toDotPath .XPath}}"); cValue.Exists() {
 				item.{{toGoName .TfName}} = types.Int64Value(cValue.Int())
@@ -1430,7 +1406,7 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
 					cItem := {{$name}}{{$cname}}{{toGoName .TfName}}Data{}
 					{{- range .Attributes}}
-					{{- if not .ExampleOnly}}
+					{{- if .XPath}}
 					{{- if eq .Type "Int64"}}
 					if ccValue := cv.Get("{{toDotPath .XPath}}"); ccValue.Exists() {
 						cItem.{{toGoName .TfName}} = types.Int64Value(ccValue.Int())
@@ -1511,7 +1487,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 	{{- define "fromBodyXMLTemplate"}}
 	{{- $name := camelCase .Name}}
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- $cname := toGoName .TfName}}
 	{{- if and (not .Reference) (not .Id)}}
 	{{- if eq .Type "Int64"}}
@@ -1570,7 +1546,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := {{$name}}{{toGoName .TfName}}{}
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if eq .Type "Int64"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
 				item.{{toGoName .TfName}} = types.Int64Value(cValue.Int())
@@ -1627,7 +1603,7 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
 					cItem := {{$name}}{{$cname}}{{toGoName .TfName}}{}
 					{{- range .Attributes}}
-					{{- if not .ExampleOnly}}
+					{{- if .XPath}}
 					{{- if eq .Type "Int64"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
 						cItem.{{toGoName .TfName}} = types.Int64Value(ccValue.Int())
@@ -1708,7 +1684,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 {{- define "fromBodyXMLTemplateData"}}
 	{{- $name := camelCase .Name}}
 	{{- range .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- $cname := toGoName .TfName}}
 	{{- if and (not .Reference) (not .Id)}}
 	{{- if eq .Type "Int64"}}
@@ -1767,7 +1743,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := {{$name}}{{toGoName .TfName}}Data{}
 			{{- range .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if eq .Type "Int64"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
 				item.{{toGoName .TfName}} = types.Int64Value(cValue.Int())
@@ -1824,7 +1800,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
 					cItem := {{$name}}{{$cname}}{{toGoName .TfName}}Data{}
 					{{- range .Attributes}}
-					{{- if not .ExampleOnly}}
+					{{- if .XPath}}
 					{{- if eq .Type "Int64"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
 						cItem.{{toGoName .TfName}} = types.Int64Value(ccValue.Int())
@@ -1904,7 +1880,7 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{camelCase .Name}}) []string {
 	deletedItems := make([]string, 0)
 	{{- range reverseAttributes .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 	if !state.{{toGoName .TfName}}.IsNull() {
 		if data.{{toGoName .TfName}}.IsNull() {
@@ -1961,7 +1937,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 			{{- end}}
 			if found {
 				{{- range reverseAttributes .Attributes}}
-				{{- if not .ExampleOnly}}
+				{{- if .XPath}}
 				{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 					if data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
@@ -2018,7 +1994,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 						{{- end}}
 						if found {
 							{{- range reverseAttributes .Attributes}}
-							{{- if not .ExampleOnly}}
+							{{- if .XPath}}
 							{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 								if data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
@@ -2079,7 +2055,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {{camelCase .Name}}, body string) string {
 	b := netconf.NewBody(body)
 	{{- range reverseAttributes .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 	if !state.{{toGoName .TfName}}.IsNull() {
 		if data.{{toGoName .TfName}}.IsNull() {
@@ -2145,7 +2121,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 			{{- end}}
 			if found {
 				{{- range reverseAttributes .Attributes}}
-				{{- if not .ExampleOnly}}
+				{{- if .XPath}}
 				{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 					if data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
@@ -2211,7 +2187,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 						{{- end}}
 						if found {
 							{{- range reverseAttributes .Attributes}}
-							{{- if not .ExampleOnly}}
+							{{- if .XPath}}
 							{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 								if data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
@@ -2277,7 +2253,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	{{- range reverseAttributes .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
 	if !data.{{toGoName .TfName}}.IsNull() && !data.{{toGoName .TfName}}.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/{{.XPath}}", data.getPath()))
@@ -2293,7 +2269,7 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 		{{- $list := (toGoName .TfName)}}
 		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
 		{{- range reverseAttributes .Attributes}}
-		{{- if not .ExampleOnly}}
+		{{- if .XPath}}
 		{{- if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
 		if !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() && !data.{{$list}}[i].{{toGoName .TfName}}.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/{{$yangName}}=%v/{{getDeletePath .}}", data.getPath(), strings.Join(keyValues[:], ",")))
@@ -2308,7 +2284,7 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 			{{- $clist := (toGoName .TfName)}}
 			ckeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
 			{{- range reverseAttributes .Attributes}}
-			{{- if not .ExampleOnly}}
+			{{- if .XPath}}
 			{{- if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
 			if !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/{{$yangName}}=%v/{{$cyangName}}=%v/{{.XPath}}", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
@@ -2337,7 +2313,7 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 func (data *{{camelCase .Name}}) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	{{- range reverseAttributes .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
 	if !data.{{toGoName .TfName}}.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/{{getDeletePath .}}", data.getPath()))
@@ -2363,7 +2339,7 @@ func (data *{{camelCase .Name}}) getDeletePaths(ctx context.Context) []string {
 func (data *{{camelCase .Name}}) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	{{- range reverseAttributes .Attributes}}
-	{{- if not .ExampleOnly}}
+	{{- if .XPath}}
 	{{- if and (or (eq .Type "StringList") (eq .Type "StringSet")) (not .NoDelete)}}
 	if !data.{{toGoName .TfName}}.IsNull() {
 		var values []string

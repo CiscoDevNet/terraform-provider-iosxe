@@ -71,7 +71,6 @@ resource "iosxe_yang" "PreReq0" {
 
 func testAccDataSourceIosxeInterfacePIMConfig() string {
 	config := `resource "iosxe_interface_pim" "test" {` + "\n"
-	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	passive = false` + "\n"
 	config += `	dense_mode = false` + "\n"
