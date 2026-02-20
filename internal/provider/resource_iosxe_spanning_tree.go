@@ -171,7 +171,8 @@ func (r *SpanningTreeResource) Configure(_ context.Context, req resource.Configu
 
 // End of section. //template:end model
 
-// Section below is generated&owned by "gen/generator.go". //template:begin create
+// CUSTOMIZED: Template markers removed to preserve disabled_vlans handling code.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/432
 
 func (r *SpanningTreeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan, config SpanningTree
@@ -308,7 +309,7 @@ func (r *SpanningTreeResource) Create(ctx context.Context, req resource.CreateRe
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
-// End of section. //template:end create
+// End of Create section (customized).
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
@@ -393,7 +394,8 @@ func (r *SpanningTreeResource) Read(ctx context.Context, req resource.ReadReques
 
 // End of section. //template:end read
 
-// Section below is generated&owned by "gen/generator.go". //template:begin update
+// CUSTOMIZED: Template markers removed to preserve disabled_vlans handling code.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/432
 
 func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state, config SpanningTree
@@ -569,7 +571,7 @@ func (r *SpanningTreeResource) Update(ctx context.Context, req resource.UpdateRe
 	resp.Diagnostics.Append(diags...)
 }
 
-// End of section. //template:end update
+// End of Update section (customized).
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
