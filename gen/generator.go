@@ -306,6 +306,19 @@ func ReverseAttributes(attributes []YamlConfigAttribute) []YamlConfigAttribute {
 	return reversed
 }
 
+// XPathAttributes filters attributes to only those with an XPath defined.
+// Attributes without XPath (like disabled_vlans) require custom handling
+// and should be skipped in standard body building templates.
+func XPathAttributes(attributes []YamlConfigAttribute) []YamlConfigAttribute {
+	var filtered []YamlConfigAttribute
+	for _, attr := range attributes {
+		if attr.XPath != "" {
+			filtered = append(filtered, attr)
+		}
+	}
+	return filtered
+}
+
 func ToRestconfPath(path string) string {
 	return helpers.ConvertXPathToRestconfPath(path)
 }
@@ -326,6 +339,7 @@ var functions = template.FuncMap{
 	"importAttributes":  ImportAttributes,
 	"getDeletePath":     GetDeletePath,
 	"reverseAttributes": ReverseAttributes,
+	"xpathAttributes":   XPathAttributes,
 	"toRestconfPath":    ToRestconfPath,
 	"toDotPath":         ToDotPath,
 }

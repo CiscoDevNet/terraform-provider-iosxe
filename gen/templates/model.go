@@ -225,8 +225,7 @@ func (data {{camelCase .Name}}Data) getXPath() string {
 
 func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .Name}}) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	{{- range .Attributes}}
-	{{- if .XPath}}
+	{{- range (xpathAttributes .Attributes)}}
 	{{- if and (not .Reference) (ne .Type "List") (ne .Type "Set")}}
 	if !data.{{toGoName .TfName}}.IsNull() && !data.{{toGoName .TfName}}.IsUnknown() {
 		{{- if eq .Type "Int64"}}
@@ -261,9 +260,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 	}
 	{{- end}}
 	{{- end}}
-	{{- end}}
-	{{- range .Attributes}}
-	{{- if .XPath}}
+	{{- range (xpathAttributes .Attributes)}}
 	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := toDotPath .XPath }}
 	{{- $listGoName := toGoName .TfName }}
@@ -280,8 +277,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 				break
 			}
 			{{- end}}
-			{{- range .Attributes}}
-			{{- if .XPath}}
+			{{- range (xpathAttributes .Attributes)}}
 			{{- if and (ne .Type "List") (ne .Type "Set")}}
 			if !item.{{toGoName .TfName}}.IsNull() && !item.{{toGoName .TfName}}.IsUnknown() {
 				{{- if eq .Type "Int64"}}
@@ -316,9 +312,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 			}
 			{{- end}}
 			{{- end}}
-			{{- end}}
-			{{- range .Attributes}}
-			{{- if .XPath}}
+			{{- range (xpathAttributes .Attributes)}}
 			{{- if or (eq .Type "List") (eq .Type "Set")}}
 			{{- $clist := toDotPath .XPath }}
 			{{- $clistGoName := toGoName .TfName }}
@@ -335,8 +329,7 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 						break
 					}
 					{{- end}}
-					{{- range .Attributes}}
-					{{- if .XPath}}
+					{{- range (xpathAttributes .Attributes)}}
 					if !citem.{{toGoName .TfName}}.IsNull() && !citem.{{toGoName .TfName}}.IsUnknown() {
 						{{- if eq .Type "Int64"}}
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"{{$list}}"+"."+strconv.Itoa(index)+"."+"{{$clist}}"+"."+strconv.Itoa(cindex)+"."+"{{toDotPath .XPath}}", strconv.FormatInt(citem.{{toGoName .TfName}}.ValueInt64(), 10))
@@ -369,15 +362,12 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context, config {{camelCase .
 						{{- end}}
 					}
 					{{- end}}
-					{{- end}}
 				}
 			}
 			{{- end}}
 			{{- end}}
-			{{- end}}
 		}
 	}
-	{{- end}}
 	{{- end}}
 	{{- end}}
 	return body
