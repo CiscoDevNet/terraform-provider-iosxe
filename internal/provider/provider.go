@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"net"
 	"os"
 	"slices"
 	"strconv"
@@ -43,6 +44,27 @@ import (
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/go-restconf"
 )
+
+// parseHostPort extracts hostname and port from a host string.
+// If the host contains a port (e.g., "host:2306"), it returns the hostname and port separately.
+// If no port is specified, it returns the original host and the defaultPort.
+// This is needed because go-netconf requires the port to be set via the Port() option,
+// not embedded in the host string.
+func parseHostPort(host string, defaultPort int) (string, int) {
+	// Try to split host:port
+	h, p, err := net.SplitHostPort(host)
+	if err != nil {
+		// No port specified or invalid format, return as-is with default port
+		return host, defaultPort
+	}
+	// Parse the port
+	port, err := strconv.Atoi(p)
+	if err != nil {
+		// Invalid port, return original host with default port
+		return host, defaultPort
+	}
+	return h, port
+}
 
 var _ provider.Provider = &IosxeProvider{}
 var _ provider.ProviderWithActions = &IosxeProvider{}
@@ -496,6 +518,8 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
 	} else {
 		// NETCONF
+		// Parse host:port - go-netconf requires port to be set separately via Port() option
+		netconfHost, netconfPort := parseHostPort(host, 830)
 		logger := helpers.NewTflogAdapter(host)
 		opts := []func(*netconf.Client){
 			netconf.Username(username),
@@ -504,10 +528,13 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
 			netconf.WithLogger(logger),
 		}
+		if netconfPort != 830 {
+			opts = append(opts, netconf.Port(netconfPort))
+		}
 		if insecure {
 			opts = append(opts, netconf.InsecureSkipHostKeyVerification())
 		}
-		c, err := netconf.NewClient(host, opts...)
+		c, err := netconf.NewClient(netconfHost, opts...)
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Unable to create NETCONF client",
@@ -571,6 +598,8 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 		} else {
 			// NETCONF
+			// Parse host:port - go-netconf requires port to be set separately via Port() option
+			netconfHost, netconfPort := parseHostPort(deviceHost, 830)
 			// Use device name as identifier for better log correlation
 			deviceID := device.Name.ValueString()
 			logger := helpers.NewTflogAdapter(deviceID)
@@ -581,10 +610,13 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
 				netconf.WithLogger(logger),
 			}
+			if netconfPort != 830 {
+				opts = append(opts, netconf.Port(netconfPort))
+			}
 			if insecure {
 				opts = append(opts, netconf.InsecureSkipHostKeyVerification())
 			}
-			c, err := netconf.NewClient(deviceHost, opts...)
+			c, err := netconf.NewClient(netconfHost, opts...)
 			if err != nil {
 				resp.Diagnostics.AddError(
 					"Unable to create NETCONF client",
