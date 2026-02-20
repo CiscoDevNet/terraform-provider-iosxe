@@ -17,7 +17,7 @@ attributes: list(include('attribute'), required=False)  # List of attributes
 test_prerequisites: list(include('test_prerequisite'), required=False)  # List of test prerequisites
 ---
 attribute:
-  yang_name: str()  # YANG name/path of the attribute
+  yang_name: str(required=False)  # YANG name/path of the attribute. Optional - if omitted, tf_name and type must be provided explicitly
   yang_scope: str(required=False)  # When trying to find a matching element in the YANG model, limit the scope by proving the parent element name here
   tf_name: str(required=False)  # Optionally provide a Terraform name for the attribute, otherwise it will be derived from the YANG name
   xpath: str(required=False)  # Optionally provide an XPath for the attribute, otherwise it will be derived from 'yang_name'

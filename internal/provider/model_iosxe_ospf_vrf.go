@@ -620,7 +620,7 @@ func (data OSPFVRF) toBody(ctx context.Context, config OSPFVRF) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel", []interface{}{})
 		for index, item := range data.PassiveInterfaceDisablePortChannels {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel"+"."+strconv.Itoa(index)+"."+"", item.Name.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
 		}
 	}
@@ -995,7 +995,7 @@ func (data OSPFVRF) toBodyXML(ctx context.Context, config OSPFVRF) string {
 		for _, item := range data.PassiveInterfaceDisablePortChannels {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/passive-interface-config/disable-interface/Port-channel", cBody.Res())
 		}
@@ -1782,7 +1782,7 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisablePortChannels {
-		keys := [...]string{""}
+		keys := [...]string{"name"}
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1804,7 +1804,7 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get(""); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
 			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringValue(value.String())
 		} else {
 			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringNull()
@@ -2603,7 +2603,7 @@ func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisablePortChannels {
-		keys := [...]string{""}
+		keys := [...]string{"name"}
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
 
 		var r xmldot.Result
@@ -2625,7 +2625,7 @@ func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 				return true
 			},
 		)
-		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
 			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringValue(value.String())
 		} else {
 			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringNull()
@@ -3017,7 +3017,7 @@ func (data *OSPFVRF) fromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
@@ -3392,7 +3392,7 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannelsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := OSPFVRFPassiveInterfaceDisablePortChannelsData{}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
@@ -3763,7 +3763,7 @@ func (data *OSPFVRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
@@ -4134,7 +4134,7 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannelsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := OSPFVRFPassiveInterfaceDisablePortChannelsData{}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
@@ -4795,7 +4795,7 @@ func (data *OSPFVRF) addDeletedItemsXML(ctx context.Context, state OSPFVRF, body
 		}
 	}
 	for i := range state.PassiveInterfaceDisablePortChannels {
-		stateKeys := [...]string{""}
+		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
@@ -5730,7 +5730,7 @@ func (data *OSPFVRF) addDeletePathsXML(ctx context.Context, body string) string 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel%v", predicates))
 	}
 	for i := range data.PassiveInterfaceDisablePortChannels {
-		keys := [...]string{""}
+		keys := [...]string{"name"}
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
 		predicates := ""
 		for i := range keys {
