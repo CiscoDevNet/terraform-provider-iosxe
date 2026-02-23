@@ -41,21 +41,21 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	{{- $name := .Name }}
 	{{- range .Attributes}}
-	{{- if and (not .Reference) (not .WriteOnly) (not .ExcludeTest) (ne .Type "StringSet") (ne .Type "Int64Set") }}
+	{{- if and (not .Reference) (not .WriteOnly) (not .ExcludeTest) .XPath (ne .Type "StringSet") (ne .Type "Int64Set") }}
 	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := .TfName }}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	{{- range .Attributes}}
-	{{- if and (not .WriteOnly) (not .ExcludeTest) (ne .Type "StringSet") (ne .Type "Int64Set") }}
+	{{- if and (not .WriteOnly) (not .ExcludeTest) .XPath (ne .Type "StringSet") (ne .Type "Int64Set") }}
 	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	{{- $clist := .TfName }}
 	{{- range .Attributes}}
-	{{- if and (not .WriteOnly) (not .ExcludeTest) (ne .Type "StringSet") (ne .Type "Int64Set") }}
+	{{- if and (not .WriteOnly) (not .ExcludeTest) .XPath (ne .Type "StringSet") (ne .Type "Int64Set") }}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_{{snakeCase $name}}.test", "{{$list}}.0.{{$clist}}.0.{{.TfName}}{{if or (eq .Type "StringList") (eq .Type "Int64List")}}.0{{end}}", "{{.Example}}"))
@@ -256,21 +256,21 @@ func testAccIosxe{{camelCase .Name}}Config_all() string {
 	config += `	delete_mode = "all"` + "\n"
 	{{- end}}
 	{{- range  .Attributes}}
-	{{- if not .ExcludeTest}}
+	{{- if and (not .ExcludeTest) (or .XPath .Reference)}}
 	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	config += `	{{.TfName}} = [{` + "\n"
 		{{- range  .Attributes}}
-		{{- if not .ExcludeTest}}
+		{{- if and (not .ExcludeTest) (or .XPath .Reference)}}
 		{{- if or (eq .Type "List") (eq .Type "Set")}}
 		{{- if len .TestTags}}
 		if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		{{- end}}
 	config += `		{{.TfName}} = [{` + "\n"
 			{{- range  .Attributes}}
-			{{- if not .ExcludeTest}}
+			{{- if and (not .ExcludeTest) (or .XPath .Reference)}}
 			{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		config += `			{{.TfName}} = {{if eq .Type "String"}}"{{.Example}}"{{else if or (eq .Type "StringList") (eq .Type "StringSet")}}["{{.Example}}"]{{else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}[{{.Example}}]{{else}}{{.Example}}{{end}}` + "\n"
