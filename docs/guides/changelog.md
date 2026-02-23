@@ -16,6 +16,9 @@ description: |-
 - Fix incorrect xpath for `authentication_meticulous_sha_1_keychain` attribute in `iosxe_bfd_template_multi_hop` resource and data source
 - Fix `iosxe_spanning_tree` resource to not remove VLANs from STP when VLANs are removed from resource configuration
 - Add `disabled_vlans` attribute to `iosxe_spanning_tree` resource and data source for explicitly disabling STP on specific VLANs
+- Fix `iosxe_interface_ethernet` resource to delete ISIS container on destroy instead of only the tag leaf
+- Add `police_target_bitrate_exceed_drop`, `police_cir`, `police_bc`, `police_be`, `police_pir`, `police_pir_be`, `police_cir_conform_transmit`, `police_cir_exceed_drop`, `police_rate_percent`, `queue_buffers_ratio`, and `set_dscp` attributes to `iosxe_policy_map` resource and data source
+- Fix idempotency issue with multi-line banners over NETCONF caused by trailing whitespace differences
 
 ## 0.15.0
 
