@@ -347,7 +347,7 @@ func setWithNamespaces(body netconf.Body, fullPath string, value any) netconf.Bo
 // to elements where prefixes appear, checking the current body to avoid duplicates.
 // When multiple sibling elements exist at the same path, adds namespace to all of them.
 func augmentNamespaces(body netconf.Body, path string) netconf.Body {
-	segments := strings.Split(path, ".")
+	segments := splitDotSegments(path)
 	pathWithoutPrefix := make([]string, 0, len(segments))
 
 	for _, segment := range segments {
@@ -401,6 +401,42 @@ func augmentNamespaces(body netconf.Body, path string) netconf.Body {
 	}
 
 	return body
+}
+
+// splitDotSegments splits a dot-notation path into segments while respecting bracket boundaries.
+// This prevents splitting on dots inside predicates like Port-channel[name=10.666]
+func splitDotSegments(path string) []string {
+	segments := []string{}
+	var currentSegment strings.Builder
+	bracketDepth := 0
+
+	for _, char := range path {
+		switch char {
+		case '[':
+			bracketDepth++
+			currentSegment.WriteRune(char)
+		case ']':
+			bracketDepth--
+			currentSegment.WriteRune(char)
+		case '.':
+			if bracketDepth == 0 {
+				if currentSegment.Len() > 0 {
+					segments = append(segments, currentSegment.String())
+					currentSegment.Reset()
+				}
+			} else {
+				currentSegment.WriteRune(char)
+			}
+		default:
+			currentSegment.WriteRune(char)
+		}
+	}
+
+	if currentSegment.Len() > 0 {
+		segments = append(segments, currentSegment.String())
+	}
+
+	return segments
 }
 
 // splitXPathSegments splits an XPath into segments while respecting bracket boundaries.

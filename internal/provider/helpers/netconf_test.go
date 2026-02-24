@@ -71,6 +71,91 @@ func TestSplitXPathSegments(t *testing.T) {
 	}
 }
 
+// TestSplitDotSegments tests the splitDotSegments function
+func TestSplitDotSegments(t *testing.T) {
+	tests := []struct {
+		name     string
+		path     string
+		expected []string
+	}{
+		{
+			name:     "simple path",
+			path:     "native.interface",
+			expected: []string{"native", "interface"},
+		},
+		{
+			name:     "path with predicate containing dot",
+			path:     "Port-channel[name=10.666].ip.Cisco-IOS-XE-icmp:unreachables",
+			expected: []string{"Port-channel[name=10.666]", "ip", "Cisco-IOS-XE-icmp:unreachables"},
+		},
+		{
+			name:     "path with multiple dots in predicate",
+			path:     "route[prefix=192.168.1.0].next-hop",
+			expected: []string{"route[prefix=192.168.1.0]", "next-hop"},
+		},
+		{
+			name:     "empty path",
+			path:     "",
+			expected: []string{},
+		},
+		{
+			name:     "single segment",
+			path:     "native",
+			expected: []string{"native"},
+		},
+		{
+			name:     "path without predicates",
+			path:     "native.ip.proxy-arp",
+			expected: []string{"native", "ip", "proxy-arp"},
+		},
+		{
+			name:     "nested predicates with dots",
+			path:     "interface[name=Gi1/0.1].vrf[name=VRF.1].address",
+			expected: []string{"interface[name=Gi1/0.1]", "vrf[name=VRF.1]", "address"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := splitDotSegments(tt.path)
+
+			if !reflect.DeepEqual(result, tt.expected) {
+				t.Errorf("splitDotSegments() = %v, want %v", result, tt.expected)
+			}
+		})
+	}
+}
+
+// TestAugmentNamespaces_DotInPredicateValue tests that dots inside predicate values
+// (e.g., Port-channel subinterface name=10.666) don't corrupt the XML namespace augmentation
+func TestAugmentNamespaces_DotInPredicateValue(t *testing.T) {
+	body := netconf.Body{}
+	// Simulate SetFromXPath for a port-channel subinterface with dot in name
+	// The path after SetFromXPath conversion would be:
+	// Port-channel[name=10.666].ip.Cisco-IOS-XE-icmp:unreachables
+	result := SetFromXPath(body, "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=10.666]/ip/Cisco-IOS-XE-icmp:unreachables", "false")
+
+	resultXML := result.Res()
+	t.Logf("Generated XML:\n%s", resultXML)
+
+	// Should NOT contain corrupted element from split predicate value
+	if strings.Contains(resultXML, "<666]>") || strings.Contains(resultXML, "</666]>") {
+		t.Errorf("Output contains corrupted element from dot-split predicate value\nGot:\n%s", resultXML)
+	}
+
+	// Should contain the ICMP namespace on unreachables
+	if !strings.Contains(resultXML, "Cisco-IOS-XE-icmp") {
+		t.Errorf("Output should contain Cisco-IOS-XE-icmp namespace\nGot:\n%s", resultXML)
+	}
+
+	// Verify unreachables has the correct namespace
+	icmpNS := "http://cisco.com/ns/yang/Cisco-IOS-XE-icmp"
+	matched, _ := regexp.MatchString(`<unreachables[^>]*xmlns="`+regexp.QuoteMeta(icmpNS)+`"`, resultXML)
+	if !matched {
+		t.Errorf("unreachables element should have xmlns=%q\nGot:\n%s", icmpNS, resultXML)
+	}
+}
+
 // TestParseXPathSegment tests the parseXPathSegment function with various XPath formats
 func TestParseXPathSegment(t *testing.T) {
 	tests := []struct {
