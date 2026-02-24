@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## Unreleased
+## 0.16.0
 
 - Expose attributes with sensitive values also as write-only attributes
 - Fix issue with NETCONF sibling element handling when removing multiple elements from YANG lists (e.g., removing multiple VLAN priorities or helper addresses)
