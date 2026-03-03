@@ -265,30 +265,6 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},
-						"wait_start_broadcast": schema.BoolAttribute{
-							MarkdownDescription: "Use Broadcast for Accounting",
-							Computed:            true,
-						},
-						"wait_start_logger": schema.BoolAttribute{
-							MarkdownDescription: "Use system logger for Accounting",
-							Computed:            true,
-						},
-						"wait_start_group1": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-						"wait_start_group2": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-						"wait_start_group3": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-						"wait_start_group4": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
 					},
 				},
 			},
@@ -350,30 +326,6 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 							Computed:            true,
 						},
 						"stop_only_group4": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-						"wait_start_broadcast": schema.BoolAttribute{
-							MarkdownDescription: "Use Broadcast for Accounting",
-							Computed:            true,
-						},
-						"wait_start_logger": schema.BoolAttribute{
-							MarkdownDescription: "Use system logger for Accounting",
-							Computed:            true,
-						},
-						"wait_start_group1": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-						"wait_start_group2": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-						"wait_start_group3": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-						"wait_start_group4": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},

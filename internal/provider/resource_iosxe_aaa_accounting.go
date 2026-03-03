@@ -292,30 +292,6 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},
-						"wait_start_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
-							Optional:            true,
-						},
-						"wait_start_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
-							Optional:            true,
-						},
-						"wait_start_group1": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
-						"wait_start_group2": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
-						"wait_start_group3": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
-						"wait_start_group4": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
 					},
 				},
 			},
@@ -377,30 +353,6 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							Optional:            true,
 						},
 						"stop_only_group4": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
-						"wait_start_broadcast": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
-							Optional:            true,
-						},
-						"wait_start_logger": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
-							Optional:            true,
-						},
-						"wait_start_group1": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
-						"wait_start_group2": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
-						"wait_start_group3": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
-							Optional:            true,
-						},
-						"wait_start_group4": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},

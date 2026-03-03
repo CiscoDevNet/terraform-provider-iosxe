@@ -166,28 +166,6 @@ attributes:
         xpath: stop-only/group4/group
         tf_name: stop_only_group4
         example: GROUP4
-      - yang_name: accounting-choice/wait-start/wait-start/broadcast
-        xpath: wait-start/broadcast
-        example: False
-      - yang_name: accounting-choice/wait-start/wait-start/logger
-        xpath: wait-start/logger
-        example: False
-      - yang_name: accounting-choice/wait-start/wait-start/group1/group
-        xpath: wait-start/group1/group
-        tf_name: wait_start_group1
-        example: GROUP1
-      - yang_name: accounting-choice/wait-start/wait-start/group2/group
-        xpath: wait-start/group2/group
-        tf_name: wait_start_group2
-        example: GROUP2
-      - yang_name: accounting-choice/wait-start/wait-start/group3/group
-        xpath: wait-start/group3/group
-        tf_name: wait_start_group3
-        example: GROUP3
-      - yang_name: accounting-choice/wait-start/wait-start/group4/group
-        xpath: wait-start/group4/group
-        tf_name: wait_start_group4
-        example: GROUP4
   - yang_name: exec
     tf_name: execs
     type: List
@@ -242,28 +220,6 @@ attributes:
       - yang_name: accounting-choice/stop-only/stop-only/group4/group
         xpath: stop-only/group4/group
         tf_name: stop_only_group4
-        example: GROUP4
-      - yang_name: accounting-choice/wait-start/wait-start/broadcast
-        xpath: wait-start/broadcast
-        example: False
-      - yang_name: accounting-choice/wait-start/wait-start/logger
-        xpath: wait-start/logger
-        example: False
-      - yang_name: accounting-choice/wait-start/wait-start/group1/group
-        xpath: wait-start/group1/group
-        tf_name: wait_start_group1
-        example: GROUP1
-      - yang_name: accounting-choice/wait-start/wait-start/group2/group
-        xpath: wait-start/group2/group
-        tf_name: wait_start_group2
-        example: GROUP2
-      - yang_name: accounting-choice/wait-start/wait-start/group3/group
-        xpath: wait-start/group3/group
-        tf_name: wait_start_group3
-        example: GROUP3
-      - yang_name: accounting-choice/wait-start/wait-start/group4/group
-        xpath: wait-start/group4/group
-        tf_name: wait_start_group4
         example: GROUP4
   - yang_name: dot1x/default/start-stop/group-config/group1/group
     tf_name: dot1x_default_start_stop_group1
