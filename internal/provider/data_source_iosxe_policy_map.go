@@ -182,6 +182,50 @@ func (d *PolicyMapDataSource) Schema(ctx context.Context, req datasource.SchemaR
 										MarkdownDescription: "Burst Byte",
 										Computed:            true,
 									},
+									"police_target_bitrate_exceed_drop": schema.BoolAttribute{
+										MarkdownDescription: "drop packet",
+										Computed:            true,
+									},
+									"police_cir": schema.Int64Attribute{
+										MarkdownDescription: "Committed information rate",
+										Computed:            true,
+									},
+									"police_bc": schema.Int64Attribute{
+										MarkdownDescription: "Conform burst",
+										Computed:            true,
+									},
+									"police_be": schema.Int64Attribute{
+										MarkdownDescription: "Excess burst",
+										Computed:            true,
+									},
+									"police_pir": schema.Int64Attribute{
+										MarkdownDescription: "Peak Information Rate",
+										Computed:            true,
+									},
+									"police_pir_be": schema.Int64Attribute{
+										MarkdownDescription: "Excess burst",
+										Computed:            true,
+									},
+									"police_cir_conform_transmit": schema.BoolAttribute{
+										MarkdownDescription: "transmit packet",
+										Computed:            true,
+									},
+									"police_cir_exceed_drop": schema.BoolAttribute{
+										MarkdownDescription: "drop packet",
+										Computed:            true,
+									},
+									"police_rate_percent": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"queue_buffers_ratio": schema.Int64Attribute{
+										MarkdownDescription: "Relative buffer size for queue",
+										Computed:            true,
+									},
+									"set_dscp": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
 								},
 							},
 						},

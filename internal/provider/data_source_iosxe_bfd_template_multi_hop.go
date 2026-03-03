@@ -120,7 +120,7 @@ func (d *BFDTemplateMultiHopDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "keychain name",
 				Computed:            true,
 			},
-			"authentication_meticulous_sha_1keychain": schema.StringAttribute{
+			"authentication_meticulous_sha_1_keychain": schema.StringAttribute{
 				MarkdownDescription: "keychain name",
 				Computed:            true,
 			},

@@ -125,6 +125,18 @@ func (d *SpanningTreeDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 			},
+			"disabled_vlans": schema.ListNestedAttribute{
+				MarkdownDescription: "VLANs to explicitly disable from spanning-tree. Uses inverse logic - presence in config sends DELETE operation (no spanning-tree vlan X). Removing from config allows VLANs to revert to default STP behavior.",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							MarkdownDescription: "VLAN ID to disable from spanning-tree",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

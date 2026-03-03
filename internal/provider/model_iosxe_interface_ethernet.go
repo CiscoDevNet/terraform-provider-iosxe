@@ -7236,7 +7236,7 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
 	deletedItems := make([]string, 0)
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis", state.getPath()))
 	}
 	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", state.getPath()))
@@ -7910,7 +7910,7 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state InterfaceEthernet, body string) string {
 	b := netconf.NewBody(body)
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis")
 	}
 	if !state.IpIgmpVersion.IsNull() && data.IpIgmpVersion.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")
@@ -8878,7 +8878,7 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.IpRouterIsis.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis/tag", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis", data.getPath()))
 	}
 	if !data.IpIgmpVersion.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-igmp:igmp/version", data.getPath()))
@@ -9316,7 +9316,7 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.IpRouterIsis.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis")
 	}
 	if !data.IpIgmpVersion.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-igmp:igmp/version")

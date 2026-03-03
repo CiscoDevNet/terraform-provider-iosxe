@@ -324,6 +324,7 @@ attributes:
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String

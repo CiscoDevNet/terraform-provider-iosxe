@@ -69,10 +69,15 @@ attributes:
     tf_name: trunk_allowed_vlans_all
     example: true
     exclude_test: true
+  # NOTE: add, except, and remove are write-only action leafs in YANG.
+  # The device computes the resulting VLAN list and stores it in 'vlans',
+  # but does not persist these action leafs. Marking as write_only prevents
+  # perpetual drift in Terraform plans.
   - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/add-vlans/add
     tf_name: trunk_allowed_vlans_add
     type: List
     exclude_test: true
+    write_only: true
     attributes:
       - yang_name: vlans
         id: true
@@ -81,10 +86,12 @@ attributes:
     tf_name: trunk_allowed_vlans_except
     example: 999
     exclude_test: true
+    write_only: true
   - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/remove
     tf_name: trunk_allowed_vlans_remove
     example: 999
     exclude_test: true
+    write_only: true
   # LEGACY attributes - trunk allowed VLANs (deprecated YANG paths)
   - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlan-choice/vlans/vlans
     xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlans

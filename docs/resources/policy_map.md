@@ -78,19 +78,36 @@ Optional:
   - Range: `1`-`100`
 - `bandwidth_remaining_ratio` (Number) ratio for sharing excess bandwidth
   - Range: `1`-`65536`
+- `police_bc` (Number) Conform burst
+  - Range: `1000`-`512000000`
+- `police_be` (Number) Excess burst
+  - Range: `1000`-`512000000`
+- `police_cir` (Number) Committed information rate
+  - Range: `8000`-`100000000000`
+- `police_cir_conform_transmit` (Boolean) transmit packet
+- `police_cir_exceed_drop` (Boolean) drop packet
+- `police_pir` (Number) Peak Information Rate
+  - Range: `8000`-`64000000000`
+- `police_pir_be` (Number) Excess burst
+  - Range: `1000`-`512000000`
+- `police_rate_percent` (Number) - Range: `0`-`100`
 - `police_target_bitrate` (Number) Target bit rate (bits per second) (postfix k, m, g optional),decimal point allowed
   - Range: `8000`-`100000000000`
 - `police_target_bitrate_conform_burst_byte` (Number) Burst Byte
   - Range: `100`-`512000000`
 - `police_target_bitrate_conform_transmit` (Boolean) transmit packet
+- `police_target_bitrate_exceed_drop` (Boolean) drop packet
 - `police_target_bitrate_exceed_transmit` (Boolean) transmit packet
 - `police_target_bitrate_excess_burst_byte` (Number) Burst Byte
   - Range: `100`-`512000000`
 - `priority_burst` (Number) - Range: `32`-`2000000`
 - `priority_level` (Number) Multi-Level Priority Queue
   - Range: `1`-`2`
+- `queue_buffers_ratio` (Number) Relative buffer size for queue
+  - Range: `0`-`100`
 - `queue_limit` (Number) - Range: `1`-`64000000`
 - `queue_limit_type` (String) - Choices: `bytes`, `ms`, `packets`, `us`
+- `set_dscp` (String)
 - `shape_average_bit_rate` (Number) Target Bit Rate (bits/sec)
   - Range: `1000`-`100000000000`
 - `shape_average_bits_per_interval_excess` (Number) bits per interval, excess.

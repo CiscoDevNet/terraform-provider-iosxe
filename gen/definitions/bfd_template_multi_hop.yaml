@@ -60,8 +60,8 @@ attributes:
     example: KEYNAME11
     exclude_test: true
   - yang_name: authentication/auth-type/meticulous-sha-1/meticulous-sha-1/keychain
-    xpath: authentication/meticulous-sha-1_keychain
-    tf_name: authentication_meticulous_sha_1keychain
+    xpath: authentication/meticulous-sha-1/keychain
+    tf_name: authentication_meticulous_sha_1_keychain
     example: KEYNAME22
     exclude_test: true
   - yang_name: authentication/auth-type/sha-1/sha-1/keychain

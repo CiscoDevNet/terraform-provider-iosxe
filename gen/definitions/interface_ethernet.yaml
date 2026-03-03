@@ -571,6 +571,7 @@ attributes:
     example: 3
   - yang_name: ip/router/Cisco-IOS-XE-isis:isis/tag
     tf_name: ip_router_isis
+    delete_parent: true
     example: TEST
     exclude_test: true
 

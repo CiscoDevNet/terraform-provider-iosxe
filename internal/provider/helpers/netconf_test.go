@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"fmt"
 	"reflect"
 	"regexp"
 	"strings"
@@ -67,6 +68,91 @@ func TestSplitXPathSegments(t *testing.T) {
 				t.Errorf("splitXPathSegments() = %v, want %v", result, tt.expected)
 			}
 		})
+	}
+}
+
+// TestSplitDotSegments tests the splitDotSegments function
+func TestSplitDotSegments(t *testing.T) {
+	tests := []struct {
+		name     string
+		path     string
+		expected []string
+	}{
+		{
+			name:     "simple path",
+			path:     "native.interface",
+			expected: []string{"native", "interface"},
+		},
+		{
+			name:     "path with predicate containing dot",
+			path:     "Port-channel[name=10.666].ip.Cisco-IOS-XE-icmp:unreachables",
+			expected: []string{"Port-channel[name=10.666]", "ip", "Cisco-IOS-XE-icmp:unreachables"},
+		},
+		{
+			name:     "path with multiple dots in predicate",
+			path:     "route[prefix=192.168.1.0].next-hop",
+			expected: []string{"route[prefix=192.168.1.0]", "next-hop"},
+		},
+		{
+			name:     "empty path",
+			path:     "",
+			expected: []string{},
+		},
+		{
+			name:     "single segment",
+			path:     "native",
+			expected: []string{"native"},
+		},
+		{
+			name:     "path without predicates",
+			path:     "native.ip.proxy-arp",
+			expected: []string{"native", "ip", "proxy-arp"},
+		},
+		{
+			name:     "nested predicates with dots",
+			path:     "interface[name=Gi1/0.1].vrf[name=VRF.1].address",
+			expected: []string{"interface[name=Gi1/0.1]", "vrf[name=VRF.1]", "address"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := splitDotSegments(tt.path)
+
+			if !reflect.DeepEqual(result, tt.expected) {
+				t.Errorf("splitDotSegments() = %v, want %v", result, tt.expected)
+			}
+		})
+	}
+}
+
+// TestAugmentNamespaces_DotInPredicateValue tests that dots inside predicate values
+// (e.g., Port-channel subinterface name=10.666) don't corrupt the XML namespace augmentation
+func TestAugmentNamespaces_DotInPredicateValue(t *testing.T) {
+	body := netconf.Body{}
+	// Simulate SetFromXPath for a port-channel subinterface with dot in name
+	// The path after SetFromXPath conversion would be:
+	// Port-channel[name=10.666].ip.Cisco-IOS-XE-icmp:unreachables
+	result := SetFromXPath(body, "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=10.666]/ip/Cisco-IOS-XE-icmp:unreachables", "false")
+
+	resultXML := result.Res()
+	t.Logf("Generated XML:\n%s", resultXML)
+
+	// Should NOT contain corrupted element from split predicate value
+	if strings.Contains(resultXML, "<666]>") || strings.Contains(resultXML, "</666]>") {
+		t.Errorf("Output contains corrupted element from dot-split predicate value\nGot:\n%s", resultXML)
+	}
+
+	// Should contain the ICMP namespace on unreachables
+	if !strings.Contains(resultXML, "Cisco-IOS-XE-icmp") {
+		t.Errorf("Output should contain Cisco-IOS-XE-icmp namespace\nGot:\n%s", resultXML)
+	}
+
+	// Verify unreachables has the correct namespace
+	icmpNS := "http://cisco.com/ns/yang/Cisco-IOS-XE-icmp"
+	matched, _ := regexp.MatchString(`<unreachables[^>]*xmlns="`+regexp.QuoteMeta(icmpNS)+`"`, resultXML)
+	if !matched {
+		t.Errorf("unreachables element should have xmlns=%q\nGot:\n%s", icmpNS, resultXML)
 	}
 }
 
@@ -2426,4 +2512,457 @@ func TestSetRawFromXPath_PreserveOtherRootElements(t *testing.T) {
 	}
 
 	t.Log("✓ Other root elements preserved successfully when appending siblings")
+}
+
+// TestRemoveFromXPath_MultipleSiblings tests that RemoveFromXPath correctly handles
+// multiple sibling list elements with different keys (e.g., multiple VLANs with different IDs)
+func TestRemoveFromXPath_MultipleSiblings(t *testing.T) {
+	// Start with an empty body
+	body := netconf.Body{}
+
+	// Simulate deleting priority from multiple VLANs (like spanning-tree vlan removal fix)
+	// Use simple paths like other tests - no namespace prefixes needed for testing
+
+	// First VLAN: delete priority for vlan[id='20']
+	body = RemoveFromXPath(body, "/native/vlan[id='20']/priority")
+
+	// Second VLAN: delete priority for vlan[id='30']
+	body = RemoveFromXPath(body, "/native/vlan[id='30']/priority")
+
+	resultXML := body.Res()
+	t.Logf("Result XML:\n%s", resultXML)
+
+	// Verify both vlan elements exist in the XML
+	vlanCount := xmldot.Get(resultXML, "native.vlan.#").Int()
+	if vlanCount != 2 {
+		t.Errorf("Found %d vlan elements, want 2", vlanCount)
+	}
+
+	// Check that we have both IDs
+	vlan0Id := xmldot.Get(resultXML, "native.vlan.0.id").String()
+	vlan1Id := xmldot.Get(resultXML, "native.vlan.1.id").String()
+
+	t.Logf("vlan.0.id = %q, vlan.1.id = %q", vlan0Id, vlan1Id)
+
+	// IDs should be 20 and 30 (order may vary)
+	ids := map[string]bool{vlan0Id: true, vlan1Id: true}
+	if !ids["20"] {
+		t.Errorf("VLAN with id='20' not found in XML")
+	}
+	if !ids["30"] {
+		t.Errorf("VLAN with id='30' not found in XML")
+	}
+
+	// Verify both priority elements have operation="remove"
+	prio0Op := xmldot.Get(resultXML, "native.vlan.0.priority.@operation").String()
+	prio1Op := xmldot.Get(resultXML, "native.vlan.1.priority.@operation").String()
+
+	if prio0Op != "remove" {
+		t.Errorf("First vlan priority operation = %q, want %q", prio0Op, "remove")
+	}
+	if prio1Op != "remove" {
+		t.Errorf("Second vlan priority operation = %q, want %q", prio1Op, "remove")
+	}
+
+	t.Log("✓ Multiple sibling elements with different keys handled correctly")
+}
+
+// TestFindSiblingInfo tests the findSiblingInfo helper function
+func TestFindSiblingInfo(t *testing.T) {
+	tests := []struct {
+		name        string
+		setupBody   func() netconf.Body
+		parentPath  string
+		elementName string
+		keys        []KeyValue
+		wantResult  SiblingResult
+	}{
+		{
+			name: "no existing elements returns SiblingActionNew",
+			setupBody: func() netconf.Body {
+				return netconf.NewBody("")
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "10"}},
+			wantResult:  SiblingResult{Action: SiblingActionNew, Index: -1},
+		},
+		{
+			name: "finds existing element with matching keys",
+			setupBody: func() netconf.Body {
+				body := netconf.NewBody("")
+				body = body.Set("spanning-tree.vlan.id", "10")
+				body = body.Set("spanning-tree.vlan.priority", "4096")
+				return body
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "10"}},
+			wantResult:  SiblingResult{Action: SiblingActionUpdate, Index: 0},
+		},
+		{
+			name: "returns SiblingActionAppend when no match",
+			setupBody: func() netconf.Body {
+				body := netconf.NewBody("")
+				body = body.Set("spanning-tree.vlan.id", "10")
+				return body
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "20"}},
+			wantResult:  SiblingResult{Action: SiblingActionAppend, Index: -1},
+		},
+		{
+			name: "finds correct element among multiple siblings",
+			setupBody: func() netconf.Body {
+				// Use SetRaw to properly create multiple sibling elements
+				// (indexed Set paths don't work with xmldot)
+				body := netconf.NewBody("")
+				body = body.SetRaw("spanning-tree", "<vlan><id>10</id></vlan><vlan><id>20</id></vlan><vlan><id>30</id></vlan>")
+				return body
+			},
+			parentPath:  "spanning-tree",
+			elementName: "vlan",
+			keys:        []KeyValue{{Key: "id", Value: "20"}},
+			wantResult:  SiblingResult{Action: SiblingActionUpdate, Index: 1},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body := tt.setupBody()
+			got := findSiblingInfo(body, tt.parentPath, tt.elementName, tt.keys)
+			if got.Action != tt.wantResult.Action || got.Index != tt.wantResult.Index {
+				t.Errorf("findSiblingInfo() = %+v, want %+v", got, tt.wantResult)
+			}
+		})
+	}
+}
+
+// TestTrimNetconfTrailingWhitespace tests the TrimNetconfTrailingWhitespace helper function
+// which trims trailing whitespace from multi-line strings from NETCONF responses to prevent Terraform drift
+func TestTrimNetconfTrailingWhitespace(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "Empty string",
+			input:    "",
+			expected: "",
+		},
+		{
+			name:     "Single line no whitespace",
+			input:    "Hello World",
+			expected: "Hello World",
+		},
+		{
+			name:     "Single line with trailing spaces",
+			input:    "Hello World   ",
+			expected: "Hello World",
+		},
+		{
+			name:     "Single line with trailing tabs",
+			input:    "Hello World\t\t",
+			expected: "Hello World",
+		},
+		{
+			name:     "Multi-line with trailing whitespace on each line",
+			input:    "Line 1   \nLine 2\t\t\nLine 3  ",
+			expected: "Line 1\nLine 2\nLine 3",
+		},
+		{
+			name:     "Multi-line preserves leading whitespace",
+			input:    "  Line 1   \n\tLine 2\t\t\n  Line 3  ",
+			expected: "  Line 1\n\tLine 2\n  Line 3",
+		},
+		{
+			name:     "Multi-line with internal empty lines preserved",
+			input:    "Line 1   \n   \nLine 3  ",
+			expected: "Line 1\n\nLine 3",
+		},
+		{
+			name:     "Preserves internal whitespace",
+			input:    "Hello   World   ",
+			expected: "Hello   World",
+		},
+		{
+			name:     "Handles carriage return",
+			input:    "Line 1  \r\nLine 2\r",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Removes trailing newline (YAML block scalar)",
+			input:    "Line 1\nLine 2\nLine 3\n",
+			expected: "Line 1\nLine 2\nLine 3",
+		},
+		{
+			name:     "Removes multiple trailing newlines",
+			input:    "Line 1\nLine 2\n\n\n",
+			expected: "Line 1\nLine 2",
+		},
+		{
+			name:     "Handles trailing whitespace and trailing newlines together",
+			input:    "Line 1  \nLine 2  \n\n",
+			expected: "Line 1\nLine 2",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := TrimNetconfTrailingWhitespace(tt.input)
+			if result != tt.expected {
+				t.Errorf("TrimNetconfTrailingWhitespace() = %q, want %q", result, tt.expected)
+			}
+		})
+	}
+}
+
+// TestRemoveFromXPath_DisabledVlansScenario tests the exact scenario used by disabled_vlans:
+// 1. First add regular vlans with priorities (via SetFromXPath)
+// 2. Then add disabled_vlans with operation="remove" on the vlan element itself (via RemoveFromXPath)
+// This tests that RemoveFromXPath properly appends sibling elements with operation="remove"
+// when there are existing siblings.
+func TestRemoveFromXPath_DisabledVlansScenario(t *testing.T) {
+	body := netconf.Body{}
+	basePath := "/Cisco-IOS-XE-native:native/spanning-tree"
+
+	// Step 1: Add regular vlans with priority (mimics toBodyXML for vlans)
+	// VLAN 10 with priority 4096
+	cBody := netconf.Body{}
+	cBody = SetFromXPath(cBody, "id", "10")
+	cBody = SetFromXPath(cBody, "priority", "4096")
+	body = SetRawFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan", cBody.Res())
+
+	t.Logf("After adding vlan 10:\n%s\n", body.Res())
+
+	// VLAN 20 with priority 8192
+	cBody2 := netconf.Body{}
+	cBody2 = SetFromXPath(cBody2, "id", "20")
+	cBody2 = SetFromXPath(cBody2, "priority", "8192")
+	body = SetRawFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan", cBody2.Res())
+
+	t.Logf("After adding vlan 20:\n%s\n", body.Res())
+
+	// Step 2: Add disabled_vlans with operation="remove" on the vlan element
+	// Disabled VLAN 40 - should have operation="remove" at the vlan level
+	predicates40 := "[id='40']"
+	body = RemoveFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan"+predicates40)
+
+	t.Logf("After disabled_vlan 40:\n%s\n", body.Res())
+
+	// Disabled VLAN 50 - should have operation="remove" at the vlan level
+	predicates50 := "[id='50']"
+	body = RemoveFromXPath(body, basePath+"/Cisco-IOS-XE-spanning-tree:vlan"+predicates50)
+
+	resultXML := body.Res()
+	t.Logf("Final XML:\n%s\n", resultXML)
+
+	// Verification
+	vlanCount := xmldot.Get(resultXML, "native.spanning-tree.vlan.#").Int()
+	t.Logf("Total vlan elements: %d", vlanCount)
+
+	if vlanCount != 4 {
+		t.Errorf("Expected 4 vlan elements, got %d", vlanCount)
+	}
+
+	// Check each vlan element
+	for i := 0; i < int(vlanCount); i++ {
+		id := xmldot.Get(resultXML, fmt.Sprintf("native.spanning-tree.vlan.%d.id", i)).String()
+		op := xmldot.Get(resultXML, fmt.Sprintf("native.spanning-tree.vlan.%d.@operation", i)).String()
+		prio := xmldot.Get(resultXML, fmt.Sprintf("native.spanning-tree.vlan.%d.priority", i)).String()
+		t.Logf("  vlan.%d: id=%s, operation=%q, priority=%s", i, id, op, prio)
+
+		// VLANs 10 and 20 should NOT have operation attribute
+		if id == "10" || id == "20" {
+			if op != "" {
+				t.Errorf("Regular vlan %s should not have operation attribute, got %q", id, op)
+			}
+		}
+		// VLANs 40 and 50 should have operation="remove"
+		if id == "40" || id == "50" {
+			if op != "remove" {
+				t.Errorf("Disabled vlan %s should have operation='remove', got %q", id, op)
+			}
+		}
+	}
+
+	// Additional string-based verification (note: the xmlns attribute may appear after operation)
+	if !strings.Contains(resultXML, `operation="remove"`) {
+		t.Error("Expected at least one element with operation=\"remove\" attribute in output")
+	}
+}
+
+// TestAugmentNamespaces_IPv6ColonHandling tests that colons in IPv6 addresses within predicates
+// are not misinterpreted as YANG namespace separators.
+//
+// This is a defensive test for the sibling handling code path in buildXPathStructure().
+// That code calls augmentNamespaces with the original XPath (including predicates),
+// which could contain IPv6 addresses with colons. Without the fix to augmentNamespaces,
+// these colons could be misinterpreted as namespace separators.
+func TestAugmentNamespaces_IPv6ColonHandling(t *testing.T) {
+	tests := []struct {
+		name             string
+		xPath            string
+		setValue         string
+		shouldNotContain []string // Strings that should NOT appear in output
+		shouldContain    []string // Strings that SHOULD appear in output
+	}{
+		{
+			// Element WITHOUT namespace prefix, but WITH IPv6 in predicate
+			name:     "element without namespace prefix but with IPv6 in predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/ipv6/route/ipv6-route[prefix='2001:db8::1/64']/next-hop",
+			setValue: "10.0.0.1",
+			shouldNotContain: []string{
+				"http://cisco.com/ns/yang/ipv6-route[prefix", // Malformed namespace URL
+			},
+			shouldContain: []string{
+				"2001:db8::1/64", // IPv6 address preserved intact
+			},
+		},
+		{
+			name:     "element without namespace prefix and link-local IPv6",
+			xPath:    "/Cisco-IOS-XE-native:native/ipv6/neighbor/neighbor-entry[address='fe80::1']/interface",
+			setValue: "GigabitEthernet1",
+			shouldNotContain: []string{
+				"http://cisco.com/ns/yang/neighbor-entry[address",
+			},
+			shouldContain: []string{
+				"fe80::1",
+			},
+		},
+		{
+			name:     "RemoveFromXPath with element without namespace and IPv6 predicate",
+			xPath:    "/Cisco-IOS-XE-native:native/ipv6/route/ipv6-route[prefix='2001:db8:abcd::1/128']",
+			setValue: "__REMOVE__",
+			shouldNotContain: []string{
+				"http://cisco.com/ns/yang/ipv6-route[prefix",
+			},
+			shouldContain: []string{
+				"2001:db8:abcd::1/128",
+				`operation="remove"`,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body := netconf.Body{}
+			var result netconf.Body
+
+			if tt.setValue == "__REMOVE__" {
+				result = RemoveFromXPath(body, tt.xPath)
+			} else {
+				result = SetFromXPath(body, tt.xPath, tt.setValue)
+			}
+
+			resultXML := result.Res()
+			t.Logf("XPath: %s", tt.xPath)
+			t.Logf("Generated XML:\n%s", resultXML)
+
+			// Check that invalid namespace patterns are NOT present
+			for _, badPattern := range tt.shouldNotContain {
+				if strings.Contains(resultXML, badPattern) {
+					t.Errorf("Output should NOT contain %q (indicates IPv6 colon was misinterpreted as namespace separator)\nGot:\n%s", badPattern, resultXML)
+				}
+			}
+
+			// Check that expected patterns ARE present
+			for _, goodPattern := range tt.shouldContain {
+				if !strings.Contains(resultXML, goodPattern) {
+					t.Errorf("Output should contain %q\nGot:\n%s", goodPattern, resultXML)
+				}
+			}
+
+			t.Log("✓ IPv6 address colons correctly handled (not misinterpreted as namespace separators)")
+		})
+	}
+}
+
+// TestTrimNetconfTrailingWhitespace_BannerScenarios tests real-world banner scenarios
+// that can cause Terraform drift when comparing NETCONF response to state
+func TestTrimNetconfTrailingWhitespace_BannerScenarios(t *testing.T) {
+	tests := []struct {
+		name         string
+		netconfValue string // Value as returned by NETCONF (with trailing whitespace)
+		stateValue   string // Value as stored in Terraform state (often from YAML with trailing newline)
+		shouldMatch  bool   // After normalization, should they match?
+	}{
+		{
+			name: "Multi-line banner with trailing spaces from NETCONF",
+			netconfValue: "***************************************************************************   \n" +
+				"*                       EXEC SESSION STARTED                              *   \n" +
+				"***************************************************************************   ",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************",
+			shouldMatch: true,
+		},
+		{
+			name: "Multi-line banner: YAML block scalar (trailing newline) vs NETCONF (no trailing newline)",
+			netconfValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************\n", // YAML | adds trailing newline
+			shouldMatch: true,
+		},
+		{
+			name: "Multi-line banner: NETCONF trailing spaces + YAML trailing newline",
+			netconfValue: "***************************************************************************   \n" +
+				"*                       EXEC SESSION STARTED                              *   \n" +
+				"***************************************************************************   ",
+			stateValue: "***************************************************************************\n" +
+				"*                       EXEC SESSION STARTED                              *\n" +
+				"***************************************************************************\n", // YAML | adds trailing newline
+			shouldMatch: true,
+		},
+		{
+			name:         "Single-line banner with trailing space",
+			netconfValue: "*** AUTHORIZED ACCESS ONLY ***   ",
+			stateValue:   "*** AUTHORIZED ACCESS ONLY ***",
+			shouldMatch:  true,
+		},
+		{
+			name: "Banner with mixed trailing whitespace",
+			netconfValue: "Line 1  \t\n" +
+				"Line 2   \n" +
+				"Line 3\t",
+			stateValue: "Line 1\n" +
+				"Line 2\n" +
+				"Line 3",
+			shouldMatch: true,
+		},
+		{
+			name:         "Banner already normalized (no changes needed)",
+			netconfValue: "Simple banner message",
+			stateValue:   "Simple banner message",
+			shouldMatch:  true,
+		},
+		{
+			name:         "Different content should not match",
+			netconfValue: "Banner A   ",
+			stateValue:   "Banner B",
+			shouldMatch:  false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			normalizedNetconf := TrimNetconfTrailingWhitespace(tt.netconfValue)
+			normalizedState := TrimNetconfTrailingWhitespace(tt.stateValue)
+
+			matches := normalizedNetconf == normalizedState
+			if matches != tt.shouldMatch {
+				if tt.shouldMatch {
+					t.Errorf("Expected values to match after normalization:\nNETCONF: %q\nState:   %q\nNormalized NETCONF: %q\nNormalized State:   %q",
+						tt.netconfValue, tt.stateValue, normalizedNetconf, normalizedState)
+				} else {
+					t.Errorf("Expected values to NOT match, but they did:\nNormalized: %q", normalizedNetconf)
+				}
+			}
+		})
+	}
 }
