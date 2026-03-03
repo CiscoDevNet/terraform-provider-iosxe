@@ -9,8 +9,8 @@ description: |-
 
 ## 0.16.0
 
-- Expose attributes with sensitive values also as write-only attributes
 - BREAKING CHANGE: Remove `wait_start_*` attributes from `iosxe_aaa_accounting` resource and data source (`connections` and `execs` blocks). IOS-XE silently converts `wait-start` to `start-stop` on all supported versions, causing Terraform idempotency issues. Use the equivalent `start_stop_*` attributes instead.
+- Expose attributes with sensitive values also as write-only attributes
 - Fix issue with NETCONF sibling element handling when removing multiple elements from YANG lists (e.g., removing multiple VLAN priorities or helper addresses)
 - Mark `trunk_allowed_vlans_add`, `trunk_allowed_vlans_except`, and `trunk_allowed_vlans_remove` attributes of `iosxe_interface_switchport` resource as write-only to avoid drift detection
 - BREAKING CHANGE: Rename `authentication_meticulous_sha_1keychain` to `authentication_meticulous_sha_1_keychain` in `iosxe_bfd_template_multi_hop` resource and data source
