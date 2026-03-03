@@ -71,3 +71,43 @@ jobs:
       #     IOSXE_URL: ${{ secrets.IOSXE_URL }}
       #   run: go test -v -cover -timeout 45m ./internal/provider/
       #   timeout-minutes: 45
+
+  notify:
+    name: Webex Notification
+    needs: [build, test]
+    if: always() && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Set short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
+
+      - name: Determine overall result
+        run: |
+          if [[ "${{ needs.build.result }}" == "success" && "${{ needs.test.result }}" != "failure" ]]; then
+            echo "PIPELINE_STATUS=success" >> $GITHUB_ENV
+          else
+            echo "PIPELINE_STATUS=failure" >> $GITHUB_ENV
+          fi
+
+      - name: Send Webex Notification
+        uses: qsnyder/action-wxt@master
+        env:
+          TOKEN: ${{ secrets.WEBEX_TOKEN }}
+          ROOMID: ${{ secrets.WEBEX_ROOM_ID }}
+          MESSAGE: |
+            ## ${{ env.PIPELINE_STATUS == 'success' && '✅' || '❌' }} NaC IOS-XE Provider Pipeline ${{ env.PIPELINE_STATUS == 'success' && 'Passed' || 'Failed' }}
+
+            ---
+            **Build Information:**
+            * **Pipeline:** ${{ github.repository }}
+            * **Run:** [#${{ github.run_number }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            * **Branch:** `${{ github.ref_name }}`
+            * **Event:** ${{ github.event_name }}
+
+            **Git Information:**
+            * **Commit:** [`${{ env.SHORT_SHA }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) — _${{ github.event.head_commit.message }}_
+            * **Author:** ${{ github.event.head_commit.author.name }}
+
+            **Quick Links:**
+            * [Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) | [Commit Diff](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
