@@ -1,3 +1,7 @@
+## Unreleased
+
+- Added support for IPv4 and IPv6 NetFlow monitors under tunnel interfaces through the `iosxe_interface_tunnel` resource and data source.
+
 ## 0.16.0
 
 - BREAKING CHANGE: Remove `wait_start_*` attributes from `iosxe_aaa_accounting` resource and data source (`connections` and `execs` blocks). IOS-XE silently converts `wait-start` to `start-stop` on all supported versions, causing Terraform idempotency issues. Use the equivalent `start_stop_*` attributes instead.
