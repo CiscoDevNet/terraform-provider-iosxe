@@ -78,6 +78,8 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_igmp_version", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_tcp_adjust_mss", "1400"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_flow_monitors.0.name", "MON1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_flow_monitors.0.direction", "input"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -128,6 +130,24 @@ resource "iosxe_yang" "PreReq0" {
 	}
 }
 
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC1]"
+	attributes = {
+		"name" = "REC1"
+		"match/ipv4/source/address" = ""
+		"collect/interface/output" = ""
+	}
+}
+
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON1]"
+	attributes = {
+		"name" = "MON1"
+		"record/type" = "REC1"
+	}
+	depends_on = [iosxe_yang.PreReq1, ]
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -137,7 +157,7 @@ resource "iosxe_yang" "PreReq0" {
 func testAccIosxeInterfaceTunnelConfig_minimum() string {
 	config := `resource "iosxe_interface_tunnel" "test" {` + "\n"
 	config += `	name = 90` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -197,7 +217,11 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	tunnel_vrf = "VRF1"` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
 	config += `	ip_tcp_adjust_mss = 1400` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	ip_flow_monitors = [{` + "\n"
+	config += `		name = "MON1"` + "\n"
+	config += `		direction = "input"` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
