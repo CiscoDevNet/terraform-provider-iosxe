@@ -10,6 +10,7 @@ description: |-
 ## Unreleased
 
 - Add `iosxe_bgp_bmp_server` resource and data source
+- Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_tunnel` resource and data source
 
 ## 0.16.0
 

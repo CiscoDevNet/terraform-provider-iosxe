@@ -377,6 +377,44 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
 				Optional:            true,
 			},
+			"ip_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
+							Required:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("input", "output"),
+							},
+						},
+					},
+				},
+			},
+			"ipv6_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
+							Required:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("input", "output"),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
