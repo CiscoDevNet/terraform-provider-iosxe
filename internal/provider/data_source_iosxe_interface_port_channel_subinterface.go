@@ -276,6 +276,22 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 					},
 				},
 			},
+			"ipv6_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: "Apply a Flow Monitor",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "User defined",
+							Computed:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"arp_timeout": schema.Int64Attribute{
 				MarkdownDescription: "Set ARP cache timeout",
 				Computed:            true,
@@ -303,6 +319,22 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 			"ip_nat_outside": schema.BoolAttribute{
 				MarkdownDescription: "Outside interface for address translation",
 				Computed:            true,
+			},
+			"ip_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: "Apply a Flow Monitor",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "User defined",
+							Computed:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}

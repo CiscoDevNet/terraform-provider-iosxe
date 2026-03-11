@@ -40,4 +40,10 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
   ]
   arp_timeout     = 2147
   ip_igmp_version = 3
+  ip_flow_monitors = [
+    {
+      name      = "MON1"
+      direction = "input"
+    }
+  ]
 }

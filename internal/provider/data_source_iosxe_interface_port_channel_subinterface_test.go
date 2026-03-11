@@ -64,6 +64,8 @@ func TestAccDataSourceIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "arp_timeout", "2147"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_igmp_version", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_flow_monitors.0.name", "MON1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_flow_monitors.0.direction", "input"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -125,6 +127,24 @@ resource "iosxe_yang" "PreReq4" {
 	}
 }
 
+resource "iosxe_yang" "PreReq5" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC1]"
+	attributes = {
+		"name" = "REC1"
+		"match/ipv4/source/address" = ""
+		"collect/interface/output" = ""
+	}
+}
+
+resource "iosxe_yang" "PreReq6" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON1]"
+	attributes = {
+		"name" = "MON1"
+		"record/type" = "REC1"
+	}
+	depends_on = [iosxe_yang.PreReq5, ]
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -169,7 +189,11 @@ func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
+	config += `	ip_flow_monitors = [{` + "\n"
+	config += `		name = "MON1"` + "\n"
+	config += `		direction = "input"` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

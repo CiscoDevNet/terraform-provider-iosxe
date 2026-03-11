@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
+
 ## 0.16.0
 
 - BREAKING CHANGE: Remove `wait_start_*` attributes from `iosxe_aaa_accounting` resource and data source (`connections` and `execs` blocks). IOS-XE silently converts `wait-start` to `start-stop` on all supported versions, causing Terraform idempotency issues. Use the equivalent `start_stop_*` attributes instead.
