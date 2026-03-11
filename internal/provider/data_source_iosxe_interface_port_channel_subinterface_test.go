@@ -64,7 +64,7 @@ func TestAccDataSourceIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "arp_timeout", "2147"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_igmp_version", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_flow_monitors.0.name", "MON1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_flow_monitors.0.name", "MON2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_flow_monitors.0.direction", "input"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -93,10 +93,10 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "/Cisco-IOS-XE-native:native/interface/Port-channel[name=10]"
+	path = "/Cisco-IOS-XE-native:native/interface/Port-channel[name=20]"
 	delete = false
 	attributes = {
-		"name" = "10"
+		"name" = "20"
 		"switchport-conf/switchport" = "false"
 	}
 }
@@ -128,19 +128,19 @@ resource "iosxe_yang" "PreReq4" {
 }
 
 resource "iosxe_yang" "PreReq5" {
-	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC1]"
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC2]"
 	attributes = {
-		"name" = "REC1"
+		"name" = "REC2"
 		"match/ipv4/source/address" = ""
 		"collect/interface/output" = ""
 	}
 }
 
 resource "iosxe_yang" "PreReq6" {
-	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON1]"
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON2]"
 	attributes = {
-		"name" = "MON1"
-		"record/type" = "REC1"
+		"name" = "MON2"
+		"record/type" = "REC2"
 	}
 	depends_on = [iosxe_yang.PreReq5, ]
 }
@@ -154,7 +154,7 @@ resource "iosxe_yang" "PreReq6" {
 func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	name = "10.666"` + "\n"
+	config += `	name = "20.666"` + "\n"
 	config += `	encapsulation_dot1q_vlan_id = 666` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
@@ -190,7 +190,7 @@ func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 	config += `	arp_timeout = 2147` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
 	config += `	ip_flow_monitors = [{` + "\n"
-	config += `		name = "MON1"` + "\n"
+	config += `		name = "MON2"` + "\n"
 	config += `		direction = "input"` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
@@ -198,7 +198,7 @@ func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 
 	config += `
 		data "iosxe_interface_port_channel_subinterface" "test" {
-			name = "10.666"
+			name = "20.666"
 			depends_on = [iosxe_interface_port_channel_subinterface.test]
 		}
 	`

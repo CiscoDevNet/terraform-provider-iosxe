@@ -14,7 +14,7 @@ This data source can read the Interface Port Channel Subinterface configuration.
 
 ```terraform
 data "iosxe_interface_port_channel_subinterface" "example" {
-  name = "10.666"
+  name = "20.666"
 }
 ```
 

@@ -14,7 +14,7 @@ This resource can manage the Interface Port Channel Subinterface configuration.
 
 ```terraform
 resource "iosxe_interface_port_channel_subinterface" "example" {
-  name                        = "10.666"
+  name                        = "20.666"
   encapsulation_dot1q_vlan_id = 666
   description                 = "My Interface Description"
   shutdown                    = false
@@ -57,7 +57,7 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
   ip_igmp_version = 3
   ip_flow_monitors = [
     {
-      name      = "MON1"
+      name      = "MON2"
       direction = "input"
     }
   ]

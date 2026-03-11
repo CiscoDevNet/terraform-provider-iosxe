@@ -5,7 +5,7 @@ test_tags: [C9000V]
 doc_category: Interface
 attributes:
   - yang_name: name
-    example: "10.666"
+    example: "20.666"
   - yang_name: encapsulation/encap-choice/dot1Q/dot1Q/vlan-id
     xpath: encapsulation/dot1Q/vlan-id
     tf_name: encapsulation_dot1q_vlan_id
@@ -171,7 +171,7 @@ attributes:
     attributes:
       - yang_name: name
         id: true
-        example: MON1
+        example: MON2
       - yang_name: direction
         id: true
         example: input
@@ -207,7 +207,7 @@ attributes:
     attributes:
       - yang_name: name
         id: true
-        example: MON1
+        example: MON2
       - yang_name: direction
         id: true
         example: input
@@ -222,11 +222,11 @@ test_prerequisites:
         value: ""
       - name: address-family/ipv6
         value: ""
-  - path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=10]
+  - path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=20]
     no_delete: true
     attributes:
       - name: name
-        value: 10
+        value: 20
       - name: switchport-conf/switchport
         value: false
   - path: /Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=1]
@@ -250,18 +250,18 @@ test_prerequisites:
         value: 200
       - name: interval-singlehop-v2/mill-unit/multiplier
         value: 4
-  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC1]
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC2]
     attributes:
       - name: name
-        value: REC1
+        value: REC2
       - name: match/ipv4/source/address
         value: ""
       - name: collect/interface/output
         value: ""
-  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON1]
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON2]
     attributes:
       - name: name
-        value: MON1
+        value: MON2
       - name: record/type
-        value: REC1
+        value: REC2
     dependencies: [5]
