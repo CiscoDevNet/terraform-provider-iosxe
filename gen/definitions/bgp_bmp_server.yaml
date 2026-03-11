@@ -1,0 +1,76 @@
+---
+name: BGP BMP Server
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/bmp/server[id=%v]
+doc_category: BGP
+skip_minimum_test: true
+attributes:
+  - yang_name: id
+    yang_scope: bgp
+    tf_name: asn
+    example: 65000
+  - yang_name: id
+    yang_scope: server
+    tf_name: server_id
+    example: 1
+  - yang_name: address-config/address
+    tf_name: address
+    example: 10.10.10.10
+  - yang_name: address-config/port-number
+    tf_name: port_number
+    example: 1790
+  - yang_name: activate
+    example: true
+  - yang_name: description
+    example: BMP Server 1
+    exclude_test: true
+  - yang_name: failure-retry-delay
+    example: 30
+  - yang_name: flapping-delay
+    example: 60
+  - yang_name: initial-delay
+    example: 10
+  - yang_name: stats-reporting-period
+    example: 30
+  - yang_name: set/ip/dscp
+    tf_name: ip_dscp
+    example: 0
+    exclude_test: true
+  - yang_name: update-source/interface-choice/Loopback/Loopback
+    xpath: update-source/Loopback
+    tf_name: update_source_loopback
+    type: Int64
+    example: 100
+  - yang_name: update-source/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: update-source/GigabitEthernet
+    tf_name: update_source_gigabit_ethernet
+    example: "1"
+    exclude_test: true
+  - yang_name: update-source/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: update-source/TenGigabitEthernet
+    tf_name: update_source_ten_gigabit_ethernet
+    example: "1"
+    exclude_test: true
+  - yang_name: update-source/interface-choice/Vlan/Vlan
+    xpath: update-source/Vlan
+    tf_name: update_source_vlan
+    type: Int64
+    example: 1
+    exclude_test: true
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native
+    no_delete: true
+    attributes:
+      - name: ip/routing-conf/routing
+        value: "true"
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
+    attributes:
+      - name: name
+        value: 100
+      - name: ip/address/primary/address
+        value: 200.200.200.200
+      - name: ip/address/primary/mask
+        value: 255.255.255.255
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
+    attributes:
+      - name: id
+        value: 65000
