@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -33,7 +32,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -49,26 +47,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &InterfaceTunnelResource{}
-	_ resource.ResourceWithImportState = &InterfaceTunnelResource{}
+	_ resource.Resource                = &DeviceTrackingResource{}
+	_ resource.ResourceWithImportState = &DeviceTrackingResource{}
 )
 
-func NewInterfaceTunnelResource() resource.Resource {
-	return &InterfaceTunnelResource{}
+func NewDeviceTrackingResource() resource.Resource {
+	return &DeviceTrackingResource{}
 }
 
-type InterfaceTunnelResource struct {
+type DeviceTrackingResource struct {
 	data *IosxeProviderData
 }
 
-func (r *InterfaceTunnelResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_tunnel"
+func (r *DeviceTrackingResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_device_tracking"
 }
 
-func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *DeviceTrackingResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface Tunnel configuration.",
+		MarkdownDescription: "This resource can manage the Device Tracking configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -89,337 +87,40 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"name": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 4294967295).String,
-				Required:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 4294967295),
-				},
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplace(),
-				},
-			},
-			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface specific description").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(0, 200),
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-				},
-			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
+			"logging_theft": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IP or MAC theft events").String,
 				Optional:            true,
 			},
-			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
-				Optional:            true,
-			},
-			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
-				Optional:            true,
-			},
-			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
-				Optional:            true,
-			},
-			"vrf_forwarding": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
-				Optional:            true,
-			},
-			"ipv6_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
-				Optional:            true,
-			},
-			"ipv6_mtu": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1280, 9976),
-				},
-			},
-			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
-				Optional:            true,
-			},
-			"ipv6_address_autoconfig_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
-				Optional:            true,
-			},
-			"ipv6_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
-				Optional:            true,
-			},
-			"ipv6_link_local_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
-							},
-						},
-						"link_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"ipv6_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"prefix": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
-							},
-						},
-						"eui_64": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"tunnel_source": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("source of tunnel packets").String,
-				Optional:            true,
-			},
-			"tunnel_destination_ipv4": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ip address or host name").String,
+			"tracking_auto_source_fallback_ipv4": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
-			"tunnel_protection_ipsec_profile_legacy": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obsolete, use the other option profile-option to set ipsec policy profile").String,
-				Optional:            true,
-			},
-			"tunnel_protection_ipsec_profile": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IPSec policy profile").String,
-				Optional:            true,
-			},
-			"crypto_ipsec_df_bit": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Handling of encapsulated DF bit.").AddStringEnumDescription("clear", "copy", "set").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("clear", "copy", "set"),
-				},
-			},
-			"arp_timeout": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set ARP cache timeout").AddIntegerRangeDescription(0, 2147483).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 2147483),
-				},
-			},
-			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ip address").String,
+			"tracking_auto_source_fallback_mask": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IP prefix mask").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
-			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ip subnet mask").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"unnumbered": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IP processing without an explicit address").String,
+			"tracking_auto_source_fallback_override": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Do not select source address from device track table").String,
 				Optional:            true,
 			},
-			"ip_mtu": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set IP Maximum Transmission Unit").AddIntegerRangeDescription(68, 18000).String,
+			"tracking_retry_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Interval time  between two probing").AddIntegerRangeDescription(1, 3600).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(68, 18000),
-				},
-			},
-			"ip_dhcp_relay_source_interface": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set source interface for relayed messages").String,
-				Optional:            true,
-			},
-			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
-				Optional:            true,
-			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
-				Optional:            true,
-			},
-			"ip_access_group_out": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"helper_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a destination address for UDP broadcasts").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IP destination address").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
-							Optional:            true,
-						},
-						"vrf": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"tunnel_mode_ipsec_ipv4": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("over IPv4").String,
-				Optional:            true,
-			},
-			"bfd_template": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("BFD template").String,
-				Optional:            true,
-			},
-			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
-				Optional:            true,
-			},
-			"bfd_local_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
-				Optional:            true,
-			},
-			"bfd_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(50, 9999).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(50, 9999),
-				},
-			},
-			"bfd_interval_min_rx": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(50, 9999).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(50, 9999),
-				},
-			},
-			"bfd_interval_multiplier": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Multiplier value used to compute holddown").AddIntegerRangeDescription(3, 50).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(3, 50),
-				},
-			},
-			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
-				Optional:            true,
-			},
-			"load_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify interval for load calculation for an interface").AddIntegerRangeDescription(30, 600).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(30, 600),
-				},
-			},
-			"snmp_trap_link_status": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LINKUP and LINKDOWN traps").String,
-				Optional:            true,
-			},
-			"logging_event_link_status_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
-				Optional:            true,
-			},
-			"tunnel_vrf": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_igmp_version": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 3),
-				},
-			},
-			"ip_router_isis": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_tcp_adjust_mss": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Adjust the mss of transit packets").AddIntegerRangeDescription(500, 1460).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(500, 1460),
-				},
-			},
-			"ip_nat_inside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
-				Optional:            true,
-			},
-			"ip_nat_outside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
-				Optional:            true,
-			},
-			"ip_flow_monitors": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
-							Required:            true,
-						},
-						"direction": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("input", "output"),
-							},
-						},
-					},
-				},
-			},
-			"ipv6_flow_monitors": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
-							Required:            true,
-						},
-						"direction": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("input", "output"),
-							},
-						},
-					},
+					int64validator.Between(1, 3600),
 				},
 			},
 		},
 	}
 }
 
-func (r *InterfaceTunnelResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *DeviceTrackingResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -431,8 +132,8 @@ func (r *InterfaceTunnelResource) Configure(_ context.Context, req resource.Conf
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *InterfaceTunnelResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config InterfaceTunnel
+func (r *DeviceTrackingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config DeviceTracking
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -522,8 +223,8 @@ func (r *InterfaceTunnelResource) Create(ctx context.Context, req resource.Creat
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *InterfaceTunnelResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state InterfaceTunnel
+func (r *DeviceTrackingResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state DeviceTracking
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -549,7 +250,7 @@ func (r *InterfaceTunnelResource) Read(ctx context.Context, req resource.ReadReq
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = InterfaceTunnel{Device: state.Device, Id: state.Id}
+				state = DeviceTracking{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -605,8 +306,8 @@ func (r *InterfaceTunnelResource) Read(ctx context.Context, req resource.ReadReq
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *InterfaceTunnelResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config InterfaceTunnel
+func (r *DeviceTrackingResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config DeviceTracking
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -713,8 +414,8 @@ func (r *InterfaceTunnelResource) Update(ctx context.Context, req resource.Updat
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *InterfaceTunnelResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state InterfaceTunnel
+func (r *DeviceTrackingResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state DeviceTracking
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -812,31 +513,25 @@ func (r *InterfaceTunnelResource) Delete(ctx context.Context, req resource.Delet
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *InterfaceTunnelResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *DeviceTrackingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 1 && len(idParts) != 2 {
-		expectedIdentifier := "Expected import identifier with format: '<name>'"
-		expectedIdentifier += " or '<name>,<device>'"
+	if len(idParts) != 0 && len(idParts) != 1 {
+		expectedIdentifier := "Expected import identifier with format: ''"
+		expectedIdentifier += " or '<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), helpers.Must(strconv.ParseInt(idParts[0], 10, 64)))...)
-	if len(idParts) == 2 {
+	if len(idParts) == 1 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state InterfaceTunnel
-	diags := resp.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	var state DeviceTracking
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

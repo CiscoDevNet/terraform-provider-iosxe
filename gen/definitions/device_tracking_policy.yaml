@@ -1,0 +1,34 @@
+---
+name: Device Tracking Policy
+path: /Cisco-IOS-XE-native:native/device-tracking/Cisco-IOS-XE-device-tracking:policy[word=%v]
+doc_category: System
+attributes:
+  - yang_name: word
+    tf_name: name
+    id: true
+    example: DT_trunk_policy
+  - yang_name: trusted-port
+    tf_name: trusted_port
+    example: true
+  - yang_name: device-role-config
+    tf_name: device_role
+    example: switch
+    test_tags: [C9000V]
+  - yang_name: device-role/device-role-choice/node/node
+    xpath: device-role/node
+    tf_name: device_role_node_legacy
+    example: true
+    exclude_test: true
+    allow_import_changes: true
+  - yang_name: device-role/device-role-choice/switch/switch
+    xpath: device-role/switch
+    tf_name: device_role_switch_legacy
+    example: true
+    exclude_test: true
+    allow_import_changes: true
+  - yang_name: device-role/device-role-choice/router/router
+    xpath: device-role/router
+    tf_name: device_role_router_legacy
+    example: true
+    exclude_test: true
+    allow_import_changes: true

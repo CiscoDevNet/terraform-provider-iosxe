@@ -63,6 +63,12 @@ resource "iosxe_interface_tunnel" "example" {
   tunnel_vrf                       = "VRF1"
   ip_igmp_version                  = 3
   ip_tcp_adjust_mss                = 1400
+  ip_flow_monitors = [
+    {
+      name      = "MON1"
+      direction = "input"
+    }
+  ]
 }
 ```
 
@@ -98,6 +104,7 @@ resource "iosxe_interface_tunnel" "example" {
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
 - `ip_mtu` (Number) Set IP Maximum Transmission Unit
@@ -116,6 +123,7 @@ resource "iosxe_interface_tunnel" "example" {
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+- `ipv6_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ipv6_flow_monitors))
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
@@ -151,6 +159,15 @@ Optional:
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
+<a id="nestedatt--ip_flow_monitors"></a>
+### Nested Schema for `ip_flow_monitors`
+
+Required:
+
+- `direction` (String) - Choices: `input`, `output`
+- `name` (String) User defined
+
+
 <a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`
 
@@ -161,6 +178,15 @@ Required:
 Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
+
+
+<a id="nestedatt--ipv6_flow_monitors"></a>
+### Nested Schema for `ipv6_flow_monitors`
+
+Required:
+
+- `direction` (String) - Choices: `input`, `output`
+- `name` (String) User defined
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>

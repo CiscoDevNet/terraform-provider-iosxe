@@ -1,0 +1,23 @@
+---
+name: Device Tracking
+path: /Cisco-IOS-XE-native:native/device-tracking
+doc_category: System
+attributes:
+  - yang_name: Cisco-IOS-XE-device-tracking:logging/theft
+    tf_name: logging_theft
+    example: true
+  - yang_name: Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ip-subnet-choice/ip-addr-and-mask/ipv4-subnet-type1/ipv4
+    xpath: Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/ipv4
+    tf_name: tracking_auto_source_fallback_ipv4
+    example: 10.0.0.1
+  - yang_name: Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ip-subnet-choice/ip-addr-and-mask/ipv4-subnet-type1/mask
+    xpath: Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/mask
+    tf_name: tracking_auto_source_fallback_mask
+    example: 255.255.255.0
+  - yang_name: Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ip-subnet-choice/ip-addr-and-mask/ipv4-subnet-type1/override
+    xpath: Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/override
+    tf_name: tracking_auto_source_fallback_override
+    example: true
+  - yang_name: Cisco-IOS-XE-device-tracking:tracking/retry-interval
+    tf_name: tracking_retry_interval
+    example: 10
