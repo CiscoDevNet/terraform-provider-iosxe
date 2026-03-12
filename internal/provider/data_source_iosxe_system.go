@@ -402,6 +402,19 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Enable server side of SCP",
 				Computed:            true,
 			},
+			"ip_sftp_username": schema.StringAttribute{
+				MarkdownDescription: "Specify username for SFTP connections",
+				Computed:            true,
+			},
+			"ip_sftp_password_encryption": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ip_sftp_password": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				Sensitive:           true,
+			},
 			"ip_ssh_version": schema.StringAttribute{
 				MarkdownDescription: "Specify protocol version supported",
 				Computed:            true,
