@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Fix incorrect xpaths for microsecond interval attributes (`interval_microseconds`, `interval_microseconds_both`, `interval_microseconds_min_tx`, `interval_microseconds_min_rx`, `interval_microseconds_multiplier`) in `iosxe_bfd_template_multi_hop` resource and data source. The xpaths were missing the `ms-unit` container, causing `unknown-element` errors over NETCONF.
+
 ## 0.16.0
 
 - BREAKING CHANGE: Remove `wait_start_*` attributes from `iosxe_aaa_accounting` resource and data source (`connections` and `execs` blocks). IOS-XE silently converts `wait-start` to `start-stop` on all supported versions, causing Terraform idempotency issues. Use the equivalent `start_stop_*` attributes instead.
