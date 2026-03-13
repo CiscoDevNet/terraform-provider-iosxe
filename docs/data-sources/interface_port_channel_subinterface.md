@@ -14,7 +14,7 @@ This data source can read the Interface Port Channel Subinterface configuration.
 
 ```terraform
 data "iosxe_interface_port_channel_subinterface" "example" {
-  name = "10.666"
+  name = "20.666"
 }
 ```
 
@@ -61,6 +61,7 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+- `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
 - `ip_igmp_version` (Number) IGMP version
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
@@ -74,6 +75,7 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+- `ipv6_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ipv6_flow_monitors))
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
@@ -91,6 +93,15 @@ Read-Only:
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
+<a id="nestedatt--ip_flow_monitors"></a>
+### Nested Schema for `ip_flow_monitors`
+
+Read-Only:
+
+- `direction` (String)
+- `name` (String) User defined
+
+
 <a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`
 
@@ -98,6 +109,15 @@ Read-Only:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
 - `prefix` (String) IPv6 prefix
+
+
+<a id="nestedatt--ipv6_flow_monitors"></a>
+### Nested Schema for `ipv6_flow_monitors`
+
+Read-Only:
+
+- `direction` (String)
+- `name` (String) User defined
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>

@@ -296,6 +296,38 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Outside interface for address translation",
 				Computed:            true,
 			},
+			"ip_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: "Apply a Flow Monitor",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "User defined",
+							Computed:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: "Apply a Flow Monitor",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "User defined",
+							Computed:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

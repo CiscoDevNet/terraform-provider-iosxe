@@ -10,6 +10,11 @@ description: |-
 ## Unreleased
 
 - Fix incorrect xpaths for microsecond interval attributes (`interval_microseconds`, `interval_microseconds_both`, `interval_microseconds_min_tx`, `interval_microseconds_min_rx`, `interval_microseconds_multiplier`) in `iosxe_bfd_template_multi_hop` resource and data source. The xpaths were missing the `ms-unit` container, causing `unknown-element` errors over NETCONF.
+- Add `iosxe_bgp_bmp_server` resource and data source
+- Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_tunnel` resource and data source
+- Add `iosxe_device_tracking` resource and data source
+- Add `iosxe_device_tracking_policy` resource and data source
+- Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
 
 ## 0.16.0
 

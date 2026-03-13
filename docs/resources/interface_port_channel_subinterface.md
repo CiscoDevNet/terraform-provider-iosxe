@@ -14,7 +14,7 @@ This resource can manage the Interface Port Channel Subinterface configuration.
 
 ```terraform
 resource "iosxe_interface_port_channel_subinterface" "example" {
-  name                        = "10.666"
+  name                        = "20.666"
   encapsulation_dot1q_vlan_id = 666
   description                 = "My Interface Description"
   shutdown                    = false
@@ -55,6 +55,12 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
   ]
   arp_timeout     = 2147
   ip_igmp_version = 3
+  ip_flow_monitors = [
+    {
+      name      = "MON2"
+      direction = "input"
+    }
+  ]
 }
 ```
 
@@ -103,6 +109,7 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
   - Range: `0`-`4294967295`
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
+- `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
@@ -117,6 +124,7 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+- `ipv6_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ipv6_flow_monitors))
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
@@ -143,6 +151,15 @@ Optional:
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
+<a id="nestedatt--ip_flow_monitors"></a>
+### Nested Schema for `ip_flow_monitors`
+
+Required:
+
+- `direction` (String) - Choices: `input`, `output`
+- `name` (String) User defined
+
+
 <a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`
 
@@ -153,6 +170,15 @@ Required:
 Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
+
+
+<a id="nestedatt--ipv6_flow_monitors"></a>
+### Nested Schema for `ipv6_flow_monitors`
+
+Required:
+
+- `direction` (String) - Choices: `input`, `output`
+- `name` (String) User defined
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>

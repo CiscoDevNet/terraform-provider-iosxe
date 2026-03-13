@@ -44,4 +44,10 @@ resource "iosxe_interface_port_channel" "example" {
   load_interval                    = 30
   logging_event_link_status_enable = false
   ip_igmp_version                  = 3
+  ip_flow_monitors = [
+    {
+      name      = "MON1"
+      direction = "input"
+    }
+  ]
 }

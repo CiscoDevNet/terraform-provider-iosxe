@@ -171,6 +171,17 @@ attributes:
         example: 2224:DB8::/32
       - yang_name: eui-64
         example: true
+  - yang_name: ipv6/Cisco-IOS-XE-flow:flow/monitor-new
+    tf_name: ipv6_flow_monitors
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: MON1
+      - yang_name: direction
+        id: true
+        example: input
   - yang_name: arp/timeout
     example: 2147
   - yang_name: ip/arp/inspection/trust
@@ -233,6 +244,16 @@ attributes:
     tf_name: ip_nat_outside
     example: true
     exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-flow:flow/monitor-new
+    tf_name: ip_flow_monitors
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: MON1
+      - yang_name: direction
+        id: true
+        example: input
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
@@ -288,3 +309,18 @@ test_prerequisites:
       - name: system-mac
         value: 0011.2233.4455
     dependencies: [5]
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC1]
+    attributes:
+      - name: name
+        value: REC1
+      - name: match/ipv4/source/address
+        value: ""
+      - name: collect/interface/output
+        value: ""
+  - path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON1]
+    attributes:
+      - name: name
+        value: MON1
+      - name: record/type
+        value: REC1
+    dependencies: [7]

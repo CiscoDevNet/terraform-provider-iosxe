@@ -38,7 +38,7 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "name", "10.666"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "name", "20.666"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "encapsulation_dot1q_vlan_id", "666"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "shutdown", "false"))
@@ -67,6 +67,8 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "arp_timeout", "2147"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_igmp_version", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_flow_monitors.0.name", "MON2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_flow_monitors.0.direction", "input"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -118,10 +120,10 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "/Cisco-IOS-XE-native:native/interface/Port-channel[name=10]"
+	path = "/Cisco-IOS-XE-native:native/interface/Port-channel[name=20]"
 	delete = false
 	attributes = {
-		"name" = "10"
+		"name" = "20"
 		"switchport-conf/switchport" = "false"
 	}
 }
@@ -152,6 +154,24 @@ resource "iosxe_yang" "PreReq4" {
 	}
 }
 
+resource "iosxe_yang" "PreReq5" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=REC2]"
+	attributes = {
+		"name" = "REC2"
+		"match/ipv4/source/address" = ""
+		"collect/interface/output" = ""
+	}
+}
+
+resource "iosxe_yang" "PreReq6" {
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=MON2]"
+	attributes = {
+		"name" = "MON2"
+		"record/type" = "REC2"
+	}
+	depends_on = [iosxe_yang.PreReq5, ]
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -160,8 +180,8 @@ resource "iosxe_yang" "PreReq4" {
 
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
-	config += `	name = "10.666"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
+	config += `	name = "20.666"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -172,7 +192,7 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
-	config += `	name = "10.666"` + "\n"
+	config += `	name = "20.666"` + "\n"
 	config += `	encapsulation_dot1q_vlan_id = 666` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
@@ -207,7 +227,11 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 2147` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
+	config += `	ip_flow_monitors = [{` + "\n"
+	config += `		name = "MON2"` + "\n"
+	config += `		direction = "input"` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, iosxe_yang.PreReq6, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

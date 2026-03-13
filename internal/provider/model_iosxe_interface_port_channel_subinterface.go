@@ -87,6 +87,7 @@ type InterfacePortChannelSubinterface struct {
 	Ipv6AddressDhcp              types.Bool                                               `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfacePortChannelSubinterfaceIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	Ipv6FlowMonitors             []InterfacePortChannelSubinterfaceIpv6FlowMonitors       `tfsdk:"ipv6_flow_monitors"`
 	ArpTimeout                   types.Int64                                              `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
@@ -94,6 +95,7 @@ type InterfacePortChannelSubinterface struct {
 	IpRouterIsis                 types.String                                             `tfsdk:"ip_router_isis"`
 	IpNatInside                  types.Bool                                               `tfsdk:"ip_nat_inside"`
 	IpNatOutside                 types.Bool                                               `tfsdk:"ip_nat_outside"`
+	IpFlowMonitors               []InterfacePortChannelSubinterfaceIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
 }
 type InterfacePortChannelSubinterfaceHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -107,6 +109,14 @@ type InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses struct {
 type InterfacePortChannelSubinterfaceIpv6Addresses struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
+}
+type InterfacePortChannelSubinterfaceIpv6FlowMonitors struct {
+	Name      types.String `tfsdk:"name"`
+	Direction types.String `tfsdk:"direction"`
+}
+type InterfacePortChannelSubinterfaceIpFlowMonitors struct {
+	Name      types.String `tfsdk:"name"`
+	Direction types.String `tfsdk:"direction"`
 }
 
 type InterfacePortChannelSubinterfaceData struct {
@@ -154,6 +164,7 @@ type InterfacePortChannelSubinterfaceData struct {
 	Ipv6AddressDhcp              types.Bool                                                   `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfacePortChannelSubinterfaceIpv6AddressesData          `tfsdk:"ipv6_addresses"`
+	Ipv6FlowMonitors             []InterfacePortChannelSubinterfaceIpv6FlowMonitorsData       `tfsdk:"ipv6_flow_monitors"`
 	ArpTimeout                   types.Int64                                                  `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust         types.Bool                                                   `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                                  `tfsdk:"ip_arp_inspection_limit_rate"`
@@ -161,6 +172,7 @@ type InterfacePortChannelSubinterfaceData struct {
 	IpRouterIsis                 types.String                                                 `tfsdk:"ip_router_isis"`
 	IpNatInside                  types.Bool                                                   `tfsdk:"ip_nat_inside"`
 	IpNatOutside                 types.Bool                                                   `tfsdk:"ip_nat_outside"`
+	IpFlowMonitors               []InterfacePortChannelSubinterfaceIpFlowMonitorsData         `tfsdk:"ip_flow_monitors"`
 }
 type InterfacePortChannelSubinterfaceHelperAddressesData struct {
 	Address types.String `tfsdk:"address"`
@@ -174,6 +186,14 @@ type InterfacePortChannelSubinterfaceIpv6LinkLocalAddressesData struct {
 type InterfacePortChannelSubinterfaceIpv6AddressesData struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
+}
+type InterfacePortChannelSubinterfaceIpv6FlowMonitorsData struct {
+	Name      types.String `tfsdk:"name"`
+	Direction types.String `tfsdk:"direction"`
+}
+type InterfacePortChannelSubinterfaceIpFlowMonitorsData struct {
+	Name      types.String `tfsdk:"name"`
+	Direction types.String `tfsdk:"direction"`
 }
 
 // End of section. //template:end types
@@ -442,6 +462,28 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context, config 
 			}
 		}
 	}
+	if len(data.Ipv6FlowMonitors) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-flow:flow.monitor-new", []interface{}{})
+		for index, item := range data.Ipv6FlowMonitors {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-flow:flow.monitor-new"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-flow:flow.monitor-new"+"."+strconv.Itoa(index)+"."+"direction", item.Direction.ValueString())
+			}
+		}
+	}
+	if len(data.IpFlowMonitors) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-flow:flow.monitor-new", []interface{}{})
+		for index, item := range data.IpFlowMonitors {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-flow:flow.monitor-new"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-flow:flow.monitor-new"+"."+strconv.Itoa(index)+"."+"direction", item.Direction.ValueString())
+			}
+		}
+	}
 	return body
 }
 
@@ -695,6 +737,18 @@ func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context, conf
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/address/prefix-list", cBody.Res())
 		}
 	}
+	if len(data.Ipv6FlowMonitors) > 0 {
+		for _, item := range data.Ipv6FlowMonitors {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
+		}
+	}
 	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/arp/timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
 	}
@@ -726,6 +780,18 @@ func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context, conf
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+		}
+	}
+	if len(data.IpFlowMonitors) > 0 {
+		for _, item := range data.IpFlowMonitors {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -1144,6 +1210,40 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	for i := range data.Ipv6FlowMonitors {
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ipv6.Cisco-IOS-XE-flow:flow.monitor-new").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Ipv6FlowMonitors[i].Name.IsNull() {
+			data.Ipv6FlowMonitors[i].Name = types.StringValue(value.String())
+		} else {
+			data.Ipv6FlowMonitors[i].Name = types.StringNull()
+		}
+		if value := r.Get("direction"); value.Exists() && !data.Ipv6FlowMonitors[i].Direction.IsNull() {
+			data.Ipv6FlowMonitors[i].Direction = types.StringValue(value.String())
+		} else {
+			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
+		}
+	}
 	if value := res.Get(prefix + "arp.timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	} else {
@@ -1190,6 +1290,40 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 		}
 	} else {
 		data.IpNatOutside = types.BoolNull()
+	}
+	for i := range data.IpFlowMonitors {
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.IpFlowMonitors[i].Name.IsNull() {
+			data.IpFlowMonitors[i].Name = types.StringValue(value.String())
+		} else {
+			data.IpFlowMonitors[i].Name = types.StringNull()
+		}
+		if value := r.Get("direction"); value.Exists() && !data.IpFlowMonitors[i].Direction.IsNull() {
+			data.IpFlowMonitors[i].Direction = types.StringValue(value.String())
+		} else {
+			data.IpFlowMonitors[i].Direction = types.StringNull()
+		}
 	}
 }
 
@@ -1598,6 +1732,40 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	for i := range data.Ipv6FlowMonitors {
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv6FlowMonitors[i].Name.IsNull() {
+			data.Ipv6FlowMonitors[i].Name = types.StringValue(value.String())
+		} else {
+			data.Ipv6FlowMonitors[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "direction"); value.Exists() && !data.Ipv6FlowMonitors[i].Direction.IsNull() {
+			data.Ipv6FlowMonitors[i].Direction = types.StringValue(value.String())
+		} else {
+			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
+		}
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	} else {
@@ -1644,6 +1812,40 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 		}
 	} else {
 		data.IpNatOutside = types.BoolNull()
+	}
+	for i := range data.IpFlowMonitors {
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.IpFlowMonitors[i].Name.IsNull() {
+			data.IpFlowMonitors[i].Name = types.StringValue(value.String())
+		} else {
+			data.IpFlowMonitors[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "direction"); value.Exists() && !data.IpFlowMonitors[i].Direction.IsNull() {
+			data.IpFlowMonitors[i].Direction = types.StringValue(value.String())
+		} else {
+			data.IpFlowMonitors[i].Direction = types.StringNull()
+		}
 	}
 }
 
@@ -1869,6 +2071,20 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
+		data.Ipv6FlowMonitors = make([]InterfacePortChannelSubinterfaceIpv6FlowMonitors, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpv6FlowMonitors{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "arp.timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -1895,6 +2111,20 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
+		data.IpFlowMonitors = make([]InterfacePortChannelSubinterfaceIpFlowMonitors, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpFlowMonitors{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.IpFlowMonitors = append(data.IpFlowMonitors, item)
+			return true
+		})
 	}
 }
 
@@ -2120,6 +2350,20 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
+		data.Ipv6FlowMonitors = make([]InterfacePortChannelSubinterfaceIpv6FlowMonitorsData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpv6FlowMonitorsData{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "arp.timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -2146,6 +2390,20 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
+		data.IpFlowMonitors = make([]InterfacePortChannelSubinterfaceIpFlowMonitorsData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpFlowMonitorsData{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.IpFlowMonitors = append(data.IpFlowMonitors, item)
+			return true
+		})
 	}
 }
 
@@ -2367,6 +2625,20 @@ func (data *InterfacePortChannelSubinterface) fromBodyXML(ctx context.Context, r
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new"); value.Exists() {
+		data.Ipv6FlowMonitors = make([]InterfacePortChannelSubinterfaceIpv6FlowMonitors, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpv6FlowMonitors{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -2393,6 +2665,20 @@ func (data *InterfacePortChannelSubinterface) fromBodyXML(ctx context.Context, r
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new"); value.Exists() {
+		data.IpFlowMonitors = make([]InterfacePortChannelSubinterfaceIpFlowMonitors, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpFlowMonitors{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.IpFlowMonitors = append(data.IpFlowMonitors, item)
+			return true
+		})
 	}
 }
 
@@ -2614,6 +2900,20 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new"); value.Exists() {
+		data.Ipv6FlowMonitors = make([]InterfacePortChannelSubinterfaceIpv6FlowMonitorsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpv6FlowMonitorsData{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/arp/timeout"); value.Exists() {
 		data.ArpTimeout = types.Int64Value(value.Int())
 	}
@@ -2641,6 +2941,20 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new"); value.Exists() {
+		data.IpFlowMonitors = make([]InterfacePortChannelSubinterfaceIpFlowMonitorsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfacePortChannelSubinterfaceIpFlowMonitorsData{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.IpFlowMonitors = append(data.IpFlowMonitors, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2649,6 +2963,37 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 
 func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Context, state InterfacePortChannelSubinterface) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.IpFlowMonitors {
+		stateKeyValues := [...]string{state.IpFlowMonitors[i].Name.ValueString(), state.IpFlowMonitors[i].Direction.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpFlowMonitors[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.IpFlowMonitors[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpFlowMonitors {
+			found = true
+			if state.IpFlowMonitors[i].Name.ValueString() != data.IpFlowMonitors[j].Name.ValueString() {
+				found = false
+			}
+			if state.IpFlowMonitors[i].Direction.ValueString() != data.IpFlowMonitors[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
 	}
@@ -2669,6 +3014,37 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	}
 	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/arp/timeout", state.getPath()))
+	}
+	for i := range state.Ipv6FlowMonitors {
+		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6FlowMonitors {
+			found = true
+			if state.Ipv6FlowMonitors[i].Name.ValueString() != data.Ipv6FlowMonitors[j].Name.ValueString() {
+				found = false
+			}
+			if state.Ipv6FlowMonitors[i].Direction.ValueString() != data.Ipv6FlowMonitors[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	for i := range state.Ipv6Addresses {
 		stateKeyValues := [...]string{state.Ipv6Addresses[i].Prefix.ValueString()}
@@ -2878,6 +3254,42 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 
 func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Context, state InterfacePortChannelSubinterface, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.IpFlowMonitors {
+		stateKeys := [...]string{"name", "direction"}
+		stateKeyValues := [...]string{state.IpFlowMonitors[i].Name.ValueString(), state.IpFlowMonitors[i].Direction.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpFlowMonitors[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.IpFlowMonitors[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpFlowMonitors {
+			found = true
+			if state.IpFlowMonitors[i].Name.ValueString() != data.IpFlowMonitors[j].Name.ValueString() {
+				found = false
+			}
+			if state.IpFlowMonitors[i].Direction.ValueString() != data.IpFlowMonitors[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new%v", predicates))
+		}
+	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 	}
@@ -2898,6 +3310,42 @@ func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Con
 	}
 	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/arp/timeout")
+	}
+	for i := range state.Ipv6FlowMonitors {
+		stateKeys := [...]string{"name", "direction"}
+		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6FlowMonitors {
+			found = true
+			if state.Ipv6FlowMonitors[i].Name.ValueString() != data.Ipv6FlowMonitors[j].Name.ValueString() {
+				found = false
+			}
+			if state.Ipv6FlowMonitors[i].Direction.ValueString() != data.Ipv6FlowMonitors[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new%v", predicates))
+		}
 	}
 	for i := range state.Ipv6Addresses {
 		stateKeys := [...]string{"prefix"}
@@ -3123,6 +3571,7 @@ func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Con
 
 func (data *InterfacePortChannelSubinterface) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
 	}
@@ -3220,6 +3669,11 @@ func (data *InterfacePortChannelSubinterface) getEmptyLeafsDelete(ctx context.Co
 
 func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.IpFlowMonitors {
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	if !data.IpNatOutside.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
 	}
@@ -3240,6 +3694,11 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	}
 	if !data.ArpTimeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
+	}
+	for i := range data.Ipv6FlowMonitors {
+		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.Ipv6Addresses {
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
@@ -3377,6 +3836,16 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 
 func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.IpFlowMonitors {
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new%v", predicates))
+	}
 	if !data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 	}
@@ -3397,6 +3866,16 @@ func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Cont
 	}
 	if !data.ArpTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/arp/timeout")
+	}
+	for i := range data.Ipv6FlowMonitors {
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new%v", predicates))
 	}
 	for i := range data.Ipv6Addresses {
 		keys := [...]string{"prefix"}
