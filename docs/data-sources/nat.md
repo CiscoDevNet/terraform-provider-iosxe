@@ -28,6 +28,8 @@ data "iosxe_nat" "example" {
 
 - `id` (String) The path of the retrieved object.
 - `inside_source_interfaces` (Attributes List) Specify access list describing local addresses (see [below for nested schema](#nestedatt--inside_source_interfaces))
+- `inside_source_static_entries` (Attributes List) (see [below for nested schema](#nestedatt--inside_source_static_entries))
+- `outside_source_static_entries` (Attributes List) (see [below for nested schema](#nestedatt--outside_source_static_entries))
 
 <a id="nestedatt--inside_source_interfaces"></a>
 ### Nested Schema for `inside_source_interfaces`
@@ -44,3 +46,43 @@ Read-Only:
 
 - `interface` (String)
 - `overload` (Boolean) Overload an address translation
+
+
+
+<a id="nestedatt--inside_source_static_entries"></a>
+### Nested Schema for `inside_source_static_entries`
+
+Read-Only:
+
+- `egress_interface_loopback` (String) Loopback interface
+- `extendable` (Boolean) Extend this translation when used
+- `forced` (Boolean) Delete this entry and its children, even if in use
+- `global_ip` (String)
+- `inside_static_overload` (Boolean) Overload an address translation
+- `inside_static_pool` (String) Name pool of local addresses
+- `local_ip` (String)
+- `mapping_id` (Number) Associate a mapping id to this mapping
+- `mask` (String)
+- `network` (String) Subnet translation
+- `no_alias` (Boolean) Do not create an alias for the global address
+- `no_payload` (Boolean) No translation of embedded address/port in the payload
+- `redundancy` (String) NAT redundancy operation
+- `reversible` (Boolean)
+- `route_map` (String) Specify route-map
+- `stateless` (Boolean) No flow entries (session) for mapping
+
+
+<a id="nestedatt--outside_source_static_entries"></a>
+### Nested Schema for `outside_source_static_entries`
+
+Read-Only:
+
+- `extendable` (Boolean) Extend this translation when used
+- `global_ip` (String)
+- `local_ip` (String)
+- `mask` (String)
+- `match_in_vrf` (Boolean) Match incoming vrf
+- `network` (String) Subnet translation
+- `no_payload` (Boolean) No translation of embedded address/port in the payload
+- `outside_static_pool` (String) Name pool of local addresses
+- `redundancy` (String) NAT redundancy operation

@@ -41,14 +41,45 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type NAT struct {
-	Device                 types.String                `tfsdk:"device"`
-	Id                     types.String                `tfsdk:"id"`
-	DeleteMode             types.String                `tfsdk:"delete_mode"`
-	InsideSourceInterfaces []NATInsideSourceInterfaces `tfsdk:"inside_source_interfaces"`
+	Device                     types.String                    `tfsdk:"device"`
+	Id                         types.String                    `tfsdk:"id"`
+	DeleteMode                 types.String                    `tfsdk:"delete_mode"`
+	InsideSourceInterfaces     []NATInsideSourceInterfaces     `tfsdk:"inside_source_interfaces"`
+	InsideSourceStaticEntries  []NATInsideSourceStaticEntries  `tfsdk:"inside_source_static_entries"`
+	OutsideSourceStaticEntries []NATOutsideSourceStaticEntries `tfsdk:"outside_source_static_entries"`
 }
 type NATInsideSourceInterfaces struct {
 	Id         types.String                          `tfsdk:"id"`
 	Interfaces []NATInsideSourceInterfacesInterfaces `tfsdk:"interfaces"`
+}
+type NATInsideSourceStaticEntries struct {
+	LocalIp                 types.String `tfsdk:"local_ip"`
+	GlobalIp                types.String `tfsdk:"global_ip"`
+	Network                 types.String `tfsdk:"network"`
+	Mask                    types.String `tfsdk:"mask"`
+	Extendable              types.Bool   `tfsdk:"extendable"`
+	NoAlias                 types.Bool   `tfsdk:"no_alias"`
+	NoPayload               types.Bool   `tfsdk:"no_payload"`
+	RouteMap                types.String `tfsdk:"route_map"`
+	Reversible              types.Bool   `tfsdk:"reversible"`
+	Redundancy              types.String `tfsdk:"redundancy"`
+	MappingId               types.Int64  `tfsdk:"mapping_id"`
+	Stateless               types.Bool   `tfsdk:"stateless"`
+	Forced                  types.Bool   `tfsdk:"forced"`
+	InsideStaticOverload    types.Bool   `tfsdk:"inside_static_overload"`
+	InsideStaticPool        types.String `tfsdk:"inside_static_pool"`
+	EgressInterfaceLoopback types.String `tfsdk:"egress_interface_loopback"`
+}
+type NATOutsideSourceStaticEntries struct {
+	GlobalIp          types.String `tfsdk:"global_ip"`
+	LocalIp           types.String `tfsdk:"local_ip"`
+	Network           types.String `tfsdk:"network"`
+	Mask              types.String `tfsdk:"mask"`
+	Extendable        types.Bool   `tfsdk:"extendable"`
+	NoPayload         types.Bool   `tfsdk:"no_payload"`
+	Redundancy        types.String `tfsdk:"redundancy"`
+	MatchInVrf        types.Bool   `tfsdk:"match_in_vrf"`
+	OutsideStaticPool types.String `tfsdk:"outside_static_pool"`
 }
 type NATInsideSourceInterfacesInterfaces struct {
 	Interface types.String `tfsdk:"interface"`
@@ -56,13 +87,44 @@ type NATInsideSourceInterfacesInterfaces struct {
 }
 
 type NATData struct {
-	Device                 types.String                    `tfsdk:"device"`
-	Id                     types.String                    `tfsdk:"id"`
-	InsideSourceInterfaces []NATInsideSourceInterfacesData `tfsdk:"inside_source_interfaces"`
+	Device                     types.String                        `tfsdk:"device"`
+	Id                         types.String                        `tfsdk:"id"`
+	InsideSourceInterfaces     []NATInsideSourceInterfacesData     `tfsdk:"inside_source_interfaces"`
+	InsideSourceStaticEntries  []NATInsideSourceStaticEntriesData  `tfsdk:"inside_source_static_entries"`
+	OutsideSourceStaticEntries []NATOutsideSourceStaticEntriesData `tfsdk:"outside_source_static_entries"`
 }
 type NATInsideSourceInterfacesData struct {
 	Id         types.String                              `tfsdk:"id"`
 	Interfaces []NATInsideSourceInterfacesInterfacesData `tfsdk:"interfaces"`
+}
+type NATInsideSourceStaticEntriesData struct {
+	LocalIp                 types.String `tfsdk:"local_ip"`
+	GlobalIp                types.String `tfsdk:"global_ip"`
+	Network                 types.String `tfsdk:"network"`
+	Mask                    types.String `tfsdk:"mask"`
+	Extendable              types.Bool   `tfsdk:"extendable"`
+	NoAlias                 types.Bool   `tfsdk:"no_alias"`
+	NoPayload               types.Bool   `tfsdk:"no_payload"`
+	RouteMap                types.String `tfsdk:"route_map"`
+	Reversible              types.Bool   `tfsdk:"reversible"`
+	Redundancy              types.String `tfsdk:"redundancy"`
+	MappingId               types.Int64  `tfsdk:"mapping_id"`
+	Stateless               types.Bool   `tfsdk:"stateless"`
+	Forced                  types.Bool   `tfsdk:"forced"`
+	InsideStaticOverload    types.Bool   `tfsdk:"inside_static_overload"`
+	InsideStaticPool        types.String `tfsdk:"inside_static_pool"`
+	EgressInterfaceLoopback types.String `tfsdk:"egress_interface_loopback"`
+}
+type NATOutsideSourceStaticEntriesData struct {
+	GlobalIp          types.String `tfsdk:"global_ip"`
+	LocalIp           types.String `tfsdk:"local_ip"`
+	Network           types.String `tfsdk:"network"`
+	Mask              types.String `tfsdk:"mask"`
+	Extendable        types.Bool   `tfsdk:"extendable"`
+	NoPayload         types.Bool   `tfsdk:"no_payload"`
+	Redundancy        types.String `tfsdk:"redundancy"`
+	MatchInVrf        types.Bool   `tfsdk:"match_in_vrf"`
+	OutsideStaticPool types.String `tfsdk:"outside_static_pool"`
 }
 type NATInsideSourceInterfacesInterfacesData struct {
 	Interface types.String `tfsdk:"interface"`
@@ -130,6 +192,111 @@ func (data NAT) toBody(ctx context.Context, config NAT) string {
 			}
 		}
 	}
+	if len(data.InsideSourceStaticEntries) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list", []interface{}{})
+		for index, item := range data.InsideSourceStaticEntries {
+			if !item.LocalIp.IsNull() && !item.LocalIp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"local-ip", item.LocalIp.ValueString())
+			}
+			if !item.GlobalIp.IsNull() && !item.GlobalIp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"global-ip", item.GlobalIp.ValueString())
+			}
+			if !item.Network.IsNull() && !item.Network.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"network-config", item.Network.ValueString())
+			}
+			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"mask", item.Mask.ValueString())
+			}
+			if !item.Extendable.IsNull() && !item.Extendable.IsUnknown() {
+				if item.Extendable.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"extendable", map[string]string{})
+				}
+			}
+			if !item.NoAlias.IsNull() && !item.NoAlias.IsUnknown() {
+				if item.NoAlias.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"no-alias", map[string]string{})
+				}
+			}
+			if !item.NoPayload.IsNull() && !item.NoPayload.IsUnknown() {
+				if item.NoPayload.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"no-payload", map[string]string{})
+				}
+			}
+			if !item.RouteMap.IsNull() && !item.RouteMap.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"route-map", item.RouteMap.ValueString())
+			}
+			if !item.Reversible.IsNull() && !item.Reversible.IsUnknown() {
+				if item.Reversible.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"reversible", map[string]string{})
+				}
+			}
+			if !item.Redundancy.IsNull() && !item.Redundancy.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"redundancy", item.Redundancy.ValueString())
+			}
+			if !item.MappingId.IsNull() && !item.MappingId.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"mapping-id", strconv.FormatInt(item.MappingId.ValueInt64(), 10))
+			}
+			if !item.Stateless.IsNull() && !item.Stateless.IsUnknown() {
+				if item.Stateless.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"stateless", map[string]string{})
+				}
+			}
+			if !item.Forced.IsNull() && !item.Forced.IsUnknown() {
+				if item.Forced.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"forced", map[string]string{})
+				}
+			}
+			if !item.InsideStaticOverload.IsNull() && !item.InsideStaticOverload.IsUnknown() {
+				if item.InsideStaticOverload.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"overload", map[string]string{})
+				}
+			}
+			if !item.InsideStaticPool.IsNull() && !item.InsideStaticPool.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"pool", item.InsideStaticPool.ValueString())
+			}
+			if !item.EgressInterfaceLoopback.IsNull() && !item.EgressInterfaceLoopback.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.static.nat-static-transport-list"+"."+strconv.Itoa(index)+"."+"egress-interface-new.Loopback", item.EgressInterfaceLoopback.ValueString())
+			}
+		}
+	}
+	if len(data.OutsideSourceStaticEntries) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf", []interface{}{})
+		for index, item := range data.OutsideSourceStaticEntries {
+			if !item.GlobalIp.IsNull() && !item.GlobalIp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"global-ip", item.GlobalIp.ValueString())
+			}
+			if !item.LocalIp.IsNull() && !item.LocalIp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"local-ip", item.LocalIp.ValueString())
+			}
+			if !item.Network.IsNull() && !item.Network.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"network", item.Network.ValueString())
+			}
+			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"mask", item.Mask.ValueString())
+			}
+			if !item.Extendable.IsNull() && !item.Extendable.IsUnknown() {
+				if item.Extendable.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"extendable", map[string]string{})
+				}
+			}
+			if !item.NoPayload.IsNull() && !item.NoPayload.IsUnknown() {
+				if item.NoPayload.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"no-payload", map[string]string{})
+				}
+			}
+			if !item.Redundancy.IsNull() && !item.Redundancy.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"redundancy", item.Redundancy.ValueString())
+			}
+			if !item.MatchInVrf.IsNull() && !item.MatchInVrf.IsUnknown() {
+				if item.MatchInVrf.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"match-in-vrf", map[string]string{})
+				}
+			}
+			if !item.OutsideStaticPool.IsNull() && !item.OutsideStaticPool.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"outside.source.static.nat-static-transport-list-no-vrf"+"."+strconv.Itoa(index)+"."+"pool", item.OutsideStaticPool.ValueString())
+			}
+		}
+	}
 	return body
 }
 
@@ -162,6 +329,133 @@ func (data NAT) toBodyXML(ctx context.Context, config NAT) string {
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/inside/source/list-interface/list", cBody.Res())
+		}
+	}
+	if len(data.InsideSourceStaticEntries) > 0 {
+		for _, item := range data.InsideSourceStaticEntries {
+			cBody := netconf.Body{}
+			if !item.LocalIp.IsNull() && !item.LocalIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "local-ip", item.LocalIp.ValueString())
+			}
+			if !item.GlobalIp.IsNull() && !item.GlobalIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "global-ip", item.GlobalIp.ValueString())
+			}
+			if !item.Network.IsNull() && !item.Network.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "network-config", item.Network.ValueString())
+			}
+			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mask", item.Mask.ValueString())
+			}
+			if !item.Extendable.IsNull() && !item.Extendable.IsUnknown() {
+				if item.Extendable.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "extendable", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "extendable")
+				}
+			}
+			if !item.NoAlias.IsNull() && !item.NoAlias.IsUnknown() {
+				if item.NoAlias.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "no-alias", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "no-alias")
+				}
+			}
+			if !item.NoPayload.IsNull() && !item.NoPayload.IsUnknown() {
+				if item.NoPayload.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "no-payload", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "no-payload")
+				}
+			}
+			if !item.RouteMap.IsNull() && !item.RouteMap.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "route-map", item.RouteMap.ValueString())
+			}
+			if !item.Reversible.IsNull() && !item.Reversible.IsUnknown() {
+				if item.Reversible.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "reversible", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "reversible")
+				}
+			}
+			if !item.Redundancy.IsNull() && !item.Redundancy.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "redundancy", item.Redundancy.ValueString())
+			}
+			if !item.MappingId.IsNull() && !item.MappingId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mapping-id", strconv.FormatInt(item.MappingId.ValueInt64(), 10))
+			}
+			if !item.Stateless.IsNull() && !item.Stateless.IsUnknown() {
+				if item.Stateless.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "stateless", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "stateless")
+				}
+			}
+			if !item.Forced.IsNull() && !item.Forced.IsUnknown() {
+				if item.Forced.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "forced", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "forced")
+				}
+			}
+			if !item.InsideStaticOverload.IsNull() && !item.InsideStaticOverload.IsUnknown() {
+				if item.InsideStaticOverload.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "overload", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "overload")
+				}
+			}
+			if !item.InsideStaticPool.IsNull() && !item.InsideStaticPool.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pool", item.InsideStaticPool.ValueString())
+			}
+			if !item.EgressInterfaceLoopback.IsNull() && !item.EgressInterfaceLoopback.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "egress-interface-new/Loopback", item.EgressInterfaceLoopback.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/inside/source/static/nat-static-transport-list", cBody.Res())
+		}
+	}
+	if len(data.OutsideSourceStaticEntries) > 0 {
+		for _, item := range data.OutsideSourceStaticEntries {
+			cBody := netconf.Body{}
+			if !item.GlobalIp.IsNull() && !item.GlobalIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "global-ip", item.GlobalIp.ValueString())
+			}
+			if !item.LocalIp.IsNull() && !item.LocalIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "local-ip", item.LocalIp.ValueString())
+			}
+			if !item.Network.IsNull() && !item.Network.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "network", item.Network.ValueString())
+			}
+			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mask", item.Mask.ValueString())
+			}
+			if !item.Extendable.IsNull() && !item.Extendable.IsUnknown() {
+				if item.Extendable.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "extendable", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "extendable")
+				}
+			}
+			if !item.NoPayload.IsNull() && !item.NoPayload.IsUnknown() {
+				if item.NoPayload.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "no-payload", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "no-payload")
+				}
+			}
+			if !item.Redundancy.IsNull() && !item.Redundancy.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "redundancy", item.Redundancy.ValueString())
+			}
+			if !item.MatchInVrf.IsNull() && !item.MatchInVrf.IsUnknown() {
+				if item.MatchInVrf.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "match-in-vrf", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "match-in-vrf")
+				}
+			}
+			if !item.OutsideStaticPool.IsNull() && !item.OutsideStaticPool.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "pool", item.OutsideStaticPool.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -247,6 +541,219 @@ func (data *NAT) updateFromBody(ctx context.Context, res gjson.Result) {
 			}
 		}
 	}
+	for i := range data.InsideSourceStaticEntries {
+		keys := [...]string{"local-ip", "global-ip"}
+		keyValues := [...]string{data.InsideSourceStaticEntries[i].LocalIp.ValueString(), data.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "inside.source.static.nat-static-transport-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("local-ip"); value.Exists() && !data.InsideSourceStaticEntries[i].LocalIp.IsNull() {
+			data.InsideSourceStaticEntries[i].LocalIp = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].LocalIp = types.StringNull()
+		}
+		if value := r.Get("global-ip"); value.Exists() && !data.InsideSourceStaticEntries[i].GlobalIp.IsNull() {
+			data.InsideSourceStaticEntries[i].GlobalIp = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].GlobalIp = types.StringNull()
+		}
+		if value := r.Get("network-config"); value.Exists() && !data.InsideSourceStaticEntries[i].Network.IsNull() {
+			data.InsideSourceStaticEntries[i].Network = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].Network = types.StringNull()
+		}
+		if value := r.Get("mask"); value.Exists() && !data.InsideSourceStaticEntries[i].Mask.IsNull() {
+			data.InsideSourceStaticEntries[i].Mask = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].Mask = types.StringNull()
+		}
+		if value := r.Get("extendable"); !data.InsideSourceStaticEntries[i].Extendable.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Extendable = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Extendable = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Extendable = types.BoolNull()
+		}
+		if value := r.Get("no-alias"); !data.InsideSourceStaticEntries[i].NoAlias.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].NoAlias = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].NoAlias = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].NoAlias = types.BoolNull()
+		}
+		if value := r.Get("no-payload"); !data.InsideSourceStaticEntries[i].NoPayload.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].NoPayload = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].NoPayload = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].NoPayload = types.BoolNull()
+		}
+		if value := r.Get("route-map"); value.Exists() && !data.InsideSourceStaticEntries[i].RouteMap.IsNull() {
+			data.InsideSourceStaticEntries[i].RouteMap = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].RouteMap = types.StringNull()
+		}
+		if value := r.Get("reversible"); !data.InsideSourceStaticEntries[i].Reversible.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Reversible = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Reversible = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Reversible = types.BoolNull()
+		}
+		if value := r.Get("redundancy"); value.Exists() && !data.InsideSourceStaticEntries[i].Redundancy.IsNull() {
+			data.InsideSourceStaticEntries[i].Redundancy = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].Redundancy = types.StringNull()
+		}
+		if value := r.Get("mapping-id"); value.Exists() && !data.InsideSourceStaticEntries[i].MappingId.IsNull() {
+			data.InsideSourceStaticEntries[i].MappingId = types.Int64Value(value.Int())
+		} else {
+			data.InsideSourceStaticEntries[i].MappingId = types.Int64Null()
+		}
+		if value := r.Get("stateless"); !data.InsideSourceStaticEntries[i].Stateless.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Stateless = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Stateless = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Stateless = types.BoolNull()
+		}
+		if value := r.Get("forced"); !data.InsideSourceStaticEntries[i].Forced.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Forced = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Forced = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Forced = types.BoolNull()
+		}
+		if value := r.Get("overload"); !data.InsideSourceStaticEntries[i].InsideStaticOverload.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].InsideStaticOverload = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].InsideStaticOverload = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].InsideStaticOverload = types.BoolNull()
+		}
+		if value := r.Get("pool"); value.Exists() && !data.InsideSourceStaticEntries[i].InsideStaticPool.IsNull() {
+			data.InsideSourceStaticEntries[i].InsideStaticPool = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].InsideStaticPool = types.StringNull()
+		}
+		if value := r.Get("egress-interface-new.Loopback"); value.Exists() && !data.InsideSourceStaticEntries[i].EgressInterfaceLoopback.IsNull() {
+			data.InsideSourceStaticEntries[i].EgressInterfaceLoopback = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].EgressInterfaceLoopback = types.StringNull()
+		}
+	}
+	for i := range data.OutsideSourceStaticEntries {
+		keys := [...]string{"global-ip", "local-ip"}
+		keyValues := [...]string{data.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), data.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "outside.source.static.nat-static-transport-list-no-vrf").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("global-ip"); value.Exists() && !data.OutsideSourceStaticEntries[i].GlobalIp.IsNull() {
+			data.OutsideSourceStaticEntries[i].GlobalIp = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].GlobalIp = types.StringNull()
+		}
+		if value := r.Get("local-ip"); value.Exists() && !data.OutsideSourceStaticEntries[i].LocalIp.IsNull() {
+			data.OutsideSourceStaticEntries[i].LocalIp = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].LocalIp = types.StringNull()
+		}
+		if value := r.Get("network"); value.Exists() && !data.OutsideSourceStaticEntries[i].Network.IsNull() {
+			data.OutsideSourceStaticEntries[i].Network = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].Network = types.StringNull()
+		}
+		if value := r.Get("mask"); value.Exists() && !data.OutsideSourceStaticEntries[i].Mask.IsNull() {
+			data.OutsideSourceStaticEntries[i].Mask = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].Mask = types.StringNull()
+		}
+		if value := r.Get("extendable"); !data.OutsideSourceStaticEntries[i].Extendable.IsNull() {
+			if value.Exists() {
+				data.OutsideSourceStaticEntries[i].Extendable = types.BoolValue(true)
+			} else {
+				data.OutsideSourceStaticEntries[i].Extendable = types.BoolValue(false)
+			}
+		} else {
+			data.OutsideSourceStaticEntries[i].Extendable = types.BoolNull()
+		}
+		if value := r.Get("no-payload"); !data.OutsideSourceStaticEntries[i].NoPayload.IsNull() {
+			if value.Exists() {
+				data.OutsideSourceStaticEntries[i].NoPayload = types.BoolValue(true)
+			} else {
+				data.OutsideSourceStaticEntries[i].NoPayload = types.BoolValue(false)
+			}
+		} else {
+			data.OutsideSourceStaticEntries[i].NoPayload = types.BoolNull()
+		}
+		if value := r.Get("redundancy"); value.Exists() && !data.OutsideSourceStaticEntries[i].Redundancy.IsNull() {
+			data.OutsideSourceStaticEntries[i].Redundancy = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].Redundancy = types.StringNull()
+		}
+		if value := r.Get("match-in-vrf"); !data.OutsideSourceStaticEntries[i].MatchInVrf.IsNull() {
+			if value.Exists() {
+				data.OutsideSourceStaticEntries[i].MatchInVrf = types.BoolValue(true)
+			} else {
+				data.OutsideSourceStaticEntries[i].MatchInVrf = types.BoolValue(false)
+			}
+		} else {
+			data.OutsideSourceStaticEntries[i].MatchInVrf = types.BoolNull()
+		}
+		if value := r.Get("pool"); value.Exists() && !data.OutsideSourceStaticEntries[i].OutsideStaticPool.IsNull() {
+			data.OutsideSourceStaticEntries[i].OutsideStaticPool = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].OutsideStaticPool = types.StringNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -321,6 +828,219 @@ func (data *NAT) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	for i := range data.InsideSourceStaticEntries {
+		keys := [...]string{"local-ip", "global-ip"}
+		keyValues := [...]string{data.InsideSourceStaticEntries[i].LocalIp.ValueString(), data.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/static/nat-static-transport-list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "local-ip"); value.Exists() && !data.InsideSourceStaticEntries[i].LocalIp.IsNull() {
+			data.InsideSourceStaticEntries[i].LocalIp = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].LocalIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "global-ip"); value.Exists() && !data.InsideSourceStaticEntries[i].GlobalIp.IsNull() {
+			data.InsideSourceStaticEntries[i].GlobalIp = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].GlobalIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "network-config"); value.Exists() && !data.InsideSourceStaticEntries[i].Network.IsNull() {
+			data.InsideSourceStaticEntries[i].Network = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].Network = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mask"); value.Exists() && !data.InsideSourceStaticEntries[i].Mask.IsNull() {
+			data.InsideSourceStaticEntries[i].Mask = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].Mask = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "extendable"); !data.InsideSourceStaticEntries[i].Extendable.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Extendable = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Extendable = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Extendable = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "no-alias"); !data.InsideSourceStaticEntries[i].NoAlias.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].NoAlias = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].NoAlias = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].NoAlias = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "no-payload"); !data.InsideSourceStaticEntries[i].NoPayload.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].NoPayload = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].NoPayload = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].NoPayload = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "route-map"); value.Exists() && !data.InsideSourceStaticEntries[i].RouteMap.IsNull() {
+			data.InsideSourceStaticEntries[i].RouteMap = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].RouteMap = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "reversible"); !data.InsideSourceStaticEntries[i].Reversible.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Reversible = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Reversible = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Reversible = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "redundancy"); value.Exists() && !data.InsideSourceStaticEntries[i].Redundancy.IsNull() {
+			data.InsideSourceStaticEntries[i].Redundancy = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].Redundancy = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mapping-id"); value.Exists() && !data.InsideSourceStaticEntries[i].MappingId.IsNull() {
+			data.InsideSourceStaticEntries[i].MappingId = types.Int64Value(value.Int())
+		} else {
+			data.InsideSourceStaticEntries[i].MappingId = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "stateless"); !data.InsideSourceStaticEntries[i].Stateless.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Stateless = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Stateless = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Stateless = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "forced"); !data.InsideSourceStaticEntries[i].Forced.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].Forced = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].Forced = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].Forced = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "overload"); !data.InsideSourceStaticEntries[i].InsideStaticOverload.IsNull() {
+			if value.Exists() {
+				data.InsideSourceStaticEntries[i].InsideStaticOverload = types.BoolValue(true)
+			} else {
+				data.InsideSourceStaticEntries[i].InsideStaticOverload = types.BoolValue(false)
+			}
+		} else {
+			data.InsideSourceStaticEntries[i].InsideStaticOverload = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "pool"); value.Exists() && !data.InsideSourceStaticEntries[i].InsideStaticPool.IsNull() {
+			data.InsideSourceStaticEntries[i].InsideStaticPool = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].InsideStaticPool = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "egress-interface-new/Loopback"); value.Exists() && !data.InsideSourceStaticEntries[i].EgressInterfaceLoopback.IsNull() {
+			data.InsideSourceStaticEntries[i].EgressInterfaceLoopback = types.StringValue(value.String())
+		} else {
+			data.InsideSourceStaticEntries[i].EgressInterfaceLoopback = types.StringNull()
+		}
+	}
+	for i := range data.OutsideSourceStaticEntries {
+		keys := [...]string{"global-ip", "local-ip"}
+		keyValues := [...]string{data.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), data.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "global-ip"); value.Exists() && !data.OutsideSourceStaticEntries[i].GlobalIp.IsNull() {
+			data.OutsideSourceStaticEntries[i].GlobalIp = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].GlobalIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "local-ip"); value.Exists() && !data.OutsideSourceStaticEntries[i].LocalIp.IsNull() {
+			data.OutsideSourceStaticEntries[i].LocalIp = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].LocalIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "network"); value.Exists() && !data.OutsideSourceStaticEntries[i].Network.IsNull() {
+			data.OutsideSourceStaticEntries[i].Network = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].Network = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mask"); value.Exists() && !data.OutsideSourceStaticEntries[i].Mask.IsNull() {
+			data.OutsideSourceStaticEntries[i].Mask = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].Mask = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "extendable"); !data.OutsideSourceStaticEntries[i].Extendable.IsNull() {
+			if value.Exists() {
+				data.OutsideSourceStaticEntries[i].Extendable = types.BoolValue(true)
+			} else {
+				data.OutsideSourceStaticEntries[i].Extendable = types.BoolValue(false)
+			}
+		} else {
+			data.OutsideSourceStaticEntries[i].Extendable = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "no-payload"); !data.OutsideSourceStaticEntries[i].NoPayload.IsNull() {
+			if value.Exists() {
+				data.OutsideSourceStaticEntries[i].NoPayload = types.BoolValue(true)
+			} else {
+				data.OutsideSourceStaticEntries[i].NoPayload = types.BoolValue(false)
+			}
+		} else {
+			data.OutsideSourceStaticEntries[i].NoPayload = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "redundancy"); value.Exists() && !data.OutsideSourceStaticEntries[i].Redundancy.IsNull() {
+			data.OutsideSourceStaticEntries[i].Redundancy = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].Redundancy = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "match-in-vrf"); !data.OutsideSourceStaticEntries[i].MatchInVrf.IsNull() {
+			if value.Exists() {
+				data.OutsideSourceStaticEntries[i].MatchInVrf = types.BoolValue(true)
+			} else {
+				data.OutsideSourceStaticEntries[i].MatchInVrf = types.BoolValue(false)
+			}
+		} else {
+			data.OutsideSourceStaticEntries[i].MatchInVrf = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "pool"); value.Exists() && !data.OutsideSourceStaticEntries[i].OutsideStaticPool.IsNull() {
+			data.OutsideSourceStaticEntries[i].OutsideStaticPool = types.StringValue(value.String())
+		} else {
+			data.OutsideSourceStaticEntries[i].OutsideStaticPool = types.StringNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -356,6 +1076,117 @@ func (data *NAT) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			data.InsideSourceInterfaces = append(data.InsideSourceInterfaces, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "inside.source.static.nat-static-transport-list"); value.Exists() {
+		data.InsideSourceStaticEntries = make([]NATInsideSourceStaticEntries, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := NATInsideSourceStaticEntries{}
+			if cValue := v.Get("local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("network-config"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := v.Get("no-alias"); cValue.Exists() {
+				item.NoAlias = types.BoolValue(true)
+			} else {
+				item.NoAlias = types.BoolValue(false)
+			}
+			if cValue := v.Get("no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := v.Get("route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("reversible"); cValue.Exists() {
+				item.Reversible = types.BoolValue(true)
+			} else {
+				item.Reversible = types.BoolValue(false)
+			}
+			if cValue := v.Get("redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mapping-id"); cValue.Exists() {
+				item.MappingId = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("stateless"); cValue.Exists() {
+				item.Stateless = types.BoolValue(true)
+			} else {
+				item.Stateless = types.BoolValue(false)
+			}
+			if cValue := v.Get("forced"); cValue.Exists() {
+				item.Forced = types.BoolValue(true)
+			} else {
+				item.Forced = types.BoolValue(false)
+			}
+			if cValue := v.Get("overload"); cValue.Exists() {
+				item.InsideStaticOverload = types.BoolValue(true)
+			} else {
+				item.InsideStaticOverload = types.BoolValue(false)
+			}
+			if cValue := v.Get("pool"); cValue.Exists() {
+				item.InsideStaticPool = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("egress-interface-new.Loopback"); cValue.Exists() {
+				item.EgressInterfaceLoopback = types.StringValue(cValue.String())
+			}
+			data.InsideSourceStaticEntries = append(data.InsideSourceStaticEntries, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "outside.source.static.nat-static-transport-list-no-vrf"); value.Exists() {
+		data.OutsideSourceStaticEntries = make([]NATOutsideSourceStaticEntries, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := NATOutsideSourceStaticEntries{}
+			if cValue := v.Get("global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("network"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := v.Get("no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := v.Get("redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("match-in-vrf"); cValue.Exists() {
+				item.MatchInVrf = types.BoolValue(true)
+			} else {
+				item.MatchInVrf = types.BoolValue(false)
+			}
+			if cValue := v.Get("pool"); cValue.Exists() {
+				item.OutsideStaticPool = types.StringValue(cValue.String())
+			}
+			data.OutsideSourceStaticEntries = append(data.OutsideSourceStaticEntries, item)
 			return true
 		})
 	}
@@ -397,6 +1228,117 @@ func (data *NATData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "inside.source.static.nat-static-transport-list"); value.Exists() {
+		data.InsideSourceStaticEntries = make([]NATInsideSourceStaticEntriesData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := NATInsideSourceStaticEntriesData{}
+			if cValue := v.Get("local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("network-config"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := v.Get("no-alias"); cValue.Exists() {
+				item.NoAlias = types.BoolValue(true)
+			} else {
+				item.NoAlias = types.BoolValue(false)
+			}
+			if cValue := v.Get("no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := v.Get("route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("reversible"); cValue.Exists() {
+				item.Reversible = types.BoolValue(true)
+			} else {
+				item.Reversible = types.BoolValue(false)
+			}
+			if cValue := v.Get("redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mapping-id"); cValue.Exists() {
+				item.MappingId = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("stateless"); cValue.Exists() {
+				item.Stateless = types.BoolValue(true)
+			} else {
+				item.Stateless = types.BoolValue(false)
+			}
+			if cValue := v.Get("forced"); cValue.Exists() {
+				item.Forced = types.BoolValue(true)
+			} else {
+				item.Forced = types.BoolValue(false)
+			}
+			if cValue := v.Get("overload"); cValue.Exists() {
+				item.InsideStaticOverload = types.BoolValue(true)
+			} else {
+				item.InsideStaticOverload = types.BoolValue(false)
+			}
+			if cValue := v.Get("pool"); cValue.Exists() {
+				item.InsideStaticPool = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("egress-interface-new.Loopback"); cValue.Exists() {
+				item.EgressInterfaceLoopback = types.StringValue(cValue.String())
+			}
+			data.InsideSourceStaticEntries = append(data.InsideSourceStaticEntries, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "outside.source.static.nat-static-transport-list-no-vrf"); value.Exists() {
+		data.OutsideSourceStaticEntries = make([]NATOutsideSourceStaticEntriesData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := NATOutsideSourceStaticEntriesData{}
+			if cValue := v.Get("global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("network"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := v.Get("no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := v.Get("redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("match-in-vrf"); cValue.Exists() {
+				item.MatchInVrf = types.BoolValue(true)
+			} else {
+				item.MatchInVrf = types.BoolValue(false)
+			}
+			if cValue := v.Get("pool"); cValue.Exists() {
+				item.OutsideStaticPool = types.StringValue(cValue.String())
+			}
+			data.OutsideSourceStaticEntries = append(data.OutsideSourceStaticEntries, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -428,6 +1370,117 @@ func (data *NAT) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			data.InsideSourceInterfaces = append(data.InsideSourceInterfaces, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/static/nat-static-transport-list"); value.Exists() {
+		data.InsideSourceStaticEntries = make([]NATInsideSourceStaticEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := NATInsideSourceStaticEntries{}
+			if cValue := helpers.GetFromXPath(v, "local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network-config"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "no-alias"); cValue.Exists() {
+				item.NoAlias = types.BoolValue(true)
+			} else {
+				item.NoAlias = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "reversible"); cValue.Exists() {
+				item.Reversible = types.BoolValue(true)
+			} else {
+				item.Reversible = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mapping-id"); cValue.Exists() {
+				item.MappingId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "stateless"); cValue.Exists() {
+				item.Stateless = types.BoolValue(true)
+			} else {
+				item.Stateless = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "forced"); cValue.Exists() {
+				item.Forced = types.BoolValue(true)
+			} else {
+				item.Forced = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "overload"); cValue.Exists() {
+				item.InsideStaticOverload = types.BoolValue(true)
+			} else {
+				item.InsideStaticOverload = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pool"); cValue.Exists() {
+				item.InsideStaticPool = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "egress-interface-new/Loopback"); cValue.Exists() {
+				item.EgressInterfaceLoopback = types.StringValue(cValue.String())
+			}
+			data.InsideSourceStaticEntries = append(data.InsideSourceStaticEntries, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf"); value.Exists() {
+		data.OutsideSourceStaticEntries = make([]NATOutsideSourceStaticEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := NATOutsideSourceStaticEntries{}
+			if cValue := helpers.GetFromXPath(v, "global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match-in-vrf"); cValue.Exists() {
+				item.MatchInVrf = types.BoolValue(true)
+			} else {
+				item.MatchInVrf = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pool"); cValue.Exists() {
+				item.OutsideStaticPool = types.StringValue(cValue.String())
+			}
+			data.OutsideSourceStaticEntries = append(data.OutsideSourceStaticEntries, item)
 			return true
 		})
 	}
@@ -465,6 +1518,117 @@ func (data *NATData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/static/nat-static-transport-list"); value.Exists() {
+		data.InsideSourceStaticEntries = make([]NATInsideSourceStaticEntriesData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := NATInsideSourceStaticEntriesData{}
+			if cValue := helpers.GetFromXPath(v, "local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network-config"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "no-alias"); cValue.Exists() {
+				item.NoAlias = types.BoolValue(true)
+			} else {
+				item.NoAlias = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "reversible"); cValue.Exists() {
+				item.Reversible = types.BoolValue(true)
+			} else {
+				item.Reversible = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mapping-id"); cValue.Exists() {
+				item.MappingId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "stateless"); cValue.Exists() {
+				item.Stateless = types.BoolValue(true)
+			} else {
+				item.Stateless = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "forced"); cValue.Exists() {
+				item.Forced = types.BoolValue(true)
+			} else {
+				item.Forced = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "overload"); cValue.Exists() {
+				item.InsideStaticOverload = types.BoolValue(true)
+			} else {
+				item.InsideStaticOverload = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pool"); cValue.Exists() {
+				item.InsideStaticPool = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "egress-interface-new/Loopback"); cValue.Exists() {
+				item.EgressInterfaceLoopback = types.StringValue(cValue.String())
+			}
+			data.InsideSourceStaticEntries = append(data.InsideSourceStaticEntries, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf"); value.Exists() {
+		data.OutsideSourceStaticEntries = make([]NATOutsideSourceStaticEntriesData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := NATOutsideSourceStaticEntriesData{}
+			if cValue := helpers.GetFromXPath(v, "global-ip"); cValue.Exists() {
+				item.GlobalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "local-ip"); cValue.Exists() {
+				item.LocalIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "extendable"); cValue.Exists() {
+				item.Extendable = types.BoolValue(true)
+			} else {
+				item.Extendable = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "no-payload"); cValue.Exists() {
+				item.NoPayload = types.BoolValue(true)
+			} else {
+				item.NoPayload = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "redundancy"); cValue.Exists() {
+				item.Redundancy = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match-in-vrf"); cValue.Exists() {
+				item.MatchInVrf = types.BoolValue(true)
+			} else {
+				item.MatchInVrf = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pool"); cValue.Exists() {
+				item.OutsideStaticPool = types.StringValue(cValue.String())
+			}
+			data.OutsideSourceStaticEntries = append(data.OutsideSourceStaticEntries, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -473,6 +1637,131 @@ func (data *NATData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.OutsideSourceStaticEntries {
+		stateKeyValues := [...]string{state.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), state.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.OutsideSourceStaticEntries[i].GlobalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.OutsideSourceStaticEntries[i].LocalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.OutsideSourceStaticEntries {
+			found = true
+			if state.OutsideSourceStaticEntries[i].GlobalIp.ValueString() != data.OutsideSourceStaticEntries[j].GlobalIp.ValueString() {
+				found = false
+			}
+			if state.OutsideSourceStaticEntries[i].LocalIp.ValueString() != data.OutsideSourceStaticEntries[j].LocalIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.OutsideSourceStaticEntries[i].OutsideStaticPool.IsNull() && data.OutsideSourceStaticEntries[j].OutsideStaticPool.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/pool", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.OutsideSourceStaticEntries[i].MatchInVrf.IsNull() && data.OutsideSourceStaticEntries[j].MatchInVrf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/match-in-vrf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.OutsideSourceStaticEntries[i].Redundancy.IsNull() && data.OutsideSourceStaticEntries[j].Redundancy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/redundancy", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.OutsideSourceStaticEntries[i].NoPayload.IsNull() && data.OutsideSourceStaticEntries[j].NoPayload.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/no-payload", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.OutsideSourceStaticEntries[i].Extendable.IsNull() && data.OutsideSourceStaticEntries[j].Extendable.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/extendable", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.OutsideSourceStaticEntries[i].Mask.IsNull() && data.OutsideSourceStaticEntries[j].Mask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.OutsideSourceStaticEntries[i].Network.IsNull() && data.OutsideSourceStaticEntries[j].Network.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/network", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.InsideSourceStaticEntries {
+		stateKeyValues := [...]string{state.InsideSourceStaticEntries[i].LocalIp.ValueString(), state.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.InsideSourceStaticEntries[i].LocalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.InsideSourceStaticEntries[i].GlobalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.InsideSourceStaticEntries {
+			found = true
+			if state.InsideSourceStaticEntries[i].LocalIp.ValueString() != data.InsideSourceStaticEntries[j].LocalIp.ValueString() {
+				found = false
+			}
+			if state.InsideSourceStaticEntries[i].GlobalIp.ValueString() != data.InsideSourceStaticEntries[j].GlobalIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.InsideSourceStaticEntries[i].EgressInterfaceLoopback.IsNull() && data.InsideSourceStaticEntries[j].EgressInterfaceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/egress-interface-new/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].InsideStaticPool.IsNull() && data.InsideSourceStaticEntries[j].InsideStaticPool.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/pool", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].InsideStaticOverload.IsNull() && data.InsideSourceStaticEntries[j].InsideStaticOverload.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/overload", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].Forced.IsNull() && data.InsideSourceStaticEntries[j].Forced.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/forced", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].Stateless.IsNull() && data.InsideSourceStaticEntries[j].Stateless.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/stateless", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].MappingId.IsNull() && data.InsideSourceStaticEntries[j].MappingId.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/mapping-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].Redundancy.IsNull() && data.InsideSourceStaticEntries[j].Redundancy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/redundancy", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].Reversible.IsNull() && data.InsideSourceStaticEntries[j].Reversible.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/reversible", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].RouteMap.IsNull() && data.InsideSourceStaticEntries[j].RouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].NoPayload.IsNull() && data.InsideSourceStaticEntries[j].NoPayload.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/no-payload", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].NoAlias.IsNull() && data.InsideSourceStaticEntries[j].NoAlias.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/no-alias", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].Extendable.IsNull() && data.InsideSourceStaticEntries[j].Extendable.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/extendable", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].Mask.IsNull() && data.InsideSourceStaticEntries[j].Mask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.InsideSourceStaticEntries[i].Network.IsNull() && data.InsideSourceStaticEntries[j].Network.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/network-config", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.InsideSourceInterfaces {
 		stateKeyValues := [...]string{state.InsideSourceInterfaces[i].Id.ValueString()}
 
@@ -536,6 +1825,141 @@ func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
 
 func (data *NAT) addDeletedItemsXML(ctx context.Context, state NAT, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.OutsideSourceStaticEntries {
+		stateKeys := [...]string{"global-ip", "local-ip"}
+		stateKeyValues := [...]string{state.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), state.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.OutsideSourceStaticEntries[i].GlobalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.OutsideSourceStaticEntries[i].LocalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.OutsideSourceStaticEntries {
+			found = true
+			if state.OutsideSourceStaticEntries[i].GlobalIp.ValueString() != data.OutsideSourceStaticEntries[j].GlobalIp.ValueString() {
+				found = false
+			}
+			if state.OutsideSourceStaticEntries[i].LocalIp.ValueString() != data.OutsideSourceStaticEntries[j].LocalIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.OutsideSourceStaticEntries[i].OutsideStaticPool.IsNull() && data.OutsideSourceStaticEntries[j].OutsideStaticPool.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/pool", predicates))
+				}
+				if !state.OutsideSourceStaticEntries[i].MatchInVrf.IsNull() && data.OutsideSourceStaticEntries[j].MatchInVrf.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/match-in-vrf", predicates))
+				}
+				if !state.OutsideSourceStaticEntries[i].Redundancy.IsNull() && data.OutsideSourceStaticEntries[j].Redundancy.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/redundancy", predicates))
+				}
+				if !state.OutsideSourceStaticEntries[i].NoPayload.IsNull() && data.OutsideSourceStaticEntries[j].NoPayload.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/no-payload", predicates))
+				}
+				if !state.OutsideSourceStaticEntries[i].Extendable.IsNull() && data.OutsideSourceStaticEntries[j].Extendable.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/extendable", predicates))
+				}
+				if !state.OutsideSourceStaticEntries[i].Mask.IsNull() && data.OutsideSourceStaticEntries[j].Mask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/mask", predicates))
+				}
+				if !state.OutsideSourceStaticEntries[i].Network.IsNull() && data.OutsideSourceStaticEntries[j].Network.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v/network", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v", predicates))
+		}
+	}
+	for i := range state.InsideSourceStaticEntries {
+		stateKeys := [...]string{"local-ip", "global-ip"}
+		stateKeyValues := [...]string{state.InsideSourceStaticEntries[i].LocalIp.ValueString(), state.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.InsideSourceStaticEntries[i].LocalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.InsideSourceStaticEntries[i].GlobalIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.InsideSourceStaticEntries {
+			found = true
+			if state.InsideSourceStaticEntries[i].LocalIp.ValueString() != data.InsideSourceStaticEntries[j].LocalIp.ValueString() {
+				found = false
+			}
+			if state.InsideSourceStaticEntries[i].GlobalIp.ValueString() != data.InsideSourceStaticEntries[j].GlobalIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.InsideSourceStaticEntries[i].EgressInterfaceLoopback.IsNull() && data.InsideSourceStaticEntries[j].EgressInterfaceLoopback.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/egress-interface-new/Loopback", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].InsideStaticPool.IsNull() && data.InsideSourceStaticEntries[j].InsideStaticPool.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/pool", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].InsideStaticOverload.IsNull() && data.InsideSourceStaticEntries[j].InsideStaticOverload.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/overload", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].Forced.IsNull() && data.InsideSourceStaticEntries[j].Forced.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/forced", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].Stateless.IsNull() && data.InsideSourceStaticEntries[j].Stateless.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/stateless", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].MappingId.IsNull() && data.InsideSourceStaticEntries[j].MappingId.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/mapping-id", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].Redundancy.IsNull() && data.InsideSourceStaticEntries[j].Redundancy.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/redundancy", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].Reversible.IsNull() && data.InsideSourceStaticEntries[j].Reversible.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/reversible", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].RouteMap.IsNull() && data.InsideSourceStaticEntries[j].RouteMap.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/route-map", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].NoPayload.IsNull() && data.InsideSourceStaticEntries[j].NoPayload.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/no-payload", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].NoAlias.IsNull() && data.InsideSourceStaticEntries[j].NoAlias.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/no-alias", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].Extendable.IsNull() && data.InsideSourceStaticEntries[j].Extendable.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/extendable", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].Mask.IsNull() && data.InsideSourceStaticEntries[j].Mask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/mask", predicates))
+				}
+				if !state.InsideSourceStaticEntries[i].Network.IsNull() && data.InsideSourceStaticEntries[j].Network.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v/network-config", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/inside/source/static/nat-static-transport-list%v", predicates))
+		}
+	}
 	for i := range state.InsideSourceInterfaces {
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{state.InsideSourceInterfaces[i].Id.ValueString()}
@@ -611,6 +2035,44 @@ func (data *NAT) addDeletedItemsXML(ctx context.Context, state NAT, body string)
 func (data *NAT) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.OutsideSourceStaticEntries {
+		keyValues := [...]string{data.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), data.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+		if !data.OutsideSourceStaticEntries[i].MatchInVrf.IsNull() && !data.OutsideSourceStaticEntries[i].MatchInVrf.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/match-in-vrf", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.OutsideSourceStaticEntries[i].NoPayload.IsNull() && !data.OutsideSourceStaticEntries[i].NoPayload.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/no-payload", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.OutsideSourceStaticEntries[i].Extendable.IsNull() && !data.OutsideSourceStaticEntries[i].Extendable.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v/extendable", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
+	for i := range data.InsideSourceStaticEntries {
+		keyValues := [...]string{data.InsideSourceStaticEntries[i].LocalIp.ValueString(), data.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+		if !data.InsideSourceStaticEntries[i].InsideStaticOverload.IsNull() && !data.InsideSourceStaticEntries[i].InsideStaticOverload.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/overload", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.InsideSourceStaticEntries[i].Forced.IsNull() && !data.InsideSourceStaticEntries[i].Forced.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/forced", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.InsideSourceStaticEntries[i].Stateless.IsNull() && !data.InsideSourceStaticEntries[i].Stateless.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/stateless", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.InsideSourceStaticEntries[i].Reversible.IsNull() && !data.InsideSourceStaticEntries[i].Reversible.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/reversible", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.InsideSourceStaticEntries[i].NoPayload.IsNull() && !data.InsideSourceStaticEntries[i].NoPayload.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/no-payload", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.InsideSourceStaticEntries[i].NoAlias.IsNull() && !data.InsideSourceStaticEntries[i].NoAlias.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/no-alias", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.InsideSourceStaticEntries[i].Extendable.IsNull() && !data.InsideSourceStaticEntries[i].Extendable.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v/extendable", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
 	for i := range data.InsideSourceInterfaces {
 		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
 
@@ -631,6 +2093,16 @@ func (data *NAT) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *NAT) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.OutsideSourceStaticEntries {
+		keyValues := [...]string{data.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), data.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/outside/source/static/nat-static-transport-list-no-vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.InsideSourceStaticEntries {
+		keyValues := [...]string{data.InsideSourceStaticEntries[i].LocalIp.ValueString(), data.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inside/source/static/nat-static-transport-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.InsideSourceInterfaces {
 		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
 
@@ -646,6 +2118,26 @@ func (data *NAT) getDeletePaths(ctx context.Context) []string {
 
 func (data *NAT) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.OutsideSourceStaticEntries {
+		keys := [...]string{"global-ip", "local-ip"}
+		keyValues := [...]string{data.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), data.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf%v", predicates))
+	}
+	for i := range data.InsideSourceStaticEntries {
+		keys := [...]string{"local-ip", "global-ip"}
+		keyValues := [...]string{data.InsideSourceStaticEntries[i].LocalIp.ValueString(), data.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/inside/source/static/nat-static-transport-list%v", predicates))
+	}
 	for i := range data.InsideSourceInterfaces {
 		keys := [...]string{"id"}
 		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}

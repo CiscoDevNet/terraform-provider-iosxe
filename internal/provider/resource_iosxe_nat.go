@@ -23,9 +23,11 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -109,6 +111,143 @@ func (r *NATResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 									},
 								},
 							},
+						},
+					},
+				},
+			},
+			"inside_source_static_entries": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"local_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"global_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"network": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Subnet translation").AddStringEnumDescription("network").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("network"),
+							},
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"extendable": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Extend this translation when used").String,
+							Optional:            true,
+						},
+						"no_alias": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Do not create an alias for the global address").String,
+							Optional:            true,
+						},
+						"no_payload": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No translation of embedded address/port in the payload").String,
+							Optional:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify route-map").String,
+							Optional:            true,
+						},
+						"reversible": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"redundancy": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NAT redundancy operation").String,
+							Optional:            true,
+						},
+						"mapping_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Associate a mapping id to this mapping").AddIntegerRangeDescription(1, 2147483647).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483647),
+							},
+						},
+						"stateless": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No flow entries (session) for mapping").String,
+							Optional:            true,
+						},
+						"forced": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Delete this entry and its children, even if in use").String,
+							Optional:            true,
+						},
+						"inside_static_overload": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Overload an address translation").String,
+							Optional:            true,
+						},
+						"inside_static_pool": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name pool of local addresses").String,
+							Optional:            true,
+						},
+						"egress_interface_loopback": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"outside_source_static_entries": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"global_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"local_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"network": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Subnet translation").AddStringEnumDescription("network").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("network"),
+							},
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"extendable": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Extend this translation when used").String,
+							Optional:            true,
+						},
+						"no_payload": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No translation of embedded address/port in the payload").String,
+							Optional:            true,
+						},
+						"redundancy": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NAT redundancy operation").String,
+							Optional:            true,
+						},
+						"match_in_vrf": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match incoming vrf").String,
+							Optional:            true,
+						},
+						"outside_static_pool": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name pool of local addresses").String,
+							Optional:            true,
 						},
 					},
 				},

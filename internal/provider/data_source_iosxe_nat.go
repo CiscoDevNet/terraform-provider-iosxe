@@ -96,6 +96,122 @@ func (d *NATDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"inside_source_static_entries": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"local_ip": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"global_ip": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"network": schema.StringAttribute{
+							MarkdownDescription: "Subnet translation",
+							Computed:            true,
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"extendable": schema.BoolAttribute{
+							MarkdownDescription: "Extend this translation when used",
+							Computed:            true,
+						},
+						"no_alias": schema.BoolAttribute{
+							MarkdownDescription: "Do not create an alias for the global address",
+							Computed:            true,
+						},
+						"no_payload": schema.BoolAttribute{
+							MarkdownDescription: "No translation of embedded address/port in the payload",
+							Computed:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: "Specify route-map",
+							Computed:            true,
+						},
+						"reversible": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"redundancy": schema.StringAttribute{
+							MarkdownDescription: "NAT redundancy operation",
+							Computed:            true,
+						},
+						"mapping_id": schema.Int64Attribute{
+							MarkdownDescription: "Associate a mapping id to this mapping",
+							Computed:            true,
+						},
+						"stateless": schema.BoolAttribute{
+							MarkdownDescription: "No flow entries (session) for mapping",
+							Computed:            true,
+						},
+						"forced": schema.BoolAttribute{
+							MarkdownDescription: "Delete this entry and its children, even if in use",
+							Computed:            true,
+						},
+						"inside_static_overload": schema.BoolAttribute{
+							MarkdownDescription: "Overload an address translation",
+							Computed:            true,
+						},
+						"inside_static_pool": schema.StringAttribute{
+							MarkdownDescription: "Name pool of local addresses",
+							Computed:            true,
+						},
+						"egress_interface_loopback": schema.StringAttribute{
+							MarkdownDescription: "Loopback interface",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"outside_source_static_entries": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"global_ip": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"local_ip": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"network": schema.StringAttribute{
+							MarkdownDescription: "Subnet translation",
+							Computed:            true,
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"extendable": schema.BoolAttribute{
+							MarkdownDescription: "Extend this translation when used",
+							Computed:            true,
+						},
+						"no_payload": schema.BoolAttribute{
+							MarkdownDescription: "No translation of embedded address/port in the payload",
+							Computed:            true,
+						},
+						"redundancy": schema.StringAttribute{
+							MarkdownDescription: "NAT redundancy operation",
+							Computed:            true,
+						},
+						"match_in_vrf": schema.BoolAttribute{
+							MarkdownDescription: "Match incoming vrf",
+							Computed:            true,
+						},
+						"outside_static_pool": schema.StringAttribute{
+							MarkdownDescription: "Name pool of local addresses",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }
