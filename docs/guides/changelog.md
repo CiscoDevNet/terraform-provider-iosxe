@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- BREAKING CHANGE: Remove the `auto_qos_voip` attribute from the `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources. This attribute was never functional, as the corresponding YANG leaf is a choice leaf that requires selection from the existing `auto_qos_voip_cisco_phone`, `auto_qos_voip_cisco_softphone`, and `auto_qos_voip_trust` attributes.
 - Add `iosxe_bgp_bmp_server` resource and data source
 - Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_tunnel` resource and data source
 - Add `iosxe_device_tracking` resource and data source
