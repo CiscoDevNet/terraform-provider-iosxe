@@ -92,8 +92,28 @@ func (d *InterfaceOSPFv3DataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Specify OSPF point-to-point network",
 				Computed:            true,
 			},
+			"bfd": schema.BoolAttribute{
+				MarkdownDescription: "Enable BFD on this interface",
+				Computed:            true,
+			},
 			"cost": schema.Int64Attribute{
 				MarkdownDescription: "Static route cost value of the interface",
+				Computed:            true,
+			},
+			"dead_interval": schema.Int64Attribute{
+				MarkdownDescription: "Interval after which a neighbor is declared dead",
+				Computed:            true,
+			},
+			"hello_interval": schema.Int64Attribute{
+				MarkdownDescription: "Time between HELLO packets",
+				Computed:            true,
+			},
+			"mtu_ignore": schema.BoolAttribute{
+				MarkdownDescription: "Ignores the MTU in DBD packets",
+				Computed:            true,
+			},
+			"priority": schema.Int64Attribute{
+				MarkdownDescription: "Router priority",
 				Computed:            true,
 			},
 		},
