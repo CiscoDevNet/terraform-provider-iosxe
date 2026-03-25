@@ -1,3 +1,6 @@
+# Manual code: getDeletedItems, addDeletedItemsXML, getDeletePaths, addDeletePathsXML in model_iosxe_line.go
+# have template markers removed. When aux entries are removed from config, only sub-attributes are deleted
+# to prevent "no line aux 0" which the device refuses. The aux line is a permanent device fixture.
 ---
 name: Line
 path: /Cisco-IOS-XE-native:native/line
