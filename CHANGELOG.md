@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `no_delete` attribute to the `/Cisco-IOS-XE-native:native/line` XPath, which prevents the incorrect attempted deletion of auxiliary (`line aux`) and console (`line con`) lines when corresponding resources are removed
 - Add `iosxe_bgp_bmp_server` resource and data source
 - Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_tunnel` resource and data source
 - Add `iosxe_device_tracking` resource and data source
