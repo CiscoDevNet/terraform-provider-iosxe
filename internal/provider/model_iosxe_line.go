@@ -41,12 +41,11 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type Line struct {
-	Device     types.String  `tfsdk:"device"`
-	Id         types.String  `tfsdk:"id"`
-	DeleteMode types.String  `tfsdk:"delete_mode"`
-	Console    []LineConsole `tfsdk:"console"`
-	Vty        []LineVty     `tfsdk:"vty"`
-	Aux        []LineAux     `tfsdk:"aux"`
+	Device  types.String  `tfsdk:"device"`
+	Id      types.String  `tfsdk:"id"`
+	Console []LineConsole `tfsdk:"console"`
+	Vty     []LineVty     `tfsdk:"vty"`
+	Aux     []LineAux     `tfsdk:"aux"`
 }
 type LineConsole struct {
 	First               types.String `tfsdk:"first"`

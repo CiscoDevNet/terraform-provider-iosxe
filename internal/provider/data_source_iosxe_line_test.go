@@ -76,7 +76,6 @@ func TestAccDataSourceIosxeLine(t *testing.T) {
 
 func testAccDataSourceIosxeLineConfig() string {
 	config := `resource "iosxe_line" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	console = [{` + "\n"
 	config += `		first = "0"` + "\n"
 	config += `		exec_timeout_minutes = 45` + "\n"

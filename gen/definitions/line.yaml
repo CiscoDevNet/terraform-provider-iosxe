@@ -1,6 +1,7 @@
 ---
 name: Line
 path: /Cisco-IOS-XE-native:native/line
+no_delete: true
 doc_category: System
 test_tags: [LINE]
 attributes:
