@@ -42,18 +42,3 @@ attributes:
   - yang_name: udi/sn
     example: C9KDUMMYSN
     exclude_test: true
-  - yang_name: feature/name
-    example: dna-advantage
-    exclude_test: true
-  - yang_name: feature/port/bulk
-    example: true
-    exclude_test: true
-  - yang_name: feature/port/onegig
-    example: 8
-    exclude_test: true
-  - yang_name: feature/port/b-6xonegig
-    example: 12
-    exclude_test: true
-  - yang_name: feature/port/tengig
-    example: 3
-    exclude_test: true

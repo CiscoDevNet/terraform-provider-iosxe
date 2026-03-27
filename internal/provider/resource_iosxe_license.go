@@ -26,7 +26,6 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -138,35 +137,6 @@ func (r *LicenseResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"udi_sn": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-			},
-			"feature_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"feature_port_bulk": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Bulk port licenses").String,
-				Optional:            true,
-			},
-			"feature_port_onegig": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable 1G port bundles").AddIntegerRangeDescription(1, 2).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2),
-				},
-			},
-			"feature_port_b_6xonegig": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable 6x1G port bundles").AddIntegerRangeDescription(1, 2).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2),
-				},
-			},
-			"feature_port_tengig": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable 10G port bundles").AddIntegerRangeDescription(1, 2).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2),
-				},
 			},
 		},
 	}
