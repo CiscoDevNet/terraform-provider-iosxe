@@ -5,6 +5,7 @@
 - Add `iosxe_device_tracking` resource and data source
 - Add `iosxe_device_tracking_policy` resource and data source
 - Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
+- Fix banner whitespace normalization for both RESTCONF and NETCONF read paths, and mark banner attributes as `Computed` to prevent idempotency issues with leading/trailing whitespace
 
 ## 0.16.0
 
