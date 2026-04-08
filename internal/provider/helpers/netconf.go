@@ -1611,7 +1611,15 @@ func TrimNetconfTrailingWhitespace(s string) string {
 
 	lines := strings.Split(s, "\n")
 	for i, line := range lines {
+		// IOS-XE strips both leading and trailing whitespace from banner text
+		// on the round-trip regardless of protocol (RESTCONF or NETCONF)
 		lines[i] = strings.TrimRight(line, " \t\r")
+		lines[i] = strings.TrimLeft(lines[i], " \t")
+	}
+
+	// Remove leading empty lines
+	for len(lines) > 0 && lines[0] == "" {
+		lines = lines[1:]
 	}
 
 	// Remove trailing empty lines

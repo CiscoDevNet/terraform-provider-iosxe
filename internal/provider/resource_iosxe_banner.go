@@ -90,6 +90,7 @@ func (r *BannerResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"exec_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					helpers.UseNetconfTrailingWhitespaceTrimming(),
 				},
@@ -97,6 +98,7 @@ func (r *BannerResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"login_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					helpers.UseNetconfTrailingWhitespaceTrimming(),
 				},
@@ -104,6 +106,7 @@ func (r *BannerResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"prompt_timeout_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					helpers.UseNetconfTrailingWhitespaceTrimming(),
 				},
@@ -111,6 +114,7 @@ func (r *BannerResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"motd_banner": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Banner message").String,
 				Optional:            true,
+				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					helpers.UseNetconfTrailingWhitespaceTrimming(),
 				},
