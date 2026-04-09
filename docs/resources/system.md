@@ -175,6 +175,11 @@ resource "iosxe_system" "example" {
 - `ip_routing` (Boolean) Enable or disable IP routing
 - `ip_routing_protocol_purge_interface` (Boolean) Perform IP routing protocol routes purge on link failures
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
+- `ip_sftp_password` (String, Sensitive)
+- `ip_sftp_password_encryption` (String) - Choices: `0`, `7`
+- `ip_sftp_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `ip_sftp_password_wo_version` (Number) The write-only version of the attribute.
+- `ip_sftp_username` (String) Specify username for SFTP connections
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
   - Range: `0`-`5`

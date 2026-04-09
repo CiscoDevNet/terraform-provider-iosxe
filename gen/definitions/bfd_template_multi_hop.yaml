@@ -26,27 +26,27 @@ attributes:
     tf_name: interval_milliseconds_multiplier
     example: 40
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/microseconds
-    xpath: interval-multihop-v2/microseconds
+    xpath: interval-multihop-v2/ms-unit/microseconds
     tf_name: interval_microseconds
     example: true
     exclude_test: true
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/both/both
-    xpath: interval-multihop-v2/both
+    xpath: interval-multihop-v2/ms-unit/both
     tf_name: interval_microseconds_both
     example: 9999
     exclude_test: true
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-tx
-    xpath: interval-multihop-v2/min-tx
+    xpath: interval-multihop-v2/ms-unit/min-tx
     tf_name: interval_microseconds_min_tx
     example: 4500
     exclude_test: true
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-rx
-    xpath: interval-multihop-v2/min-rx
+    xpath: interval-multihop-v2/ms-unit/min-rx
     tf_name: interval_microseconds_min_rx
     example: 5500
     exclude_test: true
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/multiplier
-    xpath: interval-multihop-v2/multiplier
+    xpath: interval-multihop-v2/ms-unit/multiplier
     tf_name: interval_microseconds_multiplier
     example: 40
     exclude_test: true
