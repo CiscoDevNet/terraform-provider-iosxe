@@ -475,6 +475,34 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Enable server side of SCP").String,
 				Optional:            true,
 			},
+			"ip_sftp_username": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify username for SFTP connections").String,
+				Optional:            true,
+			},
+			"ip_sftp_password_encryption": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "7"),
+				},
+			},
+			"ip_sftp_password": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				Sensitive:           true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
+			"ip_sftp_password_wo": schema.StringAttribute{
+				MarkdownDescription: "The write-only value of the attribute.",
+				WriteOnly:           true,
+				Optional:            true,
+			},
+			"ip_sftp_password_wo_version": schema.Int64Attribute{
+				MarkdownDescription: "The write-only version of the attribute.",
+				Optional:            true,
+			},
 			"ip_ssh_version": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify protocol version supported").AddStringEnumDescription("2").String,
 				Optional:            true,

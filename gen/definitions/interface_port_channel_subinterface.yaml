@@ -76,9 +76,6 @@ attributes:
   - yang_name: Cisco-IOS-XE-switch:auto/qos/video/media-player
     example: true
     exclude_test: true
-  - yang_name: Cisco-IOS-XE-switch:auto/qos/voip
-    example: true
-    exclude_test: true
   - yang_name: Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone
     example: true
     exclude_test: true
