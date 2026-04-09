@@ -41,6 +41,10 @@ func TestAccIosxeNAT(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.id", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.interface", "GigabitEthernet4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.overload", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_static_entries.0.local_ip", "10.0.0.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_static_entries.0.global_ip", "203.0.113.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "outside_source_static_entries.0.global_ip", "198.51.100.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "outside_source_static_entries.0.local_ip", "10.0.0.2"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -57,7 +61,7 @@ func TestAccIosxeNAT(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeNATImportStateIdFunc("iosxe_nat.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"inside_source_static_entries.0.extendable", "inside_source_static_entries.0.no_alias", "inside_source_static_entries.0.no_payload", "inside_source_static_entries.0.reversible", "inside_source_static_entries.0.stateless", "inside_source_static_entries.0.forced", "inside_source_static_entries.0.inside_static_overload", "outside_source_static_entries.0.extendable", "outside_source_static_entries.0.no_payload", "outside_source_static_entries.0.match_in_vrf"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -100,6 +104,14 @@ func testAccIosxeNATConfig_all() string {
 	config += `			interface = "GigabitEthernet4"` + "\n"
 	config += `			overload = true` + "\n"
 	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	inside_source_static_entries = [{` + "\n"
+	config += `		local_ip = "10.0.0.1"` + "\n"
+	config += `		global_ip = "203.0.113.1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	outside_source_static_entries = [{` + "\n"
+	config += `		global_ip = "198.51.100.1"` + "\n"
+	config += `		local_ip = "10.0.0.2"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config
