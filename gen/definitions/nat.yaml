@@ -22,3 +22,106 @@ attributes:
           - yang_name: overload-new
             tf_name: overload
             example: true
+  - yang_name: inside/source/static/nat-static-transport-list
+    tf_name: inside_source_static_entries
+    type: List
+    attributes:
+      - yang_name: local-ip
+        id: true
+        example: 10.0.0.1
+      - yang_name: global-ip
+        id: true
+        example: 203.0.113.1
+      - yang_name: network-config
+        tf_name: network
+        example: network
+        enum_values: [network]
+        exclude_test: true
+      - yang_name: mask
+        exclude_test: true
+        example: 255.255.255.0
+      - yang_name: extendable
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: no-alias
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: no-payload
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: route-map
+        exclude_test: true
+        example: RM1
+      - yang_name: reversible
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: redundancy
+        exclude_test: true
+        example: 1
+      - yang_name: mapping-id
+        exclude_test: true
+        example: 100
+        min_int: 1
+        max_int: 2147483647
+      - yang_name: stateless
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: forced
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: overload
+        tf_name: inside_static_overload
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: pool
+        tf_name: inside_static_pool
+        exclude_test: true
+        example: POOL1
+      - yang_name: egress-interface-new/interface-choice/Loopback/Loopback
+        xpath: egress-interface-new/Loopback
+        tf_name: egress_interface_loopback
+        exclude_test: true
+        example: 0
+  - yang_name: outside/source/static/nat-static-transport-list-no-vrf
+    tf_name: outside_source_static_entries
+    type: List
+    attributes:
+      - yang_name: global-ip
+        id: true
+        example: 198.51.100.1
+      - yang_name: local-ip
+        id: true
+        example: 10.0.0.2
+      - yang_name: network
+        example: network
+        enum_values: [network]
+        exclude_test: true
+      - yang_name: mask
+        exclude_test: true
+        example: 255.255.255.0
+      - yang_name: extendable
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: no-payload
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: redundancy
+        exclude_test: true
+        example: 1
+      - yang_name: match-in-vrf
+        example: true
+        type_yang_bool: empty
+        exclude_test: true
+      - yang_name: pool
+        tf_name: outside_static_pool
+        exclude_test: true
+        example: POOL1

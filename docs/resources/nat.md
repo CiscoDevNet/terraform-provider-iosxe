@@ -25,6 +25,18 @@ resource "iosxe_nat" "example" {
       ]
     }
   ]
+  inside_source_static_entries = [
+    {
+      local_ip  = "10.0.0.1"
+      global_ip = "203.0.113.1"
+    }
+  ]
+  outside_source_static_entries = [
+    {
+      global_ip = "198.51.100.1"
+      local_ip  = "10.0.0.2"
+    }
+  ]
 }
 ```
 
@@ -37,6 +49,8 @@ resource "iosxe_nat" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `inside_source_interfaces` (Attributes List) Specify access list describing local addresses (see [below for nested schema](#nestedatt--inside_source_interfaces))
+- `inside_source_static_entries` (Attributes List) (see [below for nested schema](#nestedatt--inside_source_static_entries))
+- `outside_source_static_entries` (Attributes List) (see [below for nested schema](#nestedatt--outside_source_static_entries))
 
 ### Read-Only
 
@@ -63,6 +77,55 @@ Required:
 Optional:
 
 - `overload` (Boolean) Overload an address translation
+
+
+
+<a id="nestedatt--inside_source_static_entries"></a>
+### Nested Schema for `inside_source_static_entries`
+
+Required:
+
+- `global_ip` (String)
+- `local_ip` (String)
+
+Optional:
+
+- `egress_interface_loopback` (String) Loopback interface
+- `extendable` (Boolean) Extend this translation when used
+- `forced` (Boolean) Delete this entry and its children, even if in use
+- `inside_static_overload` (Boolean) Overload an address translation
+- `inside_static_pool` (String) Name pool of local addresses
+- `mapping_id` (Number) Associate a mapping id to this mapping
+  - Range: `1`-`2147483647`
+- `mask` (String)
+- `network` (String) Subnet translation
+  - Choices: `network`
+- `no_alias` (Boolean) Do not create an alias for the global address
+- `no_payload` (Boolean) No translation of embedded address/port in the payload
+- `redundancy` (String) NAT redundancy operation
+- `reversible` (Boolean)
+- `route_map` (String) Specify route-map
+- `stateless` (Boolean) No flow entries (session) for mapping
+
+
+<a id="nestedatt--outside_source_static_entries"></a>
+### Nested Schema for `outside_source_static_entries`
+
+Required:
+
+- `global_ip` (String)
+- `local_ip` (String)
+
+Optional:
+
+- `extendable` (Boolean) Extend this translation when used
+- `mask` (String)
+- `match_in_vrf` (Boolean) Match incoming vrf
+- `network` (String) Subnet translation
+  - Choices: `network`
+- `no_payload` (Boolean) No translation of embedded address/port in the payload
+- `outside_static_pool` (String) Name pool of local addresses
+- `redundancy` (String) NAT redundancy operation
 
 ## Import
 

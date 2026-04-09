@@ -39,6 +39,10 @@ func TestAccDataSourceIosxeNAT(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_nat.test", "inside_source_interfaces.0.id", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.interface", "GigabitEthernet4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.overload", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_nat.test", "inside_source_static_entries.0.local_ip", "10.0.0.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_nat.test", "inside_source_static_entries.0.global_ip", "203.0.113.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_nat.test", "outside_source_static_entries.0.global_ip", "198.51.100.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_nat.test", "outside_source_static_entries.0.local_ip", "10.0.0.2"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -67,6 +71,14 @@ func testAccDataSourceIosxeNATConfig() string {
 	config += `			interface = "GigabitEthernet4"` + "\n"
 	config += `			overload = true` + "\n"
 	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	inside_source_static_entries = [{` + "\n"
+	config += `		local_ip = "10.0.0.1"` + "\n"
+	config += `		global_ip = "203.0.113.1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	outside_source_static_entries = [{` + "\n"
+	config += `		global_ip = "198.51.100.1"` + "\n"
+	config += `		local_ip = "10.0.0.2"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 
