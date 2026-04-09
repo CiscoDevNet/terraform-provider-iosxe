@@ -8382,7 +8382,7 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/ssh-version", state.getPath()))
 	}
 	if !state.IpSftpPassword.IsNull() && data.IpSftpPassword.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/sftp/password/password-text", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/sftp/password", state.getPath()))
 	}
 	if !state.IpSftpPasswordEncryption.IsNull() && data.IpSftpPasswordEncryption.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/sftp/password/encryption", state.getPath()))
@@ -9365,7 +9365,7 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/ssh/ssh-version")
 	}
 	if !state.IpSftpPassword.IsNull() && data.IpSftpPassword.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/sftp/password/password-text")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/sftp/password")
 	}
 	if !state.IpSftpPasswordEncryption.IsNull() && data.IpSftpPasswordEncryption.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/sftp/password/encryption")
@@ -10186,7 +10186,7 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/ssh-version", data.getPath()))
 	}
 	if !data.IpSftpPassword.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/sftp/password/password-text", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/sftp/password", data.getPath()))
 	}
 	if !data.IpSftpPasswordEncryption.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/sftp/password/encryption", data.getPath()))
@@ -10731,7 +10731,7 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/ssh/ssh-version")
 	}
 	if !data.IpSftpPassword.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/sftp/password/password-text")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/sftp/password")
 	}
 	if !data.IpSftpPasswordEncryption.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/sftp/password/encryption")

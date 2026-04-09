@@ -302,6 +302,7 @@ attributes:
     test_tags: [IOSXE1715]
   - yang_name: ip/sftp/password/password-text
     tf_name: ip_sftp_password
+    delete_parent: true
     write_only: true
     sensitive: true
     example: SftpPassword123
