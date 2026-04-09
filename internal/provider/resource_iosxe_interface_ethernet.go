@@ -251,10 +251,6 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Trust the Qos marking of the Cisco Media Player").String,
 				Optional:            true,
 			},
-			"auto_qos_voip": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure AutoQoS for VoIP").String,
-				Optional:            true,
-			},
 			"auto_qos_voip_cisco_phone": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP Phone").String,
 				Optional:            true,
