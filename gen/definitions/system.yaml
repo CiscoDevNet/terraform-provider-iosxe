@@ -292,6 +292,21 @@ attributes:
   - yang_name: ip/scp/server/enable
     example: true
     exclude_test: true
+  - yang_name: ip/sftp/username
+    example: sftpuser
+    test_tags: [IOSXE1715]
+  - yang_name: ip/sftp/password/encryption
+    tf_name: ip_sftp_password_encryption
+    write_only: true
+    example: 0
+    test_tags: [IOSXE1715]
+  - yang_name: ip/sftp/password/password-text
+    tf_name: ip_sftp_password
+    delete_parent: true
+    write_only: true
+    sensitive: true
+    example: SftpPassword123
+    test_tags: [IOSXE1715]
   - yang_name: ip/ssh/ssh-version
     tf_name: ip_ssh_version
     example: 2

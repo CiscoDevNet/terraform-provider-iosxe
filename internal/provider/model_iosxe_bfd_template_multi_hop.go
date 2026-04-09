@@ -155,20 +155,20 @@ func (data BFDTemplateMultiHop) toBody(ctx context.Context, config BFDTemplateMu
 	}
 	if !data.IntervalMicroseconds.IsNull() && !data.IntervalMicroseconds.IsUnknown() {
 		if data.IntervalMicroseconds.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.microseconds", map[string]string{})
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.ms-unit.microseconds", map[string]string{})
 		}
 	}
 	if !data.IntervalMicrosecondsBoth.IsNull() && !data.IntervalMicrosecondsBoth.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.both", strconv.FormatInt(data.IntervalMicrosecondsBoth.ValueInt64(), 10))
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.ms-unit.both", strconv.FormatInt(data.IntervalMicrosecondsBoth.ValueInt64(), 10))
 	}
 	if !data.IntervalMicrosecondsMinTx.IsNull() && !data.IntervalMicrosecondsMinTx.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.min-tx", strconv.FormatInt(data.IntervalMicrosecondsMinTx.ValueInt64(), 10))
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.ms-unit.min-tx", strconv.FormatInt(data.IntervalMicrosecondsMinTx.ValueInt64(), 10))
 	}
 	if !data.IntervalMicrosecondsMinRx.IsNull() && !data.IntervalMicrosecondsMinRx.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.min-rx", strconv.FormatInt(data.IntervalMicrosecondsMinRx.ValueInt64(), 10))
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.ms-unit.min-rx", strconv.FormatInt(data.IntervalMicrosecondsMinRx.ValueInt64(), 10))
 	}
 	if !data.IntervalMicrosecondsMultiplier.IsNull() && !data.IntervalMicrosecondsMultiplier.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.multiplier", strconv.FormatInt(data.IntervalMicrosecondsMultiplier.ValueInt64(), 10))
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-multihop-v2.ms-unit.multiplier", strconv.FormatInt(data.IntervalMicrosecondsMultiplier.ValueInt64(), 10))
 	}
 	if !data.AuthenticationMd5Keychain.IsNull() && !data.AuthenticationMd5Keychain.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.md5.keychain", data.AuthenticationMd5Keychain.ValueString())
@@ -235,22 +235,22 @@ func (data BFDTemplateMultiHop) toBodyXML(ctx context.Context, config BFDTemplat
 	}
 	if !data.IntervalMicroseconds.IsNull() && !data.IntervalMicroseconds.IsUnknown() {
 		if data.IntervalMicroseconds.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/microseconds", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/interval-multihop-v2/microseconds")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds")
 		}
 	}
 	if !data.IntervalMicrosecondsBoth.IsNull() && !data.IntervalMicrosecondsBoth.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/both", strconv.FormatInt(data.IntervalMicrosecondsBoth.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/both", strconv.FormatInt(data.IntervalMicrosecondsBoth.ValueInt64(), 10))
 	}
 	if !data.IntervalMicrosecondsMinTx.IsNull() && !data.IntervalMicrosecondsMinTx.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/min-tx", strconv.FormatInt(data.IntervalMicrosecondsMinTx.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/min-tx", strconv.FormatInt(data.IntervalMicrosecondsMinTx.ValueInt64(), 10))
 	}
 	if !data.IntervalMicrosecondsMinRx.IsNull() && !data.IntervalMicrosecondsMinRx.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/min-rx", strconv.FormatInt(data.IntervalMicrosecondsMinRx.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/min-rx", strconv.FormatInt(data.IntervalMicrosecondsMinRx.ValueInt64(), 10))
 	}
 	if !data.IntervalMicrosecondsMultiplier.IsNull() && !data.IntervalMicrosecondsMultiplier.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/multiplier", strconv.FormatInt(data.IntervalMicrosecondsMultiplier.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/interval-multihop-v2/ms-unit/multiplier", strconv.FormatInt(data.IntervalMicrosecondsMultiplier.ValueInt64(), 10))
 	}
 	if !data.AuthenticationMd5Keychain.IsNull() && !data.AuthenticationMd5Keychain.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/md5/keychain", data.AuthenticationMd5Keychain.ValueString())
@@ -336,7 +336,7 @@ func (data *BFDTemplateMultiHop) updateFromBody(ctx context.Context, res gjson.R
 	} else {
 		data.IntervalMillisecondsMultiplier = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.microseconds"); !data.IntervalMicroseconds.IsNull() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.microseconds"); !data.IntervalMicroseconds.IsNull() {
 		if value.Exists() {
 			data.IntervalMicroseconds = types.BoolValue(true)
 		} else {
@@ -345,22 +345,22 @@ func (data *BFDTemplateMultiHop) updateFromBody(ctx context.Context, res gjson.R
 	} else {
 		data.IntervalMicroseconds = types.BoolNull()
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.both"); value.Exists() && !data.IntervalMicrosecondsBoth.IsNull() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.both"); value.Exists() && !data.IntervalMicrosecondsBoth.IsNull() {
 		data.IntervalMicrosecondsBoth = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsBoth = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.min-tx"); value.Exists() && !data.IntervalMicrosecondsMinTx.IsNull() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.min-tx"); value.Exists() && !data.IntervalMicrosecondsMinTx.IsNull() {
 		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsMinTx = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.min-rx"); value.Exists() && !data.IntervalMicrosecondsMinRx.IsNull() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.min-rx"); value.Exists() && !data.IntervalMicrosecondsMinRx.IsNull() {
 		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsMinRx = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.multiplier"); value.Exists() && !data.IntervalMicrosecondsMultiplier.IsNull() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.multiplier"); value.Exists() && !data.IntervalMicrosecondsMultiplier.IsNull() {
 		data.IntervalMicrosecondsMultiplier = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsMultiplier = types.Int64Null()
@@ -460,7 +460,7 @@ func (data *BFDTemplateMultiHop) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.IntervalMillisecondsMultiplier = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/microseconds"); !data.IntervalMicroseconds.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds"); !data.IntervalMicroseconds.IsNull() {
 		if value.Exists() {
 			data.IntervalMicroseconds = types.BoolValue(true)
 		} else {
@@ -469,22 +469,22 @@ func (data *BFDTemplateMultiHop) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.IntervalMicroseconds = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/both"); value.Exists() && !data.IntervalMicrosecondsBoth.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/both"); value.Exists() && !data.IntervalMicrosecondsBoth.IsNull() {
 		data.IntervalMicrosecondsBoth = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsBoth = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/min-tx"); value.Exists() && !data.IntervalMicrosecondsMinTx.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/min-tx"); value.Exists() && !data.IntervalMicrosecondsMinTx.IsNull() {
 		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsMinTx = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/min-rx"); value.Exists() && !data.IntervalMicrosecondsMinRx.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/min-rx"); value.Exists() && !data.IntervalMicrosecondsMinRx.IsNull() {
 		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsMinRx = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/multiplier"); value.Exists() && !data.IntervalMicrosecondsMultiplier.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/multiplier"); value.Exists() && !data.IntervalMicrosecondsMultiplier.IsNull() {
 		data.IntervalMicrosecondsMultiplier = types.Int64Value(value.Int())
 	} else {
 		data.IntervalMicrosecondsMultiplier = types.Int64Null()
@@ -571,21 +571,21 @@ func (data *BFDTemplateMultiHop) fromBody(ctx context.Context, res gjson.Result)
 	if value := res.Get(prefix + "interval-multihop-v2.mill-unit.multiplier"); value.Exists() {
 		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.microseconds"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.microseconds"); value.Exists() {
 		data.IntervalMicroseconds = types.BoolValue(true)
 	} else {
 		data.IntervalMicroseconds = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.both"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.both"); value.Exists() {
 		data.IntervalMicrosecondsBoth = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.min-tx"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.min-tx"); value.Exists() {
 		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.min-rx"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.min-rx"); value.Exists() {
 		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.multiplier"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.multiplier"); value.Exists() {
 		data.IntervalMicrosecondsMultiplier = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "authentication.md5.keychain"); value.Exists() {
@@ -648,21 +648,21 @@ func (data *BFDTemplateMultiHopData) fromBody(ctx context.Context, res gjson.Res
 	if value := res.Get(prefix + "interval-multihop-v2.mill-unit.multiplier"); value.Exists() {
 		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.microseconds"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.microseconds"); value.Exists() {
 		data.IntervalMicroseconds = types.BoolValue(true)
 	} else {
 		data.IntervalMicroseconds = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.both"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.both"); value.Exists() {
 		data.IntervalMicrosecondsBoth = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.min-tx"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.min-tx"); value.Exists() {
 		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.min-rx"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.min-rx"); value.Exists() {
 		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "interval-multihop-v2.multiplier"); value.Exists() {
+	if value := res.Get(prefix + "interval-multihop-v2.ms-unit.multiplier"); value.Exists() {
 		data.IntervalMicrosecondsMultiplier = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "authentication.md5.keychain"); value.Exists() {
@@ -721,21 +721,21 @@ func (data *BFDTemplateMultiHop) fromBodyXML(ctx context.Context, res xmldot.Res
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/mill-unit/multiplier"); value.Exists() {
 		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/microseconds"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds"); value.Exists() {
 		data.IntervalMicroseconds = types.BoolValue(true)
 	} else {
 		data.IntervalMicroseconds = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/both"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/both"); value.Exists() {
 		data.IntervalMicrosecondsBoth = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/min-tx"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/min-tx"); value.Exists() {
 		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/min-rx"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/min-rx"); value.Exists() {
 		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/multiplier"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/multiplier"); value.Exists() {
 		data.IntervalMicrosecondsMultiplier = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/md5/keychain"); value.Exists() {
@@ -794,21 +794,21 @@ func (data *BFDTemplateMultiHopData) fromBodyXML(ctx context.Context, res xmldot
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/mill-unit/multiplier"); value.Exists() {
 		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/microseconds"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds"); value.Exists() {
 		data.IntervalMicroseconds = types.BoolValue(true)
 	} else {
 		data.IntervalMicroseconds = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/both"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/both"); value.Exists() {
 		data.IntervalMicrosecondsBoth = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/min-tx"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/min-tx"); value.Exists() {
 		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/min-rx"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/min-rx"); value.Exists() {
 		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/multiplier"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/interval-multihop-v2/ms-unit/multiplier"); value.Exists() {
 		data.IntervalMicrosecondsMultiplier = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/md5/keychain"); value.Exists() {
@@ -882,19 +882,19 @@ func (data *BFDTemplateMultiHop) getDeletedItems(ctx context.Context, state BFDT
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/md5/keychain", state.getPath()))
 	}
 	if !state.IntervalMicrosecondsMultiplier.IsNull() && data.IntervalMicrosecondsMultiplier.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/multiplier", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/multiplier", state.getPath()))
 	}
 	if !state.IntervalMicrosecondsMinRx.IsNull() && data.IntervalMicrosecondsMinRx.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/min-rx", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/min-rx", state.getPath()))
 	}
 	if !state.IntervalMicrosecondsMinTx.IsNull() && data.IntervalMicrosecondsMinTx.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/min-tx", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/min-tx", state.getPath()))
 	}
 	if !state.IntervalMicrosecondsBoth.IsNull() && data.IntervalMicrosecondsBoth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/both", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/both", state.getPath()))
 	}
 	if !state.IntervalMicroseconds.IsNull() && data.IntervalMicroseconds.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/microseconds", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/microseconds", state.getPath()))
 	}
 	if !state.IntervalMillisecondsMultiplier.IsNull() && data.IntervalMillisecondsMultiplier.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/multiplier", state.getPath()))
@@ -952,19 +952,19 @@ func (data *BFDTemplateMultiHop) addDeletedItemsXML(ctx context.Context, state B
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/md5/keychain")
 	}
 	if !state.IntervalMicrosecondsMultiplier.IsNull() && data.IntervalMicrosecondsMultiplier.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/multiplier")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/multiplier")
 	}
 	if !state.IntervalMicrosecondsMinRx.IsNull() && data.IntervalMicrosecondsMinRx.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/min-rx")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/min-rx")
 	}
 	if !state.IntervalMicrosecondsMinTx.IsNull() && data.IntervalMicrosecondsMinTx.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/min-tx")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/min-tx")
 	}
 	if !state.IntervalMicrosecondsBoth.IsNull() && data.IntervalMicrosecondsBoth.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/both")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/both")
 	}
 	if !state.IntervalMicroseconds.IsNull() && data.IntervalMicroseconds.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/microseconds")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/ms-unit/microseconds")
 	}
 	if !state.IntervalMillisecondsMultiplier.IsNull() && data.IntervalMillisecondsMultiplier.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/interval-multihop-v2/mill-unit/multiplier")
@@ -996,7 +996,7 @@ func (data *BFDTemplateMultiHop) getEmptyLeafsDelete(ctx context.Context) []stri
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dampening/down-monitoring", data.getPath()))
 	}
 	if !data.IntervalMicroseconds.IsNull() && !data.IntervalMicroseconds.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/interval-multihop-v2/microseconds", data.getPath()))
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/microseconds", data.getPath()))
 	}
 	if !data.Echo.IsNull() && !data.Echo.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/echo", data.getPath()))
@@ -1042,19 +1042,19 @@ func (data *BFDTemplateMultiHop) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/md5/keychain", data.getPath()))
 	}
 	if !data.IntervalMicrosecondsMultiplier.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/multiplier", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/multiplier", data.getPath()))
 	}
 	if !data.IntervalMicrosecondsMinRx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/min-rx", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/min-rx", data.getPath()))
 	}
 	if !data.IntervalMicrosecondsMinTx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/min-tx", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/min-tx", data.getPath()))
 	}
 	if !data.IntervalMicrosecondsBoth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/both", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/both", data.getPath()))
 	}
 	if !data.IntervalMicroseconds.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/microseconds", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/ms-unit/microseconds", data.getPath()))
 	}
 	if !data.IntervalMillisecondsMultiplier.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/multiplier", data.getPath()))
@@ -1112,19 +1112,19 @@ func (data *BFDTemplateMultiHop) addDeletePathsXML(ctx context.Context, body str
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/md5/keychain")
 	}
 	if !data.IntervalMicrosecondsMultiplier.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/multiplier")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/ms-unit/multiplier")
 	}
 	if !data.IntervalMicrosecondsMinRx.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/min-rx")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/ms-unit/min-rx")
 	}
 	if !data.IntervalMicrosecondsMinTx.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/min-tx")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/ms-unit/min-tx")
 	}
 	if !data.IntervalMicrosecondsBoth.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/both")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/ms-unit/both")
 	}
 	if !data.IntervalMicroseconds.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/microseconds")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/ms-unit/microseconds")
 	}
 	if !data.IntervalMillisecondsMultiplier.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/interval-multihop-v2/mill-unit/multiplier")

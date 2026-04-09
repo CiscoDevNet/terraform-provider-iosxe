@@ -67,7 +67,6 @@ type InterfacePortChannelSubinterface struct {
 	AutoQosVideoCts              types.Bool                                               `tfsdk:"auto_qos_video_cts"`
 	AutoQosVideoIpCamera         types.Bool                                               `tfsdk:"auto_qos_video_ip_camera"`
 	AutoQosVideoMediaPlayer      types.Bool                                               `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip                  types.Bool                                               `tfsdk:"auto_qos_voip"`
 	AutoQosVoipCiscoPhone        types.Bool                                               `tfsdk:"auto_qos_voip_cisco_phone"`
 	AutoQosVoipCiscoSoftphone    types.Bool                                               `tfsdk:"auto_qos_voip_cisco_softphone"`
 	AutoQosVoipTrust             types.Bool                                               `tfsdk:"auto_qos_voip_trust"`
@@ -144,7 +143,6 @@ type InterfacePortChannelSubinterfaceData struct {
 	AutoQosVideoCts              types.Bool                                                   `tfsdk:"auto_qos_video_cts"`
 	AutoQosVideoIpCamera         types.Bool                                                   `tfsdk:"auto_qos_video_ip_camera"`
 	AutoQosVideoMediaPlayer      types.Bool                                                   `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip                  types.Bool                                                   `tfsdk:"auto_qos_voip"`
 	AutoQosVoipCiscoPhone        types.Bool                                                   `tfsdk:"auto_qos_voip_cisco_phone"`
 	AutoQosVoipCiscoSoftphone    types.Bool                                                   `tfsdk:"auto_qos_voip_cisco_softphone"`
 	AutoQosVoipTrust             types.Bool                                                   `tfsdk:"auto_qos_voip_trust"`
@@ -324,11 +322,6 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context, config 
 	if !data.AutoQosVideoMediaPlayer.IsNull() && !data.AutoQosVideoMediaPlayer.IsUnknown() {
 		if data.AutoQosVideoMediaPlayer.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.video.media-player", map[string]string{})
-		}
-	}
-	if !data.AutoQosVoip.IsNull() && !data.AutoQosVoip.IsUnknown() {
-		if data.AutoQosVoip.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.voip", map[string]string{})
 		}
 	}
 	if !data.AutoQosVoipCiscoPhone.IsNull() && !data.AutoQosVoipCiscoPhone.IsUnknown() {
@@ -601,13 +594,6 @@ func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context, conf
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/media-player", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/media-player")
-		}
-	}
-	if !data.AutoQosVoip.IsNull() && !data.AutoQosVoip.IsUnknown() {
-		if data.AutoQosVoip.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip")
 		}
 	}
 	if !data.AutoQosVoipCiscoPhone.IsNull() && !data.AutoQosVoipCiscoPhone.IsUnknown() {
@@ -969,15 +955,6 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 		}
 	} else {
 		data.AutoQosVideoMediaPlayer = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip"); !data.AutoQosVoip.IsNull() {
-		if value.Exists() {
-			data.AutoQosVoip = types.BoolValue(true)
-		} else {
-			data.AutoQosVoip = types.BoolValue(false)
-		}
-	} else {
-		data.AutoQosVoip = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.cisco-phone"); !data.AutoQosVoipCiscoPhone.IsNull() {
 		if value.Exists() {
@@ -1492,15 +1469,6 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	} else {
 		data.AutoQosVideoMediaPlayer = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip"); !data.AutoQosVoip.IsNull() {
-		if value.Exists() {
-			data.AutoQosVoip = types.BoolValue(true)
-		} else {
-			data.AutoQosVoip = types.BoolValue(false)
-		}
-	} else {
-		data.AutoQosVoip = types.BoolNull()
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone"); !data.AutoQosVoipCiscoPhone.IsNull() {
 		if value.Exists() {
 			data.AutoQosVoipCiscoPhone = types.BoolValue(true)
@@ -1949,11 +1917,6 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 	} else {
 		data.AutoQosVideoMediaPlayer = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip"); value.Exists() {
-		data.AutoQosVoip = types.BoolValue(true)
-	} else {
-		data.AutoQosVoip = types.BoolValue(false)
-	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.cisco-phone"); value.Exists() {
 		data.AutoQosVoipCiscoPhone = types.BoolValue(true)
 	} else {
@@ -2228,11 +2191,6 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	} else {
 		data.AutoQosVideoMediaPlayer = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip"); value.Exists() {
-		data.AutoQosVoip = types.BoolValue(true)
-	} else {
-		data.AutoQosVoip = types.BoolValue(false)
-	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.cisco-phone"); value.Exists() {
 		data.AutoQosVoipCiscoPhone = types.BoolValue(true)
 	} else {
@@ -2503,11 +2461,6 @@ func (data *InterfacePortChannelSubinterface) fromBodyXML(ctx context.Context, r
 	} else {
 		data.AutoQosVideoMediaPlayer = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip"); value.Exists() {
-		data.AutoQosVoip = types.BoolValue(true)
-	} else {
-		data.AutoQosVoip = types.BoolValue(false)
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone"); value.Exists() {
 		data.AutoQosVoipCiscoPhone = types.BoolValue(true)
 	} else {
@@ -2777,11 +2730,6 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 		data.AutoQosVideoMediaPlayer = types.BoolValue(true)
 	} else {
 		data.AutoQosVideoMediaPlayer = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip"); value.Exists() {
-		data.AutoQosVoip = types.BoolValue(true)
-	} else {
-		data.AutoQosVoip = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone"); value.Exists() {
 		data.AutoQosVoipCiscoPhone = types.BoolValue(true)
@@ -3178,9 +3126,6 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	if !state.AutoQosVoipCiscoPhone.IsNull() && data.AutoQosVoipCiscoPhone.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", state.getPath()))
 	}
-	if !state.AutoQosVoip.IsNull() && data.AutoQosVoip.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", state.getPath()))
-	}
 	if !state.AutoQosVideoMediaPlayer.IsNull() && data.AutoQosVideoMediaPlayer.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", state.getPath()))
 	}
@@ -3494,9 +3439,6 @@ func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Con
 	if !state.AutoQosVoipCiscoPhone.IsNull() && data.AutoQosVoipCiscoPhone.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone")
 	}
-	if !state.AutoQosVoip.IsNull() && data.AutoQosVoip.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip")
-	}
 	if !state.AutoQosVideoMediaPlayer.IsNull() && data.AutoQosVideoMediaPlayer.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/media-player")
 	}
@@ -3622,9 +3564,6 @@ func (data *InterfacePortChannelSubinterface) getEmptyLeafsDelete(ctx context.Co
 	}
 	if !data.AutoQosVoipCiscoPhone.IsNull() && !data.AutoQosVoipCiscoPhone.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
-	}
-	if !data.AutoQosVoip.IsNull() && !data.AutoQosVoip.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
 	}
 	if !data.AutoQosVideoMediaPlayer.IsNull() && !data.AutoQosVideoMediaPlayer.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
@@ -3759,9 +3698,6 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	}
 	if !data.AutoQosVoipCiscoPhone.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
-	}
-	if !data.AutoQosVoip.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
 	}
 	if !data.AutoQosVideoMediaPlayer.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
@@ -3951,9 +3887,6 @@ func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Cont
 	}
 	if !data.AutoQosVoipCiscoPhone.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone")
-	}
-	if !data.AutoQosVoip.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/voip")
 	}
 	if !data.AutoQosVideoMediaPlayer.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:auto/qos/video/media-player")

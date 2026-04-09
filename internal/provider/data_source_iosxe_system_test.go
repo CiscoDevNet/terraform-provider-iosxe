@@ -73,6 +73,9 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "diagnostic_bootup_level", "minimal"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "memory_free_low_watermark_processor", "203038"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_sftp_username", "sftpuser"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_authentication_retries", "3"))
 	if os.Getenv("IOSXE1715") != "" {
@@ -181,6 +184,15 @@ func testAccDataSourceIosxeSystemConfig() string {
 	}
 	config += `	diagnostic_bootup_level = "minimal"` + "\n"
 	config += `	memory_free_low_watermark_processor = 203038` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	ip_sftp_username = "sftpuser"` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	ip_sftp_password_encryption = "0"` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	ip_sftp_password = "SftpPassword123"` + "\n"
+	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
