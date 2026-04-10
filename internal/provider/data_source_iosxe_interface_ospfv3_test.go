@@ -36,7 +36,12 @@ func TestAccDataSourceIosxeInterfaceOSPFv3(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "network_type_non_broadcast", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "network_type_point_to_multipoint", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "network_type_point_to_point", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "bfd", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "cost", "1000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "dead_interval", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "hello_interval", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "mtu_ignore", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "priority", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -75,7 +80,12 @@ func testAccDataSourceIosxeInterfaceOSPFv3Config() string {
 	config += `	network_type_non_broadcast = false` + "\n"
 	config += `	network_type_point_to_multipoint = false` + "\n"
 	config += `	network_type_point_to_point = true` + "\n"
+	config += `	bfd = true` + "\n"
 	config += `	cost = 1000` + "\n"
+	config += `	dead_interval = 30` + "\n"
+	config += `	hello_interval = 5` + "\n"
+	config += `	mtu_ignore = true` + "\n"
+	config += `	priority = 10` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

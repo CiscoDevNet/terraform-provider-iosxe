@@ -44,10 +44,20 @@ attributes:
     xpath: network-type/point-to-point
     tf_name: network_type_point_to_point
     example: true
+  - yang_name: bfd
+    example: true
   - yang_name: cost-config/cost-options/value/value
     xpath: cost-config/value
     tf_name: cost
     example: 1000
+  - yang_name: dead-interval
+    example: 30
+  - yang_name: hello-interval
+    example: 5
+  - yang_name: mtu-ignore
+    example: true
+  - yang_name: priority
+    example: 10
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]

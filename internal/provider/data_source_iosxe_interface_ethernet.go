@@ -196,10 +196,6 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Trust the Qos marking of the Cisco Media Player",
 				Computed:            true,
 			},
-			"auto_qos_voip": schema.BoolAttribute{
-				MarkdownDescription: "Configure AutoQoS for VoIP",
-				Computed:            true,
-			},
 			"auto_qos_voip_cisco_phone": schema.BoolAttribute{
 				MarkdownDescription: "Trust the QoS marking of Cisco IP Phone",
 				Computed:            true,

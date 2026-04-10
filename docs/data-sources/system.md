@@ -116,6 +116,9 @@ data "iosxe_system" "example" {
 - `ip_routing` (Boolean) Enable or disable IP routing
 - `ip_routing_protocol_purge_interface` (Boolean) Perform IP routing protocol routes purge on link failures
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
+- `ip_sftp_password` (String, Sensitive)
+- `ip_sftp_password_encryption` (String)
+- `ip_sftp_username` (String) Specify username for SFTP connections
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
 - `ip_ssh_bulk_mode` (Boolean) Enable optimizations for bulk data transfer procedures
