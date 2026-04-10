@@ -138,7 +138,9 @@ func (data Banner) toBodyXML(ctx context.Context, config Banner) string {
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
+// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
+// This prevents Terraform drift caused by trailing whitespace in RESTCONF responses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
 func (data *Banner) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -146,28 +148,28 @@ func (data *Banner) updateFromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "exec.banner"); value.Exists() && !data.ExecBanner.IsNull() {
-		data.ExecBanner = types.StringValue(value.String())
+		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.ExecBanner = types.StringNull()
 	}
 	if value := res.Get(prefix + "login.banner"); value.Exists() && !data.LoginBanner.IsNull() {
-		data.LoginBanner = types.StringValue(value.String())
+		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.LoginBanner = types.StringNull()
 	}
 	if value := res.Get(prefix + "prompt-timeout.banner"); value.Exists() && !data.PromptTimeoutBanner.IsNull() {
-		data.PromptTimeoutBanner = types.StringValue(value.String())
+		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.PromptTimeoutBanner = types.StringNull()
 	}
 	if value := res.Get(prefix + "motd.banner"); value.Exists() && !data.MotdBanner.IsNull() {
-		data.MotdBanner = types.StringValue(value.String())
+		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.MotdBanner = types.StringNull()
 	}
 }
 
-// End of section. //template:end updateFromBody
+// End of manually maintained section.
 
 // Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
 // This prevents Terraform drift caused by trailing whitespace in NETCONF responses.
@@ -198,7 +200,9 @@ func (data *Banner) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of manually maintained section.
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
+// This prevents Terraform drift caused by trailing whitespace in RESTCONF responses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
 func (data *Banner) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -206,22 +210,24 @@ func (data *Banner) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "exec.banner"); value.Exists() {
-		data.ExecBanner = types.StringValue(value.String())
+		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := res.Get(prefix + "login.banner"); value.Exists() {
-		data.LoginBanner = types.StringValue(value.String())
+		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := res.Get(prefix + "prompt-timeout.banner"); value.Exists() {
-		data.PromptTimeoutBanner = types.StringValue(value.String())
+		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := res.Get(prefix + "motd.banner"); value.Exists() {
-		data.MotdBanner = types.StringValue(value.String())
+		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 }
 
-// End of section. //template:end fromBody
+// End of manually maintained section.
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
+// This prevents Terraform drift caused by trailing whitespace in RESTCONF responses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
 func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -229,20 +235,20 @@ func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "exec.banner"); value.Exists() {
-		data.ExecBanner = types.StringValue(value.String())
+		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := res.Get(prefix + "login.banner"); value.Exists() {
-		data.LoginBanner = types.StringValue(value.String())
+		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := res.Get(prefix + "prompt-timeout.banner"); value.Exists() {
-		data.PromptTimeoutBanner = types.StringValue(value.String())
+		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 	if value := res.Get(prefix + "motd.banner"); value.Exists() {
-		data.MotdBanner = types.StringValue(value.String())
+		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 }
 
-// End of section. //template:end fromBodyData
+// End of manually maintained section.
 
 // Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
 // This prevents Terraform drift caused by trailing whitespace in NETCONF responses.

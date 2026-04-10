@@ -61,17 +61,21 @@ func (m netconfTrailingWhitespaceTrimModifier) MarkdownDescription(_ context.Con
 
 // PlanModifyString implements the plan modification logic.
 func (m netconfTrailingWhitespaceTrimModifier) PlanModifyString(ctx context.Context, req planmodifier.StringRequest, resp *planmodifier.StringResponse) {
-	// Do nothing if there is no state value (resource is being created)
-	if req.StateValue.IsNull() || req.StateValue.IsUnknown() {
-		return
-	}
-
 	// Do nothing if there is no config value (attribute not configured)
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
 
-	// Normalize both values by trimming trailing whitespace from each line
+	// Do nothing on CREATE (no prior state). Terraform Core requires plan == config
+	// for Optional+Computed attributes when no prior state exists. The first apply
+	// will store the raw config value; subsequent reads will normalize from the device,
+	// and the drift-prevention logic below will handle idempotency.
+	if req.StateValue.IsNull() || req.StateValue.IsUnknown() {
+		return
+	}
+
+	// Normalize both values by trimming leading/trailing whitespace from each line.
+	// IOS-XE strips this whitespace on the round-trip regardless of protocol.
 	configNormalized := TrimNetconfTrailingWhitespace(req.ConfigValue.ValueString())
 	stateNormalized := TrimNetconfTrailingWhitespace(req.StateValue.ValueString())
 

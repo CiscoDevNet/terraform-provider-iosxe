@@ -2673,9 +2673,9 @@ func TestTrimNetconfTrailingWhitespace(t *testing.T) {
 			expected: "Line 1\nLine 2\nLine 3",
 		},
 		{
-			name:     "Multi-line preserves leading whitespace",
+			name:     "Multi-line trims both leading and trailing whitespace",
 			input:    "  Line 1   \n\tLine 2\t\t\n  Line 3  ",
-			expected: "  Line 1\n\tLine 2\n  Line 3",
+			expected: "Line 1\nLine 2\nLine 3",
 		},
 		{
 			name:     "Multi-line with internal empty lines preserved",
