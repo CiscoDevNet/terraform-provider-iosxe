@@ -18,6 +18,7 @@ description: |-
 - Add `iosxe_device_tracking` resource and data source
 - Add `iosxe_device_tracking_policy` resource and data source
 - Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
+- BREAKING CHANGE: Remove `feature_name`, `feature_port_bulk`, `feature_port_onegig`, `feature_port_b_6xonegig`, and `feature_port_tengig` attributes from `iosxe_license` resource and data source. These mapped to YANG leafs with no backing CLI on any supported platform.
 
 ## 0.16.0
 
