@@ -41,12 +41,11 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type Line struct {
-	Device     types.String  `tfsdk:"device"`
-	Id         types.String  `tfsdk:"id"`
-	DeleteMode types.String  `tfsdk:"delete_mode"`
-	Console    []LineConsole `tfsdk:"console"`
-	Vty        []LineVty     `tfsdk:"vty"`
-	Aux        []LineAux     `tfsdk:"aux"`
+	Device  types.String  `tfsdk:"device"`
+	Id      types.String  `tfsdk:"id"`
+	Console []LineConsole `tfsdk:"console"`
+	Vty     []LineVty     `tfsdk:"vty"`
+	Aux     []LineAux     `tfsdk:"aux"`
 }
 type LineConsole struct {
 	First               types.String `tfsdk:"first"`
@@ -2375,7 +2374,10 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+// Custom implementation - template markers removed to preserve changes
+// When an aux entry is removed from config, only delete its sub-attributes, not the entire entry.
+// This prevents "no line aux 0" which the device refuses since aux is a permanent fixture.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/468
 
 func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 	deletedItems := make([]string, 0)
@@ -2422,7 +2424,29 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			// Don't delete the aux entry itself - device refuses "no line aux 0"
+			// Instead, delete each configured sub-attribute individually
+			if !state.Aux[i].TransportOutputNone.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/transport/output/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
+			if !state.Aux[i].Stopbits.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/stopbits", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
+			if !state.Aux[i].Monitor.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/monitor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
+			if !state.Aux[i].ExecTimeoutSeconds.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/exec-timeout/seconds", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
+			if !state.Aux[i].ExecTimeoutMinutes.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/exec-timeout/minutes", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
+			if !state.Aux[i].LoggingSynchronous.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/logging/synchronous", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
+			if !state.Aux[i].EscapeCharacter.IsNull() {
+				deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/escape-character/char", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			}
 		}
 	}
 	for i := range state.Vty {
@@ -2669,9 +2693,8 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 	return deletedItems
 }
 
-// End of section. //template:end getDeletedItems
-
-// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+// Custom implementation - template markers removed to preserve changes
+// See getDeletedItems above for rationale.
 
 func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body string) string {
 	b := netconf.NewBody(body)
@@ -2723,7 +2746,29 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v", predicates))
+			// Don't delete the aux entry itself - device refuses "no line aux 0"
+			// Instead, delete each configured sub-attribute individually
+			if !state.Aux[i].TransportOutputNone.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/transport/output/none", predicates))
+			}
+			if !state.Aux[i].Stopbits.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/stopbits", predicates))
+			}
+			if !state.Aux[i].Monitor.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/monitor", predicates))
+			}
+			if !state.Aux[i].ExecTimeoutSeconds.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/seconds", predicates))
+			}
+			if !state.Aux[i].ExecTimeoutMinutes.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/minutes", predicates))
+			}
+			if !state.Aux[i].LoggingSynchronous.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/logging/synchronous", predicates))
+			}
+			if !state.Aux[i].EscapeCharacter.IsNull() {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/escape-character/char", predicates))
+			}
 		}
 	}
 	for i := range state.Vty {
@@ -2998,8 +3043,6 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 	return b.Res()
 }
 
-// End of section. //template:end addDeletedItemsXML
-
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -3071,23 +3114,74 @@ func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 
 // End of section. //template:end getEmptyLeafsDelete
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
+// Custom implementation - template markers removed to preserve changes
+// On resource destroy, delete individual aux sub-attributes rather than the entry itself.
+// This prevents "no line aux 0" which the device refuses.
+// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/468
 
 func (data *Line) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-
+	for i := range data.Aux {
+		keyValues := [...]string{data.Aux[i].First.ValueString()}
+		if !data.Aux[i].TransportOutputNone.IsNull() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/aux=%v/transport/output/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].Stopbits.IsNull() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/aux=%v/stopbits", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].Monitor.IsNull() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/aux=%v/monitor", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].ExecTimeoutSeconds.IsNull() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/aux=%v/exec-timeout/seconds", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].ExecTimeoutMinutes.IsNull() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/aux=%v/exec-timeout/minutes", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].LoggingSynchronous.IsNull() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/aux=%v/logging/synchronous", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].EscapeCharacter.IsNull() {
+			deletePaths = append(deletePaths, fmt.Sprintf("%v/aux=%v/escape-character/char", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	return deletePaths
 }
 
-// End of section. //template:end getDeletePaths
-
-// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+// Custom implementation - template markers removed to preserve changes
+// See getDeletePaths above for rationale.
 
 func (data *Line) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-
+	for i := range data.Aux {
+		keys := [...]string{"first"}
+		keyValues := [...]string{data.Aux[i].First.ValueString()}
+		predicates := ""
+		for j := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
+		}
+		if !data.Aux[i].TransportOutputNone.IsNull() {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/aux%v/transport/output/none", predicates))
+		}
+		if !data.Aux[i].Stopbits.IsNull() {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/aux%v/stopbits", predicates))
+		}
+		if !data.Aux[i].Monitor.IsNull() {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/aux%v/monitor", predicates))
+		}
+		if !data.Aux[i].ExecTimeoutSeconds.IsNull() {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/aux%v/exec-timeout/seconds", predicates))
+		}
+		if !data.Aux[i].ExecTimeoutMinutes.IsNull() {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/aux%v/exec-timeout/minutes", predicates))
+		}
+		if !data.Aux[i].LoggingSynchronous.IsNull() {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/aux%v/logging/synchronous", predicates))
+		}
+		if !data.Aux[i].EscapeCharacter.IsNull() {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/aux%v/escape-character/char", predicates))
+		}
+	}
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
-
-// End of section. //template:end addDeletePathsXML
