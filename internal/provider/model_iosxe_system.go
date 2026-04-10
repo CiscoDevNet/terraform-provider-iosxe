@@ -106,6 +106,11 @@ type System struct {
 	TransceiverTypeAllMonitoring                           types.Bool                                          `tfsdk:"transceiver_type_all_monitoring"`
 	IpForwardProtocolNd                                    types.Bool                                          `tfsdk:"ip_forward_protocol_nd"`
 	IpScpServerEnable                                      types.Bool                                          `tfsdk:"ip_scp_server_enable"`
+	IpSftpUsername                                         types.String                                        `tfsdk:"ip_sftp_username"`
+	IpSftpPasswordEncryption                               types.String                                        `tfsdk:"ip_sftp_password_encryption"`
+	IpSftpPassword                                         types.String                                        `tfsdk:"ip_sftp_password"`
+	IpSftpPasswordWO                                       types.String                                        `tfsdk:"ip_sftp_password_wo"`
+	IpSftpPasswordWOVersion                                types.Int64                                         `tfsdk:"ip_sftp_password_wo_version"`
 	IpSshVersion                                           types.String                                        `tfsdk:"ip_ssh_version"`
 	IpSshVersionLegacy                                     types.Int64                                         `tfsdk:"ip_ssh_version_legacy"`
 	IpSshTimeOut                                           types.Int64                                         `tfsdk:"ip_ssh_time_out"`
@@ -329,6 +334,9 @@ type SystemData struct {
 	TransceiverTypeAllMonitoring                           types.Bool                                              `tfsdk:"transceiver_type_all_monitoring"`
 	IpForwardProtocolNd                                    types.Bool                                              `tfsdk:"ip_forward_protocol_nd"`
 	IpScpServerEnable                                      types.Bool                                              `tfsdk:"ip_scp_server_enable"`
+	IpSftpUsername                                         types.String                                            `tfsdk:"ip_sftp_username"`
+	IpSftpPasswordEncryption                               types.String                                            `tfsdk:"ip_sftp_password_encryption"`
+	IpSftpPassword                                         types.String                                            `tfsdk:"ip_sftp_password"`
 	IpSshVersion                                           types.String                                            `tfsdk:"ip_ssh_version"`
 	IpSshVersionLegacy                                     types.Int64                                             `tfsdk:"ip_ssh_version_legacy"`
 	IpSshTimeOut                                           types.Int64                                             `tfsdk:"ip_ssh_time_out"`
@@ -745,6 +753,19 @@ func (data System) toBody(ctx context.Context, config System) string {
 	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.IsUnknown() {
 		if data.IpScpServerEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.scp.server.enable", map[string]string{})
+		}
+	}
+	if !data.IpSftpUsername.IsNull() && !data.IpSftpUsername.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.sftp.username", data.IpSftpUsername.ValueString())
+	}
+	if !data.IpSftpPasswordEncryption.IsNull() && !data.IpSftpPasswordEncryption.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.sftp.password.encryption", data.IpSftpPasswordEncryption.ValueString())
+	}
+	if !data.IpSftpPassword.IsNull() && !data.IpSftpPassword.IsUnknown() {
+		if !config.IpSftpPasswordWO.IsNull() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.sftp.password.password-text", config.IpSftpPasswordWO.ValueString())
+		} else {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.sftp.password.password-text", data.IpSftpPassword.ValueString())
 		}
 	}
 	if !data.IpSshVersion.IsNull() && !data.IpSshVersion.IsUnknown() {
@@ -1564,6 +1585,19 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/scp/server/enable", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/scp/server/enable")
+		}
+	}
+	if !data.IpSftpUsername.IsNull() && !data.IpSftpUsername.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/sftp/username", data.IpSftpUsername.ValueString())
+	}
+	if !data.IpSftpPasswordEncryption.IsNull() && !data.IpSftpPasswordEncryption.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/sftp/password/encryption", data.IpSftpPasswordEncryption.ValueString())
+	}
+	if !data.IpSftpPassword.IsNull() && !data.IpSftpPassword.IsUnknown() {
+		if !config.IpSftpPasswordWO.IsNull() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/sftp/password/password-text", config.IpSftpPasswordWO.ValueString())
+		} else {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/sftp/password/password-text", data.IpSftpPassword.ValueString())
 		}
 	}
 	if !data.IpSshVersion.IsNull() && !data.IpSshVersion.IsUnknown() {
@@ -2588,6 +2622,11 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.IpScpServerEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.sftp.username"); value.Exists() && !data.IpSftpUsername.IsNull() {
+		data.IpSftpUsername = types.StringValue(value.String())
+	} else {
+		data.IpSftpUsername = types.StringNull()
 	}
 	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() && !data.IpSshVersion.IsNull() {
 		data.IpSshVersion = types.StringValue(value.String())
@@ -3953,6 +3992,11 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpScpServerEnable = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/sftp/username"); value.Exists() && !data.IpSftpUsername.IsNull() {
+		data.IpSftpUsername = types.StringValue(value.String())
+	} else {
+		data.IpSftpUsername = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/ssh-version"); value.Exists() && !data.IpSshVersion.IsNull() {
 		data.IpSshVersion = types.StringValue(value.String())
 	} else {
@@ -5065,6 +5109,15 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpScpServerEnable = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.sftp.username"); value.Exists() {
+		data.IpSftpUsername = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.sftp.password.encryption"); value.Exists() {
+		data.IpSftpPasswordEncryption = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.sftp.password.password-text"); value.Exists() {
+		data.IpSftpPassword = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() {
 		data.IpSshVersion = types.StringValue(value.String())
 	}
@@ -5817,6 +5870,15 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpScpServerEnable = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.sftp.username"); value.Exists() {
+		data.IpSftpUsername = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.sftp.password.encryption"); value.Exists() {
+		data.IpSftpPasswordEncryption = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.sftp.password.password-text"); value.Exists() {
+		data.IpSftpPassword = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() {
 		data.IpSshVersion = types.StringValue(value.String())
 	}
@@ -6565,6 +6627,15 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpScpServerEnable = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/sftp/username"); value.Exists() {
+		data.IpSftpUsername = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/sftp/password/encryption"); value.Exists() {
+		data.IpSftpPasswordEncryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/sftp/password/password-text"); value.Exists() {
+		data.IpSftpPassword = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/ssh-version"); value.Exists() {
 		data.IpSshVersion = types.StringValue(value.String())
 	}
@@ -7312,6 +7383,15 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpScpServerEnable = types.BoolValue(true)
 	} else {
 		data.IpScpServerEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/sftp/username"); value.Exists() {
+		data.IpSftpUsername = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/sftp/password/encryption"); value.Exists() {
+		data.IpSftpPasswordEncryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/sftp/password/password-text"); value.Exists() {
+		data.IpSftpPassword = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/ssh/ssh-version"); value.Exists() {
 		data.IpSshVersion = types.StringValue(value.String())
@@ -8301,6 +8381,15 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.IpSshVersion.IsNull() && data.IpSshVersion.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/ssh-version", state.getPath()))
 	}
+	if !state.IpSftpPassword.IsNull() && data.IpSftpPassword.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/sftp/password", state.getPath()))
+	}
+	if !state.IpSftpPasswordEncryption.IsNull() && data.IpSftpPasswordEncryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/sftp/password/encryption", state.getPath()))
+	}
+	if !state.IpSftpUsername.IsNull() && data.IpSftpUsername.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/sftp/username", state.getPath()))
+	}
 	if !state.IpScpServerEnable.IsNull() && data.IpScpServerEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/scp/server/enable", state.getPath()))
 	}
@@ -9275,6 +9364,15 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	if !state.IpSshVersion.IsNull() && data.IpSshVersion.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/ssh/ssh-version")
 	}
+	if !state.IpSftpPassword.IsNull() && data.IpSftpPassword.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/sftp/password")
+	}
+	if !state.IpSftpPasswordEncryption.IsNull() && data.IpSftpPasswordEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/sftp/password/encryption")
+	}
+	if !state.IpSftpUsername.IsNull() && data.IpSftpUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/sftp/username")
+	}
 	if !state.IpScpServerEnable.IsNull() && data.IpScpServerEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/scp/server/enable")
 	}
@@ -10087,6 +10185,15 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	if !data.IpSshVersion.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/ssh-version", data.getPath()))
 	}
+	if !data.IpSftpPassword.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/sftp/password", data.getPath()))
+	}
+	if !data.IpSftpPasswordEncryption.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/sftp/password/encryption", data.getPath()))
+	}
+	if !data.IpSftpUsername.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/sftp/username", data.getPath()))
+	}
 	if !data.IpScpServerEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
 	}
@@ -10622,6 +10729,15 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.IpSshVersion.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/ssh/ssh-version")
+	}
+	if !data.IpSftpPassword.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/sftp/password")
+	}
+	if !data.IpSftpPasswordEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/sftp/password/encryption")
+	}
+	if !data.IpSftpUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/sftp/username")
 	}
 	if !data.IpScpServerEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/scp/server/enable")

@@ -33,9 +33,14 @@ data "iosxe_interface_ospfv3" "example" {
 
 ### Read-Only
 
+- `bfd` (Boolean) Enable BFD on this interface
 - `cost` (Number) Static route cost value of the interface
+- `dead_interval` (Number) Interval after which a neighbor is declared dead
+- `hello_interval` (Number) Time between HELLO packets
 - `id` (String) The path of the retrieved object.
+- `mtu_ignore` (Boolean) Ignores the MTU in DBD packets
 - `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
 - `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
 - `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
+- `priority` (Number) Router priority

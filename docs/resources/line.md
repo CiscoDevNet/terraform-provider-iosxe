@@ -59,8 +59,6 @@ resource "iosxe_line" "example" {
 
 - `aux` (Attributes List) Auxiliary line (see [below for nested schema](#nestedatt--aux))
 - `console` (Attributes List) Primary terminal line (see [below for nested schema](#nestedatt--console))
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `vty` (Attributes List) Virtual terminal (see [below for nested schema](#nestedatt--vty))
 

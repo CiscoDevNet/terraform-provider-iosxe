@@ -40,7 +40,6 @@ data "iosxe_interface_port_channel" "example" {
 - `auto_qos_video_cts` (Boolean) Trust the QoS marking of the Cisco Telepresence System
 - `auto_qos_video_ip_camera` (Boolean) Trust the QoS marking of the Ip Video Surveillance camera
 - `auto_qos_video_media_player` (Boolean) Trust the Qos marking of the Cisco Media Player
-- `auto_qos_voip` (Boolean) Configure AutoQoS for VoIP
 - `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking

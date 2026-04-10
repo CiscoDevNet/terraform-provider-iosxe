@@ -20,7 +20,12 @@ resource "iosxe_interface_ospfv3" "example" {
   network_type_non_broadcast       = false
   network_type_point_to_multipoint = false
   network_type_point_to_point      = true
+  bfd                              = true
   cost                             = 1000
+  dead_interval                    = 30
+  hello_interval                   = 5
+  mtu_ignore                       = true
+  priority                         = 10
 }
 ```
 
@@ -35,15 +40,23 @@ resource "iosxe_interface_ospfv3" "example" {
 
 ### Optional
 
+- `bfd` (Boolean) Enable BFD on this interface
 - `cost` (Number) Static route cost value of the interface
+  - Range: `1`-`65535`
+- `dead_interval` (Number) Interval after which a neighbor is declared dead
   - Range: `1`-`65535`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `hello_interval` (Number) Time between HELLO packets
+  - Range: `1`-`65535`
+- `mtu_ignore` (Boolean) Ignores the MTU in DBD packets
 - `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
 - `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
 - `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
+- `priority` (Number) Router priority
+  - Range: `0`-`255`
 
 ### Read-Only
 
