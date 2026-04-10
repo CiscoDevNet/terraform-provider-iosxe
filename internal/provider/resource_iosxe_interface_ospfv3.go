@@ -123,11 +123,40 @@ func (r *InterfaceOSPFv3Resource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").String,
 				Optional:            true,
 			},
+			"bfd": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on this interface").String,
+				Optional:            true,
+			},
 			"cost": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Static route cost value of the interface").AddIntegerRangeDescription(1, 65535).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 65535),
+				},
+			},
+			"dead_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Interval after which a neighbor is declared dead").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"hello_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Time between HELLO packets").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"mtu_ignore": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ignores the MTU in DBD packets").String,
+				Optional:            true,
+			},
+			"priority": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Router priority").AddIntegerRangeDescription(0, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 255),
 				},
 			},
 		},
