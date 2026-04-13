@@ -17,6 +17,8 @@ attributes:
     example: true
   - yang_name: match/result-type/aaa-timeout
     example: true
+  - yang_name: match/result-type/success
+    example: true
   - yang_name: match/authorization-status/unauthorized
     exclude_test: true
     example: true
