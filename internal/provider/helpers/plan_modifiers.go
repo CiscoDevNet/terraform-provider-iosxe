@@ -61,8 +61,13 @@ func (m netconfTrailingWhitespaceTrimModifier) MarkdownDescription(_ context.Con
 
 // PlanModifyString implements the plan modification logic.
 func (m netconfTrailingWhitespaceTrimModifier) PlanModifyString(ctx context.Context, req planmodifier.StringRequest, resp *planmodifier.StringResponse) {
-	// Do nothing if there is no config value (attribute not configured)
-	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
+	// When attribute is not configured, explicitly set to null so that
+	// Computed attributes don't remain "unknown" after apply.
+	if req.ConfigValue.IsNull() {
+		resp.PlanValue = types.StringNull()
+		return
+	}
+	if req.ConfigValue.IsUnknown() {
 		return
 	}
 
