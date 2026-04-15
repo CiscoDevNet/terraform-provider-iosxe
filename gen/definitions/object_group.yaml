@@ -1,0 +1,32 @@
+---
+name: Object Group
+path: /Cisco-IOS-XE-native:native/object-group
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: Cisco-IOS-XE-object-group:fqdn
+    tf_name: fqdn
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: FQDN_GROUP_1
+      - yang_name: description
+        example: My FQDN object group
+      - yang_name: group-object
+        tf_name: group_objects
+        type: Set
+        exclude_test: true
+        attributes:
+          - yang_name: fqdn-group
+            tf_name: group_name
+            id: true
+            example: FQDN_GROUP_2
+      - yang_name: pattern
+        tf_name: patterns
+        type: Set
+        attributes:
+          - yang_name: fqdn-pattern
+            tf_name: fqdn_pattern
+            id: true
+            example: test-fqdn-pattern
