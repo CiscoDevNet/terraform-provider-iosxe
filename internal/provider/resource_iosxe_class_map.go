@@ -191,6 +191,23 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				ElementType:         types.StringType,
 				Optional:            true,
 			},
+			"match_protocol": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("List of protocols to match").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"protocols": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of the protocol to match").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"match_class_map": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Class map").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
 		},
 	}
 }
