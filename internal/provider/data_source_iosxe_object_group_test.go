@@ -35,6 +35,11 @@ func TestAccDataSourceIosxeObjectGroup(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "fqdn.0.name", "FQDN_GROUP_1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "fqdn.0.description", "My FQDN object group"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "fqdn.0.patterns.0.fqdn_pattern", "test-fqdn-pattern"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "network.0.name", "NETWORK_GROUP_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "network.0.description", "My network object group"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "network.0.hosts.0.ipv4_host", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "network.0.network_addresses.0.ipv4_address", "10.1.2.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_object_group.test", "network.0.network_addresses.0.ipv4_mask", "255.255.255.0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -61,6 +66,17 @@ func testAccDataSourceIosxeObjectGroupConfig() string {
 	config += `		description = "My FQDN object group"` + "\n"
 	config += `		patterns = [{` + "\n"
 	config += `			fqdn_pattern = "test-fqdn-pattern"` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	network = [{` + "\n"
+	config += `		name = "NETWORK_GROUP_1"` + "\n"
+	config += `		description = "My network object group"` + "\n"
+	config += `		hosts = [{` + "\n"
+	config += `			ipv4_host = "10.1.1.1"` + "\n"
+	config += `		}]` + "\n"
+	config += `		network_addresses = [{` + "\n"
+	config += `			ipv4_address = "10.1.2.0"` + "\n"
+	config += `			ipv4_mask = "255.255.255.0"` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

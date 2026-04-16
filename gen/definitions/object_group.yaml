@@ -30,3 +30,46 @@ attributes:
             tf_name: fqdn_pattern
             id: true
             example: test-fqdn-pattern
+  - yang_name: Cisco-IOS-XE-object-group:network
+    tf_name: network
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: NETWORK_GROUP_1
+      - yang_name: obj-Mode-config-network-group/description
+        xpath: obj-Mode-config-network-group/description
+        tf_name: description
+        example: My network object group
+      - yang_name: obj-Mode-config-network-group/host
+        xpath: obj-Mode-config-network-group/host
+        tf_name: hosts
+        type: Set
+        attributes:
+          - yang_name: ipv4-host
+            tf_name: ipv4_host
+            id: true
+            example: 10.1.1.1
+      - yang_name: obj-Mode-config-network-group/network_address
+        xpath: obj-Mode-config-network-group/network_address
+        tf_name: network_addresses
+        type: Set
+        attributes:
+          - yang_name: ipv4_addr
+            tf_name: ipv4_address
+            id: true
+            example: 10.1.2.0
+          - yang_name: ipv4_mask
+            tf_name: ipv4_mask
+            id: true
+            example: 255.255.255.0
+      - yang_name: obj-Mode-config-network-group/group-objects
+        xpath: obj-Mode-config-network-group/group-objects
+        tf_name: group_objects
+        type: Set
+        exclude_test: true
+        attributes:
+          - yang_name: network-group
+            tf_name: group_name
+            id: true
+            example: NETWORK_GROUP_2

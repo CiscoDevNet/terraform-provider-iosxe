@@ -28,6 +28,7 @@ data "iosxe_object_group" "example" {
 
 - `fqdn` (Attributes List) FQDN object-group type (see [below for nested schema](#nestedatt--fqdn))
 - `id` (String) The path of the retrieved object.
+- `network` (Attributes List) network group (see [below for nested schema](#nestedatt--network))
 
 <a id="nestedatt--fqdn"></a>
 ### Nested Schema for `fqdn`
@@ -53,3 +54,40 @@ Read-Only:
 Read-Only:
 
 - `fqdn_pattern` (String) FQDN pattern
+
+
+
+<a id="nestedatt--network"></a>
+### Nested Schema for `network`
+
+Read-Only:
+
+- `description` (String) Network object group description
+- `group_objects` (Attributes Set) List of nested IPv4 network groups (see [below for nested schema](#nestedatt--network--group_objects))
+- `hosts` (Attributes Set) Host address of the object-group member (see [below for nested schema](#nestedatt--network--hosts))
+- `name` (String) WORD;;object-group name
+- `network_addresses` (Attributes Set) (see [below for nested schema](#nestedatt--network--network_addresses))
+
+<a id="nestedatt--network--group_objects"></a>
+### Nested Schema for `network.group_objects`
+
+Read-Only:
+
+- `group_name` (String) Nested network object group name
+
+
+<a id="nestedatt--network--hosts"></a>
+### Nested Schema for `network.hosts`
+
+Read-Only:
+
+- `ipv4_host` (String) Host address of the object-group member
+
+
+<a id="nestedatt--network--network_addresses"></a>
+### Nested Schema for `network.network_addresses`
+
+Read-Only:
+
+- `ipv4_address` (String) A.B.C.D;;Network address of the group members
+- `ipv4_mask` (String) A.B.C.D;;Network mask

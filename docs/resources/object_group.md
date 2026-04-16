@@ -25,6 +25,23 @@ resource "iosxe_object_group" "example" {
       ]
     }
   ]
+  network = [
+    {
+      name        = "NETWORK_GROUP_1"
+      description = "My network object group"
+      hosts = [
+        {
+          ipv4_host = "10.1.1.1"
+        }
+      ]
+      network_addresses = [
+        {
+          ipv4_address = "10.1.2.0"
+          ipv4_mask    = "255.255.255.0"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -35,6 +52,7 @@ resource "iosxe_object_group" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `fqdn` (Attributes List) FQDN object-group type (see [below for nested schema](#nestedatt--fqdn))
+- `network` (Attributes List) network group (see [below for nested schema](#nestedatt--network))
 
 ### Read-Only
 
@@ -67,6 +85,46 @@ Required:
 Required:
 
 - `fqdn_pattern` (String) FQDN pattern
+
+
+
+<a id="nestedatt--network"></a>
+### Nested Schema for `network`
+
+Required:
+
+- `name` (String) WORD;;object-group name
+
+Optional:
+
+- `description` (String) Network object group description
+- `group_objects` (Attributes Set) List of nested IPv4 network groups (see [below for nested schema](#nestedatt--network--group_objects))
+- `hosts` (Attributes Set) Host address of the object-group member (see [below for nested schema](#nestedatt--network--hosts))
+- `network_addresses` (Attributes Set) (see [below for nested schema](#nestedatt--network--network_addresses))
+
+<a id="nestedatt--network--group_objects"></a>
+### Nested Schema for `network.group_objects`
+
+Required:
+
+- `group_name` (String) Nested network object group name
+
+
+<a id="nestedatt--network--hosts"></a>
+### Nested Schema for `network.hosts`
+
+Required:
+
+- `ipv4_host` (String) Host address of the object-group member
+
+
+<a id="nestedatt--network--network_addresses"></a>
+### Nested Schema for `network.network_addresses`
+
+Required:
+
+- `ipv4_address` (String) A.B.C.D;;Network address of the group members
+- `ipv4_mask` (String) A.B.C.D;;Network mask
 
 ## Import
 

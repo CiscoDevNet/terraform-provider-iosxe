@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -120,6 +121,74 @@ func (r *ObjectGroupResource) Schema(ctx context.Context, req resource.SchemaReq
 										Validators: []validator.String{
 											stringvalidator.LengthBetween(1, 240),
 										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"network": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("network group").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("WORD;;object-group name").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 64),
+							},
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Network object group description").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 200),
+							},
+						},
+						"hosts": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Host address of the object-group member").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_host": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Host address of the object-group member").String,
+										Required:            true,
+									},
+								},
+							},
+						},
+						"network_addresses": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("A.B.C.D;;Network address of the group members").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"ipv4_mask": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("A.B.C.D;;Network mask").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+								},
+							},
+						},
+						"group_objects": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("List of nested IPv4 network groups").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"group_name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Nested network object group name").String,
+										Required:            true,
 									},
 								},
 							},

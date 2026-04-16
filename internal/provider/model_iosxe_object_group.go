@@ -41,9 +41,10 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type ObjectGroup struct {
-	Device types.String      `tfsdk:"device"`
-	Id     types.String      `tfsdk:"id"`
-	Fqdn   []ObjectGroupFqdn `tfsdk:"fqdn"`
+	Device  types.String         `tfsdk:"device"`
+	Id      types.String         `tfsdk:"id"`
+	Fqdn    []ObjectGroupFqdn    `tfsdk:"fqdn"`
+	Network []ObjectGroupNetwork `tfsdk:"network"`
 }
 type ObjectGroupFqdn struct {
 	Name         types.String                  `tfsdk:"name"`
@@ -51,17 +52,35 @@ type ObjectGroupFqdn struct {
 	GroupObjects []ObjectGroupFqdnGroupObjects `tfsdk:"group_objects"`
 	Patterns     []ObjectGroupFqdnPatterns     `tfsdk:"patterns"`
 }
+type ObjectGroupNetwork struct {
+	Name             types.String                         `tfsdk:"name"`
+	Description      types.String                         `tfsdk:"description"`
+	Hosts            []ObjectGroupNetworkHosts            `tfsdk:"hosts"`
+	NetworkAddresses []ObjectGroupNetworkNetworkAddresses `tfsdk:"network_addresses"`
+	GroupObjects     []ObjectGroupNetworkGroupObjects     `tfsdk:"group_objects"`
+}
 type ObjectGroupFqdnGroupObjects struct {
 	GroupName types.String `tfsdk:"group_name"`
 }
 type ObjectGroupFqdnPatterns struct {
 	FqdnPattern types.String `tfsdk:"fqdn_pattern"`
 }
+type ObjectGroupNetworkHosts struct {
+	Ipv4Host types.String `tfsdk:"ipv4_host"`
+}
+type ObjectGroupNetworkNetworkAddresses struct {
+	Ipv4Address types.String `tfsdk:"ipv4_address"`
+	Ipv4Mask    types.String `tfsdk:"ipv4_mask"`
+}
+type ObjectGroupNetworkGroupObjects struct {
+	GroupName types.String `tfsdk:"group_name"`
+}
 
 type ObjectGroupData struct {
-	Device types.String          `tfsdk:"device"`
-	Id     types.String          `tfsdk:"id"`
-	Fqdn   []ObjectGroupFqdnData `tfsdk:"fqdn"`
+	Device  types.String             `tfsdk:"device"`
+	Id      types.String             `tfsdk:"id"`
+	Fqdn    []ObjectGroupFqdnData    `tfsdk:"fqdn"`
+	Network []ObjectGroupNetworkData `tfsdk:"network"`
 }
 type ObjectGroupFqdnData struct {
 	Name         types.String                      `tfsdk:"name"`
@@ -69,11 +88,28 @@ type ObjectGroupFqdnData struct {
 	GroupObjects []ObjectGroupFqdnGroupObjectsData `tfsdk:"group_objects"`
 	Patterns     []ObjectGroupFqdnPatternsData     `tfsdk:"patterns"`
 }
+type ObjectGroupNetworkData struct {
+	Name             types.String                             `tfsdk:"name"`
+	Description      types.String                             `tfsdk:"description"`
+	Hosts            []ObjectGroupNetworkHostsData            `tfsdk:"hosts"`
+	NetworkAddresses []ObjectGroupNetworkNetworkAddressesData `tfsdk:"network_addresses"`
+	GroupObjects     []ObjectGroupNetworkGroupObjectsData     `tfsdk:"group_objects"`
+}
 type ObjectGroupFqdnGroupObjectsData struct {
 	GroupName types.String `tfsdk:"group_name"`
 }
 type ObjectGroupFqdnPatternsData struct {
 	FqdnPattern types.String `tfsdk:"fqdn_pattern"`
+}
+type ObjectGroupNetworkHostsData struct {
+	Ipv4Host types.String `tfsdk:"ipv4_host"`
+}
+type ObjectGroupNetworkNetworkAddressesData struct {
+	Ipv4Address types.String `tfsdk:"ipv4_address"`
+	Ipv4Mask    types.String `tfsdk:"ipv4_mask"`
+}
+type ObjectGroupNetworkGroupObjectsData struct {
+	GroupName types.String `tfsdk:"group_name"`
 }
 
 // End of section. //template:end types
@@ -143,6 +179,44 @@ func (data ObjectGroup) toBody(ctx context.Context, config ObjectGroup) string {
 			}
 		}
 	}
+	if len(data.Network) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network", []interface{}{})
+		for index, item := range data.Network {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Description.IsNull() && !item.Description.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.description", item.Description.ValueString())
+			}
+			if len(item.Hosts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.host", []interface{}{})
+				for cindex, citem := range item.Hosts {
+					if !citem.Ipv4Host.IsNull() && !citem.Ipv4Host.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.host"+"."+strconv.Itoa(cindex)+"."+"ipv4-host", citem.Ipv4Host.ValueString())
+					}
+				}
+			}
+			if len(item.NetworkAddresses) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.network_address", []interface{}{})
+				for cindex, citem := range item.NetworkAddresses {
+					if !citem.Ipv4Address.IsNull() && !citem.Ipv4Address.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.network_address"+"."+strconv.Itoa(cindex)+"."+"ipv4_addr", citem.Ipv4Address.ValueString())
+					}
+					if !citem.Ipv4Mask.IsNull() && !citem.Ipv4Mask.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.network_address"+"."+strconv.Itoa(cindex)+"."+"ipv4_mask", citem.Ipv4Mask.ValueString())
+					}
+				}
+			}
+			if len(item.GroupObjects) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.group-objects", []interface{}{})
+				for cindex, citem := range item.GroupObjects {
+					if !citem.GroupName.IsNull() && !citem.GroupName.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:network"+"."+strconv.Itoa(index)+"."+"obj-Mode-config-network-group.group-objects"+"."+strconv.Itoa(cindex)+"."+"network-group", citem.GroupName.ValueString())
+					}
+				}
+			}
+		}
+	}
 	return body
 }
 
@@ -180,6 +254,48 @@ func (data ObjectGroup) toBodyXML(ctx context.Context, config ObjectGroup) strin
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-object-group:fqdn", cBody.Res())
+		}
+	}
+	if len(data.Network) > 0 {
+		for _, item := range data.Network {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Description.IsNull() && !item.Description.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "obj-Mode-config-network-group/description", item.Description.ValueString())
+			}
+			if len(item.Hosts) > 0 {
+				for _, citem := range item.Hosts {
+					ccBody := netconf.Body{}
+					if !citem.Ipv4Host.IsNull() && !citem.Ipv4Host.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv4-host", citem.Ipv4Host.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "obj-Mode-config-network-group/host", ccBody.Res())
+				}
+			}
+			if len(item.NetworkAddresses) > 0 {
+				for _, citem := range item.NetworkAddresses {
+					ccBody := netconf.Body{}
+					if !citem.Ipv4Address.IsNull() && !citem.Ipv4Address.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv4_addr", citem.Ipv4Address.ValueString())
+					}
+					if !citem.Ipv4Mask.IsNull() && !citem.Ipv4Mask.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv4_mask", citem.Ipv4Mask.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "obj-Mode-config-network-group/network_address", ccBody.Res())
+				}
+			}
+			if len(item.GroupObjects) > 0 {
+				for _, citem := range item.GroupObjects {
+					ccBody := netconf.Body{}
+					if !citem.GroupName.IsNull() && !citem.GroupName.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "network-group", citem.GroupName.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "obj-Mode-config-network-group/group-objects", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-object-group:network", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -290,6 +406,132 @@ func (data *ObjectGroup) updateFromBody(ctx context.Context, res gjson.Result) {
 			}
 		}
 	}
+	for i := range data.Network {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Network[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-object-group:network").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Network[i].Name.IsNull() {
+			data.Network[i].Name = types.StringValue(value.String())
+		} else {
+			data.Network[i].Name = types.StringNull()
+		}
+		if value := r.Get("obj-Mode-config-network-group.description"); value.Exists() && !data.Network[i].Description.IsNull() {
+			data.Network[i].Description = types.StringValue(value.String())
+		} else {
+			data.Network[i].Description = types.StringNull()
+		}
+		for ci := range data.Network[i].Hosts {
+			keys := [...]string{"ipv4-host"}
+			keyValues := [...]string{data.Network[i].Hosts[ci].Ipv4Host.ValueString()}
+
+			var cr gjson.Result
+			r.Get("obj-Mode-config-network-group.host").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("ipv4-host"); value.Exists() && !data.Network[i].Hosts[ci].Ipv4Host.IsNull() {
+				data.Network[i].Hosts[ci].Ipv4Host = types.StringValue(value.String())
+			} else {
+				data.Network[i].Hosts[ci].Ipv4Host = types.StringNull()
+			}
+		}
+		for ci := range data.Network[i].NetworkAddresses {
+			keys := [...]string{"ipv4_addr", "ipv4_mask"}
+			keyValues := [...]string{data.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString(), data.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()}
+
+			var cr gjson.Result
+			r.Get("obj-Mode-config-network-group.network_address").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("ipv4_addr"); value.Exists() && !data.Network[i].NetworkAddresses[ci].Ipv4Address.IsNull() {
+				data.Network[i].NetworkAddresses[ci].Ipv4Address = types.StringValue(value.String())
+			} else {
+				data.Network[i].NetworkAddresses[ci].Ipv4Address = types.StringNull()
+			}
+			if value := cr.Get("ipv4_mask"); value.Exists() && !data.Network[i].NetworkAddresses[ci].Ipv4Mask.IsNull() {
+				data.Network[i].NetworkAddresses[ci].Ipv4Mask = types.StringValue(value.String())
+			} else {
+				data.Network[i].NetworkAddresses[ci].Ipv4Mask = types.StringNull()
+			}
+		}
+		for ci := range data.Network[i].GroupObjects {
+			keys := [...]string{"network-group"}
+			keyValues := [...]string{data.Network[i].GroupObjects[ci].GroupName.ValueString()}
+
+			var cr gjson.Result
+			r.Get("obj-Mode-config-network-group.group-objects").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("network-group"); value.Exists() && !data.Network[i].GroupObjects[ci].GroupName.IsNull() {
+				data.Network[i].GroupObjects[ci].GroupName = types.StringValue(value.String())
+			} else {
+				data.Network[i].GroupObjects[ci].GroupName = types.StringNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -389,6 +631,132 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 			}
 		}
 	}
+	for i := range data.Network {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Network[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:network").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Network[i].Name.IsNull() {
+			data.Network[i].Name = types.StringValue(value.String())
+		} else {
+			data.Network[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "obj-Mode-config-network-group/description"); value.Exists() && !data.Network[i].Description.IsNull() {
+			data.Network[i].Description = types.StringValue(value.String())
+		} else {
+			data.Network[i].Description = types.StringNull()
+		}
+		for ci := range data.Network[i].Hosts {
+			keys := [...]string{"ipv4-host"}
+			keyValues := [...]string{data.Network[i].Hosts[ci].Ipv4Host.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "obj-Mode-config-network-group/host").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "ipv4-host"); value.Exists() && !data.Network[i].Hosts[ci].Ipv4Host.IsNull() {
+				data.Network[i].Hosts[ci].Ipv4Host = types.StringValue(value.String())
+			} else {
+				data.Network[i].Hosts[ci].Ipv4Host = types.StringNull()
+			}
+		}
+		for ci := range data.Network[i].NetworkAddresses {
+			keys := [...]string{"ipv4_addr", "ipv4_mask"}
+			keyValues := [...]string{data.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString(), data.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "obj-Mode-config-network-group/network_address").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "ipv4_addr"); value.Exists() && !data.Network[i].NetworkAddresses[ci].Ipv4Address.IsNull() {
+				data.Network[i].NetworkAddresses[ci].Ipv4Address = types.StringValue(value.String())
+			} else {
+				data.Network[i].NetworkAddresses[ci].Ipv4Address = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "ipv4_mask"); value.Exists() && !data.Network[i].NetworkAddresses[ci].Ipv4Mask.IsNull() {
+				data.Network[i].NetworkAddresses[ci].Ipv4Mask = types.StringValue(value.String())
+			} else {
+				data.Network[i].NetworkAddresses[ci].Ipv4Mask = types.StringNull()
+			}
+		}
+		for ci := range data.Network[i].GroupObjects {
+			keys := [...]string{"network-group"}
+			keyValues := [...]string{data.Network[i].GroupObjects[ci].GroupName.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "obj-Mode-config-network-group/group-objects").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "network-group"); value.Exists() && !data.Network[i].GroupObjects[ci].GroupName.IsNull() {
+				data.Network[i].GroupObjects[ci].GroupName = types.StringValue(value.String())
+			} else {
+				data.Network[i].GroupObjects[ci].GroupName = types.StringNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -433,6 +801,56 @@ func (data *ObjectGroup) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			data.Fqdn = append(data.Fqdn, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-object-group:network"); value.Exists() {
+		data.Network = make([]ObjectGroupNetwork, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ObjectGroupNetwork{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.host"); cValue.Exists() {
+				item.Hosts = make([]ObjectGroupNetworkHosts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupNetworkHosts{}
+					if ccValue := cv.Get("ipv4-host"); ccValue.Exists() {
+						cItem.Ipv4Host = types.StringValue(ccValue.String())
+					}
+					item.Hosts = append(item.Hosts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.network_address"); cValue.Exists() {
+				item.NetworkAddresses = make([]ObjectGroupNetworkNetworkAddresses, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupNetworkNetworkAddresses{}
+					if ccValue := cv.Get("ipv4_addr"); ccValue.Exists() {
+						cItem.Ipv4Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("ipv4_mask"); ccValue.Exists() {
+						cItem.Ipv4Mask = types.StringValue(ccValue.String())
+					}
+					item.NetworkAddresses = append(item.NetworkAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupNetworkGroupObjects, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupNetworkGroupObjects{}
+					if ccValue := cv.Get("network-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			data.Network = append(data.Network, item)
 			return true
 		})
 	}
@@ -483,6 +901,56 @@ func (data *ObjectGroupData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-object-group:network"); value.Exists() {
+		data.Network = make([]ObjectGroupNetworkData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ObjectGroupNetworkData{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.host"); cValue.Exists() {
+				item.Hosts = make([]ObjectGroupNetworkHostsData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupNetworkHostsData{}
+					if ccValue := cv.Get("ipv4-host"); ccValue.Exists() {
+						cItem.Ipv4Host = types.StringValue(ccValue.String())
+					}
+					item.Hosts = append(item.Hosts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.network_address"); cValue.Exists() {
+				item.NetworkAddresses = make([]ObjectGroupNetworkNetworkAddressesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupNetworkNetworkAddressesData{}
+					if ccValue := cv.Get("ipv4_addr"); ccValue.Exists() {
+						cItem.Ipv4Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("ipv4_mask"); ccValue.Exists() {
+						cItem.Ipv4Mask = types.StringValue(ccValue.String())
+					}
+					item.NetworkAddresses = append(item.NetworkAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("obj-Mode-config-network-group.group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupNetworkGroupObjectsData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupNetworkGroupObjectsData{}
+					if ccValue := cv.Get("network-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			data.Network = append(data.Network, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -523,6 +991,56 @@ func (data *ObjectGroup) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			data.Fqdn = append(data.Fqdn, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:network"); value.Exists() {
+		data.Network = make([]ObjectGroupNetwork, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ObjectGroupNetwork{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/host"); cValue.Exists() {
+				item.Hosts = make([]ObjectGroupNetworkHosts, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupNetworkHosts{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4-host"); ccValue.Exists() {
+						cItem.Ipv4Host = types.StringValue(ccValue.String())
+					}
+					item.Hosts = append(item.Hosts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/network_address"); cValue.Exists() {
+				item.NetworkAddresses = make([]ObjectGroupNetworkNetworkAddresses, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupNetworkNetworkAddresses{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4_addr"); ccValue.Exists() {
+						cItem.Ipv4Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4_mask"); ccValue.Exists() {
+						cItem.Ipv4Mask = types.StringValue(ccValue.String())
+					}
+					item.NetworkAddresses = append(item.NetworkAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupNetworkGroupObjects, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupNetworkGroupObjects{}
+					if ccValue := helpers.GetFromXPath(cv, "network-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			data.Network = append(data.Network, item)
 			return true
 		})
 	}
@@ -569,6 +1087,56 @@ func (data *ObjectGroupData) fromBodyXML(ctx context.Context, res xmldot.Result)
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:network"); value.Exists() {
+		data.Network = make([]ObjectGroupNetworkData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ObjectGroupNetworkData{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/host"); cValue.Exists() {
+				item.Hosts = make([]ObjectGroupNetworkHostsData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupNetworkHostsData{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4-host"); ccValue.Exists() {
+						cItem.Ipv4Host = types.StringValue(ccValue.String())
+					}
+					item.Hosts = append(item.Hosts, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/network_address"); cValue.Exists() {
+				item.NetworkAddresses = make([]ObjectGroupNetworkNetworkAddressesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupNetworkNetworkAddressesData{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4_addr"); ccValue.Exists() {
+						cItem.Ipv4Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ipv4_mask"); ccValue.Exists() {
+						cItem.Ipv4Mask = types.StringValue(ccValue.String())
+					}
+					item.NetworkAddresses = append(item.NetworkAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "obj-Mode-config-network-group/group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupNetworkGroupObjectsData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupNetworkGroupObjectsData{}
+					if ccValue := helpers.GetFromXPath(cv, "network-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			data.Network = append(data.Network, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -577,6 +1145,115 @@ func (data *ObjectGroupData) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 func (data *ObjectGroup) getDeletedItems(ctx context.Context, state ObjectGroup) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Network {
+		stateKeyValues := [...]string{state.Network[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Network[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Network {
+			found = true
+			if state.Network[i].Name.ValueString() != data.Network[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Network[i].GroupObjects {
+					cstateKeyValues := [...]string{state.Network[i].GroupObjects[ci].GroupName.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Network[i].GroupObjects[ci].GroupName.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Network[j].GroupObjects {
+						found = true
+						if state.Network[i].GroupObjects[ci].GroupName.ValueString() != data.Network[j].GroupObjects[cj].GroupName.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:network=%v/obj-Mode-config-network-group/group-objects=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Network[i].NetworkAddresses {
+					cstateKeyValues := [...]string{state.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString(), state.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Network[j].NetworkAddresses {
+						found = true
+						if state.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString() != data.Network[j].NetworkAddresses[cj].Ipv4Address.ValueString() {
+							found = false
+						}
+						if state.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString() != data.Network[j].NetworkAddresses[cj].Ipv4Mask.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:network=%v/obj-Mode-config-network-group/network_address=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Network[i].Hosts {
+					cstateKeyValues := [...]string{state.Network[i].Hosts[ci].Ipv4Host.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Network[i].Hosts[ci].Ipv4Host.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Network[j].Hosts {
+						found = true
+						if state.Network[i].Hosts[ci].Ipv4Host.ValueString() != data.Network[j].Hosts[cj].Ipv4Host.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:network=%v/obj-Mode-config-network-group/host=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.Network[i].Description.IsNull() && data.Network[j].Description.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:network=%v/obj-Mode-config-network-group/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Fqdn {
 		stateKeyValues := [...]string{state.Fqdn[i].Name.ValueString()}
 
@@ -665,6 +1342,135 @@ func (data *ObjectGroup) getDeletedItems(ctx context.Context, state ObjectGroup)
 
 func (data *ObjectGroup) addDeletedItemsXML(ctx context.Context, state ObjectGroup, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.Network {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Network[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Network[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Network {
+			found = true
+			if state.Network[i].Name.ValueString() != data.Network[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Network[i].GroupObjects {
+					cstateKeys := [...]string{"network-group"}
+					cstateKeyValues := [...]string{state.Network[i].GroupObjects[ci].GroupName.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Network[i].GroupObjects[ci].GroupName.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Network[j].GroupObjects {
+						found = true
+						if state.Network[i].GroupObjects[ci].GroupName.ValueString() != data.Network[j].GroupObjects[cj].GroupName.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:network%v/obj-Mode-config-network-group/group-objects%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Network[i].NetworkAddresses {
+					cstateKeys := [...]string{"ipv4_addr", "ipv4_mask"}
+					cstateKeyValues := [...]string{state.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString(), state.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Network[j].NetworkAddresses {
+						found = true
+						if state.Network[i].NetworkAddresses[ci].Ipv4Address.ValueString() != data.Network[j].NetworkAddresses[cj].Ipv4Address.ValueString() {
+							found = false
+						}
+						if state.Network[i].NetworkAddresses[ci].Ipv4Mask.ValueString() != data.Network[j].NetworkAddresses[cj].Ipv4Mask.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:network%v/obj-Mode-config-network-group/network_address%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Network[i].Hosts {
+					cstateKeys := [...]string{"ipv4-host"}
+					cstateKeyValues := [...]string{state.Network[i].Hosts[ci].Ipv4Host.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Network[i].Hosts[ci].Ipv4Host.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Network[j].Hosts {
+						found = true
+						if state.Network[i].Hosts[ci].Ipv4Host.ValueString() != data.Network[j].Hosts[cj].Ipv4Host.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:network%v/obj-Mode-config-network-group/host%v", predicates, cpredicates))
+					}
+				}
+				if !state.Network[i].Description.IsNull() && data.Network[j].Description.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:network%v/obj-Mode-config-network-group/description", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:network%v", predicates))
+		}
+	}
 	for i := range state.Fqdn {
 		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.Fqdn[i].Name.ValueString()}
@@ -779,6 +1585,11 @@ func (data *ObjectGroup) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *ObjectGroup) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Network {
+		keyValues := [...]string{data.Network[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Fqdn {
 		keyValues := [...]string{data.Fqdn[i].Name.ValueString()}
 
@@ -794,6 +1605,16 @@ func (data *ObjectGroup) getDeletePaths(ctx context.Context) []string {
 
 func (data *ObjectGroup) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.Network {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Network[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-object-group:network%v", predicates))
+	}
 	for i := range data.Fqdn {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.Fqdn[i].Name.ValueString()}

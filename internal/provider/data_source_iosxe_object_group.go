@@ -108,6 +108,62 @@ func (d *ObjectGroupDataSource) Schema(ctx context.Context, req datasource.Schem
 					},
 				},
 			},
+			"network": schema.ListNestedAttribute{
+				MarkdownDescription: "network group",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "WORD;;object-group name",
+							Computed:            true,
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: "Network object group description",
+							Computed:            true,
+						},
+						"hosts": schema.SetNestedAttribute{
+							MarkdownDescription: "Host address of the object-group member",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_host": schema.StringAttribute{
+										MarkdownDescription: "Host address of the object-group member",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"network_addresses": schema.SetNestedAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_address": schema.StringAttribute{
+										MarkdownDescription: "A.B.C.D;;Network address of the group members",
+										Computed:            true,
+									},
+									"ipv4_mask": schema.StringAttribute{
+										MarkdownDescription: "A.B.C.D;;Network mask",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"group_objects": schema.SetNestedAttribute{
+							MarkdownDescription: "List of nested IPv4 network groups",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"group_name": schema.StringAttribute{
+										MarkdownDescription: "Nested network object group name",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
