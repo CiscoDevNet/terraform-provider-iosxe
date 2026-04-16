@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `source_fqdn_group` and `destination_fqdn_group` attributes to `iosxe_access_list_extended` resource and data source
 - BREAKING CHANGE: Remove the `auto_qos_voip` attribute from the `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources. This attribute was never functional, as the corresponding YANG leaf is a choice leaf that requires selection from the existing `auto_qos_voip_cisco_phone`, `auto_qos_voip_cisco_softphone`, and `auto_qos_voip_trust` attributes.
 - Fix incorrect xpaths for microsecond interval attributes (`interval_microseconds`, `interval_microseconds_both`, `interval_microseconds_min_tx`, `interval_microseconds_min_rx`, `interval_microseconds_multiplier`) in `iosxe_bfd_template_multi_hop` resource and data source. The xpaths were missing the `ms-unit` container, causing `unknown-element` errors over NETCONF.
 - Add `bfd`, `dead_interval`, `hello_interval`, `mtu_ignore`, and `priority` attributes to `iosxe_interface_ospfv3` resource and data source

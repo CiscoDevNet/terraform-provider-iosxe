@@ -58,6 +58,7 @@ type AccessListExtendedEntries struct {
 	SourceAny                  types.Bool   `tfsdk:"source_any"`
 	SourceHost                 types.String `tfsdk:"source_host"`
 	SourceObjectGroup          types.String `tfsdk:"source_object_group"`
+	SourceFqdnGroup            types.String `tfsdk:"source_fqdn_group"`
 	SourcePortEqual            types.String `tfsdk:"source_port_equal"`
 	SourcePortGreaterThan      types.String `tfsdk:"source_port_greater_than"`
 	SourcePortLesserThan       types.String `tfsdk:"source_port_lesser_than"`
@@ -68,6 +69,7 @@ type AccessListExtendedEntries struct {
 	DestinationAny             types.Bool   `tfsdk:"destination_any"`
 	DestinationHost            types.String `tfsdk:"destination_host"`
 	DestinationObjectGroup     types.String `tfsdk:"destination_object_group"`
+	DestinationFqdnGroup       types.String `tfsdk:"destination_fqdn_group"`
 	DestinationPortEqual       types.String `tfsdk:"destination_port_equal"`
 	DestinationPortGreaterThan types.String `tfsdk:"destination_port_greater_than"`
 	DestinationPortLesserThan  types.String `tfsdk:"destination_port_lesser_than"`
@@ -117,6 +119,7 @@ type AccessListExtendedEntriesData struct {
 	SourceAny                  types.Bool   `tfsdk:"source_any"`
 	SourceHost                 types.String `tfsdk:"source_host"`
 	SourceObjectGroup          types.String `tfsdk:"source_object_group"`
+	SourceFqdnGroup            types.String `tfsdk:"source_fqdn_group"`
 	SourcePortEqual            types.String `tfsdk:"source_port_equal"`
 	SourcePortGreaterThan      types.String `tfsdk:"source_port_greater_than"`
 	SourcePortLesserThan       types.String `tfsdk:"source_port_lesser_than"`
@@ -127,6 +130,7 @@ type AccessListExtendedEntriesData struct {
 	DestinationAny             types.Bool   `tfsdk:"destination_any"`
 	DestinationHost            types.String `tfsdk:"destination_host"`
 	DestinationObjectGroup     types.String `tfsdk:"destination_object_group"`
+	DestinationFqdnGroup       types.String `tfsdk:"destination_fqdn_group"`
 	DestinationPortEqual       types.String `tfsdk:"destination_port_equal"`
 	DestinationPortGreaterThan types.String `tfsdk:"destination_port_greater_than"`
 	DestinationPortLesserThan  types.String `tfsdk:"destination_port_lesser_than"`
@@ -239,6 +243,9 @@ func (data AccessListExtended) toBody(ctx context.Context, config AccessListExte
 			if !item.SourceObjectGroup.IsNull() && !item.SourceObjectGroup.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.object-group", item.SourceObjectGroup.ValueString())
 			}
+			if !item.SourceFqdnGroup.IsNull() && !item.SourceFqdnGroup.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-fqdn-group", item.SourceFqdnGroup.ValueString())
+			}
 			if !item.SourcePortEqual.IsNull() && !item.SourcePortEqual.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq", item.SourcePortEqual.ValueString())
 			}
@@ -270,6 +277,9 @@ func (data AccessListExtended) toBody(ctx context.Context, config AccessListExte
 			}
 			if !item.DestinationObjectGroup.IsNull() && !item.DestinationObjectGroup.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.dst-object-group", item.DestinationObjectGroup.ValueString())
+			}
+			if !item.DestinationFqdnGroup.IsNull() && !item.DestinationFqdnGroup.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.dst-fqdn-group", item.DestinationFqdnGroup.ValueString())
 			}
 			if !item.DestinationPortEqual.IsNull() && !item.DestinationPortEqual.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.dst-eq", item.DestinationPortEqual.ValueString())
@@ -432,6 +442,9 @@ func (data AccessListExtended) toBodyXML(ctx context.Context, config AccessListE
 			if !item.SourceObjectGroup.IsNull() && !item.SourceObjectGroup.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ace-rule/object-group", item.SourceObjectGroup.ValueString())
 			}
+			if !item.SourceFqdnGroup.IsNull() && !item.SourceFqdnGroup.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-fqdn-group", item.SourceFqdnGroup.ValueString())
+			}
 			if !item.SourcePortEqual.IsNull() && !item.SourcePortEqual.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq", item.SourcePortEqual.ValueString())
 			}
@@ -465,6 +478,9 @@ func (data AccessListExtended) toBodyXML(ctx context.Context, config AccessListE
 			}
 			if !item.DestinationObjectGroup.IsNull() && !item.DestinationObjectGroup.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ace-rule/dst-object-group", item.DestinationObjectGroup.ValueString())
+			}
+			if !item.DestinationFqdnGroup.IsNull() && !item.DestinationFqdnGroup.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/dst-fqdn-group", item.DestinationFqdnGroup.ValueString())
 			}
 			if !item.DestinationPortEqual.IsNull() && !item.DestinationPortEqual.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ace-rule/dst-eq", item.DestinationPortEqual.ValueString())
@@ -697,6 +713,11 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 		} else {
 			data.Entries[i].SourceObjectGroup = types.StringNull()
 		}
+		if value := r.Get("ace-rule.src-fqdn-group"); value.Exists() && !data.Entries[i].SourceFqdnGroup.IsNull() {
+			data.Entries[i].SourceFqdnGroup = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourceFqdnGroup = types.StringNull()
+		}
 		if value := r.Get("ace-rule.src-eq"); value.Exists() && !data.Entries[i].SourcePortEqual.IsNull() {
 			data.Entries[i].SourcePortEqual = types.StringValue(value.String())
 		} else {
@@ -750,6 +771,11 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 			data.Entries[i].DestinationObjectGroup = types.StringValue(value.String())
 		} else {
 			data.Entries[i].DestinationObjectGroup = types.StringNull()
+		}
+		if value := r.Get("ace-rule.dst-fqdn-group"); value.Exists() && !data.Entries[i].DestinationFqdnGroup.IsNull() {
+			data.Entries[i].DestinationFqdnGroup = types.StringValue(value.String())
+		} else {
+			data.Entries[i].DestinationFqdnGroup = types.StringNull()
 		}
 		if value := r.Get("ace-rule.dst-eq"); value.Exists() && !data.Entries[i].DestinationPortEqual.IsNull() {
 			data.Entries[i].DestinationPortEqual = types.StringValue(value.String())
@@ -1031,6 +1057,11 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 		} else {
 			data.Entries[i].SourceObjectGroup = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-fqdn-group"); value.Exists() && !data.Entries[i].SourceFqdnGroup.IsNull() {
+			data.Entries[i].SourceFqdnGroup = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourceFqdnGroup = types.StringNull()
+		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq"); value.Exists() && !data.Entries[i].SourcePortEqual.IsNull() {
 			data.Entries[i].SourcePortEqual = types.StringValue(value.String())
 		} else {
@@ -1084,6 +1115,11 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 			data.Entries[i].DestinationObjectGroup = types.StringValue(value.String())
 		} else {
 			data.Entries[i].DestinationObjectGroup = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/dst-fqdn-group"); value.Exists() && !data.Entries[i].DestinationFqdnGroup.IsNull() {
+			data.Entries[i].DestinationFqdnGroup = types.StringValue(value.String())
+		} else {
+			data.Entries[i].DestinationFqdnGroup = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq"); value.Exists() && !data.Entries[i].DestinationPortEqual.IsNull() {
 			data.Entries[i].DestinationPortEqual = types.StringValue(value.String())
@@ -1323,6 +1359,9 @@ func (data *AccessListExtended) fromBody(ctx context.Context, res gjson.Result) 
 			if cValue := v.Get("ace-rule.object-group"); cValue.Exists() {
 				item.SourceObjectGroup = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("ace-rule.src-fqdn-group"); cValue.Exists() {
+				item.SourceFqdnGroup = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("ace-rule.src-eq"); cValue.Exists() {
 				item.SourcePortEqual = types.StringValue(cValue.String())
 			}
@@ -1354,6 +1393,9 @@ func (data *AccessListExtended) fromBody(ctx context.Context, res gjson.Result) 
 			}
 			if cValue := v.Get("ace-rule.dst-object-group"); cValue.Exists() {
 				item.DestinationObjectGroup = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-fqdn-group"); cValue.Exists() {
+				item.DestinationFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ace-rule.dst-eq"); cValue.Exists() {
 				item.DestinationPortEqual = types.StringValue(cValue.String())
@@ -1516,6 +1558,9 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 			if cValue := v.Get("ace-rule.object-group"); cValue.Exists() {
 				item.SourceObjectGroup = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("ace-rule.src-fqdn-group"); cValue.Exists() {
+				item.SourceFqdnGroup = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("ace-rule.src-eq"); cValue.Exists() {
 				item.SourcePortEqual = types.StringValue(cValue.String())
 			}
@@ -1547,6 +1592,9 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 			}
 			if cValue := v.Get("ace-rule.dst-object-group"); cValue.Exists() {
 				item.DestinationObjectGroup = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-fqdn-group"); cValue.Exists() {
+				item.DestinationFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ace-rule.dst-eq"); cValue.Exists() {
 				item.DestinationPortEqual = types.StringValue(cValue.String())
@@ -1705,6 +1753,9 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 			if cValue := helpers.GetFromXPath(v, "ace-rule/object-group"); cValue.Exists() {
 				item.SourceObjectGroup = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-fqdn-group"); cValue.Exists() {
+				item.SourceFqdnGroup = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq"); cValue.Exists() {
 				item.SourcePortEqual = types.StringValue(cValue.String())
 			}
@@ -1736,6 +1787,9 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-object-group"); cValue.Exists() {
 				item.DestinationObjectGroup = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-fqdn-group"); cValue.Exists() {
+				item.DestinationFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq"); cValue.Exists() {
 				item.DestinationPortEqual = types.StringValue(cValue.String())
@@ -1894,6 +1948,9 @@ func (data *AccessListExtendedData) fromBodyXML(ctx context.Context, res xmldot.
 			if cValue := helpers.GetFromXPath(v, "ace-rule/object-group"); cValue.Exists() {
 				item.SourceObjectGroup = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-fqdn-group"); cValue.Exists() {
+				item.SourceFqdnGroup = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq"); cValue.Exists() {
 				item.SourcePortEqual = types.StringValue(cValue.String())
 			}
@@ -1925,6 +1982,9 @@ func (data *AccessListExtendedData) fromBodyXML(ctx context.Context, res xmldot.
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-object-group"); cValue.Exists() {
 				item.DestinationObjectGroup = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-fqdn-group"); cValue.Exists() {
+				item.DestinationFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq"); cValue.Exists() {
 				item.DestinationPortEqual = types.StringValue(cValue.String())
@@ -2156,6 +2216,9 @@ func (data *AccessListExtended) getDeletedItems(ctx context.Context, state Acces
 				if !state.Entries[i].DestinationPortEqual.IsNull() && data.Entries[j].DestinationPortEqual.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/dst-eq", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
+				if !state.Entries[i].DestinationFqdnGroup.IsNull() && data.Entries[j].DestinationFqdnGroup.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/dst-fqdn-group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Entries[i].DestinationObjectGroup.IsNull() && data.Entries[j].DestinationObjectGroup.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/dst-object-group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -2185,6 +2248,9 @@ func (data *AccessListExtended) getDeletedItems(ctx context.Context, state Acces
 				}
 				if !state.Entries[i].SourcePortEqual.IsNull() && data.Entries[j].SourcePortEqual.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourceFqdnGroup.IsNull() && data.Entries[j].SourceFqdnGroup.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-fqdn-group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Entries[i].SourceObjectGroup.IsNull() && data.Entries[j].SourceObjectGroup.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/object-group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -2343,6 +2409,9 @@ func (data *AccessListExtended) addDeletedItemsXML(ctx context.Context, state Ac
 				if !state.Entries[i].DestinationPortEqual.IsNull() && data.Entries[j].DestinationPortEqual.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq", predicates))
 				}
+				if !state.Entries[i].DestinationFqdnGroup.IsNull() && data.Entries[j].DestinationFqdnGroup.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-fqdn-group", predicates))
+				}
 				if !state.Entries[i].DestinationObjectGroup.IsNull() && data.Entries[j].DestinationObjectGroup.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-object-group", predicates))
 				}
@@ -2372,6 +2441,9 @@ func (data *AccessListExtended) addDeletedItemsXML(ctx context.Context, state Ac
 				}
 				if !state.Entries[i].SourcePortEqual.IsNull() && data.Entries[j].SourcePortEqual.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq", predicates))
+				}
+				if !state.Entries[i].SourceFqdnGroup.IsNull() && data.Entries[j].SourceFqdnGroup.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-fqdn-group", predicates))
 				}
 				if !state.Entries[i].SourceObjectGroup.IsNull() && data.Entries[j].SourceObjectGroup.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/object-group", predicates))
