@@ -81,6 +81,7 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 - `shutdown` (Boolean) Shutdown the selected interface
 - `trust_device` (String) trusted device class
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 <a id="nestedatt--helper_addresses"></a>
 ### Nested Schema for `helper_addresses`

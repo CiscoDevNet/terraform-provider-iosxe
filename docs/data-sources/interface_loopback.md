@@ -56,6 +56,7 @@ data "iosxe_interface_loopback" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 <a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`

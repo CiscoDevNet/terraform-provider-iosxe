@@ -92,6 +92,7 @@ data "iosxe_interface_port_channel" "example" {
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 <a id="nestedatt--device_tracking_attached_policies"></a>
 ### Nested Schema for `device_tracking_attached_policies`
