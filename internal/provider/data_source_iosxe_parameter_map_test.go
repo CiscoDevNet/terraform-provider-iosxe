@@ -30,18 +30,18 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeParameterMapTypeInspect(t *testing.T) {
+func TestAccDataSourceIosxeParameterMap(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map_type_inspect.test", "icmp_idle_time", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map_type_inspect.test", "sessions_maximum", "10000"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map_type_inspect.test", "tcp_idle_time", "3600"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map_type_inspect.test", "tcp_max_incomplete_host", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map.test", "icmp_idle_time", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map.test", "sessions_maximum", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map.test", "tcp_idle_time", "3600"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_parameter_map.test", "tcp_max_incomplete_host", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeParameterMapTypeInspectConfig(),
+				Config: testAccDataSourceIosxeParameterMapConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -55,8 +55,8 @@ func TestAccDataSourceIosxeParameterMapTypeInspect(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeParameterMapTypeInspectConfig() string {
-	config := `resource "iosxe_parameter_map_type_inspect" "test" {` + "\n"
+func testAccDataSourceIosxeParameterMapConfig() string {
+	config := `resource "iosxe_parameter_map" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "PM_INSPECT1"` + "\n"
 	config += `	icmp_idle_time = 10` + "\n"
@@ -66,9 +66,9 @@ func testAccDataSourceIosxeParameterMapTypeInspectConfig() string {
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_parameter_map_type_inspect" "test" {
+		data "iosxe_parameter_map" "test" {
 			name = "PM_INSPECT1"
-			depends_on = [iosxe_parameter_map_type_inspect.test]
+			depends_on = [iosxe_parameter_map.test]
 		}
 	`
 	return config

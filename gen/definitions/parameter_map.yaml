@@ -1,5 +1,5 @@
 ---
-name: Parameter Map Type Inspect
+name: Parameter Map
 path: /Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:inspect[name=%v]
 doc_category: QoS
 attributes:

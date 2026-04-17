@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &ParameterMapTypeInspectDataSource{}
-	_ datasource.DataSourceWithConfigure = &ParameterMapTypeInspectDataSource{}
+	_ datasource.DataSource              = &ParameterMapDataSource{}
+	_ datasource.DataSourceWithConfigure = &ParameterMapDataSource{}
 )
 
-func NewParameterMapTypeInspectDataSource() datasource.DataSource {
-	return &ParameterMapTypeInspectDataSource{}
+func NewParameterMapDataSource() datasource.DataSource {
+	return &ParameterMapDataSource{}
 }
 
-type ParameterMapTypeInspectDataSource struct {
+type ParameterMapDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *ParameterMapTypeInspectDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_parameter_map_type_inspect"
+func (d *ParameterMapDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_parameter_map"
 }
 
-func (d *ParameterMapTypeInspectDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *ParameterMapDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Parameter Map Type Inspect configuration.",
+		MarkdownDescription: "This data source can read the Parameter Map configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -288,7 +288,7 @@ func (d *ParameterMapTypeInspectDataSource) Schema(ctx context.Context, req data
 	}
 }
 
-func (d *ParameterMapTypeInspectDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *ParameterMapDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -300,8 +300,8 @@ func (d *ParameterMapTypeInspectDataSource) Configure(_ context.Context, req dat
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *ParameterMapTypeInspectDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config ParameterMapTypeInspectData
+func (d *ParameterMapDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config ParameterMapData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -321,7 +321,7 @@ func (d *ParameterMapTypeInspectDataSource) Read(ctx context.Context, req dataso
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = ParameterMapTypeInspectData{Device: config.Device}
+			config = ParameterMapData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

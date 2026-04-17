@@ -1,4 +1,4 @@
-resource "iosxe_parameter_map_type_inspect" "example" {
+resource "iosxe_parameter_map" "example" {
   name = "PM_INSPECT1"
   icmp_idle_time = 10
   sessions_maximum = 10000

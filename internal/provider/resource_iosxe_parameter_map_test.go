@@ -32,29 +32,29 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeParameterMapTypeInspect(t *testing.T) {
+func TestAccIosxeParameterMap(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map_type_inspect.test", "name", "PM_INSPECT1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map_type_inspect.test", "icmp_idle_time", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map_type_inspect.test", "sessions_maximum", "10000"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map_type_inspect.test", "tcp_idle_time", "3600"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map_type_inspect.test", "tcp_max_incomplete_host", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map.test", "name", "PM_INSPECT1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map.test", "icmp_idle_time", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map.test", "sessions_maximum", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map.test", "tcp_idle_time", "3600"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_parameter_map.test", "tcp_max_incomplete_host", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeParameterMapTypeInspectConfig_minimum(),
+				Config: testAccIosxeParameterMapConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeParameterMapTypeInspectConfig_all(),
+				Config: testAccIosxeParameterMapConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_parameter_map_type_inspect.test",
+				ResourceName:            "iosxe_parameter_map.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeParameterMapTypeInspectImportStateIdFunc("iosxe_parameter_map_type_inspect.test"),
+				ImportStateIdFunc:       iosxeParameterMapImportStateIdFunc("iosxe_parameter_map.test"),
 				ImportStateVerifyIgnore: []string{"alert", "audit_trail", "icmp_unreachable_allow", "log_dropped_packets", "log_flow", "tcp_half_close_reset_off", "tcp_half_open_reset_off", "tcp_idle_reset_off", "tcp_window_scale_enforcement_loose", "zone_mismatch_drop"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -66,7 +66,7 @@ func TestAccIosxeParameterMapTypeInspect(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeParameterMapTypeInspectImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeParameterMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
 		Name := primary.Attributes["name"]
@@ -82,8 +82,8 @@ func iosxeParameterMapTypeInspectImportStateIdFunc(resourceName string) resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeParameterMapTypeInspectConfig_minimum() string {
-	config := `resource "iosxe_parameter_map_type_inspect" "test" {` + "\n"
+func testAccIosxeParameterMapConfig_minimum() string {
+	config := `resource "iosxe_parameter_map" "test" {` + "\n"
 	config += `	name = "PM_INSPECT1"` + "\n"
 	config += `}` + "\n"
 	return config
@@ -93,8 +93,8 @@ func testAccIosxeParameterMapTypeInspectConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeParameterMapTypeInspectConfig_all() string {
-	config := `resource "iosxe_parameter_map_type_inspect" "test" {` + "\n"
+func testAccIosxeParameterMapConfig_all() string {
+	config := `resource "iosxe_parameter_map" "test" {` + "\n"
 	config += `	name = "PM_INSPECT1"` + "\n"
 	config += `	icmp_idle_time = 10` + "\n"
 	config += `	sessions_maximum = 10000` + "\n"

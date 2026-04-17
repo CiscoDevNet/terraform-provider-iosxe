@@ -39,7 +39,7 @@ import (
 // End of section. //template:end imports
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
-type ParameterMapTypeInspect struct {
+type ParameterMap struct {
 	Device                         types.String `tfsdk:"device"`
 	Id                             types.String `tfsdk:"id"`
 	DeleteMode                     types.String `tfsdk:"delete_mode"`
@@ -99,7 +99,7 @@ type ParameterMapTypeInspect struct {
 	ZoneMismatchDrop               types.Bool   `tfsdk:"zone_mismatch_drop"`
 }
 
-type ParameterMapTypeInspectData struct {
+type ParameterMapData struct {
 	Device                         types.String `tfsdk:"device"`
 	Id                             types.String `tfsdk:"id"`
 	Name                           types.String `tfsdk:"name"`
@@ -162,16 +162,16 @@ type ParameterMapTypeInspectData struct {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
-func (data ParameterMapTypeInspect) getPath() string {
+func (data ParameterMap) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:inspect=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-func (data ParameterMapTypeInspectData) getPath() string {
+func (data ParameterMapData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:inspect=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it
-func (data ParameterMapTypeInspect) getPathShort() string {
+func (data ParameterMap) getPathShort() string {
 	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
@@ -182,13 +182,13 @@ func (data ParameterMapTypeInspect) getPathShort() string {
 }
 
 // getXPath returns the XPath for NETCONF operations
-func (data ParameterMapTypeInspect) getXPath() string {
+func (data ParameterMap) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:inspect[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
-func (data ParameterMapTypeInspectData) getXPath() string {
+func (data ParameterMapData) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:inspect[name=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
@@ -198,7 +198,7 @@ func (data ParameterMapTypeInspectData) getXPath() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data ParameterMapTypeInspect) toBody(ctx context.Context, config ParameterMapTypeInspect) string {
+func (data ParameterMap) toBody(ctx context.Context, config ParameterMap) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
@@ -389,7 +389,7 @@ func (data ParameterMapTypeInspect) toBody(ctx context.Context, config Parameter
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
-func (data ParameterMapTypeInspect) toBodyXML(ctx context.Context, config ParameterMapTypeInspect) string {
+func (data ParameterMap) toBodyXML(ctx context.Context, config ParameterMap) string {
 	body := netconf.Body{}
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
@@ -604,7 +604,7 @@ func (data ParameterMapTypeInspect) toBodyXML(ctx context.Context, config Parame
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
-func (data *ParameterMapTypeInspect) updateFromBody(ctx context.Context, res gjson.Result) {
+func (data *ParameterMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -961,7 +961,7 @@ func (data *ParameterMapTypeInspect) updateFromBody(ctx context.Context, res gjs
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
-func (data *ParameterMapTypeInspect) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *ParameterMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
@@ -1314,7 +1314,7 @@ func (data *ParameterMapTypeInspect) updateFromBodyXML(ctx context.Context, res 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
-func (data *ParameterMapTypeInspect) fromBody(ctx context.Context, res gjson.Result) {
+func (data *ParameterMap) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -1540,7 +1540,7 @@ func (data *ParameterMapTypeInspect) fromBody(ctx context.Context, res gjson.Res
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
-func (data *ParameterMapTypeInspectData) fromBody(ctx context.Context, res gjson.Result) {
+func (data *ParameterMapData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -1766,7 +1766,7 @@ func (data *ParameterMapTypeInspectData) fromBody(ctx context.Context, res gjson
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
-func (data *ParameterMapTypeInspect) fromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *ParameterMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/alert/on"); value.Exists() {
 		data.Alert = types.BoolValue(true)
 	} else {
@@ -1988,7 +1988,7 @@ func (data *ParameterMapTypeInspect) fromBodyXML(ctx context.Context, res xmldot
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
-func (data *ParameterMapTypeInspectData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+func (data *ParameterMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/alert/on"); value.Exists() {
 		data.Alert = types.BoolValue(true)
 	} else {
@@ -2210,7 +2210,7 @@ func (data *ParameterMapTypeInspectData) fromBodyXML(ctx context.Context, res xm
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
-func (data *ParameterMapTypeInspect) getDeletedItems(ctx context.Context, state ParameterMapTypeInspect) []string {
+func (data *ParameterMap) getDeletedItems(ctx context.Context, state ParameterMap) []string {
 	deletedItems := make([]string, 0)
 	if !state.ZoneMismatchDrop.IsNull() && data.ZoneMismatchDrop.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/zone-mismatch/drop", state.getPath()))
@@ -2379,7 +2379,7 @@ func (data *ParameterMapTypeInspect) getDeletedItems(ctx context.Context, state 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
-func (data *ParameterMapTypeInspect) addDeletedItemsXML(ctx context.Context, state ParameterMapTypeInspect, body string) string {
+func (data *ParameterMap) addDeletedItemsXML(ctx context.Context, state ParameterMap, body string) string {
 	b := netconf.NewBody(body)
 	if !state.ZoneMismatchDrop.IsNull() && data.ZoneMismatchDrop.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/zone-mismatch/drop")
@@ -2549,7 +2549,7 @@ func (data *ParameterMapTypeInspect) addDeletedItemsXML(ctx context.Context, sta
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
-func (data *ParameterMapTypeInspect) getEmptyLeafsDelete(ctx context.Context) []string {
+func (data *ParameterMap) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.ZoneMismatchDrop.IsNull() && !data.ZoneMismatchDrop.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/zone-mismatch/drop", data.getPath()))
@@ -2589,7 +2589,7 @@ func (data *ParameterMapTypeInspect) getEmptyLeafsDelete(ctx context.Context) []
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
-func (data *ParameterMapTypeInspect) getDeletePaths(ctx context.Context) []string {
+func (data *ParameterMap) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.ZoneMismatchDrop.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/zone-mismatch/drop", data.getPath()))
@@ -2758,7 +2758,7 @@ func (data *ParameterMapTypeInspect) getDeletePaths(ctx context.Context) []strin
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
-func (data *ParameterMapTypeInspect) addDeletePathsXML(ctx context.Context, body string) string {
+func (data *ParameterMap) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.ZoneMismatchDrop.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/zone-mismatch/drop")

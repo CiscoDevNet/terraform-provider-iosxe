@@ -46,26 +46,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &ParameterMapTypeInspectResource{}
-	_ resource.ResourceWithImportState = &ParameterMapTypeInspectResource{}
+	_ resource.Resource                = &ParameterMapResource{}
+	_ resource.ResourceWithImportState = &ParameterMapResource{}
 )
 
-func NewParameterMapTypeInspectResource() resource.Resource {
-	return &ParameterMapTypeInspectResource{}
+func NewParameterMapResource() resource.Resource {
+	return &ParameterMapResource{}
 }
 
-type ParameterMapTypeInspectResource struct {
+type ParameterMapResource struct {
 	data *IosxeProviderData
 }
 
-func (r *ParameterMapTypeInspectResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_parameter_map_type_inspect"
+func (r *ParameterMapResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_parameter_map"
 }
 
-func (r *ParameterMapTypeInspectResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ParameterMapResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Parameter Map Type Inspect configuration.",
+		MarkdownDescription: "This resource can manage the Parameter Map configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -384,7 +384,7 @@ func (r *ParameterMapTypeInspectResource) Schema(ctx context.Context, req resour
 	}
 }
 
-func (r *ParameterMapTypeInspectResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *ParameterMapResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -396,8 +396,8 @@ func (r *ParameterMapTypeInspectResource) Configure(_ context.Context, req resou
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *ParameterMapTypeInspectResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config ParameterMapTypeInspect
+func (r *ParameterMapResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config ParameterMap
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -487,8 +487,8 @@ func (r *ParameterMapTypeInspectResource) Create(ctx context.Context, req resour
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *ParameterMapTypeInspectResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state ParameterMapTypeInspect
+func (r *ParameterMapResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state ParameterMap
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -514,7 +514,7 @@ func (r *ParameterMapTypeInspectResource) Read(ctx context.Context, req resource
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = ParameterMapTypeInspect{Device: state.Device, Id: state.Id}
+				state = ParameterMap{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -570,8 +570,8 @@ func (r *ParameterMapTypeInspectResource) Read(ctx context.Context, req resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *ParameterMapTypeInspectResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config ParameterMapTypeInspect
+func (r *ParameterMapResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config ParameterMap
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -678,8 +678,8 @@ func (r *ParameterMapTypeInspectResource) Update(ctx context.Context, req resour
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *ParameterMapTypeInspectResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state ParameterMapTypeInspect
+func (r *ParameterMapResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state ParameterMap
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -777,7 +777,7 @@ func (r *ParameterMapTypeInspectResource) Delete(ctx context.Context, req resour
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *ParameterMapTypeInspectResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *ParameterMapResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -796,7 +796,7 @@ func (r *ParameterMapTypeInspectResource) ImportState(ctx context.Context, req r
 	}
 
 	// construct path for 'id' attribute
-	var state ParameterMapTypeInspect
+	var state ParameterMap
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
