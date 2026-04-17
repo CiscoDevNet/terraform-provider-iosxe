@@ -757,6 +757,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewVLANGroupResource,
 		NewVRFResource,
 		NewVTPResource,
+		NewZoneSecurityResource,
 	}
 }
 
@@ -882,6 +883,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewVLANGroupDataSource,
 		NewVRFDataSource,
 		NewVTPDataSource,
+		NewZoneSecurityDataSource,
 	}
 }
 
