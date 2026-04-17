@@ -392,6 +392,10 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -84,6 +84,7 @@ type InterfaceVLAN struct {
 	IpRouterIsis                      types.String                          `tfsdk:"ip_router_isis"`
 	IpNatInside                       types.Bool                            `tfsdk:"ip_nat_inside"`
 	IpNatOutside                      types.Bool                            `tfsdk:"ip_nat_outside"`
+	ZoneMemberSecurity                types.String                          `tfsdk:"zone_member_security"`
 }
 type InterfaceVLANHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -141,6 +142,7 @@ type InterfaceVLANData struct {
 	IpRouterIsis                      types.String                              `tfsdk:"ip_router_isis"`
 	IpNatInside                       types.Bool                                `tfsdk:"ip_nat_inside"`
 	IpNatOutside                      types.Bool                                `tfsdk:"ip_nat_outside"`
+	ZoneMemberSecurity                types.String                              `tfsdk:"zone_member_security"`
 }
 type InterfaceVLANHelperAddressesData struct {
 	Address types.String `tfsdk:"address"`
@@ -327,6 +329,9 @@ func (data InterfaceVLAN) toBody(ctx context.Context, config InterfaceVLAN) stri
 		if data.IpNatOutside.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
 		}
+	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-zone:zone-member.security", data.ZoneMemberSecurity.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -581,6 +586,9 @@ func (data InterfaceVLAN) toBodyXML(ctx context.Context, config InterfaceVLAN) s
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 		}
+	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -953,6 +961,11 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1315,6 +1328,11 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1515,6 +1533,9 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -1717,6 +1738,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1913,6 +1937,9 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -2111,6 +2138,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2119,6 +2149,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceVLAN) []string {
 	deletedItems := make([]string, 0)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", state.getPath()))
+	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
 	}
@@ -2318,6 +2351,9 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 
 func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state InterfaceVLAN, body string) string {
 	b := netconf.NewBody(body)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 	}
@@ -2597,6 +2633,9 @@ func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.ZoneMemberSecurity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", data.getPath()))
+	}
 	if !data.IpNatOutside.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
 	}
@@ -2724,6 +2763,9 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	if !data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 	}

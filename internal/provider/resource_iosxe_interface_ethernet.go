@@ -907,6 +907,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
+				Optional:            true,
+			},
 		},
 	}
 }

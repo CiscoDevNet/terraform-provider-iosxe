@@ -330,6 +330,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
 				Optional:            true,
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
+				Optional:            true,
+			},
 		},
 	}
 }
