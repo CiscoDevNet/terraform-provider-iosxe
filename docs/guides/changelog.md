@@ -20,6 +20,8 @@ description: |-
 - Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
 - Fix banner whitespace normalization for both RESTCONF and NETCONF read paths, and mark banner attributes as `Computed` to prevent idempotency issues with leading/trailing whitespace
 - BREAKING CHANGE: Remove `feature_name`, `feature_port_bulk`, `feature_port_onegig`, `feature_port_b_6xonegig`, and `feature_port_tengig` attributes from `iosxe_license` resource and data source. These mapped to YANG leafs with no backing CLI on any supported platform.
+- Add `ip_sftp_username`, `ip_sftp_password_encryption`, and `ip_sftp_password` attributes to `iosxe_system` resource and data source
+- Add static NAT support (inside and outside source static) to `iosxe_nat` resource and data source
 
 ## 0.16.0
 
