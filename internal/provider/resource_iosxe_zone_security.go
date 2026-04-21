@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -47,26 +46,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &InterfacePortChannelSubinterfaceResource{}
-	_ resource.ResourceWithImportState = &InterfacePortChannelSubinterfaceResource{}
+	_ resource.Resource                = &ZoneSecurityResource{}
+	_ resource.ResourceWithImportState = &ZoneSecurityResource{}
 )
 
-func NewInterfacePortChannelSubinterfaceResource() resource.Resource {
-	return &InterfacePortChannelSubinterfaceResource{}
+func NewZoneSecurityResource() resource.Resource {
+	return &ZoneSecurityResource{}
 }
 
-type InterfacePortChannelSubinterfaceResource struct {
+type ZoneSecurityResource struct {
 	data *IosxeProviderData
 }
 
-func (r *InterfacePortChannelSubinterfaceResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_port_channel_subinterface"
+func (r *ZoneSecurityResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_zone_security"
 }
 
-func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ZoneSecurityResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface Port Channel Subinterface configuration.",
+		MarkdownDescription: "This resource can manage the Zone Security configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -91,339 +90,43 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`[1-9][0-9]*\.[1-9][0-9]*`), ""),
+					stringvalidator.LengthBetween(1, 64),
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 4094),
-				},
-			},
 			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface specific description").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Zone description").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.LengthBetween(0, 200),
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+					stringvalidator.LengthBetween(1, 200),
 				},
 			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
+			"protection": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("config sync cookie protection against sync flood").String,
 				Optional:            true,
 			},
-			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
-				Optional:            true,
-			},
-			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
-				Optional:            true,
-			},
-			"ip_unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
-				Optional:            true,
-			},
-			"vrf_forwarding": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
-				Optional:            true,
-			},
-			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ip address").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ip subnet mask").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"ipv4_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").String,
-				Optional:            true,
-			},
-			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
-				Optional:            true,
-			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
-				Optional:            true,
-			},
-			"ip_access_group_out": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"auto_qos_classify": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure classification for untrusted devices").String,
-				Optional:            true,
-			},
-			"auto_qos_classify_police": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure QoS policing for untrusted devices").String,
-				Optional:            true,
-			},
-			"auto_qos_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").String,
-				Optional:            true,
-			},
-			"auto_qos_trust_cos": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the CoS marking").String,
-				Optional:            true,
-			},
-			"auto_qos_trust_dscp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP marking").String,
-				Optional:            true,
-			},
-			"auto_qos_video_cts": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Cisco Telepresence System").String,
-				Optional:            true,
-			},
-			"auto_qos_video_ip_camera": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Ip Video Surveillance camera").String,
-				Optional:            true,
-			},
-			"auto_qos_video_media_player": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the Qos marking of the Cisco Media Player").String,
-				Optional:            true,
-			},
-			"auto_qos_voip_cisco_phone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP Phone").String,
-				Optional:            true,
-			},
-			"auto_qos_voip_cisco_softphone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP SoftPhone").String,
-				Optional:            true,
-			},
-			"auto_qos_voip_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").String,
-				Optional:            true,
-			},
-			"trust_device": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("trusted device class").AddStringEnumDescription("cisco-phone", "cts", "ip-camera", "media-player").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("cisco-phone", "cts", "ip-camera", "media-player"),
-				},
-			},
-			"helper_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a destination address for UDP broadcasts").String,
+			"vpns": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("config vpn and zone binding list").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IP destination address").String,
+						"id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VPN Number").AddIntegerRangeDescription(0, 4294967295).String,
 							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
-							Optional:            true,
-						},
-						"vrf": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"bfd_template": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("BFD template").String,
-				Optional:            true,
-			},
-			"bfd_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
-				Optional:            true,
-			},
-			"bfd_local_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
-				Optional:            true,
-			},
-			"bfd_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(50, 9999).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(50, 9999),
-				},
-			},
-			"bfd_interval_min_rx": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(50, 9999).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(50, 9999),
-				},
-			},
-			"bfd_interval_multiplier": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Multiplier value used to compute holddown").AddIntegerRangeDescription(3, 50).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(3, 50),
-				},
-			},
-			"bfd_echo": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
-				Optional:            true,
-			},
-			"ipv6_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
-				Optional:            true,
-			},
-			"ipv6_mtu": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1280, 9976),
-				},
-			},
-			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
-				Optional:            true,
-			},
-			"ipv6_address_autoconfig_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
-				Optional:            true,
-			},
-			"ipv6_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
-				Optional:            true,
-			},
-			"ipv6_link_local_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
-							},
-						},
-						"link_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"ipv6_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"prefix": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
-							},
-						},
-						"eui_64": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"ipv6_flow_monitors": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
-							Required:            true,
-						},
-						"direction": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("input", "output"),
+							Validators: []validator.Int64{
+								int64validator.Between(0, 4294967295),
 							},
 						},
 					},
 				},
-			},
-			"arp_timeout": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set ARP cache timeout").AddIntegerRangeDescription(0, 2147483).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 2147483),
-				},
-			},
-			"ip_arp_inspection_trust": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure Trust state").String,
-				Optional:            true,
-			},
-			"ip_arp_inspection_limit_rate": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Rate Limit").AddIntegerRangeDescription(0, 4294967295).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 4294967295),
-				},
-			},
-			"ip_igmp_version": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 3),
-				},
-			},
-			"ip_router_isis": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_nat_inside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
-				Optional:            true,
-			},
-			"ip_nat_outside": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
-				Optional:            true,
-			},
-			"ip_flow_monitors": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
-							Required:            true,
-						},
-						"direction": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("input", "output"),
-							},
-						},
-					},
-				},
-			},
-			"zone_member_security": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
-				Optional:            true,
 			},
 		},
 	}
 }
 
-func (r *InterfacePortChannelSubinterfaceResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *ZoneSecurityResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -435,8 +138,8 @@ func (r *InterfacePortChannelSubinterfaceResource) Configure(_ context.Context, 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *InterfacePortChannelSubinterfaceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config InterfacePortChannelSubinterface
+func (r *ZoneSecurityResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config ZoneSecurity
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -526,8 +229,8 @@ func (r *InterfacePortChannelSubinterfaceResource) Create(ctx context.Context, r
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *InterfacePortChannelSubinterfaceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state InterfacePortChannelSubinterface
+func (r *ZoneSecurityResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state ZoneSecurity
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -553,7 +256,7 @@ func (r *InterfacePortChannelSubinterfaceResource) Read(ctx context.Context, req
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = InterfacePortChannelSubinterface{Device: state.Device, Id: state.Id}
+				state = ZoneSecurity{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -609,8 +312,8 @@ func (r *InterfacePortChannelSubinterfaceResource) Read(ctx context.Context, req
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *InterfacePortChannelSubinterfaceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config InterfacePortChannelSubinterface
+func (r *ZoneSecurityResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config ZoneSecurity
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -717,8 +420,8 @@ func (r *InterfacePortChannelSubinterfaceResource) Update(ctx context.Context, r
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *InterfacePortChannelSubinterfaceResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state InterfacePortChannelSubinterface
+func (r *ZoneSecurityResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state ZoneSecurity
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -816,7 +519,7 @@ func (r *InterfacePortChannelSubinterfaceResource) Delete(ctx context.Context, r
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *InterfacePortChannelSubinterfaceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *ZoneSecurityResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -835,7 +538,7 @@ func (r *InterfacePortChannelSubinterfaceResource) ImportState(ctx context.Conte
 	}
 
 	// construct path for 'id' attribute
-	var state InterfacePortChannelSubinterface
+	var state ZoneSecurity
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

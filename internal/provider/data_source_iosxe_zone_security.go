@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &InterfaceBDIDataSource{}
-	_ datasource.DataSourceWithConfigure = &InterfaceBDIDataSource{}
+	_ datasource.DataSource              = &ZoneSecurityDataSource{}
+	_ datasource.DataSourceWithConfigure = &ZoneSecurityDataSource{}
 )
 
-func NewInterfaceBDIDataSource() datasource.DataSource {
-	return &InterfaceBDIDataSource{}
+func NewZoneSecurityDataSource() datasource.DataSource {
+	return &ZoneSecurityDataSource{}
 }
 
-type InterfaceBDIDataSource struct {
+type ZoneSecurityDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *InterfaceBDIDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_bdi"
+func (d *ZoneSecurityDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_zone_security"
 }
 
-func (d *InterfaceBDIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *ZoneSecurityDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Interface BDI configuration.",
+		MarkdownDescription: "This data source can read the Zone Security configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -72,19 +72,31 @@ func (d *InterfaceBDIDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"mac_address": schema.StringAttribute{
-				MarkdownDescription: "Manually set interface MAC address",
+			"description": schema.StringAttribute{
+				MarkdownDescription: "Zone description",
 				Computed:            true,
 			},
-			"zone_member_security": schema.StringAttribute{
-				MarkdownDescription: "Security zone",
+			"protection": schema.StringAttribute{
+				MarkdownDescription: "config sync cookie protection against sync flood",
 				Computed:            true,
+			},
+			"vpns": schema.ListNestedAttribute{
+				MarkdownDescription: "config vpn and zone binding list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.Int64Attribute{
+							MarkdownDescription: "VPN Number",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}
 }
 
-func (d *InterfaceBDIDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *ZoneSecurityDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -96,8 +108,8 @@ func (d *InterfaceBDIDataSource) Configure(_ context.Context, req datasource.Con
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *InterfaceBDIDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config InterfaceBDIData
+func (d *ZoneSecurityDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config ZoneSecurityData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -117,7 +129,7 @@ func (d *InterfaceBDIDataSource) Read(ctx context.Context, req datasource.ReadRe
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = InterfaceBDIData{Device: config.Device}
+			config = ZoneSecurityData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

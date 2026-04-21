@@ -760,6 +760,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewVRFResource,
 		NewVTPResource,
 		NewZonePairSecurityResource,
+		NewZoneSecurityResource,
 	}
 }
 
@@ -888,6 +889,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewVRFDataSource,
 		NewVTPDataSource,
 		NewZonePairSecurityDataSource,
+		NewZoneSecurityDataSource,
 	}
 }
 
