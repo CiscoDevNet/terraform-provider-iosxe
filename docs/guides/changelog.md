@@ -13,6 +13,7 @@ description: |-
 
 ## 0.17.0
 
+- Add `source_fqdn_group` and `destination_fqdn_group` attributes to `iosxe_access_list_extended` resource and data source
 - Add `ipv4_address_dhcp` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_tunnel` resources and data sources
 - Add `match_result_type_success` attribute to `iosxe_class_map` resource and data source
 - BREAKING CHANGE: Remove the `auto_qos_voip` attribute from the `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources. This attribute was never functional, as the corresponding YANG leaf is a choice leaf that requires selection from the existing `auto_qos_voip_cisco_phone`, `auto_qos_voip_cisco_softphone`, and `auto_qos_voip_trust` attributes.

@@ -150,6 +150,10 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 							MarkdownDescription: helpers.NewAttributeDescription("Source network object group").String,
 							Optional:            true,
 						},
+						"source_fqdn_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Source FQDN group").String,
+							Optional:            true,
+						},
 						"source_port_equal": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Match only packets on a given port number up to 10 ports").String,
 							Optional:            true,
@@ -197,6 +201,10 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 						},
 						"destination_object_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Destination network object group").String,
+							Optional:            true,
+						},
+						"destination_fqdn_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Destination FQDN group").String,
 							Optional:            true,
 						},
 						"destination_port_equal": schema.StringAttribute{
