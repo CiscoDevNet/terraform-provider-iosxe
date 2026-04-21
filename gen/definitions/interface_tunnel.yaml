@@ -185,6 +185,7 @@ attributes:
   - yang_name: ip/Cisco-IOS-XE-flow:flow/monitor-new
     tf_name: ip_flow_monitors
     type: List
+    test_tags: [C8000V]
     attributes:
       - yang_name: name
         id: true
