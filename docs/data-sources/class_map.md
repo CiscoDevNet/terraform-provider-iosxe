@@ -49,6 +49,7 @@ data "iosxe_class_map" "example" {
 - `match_result_type_method_dot1x_authoritative` (Boolean) failure type
 - `match_result_type_method_dot1x_method_timeout` (Boolean) method timeout type
 - `match_result_type_method_mab_authoritative` (Boolean) failure type
+- `match_result_type_success` (Boolean) success type
 - `prematch` (String) Logical-AND/Logical-OR of all matching statements under this class map
 - `subscriber` (Boolean) Domain name of the class map
 - `type` (String) type of the class-map
