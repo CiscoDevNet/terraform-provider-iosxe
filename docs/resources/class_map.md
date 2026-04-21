@@ -20,6 +20,7 @@ resource "iosxe_class_map" "example" {
   prematch                              = "match-all"
   match_authorization_status_authorized = true
   match_result_type_aaa_timeout         = true
+  match_result_type_success             = true
   match_activated_service_templates = [
     {
       service_name = "CRITICAL_AUTH_ACCESS"
@@ -66,6 +67,7 @@ resource "iosxe_class_map" "example" {
 - `match_result_type_method_dot1x_authoritative` (Boolean) failure type
 - `match_result_type_method_dot1x_method_timeout` (Boolean) method timeout type
 - `match_result_type_method_mab_authoritative` (Boolean) failure type
+- `match_result_type_success` (Boolean) success type
 - `subscriber` (Boolean) Domain name of the class map
 - `type` (String) type of the class-map
   - Choices: `access-control`, `appnav`, `control`, `inspect`, `multicast-flows`, `ngsw-qos`, `site-manager`, `stack`, `traffic`
