@@ -43,7 +43,11 @@ data "iosxe_policy_map" "example" {
 Read-Only:
 
 - `actions` (Attributes List) (see [below for nested schema](#nestedatt--classes--actions))
+- `class_type` (String) type of the class-map
 - `name` (String)
+- `policy_action` (String)
+- `policy_log` (Boolean) Send logging message for drop or pass
+- `policy_parameter_map` (String)
 
 <a id="nestedatt--classes--actions"></a>
 ### Nested Schema for `classes.actions`

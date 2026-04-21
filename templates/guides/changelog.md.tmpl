@@ -9,6 +9,7 @@ description: |-
 
 ## 0.18.0
 
+- Add `class_type`, `policy_action`, `policy_log`, and `policy_parameter_map` attributes to `iosxe_policy_map` resource and data source for Zone-Based Firewall (ZBF) inspect policy-map class configuration
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
 
 ## 0.17.0
