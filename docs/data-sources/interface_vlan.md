@@ -57,6 +57,7 @@ data "iosxe_interface_vlan" "example" {
 - `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
+- `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
 - `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server

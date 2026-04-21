@@ -116,6 +116,28 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
+						"class_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("type of the class-map").AddStringEnumDescription("inspect").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("inspect"),
+							},
+						},
+						"policy_action": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cxsc", "drop", "inspect", "pass").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("cxsc", "drop", "inspect", "pass"),
+							},
+						},
+						"policy_log": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Send logging message for drop or pass").String,
+							Optional:            true,
+						},
+						"policy_parameter_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
 						"actions": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
