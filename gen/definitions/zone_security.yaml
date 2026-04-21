@@ -1,0 +1,23 @@
+---
+name: Zone Security
+path: /Cisco-IOS-XE-native:native/zone/Cisco-IOS-XE-zone:security[id=%v]
+doc_category: Security
+attributes:
+  - yang_name: id
+    tf_name: name
+    id: true
+    example: INSIDE
+  - yang_name: description
+    example: Internal trusted network
+  - yang_name: protection
+    example: my-zone-protection
+    exclude_test: true
+  - yang_name: vpn
+    tf_name: vpns
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: id
+        tf_name: id
+        id: true
+        example: 100

@@ -39,18 +39,20 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceBDI struct {
-	Device     types.String `tfsdk:"device"`
-	Id         types.String `tfsdk:"id"`
-	DeleteMode types.String `tfsdk:"delete_mode"`
-	Name       types.String `tfsdk:"name"`
-	MacAddress types.String `tfsdk:"mac_address"`
+	Device             types.String `tfsdk:"device"`
+	Id                 types.String `tfsdk:"id"`
+	DeleteMode         types.String `tfsdk:"delete_mode"`
+	Name               types.String `tfsdk:"name"`
+	MacAddress         types.String `tfsdk:"mac_address"`
+	ZoneMemberSecurity types.String `tfsdk:"zone_member_security"`
 }
 
 type InterfaceBDIData struct {
-	Device     types.String `tfsdk:"device"`
-	Id         types.String `tfsdk:"id"`
-	Name       types.String `tfsdk:"name"`
-	MacAddress types.String `tfsdk:"mac_address"`
+	Device             types.String `tfsdk:"device"`
+	Id                 types.String `tfsdk:"id"`
+	Name               types.String `tfsdk:"name"`
+	MacAddress         types.String `tfsdk:"mac_address"`
+	ZoneMemberSecurity types.String `tfsdk:"zone_member_security"`
 }
 
 // End of section. //template:end types
@@ -101,6 +103,9 @@ func (data InterfaceBDI) toBody(ctx context.Context, config InterfaceBDI) string
 	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mac-address", data.MacAddress.ValueString())
 	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-zone:zone-member.security", data.ZoneMemberSecurity.ValueString())
+	}
 	return body
 }
 
@@ -115,6 +120,9 @@ func (data InterfaceBDI) toBodyXML(ctx context.Context, config InterfaceBDI) str
 	}
 	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/mac-address", data.MacAddress.ValueString())
+	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -142,6 +150,11 @@ func (data *InterfaceBDI) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.MacAddress = types.StringNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -159,6 +172,11 @@ func (data *InterfaceBDI) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.MacAddress = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -172,6 +190,9 @@ func (data *InterfaceBDI) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -187,6 +208,9 @@ func (data *InterfaceBDIData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -196,6 +220,9 @@ func (data *InterfaceBDIData) fromBody(ctx context.Context, res gjson.Result) {
 func (data *InterfaceBDI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -207,6 +234,9 @@ func (data *InterfaceBDIData) fromBodyXML(ctx context.Context, res xmldot.Result
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -215,6 +245,9 @@ func (data *InterfaceBDIData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *InterfaceBDI) getDeletedItems(ctx context.Context, state InterfaceBDI) []string {
 	deletedItems := make([]string, 0)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", state.getPath()))
+	}
 	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac-address", state.getPath()))
 	}
@@ -228,6 +261,9 @@ func (data *InterfaceBDI) getDeletedItems(ctx context.Context, state InterfaceBD
 
 func (data *InterfaceBDI) addDeletedItemsXML(ctx context.Context, state InterfaceBDI, body string) string {
 	b := netconf.NewBody(body)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac-address")
 	}
@@ -252,6 +288,9 @@ func (data *InterfaceBDI) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceBDI) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.ZoneMemberSecurity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", data.getPath()))
+	}
 	if !data.MacAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac-address", data.getPath()))
 	}
@@ -265,6 +304,9 @@ func (data *InterfaceBDI) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceBDI) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	if !data.MacAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac-address")
 	}

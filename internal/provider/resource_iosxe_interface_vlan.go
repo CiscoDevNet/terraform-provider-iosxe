@@ -149,6 +149,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
+			"ipv4_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").String,
+				Optional:            true,
+			},
 			"unnumbered": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable IP processing without an explicit address").String,
 				Optional:            true,
@@ -328,6 +332,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"ip_nat_outside": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
+				Optional:            true,
+			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
 				Optional:            true,
 			},
 		},

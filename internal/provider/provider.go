@@ -727,8 +727,10 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewMulticastResource,
 		NewNATResource,
 		NewNTPResource,
+		NewObjectGroupResource,
 		NewOSPFResource,
 		NewOSPFVRFResource,
+		NewParameterMapResource,
 		NewPIMResource,
 		NewPIMIPv6Resource,
 		NewPlatformResource,
@@ -758,6 +760,8 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewVLANGroupResource,
 		NewVRFResource,
 		NewVTPResource,
+		NewZonePairSecurityResource,
+		NewZoneSecurityResource,
 	}
 }
 
@@ -853,8 +857,10 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewMulticastDataSource,
 		NewNATDataSource,
 		NewNTPDataSource,
+		NewObjectGroupDataSource,
 		NewOSPFDataSource,
 		NewOSPFVRFDataSource,
+		NewParameterMapDataSource,
 		NewPIMDataSource,
 		NewPIMIPv6DataSource,
 		NewPlatformDataSource,
@@ -884,6 +890,8 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewVLANGroupDataSource,
 		NewVRFDataSource,
 		NewVTPDataSource,
+		NewZonePairSecurityDataSource,
+		NewZoneSecurityDataSource,
 	}
 }
 

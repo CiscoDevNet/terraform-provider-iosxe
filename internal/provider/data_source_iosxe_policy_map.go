@@ -93,6 +93,22 @@ func (d *PolicyMapDataSource) Schema(ctx context.Context, req datasource.SchemaR
 							MarkdownDescription: "",
 							Computed:            true,
 						},
+						"class_type": schema.StringAttribute{
+							MarkdownDescription: "type of the class-map",
+							Computed:            true,
+						},
+						"policy_action": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"policy_log": schema.BoolAttribute{
+							MarkdownDescription: "Send logging message for drop or pass",
+							Computed:            true,
+						},
+						"policy_parameter_map": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
 						"actions": schema.ListNestedAttribute{
 							MarkdownDescription: "",
 							Computed:            true,

@@ -180,6 +180,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
+			"ipv4_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: "IP Address negotiated via DHCP",
+				Computed:            true,
+			},
 			"unnumbered": schema.StringAttribute{
 				MarkdownDescription: "Enable IP processing without an explicit address",
 				Computed:            true,
@@ -327,6 +331,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 						},
 					},
 				},
+			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
+				Computed:            true,
 			},
 		},
 	}

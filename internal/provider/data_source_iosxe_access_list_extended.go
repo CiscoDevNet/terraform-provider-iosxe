@@ -117,6 +117,10 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 							MarkdownDescription: "Source network object group",
 							Computed:            true,
 						},
+						"source_fqdn_group": schema.StringAttribute{
+							MarkdownDescription: "Source FQDN group",
+							Computed:            true,
+						},
 						"source_port_equal": schema.StringAttribute{
 							MarkdownDescription: "Match only packets on a given port number up to 10 ports",
 							Computed:            true,
@@ -155,6 +159,10 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 						},
 						"destination_object_group": schema.StringAttribute{
 							MarkdownDescription: "Destination network object group",
+							Computed:            true,
+						},
+						"destination_fqdn_group": schema.StringAttribute{
+							MarkdownDescription: "Destination FQDN group",
 							Computed:            true,
 						},
 						"destination_port_equal": schema.StringAttribute{
