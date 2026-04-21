@@ -27,7 +27,6 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -47,26 +46,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &AccessListExtendedResource{}
-	_ resource.ResourceWithImportState = &AccessListExtendedResource{}
+	_ resource.Resource                = &ObjectGroupResource{}
+	_ resource.ResourceWithImportState = &ObjectGroupResource{}
 )
 
-func NewAccessListExtendedResource() resource.Resource {
-	return &AccessListExtendedResource{}
+func NewObjectGroupResource() resource.Resource {
+	return &ObjectGroupResource{}
 }
 
-type AccessListExtendedResource struct {
+type ObjectGroupResource struct {
 	data *IosxeProviderData
 }
 
-func (r *AccessListExtendedResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_access_list_extended"
+func (r *ObjectGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_object_group"
 }
 
-func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ObjectGroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Access List Extended configuration.",
+		MarkdownDescription: "This resource can manage the Object Group configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -80,260 +79,118 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"entries": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"fqdn": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("FQDN object-group type").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"sequence": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 2147483647).String,
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of FQDN OG").String,
 							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 2147483647),
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 64),
 							},
 						},
-						"remark": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Access list entry comment").String,
+						"description": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Description for FQDN OG").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.LengthBetween(1, 100),
+								stringvalidator.LengthBetween(1, 200),
 							},
 						},
-						"ace_rule_action": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("deny", "permit").String,
+						"group_objects": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("List of nested FQDN Groups").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"group_name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("FQDN group name").String,
+										Required:            true,
+									},
+								},
+							},
+						},
+						"patterns": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("List of reg exp FQDN patterns").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"fqdn_pattern": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("FQDN pattern").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.LengthBetween(1, 240),
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"network": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("network group").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("WORD;;object-group name").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 64),
+							},
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Network object group description").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("deny", "permit"),
+								stringvalidator.LengthBetween(1, 200),
 							},
 						},
-						"ace_rule_protocol": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+						"hosts": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Host address of the object-group member").String,
 							Optional:            true,
-						},
-						"service_object_group": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Service object group name").String,
-							Optional:            true,
-						},
-						"source_prefix": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_host": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Host address of the object-group member").String,
+										Required:            true,
+									},
+								},
 							},
 						},
-						"source_prefix_mask": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Source wildcard bits").String,
+						"network_addresses": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("A.B.C.D;;Network address of the group members").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"ipv4_mask": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("A.B.C.D;;Network mask").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+								},
 							},
 						},
-						"source_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Any source host").String,
+						"group_objects": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("List of nested IPv4 network groups").String,
 							Optional:            true,
-						},
-						"source_host": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("A single source host").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"source_object_group": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Source network object group").String,
-							Optional:            true,
-						},
-						"source_fqdn_group": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Source FQDN group").String,
-							Optional:            true,
-						},
-						"source_port_equal": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets on a given port number up to 10 ports").String,
-							Optional:            true,
-						},
-						"source_port_greater_than": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a greater port number").String,
-							Optional:            true,
-						},
-						"source_port_lesser_than": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a lower port number").String,
-							Optional:            true,
-						},
-						"source_port_range_from": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
-							Optional:            true,
-						},
-						"source_port_range_to": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
-							Optional:            true,
-						},
-						"destination_prefix": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"destination_prefix_mask": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Destination wildcard bits").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"destination_any": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Any destination host").String,
-							Optional:            true,
-						},
-						"destination_host": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("A single destination host").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"destination_object_group": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Destination network object group").String,
-							Optional:            true,
-						},
-						"destination_fqdn_group": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Destination FQDN group").String,
-							Optional:            true,
-						},
-						"destination_port_equal": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets on a given port number up to 10 ports").String,
-							Optional:            true,
-						},
-						"destination_port_greater_than": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a greater port number").String,
-							Optional:            true,
-						},
-						"destination_port_lesser_than": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets with a lower port number").String,
-							Optional:            true,
-						},
-						"destination_port_range_from": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
-							Optional:            true,
-						},
-						"destination_port_range_to": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match only packets in the range of port numbers").String,
-							Optional:            true,
-						},
-						"ack": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the ACK bit").String,
-							Optional:            true,
-						},
-						"fin": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the FIN bit").String,
-							Optional:            true,
-						},
-						"psh": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the PSH bit").String,
-							Optional:            true,
-						},
-						"rst": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the RST bit").String,
-							Optional:            true,
-						},
-						"syn": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the SYN bit").String,
-							Optional:            true,
-						},
-						"urg": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match on the URG bit").String,
-							Optional:            true,
-						},
-						"established": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match established connections").String,
-							Optional:            true,
-						},
-						"dscp": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given dscp value").String,
-							Optional:            true,
-						},
-						"fragments": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Check non-initial fragments").String,
-							Optional:            true,
-						},
-						"precedence": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given precedence value").String,
-							Optional:            true,
-						},
-						"tos": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given TOS value").String,
-							Optional:            true,
-						},
-						"log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
-							Optional:            true,
-						},
-						"log_input": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry, including input interface").String,
-							Optional:            true,
-						},
-						"icmp_named_msg_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("administratively-prohibited", "alternate-address", "conversion-error", "dod-host-prohibited", "dod-net-prohibited", "echo", "echo-reply", "general-parameter-problem", "host-isolated", "host-precedence-unreachable", "host-redirect", "host-tos-redirect", "host-tos-unreachable", "host-unknown", "host-unreachable", "information-reply", "information-request", "mask-reply", "mask-request", "mobile-redirect", "net-redirect", "net-tos-redirect", "net-tos-unreachable", "net-unreachable", "network-unknown", "no-room-for-option", "option-missing", "packet-too-big", "parameter-problem", "port-unreachable", "precedence-unreachable", "protocol-unreachable", "reassembly-timeout", "redirect", "router-advertisement", "router-solicitation", "source-quench", "source-route-failed", "time-exceeded", "timestamp-reply", "timestamp-request", "traceroute", "ttl-exceeded", "unreachable").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("administratively-prohibited", "alternate-address", "conversion-error", "dod-host-prohibited", "dod-net-prohibited", "echo", "echo-reply", "general-parameter-problem", "host-isolated", "host-precedence-unreachable", "host-redirect", "host-tos-redirect", "host-tos-unreachable", "host-unknown", "host-unreachable", "information-reply", "information-request", "mask-reply", "mask-request", "mobile-redirect", "net-redirect", "net-tos-redirect", "net-tos-unreachable", "net-unreachable", "network-unknown", "no-room-for-option", "option-missing", "packet-too-big", "parameter-problem", "port-unreachable", "precedence-unreachable", "protocol-unreachable", "reassembly-timeout", "redirect", "router-advertisement", "router-solicitation", "source-quench", "source-route-failed", "time-exceeded", "timestamp-reply", "timestamp-request", "traceroute", "ttl-exceeded", "unreachable"),
-							},
-						},
-						"destination_port_equal_2": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_3": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_4": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_5": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_6": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_7": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_8": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_9": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"destination_port_equal_10": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"icmp_msg_type": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 255).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(0, 255),
-							},
-						},
-						"icmp_msg_code": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 255).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(0, 255),
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"group_name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Nested network object group name").String,
+										Required:            true,
+									},
+								},
 							},
 						},
 					},
@@ -343,7 +200,7 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 	}
 }
 
-func (r *AccessListExtendedResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *ObjectGroupResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -355,8 +212,8 @@ func (r *AccessListExtendedResource) Configure(_ context.Context, req resource.C
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *AccessListExtendedResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config AccessListExtended
+func (r *ObjectGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config ObjectGroup
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -446,8 +303,8 @@ func (r *AccessListExtendedResource) Create(ctx context.Context, req resource.Cr
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *AccessListExtendedResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state AccessListExtended
+func (r *ObjectGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state ObjectGroup
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -473,7 +330,7 @@ func (r *AccessListExtendedResource) Read(ctx context.Context, req resource.Read
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = AccessListExtended{Device: state.Device, Id: state.Id}
+				state = ObjectGroup{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -529,8 +386,8 @@ func (r *AccessListExtendedResource) Read(ctx context.Context, req resource.Read
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *AccessListExtendedResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config AccessListExtended
+func (r *ObjectGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config ObjectGroup
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -637,8 +494,8 @@ func (r *AccessListExtendedResource) Update(ctx context.Context, req resource.Up
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *AccessListExtendedResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state AccessListExtended
+func (r *ObjectGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state ObjectGroup
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -731,31 +588,25 @@ func (r *AccessListExtendedResource) Delete(ctx context.Context, req resource.De
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *AccessListExtendedResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *ObjectGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 1 && len(idParts) != 2 {
-		expectedIdentifier := "Expected import identifier with format: '<name>'"
-		expectedIdentifier += " or '<name>,<device>'"
+	if len(idParts) != 0 && len(idParts) != 1 {
+		expectedIdentifier := "Expected import identifier with format: ''"
+		expectedIdentifier += " or '<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
-	if len(idParts) == 2 {
+	if len(idParts) == 1 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state AccessListExtended
-	diags := resp.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	var state ObjectGroup
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

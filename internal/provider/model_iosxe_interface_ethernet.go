@@ -58,6 +58,7 @@ type InterfaceEthernet struct {
 	VrfForwarding                                       types.String                                      `tfsdk:"vrf_forwarding"`
 	Ipv4Address                                         types.String                                      `tfsdk:"ipv4_address"`
 	Ipv4AddressMask                                     types.String                                      `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp                                     types.Bool                                        `tfsdk:"ipv4_address_dhcp"`
 	Unnumbered                                          types.String                                      `tfsdk:"unnumbered"`
 	EncapsulationDot1qVlanId                            types.Int64                                       `tfsdk:"encapsulation_dot1q_vlan_id"`
 	ChannelGroupNumber                                  types.Int64                                       `tfsdk:"channel_group_number"`
@@ -240,6 +241,7 @@ type InterfaceEthernetData struct {
 	VrfForwarding                                       types.String                                          `tfsdk:"vrf_forwarding"`
 	Ipv4Address                                         types.String                                          `tfsdk:"ipv4_address"`
 	Ipv4AddressMask                                     types.String                                          `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp                                     types.Bool                                            `tfsdk:"ipv4_address_dhcp"`
 	Unnumbered                                          types.String                                          `tfsdk:"unnumbered"`
 	EncapsulationDot1qVlanId                            types.Int64                                           `tfsdk:"encapsulation_dot1q_vlan_id"`
 	ChannelGroupNumber                                  types.Int64                                           `tfsdk:"channel_group_number"`
@@ -487,6 +489,11 @@ func (data InterfaceEthernet) toBody(ctx context.Context, config InterfaceEthern
 	}
 	if !data.Ipv4AddressMask.IsNull() && !data.Ipv4AddressMask.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.primary.mask", data.Ipv4AddressMask.ValueString())
+	}
+	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.IsUnknown() {
+		if data.Ipv4AddressDhcp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.dhcp", map[string]string{})
+		}
 	}
 	if !data.Unnumbered.IsNull() && !data.Unnumbered.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.unnumbered", data.Unnumbered.ValueString())
@@ -1124,6 +1131,13 @@ func (data InterfaceEthernet) toBodyXML(ctx context.Context, config InterfaceEth
 	}
 	if !data.Ipv4AddressMask.IsNull() && !data.Ipv4AddressMask.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/primary/mask", data.Ipv4AddressMask.ValueString())
+	}
+	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.IsUnknown() {
+		if data.Ipv4AddressDhcp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/dhcp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/address/dhcp")
+		}
 	}
 	if !data.Unnumbered.IsNull() && !data.Unnumbered.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/unnumbered", data.Unnumbered.ValueString())
@@ -1948,6 +1962,15 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	} else {
 		data.Ipv4AddressMask = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.address.dhcp"); !data.Ipv4AddressDhcp.IsNull() {
+		if value.Exists() {
+			data.Ipv4AddressDhcp = types.BoolValue(true)
+		} else {
+			data.Ipv4AddressDhcp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4AddressDhcp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.unnumbered"); value.Exists() && !data.Unnumbered.IsNull() {
 		data.Unnumbered = types.StringValue(value.String())
@@ -3228,6 +3251,15 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Ipv4AddressMask = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/dhcp"); !data.Ipv4AddressDhcp.IsNull() {
+		if value.Exists() {
+			data.Ipv4AddressDhcp = types.BoolValue(true)
+		} else {
+			data.Ipv4AddressDhcp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4AddressDhcp = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/unnumbered"); value.Exists() && !data.Unnumbered.IsNull() {
 		data.Unnumbered = types.StringValue(value.String())
 	} else {
@@ -4480,6 +4512,11 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.address.dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.unnumbered"); value.Exists() {
 		data.Unnumbered = types.StringValue(value.String())
 	}
@@ -5170,6 +5207,11 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.address.dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.unnumbered"); value.Exists() {
 		data.Unnumbered = types.StringValue(value.String())
 	}
@@ -5856,6 +5898,11 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/unnumbered"); value.Exists() {
 		data.Unnumbered = types.StringValue(value.String())
 	}
@@ -6541,6 +6588,11 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/unnumbered"); value.Exists() {
 		data.Unnumbered = types.StringValue(value.String())
@@ -7808,6 +7860,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	if !state.Unnumbered.IsNull() && data.Unnumbered.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/unnumbered", state.getPath()))
 	}
+	if !state.Ipv4AddressDhcp.IsNull() && data.Ipv4AddressDhcp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/dhcp", state.getPath()))
+	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
 	}
@@ -8529,6 +8584,9 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 	if !state.Unnumbered.IsNull() && data.Unnumbered.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/unnumbered")
 	}
+	if !state.Ipv4AddressDhcp.IsNull() && data.Ipv4AddressDhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/dhcp")
+	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
 	}
@@ -8802,6 +8860,9 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
+	}
+	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/address/dhcp", data.getPath()))
 	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
@@ -9204,6 +9265,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Unnumbered.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/unnumbered", data.getPath()))
+	}
+	if !data.Ipv4AddressDhcp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/dhcp", data.getPath()))
 	}
 	if !data.Ipv4AddressMask.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
@@ -9689,6 +9753,9 @@ func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body strin
 	}
 	if !data.Unnumbered.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/unnumbered")
+	}
+	if !data.Ipv4AddressDhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/dhcp")
 	}
 	if !data.Ipv4AddressMask.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")
