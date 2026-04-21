@@ -54,6 +54,7 @@ type InterfaceLoopback struct {
 	VrfForwarding                types.String                              `tfsdk:"vrf_forwarding"`
 	Ipv4Address                  types.String                              `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                              `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp              types.Bool                                `tfsdk:"ipv4_address_dhcp"`
 	IpAccessGroupInEnable        types.Bool                                `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn              types.String                              `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                `tfsdk:"ip_access_group_out_enable"`
@@ -93,6 +94,7 @@ type InterfaceLoopbackData struct {
 	VrfForwarding                types.String                                  `tfsdk:"vrf_forwarding"`
 	Ipv4Address                  types.String                                  `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                                  `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp              types.Bool                                    `tfsdk:"ipv4_address_dhcp"`
 	IpAccessGroupInEnable        types.Bool                                    `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn              types.String                                  `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                    `tfsdk:"ip_access_group_out_enable"`
@@ -190,6 +192,11 @@ func (data InterfaceLoopback) toBody(ctx context.Context, config InterfaceLoopba
 	}
 	if !data.Ipv4AddressMask.IsNull() && !data.Ipv4AddressMask.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.primary.mask", data.Ipv4AddressMask.ValueString())
+	}
+	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.IsUnknown() {
+		if data.Ipv4AddressDhcp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.dhcp", map[string]string{})
+		}
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
@@ -317,6 +324,13 @@ func (data InterfaceLoopback) toBodyXML(ctx context.Context, config InterfaceLoo
 	}
 	if !data.Ipv4AddressMask.IsNull() && !data.Ipv4AddressMask.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/primary/mask", data.Ipv4AddressMask.ValueString())
+	}
+	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.IsUnknown() {
+		if data.Ipv4AddressDhcp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/address/dhcp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/address/dhcp")
+		}
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
@@ -497,6 +511,15 @@ func (data *InterfaceLoopback) updateFromBody(ctx context.Context, res gjson.Res
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	} else {
 		data.Ipv4AddressMask = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.address.dhcp"); !data.Ipv4AddressDhcp.IsNull() {
+		if value.Exists() {
+			data.Ipv4AddressDhcp = types.BoolValue(true)
+		} else {
+			data.Ipv4AddressDhcp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4AddressDhcp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
@@ -743,6 +766,15 @@ func (data *InterfaceLoopback) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Ipv4AddressMask = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/dhcp"); !data.Ipv4AddressDhcp.IsNull() {
+		if value.Exists() {
+			data.Ipv4AddressDhcp = types.BoolValue(true)
+		} else {
+			data.Ipv4AddressDhcp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv4AddressDhcp = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
 			data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -969,6 +1001,11 @@ func (data *InterfaceLoopback) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.address.dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
@@ -1105,6 +1142,11 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.address.dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
@@ -1237,6 +1279,11 @@ func (data *InterfaceLoopback) fromBodyXML(ctx context.Context, res xmldot.Resul
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
@@ -1368,6 +1415,11 @@ func (data *InterfaceLoopbackData) fromBodyXML(ctx context.Context, res xmldot.R
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/primary/mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/address/dhcp"); value.Exists() {
+		data.Ipv4AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv4AddressDhcp = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -1571,6 +1623,9 @@ func (data *InterfaceLoopback) getDeletedItems(ctx context.Context, state Interf
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
 	}
+	if !state.Ipv4AddressDhcp.IsNull() && data.Ipv4AddressDhcp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/dhcp", state.getPath()))
+	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
 	}
@@ -1716,6 +1771,9 @@ func (data *InterfaceLoopback) addDeletedItemsXML(ctx context.Context, state Int
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/in")
 	}
+	if !state.Ipv4AddressDhcp.IsNull() && data.Ipv4AddressDhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/dhcp")
+	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
 	}
@@ -1789,6 +1847,9 @@ func (data *InterfaceLoopback) getEmptyLeafsDelete(ctx context.Context) []string
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
+	if !data.Ipv4AddressDhcp.IsNull() && !data.Ipv4AddressDhcp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/address/dhcp", data.getPath()))
+	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
@@ -1856,6 +1917,9 @@ func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpAccessGroupInEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
+	}
+	if !data.Ipv4AddressDhcp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/dhcp", data.getPath()))
 	}
 	if !data.Ipv4AddressMask.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
@@ -1955,6 +2019,9 @@ func (data *InterfaceLoopback) addDeletePathsXML(ctx context.Context, body strin
 	}
 	if !data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/in")
+	}
+	if !data.Ipv4AddressDhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/dhcp")
 	}
 	if !data.Ipv4AddressMask.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")

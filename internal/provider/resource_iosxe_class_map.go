@@ -114,6 +114,10 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: helpers.NewAttributeDescription("aaa timeout type").String,
 				Optional:            true,
 			},
+			"match_result_type_success": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("success type").String,
+				Optional:            true,
+			},
 			"match_authorization_status_unauthorized": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("unauthorized").String,
 				Optional:            true,
@@ -188,6 +192,23 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 			},
 			"match_ip_precedence": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Match IP precedence").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"match_protocol": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("List of protocols to match").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"protocols": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of the protocol to match").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"match_class_map": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Class map").String,
 				ElementType:         types.StringType,
 				Optional:            true,
 			},

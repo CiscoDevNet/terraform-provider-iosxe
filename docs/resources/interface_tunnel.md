@@ -63,12 +63,6 @@ resource "iosxe_interface_tunnel" "example" {
   tunnel_vrf                       = "VRF1"
   ip_igmp_version                  = 3
   ip_tcp_adjust_mss                = 1400
-  ip_flow_monitors = [
-    {
-      name      = "MON1"
-      direction = "input"
-    }
-  ]
 }
 ```
 
@@ -118,6 +112,7 @@ resource "iosxe_interface_tunnel" "example" {
   - Range: `500`-`1460`
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
+- `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
 - `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server

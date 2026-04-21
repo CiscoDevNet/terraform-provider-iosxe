@@ -7,10 +7,19 @@ description: |-
 
 # Changelog
 
-## Unreleased
+## 0.18.0
 
 - Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
 - Add `zone_member_security` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_bdi` resources and data sources for ZBF interface zone assignment
+- Add `iosxe_zone_pair_security` resource and data source
+- Add `class_type`, `policy_action`, `policy_log`, and `policy_parameter_map` attributes to `iosxe_policy_map` resource and data source for Zone-Based Firewall (ZBF) inspect policy-map class configuration
+- Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
+
+## 0.17.0
+
+- Add `source_fqdn_group` and `destination_fqdn_group` attributes to `iosxe_access_list_extended` resource and data source
+- Add `ipv4_address_dhcp` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_tunnel` resources and data sources
+- Add `match_result_type_success` attribute to `iosxe_class_map` resource and data source
 - BREAKING CHANGE: Remove the `auto_qos_voip` attribute from the `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources. This attribute was never functional, as the corresponding YANG leaf is a choice leaf that requires selection from the existing `auto_qos_voip_cisco_phone`, `auto_qos_voip_cisco_softphone`, and `auto_qos_voip_trust` attributes.
 - Fix incorrect xpaths for microsecond interval attributes (`interval_microseconds`, `interval_microseconds_both`, `interval_microseconds_min_tx`, `interval_microseconds_min_rx`, `interval_microseconds_multiplier`) in `iosxe_bfd_template_multi_hop` resource and data source. The xpaths were missing the `ms-unit` container, causing `unknown-element` errors over NETCONF.
 - Add `bfd`, `dead_interval`, `hello_interval`, `mtu_ignore`, and `priority` attributes to `iosxe_interface_ospfv3` resource and data source
@@ -22,6 +31,8 @@ description: |-
 - Add `ip_flow_monitors` and `ipv6_flow_monitors` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
 - Fix banner whitespace normalization for both RESTCONF and NETCONF read paths, and mark banner attributes as `Computed` to prevent idempotency issues with leading/trailing whitespace
 - BREAKING CHANGE: Remove `feature_name`, `feature_port_bulk`, `feature_port_onegig`, `feature_port_b_6xonegig`, and `feature_port_tengig` attributes from `iosxe_license` resource and data source. These mapped to YANG leafs with no backing CLI on any supported platform.
+- Add `ip_sftp_username`, `ip_sftp_password_encryption`, and `ip_sftp_password` attributes to `iosxe_system` resource and data source
+- Add static NAT support (inside and outside source static) to `iosxe_nat` resource and data source
 
 ## 0.16.0
 

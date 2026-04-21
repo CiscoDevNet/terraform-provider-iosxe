@@ -146,6 +146,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
+			"ipv4_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").String,
+				Optional:            true,
+			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
 				Optional:            true,

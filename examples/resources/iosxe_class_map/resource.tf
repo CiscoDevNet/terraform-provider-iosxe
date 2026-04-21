@@ -5,6 +5,7 @@ resource "iosxe_class_map" "example" {
   prematch                              = "match-all"
   match_authorization_status_authorized = true
   match_result_type_aaa_timeout         = true
+  match_result_type_success             = true
   match_activated_service_templates = [
     {
       service_name = "CRITICAL_AUTH_ACCESS"

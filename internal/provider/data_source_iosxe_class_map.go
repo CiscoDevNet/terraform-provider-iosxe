@@ -92,6 +92,10 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "aaa timeout type",
 				Computed:            true,
 			},
+			"match_result_type_success": schema.BoolAttribute{
+				MarkdownDescription: "success type",
+				Computed:            true,
+			},
 			"match_authorization_status_unauthorized": schema.BoolAttribute{
 				MarkdownDescription: "unauthorized",
 				Computed:            true,
@@ -163,6 +167,23 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			},
 			"match_ip_precedence": schema.ListAttribute{
 				MarkdownDescription: "Match IP precedence",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"match_protocol": schema.ListNestedAttribute{
+				MarkdownDescription: "List of protocols to match",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"protocols": schema.StringAttribute{
+							MarkdownDescription: "Name of the protocol to match",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"match_class_map": schema.ListAttribute{
+				MarkdownDescription: "Class map",
 				ElementType:         types.StringType,
 				Computed:            true,
 			},

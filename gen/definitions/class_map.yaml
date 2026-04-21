@@ -17,6 +17,8 @@ attributes:
     example: true
   - yang_name: match/result-type/aaa-timeout
     example: true
+  - yang_name: match/result-type/success
+    example: true
   - yang_name: match/authorization-status/unauthorized
     exclude_test: true
     example: true
@@ -58,4 +60,17 @@ attributes:
     exclude_test: true
   - yang_name: match/ip/precedence
     example: network
+    exclude_test: true
+  - yang_name: match/protocol/protocols-list
+    tf_name: match_protocol
+    type: List
+    attributes:
+      - yang_name: protocols
+        id: true
+        example: tcp
+    exclude_test: true
+  - yang_name: match/class-map
+    tf_name: match_class_map
+    type: StringList
+    example: CM_NESTED
     exclude_test: true

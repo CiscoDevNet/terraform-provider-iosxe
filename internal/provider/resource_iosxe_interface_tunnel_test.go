@@ -78,8 +78,10 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_igmp_version", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_tcp_adjust_mss", "1400"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_flow_monitors.0.name", "MON1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_flow_monitors.0.direction", "input"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_flow_monitors.0.name", "MON1"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_flow_monitors.0.direction", "input"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -96,7 +98,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceTunnelImportStateIdFunc("iosxe_interface_tunnel.test"),
-				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "tunnel_mode_ipsec_ipv4", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ipv4_address_dhcp", "tunnel_mode_ipsec_ipv4", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -217,10 +219,12 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	tunnel_vrf = "VRF1"` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
 	config += `	ip_tcp_adjust_mss = 1400` + "\n"
-	config += `	ip_flow_monitors = [{` + "\n"
-	config += `		name = "MON1"` + "\n"
-	config += `		direction = "input"` + "\n"
-	config += `	}]` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	ip_flow_monitors = [{` + "\n"
+		config += `		name = "MON1"` + "\n"
+		config += `		direction = "input"` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
