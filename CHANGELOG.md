@@ -1,3 +1,7 @@
+## 0.18.0
+
+- Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
+
 ## 0.17.0
 
 - Add `ipv4_address_dhcp` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_tunnel` resources and data sources
