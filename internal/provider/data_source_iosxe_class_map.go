@@ -92,6 +92,10 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "aaa timeout type",
 				Computed:            true,
 			},
+			"match_result_type_success": schema.BoolAttribute{
+				MarkdownDescription: "success type",
+				Computed:            true,
+			},
 			"match_authorization_status_unauthorized": schema.BoolAttribute{
 				MarkdownDescription: "unauthorized",
 				Computed:            true,

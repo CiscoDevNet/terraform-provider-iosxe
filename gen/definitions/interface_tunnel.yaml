@@ -79,6 +79,11 @@ attributes:
     tf_name: ipv4_address_mask
     delete_parent: true
     example: 255.255.255.0
+  - yang_name: ip/address-choice/address/address/address-choice/dhcp-case/dhcp
+    xpath: ip/address/dhcp
+    tf_name: ipv4_address_dhcp
+    exclude_test: true
+    example: true
   - yang_name: ip/address-choice/unnumbered/unnumbered
     xpath: ip/unnumbered
     tf_name: unnumbered
@@ -185,6 +190,7 @@ attributes:
   - yang_name: ip/Cisco-IOS-XE-flow:flow/monitor-new
     tf_name: ip_flow_monitors
     type: List
+    test_tags: [C8000V]
     attributes:
       - yang_name: name
         id: true

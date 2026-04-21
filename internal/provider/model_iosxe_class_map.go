@@ -50,6 +50,7 @@ type ClassMap struct {
 	Prematch                                  types.String                             `tfsdk:"prematch"`
 	MatchAuthorizationStatusAuthorized        types.Bool                               `tfsdk:"match_authorization_status_authorized"`
 	MatchResultTypeAaaTimeout                 types.Bool                               `tfsdk:"match_result_type_aaa_timeout"`
+	MatchResultTypeSuccess                    types.Bool                               `tfsdk:"match_result_type_success"`
 	MatchAuthorizationStatusUnauthorized      types.Bool                               `tfsdk:"match_authorization_status_unauthorized"`
 	MatchActivatedServiceTemplates            []ClassMapMatchActivatedServiceTemplates `tfsdk:"match_activated_service_templates"`
 	MatchAuthorizingMethodPriorityGreaterThan types.List                               `tfsdk:"match_authorizing_method_priority_greater_than"`
@@ -84,6 +85,7 @@ type ClassMapData struct {
 	Prematch                                  types.String                                 `tfsdk:"prematch"`
 	MatchAuthorizationStatusAuthorized        types.Bool                                   `tfsdk:"match_authorization_status_authorized"`
 	MatchResultTypeAaaTimeout                 types.Bool                                   `tfsdk:"match_result_type_aaa_timeout"`
+	MatchResultTypeSuccess                    types.Bool                                   `tfsdk:"match_result_type_success"`
 	MatchAuthorizationStatusUnauthorized      types.Bool                                   `tfsdk:"match_authorization_status_unauthorized"`
 	MatchActivatedServiceTemplates            []ClassMapMatchActivatedServiceTemplatesData `tfsdk:"match_activated_service_templates"`
 	MatchAuthorizingMethodPriorityGreaterThan types.List                                   `tfsdk:"match_authorizing_method_priority_greater_than"`
@@ -173,6 +175,11 @@ func (data ClassMap) toBody(ctx context.Context, config ClassMap) string {
 	if !data.MatchResultTypeAaaTimeout.IsNull() && !data.MatchResultTypeAaaTimeout.IsUnknown() {
 		if data.MatchResultTypeAaaTimeout.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.result-type.aaa-timeout", map[string]string{})
+		}
+	}
+	if !data.MatchResultTypeSuccess.IsNull() && !data.MatchResultTypeSuccess.IsUnknown() {
+		if data.MatchResultTypeSuccess.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.result-type.success", map[string]string{})
 		}
 	}
 	if !data.MatchAuthorizationStatusUnauthorized.IsNull() && !data.MatchAuthorizationStatusUnauthorized.IsUnknown() {
@@ -301,6 +308,13 @@ func (data ClassMap) toBodyXML(ctx context.Context, config ClassMap) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/aaa-timeout", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/aaa-timeout")
+		}
+	}
+	if !data.MatchResultTypeSuccess.IsNull() && !data.MatchResultTypeSuccess.IsUnknown() {
+		if data.MatchResultTypeSuccess.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/success", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/success")
 		}
 	}
 	if !data.MatchAuthorizationStatusUnauthorized.IsNull() && !data.MatchAuthorizationStatusUnauthorized.IsUnknown() {
@@ -479,6 +493,15 @@ func (data *ClassMap) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.MatchResultTypeAaaTimeout = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.result-type.success"); !data.MatchResultTypeSuccess.IsNull() {
+		if value.Exists() {
+			data.MatchResultTypeSuccess = types.BoolValue(true)
+		} else {
+			data.MatchResultTypeSuccess = types.BoolValue(false)
+		}
+	} else {
+		data.MatchResultTypeSuccess = types.BoolNull()
 	}
 	if value := res.Get(prefix + "match.authorization-status.unauthorized"); !data.MatchAuthorizationStatusUnauthorized.IsNull() {
 		if value.Exists() {
@@ -690,6 +713,15 @@ func (data *ClassMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.MatchResultTypeAaaTimeout = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/result-type/success"); !data.MatchResultTypeSuccess.IsNull() {
+		if value.Exists() {
+			data.MatchResultTypeSuccess = types.BoolValue(true)
+		} else {
+			data.MatchResultTypeSuccess = types.BoolValue(false)
+		}
+	} else {
+		data.MatchResultTypeSuccess = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/authorization-status/unauthorized"); !data.MatchAuthorizationStatusUnauthorized.IsNull() {
 		if value.Exists() {
 			data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
@@ -883,6 +915,11 @@ func (data *ClassMap) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchResultTypeAaaTimeout = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.result-type.success"); value.Exists() {
+		data.MatchResultTypeSuccess = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeSuccess = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "match.authorization-status.unauthorized"); value.Exists() {
 		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
 	} else {
@@ -1010,6 +1047,11 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchResultTypeAaaTimeout = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.result-type.success"); value.Exists() {
+		data.MatchResultTypeSuccess = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeSuccess = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "match.authorization-status.unauthorized"); value.Exists() {
 		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
 	} else {
@@ -1133,6 +1175,11 @@ func (data *ClassMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MatchResultTypeAaaTimeout = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/result-type/success"); value.Exists() {
+		data.MatchResultTypeSuccess = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeSuccess = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/authorization-status/unauthorized"); value.Exists() {
 		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
 	} else {
@@ -1255,6 +1302,11 @@ func (data *ClassMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MatchResultTypeAaaTimeout = types.BoolValue(true)
 	} else {
 		data.MatchResultTypeAaaTimeout = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/result-type/success"); value.Exists() {
+		data.MatchResultTypeSuccess = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeSuccess = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/authorization-status/unauthorized"); value.Exists() {
 		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
@@ -1580,6 +1632,9 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 	if !state.MatchAuthorizationStatusUnauthorized.IsNull() && data.MatchAuthorizationStatusUnauthorized.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorization-status/unauthorized", state.getPath()))
 	}
+	if !state.MatchResultTypeSuccess.IsNull() && data.MatchResultTypeSuccess.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/success", state.getPath()))
+	}
 	if !state.MatchResultTypeAaaTimeout.IsNull() && data.MatchResultTypeAaaTimeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/aaa-timeout", state.getPath()))
 	}
@@ -1864,6 +1919,9 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 	if !state.MatchAuthorizationStatusUnauthorized.IsNull() && data.MatchAuthorizationStatusUnauthorized.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/authorization-status/unauthorized")
 	}
+	if !state.MatchResultTypeSuccess.IsNull() && data.MatchResultTypeSuccess.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/success")
+	}
 	if !state.MatchResultTypeAaaTimeout.IsNull() && data.MatchResultTypeAaaTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/aaa-timeout")
 	}
@@ -1912,6 +1970,9 @@ func (data *ClassMap) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	if !data.MatchAuthorizationStatusUnauthorized.IsNull() && !data.MatchAuthorizationStatusUnauthorized.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/authorization-status/unauthorized", data.getPath()))
+	}
+	if !data.MatchResultTypeSuccess.IsNull() && !data.MatchResultTypeSuccess.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/success", data.getPath()))
 	}
 	if !data.MatchResultTypeAaaTimeout.IsNull() && !data.MatchResultTypeAaaTimeout.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/aaa-timeout", data.getPath()))
@@ -1986,6 +2047,9 @@ func (data *ClassMap) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.MatchAuthorizationStatusUnauthorized.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/authorization-status/unauthorized", data.getPath()))
+	}
+	if !data.MatchResultTypeSuccess.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/success", data.getPath()))
 	}
 	if !data.MatchResultTypeAaaTimeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/aaa-timeout", data.getPath()))
@@ -2104,6 +2168,9 @@ func (data *ClassMap) addDeletePathsXML(ctx context.Context, body string) string
 	}
 	if !data.MatchAuthorizationStatusUnauthorized.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/authorization-status/unauthorized")
+	}
+	if !data.MatchResultTypeSuccess.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/result-type/success")
 	}
 	if !data.MatchResultTypeAaaTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/result-type/aaa-timeout")

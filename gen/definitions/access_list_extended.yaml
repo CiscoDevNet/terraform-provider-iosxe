@@ -46,6 +46,11 @@ attributes:
         tf_name: source_object_group
         example: OG1
         exclude_test: true
+      - yang_name: ace-rule/source-choice/fqdn-group-case/src-fqdn-group
+        xpath: ace-rule/src-fqdn-group
+        tf_name: source_fqdn_group
+        example: FQDN_GROUP_1
+        exclude_test: true
       - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq
         xpath: ace-rule/src-eq
         tf_name: source_port_equal
@@ -93,6 +98,11 @@ attributes:
         xpath: ace-rule/dst-object-group
         tf_name: destination_object_group
         example: OG1
+        exclude_test: true
+      - yang_name: ace-rule/destination-choice/fqdn-group-case/dst-fqdn-group
+        xpath: ace-rule/dst-fqdn-group
+        tf_name: destination_fqdn_group
+        example: FQDN_GROUP_1
         exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq
         xpath: ace-rule/dst-eq
