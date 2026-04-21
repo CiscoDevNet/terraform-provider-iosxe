@@ -114,6 +114,10 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: helpers.NewAttributeDescription("aaa timeout type").String,
 				Optional:            true,
 			},
+			"match_result_type_success": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("success type").String,
+				Optional:            true,
+			},
 			"match_authorization_status_unauthorized": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("unauthorized").String,
 				Optional:            true,
