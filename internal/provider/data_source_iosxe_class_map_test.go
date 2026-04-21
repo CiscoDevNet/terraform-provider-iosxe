@@ -37,6 +37,7 @@ func TestAccDataSourceIosxeClassMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_class_map.test", "prematch", "match-all"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_class_map.test", "match_authorization_status_authorized", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_class_map.test", "match_result_type_aaa_timeout", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_class_map.test", "match_result_type_success", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_class_map.test", "match_activated_service_templates.0.service_name", "CRITICAL_AUTH_ACCESS"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_class_map.test", "match_authorizing_method_priority_greater_than.0", "20"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_class_map.test", "match_method_dot1x", "true"))
@@ -72,6 +73,7 @@ func testAccDataSourceIosxeClassMapConfig() string {
 	config += `	prematch = "match-all"` + "\n"
 	config += `	match_authorization_status_authorized = true` + "\n"
 	config += `	match_result_type_aaa_timeout = true` + "\n"
+	config += `	match_result_type_success = true` + "\n"
 	config += `	match_activated_service_templates = [{` + "\n"
 	config += `		service_name = "CRITICAL_AUTH_ACCESS"` + "\n"
 	config += `	}]` + "\n"
