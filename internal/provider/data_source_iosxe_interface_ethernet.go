@@ -124,6 +124,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
+			"ipv4_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: "IP Address negotiated via DHCP",
+				Computed:            true,
+			},
 			"unnumbered": schema.StringAttribute{
 				MarkdownDescription: "Enable IP processing without an explicit address",
 				Computed:            true,

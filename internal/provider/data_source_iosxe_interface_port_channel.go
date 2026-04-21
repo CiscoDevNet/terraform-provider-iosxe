@@ -108,6 +108,10 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
+			"ipv4_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: "IP Address negotiated via DHCP",
+				Computed:            true,
+			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: "inbound packets",
 				Computed:            true,
