@@ -38,17 +38,20 @@ data "iosxe_class_map" "example" {
 - `match_authorization_status_authorized` (Boolean) authorized
 - `match_authorization_status_unauthorized` (Boolean) unauthorized
 - `match_authorizing_method_priority_greater_than` (List of Number) greater than
+- `match_class_map` (List of String) Class map
 - `match_cos` (List of Number) IEEE 802.1Q/ISL class of service/user priority values
 - `match_dscp` (List of String) Match DSCP in IP(v4) and IPv6 packets
 - `match_ip_dscp` (List of String) Match IP DSCP (DiffServ CodePoints)
 - `match_ip_precedence` (List of String) Match IP precedence
 - `match_method_dot1x` (Boolean) dot1x
 - `match_method_mab` (Boolean) mab
+- `match_protocol` (Attributes List) List of protocols to match (see [below for nested schema](#nestedatt--match_protocol))
 - `match_result_type_aaa_timeout` (Boolean) aaa timeout type
 - `match_result_type_method_dot1x_agent_not_found` (Boolean) agent not found type
 - `match_result_type_method_dot1x_authoritative` (Boolean) failure type
 - `match_result_type_method_dot1x_method_timeout` (Boolean) method timeout type
 - `match_result_type_method_mab_authoritative` (Boolean) failure type
+- `match_result_type_success` (Boolean) success type
 - `prematch` (String) Logical-AND/Logical-OR of all matching statements under this class map
 - `subscriber` (Boolean) Domain name of the class map
 - `type` (String) type of the class-map
@@ -59,3 +62,11 @@ data "iosxe_class_map" "example" {
 Read-Only:
 
 - `service_name` (String) Enter service name
+
+
+<a id="nestedatt--match_protocol"></a>
+### Nested Schema for `match_protocol`
+
+Read-Only:
+
+- `protocols` (String) Name of the protocol to match

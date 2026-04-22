@@ -29,6 +29,11 @@ attributes:
     tf_name: ipv4_address_mask
     example: 255.255.255.255
     delete_parent: true
+  - yang_name: ip/address-choice/address/address/address-choice/dhcp-case/dhcp
+    xpath: ip/address/dhcp
+    tf_name: ipv4_address_dhcp
+    exclude_test: true
+    example: true
   - yang_name: ip/access-group/in/apply-type/apply-intf/acl/in
     xpath: ip/access-group/in/acl/in
     tf_name: ip_access_group_in_enable
@@ -94,6 +99,10 @@ attributes:
     xpath: ip/Cisco-IOS-XE-nat:nat/outside
     tf_name: ip_nat_outside
     example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-zone:zone-member/security
+    tf_name: zone_member_security
+    example: INSIDE
     exclude_test: true
 
 test_prerequisites:

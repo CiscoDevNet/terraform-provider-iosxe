@@ -8,3 +8,7 @@ attributes:
     example: 100
   - yang_name: mac-address
     example: 0000.11AA.22BB
+  - yang_name: Cisco-IOS-XE-zone:zone-member/security
+    tf_name: zone_member_security
+    example: INSIDE
+    exclude_test: true

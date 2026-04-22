@@ -69,6 +69,7 @@ Optional:
 - `ace_rule_protocol` (String)
 - `ack` (Boolean) Match on the ACK bit
 - `destination_any` (Boolean) Any destination host
+- `destination_fqdn_group` (String) Destination FQDN group
 - `destination_host` (String) A single destination host
 - `destination_object_group` (String) Destination network object group
 - `destination_port_equal` (String) Match only packets on a given port number up to 10 ports
@@ -102,6 +103,7 @@ Optional:
 - `rst` (Boolean) Match on the RST bit
 - `service_object_group` (String) Service object group name
 - `source_any` (Boolean) Any source host
+- `source_fqdn_group` (String) Source FQDN group
 - `source_host` (String) A single source host
 - `source_object_group` (String) Source network object group
 - `source_port_equal` (String) Match only packets on a given port number up to 10 ports

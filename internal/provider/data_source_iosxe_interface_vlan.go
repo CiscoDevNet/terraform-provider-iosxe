@@ -112,6 +112,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
+			"ipv4_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: "IP Address negotiated via DHCP",
+				Computed:            true,
+			},
 			"unnumbered": schema.StringAttribute{
 				MarkdownDescription: "Enable IP processing without an explicit address",
 				Computed:            true,
@@ -262,6 +266,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 			},
 			"ip_nat_outside": schema.BoolAttribute{
 				MarkdownDescription: "Outside interface for address translation",
+				Computed:            true,
+			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
 				Computed:            true,
 			},
 		},

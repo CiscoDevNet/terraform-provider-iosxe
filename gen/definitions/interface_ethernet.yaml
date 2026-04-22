@@ -63,6 +63,11 @@ attributes:
     tf_name: ipv4_address_mask
     delete_parent: true
     example: 255.255.255.252
+  - yang_name: ip/address-choice/address/address/address-choice/dhcp-case/dhcp
+    xpath: ip/address/dhcp
+    tf_name: ipv4_address_dhcp
+    exclude_test: true
+    example: true
   - yang_name: ip/address-choice/unnumbered/unnumbered
     xpath: ip/unnumbered
     tf_name: unnumbered
@@ -570,6 +575,10 @@ attributes:
     tf_name: ip_router_isis
     delete_parent: true
     example: TEST
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-zone:zone-member/security
+    tf_name: zone_member_security
+    example: INSIDE
     exclude_test: true
 
 test_prerequisites:

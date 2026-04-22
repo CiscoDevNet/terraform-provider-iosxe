@@ -59,6 +59,7 @@ data "iosxe_interface_tunnel" "example" {
 - `ip_tcp_adjust_mss` (Number) Adjust the mss of transit packets
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String) Ip address
+- `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
 - `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
@@ -80,6 +81,7 @@ data "iosxe_interface_tunnel" "example" {
 - `tunnel_vrf` (String)
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 <a id="nestedatt--helper_addresses"></a>
 ### Nested Schema for `helper_addresses`
