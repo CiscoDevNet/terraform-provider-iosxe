@@ -75,6 +75,51 @@ attributes:
         tf_name: source_port_range_to
         example: 2000
         exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port2
+        xpath: ace-rule/src-eq-port2
+        tf_name: source_port_equal_2
+        example: 1002
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port3
+        xpath: ace-rule/src-eq-port3
+        tf_name: source_port_equal_3
+        example: 1003
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port4
+        xpath: ace-rule/src-eq-port4
+        tf_name: source_port_equal_4
+        example: 1004
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port5
+        xpath: ace-rule/src-eq-port5
+        tf_name: source_port_equal_5
+        example: 1005
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port6
+        xpath: ace-rule/src-eq-port6
+        tf_name: source_port_equal_6
+        example: 1006
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port7
+        xpath: ace-rule/src-eq-port7
+        tf_name: source_port_equal_7
+        example: 1007
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port8
+        xpath: ace-rule/src-eq-port8
+        tf_name: source_port_equal_8
+        example: 1008
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port9
+        xpath: ace-rule/src-eq-port9
+        tf_name: source_port_equal_9
+        example: 1009
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq-port10
+        xpath: ace-rule/src-eq-port10
+        tf_name: source_port_equal_10
+        example: 1010
+        exclude_test: true
       - yang_name: ace-rule/destination-choice/ipv4-prefix-case/dest-ipv4-address
         xpath: ace-rule/dest-ipv4-address
         tf_name: destination_prefix
