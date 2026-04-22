@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
+
 ## 0.18.0
 
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
