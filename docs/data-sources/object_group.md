@@ -62,11 +62,21 @@ Read-Only:
 
 Read-Only:
 
+- `address_ranges` (Attributes Set) List of IPv4 address ranges (see [below for nested schema](#nestedatt--network--address_ranges))
 - `description` (String) Network object group description
 - `group_objects` (Attributes Set) List of nested IPv4 network groups (see [below for nested schema](#nestedatt--network--group_objects))
 - `hosts` (Attributes Set) Host address of the object-group member (see [below for nested schema](#nestedatt--network--hosts))
 - `name` (String) WORD;;object-group name
 - `network_addresses` (Attributes Set) (see [below for nested schema](#nestedatt--network--network_addresses))
+
+<a id="nestedatt--network--address_ranges"></a>
+### Nested Schema for `network.address_ranges`
+
+Read-Only:
+
+- `end` (String) Ending IPv4 Address
+- `start` (String) Starting IPv4 Address
+
 
 <a id="nestedatt--network--group_objects"></a>
 ### Nested Schema for `network.group_objects`
