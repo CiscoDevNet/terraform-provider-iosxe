@@ -328,6 +328,7 @@ Read-Only:
 - `v3_auth_priv_des_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_des_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
 - `v3_auth_priv_des_password` (String, Sensitive) Authentication password for user
+- `v3_auth_sha2` (String) Use HMAC SHA-2 algorithm for authentication
 
 
 <a id="nestedatt--views"></a>

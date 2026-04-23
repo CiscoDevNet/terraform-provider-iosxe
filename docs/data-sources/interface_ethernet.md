@@ -170,6 +170,7 @@ data "iosxe_interface_ethernet" "example" {
 - `trust_device` (String) trusted device class
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 <a id="nestedatt--device_tracking_attached_policies"></a>
 ### Nested Schema for `device_tracking_attached_policies`

@@ -182,6 +182,7 @@ type InterfaceEthernet struct {
 	HoldQueues                                          []InterfaceEthernetHoldQueues                     `tfsdk:"hold_queues"`
 	IpIgmpVersion                                       types.Int64                                       `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                      `tfsdk:"ip_router_isis"`
+	ZoneMemberSecurity                                  types.String                                      `tfsdk:"zone_member_security"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -365,6 +366,7 @@ type InterfaceEthernetData struct {
 	HoldQueues                                          []InterfaceEthernetHoldQueuesData                     `tfsdk:"hold_queues"`
 	IpIgmpVersion                                       types.Int64                                           `tfsdk:"ip_igmp_version"`
 	IpRouterIsis                                        types.String                                          `tfsdk:"ip_router_isis"`
+	ZoneMemberSecurity                                  types.String                                          `tfsdk:"zone_member_security"`
 }
 type InterfaceEthernetHelperAddressesData struct {
 	Address types.String `tfsdk:"address"`
@@ -957,6 +959,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context, config InterfaceEthern
 	}
 	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.router.Cisco-IOS-XE-isis:isis.tag", data.IpRouterIsis.ValueString())
+	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-zone:zone-member.security", data.ZoneMemberSecurity.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -1869,6 +1874,9 @@ func (data InterfaceEthernet) toBodyXML(ctx context.Context, config InterfaceEth
 	}
 	if !data.IpRouterIsis.IsNull() && !data.IpRouterIsis.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag", data.IpRouterIsis.ValueString())
+	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -3167,6 +3175,11 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpRouterIsis = types.StringNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -4455,6 +4468,11 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.IpRouterIsis = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -5149,6 +5167,9 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -5845,6 +5866,9 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.router.Cisco-IOS-XE-isis:isis.tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -6535,6 +6559,9 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -7227,6 +7254,9 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis/tag"); value.Exists() {
 		data.IpRouterIsis = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -7235,6 +7265,9 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
 	deletedItems := make([]string, 0)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", state.getPath()))
+	}
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis", state.getPath()))
 	}
@@ -7909,6 +7942,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 
 func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state InterfaceEthernet, body string) string {
 	b := netconf.NewBody(body)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	if !state.IpRouterIsis.IsNull() && data.IpRouterIsis.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis")
 	}
@@ -8877,6 +8913,9 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.ZoneMemberSecurity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", data.getPath()))
+	}
 	if !data.IpRouterIsis.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/router/Cisco-IOS-XE-isis:isis", data.getPath()))
 	}
@@ -9315,6 +9354,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	if !data.IpRouterIsis.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/router/Cisco-IOS-XE-isis:isis")
 	}

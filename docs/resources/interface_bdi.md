@@ -32,6 +32,7 @@ resource "iosxe_interface_bdi" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `mac_address` (String) Manually set interface MAC address
+- `zone_member_security` (String) Security zone
 
 ### Read-Only
 

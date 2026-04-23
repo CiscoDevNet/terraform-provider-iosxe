@@ -1241,6 +1241,13 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 								stringvalidator.OneOf("md5", "sha"),
 							},
 						},
+						"v3_auth_sha2": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use HMAC SHA-2 algorithm for authentication").AddStringEnumDescription("256", "384", "512").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("256", "384", "512"),
+							},
+						},
 						"v3_auth_password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
 							Required:            true,
