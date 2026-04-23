@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
+
 ## 0.18.0
 
 - Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
