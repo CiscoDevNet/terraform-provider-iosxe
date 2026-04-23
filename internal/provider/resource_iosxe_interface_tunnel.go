@@ -419,6 +419,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					},
 				},
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
+				Optional:            true,
+			},
 		},
 	}
 }

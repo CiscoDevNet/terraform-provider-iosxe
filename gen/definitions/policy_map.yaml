@@ -22,6 +22,25 @@ attributes:
       - yang_name: name
         id: true
         example: CLASS1
+      - yang_name: type
+        tf_name: class_type
+        example: inspect
+        exclude_test: true
+      - yang_name: policy/action
+        xpath: policy/action
+        tf_name: policy_action
+        example: inspect
+        exclude_test: true
+      - yang_name: policy/log
+        xpath: policy/log
+        tf_name: policy_log
+        example: true
+        exclude_test: true
+      - yang_name: policy/parameter-map
+        xpath: policy/parameter-map
+        tf_name: policy_parameter_map
+        example: my-param-map
+        exclude_test: true
       - yang_name: action-list
         tf_name: actions
         type: List

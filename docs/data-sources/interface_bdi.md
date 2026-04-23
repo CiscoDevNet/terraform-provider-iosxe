@@ -33,3 +33,4 @@ data "iosxe_interface_bdi" "example" {
 
 - `id` (String) The path of the retrieved object.
 - `mac_address` (String) Manually set interface MAC address
+- `zone_member_security` (String) Security zone
