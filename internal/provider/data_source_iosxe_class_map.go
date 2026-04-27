@@ -170,6 +170,23 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
+			"match_protocol": schema.ListNestedAttribute{
+				MarkdownDescription: "List of protocols to match",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"protocols": schema.StringAttribute{
+							MarkdownDescription: "Name of the protocol to match",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"match_class_map": schema.ListAttribute{
+				MarkdownDescription: "Class map",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
 		},
 	}
 }

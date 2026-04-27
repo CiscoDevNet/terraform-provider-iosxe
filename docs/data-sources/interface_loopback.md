@@ -58,6 +58,7 @@ data "iosxe_interface_loopback" "example" {
 - `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
 - `shutdown` (Boolean) Shutdown the selected interface
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 <a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`

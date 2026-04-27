@@ -7,13 +7,20 @@ description: |-
 
 # Changelog
 
-## 0.19.0
+## Unreleased
 
 - Add `mtu` attribute to `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, and `iosxe_interface_tunnel` resources and data sources
+- Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
 
 ## 0.18.0
 
-- Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
+- Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
+- Add `zone_member_security` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_bdi` resources and data sources for ZBF interface zone assignment
+- Add `iosxe_zone_pair_security` resource and data source
+- Add `class_type`, `policy_action`, `policy_log`, and `policy_parameter_map` attributes to `iosxe_policy_map` resource and data source for Zone-Based Firewall (ZBF) inspect policy-map class configuration
+- Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
+- Add `iosxe_ipv6_prefix_list` resource and data source
+- Add `iosxe_parameter_map` resource and data source
 
 ## 0.17.0
 

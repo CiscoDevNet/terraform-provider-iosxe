@@ -200,6 +200,10 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Outside interface for address translation",
 				Computed:            true,
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
+				Computed:            true,
+			},
 		},
 	}
 }

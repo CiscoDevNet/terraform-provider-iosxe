@@ -141,6 +141,42 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 							MarkdownDescription: "Match only packets in the range of port numbers",
 							Computed:            true,
 						},
+						"source_port_equal_2": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_3": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_4": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_5": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_6": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_7": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_8": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_9": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"source_port_equal_10": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
 						"destination_prefix": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,

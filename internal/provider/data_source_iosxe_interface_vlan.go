@@ -272,6 +272,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Outside interface for address translation",
 				Computed:            true,
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
+				Computed:            true,
+			},
 		},
 	}
 }

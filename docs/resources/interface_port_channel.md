@@ -154,6 +154,7 @@ resource "iosxe_interface_port_channel" "example" {
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 ### Read-Only
 

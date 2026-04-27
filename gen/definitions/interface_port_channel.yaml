@@ -258,6 +258,10 @@ attributes:
       - yang_name: direction
         id: true
         example: input
+  - yang_name: Cisco-IOS-XE-zone:zone-member/security
+    tf_name: zone_member_security
+    example: INSIDE
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

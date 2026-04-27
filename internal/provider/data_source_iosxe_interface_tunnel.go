@@ -336,6 +336,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 					},
 				},
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
+				Computed:            true,
+			},
 		},
 	}
 }

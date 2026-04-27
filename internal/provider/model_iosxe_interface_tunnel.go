@@ -96,6 +96,7 @@ type InterfaceTunnel struct {
 	IpNatOutside                       types.Bool                              `tfsdk:"ip_nat_outside"`
 	IpFlowMonitors                     []InterfaceTunnelIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
 	Ipv6FlowMonitors                   []InterfaceTunnelIpv6FlowMonitors       `tfsdk:"ipv6_flow_monitors"`
+	ZoneMemberSecurity                 types.String                            `tfsdk:"zone_member_security"`
 }
 type InterfaceTunnelIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -173,6 +174,7 @@ type InterfaceTunnelData struct {
 	IpNatOutside                       types.Bool                                  `tfsdk:"ip_nat_outside"`
 	IpFlowMonitors                     []InterfaceTunnelIpFlowMonitorsData         `tfsdk:"ip_flow_monitors"`
 	Ipv6FlowMonitors                   []InterfaceTunnelIpv6FlowMonitorsData       `tfsdk:"ipv6_flow_monitors"`
+	ZoneMemberSecurity                 types.String                                `tfsdk:"zone_member_security"`
 }
 type InterfaceTunnelIpv6LinkLocalAddressesData struct {
 	Address   types.String `tfsdk:"address"`
@@ -397,6 +399,9 @@ func (data InterfaceTunnel) toBody(ctx context.Context, config InterfaceTunnel) 
 		if data.IpNatOutside.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
 		}
+	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-zone:zone-member.security", data.ZoneMemberSecurity.ValueString())
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
@@ -727,6 +732,9 @@ func (data InterfaceTunnel) toBodyXML(ctx context.Context, config InterfaceTunne
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
 		}
+	}
+	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1219,6 +1227,11 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1701,6 +1714,11 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	} else {
+		data.ZoneMemberSecurity = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1961,6 +1979,9 @@ func (data *InterfaceTunnel) fromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -2223,6 +2244,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2479,6 +2503,9 @@ func (data *InterfaceTunnel) fromBodyXML(ctx context.Context, res xmldot.Result)
 			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
 }
 
@@ -2737,6 +2764,9 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
+		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -2745,6 +2775,9 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state InterfaceTunnel) []string {
 	deletedItems := make([]string, 0)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", state.getPath()))
+	}
 	for i := range state.Ipv6FlowMonitors {
 		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
 
@@ -3036,6 +3069,9 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 
 func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state InterfaceTunnel, body string) string {
 	b := netconf.NewBody(body)
+	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	for i := range state.Ipv6FlowMonitors {
 		stateKeys := [...]string{"name", "direction"}
 		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
@@ -3418,6 +3454,9 @@ func (data *InterfaceTunnel) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.ZoneMemberSecurity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", data.getPath()))
+	}
 	for i := range data.Ipv6FlowMonitors {
 		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
 
@@ -3585,6 +3624,9 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.ZoneMemberSecurity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
 	for i := range data.Ipv6FlowMonitors {
 		keys := [...]string{"name", "direction"}
 		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}

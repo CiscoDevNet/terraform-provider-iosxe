@@ -90,6 +90,7 @@ resource "iosxe_interface_loopback" "example" {
   - Range: `64`-`18000`
 - `shutdown` (Boolean) Shutdown the selected interface
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 ### Read-Only
 

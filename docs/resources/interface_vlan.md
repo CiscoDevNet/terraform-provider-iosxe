@@ -122,6 +122,7 @@ resource "iosxe_interface_vlan" "example" {
 - `shutdown` (Boolean) Shutdown the selected interface
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 ### Read-Only
 
