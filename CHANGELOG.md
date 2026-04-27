@@ -1,5 +1,6 @@
 ## 0.18.0
 
+- Add `relay_bootp_ignore` attribute to `iosxe_dhcp` resource and data source
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
 
 ## 0.17.0
