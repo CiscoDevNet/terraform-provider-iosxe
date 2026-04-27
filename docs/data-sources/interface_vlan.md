@@ -50,6 +50,7 @@ data "iosxe_interface_vlan" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_igmp_version` (Number) IGMP version
 - `ip_local_proxy_arp` (Boolean) Enable local-proxy ARP
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
@@ -68,7 +69,6 @@ data "iosxe_interface_vlan" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
 - `mac_address` (String) Manually set interface MAC address
-- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
 - `shutdown` (Boolean) Shutdown the selected interface
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table

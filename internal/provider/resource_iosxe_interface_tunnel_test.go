@@ -38,7 +38,6 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "name", "90"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "shutdown", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "mtu", "1500"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_redirects", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_unreachables", "false"))
@@ -174,7 +173,6 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	name = 90` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	mtu = 1500` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
 	config += `	ip_unreachables = false` + "\n"

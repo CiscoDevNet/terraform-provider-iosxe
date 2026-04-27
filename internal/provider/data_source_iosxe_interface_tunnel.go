@@ -80,10 +80,6 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Shutdown the selected interface",
 				Computed:            true,
 			},
-			"mtu": schema.Int64Attribute{
-				MarkdownDescription: "Set the interface Maximum Transmission Unit (MTU)",
-				Computed:            true,
-			},
 			"ip_proxy_arp": schema.BoolAttribute{
 				MarkdownDescription: "Enable proxy ARP",
 				Computed:            true,

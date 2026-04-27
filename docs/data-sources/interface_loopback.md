@@ -39,6 +39,7 @@ data "iosxe_interface_loopback" "example" {
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_igmp_version` (Number) IGMP version
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
@@ -55,7 +56,6 @@ data "iosxe_interface_loopback" "example" {
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
-- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
 - `shutdown` (Boolean) Shutdown the selected interface
 - `vrf_forwarding` (String) Configure forwarding table
 - `zone_member_security` (String) Security zone

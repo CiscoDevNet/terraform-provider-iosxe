@@ -111,13 +111,6 @@ func (r *InterfaceLoopbackResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
 				Optional:            true,
 			},
-			"mtu": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the interface Maximum Transmission Unit (MTU)").AddIntegerRangeDescription(64, 18000).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(64, 18000),
-				},
-			},
 			"ip_proxy_arp": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
 				Optional:            true,
@@ -151,6 +144,13 @@ func (r *InterfaceLoopbackResource) Schema(ctx context.Context, req resource.Sch
 			"ipv4_address_dhcp": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IP Address negotiated via DHCP").String,
 				Optional:            true,
+			},
+			"ip_mtu": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set IP Maximum Transmission Unit").AddIntegerRangeDescription(68, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(68, 18000),
+				},
 			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,

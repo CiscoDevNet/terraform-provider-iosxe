@@ -10,8 +10,6 @@ attributes:
     example: My Interface Description
   - yang_name: shutdown
     example: false
-  - yang_name: mtu
-    example: 1500
   - yang_name: ip/proxy-arp
     example: false
   - yang_name: ip/redirects

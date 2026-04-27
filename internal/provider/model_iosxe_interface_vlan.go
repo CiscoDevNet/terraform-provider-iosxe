@@ -49,7 +49,6 @@ type InterfaceVLAN struct {
 	Autostate                         types.Bool                            `tfsdk:"autostate"`
 	Description                       types.String                          `tfsdk:"description"`
 	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
-	Mtu                               types.Int64                           `tfsdk:"mtu"`
 	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
 	IpLocalProxyArp                   types.Bool                            `tfsdk:"ip_local_proxy_arp"`
 	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
@@ -60,6 +59,7 @@ type InterfaceVLAN struct {
 	Ipv4AddressDhcp                   types.Bool                            `tfsdk:"ipv4_address_dhcp"`
 	Unnumbered                        types.String                          `tfsdk:"unnumbered"`
 	IpDhcpRelaySourceInterface        types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpMtu                             types.Int64                           `tfsdk:"ip_mtu"`
 	IpAccessGroupInEnable             types.Bool                            `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn                   types.String                          `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable            types.Bool                            `tfsdk:"ip_access_group_out_enable"`
@@ -109,7 +109,6 @@ type InterfaceVLANData struct {
 	Autostate                         types.Bool                                `tfsdk:"autostate"`
 	Description                       types.String                              `tfsdk:"description"`
 	Shutdown                          types.Bool                                `tfsdk:"shutdown"`
-	Mtu                               types.Int64                               `tfsdk:"mtu"`
 	IpProxyArp                        types.Bool                                `tfsdk:"ip_proxy_arp"`
 	IpLocalProxyArp                   types.Bool                                `tfsdk:"ip_local_proxy_arp"`
 	IpRedirects                       types.Bool                                `tfsdk:"ip_redirects"`
@@ -120,6 +119,7 @@ type InterfaceVLANData struct {
 	Ipv4AddressDhcp                   types.Bool                                `tfsdk:"ipv4_address_dhcp"`
 	Unnumbered                        types.String                              `tfsdk:"unnumbered"`
 	IpDhcpRelaySourceInterface        types.String                              `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpMtu                             types.Int64                               `tfsdk:"ip_mtu"`
 	IpAccessGroupInEnable             types.Bool                                `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn                   types.String                              `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable            types.Bool                                `tfsdk:"ip_access_group_out_enable"`
@@ -218,9 +218,6 @@ func (data InterfaceVLAN) toBody(ctx context.Context, config InterfaceVLAN) stri
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", map[string]string{})
 		}
 	}
-	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
-	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.proxy-arp", data.IpProxyArp.ValueBool())
 	}
@@ -254,6 +251,9 @@ func (data InterfaceVLAN) toBody(ctx context.Context, config InterfaceVLAN) stri
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() && !data.IpDhcpRelaySourceInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface", data.IpDhcpRelaySourceInterface.ValueString())
+	}
+	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.mtu", strconv.FormatInt(data.IpMtu.ValueInt64(), 10))
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
@@ -412,9 +412,6 @@ func (data InterfaceVLAN) toBodyXML(ctx context.Context, config InterfaceVLAN) s
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
 	}
-	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
-	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/proxy-arp", data.IpProxyArp.ValueBool())
 	}
@@ -452,6 +449,9 @@ func (data InterfaceVLAN) toBodyXML(ctx context.Context, config InterfaceVLAN) s
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() && !data.IpDhcpRelaySourceInterface.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.IpDhcpRelaySourceInterface.ValueString())
+	}
+	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/mtu", strconv.FormatInt(data.IpMtu.ValueInt64(), 10))
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
@@ -654,11 +654,6 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
-	if value := res.Get(prefix + "mtu"); value.Exists() && !data.Mtu.IsNull() {
-		data.Mtu = types.Int64Value(value.Int())
-	} else {
-		data.Mtu = types.Int64Null()
-	}
 	if value := res.Get(prefix + "ip.proxy-arp"); !data.IpProxyArp.IsNull() {
 		if value.Exists() {
 			data.IpProxyArp = types.BoolValue(value.Bool())
@@ -722,6 +717,11 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
 	} else {
 		data.IpDhcpRelaySourceInterface = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() && !data.IpMtu.IsNull() {
+		data.IpMtu = types.Int64Value(value.Int())
+	} else {
+		data.IpMtu = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
@@ -1035,11 +1035,6 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() && !data.Mtu.IsNull() {
-		data.Mtu = types.Int64Value(value.Int())
-	} else {
-		data.Mtu = types.Int64Null()
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); !data.IpProxyArp.IsNull() {
 		if value.Exists() {
 			data.IpProxyArp = types.BoolValue(value.Bool())
@@ -1103,6 +1098,11 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
 	} else {
 		data.IpDhcpRelaySourceInterface = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() && !data.IpMtu.IsNull() {
+		data.IpMtu = types.Int64Value(value.Int())
+	} else {
+		data.IpMtu = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
@@ -1407,9 +1407,6 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "mtu"); value.Exists() {
-		data.Mtu = types.Int64Value(value.Int())
-	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1449,6 +1446,9 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -1619,9 +1619,6 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "mtu"); value.Exists() {
-		data.Mtu = types.Int64Value(value.Int())
-	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1661,6 +1658,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -1827,9 +1827,6 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
-		data.Mtu = types.Int64Value(value.Int())
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1869,6 +1866,9 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -2035,9 +2035,6 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
-		data.Mtu = types.Int64Value(value.Int())
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -2077,6 +2074,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -2387,6 +2387,9 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
 	}
+	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/mtu", state.getPath()))
+	}
 	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", state.getPath()))
 	}
@@ -2416,9 +2419,6 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 	}
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/proxy-arp", state.getPath()))
-	}
-	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu", state.getPath()))
 	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
@@ -2610,6 +2610,9 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/in")
 	}
+	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/mtu")
+	}
 	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface")
 	}
@@ -2639,9 +2642,6 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 	}
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/proxy-arp")
-	}
-	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu")
 	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
@@ -2814,6 +2814,9 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	if !data.IpAccessGroupInEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
+	if !data.IpMtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/mtu", data.getPath()))
+	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))
 	}
@@ -2843,9 +2846,6 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpProxyArp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/proxy-arp", data.getPath()))
-	}
-	if !data.Mtu.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu", data.getPath()))
 	}
 	if !data.Shutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
@@ -2965,6 +2965,9 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 	if !data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/in")
 	}
+	if !data.IpMtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/mtu")
+	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface")
 	}
@@ -2994,9 +2997,6 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 	}
 	if !data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/proxy-arp")
-	}
-	if !data.Mtu.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mtu")
 	}
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")

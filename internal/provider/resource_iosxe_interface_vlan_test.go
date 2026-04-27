@@ -42,7 +42,6 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "autostate", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "shutdown", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "mtu", "1500"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_local_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_redirects", "false"))
@@ -51,6 +50,7 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv4_address", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv4_address_mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_dhcp_relay_source_interface", "Loopback100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_mtu", "1400"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_access_group_in_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_access_group_out_enable", "true"))
@@ -147,7 +147,6 @@ func testAccIosxeInterfaceVLANConfig_all() string {
 	config += `	autostate = false` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	mtu = 1500` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_local_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
@@ -156,6 +155,7 @@ func testAccIosxeInterfaceVLANConfig_all() string {
 	config += `	ipv4_address = "10.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
 	config += `	ip_dhcp_relay_source_interface = "Loopback100"` + "\n"
+	config += `	ip_mtu = 1400` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"
 	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"

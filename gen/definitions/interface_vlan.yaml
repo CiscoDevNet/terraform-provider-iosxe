@@ -12,8 +12,6 @@ attributes:
     example: My Interface Description
   - yang_name: shutdown
     example: false
-  - yang_name: mtu
-    example: 1500
   - yang_name: ip/proxy-arp
     example: false
   - yang_name: ip/local-proxy-arp
@@ -49,6 +47,8 @@ attributes:
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface
     tf_name: ip_dhcp_relay_source_interface
     example: Loopback100
+  - yang_name: ip/mtu
+    example: 1400
   - yang_name: ip/access-group/in/apply-type/apply-intf/acl/in
     xpath: ip/access-group/in/acl/in
     tf_name: ip_access_group_in_enable

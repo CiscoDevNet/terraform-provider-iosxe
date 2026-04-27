@@ -80,10 +80,6 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Shutdown the selected interface",
 				Computed:            true,
 			},
-			"mtu": schema.Int64Attribute{
-				MarkdownDescription: "Set the interface Maximum Transmission Unit (MTU)",
-				Computed:            true,
-			},
 			"ip_proxy_arp": schema.BoolAttribute{
 				MarkdownDescription: "Enable proxy ARP",
 				Computed:            true,
@@ -110,6 +106,10 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 			},
 			"ipv4_address_dhcp": schema.BoolAttribute{
 				MarkdownDescription: "IP Address negotiated via DHCP",
+				Computed:            true,
+			},
+			"ip_mtu": schema.Int64Attribute{
+				MarkdownDescription: "Set IP Maximum Transmission Unit",
 				Computed:            true,
 			},
 			"ip_access_group_in_enable": schema.BoolAttribute{

@@ -37,13 +37,13 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "name", "201"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "shutdown", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "mtu", "1500"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_redirects", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv4_address", "200.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv4_address_mask", "255.255.255.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_mtu", "1400"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_in_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_out_enable", "true"))
@@ -129,13 +129,13 @@ func testAccIosxeInterfaceLoopbackConfig_all() string {
 	config += `	name = 201` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	mtu = 1500` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
 	config += `	ip_unreachables = false` + "\n"
 	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv4_address = "200.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.255"` + "\n"
+	config += `	ip_mtu = 1400` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"
 	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"

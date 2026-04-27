@@ -17,13 +17,13 @@ resource "iosxe_interface_loopback" "example" {
   name                       = 201
   description                = "My Interface Description"
   shutdown                   = false
-  mtu                        = 1500
   ip_proxy_arp               = false
   ip_redirects               = false
   ip_unreachables            = false
   vrf_forwarding             = "VRF1"
   ipv4_address               = "200.1.1.1"
   ipv4_address_mask          = "255.255.255.255"
+  ip_mtu                     = 1400
   ip_access_group_in_enable  = true
   ip_access_group_in         = "1"
   ip_access_group_out_enable = true
@@ -69,6 +69,8 @@ resource "iosxe_interface_loopback" "example" {
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
+  - Range: `68`-`18000`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
@@ -86,8 +88,6 @@ resource "iosxe_interface_loopback" "example" {
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
-- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
-  - Range: `64`-`18000`
 - `shutdown` (Boolean) Shutdown the selected interface
 - `vrf_forwarding` (String) Configure forwarding table
 - `zone_member_security` (String) Security zone

@@ -18,7 +18,6 @@ resource "iosxe_interface_vlan" "example" {
   autostate                      = false
   description                    = "My Interface Description"
   shutdown                       = false
-  mtu                            = 1500
   ip_proxy_arp                   = false
   ip_local_proxy_arp             = false
   ip_redirects                   = false
@@ -27,6 +26,7 @@ resource "iosxe_interface_vlan" "example" {
   ipv4_address                   = "10.1.1.1"
   ipv4_address_mask              = "255.255.255.0"
   ip_dhcp_relay_source_interface = "Loopback100"
+  ip_mtu                         = 1400
   ip_access_group_in_enable      = true
   ip_access_group_in             = "1"
   ip_access_group_out_enable     = true
@@ -97,6 +97,8 @@ resource "iosxe_interface_vlan" "example" {
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
 - `ip_local_proxy_arp` (Boolean) Enable local-proxy ARP
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
+  - Range: `68`-`18000`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
@@ -117,8 +119,6 @@ resource "iosxe_interface_vlan" "example" {
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `mac_address` (String) Manually set interface MAC address
-- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
-  - Range: `64`-`18000`
 - `shutdown` (Boolean) Shutdown the selected interface
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table

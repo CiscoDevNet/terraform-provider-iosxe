@@ -17,7 +17,6 @@ resource "iosxe_interface_tunnel" "example" {
   name                    = 90
   description             = "My Interface Description"
   shutdown                = false
-  mtu                     = 1500
   ip_proxy_arp            = false
   ip_redirects            = false
   ip_unreachables         = false
@@ -127,8 +126,6 @@ resource "iosxe_interface_tunnel" "example" {
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
-- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
-  - Range: `64`-`18000`
 - `shutdown` (Boolean) Shutdown the selected interface
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `tunnel_destination_ipv4` (String) ip address or host name
