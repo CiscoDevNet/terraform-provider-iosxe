@@ -48,6 +48,7 @@ type InterfaceTunnel struct {
 	Name                               types.Int64                             `tfsdk:"name"`
 	Description                        types.String                            `tfsdk:"description"`
 	Shutdown                           types.Bool                              `tfsdk:"shutdown"`
+	Mtu                                types.Int64                             `tfsdk:"mtu"`
 	IpProxyArp                         types.Bool                              `tfsdk:"ip_proxy_arp"`
 	IpRedirects                        types.Bool                              `tfsdk:"ip_redirects"`
 	IpUnreachables                     types.Bool                              `tfsdk:"ip_unreachables"`
@@ -124,6 +125,7 @@ type InterfaceTunnelData struct {
 	Name                               types.Int64                                 `tfsdk:"name"`
 	Description                        types.String                                `tfsdk:"description"`
 	Shutdown                           types.Bool                                  `tfsdk:"shutdown"`
+	Mtu                                types.Int64                                 `tfsdk:"mtu"`
 	IpProxyArp                         types.Bool                                  `tfsdk:"ip_proxy_arp"`
 	IpRedirects                        types.Bool                                  `tfsdk:"ip_redirects"`
 	IpUnreachables                     types.Bool                                  `tfsdk:"ip_unreachables"`
@@ -246,6 +248,9 @@ func (data InterfaceTunnel) toBody(ctx context.Context, config InterfaceTunnel) 
 		if data.Shutdown.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", map[string]string{})
 		}
+	}
+	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.proxy-arp", data.IpProxyArp.ValueBool())
@@ -478,6 +483,9 @@ func (data InterfaceTunnel) toBodyXML(ctx context.Context, config InterfaceTunne
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
+	}
+	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/proxy-arp", data.IpProxyArp.ValueBool())
@@ -754,6 +762,11 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 		}
 	} else {
 		data.Shutdown = types.BoolNull()
+	}
+	if value := res.Get(prefix + "mtu"); value.Exists() && !data.Mtu.IsNull() {
+		data.Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Mtu = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ip.proxy-arp"); !data.IpProxyArp.IsNull() {
 		if value.Exists() {
@@ -1232,6 +1245,11 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() && !data.Mtu.IsNull() {
+		data.Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Mtu = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); !data.IpProxyArp.IsNull() {
 		if value.Exists() {
 			data.IpProxyArp = types.BoolValue(value.Bool())
@@ -1702,6 +1720,9 @@ func (data *InterfaceTunnel) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1960,6 +1981,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -2214,6 +2238,9 @@ func (data *InterfaceTunnel) fromBodyXML(ctx context.Context, res xmldot.Result)
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -2467,6 +2494,9 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 		data.Shutdown = types.BoolValue(true)
 	} else {
 		data.Shutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
@@ -2987,6 +3017,9 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/proxy-arp", state.getPath()))
 	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu", state.getPath()))
+	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
 	}
@@ -3300,6 +3333,9 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/proxy-arp")
 	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu")
+	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
@@ -3530,6 +3566,9 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	if !data.IpProxyArp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/proxy-arp", data.getPath()))
 	}
+	if !data.Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu", data.getPath()))
+	}
 	if !data.Shutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
@@ -3718,6 +3757,9 @@ func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string)
 	}
 	if !data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/proxy-arp")
+	}
+	if !data.Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mtu")
 	}
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")

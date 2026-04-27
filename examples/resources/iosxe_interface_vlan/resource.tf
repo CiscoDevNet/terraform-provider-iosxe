@@ -3,6 +3,7 @@ resource "iosxe_interface_vlan" "example" {
   autostate                      = false
   description                    = "My Interface Description"
   shutdown                       = false
+  mtu                            = 1500
   ip_proxy_arp                   = false
   ip_local_proxy_arp             = false
   ip_redirects                   = false

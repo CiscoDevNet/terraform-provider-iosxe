@@ -71,6 +71,7 @@ data "iosxe_interface_tunnel" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
 - `shutdown` (Boolean) Shutdown the selected interface
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `tunnel_destination_ipv4` (String) ip address or host name

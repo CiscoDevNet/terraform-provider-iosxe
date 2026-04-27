@@ -111,6 +111,13 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
 				Optional:            true,
 			},
+			"mtu": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the interface Maximum Transmission Unit (MTU)").AddIntegerRangeDescription(64, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(64, 18000),
+				},
+			},
 			"switchport": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,

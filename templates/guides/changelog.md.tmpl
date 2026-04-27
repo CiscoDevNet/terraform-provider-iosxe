@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 0.19.0
+
+- Add `mtu` attribute to `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_port_channel`, and `iosxe_interface_tunnel` resources and data sources
+
 ## 0.18.0
 
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns

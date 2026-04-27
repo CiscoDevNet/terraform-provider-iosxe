@@ -39,6 +39,7 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "autostate", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "shutdown", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "mtu", "1500"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_local_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_redirects", "false"))
@@ -108,6 +109,7 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `	autostate = false` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	mtu = 1500` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_local_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"

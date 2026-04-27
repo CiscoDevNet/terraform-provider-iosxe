@@ -2,6 +2,7 @@ resource "iosxe_interface_tunnel" "example" {
   name                    = 90
   description             = "My Interface Description"
   shutdown                = false
+  mtu                     = 1500
   ip_proxy_arp            = false
   ip_redirects            = false
   ip_unreachables         = false

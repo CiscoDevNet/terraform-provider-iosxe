@@ -37,6 +37,7 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "name", "201"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "shutdown", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "mtu", "1500"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_redirects", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_unreachables", "false"))
@@ -128,6 +129,7 @@ func testAccIosxeInterfaceLoopbackConfig_all() string {
 	config += `	name = 201` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	mtu = 1500` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
 	config += `	ip_unreachables = false` + "\n"

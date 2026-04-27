@@ -17,6 +17,7 @@ resource "iosxe_interface_loopback" "example" {
   name                       = 201
   description                = "My Interface Description"
   shutdown                   = false
+  mtu                        = 1500
   ip_proxy_arp               = false
   ip_redirects               = false
   ip_unreachables            = false
@@ -85,6 +86,8 @@ resource "iosxe_interface_loopback" "example" {
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
+  - Range: `64`-`18000`
 - `shutdown` (Boolean) Shutdown the selected interface
 - `vrf_forwarding` (String) Configure forwarding table
 

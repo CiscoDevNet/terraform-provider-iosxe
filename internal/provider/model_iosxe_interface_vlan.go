@@ -49,6 +49,7 @@ type InterfaceVLAN struct {
 	Autostate                         types.Bool                            `tfsdk:"autostate"`
 	Description                       types.String                          `tfsdk:"description"`
 	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
+	Mtu                               types.Int64                           `tfsdk:"mtu"`
 	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
 	IpLocalProxyArp                   types.Bool                            `tfsdk:"ip_local_proxy_arp"`
 	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
@@ -107,6 +108,7 @@ type InterfaceVLANData struct {
 	Autostate                         types.Bool                                `tfsdk:"autostate"`
 	Description                       types.String                              `tfsdk:"description"`
 	Shutdown                          types.Bool                                `tfsdk:"shutdown"`
+	Mtu                               types.Int64                               `tfsdk:"mtu"`
 	IpProxyArp                        types.Bool                                `tfsdk:"ip_proxy_arp"`
 	IpLocalProxyArp                   types.Bool                                `tfsdk:"ip_local_proxy_arp"`
 	IpRedirects                       types.Bool                                `tfsdk:"ip_redirects"`
@@ -213,6 +215,9 @@ func (data InterfaceVLAN) toBody(ctx context.Context, config InterfaceVLAN) stri
 		if data.Shutdown.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", map[string]string{})
 		}
+	}
+	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.proxy-arp", data.IpProxyArp.ValueBool())
@@ -401,6 +406,9 @@ func (data InterfaceVLAN) toBodyXML(ctx context.Context, config InterfaceVLAN) s
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
+	}
+	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
 	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/proxy-arp", data.IpProxyArp.ValueBool())
@@ -637,6 +645,11 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 		}
 	} else {
 		data.Shutdown = types.BoolNull()
+	}
+	if value := res.Get(prefix + "mtu"); value.Exists() && !data.Mtu.IsNull() {
+		data.Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Mtu = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ip.proxy-arp"); !data.IpProxyArp.IsNull() {
 		if value.Exists() {
@@ -1009,6 +1022,11 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() && !data.Mtu.IsNull() {
+		data.Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Mtu = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); !data.IpProxyArp.IsNull() {
 		if value.Exists() {
 			data.IpProxyArp = types.BoolValue(value.Bool())
@@ -1371,6 +1389,9 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1577,6 +1598,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1779,6 +1803,9 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1980,6 +2007,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.Shutdown = types.BoolValue(true)
 	} else {
 		data.Shutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
@@ -2354,6 +2384,9 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/proxy-arp", state.getPath()))
 	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu", state.getPath()))
+	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
 	}
@@ -2571,6 +2604,9 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/proxy-arp")
 	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu")
+	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
@@ -2769,6 +2805,9 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	if !data.IpProxyArp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/proxy-arp", data.getPath()))
 	}
+	if !data.Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu", data.getPath()))
+	}
 	if !data.Shutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
@@ -2913,6 +2952,9 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 	}
 	if !data.IpProxyArp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/proxy-arp")
+	}
+	if !data.Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mtu")
 	}
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
