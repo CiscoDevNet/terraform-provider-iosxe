@@ -107,6 +107,15 @@ Optional:
 - `source_host` (String) A single source host
 - `source_object_group` (String) Source network object group
 - `source_port_equal` (String) Match only packets on a given port number up to 10 ports
+- `source_port_equal_10` (String)
+- `source_port_equal_2` (String)
+- `source_port_equal_3` (String)
+- `source_port_equal_4` (String)
+- `source_port_equal_5` (String)
+- `source_port_equal_6` (String)
+- `source_port_equal_7` (String)
+- `source_port_equal_8` (String)
+- `source_port_equal_9` (String)
 - `source_port_greater_than` (String) Match only packets with a greater port number
 - `source_port_lesser_than` (String) Match only packets with a lower port number
 - `source_port_range_from` (String) Match only packets in the range of port numbers

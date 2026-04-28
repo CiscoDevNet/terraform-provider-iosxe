@@ -100,6 +100,10 @@ attributes:
     tf_name: ip_nat_outside
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-zone:zone-member/security
+    tf_name: zone_member_security
+    example: INSIDE
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

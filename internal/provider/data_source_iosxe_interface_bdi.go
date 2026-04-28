@@ -76,6 +76,10 @@ func (d *InterfaceBDIDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Manually set interface MAC address",
 				Computed:            true,
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
+				Computed:            true,
+			},
 		},
 	}
 }

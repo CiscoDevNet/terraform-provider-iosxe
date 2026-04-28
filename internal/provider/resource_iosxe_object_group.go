@@ -181,6 +181,28 @@ func (r *ObjectGroupResource) Schema(ctx context.Context, req resource.SchemaReq
 								},
 							},
 						},
+						"address_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("List of IPv4 address ranges").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"start": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Starting IPv4 Address").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"end": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Ending IPv4 Address").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+								},
+							},
+						},
 						"group_objects": schema.SetNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("List of nested IPv4 network groups").String,
 							Optional:            true,

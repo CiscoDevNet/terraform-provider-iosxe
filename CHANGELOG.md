@@ -1,7 +1,17 @@
+## Unreleased
+
+- Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
+
 ## 0.18.0
 
 - Add `data_glean_log_only`, `data_glean_recovery_dhcp`, `data_glean_recovery_ndp`, `prefix_glean`, `prefix_glean_only`, `destination_glean_log_only`, `destination_glean_recovery_dhcp`, `protocol_arp`, `protocol_arp_prefix_list`, `protocol_dhcp4`, `protocol_dhcp4_prefix_list`, `protocol_dhcp6`, `protocol_dhcp6_prefix_list`, `protocol_ndp`, `protocol_ndp_prefix_list`, `tracking_enable`, `tracking_enable_reachable_lifetime_seconds`, `tracking_enable_reachable_lifetime_infinite`, `tracking_disable`, `tracking_disable_stale_lifetime`, `limit_address_count`, `security_level_glean`, `security_level_guard`, `security_level_inspect`, and `medium_type_wireless` attributes to `iosxe_device_tracking_policy` resource and data source
-- Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
+- Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
+- Add `zone_member_security` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_bdi` resources and data sources for ZBF interface zone assignment
+- Add `iosxe_zone_pair_security` resource and data source
+- Add `class_type`, `policy_action`, `policy_log`, and `policy_parameter_map` attributes to `iosxe_policy_map` resource and data source for Zone-Based Firewall (ZBF) inspect policy-map class configuration
+- Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
+- Add `iosxe_ipv6_prefix_list` resource and data source
+- Add `iosxe_parameter_map` resource and data source
 
 ## 0.17.0
 

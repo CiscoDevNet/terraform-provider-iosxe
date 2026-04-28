@@ -63,6 +63,19 @@ attributes:
             tf_name: ipv4_mask
             id: true
             example: 255.255.255.0
+      - yang_name: obj-Mode-config-network-group/addr-ranges
+        xpath: obj-Mode-config-network-group/addr-ranges
+        tf_name: address_ranges
+        type: Set
+        attributes:
+          - yang_name: addr-range-start
+            tf_name: start
+            id: true
+            example: 10.1.3.1
+          - yang_name: addr-range-end
+            tf_name: end
+            id: true
+            example: 10.1.3.10
       - yang_name: obj-Mode-config-network-group/group-objects
         xpath: obj-Mode-config-network-group/group-objects
         tf_name: group_objects
