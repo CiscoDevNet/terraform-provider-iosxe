@@ -32,3 +32,108 @@ attributes:
     example: true
     exclude_test: true
     allow_import_changes: true
+  - yang_name: data-glean/log-only
+    tf_name: data_glean_log_only
+    example: true
+    exclude_test: true
+  - yang_name: data-glean/recovery/dhcp
+    tf_name: data_glean_recovery_dhcp
+    example: true
+  - yang_name: data-glean/recovery/ndp
+    tf_name: data_glean_recovery_ndp
+    example: true
+  - yang_name: prefix-glean
+    tf_name: prefix_glean
+    type_yang_bool: presence
+    example: true
+  - yang_name: prefix-glean/only
+    tf_name: prefix_glean_only
+    example: true
+    exclude_test: true
+  - yang_name: destination-glean/log-only
+    tf_name: destination_glean_log_only
+    example: true
+    exclude_test: true
+  - yang_name: destination-glean/recovery/dhcp
+    tf_name: destination_glean_recovery_dhcp
+    example: true
+  - yang_name: protocol/proto-arp/arp
+    tf_name: protocol_arp
+    default_value: true
+    example: false
+  - yang_name: protocol/proto-arp/prefix-list
+    tf_name: protocol_arp_prefix_list
+    example: ARP_PL
+    exclude_test: true
+  - yang_name: protocol/proto-dhcp4/dhcp4
+    tf_name: protocol_dhcp4
+    default_value: true
+    example: false
+  - yang_name: protocol/proto-dhcp4/prefix-list
+    tf_name: protocol_dhcp4_prefix_list
+    example: DHCP4_PL
+    exclude_test: true
+  - yang_name: protocol/proto-dhcp6/dhcp6
+    tf_name: protocol_dhcp6
+    default_value: true
+    example: false
+  - yang_name: protocol/proto-dhcp6/prefix-list
+    tf_name: protocol_dhcp6_prefix_list
+    example: DHCP6_PL
+    exclude_test: true
+  - yang_name: protocol/proto-ndp/ndp
+    tf_name: protocol_ndp
+    default_value: true
+    example: false
+  - yang_name: protocol/proto-ndp/prefix-list
+    tf_name: protocol_ndp_prefix_list
+    example: NDP_PL
+    exclude_test: true
+  - yang_name: tracking/tracking-enable-disable/enable-tracking/enable-tracking
+    xpath: tracking/enable-tracking
+    tf_name: tracking_enable
+    type_yang_bool: presence
+    example: true
+  - yang_name: tracking/tracking-enable-disable/enable-tracking/enable-tracking/reachable-lifetime/tracking-enable/seconds/seconds
+    xpath: tracking/enable-tracking/reachable-lifetime/seconds
+    tf_name: tracking_enable_reachable_lifetime_seconds
+    example: 300
+    min_int: 1
+    max_int: 86400
+  - yang_name: tracking/tracking-enable-disable/enable-tracking/enable-tracking/reachable-lifetime/tracking-enable/infinite/infinite
+    xpath: tracking/enable-tracking/reachable-lifetime/infinite
+    tf_name: tracking_enable_reachable_lifetime_infinite
+    example: true
+    exclude_test: true
+  - yang_name: tracking/tracking-enable-disable/disable-tracking/disable-tracking
+    xpath: tracking/disable-tracking
+    tf_name: tracking_disable
+    type_yang_bool: presence
+    example: true
+    exclude_test: true
+  - yang_name: tracking/tracking-enable-disable/disable-tracking/disable-tracking/stale-lifetime
+    xpath: tracking/disable-tracking/stale-lifetime
+    tf_name: tracking_disable_stale_lifetime
+    type: String
+    example: "86400"
+    exclude_test: true
+  - yang_name: limit/address-count
+    tf_name: limit_address_count
+    example: 100
+    min_int: 1
+    max_int: 32000
+  - yang_name: security-level/glean
+    tf_name: security_level_glean
+    example: true
+  - yang_name: security-level/guard
+    tf_name: security_level_guard
+    example: true
+    exclude_test: true
+  - yang_name: security-level/inspect
+    tf_name: security_level_inspect
+    example: true
+    exclude_test: true
+  - yang_name: medium-type-wireless
+    tf_name: medium_type_wireless
+    example: true
+    exclude_test: true
