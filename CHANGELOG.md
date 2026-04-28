@@ -1,3 +1,7 @@
+## 0.19.0
+
+- Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association
+
 ## 0.18.0
 
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
