@@ -1,0 +1,20 @@
+---
+name: Zone Pair Security
+path: /Cisco-IOS-XE-native:native/zone-pair/Cisco-IOS-XE-zone:security[id=%v]
+no_delete_attributes: true
+doc_category: Security
+attributes:
+  - yang_name: id
+    tf_name: name
+    example: ZP_IN_OUT
+  - yang_name: source
+    mandatory: true
+    example: INSIDE
+  - yang_name: destination
+    mandatory: true
+    example: OUTSIDE
+  - yang_name: description
+    example: Inside to outside traffic policy
+  - yang_name: service-policy/type/inspect
+    tf_name: service_policy_type_inspect
+    example: PM_IN_TO_OUT

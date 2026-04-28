@@ -272,6 +272,7 @@ resource "iosxe_interface_ethernet" "example" {
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 ### Read-Only
 
