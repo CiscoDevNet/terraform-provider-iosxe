@@ -40,6 +40,12 @@ resource "iosxe_object_group" "example" {
           ipv4_mask    = "255.255.255.0"
         }
       ]
+      address_ranges = [
+        {
+          start = "10.1.3.1"
+          end   = "10.1.3.10"
+        }
+      ]
     }
   ]
 }
@@ -97,10 +103,20 @@ Required:
 
 Optional:
 
+- `address_ranges` (Attributes Set) List of IPv4 address ranges (see [below for nested schema](#nestedatt--network--address_ranges))
 - `description` (String) Network object group description
 - `group_objects` (Attributes Set) List of nested IPv4 network groups (see [below for nested schema](#nestedatt--network--group_objects))
 - `hosts` (Attributes Set) Host address of the object-group member (see [below for nested schema](#nestedatt--network--hosts))
 - `network_addresses` (Attributes Set) (see [below for nested schema](#nestedatt--network--network_addresses))
+
+<a id="nestedatt--network--address_ranges"></a>
+### Nested Schema for `network.address_ranges`
+
+Required:
+
+- `end` (String) Ending IPv4 Address
+- `start` (String) Starting IPv4 Address
+
 
 <a id="nestedatt--network--group_objects"></a>
 ### Nested Schema for `network.group_objects`

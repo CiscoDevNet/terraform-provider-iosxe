@@ -149,6 +149,22 @@ func (d *ObjectGroupDataSource) Schema(ctx context.Context, req datasource.Schem
 								},
 							},
 						},
+						"address_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: "List of IPv4 address ranges",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"start": schema.StringAttribute{
+										MarkdownDescription: "Starting IPv4 Address",
+										Computed:            true,
+									},
+									"end": schema.StringAttribute{
+										MarkdownDescription: "Ending IPv4 Address",
+										Computed:            true,
+									},
+								},
+							},
+						},
 						"group_objects": schema.SetNestedAttribute{
 							MarkdownDescription: "List of nested IPv4 network groups",
 							Computed:            true,

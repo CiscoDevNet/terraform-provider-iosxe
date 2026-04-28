@@ -715,6 +715,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewInterfaceSwitchportResource,
 		NewInterfaceTunnelResource,
 		NewInterfaceVLANResource,
+		NewIPv6PrefixListResource,
 		NewISISResource,
 		NewL2VFIResource,
 		NewLicenseResource,
@@ -730,6 +731,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewObjectGroupResource,
 		NewOSPFResource,
 		NewOSPFVRFResource,
+		NewParameterMapResource,
 		NewPIMResource,
 		NewPIMIPv6Resource,
 		NewPlatformResource,
@@ -759,6 +761,8 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewVLANGroupResource,
 		NewVRFResource,
 		NewVTPResource,
+		NewZonePairSecurityResource,
+		NewZoneSecurityResource,
 	}
 }
 
@@ -842,6 +846,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewInterfaceSwitchportDataSource,
 		NewInterfaceTunnelDataSource,
 		NewInterfaceVLANDataSource,
+		NewIPv6PrefixListDataSource,
 		NewISISDataSource,
 		NewL2VFIDataSource,
 		NewLicenseDataSource,
@@ -857,6 +862,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewObjectGroupDataSource,
 		NewOSPFDataSource,
 		NewOSPFVRFDataSource,
+		NewParameterMapDataSource,
 		NewPIMDataSource,
 		NewPIMIPv6DataSource,
 		NewPlatformDataSource,
@@ -886,6 +892,8 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewVLANGroupDataSource,
 		NewVRFDataSource,
 		NewVTPDataSource,
+		NewZonePairSecurityDataSource,
+		NewZoneSecurityDataSource,
 	}
 }
 

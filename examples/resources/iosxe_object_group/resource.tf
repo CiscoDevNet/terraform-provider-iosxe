@@ -25,6 +25,12 @@ resource "iosxe_object_group" "example" {
           ipv4_mask    = "255.255.255.0"
         }
       ]
+      address_ranges = [
+        {
+          start = "10.1.3.1"
+          end   = "10.1.3.10"
+        }
+      ]
     }
   ]
 }

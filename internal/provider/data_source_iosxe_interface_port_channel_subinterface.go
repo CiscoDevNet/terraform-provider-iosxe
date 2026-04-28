@@ -336,6 +336,10 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 					},
 				},
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: "Security zone",
+				Computed:            true,
+			},
 		},
 	}
 }
