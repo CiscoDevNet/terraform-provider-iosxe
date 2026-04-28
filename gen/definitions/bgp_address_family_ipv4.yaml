@@ -11,9 +11,23 @@ attributes:
   - yang_name: ipv4-unicast/redistribute/connected
     tf_name: ipv4_unicast_redistribute_connected
     example: true
+  - yang_name: ipv4-unicast/redistribute/connected/route-map
+    tf_name: ipv4_unicast_redistribute_connected_route_map
+    example: RM_BGP_CONNECTED
+  - yang_name: ipv4-unicast/redistribute/connected/metric
+    tf_name: ipv4_unicast_redistribute_connected_metric
+    example: 100
   - yang_name: ipv4-unicast/redistribute/static
     tf_name: ipv4_unicast_redistribute_static
     example: true
+  - yang_name: ipv4-unicast/redistribute/static/static-choice/ip/ip/route-map
+    tf_name: ipv4_unicast_redistribute_static_route_map
+    xpath: ipv4-unicast/redistribute/static/ip/route-map
+    example: RM_BGP_STATIC
+  - yang_name: ipv4-unicast/redistribute/static/static-choice/ip/ip/metric
+    tf_name: ipv4_unicast_redistribute_static_metric
+    xpath: ipv4-unicast/redistribute/static/ip/metric
+    example: 200
   - yang_name: ipv4-unicast/aggregate-address
     tf_name: ipv4_unicast_aggregate_addresses
     type: List

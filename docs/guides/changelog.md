@@ -10,6 +10,10 @@ description: |-
 ## Unreleased
 
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
+- Add `ipv4_unicast_redistribute_connected_route_map`, `ipv4_unicast_redistribute_connected_metric`, `ipv4_unicast_redistribute_static_route_map`, and `ipv4_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv4` resource and data source
+- Add `ipv6_unicast_redistribute_connected_route_map`, `ipv6_unicast_redistribute_connected_metric`, `ipv6_unicast_redistribute_static_route_map`, and `ipv6_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv6` resource and data source
+- Add `ipv4_unicast_redistribute_connected_route_map`, `ipv4_unicast_redistribute_connected_metric`, `ipv4_unicast_redistribute_static_route_map`, and `ipv4_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv4_vrf` resource and data source
+- Add `ipv6_unicast_redistribute_connected_route_map`, `ipv6_unicast_redistribute_connected_metric`, `ipv6_unicast_redistribute_static_route_map`, and `ipv6_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv6_vrf` resource and data source
 
 ## 0.18.0
 

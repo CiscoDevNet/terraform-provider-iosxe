@@ -42,14 +42,18 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type BGPAddressFamilyIPv6 struct {
-	Device                           types.String                              `tfsdk:"device"`
-	Id                               types.String                              `tfsdk:"id"`
-	DeleteMode                       types.String                              `tfsdk:"delete_mode"`
-	Asn                              types.String                              `tfsdk:"asn"`
-	AfName                           types.String                              `tfsdk:"af_name"`
-	Ipv6UnicastRedistributeConnected types.Bool                                `tfsdk:"ipv6_unicast_redistribute_connected"`
-	Ipv6UnicastRedistributeStatic    types.Bool                                `tfsdk:"ipv6_unicast_redistribute_static"`
-	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+	Device                                   types.String                              `tfsdk:"device"`
+	Id                                       types.String                              `tfsdk:"id"`
+	DeleteMode                               types.String                              `tfsdk:"delete_mode"`
+	Asn                                      types.String                              `tfsdk:"asn"`
+	AfName                                   types.String                              `tfsdk:"af_name"`
+	Ipv6UnicastRedistributeConnected         types.Bool                                `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeConnectedRouteMap types.String                              `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
+	Ipv6UnicastRedistributeConnectedMetric   types.Int64                               `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
+	Ipv6UnicastRedistributeStatic            types.Bool                                `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastRedistributeStaticRouteMap    types.String                              `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
+	Ipv6UnicastRedistributeStaticMetric      types.Int64                               `tfsdk:"ipv6_unicast_redistribute_static_metric"`
+	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
 type BGPAddressFamilyIPv6Ipv6UnicastNetworks struct {
 	Network  types.String `tfsdk:"network"`
@@ -58,13 +62,17 @@ type BGPAddressFamilyIPv6Ipv6UnicastNetworks struct {
 }
 
 type BGPAddressFamilyIPv6Data struct {
-	Device                           types.String                                  `tfsdk:"device"`
-	Id                               types.String                                  `tfsdk:"id"`
-	Asn                              types.String                                  `tfsdk:"asn"`
-	AfName                           types.String                                  `tfsdk:"af_name"`
-	Ipv6UnicastRedistributeConnected types.Bool                                    `tfsdk:"ipv6_unicast_redistribute_connected"`
-	Ipv6UnicastRedistributeStatic    types.Bool                                    `tfsdk:"ipv6_unicast_redistribute_static"`
-	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6Ipv6UnicastNetworksData `tfsdk:"ipv6_unicast_networks"`
+	Device                                   types.String                                  `tfsdk:"device"`
+	Id                                       types.String                                  `tfsdk:"id"`
+	Asn                                      types.String                                  `tfsdk:"asn"`
+	AfName                                   types.String                                  `tfsdk:"af_name"`
+	Ipv6UnicastRedistributeConnected         types.Bool                                    `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeConnectedRouteMap types.String                                  `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
+	Ipv6UnicastRedistributeConnectedMetric   types.Int64                                   `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
+	Ipv6UnicastRedistributeStatic            types.Bool                                    `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastRedistributeStaticRouteMap    types.String                                  `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
+	Ipv6UnicastRedistributeStaticMetric      types.Int64                                   `tfsdk:"ipv6_unicast_redistribute_static_metric"`
+	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6Ipv6UnicastNetworksData `tfsdk:"ipv6_unicast_networks"`
 }
 type BGPAddressFamilyIPv6Ipv6UnicastNetworksData struct {
 	Network  types.String `tfsdk:"network"`
@@ -122,10 +130,22 @@ func (data BGPAddressFamilyIPv6) toBody(ctx context.Context, config BGPAddressFa
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.connected", map[string]string{})
 		}
 	}
+	if !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && !data.Ipv6UnicastRedistributeConnectedRouteMap.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.connected.route-map", data.Ipv6UnicastRedistributeConnectedRouteMap.ValueString())
+	}
+	if !data.Ipv6UnicastRedistributeConnectedMetric.IsNull() && !data.Ipv6UnicastRedistributeConnectedMetric.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.connected.metric", strconv.FormatInt(data.Ipv6UnicastRedistributeConnectedMetric.ValueInt64(), 10))
+	}
 	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.IsUnknown() {
 		if data.Ipv6UnicastRedistributeStatic.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.static", map[string]string{})
 		}
+	}
+	if !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && !data.Ipv6UnicastRedistributeStaticRouteMap.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.static.route-map", data.Ipv6UnicastRedistributeStaticRouteMap.ValueString())
+	}
+	if !data.Ipv6UnicastRedistributeStaticMetric.IsNull() && !data.Ipv6UnicastRedistributeStaticMetric.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.static.metric", strconv.FormatInt(data.Ipv6UnicastRedistributeStaticMetric.ValueInt64(), 10))
 	}
 	if len(data.Ipv6UnicastNetworks) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.network", []interface{}{})
@@ -162,12 +182,24 @@ func (data BGPAddressFamilyIPv6) toBodyXML(ctx context.Context, config BGPAddres
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected")
 		}
 	}
+	if !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && !data.Ipv6UnicastRedistributeConnectedRouteMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/route-map", data.Ipv6UnicastRedistributeConnectedRouteMap.ValueString())
+	}
+	if !data.Ipv6UnicastRedistributeConnectedMetric.IsNull() && !data.Ipv6UnicastRedistributeConnectedMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/metric", strconv.FormatInt(data.Ipv6UnicastRedistributeConnectedMetric.ValueInt64(), 10))
+	}
 	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.IsUnknown() {
 		if data.Ipv6UnicastRedistributeStatic.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static")
 		}
+	}
+	if !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && !data.Ipv6UnicastRedistributeStaticRouteMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static/route-map", data.Ipv6UnicastRedistributeStaticRouteMap.ValueString())
+	}
+	if !data.Ipv6UnicastRedistributeStaticMetric.IsNull() && !data.Ipv6UnicastRedistributeStaticMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric", strconv.FormatInt(data.Ipv6UnicastRedistributeStaticMetric.ValueInt64(), 10))
 	}
 	if len(data.Ipv6UnicastNetworks) > 0 {
 		for _, item := range data.Ipv6UnicastNetworks {
@@ -218,6 +250,16 @@ func (data *BGPAddressFamilyIPv6) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.Ipv6UnicastRedistributeConnected = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected.route-map"); value.Exists() && !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+	} else {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringNull()
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected.metric"); value.Exists() && !data.Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+	} else {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Null()
+	}
 	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static"); !data.Ipv6UnicastRedistributeStatic.IsNull() {
 		if value.Exists() {
 			data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
@@ -226,6 +268,16 @@ func (data *BGPAddressFamilyIPv6) updateFromBody(ctx context.Context, res gjson.
 		}
 	} else {
 		data.Ipv6UnicastRedistributeStatic = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static.route-map"); value.Exists() && !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+	} else {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringNull()
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static.metric"); value.Exists() && !data.Ipv6UnicastRedistributeStaticMetric.IsNull() {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
+	} else {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Null()
 	}
 	for i := range data.Ipv6UnicastNetworks {
 		keys := [...]string{"number"}
@@ -291,6 +343,16 @@ func (data *BGPAddressFamilyIPv6) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.Ipv6UnicastRedistributeConnected = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/route-map"); value.Exists() && !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+	} else {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/metric"); value.Exists() && !data.Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+	} else {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static"); !data.Ipv6UnicastRedistributeStatic.IsNull() {
 		if value.Exists() {
 			data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
@@ -299,6 +361,16 @@ func (data *BGPAddressFamilyIPv6) updateFromBodyXML(ctx context.Context, res xml
 		}
 	} else {
 		data.Ipv6UnicastRedistributeStatic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static/route-map"); value.Exists() && !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+	} else {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric"); value.Exists() && !data.Ipv6UnicastRedistributeStaticMetric.IsNull() {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
+	} else {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Null()
 	}
 	for i := range data.Ipv6UnicastNetworks {
 		keys := [...]string{"number"}
@@ -359,10 +431,22 @@ func (data *BGPAddressFamilyIPv6) fromBody(ctx context.Context, res gjson.Result
 	} else {
 		data.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected.route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected.metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static"); value.Exists() {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 	} else {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static.route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static.metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ipv6-unicast.network"); value.Exists() {
 		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworks, 0)
@@ -399,10 +483,22 @@ func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected.route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected.metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static"); value.Exists() {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 	} else {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static.route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static.metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ipv6-unicast.network"); value.Exists() {
 		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworksData, 0)
@@ -435,10 +531,22 @@ func (data *BGPAddressFamilyIPv6) fromBodyXML(ctx context.Context, res xmldot.Re
 	} else {
 		data.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static"); value.Exists() {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 	} else {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static/route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/network"); value.Exists() {
 		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworks, 0)
@@ -471,10 +579,22 @@ func (data *BGPAddressFamilyIPv6Data) fromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static"); value.Exists() {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 	} else {
 		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static/route-map"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric"); value.Exists() {
+		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/network"); value.Exists() {
 		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworksData, 0)
@@ -534,8 +654,20 @@ func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGP
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Ipv6UnicastRedistributeStaticMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static/metric", state.getPath()))
+	}
+	if !state.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static/route-map", state.getPath()))
+	}
 	if !state.Ipv6UnicastRedistributeStatic.IsNull() && data.Ipv6UnicastRedistributeStatic.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", state.getPath()))
+	}
+	if !state.Ipv6UnicastRedistributeConnectedMetric.IsNull() && data.Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected/metric", state.getPath()))
+	}
+	if !state.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected/route-map", state.getPath()))
 	}
 	if !state.Ipv6UnicastRedistributeConnected.IsNull() && data.Ipv6UnicastRedistributeConnected.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", state.getPath()))
@@ -586,8 +718,20 @@ func (data *BGPAddressFamilyIPv6) addDeletedItemsXML(ctx context.Context, state 
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6-unicast/network%v", predicates))
 		}
 	}
+	if !state.Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Ipv6UnicastRedistributeStaticMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric")
+	}
+	if !state.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/static/route-map")
+	}
 	if !state.Ipv6UnicastRedistributeStatic.IsNull() && data.Ipv6UnicastRedistributeStatic.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/static")
+	}
+	if !state.Ipv6UnicastRedistributeConnectedMetric.IsNull() && data.Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/connected/metric")
+	}
+	if !state.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/connected/route-map")
 	}
 	if !state.Ipv6UnicastRedistributeConnected.IsNull() && data.Ipv6UnicastRedistributeConnected.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6-unicast/redistribute-v6/connected")
@@ -631,8 +775,20 @@ func (data *BGPAddressFamilyIPv6) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.Ipv6UnicastRedistributeStaticMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static/metric", data.getPath()))
+	}
+	if !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static/route-map", data.getPath()))
+	}
 	if !data.Ipv6UnicastRedistributeStatic.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", data.getPath()))
+	}
+	if !data.Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected/metric", data.getPath()))
+	}
+	if !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected/route-map", data.getPath()))
 	}
 	if !data.Ipv6UnicastRedistributeConnected.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", data.getPath()))
@@ -657,8 +813,20 @@ func (data *BGPAddressFamilyIPv6) addDeletePathsXML(ctx context.Context, body st
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ipv6-unicast/network%v", predicates))
 	}
+	if !data.Ipv6UnicastRedistributeStaticMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric")
+	}
+	if !data.Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6-unicast/redistribute-v6/static/route-map")
+	}
 	if !data.Ipv6UnicastRedistributeStatic.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6-unicast/redistribute-v6/static")
+	}
+	if !data.Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/metric")
+	}
+	if !data.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected/route-map")
 	}
 	if !data.Ipv6UnicastRedistributeConnected.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6-unicast/redistribute-v6/connected")

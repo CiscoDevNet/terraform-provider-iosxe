@@ -1,8 +1,12 @@
 resource "iosxe_bgp_address_family_ipv4" "example" {
-  asn                                 = "65000"
-  af_name                             = "unicast"
-  ipv4_unicast_redistribute_connected = true
-  ipv4_unicast_redistribute_static    = true
+  asn                                           = "65000"
+  af_name                                       = "unicast"
+  ipv4_unicast_redistribute_connected           = true
+  ipv4_unicast_redistribute_connected_route_map = "RM_BGP_CONNECTED"
+  ipv4_unicast_redistribute_connected_metric    = 100
+  ipv4_unicast_redistribute_static              = true
+  ipv4_unicast_redistribute_static_route_map    = "RM_BGP_STATIC"
+  ipv4_unicast_redistribute_static_metric       = 200
   ipv4_unicast_aggregate_addresses = [
     {
       ipv4_address = "10.0.0.0"
