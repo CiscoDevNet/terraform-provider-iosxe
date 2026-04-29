@@ -10,6 +10,8 @@ description: |-
 ## 0.18.0
 
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, and regex FQDN patterns
+- Add `lifetime` and `match_address_local_interface_loopback` attributes to `iosxe_crypto_ikev2_profile` resource and data source
+- Add `set_pfs_group`, `set_security_association_lifetime_seconds`, and `set_security_association_lifetime_seconds_legacy` attributes to `iosxe_crypto_ipsec_profile` resource and data source
 
 ## 0.17.0
 

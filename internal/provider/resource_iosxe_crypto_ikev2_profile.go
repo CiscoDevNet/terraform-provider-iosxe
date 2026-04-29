@@ -191,6 +191,20 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 					stringvalidator.OneOf("on-demand", "periodic"),
 				},
 			},
+			"lifetime": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(120, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(120, 86400),
+				},
+			},
+			"match_address_local_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483647),
+				},
+			},
 			"config_exchange_request": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("enable config-exchange request").String,
 				Optional:            true,

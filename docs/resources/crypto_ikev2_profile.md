@@ -33,6 +33,7 @@ resource "iosxe_crypto_ikev2_profile" "example" {
   dpd_interval               = 10
   dpd_retry                  = 2
   dpd_query                  = "periodic"
+  lifetime                   = 28800
   config_exchange_request    = false
 }
 ```
@@ -60,6 +61,9 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
 - `ivrf` (String) I-VRF of the profile
 - `keyring_local` (String) Keyring name
+- `lifetime` (Number) - Range: `120`-`86400`
+- `match_address_local_interface_loopback` (Number) Loopback interface
+  - Range: `0`-`2147483647`
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
