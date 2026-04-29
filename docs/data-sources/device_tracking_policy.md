@@ -31,9 +31,34 @@ data "iosxe_device_tracking_policy" "example" {
 
 ### Read-Only
 
+- `data_glean_log_only` (Boolean) only generate a syslog upon data packet notification
+- `data_glean_recovery_dhcp` (Boolean) use DHCP as the recovery protocol
+- `data_glean_recovery_ndp` (Boolean) use NDP as the recovery protocol
+- `destination_glean_log_only` (Boolean)
+- `destination_glean_recovery_dhcp` (Boolean) use DHCP as the recovery protocol
 - `device_role` (String) The role of the device attached to the port
 - `device_role_node_legacy` (Boolean)
 - `device_role_router_legacy` (Boolean)
 - `device_role_switch_legacy` (Boolean)
 - `id` (String) The path of the retrieved object.
+- `limit_address_count` (Number) Configure maximum address per port
+- `medium_type_wireless` (Boolean) Force medium type to wireless
+- `prefix_glean` (Boolean) Glean prefixes in RA and DHCP-PD traffic
+- `prefix_glean_only` (Boolean) Glean only prefixes i.e. do not glean host addresses
+- `protocol_arp` (Boolean) Glean addresses in ARP packets
+- `protocol_arp_prefix_list` (String) Name of the prefix-list to be matched
+- `protocol_dhcp4` (Boolean) Glean addresses in DHCPv4 packets
+- `protocol_dhcp4_prefix_list` (String) Name of the prefix-list to be matched
+- `protocol_dhcp6` (Boolean) Glean addresses in DHCPv6 packets
+- `protocol_dhcp6_prefix_list` (String) Name of the prefix-list to be matched
+- `protocol_ndp` (Boolean) Glean addresses in NDP packets
+- `protocol_ndp_prefix_list` (String) Name of the prefix-list to be matched
+- `security_level_glean` (Boolean) glean addresses passively
+- `security_level_guard` (Boolean) inspect and drop un-authorized messages (default)
+- `security_level_inspect` (Boolean) glean and Validate message
+- `tracking_disable` (Boolean) Tracking on or off
+- `tracking_disable_stale_lifetime` (String) Default maximum time in STALE
+- `tracking_enable` (Boolean)
+- `tracking_enable_reachable_lifetime_infinite` (Boolean) Keep in REACHABLE forever
+- `tracking_enable_reachable_lifetime_seconds` (Number) Seconds
 - `trusted_port` (Boolean) setup trusted port
