@@ -42,6 +42,8 @@ func TestAccIosxeObjectGroup(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.hosts.0.ipv4_host", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.network_addresses.0.ipv4_address", "10.1.2.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.network_addresses.0.ipv4_mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.address_ranges.0.start", "10.1.3.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.address_ranges.0.end", "10.1.3.10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -111,6 +113,10 @@ func testAccIosxeObjectGroupConfig_all() string {
 	config += `		network_addresses = [{` + "\n"
 	config += `			ipv4_address = "10.1.2.0"` + "\n"
 	config += `			ipv4_mask = "255.255.255.0"` + "\n"
+	config += `		}]` + "\n"
+	config += `		address_ranges = [{` + "\n"
+	config += `			start = "10.1.3.1"` + "\n"
+	config += `			end = "10.1.3.10"` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

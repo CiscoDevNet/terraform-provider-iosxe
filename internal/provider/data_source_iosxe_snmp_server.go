@@ -1109,6 +1109,10 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 							MarkdownDescription: "Use HMAC SHA/MD5 algorithm for authentication",
 							Computed:            true,
 						},
+						"v3_auth_sha2": schema.StringAttribute{
+							MarkdownDescription: "Use HMAC SHA-2 algorithm for authentication",
+							Computed:            true,
+						},
 						"v3_auth_password": schema.StringAttribute{
 							MarkdownDescription: "Authentication password for user",
 							Computed:            true,

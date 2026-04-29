@@ -307,6 +307,7 @@ type SNMPServerUsers struct {
 	Username                        types.String `tfsdk:"username"`
 	Grpname                         types.String `tfsdk:"grpname"`
 	V3AuthAlgorithm                 types.String `tfsdk:"v3_auth_algorithm"`
+	V3AuthSha2                      types.String `tfsdk:"v3_auth_sha2"`
 	V3AuthPassword                  types.String `tfsdk:"v3_auth_password"`
 	V3AuthPasswordWO                types.String `tfsdk:"v3_auth_password_wo"`
 	V3AuthPasswordWOVersion         types.Int64  `tfsdk:"v3_auth_password_wo_version"`
@@ -605,6 +606,7 @@ type SNMPServerUsersData struct {
 	Username                        types.String `tfsdk:"username"`
 	Grpname                         types.String `tfsdk:"grpname"`
 	V3AuthAlgorithm                 types.String `tfsdk:"v3_auth_algorithm"`
+	V3AuthSha2                      types.String `tfsdk:"v3_auth_sha2"`
 	V3AuthPassword                  types.String `tfsdk:"v3_auth_password"`
 	V3AuthPrivAesAlgorithm          types.String `tfsdk:"v3_auth_priv_aes_algorithm"`
 	V3AuthPrivAesPassword           types.String `tfsdk:"v3_auth_priv_aes_password"`
@@ -1852,6 +1854,9 @@ func (data SNMPServer) toBody(ctx context.Context, config SNMPServer) string {
 			}
 			if !item.V3AuthAlgorithm.IsNull() && !item.V3AuthAlgorithm.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.algorithm", item.V3AuthAlgorithm.ValueString())
+			}
+			if !item.V3AuthSha2.IsNull() && !item.V3AuthSha2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.sha-2", item.V3AuthSha2.ValueString())
 			}
 			if !item.V3AuthPassword.IsNull() && !item.V3AuthPassword.IsUnknown() {
 				if !configItem.V3AuthPasswordWO.IsNull() {
@@ -3467,6 +3472,9 @@ func (data SNMPServer) toBodyXML(ctx context.Context, config SNMPServer) string 
 			}
 			if !item.V3AuthAlgorithm.IsNull() && !item.V3AuthAlgorithm.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/algorithm", item.V3AuthAlgorithm.ValueString())
+			}
+			if !item.V3AuthSha2.IsNull() && !item.V3AuthSha2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/sha-2", item.V3AuthSha2.ValueString())
 			}
 			if !item.V3AuthPassword.IsNull() && !item.V3AuthPassword.IsUnknown() {
 				if !configItem.V3AuthPasswordWO.IsNull() {
@@ -8824,6 +8832,9 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("v3.auth-config.algorithm"); cValue.Exists() {
 				item.V3AuthAlgorithm = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("v3.auth-config.sha-2"); cValue.Exists() {
+				item.V3AuthSha2 = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("v3.auth-config.password"); cValue.Exists() {
 				item.V3AuthPassword = types.StringValue(cValue.String())
 			}
@@ -10038,6 +10049,9 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("v3.auth-config.algorithm"); cValue.Exists() {
 				item.V3AuthAlgorithm = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("v3.auth-config.sha-2"); cValue.Exists() {
+				item.V3AuthSha2 = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("v3.auth-config.password"); cValue.Exists() {
 				item.V3AuthPassword = types.StringValue(cValue.String())
 			}
@@ -11247,6 +11261,9 @@ func (data *SNMPServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "v3/auth-config/algorithm"); cValue.Exists() {
 				item.V3AuthAlgorithm = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "v3/auth-config/sha-2"); cValue.Exists() {
+				item.V3AuthSha2 = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "v3/auth-config/password"); cValue.Exists() {
 				item.V3AuthPassword = types.StringValue(cValue.String())
@@ -12458,6 +12475,9 @@ func (data *SNMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 			if cValue := helpers.GetFromXPath(v, "v3/auth-config/algorithm"); cValue.Exists() {
 				item.V3AuthAlgorithm = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "v3/auth-config/sha-2"); cValue.Exists() {
+				item.V3AuthSha2 = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "v3/auth-config/password"); cValue.Exists() {
 				item.V3AuthPassword = types.StringValue(cValue.String())
 			}
@@ -12595,6 +12615,9 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 				}
 				if !state.Users[i].V3AuthPassword.IsNull() && data.Users[j].V3AuthPassword.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthSha2.IsNull() && data.Users[j].V3AuthSha2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/sha-2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Users[i].V3AuthAlgorithm.IsNull() && data.Users[j].V3AuthAlgorithm.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/algorithm", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -13602,6 +13625,9 @@ func (data *SNMPServer) addDeletedItemsXML(ctx context.Context, state SNMPServer
 				}
 				if !state.Users[i].V3AuthPassword.IsNull() && data.Users[j].V3AuthPassword.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-snmp:user/names%v/v3/auth-config/password", predicates))
+				}
+				if !state.Users[i].V3AuthSha2.IsNull() && data.Users[j].V3AuthSha2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-snmp:user/names%v/v3/auth-config/sha-2", predicates))
 				}
 				if !state.Users[i].V3AuthAlgorithm.IsNull() && data.Users[j].V3AuthAlgorithm.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-snmp:user/names%v/v3/auth-config/algorithm", predicates))
