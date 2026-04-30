@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `authentication_key_chain`, `authentication_message_digest`, and `authentication_null` attributes to `iosxe_interface_ospf` resource and data source for OSPF interface authentication mode selection (key-chain, message-digest, or null)
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
 
 ## 0.18.0

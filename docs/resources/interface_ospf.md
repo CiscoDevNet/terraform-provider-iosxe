@@ -62,6 +62,9 @@ resource "iosxe_interface_ospf" "example" {
 
 ### Optional
 
+- `authentication_key_chain` (String)
+- `authentication_message_digest` (Boolean) Use message-digest authentication
+- `authentication_null` (Boolean) Use no authentication
 - `cost` (Number) Route cost of this interface
   - Range: `1`-`65535`
 - `dead_interval` (Number) Interval after which a neighbor is declared dead
