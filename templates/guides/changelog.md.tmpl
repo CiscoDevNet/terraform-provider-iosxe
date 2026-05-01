@@ -20,6 +20,7 @@ description: |-
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
+- Fix panic in route-map (and other list-entry resources) when adding a new entry before an existing one that contains list-type match/set attributes. The `getDeletedItems` (RESTCONF) and `addDeletedItemsXML` (NETCONF) functions had swapped loop indices when comparing list element values between state and plan.
 
 ## 0.17.0
 
