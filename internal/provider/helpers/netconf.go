@@ -20,6 +20,7 @@ package helpers
 import (
 	"context"
 	"fmt"
+	"html"
 	"regexp"
 	"strings"
 	"sync"
@@ -662,7 +663,7 @@ func appendSiblingElement(body netconf.Body, parentPathSegments []string, remain
 
 	// Add keys to the inner XML
 	for _, kv := range keys {
-		innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, kv.Value, kv.Key))
+		innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, html.EscapeString(kv.Value), kv.Key))
 	}
 
 	// Process any nested segments after the first one
@@ -679,7 +680,7 @@ func appendSiblingElement(body netconf.Body, parentPathSegments []string, remain
 
 			// Add nested keys
 			for _, kv := range nestedKeys {
-				innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, kv.Value, kv.Key))
+				innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, html.EscapeString(kv.Value), kv.Key))
 			}
 		}
 
