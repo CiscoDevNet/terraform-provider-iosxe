@@ -64,6 +64,15 @@ type AccessListExtendedEntries struct {
 	SourcePortLesserThan       types.String `tfsdk:"source_port_lesser_than"`
 	SourcePortRangeFrom        types.String `tfsdk:"source_port_range_from"`
 	SourcePortRangeTo          types.String `tfsdk:"source_port_range_to"`
+	SourcePortEqual2           types.String `tfsdk:"source_port_equal_2"`
+	SourcePortEqual3           types.String `tfsdk:"source_port_equal_3"`
+	SourcePortEqual4           types.String `tfsdk:"source_port_equal_4"`
+	SourcePortEqual5           types.String `tfsdk:"source_port_equal_5"`
+	SourcePortEqual6           types.String `tfsdk:"source_port_equal_6"`
+	SourcePortEqual7           types.String `tfsdk:"source_port_equal_7"`
+	SourcePortEqual8           types.String `tfsdk:"source_port_equal_8"`
+	SourcePortEqual9           types.String `tfsdk:"source_port_equal_9"`
+	SourcePortEqual10          types.String `tfsdk:"source_port_equal_10"`
 	DestinationPrefix          types.String `tfsdk:"destination_prefix"`
 	DestinationPrefixMask      types.String `tfsdk:"destination_prefix_mask"`
 	DestinationAny             types.Bool   `tfsdk:"destination_any"`
@@ -125,6 +134,15 @@ type AccessListExtendedEntriesData struct {
 	SourcePortLesserThan       types.String `tfsdk:"source_port_lesser_than"`
 	SourcePortRangeFrom        types.String `tfsdk:"source_port_range_from"`
 	SourcePortRangeTo          types.String `tfsdk:"source_port_range_to"`
+	SourcePortEqual2           types.String `tfsdk:"source_port_equal_2"`
+	SourcePortEqual3           types.String `tfsdk:"source_port_equal_3"`
+	SourcePortEqual4           types.String `tfsdk:"source_port_equal_4"`
+	SourcePortEqual5           types.String `tfsdk:"source_port_equal_5"`
+	SourcePortEqual6           types.String `tfsdk:"source_port_equal_6"`
+	SourcePortEqual7           types.String `tfsdk:"source_port_equal_7"`
+	SourcePortEqual8           types.String `tfsdk:"source_port_equal_8"`
+	SourcePortEqual9           types.String `tfsdk:"source_port_equal_9"`
+	SourcePortEqual10          types.String `tfsdk:"source_port_equal_10"`
 	DestinationPrefix          types.String `tfsdk:"destination_prefix"`
 	DestinationPrefixMask      types.String `tfsdk:"destination_prefix_mask"`
 	DestinationAny             types.Bool   `tfsdk:"destination_any"`
@@ -260,6 +278,33 @@ func (data AccessListExtended) toBody(ctx context.Context, config AccessListExte
 			}
 			if !item.SourcePortRangeTo.IsNull() && !item.SourcePortRangeTo.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-range2", item.SourcePortRangeTo.ValueString())
+			}
+			if !item.SourcePortEqual2.IsNull() && !item.SourcePortEqual2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port2", item.SourcePortEqual2.ValueString())
+			}
+			if !item.SourcePortEqual3.IsNull() && !item.SourcePortEqual3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port3", item.SourcePortEqual3.ValueString())
+			}
+			if !item.SourcePortEqual4.IsNull() && !item.SourcePortEqual4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port4", item.SourcePortEqual4.ValueString())
+			}
+			if !item.SourcePortEqual5.IsNull() && !item.SourcePortEqual5.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port5", item.SourcePortEqual5.ValueString())
+			}
+			if !item.SourcePortEqual6.IsNull() && !item.SourcePortEqual6.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port6", item.SourcePortEqual6.ValueString())
+			}
+			if !item.SourcePortEqual7.IsNull() && !item.SourcePortEqual7.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port7", item.SourcePortEqual7.ValueString())
+			}
+			if !item.SourcePortEqual8.IsNull() && !item.SourcePortEqual8.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port8", item.SourcePortEqual8.ValueString())
+			}
+			if !item.SourcePortEqual9.IsNull() && !item.SourcePortEqual9.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port9", item.SourcePortEqual9.ValueString())
+			}
+			if !item.SourcePortEqual10.IsNull() && !item.SourcePortEqual10.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.src-eq-port10", item.SourcePortEqual10.ValueString())
 			}
 			if !item.DestinationPrefix.IsNull() && !item.DestinationPrefix.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.dest-ipv4-address", item.DestinationPrefix.ValueString())
@@ -459,6 +504,33 @@ func (data AccessListExtended) toBodyXML(ctx context.Context, config AccessListE
 			}
 			if !item.SourcePortRangeTo.IsNull() && !item.SourcePortRangeTo.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-range2", item.SourcePortRangeTo.ValueString())
+			}
+			if !item.SourcePortEqual2.IsNull() && !item.SourcePortEqual2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port2", item.SourcePortEqual2.ValueString())
+			}
+			if !item.SourcePortEqual3.IsNull() && !item.SourcePortEqual3.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port3", item.SourcePortEqual3.ValueString())
+			}
+			if !item.SourcePortEqual4.IsNull() && !item.SourcePortEqual4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port4", item.SourcePortEqual4.ValueString())
+			}
+			if !item.SourcePortEqual5.IsNull() && !item.SourcePortEqual5.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port5", item.SourcePortEqual5.ValueString())
+			}
+			if !item.SourcePortEqual6.IsNull() && !item.SourcePortEqual6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port6", item.SourcePortEqual6.ValueString())
+			}
+			if !item.SourcePortEqual7.IsNull() && !item.SourcePortEqual7.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port7", item.SourcePortEqual7.ValueString())
+			}
+			if !item.SourcePortEqual8.IsNull() && !item.SourcePortEqual8.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port8", item.SourcePortEqual8.ValueString())
+			}
+			if !item.SourcePortEqual9.IsNull() && !item.SourcePortEqual9.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port9", item.SourcePortEqual9.ValueString())
+			}
+			if !item.SourcePortEqual10.IsNull() && !item.SourcePortEqual10.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/src-eq-port10", item.SourcePortEqual10.ValueString())
 			}
 			if !item.DestinationPrefix.IsNull() && !item.DestinationPrefix.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ace-rule/dest-ipv4-address", item.DestinationPrefix.ValueString())
@@ -742,6 +814,51 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 			data.Entries[i].SourcePortRangeTo = types.StringValue(value.String())
 		} else {
 			data.Entries[i].SourcePortRangeTo = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port2"); value.Exists() && !data.Entries[i].SourcePortEqual2.IsNull() {
+			data.Entries[i].SourcePortEqual2 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual2 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port3"); value.Exists() && !data.Entries[i].SourcePortEqual3.IsNull() {
+			data.Entries[i].SourcePortEqual3 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual3 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port4"); value.Exists() && !data.Entries[i].SourcePortEqual4.IsNull() {
+			data.Entries[i].SourcePortEqual4 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual4 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port5"); value.Exists() && !data.Entries[i].SourcePortEqual5.IsNull() {
+			data.Entries[i].SourcePortEqual5 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual5 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port6"); value.Exists() && !data.Entries[i].SourcePortEqual6.IsNull() {
+			data.Entries[i].SourcePortEqual6 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual6 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port7"); value.Exists() && !data.Entries[i].SourcePortEqual7.IsNull() {
+			data.Entries[i].SourcePortEqual7 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual7 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port8"); value.Exists() && !data.Entries[i].SourcePortEqual8.IsNull() {
+			data.Entries[i].SourcePortEqual8 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual8 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port9"); value.Exists() && !data.Entries[i].SourcePortEqual9.IsNull() {
+			data.Entries[i].SourcePortEqual9 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual9 = types.StringNull()
+		}
+		if value := r.Get("ace-rule.src-eq-port10"); value.Exists() && !data.Entries[i].SourcePortEqual10.IsNull() {
+			data.Entries[i].SourcePortEqual10 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual10 = types.StringNull()
 		}
 		if value := r.Get("ace-rule.dest-ipv4-address"); value.Exists() && !data.Entries[i].DestinationPrefix.IsNull() {
 			data.Entries[i].DestinationPrefix = types.StringValue(value.String())
@@ -1087,6 +1204,51 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 		} else {
 			data.Entries[i].SourcePortRangeTo = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port2"); value.Exists() && !data.Entries[i].SourcePortEqual2.IsNull() {
+			data.Entries[i].SourcePortEqual2 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port3"); value.Exists() && !data.Entries[i].SourcePortEqual3.IsNull() {
+			data.Entries[i].SourcePortEqual3 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual3 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port4"); value.Exists() && !data.Entries[i].SourcePortEqual4.IsNull() {
+			data.Entries[i].SourcePortEqual4 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual4 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port5"); value.Exists() && !data.Entries[i].SourcePortEqual5.IsNull() {
+			data.Entries[i].SourcePortEqual5 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual5 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port6"); value.Exists() && !data.Entries[i].SourcePortEqual6.IsNull() {
+			data.Entries[i].SourcePortEqual6 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port7"); value.Exists() && !data.Entries[i].SourcePortEqual7.IsNull() {
+			data.Entries[i].SourcePortEqual7 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual7 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port8"); value.Exists() && !data.Entries[i].SourcePortEqual8.IsNull() {
+			data.Entries[i].SourcePortEqual8 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual8 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port9"); value.Exists() && !data.Entries[i].SourcePortEqual9.IsNull() {
+			data.Entries[i].SourcePortEqual9 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual9 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port10"); value.Exists() && !data.Entries[i].SourcePortEqual10.IsNull() {
+			data.Entries[i].SourcePortEqual10 = types.StringValue(value.String())
+		} else {
+			data.Entries[i].SourcePortEqual10 = types.StringNull()
+		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dest-ipv4-address"); value.Exists() && !data.Entries[i].DestinationPrefix.IsNull() {
 			data.Entries[i].DestinationPrefix = types.StringValue(value.String())
 		} else {
@@ -1377,6 +1539,33 @@ func (data *AccessListExtended) fromBody(ctx context.Context, res gjson.Result) 
 			if cValue := v.Get("ace-rule.src-range2"); cValue.Exists() {
 				item.SourcePortRangeTo = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("ace-rule.src-eq-port2"); cValue.Exists() {
+				item.SourcePortEqual2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port3"); cValue.Exists() {
+				item.SourcePortEqual3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port4"); cValue.Exists() {
+				item.SourcePortEqual4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port5"); cValue.Exists() {
+				item.SourcePortEqual5 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port6"); cValue.Exists() {
+				item.SourcePortEqual6 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port7"); cValue.Exists() {
+				item.SourcePortEqual7 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port8"); cValue.Exists() {
+				item.SourcePortEqual8 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port9"); cValue.Exists() {
+				item.SourcePortEqual9 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port10"); cValue.Exists() {
+				item.SourcePortEqual10 = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("ace-rule.dest-ipv4-address"); cValue.Exists() {
 				item.DestinationPrefix = types.StringValue(cValue.String())
 			}
@@ -1576,6 +1765,33 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 			if cValue := v.Get("ace-rule.src-range2"); cValue.Exists() {
 				item.SourcePortRangeTo = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("ace-rule.src-eq-port2"); cValue.Exists() {
+				item.SourcePortEqual2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port3"); cValue.Exists() {
+				item.SourcePortEqual3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port4"); cValue.Exists() {
+				item.SourcePortEqual4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port5"); cValue.Exists() {
+				item.SourcePortEqual5 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port6"); cValue.Exists() {
+				item.SourcePortEqual6 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port7"); cValue.Exists() {
+				item.SourcePortEqual7 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port8"); cValue.Exists() {
+				item.SourcePortEqual8 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port9"); cValue.Exists() {
+				item.SourcePortEqual9 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq-port10"); cValue.Exists() {
+				item.SourcePortEqual10 = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("ace-rule.dest-ipv4-address"); cValue.Exists() {
 				item.DestinationPrefix = types.StringValue(cValue.String())
 			}
@@ -1771,6 +1987,33 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-range2"); cValue.Exists() {
 				item.SourcePortRangeTo = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port2"); cValue.Exists() {
+				item.SourcePortEqual2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port3"); cValue.Exists() {
+				item.SourcePortEqual3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port4"); cValue.Exists() {
+				item.SourcePortEqual4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port5"); cValue.Exists() {
+				item.SourcePortEqual5 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port6"); cValue.Exists() {
+				item.SourcePortEqual6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port7"); cValue.Exists() {
+				item.SourcePortEqual7 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port8"); cValue.Exists() {
+				item.SourcePortEqual8 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port9"); cValue.Exists() {
+				item.SourcePortEqual9 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port10"); cValue.Exists() {
+				item.SourcePortEqual10 = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dest-ipv4-address"); cValue.Exists() {
 				item.DestinationPrefix = types.StringValue(cValue.String())
 			}
@@ -1965,6 +2208,33 @@ func (data *AccessListExtendedData) fromBodyXML(ctx context.Context, res xmldot.
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-range2"); cValue.Exists() {
 				item.SourcePortRangeTo = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port2"); cValue.Exists() {
+				item.SourcePortEqual2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port3"); cValue.Exists() {
+				item.SourcePortEqual3 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port4"); cValue.Exists() {
+				item.SourcePortEqual4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port5"); cValue.Exists() {
+				item.SourcePortEqual5 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port6"); cValue.Exists() {
+				item.SourcePortEqual6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port7"); cValue.Exists() {
+				item.SourcePortEqual7 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port8"); cValue.Exists() {
+				item.SourcePortEqual8 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port9"); cValue.Exists() {
+				item.SourcePortEqual9 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port10"); cValue.Exists() {
+				item.SourcePortEqual10 = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dest-ipv4-address"); cValue.Exists() {
 				item.DestinationPrefix = types.StringValue(cValue.String())
@@ -2234,6 +2504,33 @@ func (data *AccessListExtended) getDeletedItems(ctx context.Context, state Acces
 				if !state.Entries[i].DestinationPrefix.IsNull() && data.Entries[j].DestinationPrefix.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/dest-ipv4-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
+				if !state.Entries[i].SourcePortEqual10.IsNull() && data.Entries[j].SourcePortEqual10.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port10", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual9.IsNull() && data.Entries[j].SourcePortEqual9.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port9", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual8.IsNull() && data.Entries[j].SourcePortEqual8.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port8", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual7.IsNull() && data.Entries[j].SourcePortEqual7.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port7", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual6.IsNull() && data.Entries[j].SourcePortEqual6.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port6", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual5.IsNull() && data.Entries[j].SourcePortEqual5.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port5", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual4.IsNull() && data.Entries[j].SourcePortEqual4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port4", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual3.IsNull() && data.Entries[j].SourcePortEqual3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port3", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SourcePortEqual2.IsNull() && data.Entries[j].SourcePortEqual2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-eq-port2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Entries[i].SourcePortRangeTo.IsNull() && data.Entries[j].SourcePortRangeTo.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/src-range2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -2426,6 +2723,33 @@ func (data *AccessListExtended) addDeletedItemsXML(ctx context.Context, state Ac
 				}
 				if !state.Entries[i].DestinationPrefix.IsNull() && data.Entries[j].DestinationPrefix.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dest-ipv4-address", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual10.IsNull() && data.Entries[j].SourcePortEqual10.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port10", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual9.IsNull() && data.Entries[j].SourcePortEqual9.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port9", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual8.IsNull() && data.Entries[j].SourcePortEqual8.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port8", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual7.IsNull() && data.Entries[j].SourcePortEqual7.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port7", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual6.IsNull() && data.Entries[j].SourcePortEqual6.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port6", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual5.IsNull() && data.Entries[j].SourcePortEqual5.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port5", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual4.IsNull() && data.Entries[j].SourcePortEqual4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port4", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual3.IsNull() && data.Entries[j].SourcePortEqual3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port3", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual2.IsNull() && data.Entries[j].SourcePortEqual2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq-port2", predicates))
 				}
 				if !state.Entries[i].SourcePortRangeTo.IsNull() && data.Entries[j].SourcePortRangeTo.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-range2", predicates))

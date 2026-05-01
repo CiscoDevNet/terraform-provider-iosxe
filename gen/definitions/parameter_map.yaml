@@ -1,0 +1,243 @@
+---
+name: Parameter Map
+path: /Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:inspect[name=%v]
+doc_category: QoS
+attributes:
+  - yang_name: name
+    id: true
+    example: PM_INSPECT1
+  - yang_name: alert/on
+    tf_name: alert
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/dns
+    tf_name: application_inspect_dns
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/exec
+    tf_name: application_inspect_exec
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/ftp
+    tf_name: application_inspect_ftp
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/gtp
+    tf_name: application_inspect_gtp
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/h323
+    tf_name: application_inspect_h323
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/http
+    tf_name: application_inspect_http
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/imap
+    tf_name: application_inspect_imap
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/login
+    tf_name: application_inspect_login
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/msrpc
+    tf_name: application_inspect_msrpc
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/netbios
+    tf_name: application_inspect_netbios
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/pop3
+    tf_name: application_inspect_pop3
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/rtsp
+    tf_name: application_inspect_rtsp
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/shell
+    tf_name: application_inspect_shell
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/sip
+    tf_name: application_inspect_sip
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/skinny
+    tf_name: application_inspect_skinny
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/smtp
+    tf_name: application_inspect_smtp
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/sunrpc
+    tf_name: application_inspect_sunrpc
+    example: true
+    exclude_test: true
+  - yang_name: application-inspect/tftp
+    tf_name: application_inspect_tftp
+    example: true
+    exclude_test: true
+  - yang_name: audit-trail/on
+    tf_name: audit_trail
+    example: true
+    exclude_test: true
+  - yang_name: dns-timeout
+    example: 5
+    exclude_test: true
+  - yang_name: icmp/idle-time/timeout
+    xpath: icmp/idle-time/timeout
+    tf_name: icmp_idle_time
+    example: 10
+  - yang_name: icmp/idle-time/ageout-time
+    xpath: icmp/idle-time/ageout-time
+    tf_name: icmp_idle_time_ageout
+    example: 5
+    exclude_test: true
+  - yang_name: icmp-unreachable-allow
+    tf_name: icmp_unreachable_allow
+    example: true
+    exclude_test: true
+  - yang_name: log/dropped-packets
+    tf_name: log_dropped_packets
+    example: true
+    exclude_test: true
+  - yang_name: log/flow
+    tf_name: log_flow
+    example: true
+    exclude_test: true
+  - yang_name: max-incomplete/high
+    xpath: max-incomplete/high
+    tf_name: max_incomplete_high
+    example: 500
+    exclude_test: true
+  - yang_name: max-incomplete/low
+    xpath: max-incomplete/low
+    tf_name: max_incomplete_low
+    example: 400
+    exclude_test: true
+  - yang_name: one-minute/high
+    xpath: one-minute/high
+    tf_name: one_minute_high
+    example: 500
+    exclude_test: true
+  - yang_name: one-minute/low
+    xpath: one-minute/low
+    tf_name: one_minute_low
+    example: 400
+    exclude_test: true
+  - yang_name: sessions/maximum
+    xpath: sessions/maximum
+    tf_name: sessions_maximum
+    example: 10000
+  - yang_name: sessions/packet
+    xpath: sessions/packet
+    tf_name: sessions_packet
+    example: 50
+    exclude_test: true
+  - yang_name: sessions/rate/high/value
+    xpath: sessions/rate/high/value
+    tf_name: sessions_rate_high
+    example: 500
+    exclude_test: true
+  - yang_name: sessions/rate/high/time
+    xpath: sessions/rate/high/time
+    tf_name: sessions_rate_high_time
+    example: 60
+    exclude_test: true
+  - yang_name: sessions/rate/low/value
+    xpath: sessions/rate/low/value
+    tf_name: sessions_rate_low
+    example: 400
+    exclude_test: true
+  - yang_name: sessions/rate/low/time
+    xpath: sessions/rate/low/time
+    tf_name: sessions_rate_low_time
+    example: 60
+    exclude_test: true
+  - yang_name: tcp/finwait-time/timeout
+    xpath: tcp/finwait-time/timeout
+    tf_name: tcp_finwait_time
+    example: 10
+    exclude_test: true
+  - yang_name: tcp/finwait-time/ageout-time
+    xpath: tcp/finwait-time/ageout-time
+    tf_name: tcp_finwait_time_ageout
+    example: 5
+    exclude_test: true
+  - yang_name: tcp/half-close/reset/off
+    xpath: tcp/half-close/reset/off
+    tf_name: tcp_half_close_reset_off
+    example: true
+    exclude_test: true
+  - yang_name: tcp/half-open/reset/off
+    xpath: tcp/half-open/reset/off
+    tf_name: tcp_half_open_reset_off
+    example: true
+    exclude_test: true
+  - yang_name: tcp/idle/reset/off
+    xpath: tcp/idle/reset/off
+    tf_name: tcp_idle_reset_off
+    example: true
+    exclude_test: true
+  - yang_name: tcp/idle-time/timeout
+    xpath: tcp/idle-time/timeout
+    tf_name: tcp_idle_time
+    example: 3600
+  - yang_name: tcp/idle-time/ageout-time
+    xpath: tcp/idle-time/ageout-time
+    tf_name: tcp_idle_time_ageout
+    example: 5
+    exclude_test: true
+  - yang_name: tcp/max-incomplete/host/value
+    xpath: tcp/max-incomplete/host/value
+    tf_name: tcp_max_incomplete_host
+    example: 100
+  - yang_name: tcp/max-incomplete/host/block-time
+    xpath: tcp/max-incomplete/host/block-time
+    tf_name: tcp_max_incomplete_host_block_time
+    example: 60
+    exclude_test: true
+  - yang_name: tcp/synwait-time/timeout
+    xpath: tcp/synwait-time/timeout
+    tf_name: tcp_synwait_time
+    example: 30
+    exclude_test: true
+  - yang_name: tcp/synwait-time/ageout-time
+    xpath: tcp/synwait-time/ageout-time
+    tf_name: tcp_synwait_time_ageout
+    example: 5
+    exclude_test: true
+  - yang_name: tcp/window-scale-enforcement/loose
+    xpath: tcp/window-scale-enforcement/loose
+    tf_name: tcp_window_scale_enforcement_loose
+    example: true
+    exclude_test: true
+  - yang_name: udp/half-open/idle-time/timeout
+    xpath: udp/half-open/idle-time/timeout
+    tf_name: udp_half_open_idle_time
+    example: 30
+    exclude_test: true
+  - yang_name: udp/half-open/idle-time/ageout-time
+    xpath: udp/half-open/idle-time/ageout-time
+    tf_name: udp_half_open_idle_time_ageout
+    example: 5
+    exclude_test: true
+  - yang_name: udp/idle-time/timeout
+    xpath: udp/idle-time/timeout
+    tf_name: udp_idle_time
+    example: 30
+    exclude_test: true
+  - yang_name: udp/idle-time/ageout-time
+    xpath: udp/idle-time/ageout-time
+    tf_name: udp_idle_time_ageout
+    example: 5
+    exclude_test: true
+  - yang_name: zone-mismatch/drop
+    tf_name: zone_mismatch_drop
+    example: true
+    exclude_test: true
