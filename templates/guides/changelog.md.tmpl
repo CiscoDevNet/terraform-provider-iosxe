@@ -13,6 +13,7 @@ description: |-
 
 ## 0.18.0
 
+- Add `match_access_group_index` attribute to `iosxe_class_map` resource and data source for matching on numbered ACLs (`match access-group <1-199 | 1300-2699>`)
 - Add `relay_bootp_ignore` attribute to `iosxe_dhcp` resource and data source
 - Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
 - Add `zone_member_security` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_bdi` resources and data sources for ZBF interface zone assignment

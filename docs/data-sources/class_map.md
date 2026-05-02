@@ -33,6 +33,7 @@ data "iosxe_class_map" "example" {
 
 - `description` (String) Class-Map description
 - `id` (String) The path of the retrieved object.
+- `match_access_group_index` (String) Numbered Access List
 - `match_access_group_name` (List of String) Named Access List
 - `match_activated_service_templates` (Attributes List) match name of service template activated on session (see [below for nested schema](#nestedatt--match_activated_service_templates))
 - `match_authorization_status_authorized` (Boolean) authorized

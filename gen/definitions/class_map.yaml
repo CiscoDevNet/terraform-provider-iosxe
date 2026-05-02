@@ -52,6 +52,9 @@ attributes:
   - yang_name: description
     example: My description
     exclude_test: true
+  - yang_name: match/access-group/index
+    example: 100
+    exclude_test: true
   - yang_name: match/access-group/name
     example: AG1
     exclude_test: true
