@@ -9,6 +9,8 @@ description: |-
 
 ## Unreleased
 
+- Add `mtu` attribute to `iosxe_interface_port_channel` resource and data source
+- Add `ip_mtu` attribute to `iosxe_interface_loopback` and `iosxe_interface_vlan` resources and data sources
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
 
 ## 0.18.0

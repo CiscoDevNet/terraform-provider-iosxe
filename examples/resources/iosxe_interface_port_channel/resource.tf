@@ -2,6 +2,7 @@ resource "iosxe_interface_port_channel" "example" {
   name                           = 10
   description                    = "My Interface Description"
   shutdown                       = false
+  mtu                            = 1500
   switchport                     = false
   ip_proxy_arp                   = false
   ip_redirects                   = false

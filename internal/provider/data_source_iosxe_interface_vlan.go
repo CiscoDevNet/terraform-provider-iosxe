@@ -124,6 +124,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Set source interface for relayed messages",
 				Computed:            true,
 			},
+			"ip_mtu": schema.Int64Attribute{
+				MarkdownDescription: "Set IP Maximum Transmission Unit",
+				Computed:            true,
+			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: "inbound packets",
 				Computed:            true,
