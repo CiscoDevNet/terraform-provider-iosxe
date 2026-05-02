@@ -29,6 +29,7 @@ data "iosxe_dhcp" "example" {
 - `compatibility_suboption_link_selection` (String)
 - `compatibility_suboption_server_override` (String)
 - `id` (String) The path of the retrieved object.
+- `relay_bootp_ignore` (Boolean) Configure this DHCP relay to ignore to BOOTP requests.
 - `relay_information_option_default` (Boolean) Default option, no vpn
 - `relay_information_option_vpn` (Boolean) Insert VPN sub-options and change the giaddr to the outgoing interface
 - `relay_information_trust_all` (Boolean) Received DHCP packets may contain relay info option with zero giaddr

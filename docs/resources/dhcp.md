@@ -17,6 +17,7 @@ resource "iosxe_dhcp" "example" {
   relay_information_trust_all                 = false
   relay_information_option_default            = false
   relay_information_option_vpn                = true
+  relay_bootp_ignore                          = true
   snooping                                    = true
   snooping_information_option                 = true
   snooping_information_option_allow_untrusted = true
@@ -33,6 +34,7 @@ resource "iosxe_dhcp" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `relay_bootp_ignore` (Boolean) Configure this DHCP relay to ignore to BOOTP requests.
 - `relay_information_option_default` (Boolean) Default option, no vpn
 - `relay_information_option_vpn` (Boolean) Insert VPN sub-options and change the giaddr to the outgoing interface
 - `relay_information_trust_all` (Boolean) Received DHCP packets may contain relay info option with zero giaddr

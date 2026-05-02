@@ -38,6 +38,7 @@ func TestAccIosxeDHCP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_trust_all", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_option_default", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_option_vpn", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_bootp_ignore", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping_information_option", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping_information_option_allow_untrusted", "true"))
@@ -103,6 +104,7 @@ func testAccIosxeDHCPConfig_all() string {
 	config += `	relay_information_trust_all = false` + "\n"
 	config += `	relay_information_option_default = false` + "\n"
 	config += `	relay_information_option_vpn = true` + "\n"
+	config += `	relay_bootp_ignore = true` + "\n"
 	config += `	snooping = true` + "\n"
 	config += `	snooping_information_option = true` + "\n"
 	config += `	snooping_information_option_allow_untrusted = true` + "\n"
