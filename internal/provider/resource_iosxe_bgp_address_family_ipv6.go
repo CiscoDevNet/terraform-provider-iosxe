@@ -27,6 +27,7 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -107,9 +108,31 @@ func (r *BGPAddressFamilyIPv6Resource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
 				Optional:            true,
 			},
+			"ipv6_unicast_redistribute_connected_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"ipv6_unicast_redistribute_connected_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
 			"ipv6_unicast_redistribute_static": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
 				Optional:            true,
+			},
+			"ipv6_unicast_redistribute_static_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"ipv6_unicast_redistribute_static_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
 			},
 			"ipv6_unicast_networks": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
