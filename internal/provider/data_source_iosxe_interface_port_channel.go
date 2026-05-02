@@ -364,6 +364,18 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
+			"evpn_ethernet_segments_legacy": schema.ListNestedAttribute{
+				MarkdownDescription: "Ethernet segment local discriminator value, DEPRECATED",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"es_value": schema.Int64Attribute{
+							MarkdownDescription: "Ethernet segment local discriminator value, DEPRECATED",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"ip_igmp_version": schema.Int64Attribute{
 				MarkdownDescription: "IGMP version",
 				Computed:            true,

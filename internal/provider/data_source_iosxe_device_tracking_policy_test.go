@@ -37,6 +37,18 @@ func TestAccDataSourceIosxeDeviceTrackingPolicy(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "device_role", "switch"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "data_glean_recovery_dhcp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "data_glean_recovery_ndp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "prefix_glean", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "destination_glean_recovery_dhcp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "protocol_arp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "protocol_dhcp4", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "protocol_dhcp6", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "protocol_ndp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "tracking_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "tracking_enable_reachable_lifetime_seconds", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "limit_address_count", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking_policy.test", "security_level_glean", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -64,6 +76,18 @@ func testAccDataSourceIosxeDeviceTrackingPolicyConfig() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	device_role = "switch"` + "\n"
 	}
+	config += `	data_glean_recovery_dhcp = true` + "\n"
+	config += `	data_glean_recovery_ndp = true` + "\n"
+	config += `	prefix_glean = true` + "\n"
+	config += `	destination_glean_recovery_dhcp = true` + "\n"
+	config += `	protocol_arp = false` + "\n"
+	config += `	protocol_dhcp4 = false` + "\n"
+	config += `	protocol_dhcp6 = false` + "\n"
+	config += `	protocol_ndp = false` + "\n"
+	config += `	tracking_enable = true` + "\n"
+	config += `	tracking_enable_reachable_lifetime_seconds = 300` + "\n"
+	config += `	limit_address_count = 100` + "\n"
+	config += `	security_level_glean = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
