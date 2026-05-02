@@ -2148,7 +2148,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 											}
 										}
 										if !found {
-											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{.XPath}}[.=%v]", predicates, cpredicates, v))
+											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{.XPath}}=[.%v]", predicates, cpredicates, v))
 										}
 									}
 								}
