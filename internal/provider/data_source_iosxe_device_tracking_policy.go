@@ -92,6 +92,106 @@ func (d *DeviceTrackingPolicyDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"data_glean_log_only": schema.BoolAttribute{
+				MarkdownDescription: "only generate a syslog upon data packet notification",
+				Computed:            true,
+			},
+			"data_glean_recovery_dhcp": schema.BoolAttribute{
+				MarkdownDescription: "use DHCP as the recovery protocol",
+				Computed:            true,
+			},
+			"data_glean_recovery_ndp": schema.BoolAttribute{
+				MarkdownDescription: "use NDP as the recovery protocol",
+				Computed:            true,
+			},
+			"prefix_glean": schema.BoolAttribute{
+				MarkdownDescription: "Glean prefixes in RA and DHCP-PD traffic",
+				Computed:            true,
+			},
+			"prefix_glean_only": schema.BoolAttribute{
+				MarkdownDescription: "Glean only prefixes i.e. do not glean host addresses",
+				Computed:            true,
+			},
+			"destination_glean_log_only": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"destination_glean_recovery_dhcp": schema.BoolAttribute{
+				MarkdownDescription: "use DHCP as the recovery protocol",
+				Computed:            true,
+			},
+			"protocol_arp": schema.BoolAttribute{
+				MarkdownDescription: "Glean addresses in ARP packets",
+				Computed:            true,
+			},
+			"protocol_arp_prefix_list": schema.StringAttribute{
+				MarkdownDescription: "Name of the prefix-list to be matched",
+				Computed:            true,
+			},
+			"protocol_dhcp4": schema.BoolAttribute{
+				MarkdownDescription: "Glean addresses in DHCPv4 packets",
+				Computed:            true,
+			},
+			"protocol_dhcp4_prefix_list": schema.StringAttribute{
+				MarkdownDescription: "Name of the prefix-list to be matched",
+				Computed:            true,
+			},
+			"protocol_dhcp6": schema.BoolAttribute{
+				MarkdownDescription: "Glean addresses in DHCPv6 packets",
+				Computed:            true,
+			},
+			"protocol_dhcp6_prefix_list": schema.StringAttribute{
+				MarkdownDescription: "Name of the prefix-list to be matched",
+				Computed:            true,
+			},
+			"protocol_ndp": schema.BoolAttribute{
+				MarkdownDescription: "Glean addresses in NDP packets",
+				Computed:            true,
+			},
+			"protocol_ndp_prefix_list": schema.StringAttribute{
+				MarkdownDescription: "Name of the prefix-list to be matched",
+				Computed:            true,
+			},
+			"tracking_enable": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"tracking_enable_reachable_lifetime_seconds": schema.Int64Attribute{
+				MarkdownDescription: "Seconds",
+				Computed:            true,
+			},
+			"tracking_enable_reachable_lifetime_infinite": schema.BoolAttribute{
+				MarkdownDescription: "Keep in REACHABLE forever",
+				Computed:            true,
+			},
+			"tracking_disable": schema.BoolAttribute{
+				MarkdownDescription: "Tracking on or off",
+				Computed:            true,
+			},
+			"tracking_disable_stale_lifetime": schema.StringAttribute{
+				MarkdownDescription: "Default maximum time in STALE",
+				Computed:            true,
+			},
+			"limit_address_count": schema.Int64Attribute{
+				MarkdownDescription: "Configure maximum address per port",
+				Computed:            true,
+			},
+			"security_level_glean": schema.BoolAttribute{
+				MarkdownDescription: "glean addresses passively",
+				Computed:            true,
+			},
+			"security_level_guard": schema.BoolAttribute{
+				MarkdownDescription: "inspect and drop un-authorized messages (default)",
+				Computed:            true,
+			},
+			"security_level_inspect": schema.BoolAttribute{
+				MarkdownDescription: "glean and Validate message",
+				Computed:            true,
+			},
+			"medium_type_wireless": schema.BoolAttribute{
+				MarkdownDescription: "Force medium type to wireless",
+				Computed:            true,
+			},
 		},
 	}
 }
