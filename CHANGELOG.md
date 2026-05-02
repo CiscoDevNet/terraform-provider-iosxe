@@ -13,6 +13,7 @@
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
+- Add `evpn_ethernet_segments_legacy` attribute to `iosxe_interface_port_channel` resource and data source for IOS-XE 17.12 compatibility. The legacy attribute uses the pre-17.15 YANG path (`evpn/ethernet-segment`) while the existing `evpn_ethernet_segments` attribute targets the 17.15+ path (`evpn/ethernet-segment-choice`).
 
 ## 0.17.0
 
