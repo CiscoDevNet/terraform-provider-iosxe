@@ -33,6 +33,7 @@ import (
 func TestAccDataSourceIosxeInterfaceBDI(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_bdi.test", "mac_address", "0000.11AA.22BB"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_bdi.test", "ip_mtu", "1400"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -57,6 +58,7 @@ func testAccDataSourceIosxeInterfaceBDIConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "100"` + "\n"
 	config += `	mac_address = "0000.11AA.22BB"` + "\n"
+	config += `	ip_mtu = 1400` + "\n"
 	config += `}` + "\n"
 
 	config += `
