@@ -26,11 +26,14 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
@@ -95,6 +98,27 @@ func (r *CryptoIPSecProfileResource) Schema(ctx context.Context, req resource.Sc
 			"set_isakmp_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify isakmp Profile").String,
 				Optional:            true,
+			},
+			"set_pfs_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("List of supported DH groups").AddStringEnumDescription("group1", "group14", "group15", "group16", "group19", "group2", "group20", "group21", "group24", "group5").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("group1", "group14", "group15", "group16", "group19", "group2", "group20", "group21", "group24", "group5"),
+				},
+			},
+			"set_security_association_lifetime_seconds": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Time-based key duration in seconds").AddIntegerRangeDescription(120, 2592000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(120, 2592000),
+				},
+			},
+			"set_security_association_lifetime_seconds_legacy": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Security association lifetime in seconds. Use this for IOS-XE versions before `17.15.1`.").AddIntegerRangeDescription(120, 2592000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(120, 2592000),
+				},
 			},
 		},
 	}

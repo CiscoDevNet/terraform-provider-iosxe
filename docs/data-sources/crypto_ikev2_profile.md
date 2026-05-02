@@ -43,6 +43,8 @@ data "iosxe_crypto_ikev2_profile" "example" {
 - `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
 - `ivrf` (String) I-VRF of the profile
 - `keyring_local` (String) Keyring name
+- `lifetime` (Number)
+- `match_address_local_interface_loopback` (Number) Loopback interface
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf

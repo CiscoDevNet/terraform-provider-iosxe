@@ -63,6 +63,15 @@ attributes:
   - yang_name: dpd/query
     delete_parent: true
     example: periodic
+  - yang_name: lifetime/seconds
+    tf_name: lifetime
+    example: 28800
+  - yang_name: match/address/local/interface-options/interface-choice/Loopback/Loopback
+    xpath: match/address/local/interface-options/Loopback
+    tf_name: match_address_local_interface_loopback
+    type: Int64
+    example: 100
+    exclude_test: true
   - yang_name: config-exchange/request-1
     tf_name: config_exchange_request
     example: false

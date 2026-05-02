@@ -154,6 +154,14 @@ func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasourc
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"lifetime": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"match_address_local_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: "Loopback interface",
+				Computed:            true,
+			},
 			"config_exchange_request": schema.BoolAttribute{
 				MarkdownDescription: "enable config-exchange request",
 				Computed:            true,
