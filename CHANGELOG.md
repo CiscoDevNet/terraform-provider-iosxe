@@ -5,6 +5,7 @@
 ## 0.18.0
 
 - Add `match_access_group_index` attribute to `iosxe_class_map` resource and data source for matching on numbered ACLs (`match access-group <1-199 | 1300-2699>`)
+- Add `relay_bootp_ignore` attribute to `iosxe_dhcp` resource and data source
 - Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
 - Add `zone_member_security` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_bdi` resources and data sources for ZBF interface zone assignment
 - Add `iosxe_zone_pair_security` resource and data source
@@ -12,6 +13,7 @@
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
+- Add `evpn_ethernet_segments_legacy` attribute to `iosxe_interface_port_channel` resource and data source for IOS-XE 17.12 compatibility. The legacy attribute uses the pre-17.15 YANG path (`evpn/ethernet-segment`) while the existing `evpn_ethernet_segments` attribute targets the 17.15+ path (`evpn/ethernet-segment-choice`).
 
 ## 0.17.0
 

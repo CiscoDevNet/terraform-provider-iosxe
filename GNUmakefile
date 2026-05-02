@@ -127,5 +127,5 @@ gen:
 	go run ./gen/generator.go "$(NAME)"
 	go run golang.org/x/tools/cmd/goimports -w internal/provider/
 	terraform fmt -recursive ./examples/
-	go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+	go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-name iosxe --rendered-provider-name terraform-provider-iosxe
 	go run gen/doc_category.go
