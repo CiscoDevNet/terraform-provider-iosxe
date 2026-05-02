@@ -54,6 +54,7 @@ data "iosxe_interface_port_channel" "example" {
 - `device_tracking` (Boolean) Configure device-tracking on the interface
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
 - `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
+- `evpn_ethernet_segments_legacy` (Attributes List) Ethernet segment local discriminator value, DEPRECATED (see [below for nested schema](#nestedatt--evpn_ethernet_segments_legacy))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
 - `ip_access_group_in` (String)
@@ -109,6 +110,14 @@ Read-Only:
 Read-Only:
 
 - `es_value` (Number) Ethernet segment local discriminator value
+
+
+<a id="nestedatt--evpn_ethernet_segments_legacy"></a>
+### Nested Schema for `evpn_ethernet_segments_legacy`
+
+Read-Only:
+
+- `es_value` (Number) Ethernet segment local discriminator value, DEPRECATED
 
 
 <a id="nestedatt--helper_addresses"></a>
