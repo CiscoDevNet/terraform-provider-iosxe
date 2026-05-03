@@ -14,8 +14,20 @@ This resource can manage the Device Tracking Policy configuration.
 
 ```terraform
 resource "iosxe_device_tracking_policy" "example" {
-  name         = "DT_trunk_policy"
-  trusted_port = true
+  name                                       = "DT_trunk_policy"
+  trusted_port                               = true
+  data_glean_recovery_dhcp                   = true
+  data_glean_recovery_ndp                    = true
+  prefix_glean                               = true
+  destination_glean_recovery_dhcp            = true
+  protocol_arp                               = false
+  protocol_dhcp4                             = false
+  protocol_dhcp6                             = false
+  protocol_ndp                               = false
+  tracking_enable                            = true
+  tracking_enable_reachable_lifetime_seconds = 300
+  limit_address_count                        = 100
+  security_level_glean                       = true
 }
 ```
 
@@ -28,14 +40,45 @@ resource "iosxe_device_tracking_policy" "example" {
 
 ### Optional
 
+- `data_glean_log_only` (Boolean) only generate a syslog upon data packet notification
+- `data_glean_recovery_dhcp` (Boolean) use DHCP as the recovery protocol
+- `data_glean_recovery_ndp` (Boolean) use NDP as the recovery protocol
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
+- `destination_glean_log_only` (Boolean)
+- `destination_glean_recovery_dhcp` (Boolean) use DHCP as the recovery protocol
 - `device` (String) A device name from the provider configuration.
 - `device_role` (String) The role of the device attached to the port
   - Choices: `node`, `router`, `switch`
 - `device_role_node_legacy` (Boolean)
 - `device_role_router_legacy` (Boolean)
 - `device_role_switch_legacy` (Boolean)
+- `limit_address_count` (Number) Configure maximum address per port
+  - Range: `1`-`32000`
+- `medium_type_wireless` (Boolean) Force medium type to wireless
+- `prefix_glean` (Boolean) Glean prefixes in RA and DHCP-PD traffic
+- `prefix_glean_only` (Boolean) Glean only prefixes i.e. do not glean host addresses
+- `protocol_arp` (Boolean) Glean addresses in ARP packets
+  - Default value: `true`
+- `protocol_arp_prefix_list` (String) Name of the prefix-list to be matched
+- `protocol_dhcp4` (Boolean) Glean addresses in DHCPv4 packets
+  - Default value: `true`
+- `protocol_dhcp4_prefix_list` (String) Name of the prefix-list to be matched
+- `protocol_dhcp6` (Boolean) Glean addresses in DHCPv6 packets
+  - Default value: `true`
+- `protocol_dhcp6_prefix_list` (String) Name of the prefix-list to be matched
+- `protocol_ndp` (Boolean) Glean addresses in NDP packets
+  - Default value: `true`
+- `protocol_ndp_prefix_list` (String) Name of the prefix-list to be matched
+- `security_level_glean` (Boolean) glean addresses passively
+- `security_level_guard` (Boolean) inspect and drop un-authorized messages (default)
+- `security_level_inspect` (Boolean) glean and Validate message
+- `tracking_disable` (Boolean) Tracking on or off
+- `tracking_disable_stale_lifetime` (String) Default maximum time in STALE
+- `tracking_enable` (Boolean)
+- `tracking_enable_reachable_lifetime_infinite` (Boolean) Keep in REACHABLE forever
+- `tracking_enable_reachable_lifetime_seconds` (Number) Seconds
+  - Range: `1`-`86400`
 - `trusted_port` (Boolean) setup trusted port
 
 ### Read-Only
