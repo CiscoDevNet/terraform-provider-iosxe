@@ -1,10 +1,13 @@
 ## Unreleased
 
-- Add `authentication_key_chain`, `authentication_message_digest`, and `authentication_null` attributes to `iosxe_interface_ospf` resource and data source for OSPF interface authentication mode selection (key-chain, message-digest, or null)
+- Add `iosxe_key_chain` resource and data source for key chain management (`key chain`), including keys with cryptographic algorithms (hmac-sha-256, hmac-sha-512, md5, etc.), key strings, accept/send lifetimes, and support for TCP AO and MACsec key chain modes
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
+- Add `authentication_key_chain`, `authentication_message_digest`, and `authentication_null` attributes to `iosxe_interface_ospf` resource and data source for OSPF interface authentication mode selection (key-chain, message-digest, or null)
 
 ## 0.18.0
 
+- Add `data_glean_log_only`, `data_glean_recovery_dhcp`, `data_glean_recovery_ndp`, `prefix_glean`, `prefix_glean_only`, `destination_glean_log_only`, `destination_glean_recovery_dhcp`, `protocol_arp`, `protocol_arp_prefix_list`, `protocol_dhcp4`, `protocol_dhcp4_prefix_list`, `protocol_dhcp6`, `protocol_dhcp6_prefix_list`, `protocol_ndp`, `protocol_ndp_prefix_list`, `tracking_enable`, `tracking_enable_reachable_lifetime_seconds`, `tracking_enable_reachable_lifetime_infinite`, `tracking_disable`, `tracking_disable_stale_lifetime`, `limit_address_count`, `security_level_glean`, `security_level_guard`, `security_level_inspect`, and `medium_type_wireless` attributes to `iosxe_device_tracking_policy` resource and data source
+- Add `relay_bootp_ignore` attribute to `iosxe_dhcp` resource and data source
 - Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
 - Add `zone_member_security` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_bdi` resources and data sources for ZBF interface zone assignment
 - Add `iosxe_zone_pair_security` resource and data source
@@ -12,6 +15,7 @@
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
+- Add `evpn_ethernet_segments_legacy` attribute to `iosxe_interface_port_channel` resource and data source for IOS-XE 17.12 compatibility. The legacy attribute uses the pre-17.15 YANG path (`evpn/ethernet-segment`) while the existing `evpn_ethernet_segments` attribute targets the 17.15+ path (`evpn/ethernet-segment-choice`).
 
 ## 0.17.0
 

@@ -18,6 +18,9 @@ attributes:
   - yang_name: Cisco-IOS-XE-dhcp:relay/information/option/vpn
     tf_name: relay_information_option_vpn
     example: true
+  - yang_name: Cisco-IOS-XE-dhcp:relay/bootp/ignore
+    tf_name: relay_bootp_ignore
+    example: true
   - yang_name: Cisco-IOS-XE-dhcp:snooping
     example: true
   - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option
