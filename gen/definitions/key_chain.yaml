@@ -1,0 +1,276 @@
+---
+name: Key Chain
+path: /Cisco-IOS-XE-native:native/key/Cisco-IOS-XE-crypto:chain[name=%s]
+no_delete_attributes: true
+doc_category: Crypto
+attributes:
+  - yang_name: name
+    example: OSPF-AUTH
+  - yang_name: macsec
+    example: false
+    exclude_test: true
+  - yang_name: tcp
+    example: false
+    exclude_test: true
+  - yang_name: key
+    tf_name: keys
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: 1
+      - yang_name: cryptographic-algorithm-choice/default
+        tf_name: cryptographic_algorithm
+        example: hmac-sha-256
+        exclude_test: true
+      - yang_name: cryptographic-algorithm-choice/tcp
+        tf_name: cryptographic_algorithm_tcp
+        example: aes-128-cmac
+        exclude_test: true
+      - yang_name: cryptographic-algorithm-choice/macsec
+        tf_name: cryptographic_algorithm_macsec
+        example: aes-128-cmac
+        exclude_test: true
+      - yang_name: key-string/encryption
+        tf_name: key_string_encryption
+        example: 0
+      - yang_name: key-string/key
+        tf_name: key_string_key
+        write_only: true
+        sensitive: true
+        example: mySecretKey123
+      - yang_name: accept-lifetime/lifetime-group-v1/local
+        tf_name: accept_lifetime_local
+        example: false
+        exclude_test: true
+      - yang_name: accept-lifetime/lifetime-group-v1/start-hh-mm-ss
+        tf_name: accept_lifetime_start_time
+        example: "00:00:00"
+      - yang_name: accept-lifetime/lifetime-group-v1/start-month
+        tf_name: accept_lifetime_start_month
+        example: Jan
+        enum_values:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+          - Jul
+          - Aug
+          - Sep
+          - Oct
+          - Nov
+          - Dec
+      - yang_name: accept-lifetime/lifetime-group-v1/start-day
+        tf_name: accept_lifetime_start_day
+        example: 1
+      - yang_name: accept-lifetime/lifetime-group-v1/start-year
+        tf_name: accept_lifetime_start_year
+        example: 2025
+      - yang_name: accept-lifetime/lifetime-group-v1/lifetime-end-choice/duration/duration
+        xpath: accept-lifetime/lifetime-group-v1/duration
+        tf_name: accept_lifetime_duration
+        example: 2147483646
+        exclude_test: true
+      - yang_name: accept-lifetime/lifetime-group-v1/lifetime-end-choice/infinite/infinite
+        xpath: accept-lifetime/lifetime-group-v1/infinite
+        tf_name: accept_lifetime_infinite
+        example: true
+      - yang_name: accept-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-hh-mm-ss
+        xpath: accept-lifetime/lifetime-group-v1/end-hh-mm-ss
+        tf_name: accept_lifetime_end_time
+        example: "23:59:59"
+        exclude_test: true
+      - yang_name: accept-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-month
+        xpath: accept-lifetime/lifetime-group-v1/end-month
+        tf_name: accept_lifetime_end_month
+        example: Dec
+        exclude_test: true
+        enum_values:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+          - Jul
+          - Aug
+          - Sep
+          - Oct
+          - Nov
+          - Dec
+      - yang_name: accept-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-day
+        xpath: accept-lifetime/lifetime-group-v1/end-day
+        tf_name: accept_lifetime_end_day
+        example: 31
+        exclude_test: true
+      - yang_name: accept-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-year
+        xpath: accept-lifetime/lifetime-group-v1/end-year
+        tf_name: accept_lifetime_end_year
+        example: 2030
+        exclude_test: true
+      - yang_name: send-lifetime/lifetime-group-v1/local
+        tf_name: send_lifetime_local
+        example: false
+        exclude_test: true
+      - yang_name: send-lifetime/lifetime-group-v1/start-hh-mm-ss
+        tf_name: send_lifetime_start_time
+        example: "00:00:00"
+      - yang_name: send-lifetime/lifetime-group-v1/start-month
+        tf_name: send_lifetime_start_month
+        example: Jan
+        enum_values:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+          - Jul
+          - Aug
+          - Sep
+          - Oct
+          - Nov
+          - Dec
+      - yang_name: send-lifetime/lifetime-group-v1/start-day
+        tf_name: send_lifetime_start_day
+        example: 1
+      - yang_name: send-lifetime/lifetime-group-v1/start-year
+        tf_name: send_lifetime_start_year
+        example: 2025
+      - yang_name: send-lifetime/lifetime-group-v1/lifetime-end-choice/duration/duration
+        xpath: send-lifetime/lifetime-group-v1/duration
+        tf_name: send_lifetime_duration
+        example: 2147483646
+        exclude_test: true
+      - yang_name: send-lifetime/lifetime-group-v1/lifetime-end-choice/infinite/infinite
+        xpath: send-lifetime/lifetime-group-v1/infinite
+        tf_name: send_lifetime_infinite
+        example: true
+      - yang_name: send-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-hh-mm-ss
+        xpath: send-lifetime/lifetime-group-v1/end-hh-mm-ss
+        tf_name: send_lifetime_end_time
+        example: "23:59:59"
+        exclude_test: true
+      - yang_name: send-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-month
+        xpath: send-lifetime/lifetime-group-v1/end-month
+        tf_name: send_lifetime_end_month
+        example: Dec
+        exclude_test: true
+        enum_values:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+          - Jul
+          - Aug
+          - Sep
+          - Oct
+          - Nov
+          - Dec
+      - yang_name: send-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-day
+        xpath: send-lifetime/lifetime-group-v1/end-day
+        tf_name: send_lifetime_end_day
+        example: 31
+        exclude_test: true
+      - yang_name: send-lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-year
+        xpath: send-lifetime/lifetime-group-v1/end-year
+        tf_name: send_lifetime_end_year
+        example: 2030
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/local
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/local
+        tf_name: macsec_lifetime_local
+        example: false
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/start-hh-mm-ss
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/start-hh-mm-ss
+        tf_name: macsec_lifetime_start_time
+        example: "00:00:00"
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/start-month
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/start-month
+        tf_name: macsec_lifetime_start_month
+        example: Jan
+        exclude_test: true
+        enum_values:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+          - Jul
+          - Aug
+          - Sep
+          - Oct
+          - Nov
+          - Dec
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/start-day
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/start-day
+        tf_name: macsec_lifetime_start_day
+        example: 1
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/start-year
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/start-year
+        tf_name: macsec_lifetime_start_year
+        example: 2025
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/lifetime-end-choice/duration/duration
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/duration
+        tf_name: macsec_lifetime_duration
+        example: 2147483646
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/lifetime-end-choice/infinite/infinite
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/infinite
+        tf_name: macsec_lifetime_infinite
+        example: true
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-hh-mm-ss
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/end-hh-mm-ss
+        tf_name: macsec_lifetime_end_time
+        example: "23:59:59"
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-month
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/end-month
+        tf_name: macsec_lifetime_end_month
+        example: Dec
+        exclude_test: true
+        enum_values:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+          - Jul
+          - Aug
+          - Sep
+          - Oct
+          - Nov
+          - Dec
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-day
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/end-day
+        tf_name: macsec_lifetime_end_day
+        example: 31
+        exclude_test: true
+      - yang_name: macsec-lifetime/lifetime/lifetime-group-v1/lifetime-end-choice/time-date/end-year
+        xpath: macsec-lifetime/lifetime/lifetime-group-v1/end-year
+        tf_name: macsec_lifetime_end_year
+        example: 2030
+        exclude_test: true
+      - yang_name: send-id
+        example: 1
+        exclude_test: true
+      - yang_name: recv-id
+        example: 1
+        exclude_test: true
+      - yang_name: include-tcp-options
+        example: false
+        exclude_test: true
+      - yang_name: accept-ao-mismatch
+        example: false
+        exclude_test: true

@@ -88,6 +88,18 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Time between HELLO packets",
 				Computed:            true,
 			},
+			"authentication_key_chain": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"authentication_message_digest": schema.BoolAttribute{
+				MarkdownDescription: "Use message-digest authentication",
+				Computed:            true,
+			},
+			"authentication_null": schema.BoolAttribute{
+				MarkdownDescription: "Use no authentication",
+				Computed:            true,
+			},
 			"mtu_ignore": schema.BoolAttribute{
 				MarkdownDescription: "Ignores the MTU in DBD packets",
 				Computed:            true,

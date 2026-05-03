@@ -47,26 +47,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &InterfaceOSPFResource{}
-	_ resource.ResourceWithImportState = &InterfaceOSPFResource{}
+	_ resource.Resource                = &KeyChainResource{}
+	_ resource.ResourceWithImportState = &KeyChainResource{}
 )
 
-func NewInterfaceOSPFResource() resource.Resource {
-	return &InterfaceOSPFResource{}
+func NewKeyChainResource() resource.Resource {
+	return &KeyChainResource{}
 }
 
-type InterfaceOSPFResource struct {
+type KeyChainResource struct {
 	data *IosxeProviderData
 }
 
-func (r *InterfaceOSPFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_ospf"
+func (r *KeyChainResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_key_chain"
 }
 
-func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface OSPF configuration.",
+		MarkdownDescription: "This resource can manage the Key Chain configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -80,174 +80,306 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "FiftyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel").String,
-				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "FiftyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel"),
-				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(0|[1-9][0-9]*)(/(0|[1-9][0-9]*))*(\.[0-9]*)?`), ""),
-				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"cost": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Route cost of this interface").AddIntegerRangeDescription(1, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
-				},
-			},
-			"dead_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interval after which a neighbor is declared dead").AddIntegerRangeDescription(1, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
-				},
-			},
-			"hello_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Time between HELLO packets").AddIntegerRangeDescription(1, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
-				},
-			},
-			"authentication_key_chain": schema.StringAttribute{
+			"macsec": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
-			"authentication_message_digest": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").String,
-				Optional:            true,
-			},
-			"authentication_null": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use no authentication").String,
-				Optional:            true,
-			},
-			"mtu_ignore": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ignores the MTU in DBD packets").String,
-				Optional:            true,
-			},
-			"network_type_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF broadcast multi-access network").String,
-				Optional:            true,
-			},
-			"network_type_non_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF NBMA network").String,
-				Optional:            true,
-			},
-			"network_type_point_to_multipoint": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-multipoint network").String,
-				Optional:            true,
-			},
-			"network_type_point_to_point": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").String,
-				Optional:            true,
-			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Router priority").AddIntegerRangeDescription(0, 255).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 255),
-				},
-			},
-			"ttl_security_hops": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP hops").AddIntegerRangeDescription(1, 254).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 254),
-				},
-			},
-			"process_ids": schema.ListNestedAttribute{
+			"tcp": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"keys": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure a key").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Process ID").AddIntegerRangeDescription(1, 65535).String,
+						"id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key identifier - (0-2147483674) for regular key chain and hex number with even number digits for macsec key chain").String,
 							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 65535),
+						},
+						"cryptographic_algorithm": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("hmac-sha-1", "hmac-sha-256", "hmac-sha-384", "hmac-sha-512", "md5").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("hmac-sha-1", "hmac-sha-256", "hmac-sha-384", "hmac-sha-512", "md5"),
 							},
 						},
-						"areas": schema.ListNestedAttribute{
+						"cryptographic_algorithm_tcp": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("aes-128-cmac", "hmac-sha-1", "hmac-sha-256").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("aes-128-cmac", "hmac-sha-1", "hmac-sha-256"),
+							},
+						},
+						"cryptographic_algorithm_macsec": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("aes-128-cmac", "aes-256-cmac").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("aes-128-cmac", "aes-256-cmac"),
+							},
+						},
+						"key_string_encryption": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key encryption method").AddStringEnumDescription("0", "6", "7").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0", "6", "7"),
+							},
+						},
+						"key_string_key": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"area_id": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF area ID").String,
-										Required:            true,
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			"multi_area_ids": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF multi-area ID").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"area_id": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF multi-area ID").String,
-							Required:            true,
-						},
-					},
-				},
-			},
-			"message_digest_keys": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Message digest authentication password (key)").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Key ID").AddIntegerRangeDescription(1, 255).String,
-							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 255),
-							},
-						},
-						"md5_auth_key": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("The OSPF password (key) (only the first 16 characters are used)").String,
-							Optional:            true,
 							Sensitive:           true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-							},
 						},
-						"md5_auth_key_wo": schema.StringAttribute{
+						"key_string_key_wo": schema.StringAttribute{
 							MarkdownDescription: "The write-only value of the attribute.",
 							WriteOnly:           true,
 							Optional:            true,
 						},
-						"md5_auth_key_wo_version": schema.Int64Attribute{
+						"key_string_key_wo_version": schema.Int64Attribute{
 							MarkdownDescription: "The write-only version of the attribute.",
 							Optional:            true,
 						},
-						"md5_auth_type": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 for not yet encrypted, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
+						"accept_lifetime_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							Optional:            true,
+						},
+						"accept_lifetime_start_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"accept_lifetime_start_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"accept_lifetime_start_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start day").AddIntegerRangeDescription(1, 31).String,
 							Optional:            true,
 							Validators: []validator.Int64{
-								int64validator.Between(0, 7),
+								int64validator.Between(1, 31),
 							},
+						},
+						"accept_lifetime_start_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"accept_lifetime_duration": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime duration (in seconds)").AddIntegerRangeDescription(1, 2147483646).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483646),
+							},
+						},
+						"accept_lifetime_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							Optional:            true,
+						},
+						"accept_lifetime_end_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"accept_lifetime_end_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"accept_lifetime_end_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"accept_lifetime_end_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"send_lifetime_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							Optional:            true,
+						},
+						"send_lifetime_start_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"send_lifetime_start_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"send_lifetime_start_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"send_lifetime_start_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"send_lifetime_duration": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime duration (in seconds)").AddIntegerRangeDescription(1, 2147483646).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483646),
+							},
+						},
+						"send_lifetime_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							Optional:            true,
+						},
+						"send_lifetime_end_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"send_lifetime_end_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"send_lifetime_end_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"send_lifetime_end_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"macsec_lifetime_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							Optional:            true,
+						},
+						"macsec_lifetime_start_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"macsec_lifetime_start_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"macsec_lifetime_start_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"macsec_lifetime_start_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"macsec_lifetime_duration": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime duration (in seconds)").AddIntegerRangeDescription(1, 2147483646).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483646),
+							},
+						},
+						"macsec_lifetime_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							Optional:            true,
+						},
+						"macsec_lifetime_end_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"macsec_lifetime_end_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"macsec_lifetime_end_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"macsec_lifetime_end_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"send_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("configure a send id").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+						"recv_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("configure a receive id").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+						"include_tcp_options": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Include tcp options in HMAC calculation").String,
+							Optional:            true,
+						},
+						"accept_ao_mismatch": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Accept packets with HMAC mismatch").String,
+							Optional:            true,
 						},
 					},
 				},
@@ -256,7 +388,7 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 	}
 }
 
-func (r *InterfaceOSPFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *KeyChainResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -268,8 +400,8 @@ func (r *InterfaceOSPFResource) Configure(_ context.Context, req resource.Config
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *InterfaceOSPFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config InterfaceOSPF
+func (r *KeyChainResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config KeyChain
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -359,8 +491,8 @@ func (r *InterfaceOSPFResource) Create(ctx context.Context, req resource.CreateR
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state InterfaceOSPF
+func (r *KeyChainResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state KeyChain
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -386,7 +518,7 @@ func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadReque
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = InterfaceOSPF{Device: state.Device, Id: state.Id}
+				state = KeyChain{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -442,8 +574,8 @@ func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadReque
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *InterfaceOSPFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config InterfaceOSPF
+func (r *KeyChainResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config KeyChain
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -550,8 +682,8 @@ func (r *InterfaceOSPFResource) Update(ctx context.Context, req resource.UpdateR
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state InterfaceOSPF
+func (r *KeyChainResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state KeyChain
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -570,11 +702,6 @@ func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteR
 
 	if device.Managed {
 		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
 
 		if deleteMode == "all" {
 			if device.Protocol == "restconf" {
@@ -649,27 +776,26 @@ func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteR
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *InterfaceOSPFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *KeyChainResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 2 && len(idParts) != 3 {
-		expectedIdentifier := "Expected import identifier with format: '<type>,<name>'"
-		expectedIdentifier += " or '<type>,<name>,<device>'"
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<name>'"
+		expectedIdentifier += " or '<name>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("type"), idParts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[1])...)
-	if len(idParts) == 3 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
+	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state InterfaceOSPF
+	var state KeyChain
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
