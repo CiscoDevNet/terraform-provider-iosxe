@@ -34,6 +34,22 @@ attributes:
     example: 30
   - yang_name: hello-interval
     example: 5
+  - yang_name: authentication/auth-type-choice/key-chain
+    xpath: authentication/key-chain
+    tf_name: authentication_key_chain
+    type: String
+    example: OSPF-AUTH
+    exclude_test: true
+  - yang_name: authentication/auth-type-choice/message-digest/message-digest
+    xpath: authentication/message-digest
+    tf_name: authentication_message_digest
+    example: true
+    exclude_test: true
+  - yang_name: authentication/auth-type-choice/null/null
+    xpath: authentication/null
+    tf_name: authentication_null
+    example: false
+    exclude_test: true
   - yang_name: mtu-ignore
     example: false
   - yang_name: network/network-type-choice/broadcast/broadcast
