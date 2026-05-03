@@ -180,8 +180,8 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringvalidator.LengthBetween(1, 200),
 				},
 			},
-			"match_access_group_index": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Numbered Access List").String,
+			"match_access_group_index_legacy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Numbered Access List. Use this for versions before `17.18`.").String,
 				Optional:            true,
 			},
 			"match_access_group_name": schema.ListAttribute{

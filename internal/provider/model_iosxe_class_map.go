@@ -63,7 +63,7 @@ type ClassMap struct {
 	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
 	MatchCos                                  types.List                               `tfsdk:"match_cos"`
 	Description                               types.String                             `tfsdk:"description"`
-	MatchAccessGroupIndex                     types.String                             `tfsdk:"match_access_group_index"`
+	MatchAccessGroupIndexLegacy               types.String                             `tfsdk:"match_access_group_index_legacy"`
 	MatchAccessGroupName                      types.List                               `tfsdk:"match_access_group_name"`
 	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
 	MatchIpPrecedence                         types.List                               `tfsdk:"match_ip_precedence"`
@@ -99,7 +99,7 @@ type ClassMapData struct {
 	MatchDscp                                 types.List                                   `tfsdk:"match_dscp"`
 	MatchCos                                  types.List                                   `tfsdk:"match_cos"`
 	Description                               types.String                                 `tfsdk:"description"`
-	MatchAccessGroupIndex                     types.String                                 `tfsdk:"match_access_group_index"`
+	MatchAccessGroupIndexLegacy               types.String                                 `tfsdk:"match_access_group_index_legacy"`
 	MatchAccessGroupName                      types.List                                   `tfsdk:"match_access_group_name"`
 	MatchIpDscp                               types.List                                   `tfsdk:"match_ip_dscp"`
 	MatchIpPrecedence                         types.List                                   `tfsdk:"match_ip_precedence"`
@@ -237,8 +237,8 @@ func (data ClassMap) toBody(ctx context.Context, config ClassMap) string {
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
 	}
-	if !data.MatchAccessGroupIndex.IsNull() && !data.MatchAccessGroupIndex.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.access-group.index", data.MatchAccessGroupIndex.ValueString())
+	if !data.MatchAccessGroupIndexLegacy.IsNull() && !data.MatchAccessGroupIndexLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.access-group.index", data.MatchAccessGroupIndexLegacy.ValueString())
 	}
 	if !data.MatchAccessGroupName.IsNull() && !data.MatchAccessGroupName.IsUnknown() {
 		var values []string
@@ -404,8 +404,8 @@ func (data ClassMap) toBodyXML(ctx context.Context, config ClassMap) string {
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
 	}
-	if !data.MatchAccessGroupIndex.IsNull() && !data.MatchAccessGroupIndex.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/access-group/index", data.MatchAccessGroupIndex.ValueString())
+	if !data.MatchAccessGroupIndexLegacy.IsNull() && !data.MatchAccessGroupIndexLegacy.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/access-group/index", data.MatchAccessGroupIndexLegacy.ValueString())
 	}
 	if !data.MatchAccessGroupName.IsNull() && !data.MatchAccessGroupName.IsUnknown() {
 		var values []string
@@ -623,10 +623,10 @@ func (data *ClassMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Description = types.StringNull()
 	}
-	if value := res.Get(prefix + "match.access-group.index"); value.Exists() && !data.MatchAccessGroupIndex.IsNull() {
-		data.MatchAccessGroupIndex = types.StringValue(value.String())
+	if value := res.Get(prefix + "match.access-group.index"); value.Exists() && !data.MatchAccessGroupIndexLegacy.IsNull() {
+		data.MatchAccessGroupIndexLegacy = types.StringValue(value.String())
 	} else {
-		data.MatchAccessGroupIndex = types.StringNull()
+		data.MatchAccessGroupIndexLegacy = types.StringNull()
 	}
 	if value := res.Get(prefix + "match.access-group.name"); value.Exists() && !data.MatchAccessGroupName.IsNull() {
 		data.MatchAccessGroupName = helpers.GetStringList(value.Array())
@@ -847,10 +847,10 @@ func (data *ClassMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.Description = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/access-group/index"); value.Exists() && !data.MatchAccessGroupIndex.IsNull() {
-		data.MatchAccessGroupIndex = types.StringValue(value.String())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/access-group/index"); value.Exists() && !data.MatchAccessGroupIndexLegacy.IsNull() {
+		data.MatchAccessGroupIndexLegacy = types.StringValue(value.String())
 	} else {
-		data.MatchAccessGroupIndex = types.StringNull()
+		data.MatchAccessGroupIndexLegacy = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/access-group/name"); value.Exists() && !data.MatchAccessGroupName.IsNull() {
 		data.MatchAccessGroupName = helpers.GetStringListXML(value.Array())
@@ -1003,7 +1003,7 @@ func (data *ClassMap) fromBody(ctx context.Context, res gjson.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "match.access-group.index"); value.Exists() {
-		data.MatchAccessGroupIndex = types.StringValue(value.String())
+		data.MatchAccessGroupIndexLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "match.access-group.name"); value.Exists() {
 		data.MatchAccessGroupName = helpers.GetStringList(value.Array())
@@ -1138,7 +1138,7 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "match.access-group.index"); value.Exists() {
-		data.MatchAccessGroupIndex = types.StringValue(value.String())
+		data.MatchAccessGroupIndexLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "match.access-group.name"); value.Exists() {
 		data.MatchAccessGroupName = helpers.GetStringList(value.Array())
@@ -1269,7 +1269,7 @@ func (data *ClassMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/access-group/index"); value.Exists() {
-		data.MatchAccessGroupIndex = types.StringValue(value.String())
+		data.MatchAccessGroupIndexLegacy = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/access-group/name"); value.Exists() {
 		data.MatchAccessGroupName = helpers.GetStringListXML(value.Array())
@@ -1400,7 +1400,7 @@ func (data *ClassMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/access-group/index"); value.Exists() {
-		data.MatchAccessGroupIndex = types.StringValue(value.String())
+		data.MatchAccessGroupIndexLegacy = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/access-group/name"); value.Exists() {
 		data.MatchAccessGroupName = helpers.GetStringListXML(value.Array())
@@ -1550,7 +1550,7 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 			}
 		}
 	}
-	if !state.MatchAccessGroupIndex.IsNull() && data.MatchAccessGroupIndex.IsNull() {
+	if !state.MatchAccessGroupIndexLegacy.IsNull() && data.MatchAccessGroupIndexLegacy.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/access-group/index", state.getPath()))
 	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
@@ -1823,7 +1823,7 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 			}
 		}
 	}
-	if !state.MatchAccessGroupIndex.IsNull() && data.MatchAccessGroupIndex.IsNull() {
+	if !state.MatchAccessGroupIndexLegacy.IsNull() && data.MatchAccessGroupIndexLegacy.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/access-group/index")
 	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
@@ -2046,7 +2046,7 @@ func (data *ClassMap) getDeletePaths(ctx context.Context) []string {
 	if !data.MatchAccessGroupName.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/access-group/name", data.getPath()))
 	}
-	if !data.MatchAccessGroupIndex.IsNull() {
+	if !data.MatchAccessGroupIndexLegacy.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/access-group/index", data.getPath()))
 	}
 	if !data.Description.IsNull() {
@@ -2153,7 +2153,7 @@ func (data *ClassMap) addDeletePathsXML(ctx context.Context, body string) string
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/match/access-group/name[.=%v]", v))
 		}
 	}
-	if !data.MatchAccessGroupIndex.IsNull() {
+	if !data.MatchAccessGroupIndexLegacy.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/access-group/index")
 	}
 	if !data.Description.IsNull() {
