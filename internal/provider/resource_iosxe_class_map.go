@@ -184,6 +184,11 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: helpers.NewAttributeDescription("Numbered Access List. Use this for versions before `17.18`.").String,
 				Optional:            true,
 			},
+			"match_access_group_index_list": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Numbered Access List. Use this for versions `17.18` and later.").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
 			"match_access_group_name": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Named Access List").String,
 				ElementType:         types.StringType,

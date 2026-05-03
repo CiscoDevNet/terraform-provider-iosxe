@@ -64,6 +64,7 @@ type ClassMap struct {
 	MatchCos                                  types.List                               `tfsdk:"match_cos"`
 	Description                               types.String                             `tfsdk:"description"`
 	MatchAccessGroupIndexLegacy               types.String                             `tfsdk:"match_access_group_index_legacy"`
+	MatchAccessGroupIndexList                 types.List                               `tfsdk:"match_access_group_index_list"`
 	MatchAccessGroupName                      types.List                               `tfsdk:"match_access_group_name"`
 	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
 	MatchIpPrecedence                         types.List                               `tfsdk:"match_ip_precedence"`
@@ -100,6 +101,7 @@ type ClassMapData struct {
 	MatchCos                                  types.List                                   `tfsdk:"match_cos"`
 	Description                               types.String                                 `tfsdk:"description"`
 	MatchAccessGroupIndexLegacy               types.String                                 `tfsdk:"match_access_group_index_legacy"`
+	MatchAccessGroupIndexList                 types.List                                   `tfsdk:"match_access_group_index_list"`
 	MatchAccessGroupName                      types.List                                   `tfsdk:"match_access_group_name"`
 	MatchIpDscp                               types.List                                   `tfsdk:"match_ip_dscp"`
 	MatchIpPrecedence                         types.List                                   `tfsdk:"match_ip_precedence"`

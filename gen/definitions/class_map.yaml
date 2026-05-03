@@ -58,14 +58,14 @@ attributes:
     example: 100
     exclude_test: true
     test_tags: [IOSXE1712]
-  # TODO: Uncomment once a 17.18.x device is available for testing
-  # - yang_name: match/access-group/index_list
-  #   tf_name: match_access_group_index_list
-  #   type: StringList
-  #   description: Numbered Access List. Use this for versions `17.18` and later.
-  #   no_augment_config: true
-  #   example: 100
-  #   exclude_test: true
+  # TODO: Remove exclude_test once a 17.18.x device is available in CI
+  - yang_name: match/access-group/index_list
+    tf_name: match_access_group_index_list
+    type: StringList
+    description: Numbered Access List. Use this for versions `17.18` and later.
+    no_augment_config: true
+    example: 100
+    exclude_test: true
   - yang_name: match/access-group/name
     example: AG1
     exclude_test: true
