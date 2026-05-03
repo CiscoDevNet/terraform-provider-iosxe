@@ -16,6 +16,7 @@
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
 - Add `evpn_ethernet_segments_legacy` attribute to `iosxe_interface_port_channel` resource and data source for IOS-XE 17.12 compatibility. The legacy attribute uses the pre-17.15 YANG path (`evpn/ethernet-segment`) while the existing `evpn_ethernet_segments` attribute targets the 17.15+ path (`evpn/ethernet-segment-choice`).
+- Fix panic in route-map (and other list-entry resources) when adding a new entry before an existing one that contains list-type match/set attributes. The `getDeletedItems` (RESTCONF) and `addDeletedItemsXML` (NETCONF) functions had swapped loop indices when comparing list element values between state and plan.
 
 ## 0.17.0
 
