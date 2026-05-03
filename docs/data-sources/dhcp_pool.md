@@ -62,7 +62,8 @@ Read-Only:
 
 - `ascii` (String) Data is an NVT ASCII string
 - `hex` (String) Data is a hexadecimal string
-- `ip` (List of String) Data is one or more IP addresses
+- `ip` (List of String) Data is one or more IP addresses. Use this for versions `17.15` and later.
+- `ip_legacy` (List of String) Data is one or more IP addresses. Use this for versions before `17.15`.
 - `option_code` (Number) DHCP option code
 
 

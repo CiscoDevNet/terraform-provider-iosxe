@@ -135,11 +135,18 @@ attributes:
         description: Data is a hexadecimal string
         exclude_test: true
         example: 0a0101010a010102
-      - yang_name: option-range-choice/ip-case/ip-new
-        xpath: ip-new
+      - yang_name: option-range-choice/ip-case/ip-ordered
+        xpath: ip-ordered
         tf_name: ip
         type: StringList
-        description: Data is one or more IP addresses
+        description: Data is one or more IP addresses. Use this for versions `17.15` and later.
+        exclude_test: true
+        example: 10.1.1.1
+      - yang_name: option-range-choice/ip-case/ip-new
+        xpath: ip-new
+        tf_name: ip_legacy
+        type: StringList
+        description: Data is one or more IP addresses. Use this for versions before `17.15`.
         exclude_test: true
         example: 10.1.1.1
 

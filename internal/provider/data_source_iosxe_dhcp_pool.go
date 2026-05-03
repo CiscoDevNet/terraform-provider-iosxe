@@ -193,7 +193,12 @@ func (d *DHCPPoolDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							Computed:            true,
 						},
 						"ip": schema.ListAttribute{
-							MarkdownDescription: "Data is one or more IP addresses",
+							MarkdownDescription: "Data is one or more IP addresses. Use this for versions `17.15` and later.",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"ip_legacy": schema.ListAttribute{
+							MarkdownDescription: "Data is one or more IP addresses. Use this for versions before `17.15`.",
 							ElementType:         types.StringType,
 							Computed:            true,
 						},

@@ -9,7 +9,7 @@ description: |-
 
 ## Unreleased
 
-- Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association
+- Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association. DHCP option IP addresses use `ip` (`ip-ordered`, 17.15+) and `ip_legacy` (`ip-new`, pre-17.15) attributes to handle the YANG deprecation of `ip-new` in favor of `ip-ordered`
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
 
 ## 0.18.0
