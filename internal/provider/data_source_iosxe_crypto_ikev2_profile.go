@@ -155,12 +155,24 @@ func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasourc
 				Computed:            true,
 			},
 			"lifetime": schema.Int64Attribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "IKEv2 SA lifetime in seconds",
 				Computed:            true,
 			},
-			"match_address_local_interface_loopback": schema.Int64Attribute{
-				MarkdownDescription: "Loopback interface",
+			"match_address_local_interface_loopback_legacy": schema.Int64Attribute{
+				MarkdownDescription: "Loopback interface. Use this for IOS-XE versions before `17.18.1`.",
 				Computed:            true,
+			},
+			"match_address_local_interface_loopback": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"loopback_number": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
 			},
 			"config_exchange_request": schema.BoolAttribute{
 				MarkdownDescription: "enable config-exchange request",

@@ -61,8 +61,10 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
 - `ivrf` (String) I-VRF of the profile
 - `keyring_local` (String) Keyring name
-- `lifetime` (Number) - Range: `120`-`86400`
-- `match_address_local_interface_loopback` (Number) Loopback interface
+- `lifetime` (Number) IKEv2 SA lifetime in seconds
+  - Range: `120`-`86400`
+- `match_address_local_interface_loopback` (Attributes List) (see [below for nested schema](#nestedatt--match_address_local_interface_loopback))
+- `match_address_local_interface_loopback_legacy` (Number) Loopback interface. Use this for IOS-XE versions before `17.18.1`.
   - Range: `0`-`2147483647`
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)
@@ -75,6 +77,14 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--match_address_local_interface_loopback"></a>
+### Nested Schema for `match_address_local_interface_loopback`
+
+Required:
+
+- `loopback_number` (Number)
+
 
 <a id="nestedatt--match_identity_remote_ipv4_addresses"></a>
 ### Nested Schema for `match_identity_remote_ipv4_addresses`

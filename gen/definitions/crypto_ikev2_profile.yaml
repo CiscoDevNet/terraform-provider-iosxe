@@ -65,13 +65,29 @@ attributes:
     example: periodic
   - yang_name: lifetime/seconds
     tf_name: lifetime
+    description: IKEv2 SA lifetime in seconds
     example: 28800
   - yang_name: match/address/local/interface-options/interface-choice/Loopback/Loopback
     xpath: match/address/local/interface-options/Loopback
-    tf_name: match_address_local_interface_loopback
+    tf_name: match_address_local_interface_loopback_legacy
+    description: Loopback interface. Use this for IOS-XE versions before `17.18.1`.
     type: Int64
     example: 100
     exclude_test: true
+  - yang_name: match/address/local/interface-options-local/Loopback
+    xpath: match/address/local/interface-options-local/Loopback
+    tf_name: match_address_local_interface_loopback
+    type: List
+    no_augment_config: true
+    exclude_test: true
+    attributes:
+      - yang_name: Loopback
+        xpath: Loopback
+        tf_name: loopback_number
+        id: true
+        type: Int64
+        no_augment_config: true
+        example: 100
   - yang_name: config-exchange/request-1
     tf_name: config_exchange_request
     example: false
