@@ -20,13 +20,13 @@ attributes:
   - yang_name: ipv4-unicast/redistribute/static
     tf_name: ipv4_unicast_redistribute_static
     example: true
-  - yang_name: ipv4-unicast/redistribute/static/static-choice/ip/ip/route-map
+  - yang_name: ipv4-unicast/redistribute/static/static-choice/default/default/route-map
     tf_name: ipv4_unicast_redistribute_static_route_map
-    xpath: ipv4-unicast/redistribute/static/ip/route-map
+    xpath: ipv4-unicast/redistribute/static/default/route-map
     example: RM_BGP_STATIC
-  - yang_name: ipv4-unicast/redistribute/static/static-choice/ip/ip/metric
+  - yang_name: ipv4-unicast/redistribute/static/static-choice/default/default/metric
     tf_name: ipv4_unicast_redistribute_static_metric
-    xpath: ipv4-unicast/redistribute/static/ip/metric
+    xpath: ipv4-unicast/redistribute/static/default/metric
     example: 200
   - yang_name: ipv4-unicast/aggregate-address
     tf_name: ipv4_unicast_aggregate_addresses
