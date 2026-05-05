@@ -9077,7 +9077,7 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 											}
 										}
 										if !found {
-											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/vrf%v/host-name%v/ip-list=[.%v]", predicates, cpredicates, v))
+											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/vrf%v/host-name%v/ip-list[.=%v]", predicates, cpredicates, v))
 										}
 									}
 								}
