@@ -6,6 +6,7 @@
 
 ## 0.18.0
 
+- Add `match_access_group_index_legacy` and `match_access_group_index_list` attributes to `iosxe_class_map` resource and data source for matching on numbered ACLs (`match access-group <1-199 | 1300-2699>`)
 - Add `data_glean_log_only`, `data_glean_recovery_dhcp`, `data_glean_recovery_ndp`, `prefix_glean`, `prefix_glean_only`, `destination_glean_log_only`, `destination_glean_recovery_dhcp`, `protocol_arp`, `protocol_arp_prefix_list`, `protocol_dhcp4`, `protocol_dhcp4_prefix_list`, `protocol_dhcp6`, `protocol_dhcp6_prefix_list`, `protocol_ndp`, `protocol_ndp_prefix_list`, `tracking_enable`, `tracking_enable_reachable_lifetime_seconds`, `tracking_enable_reachable_lifetime_infinite`, `tracking_disable`, `tracking_disable_stale_lifetime`, `limit_address_count`, `security_level_glean`, `security_level_guard`, `security_level_inspect`, and `medium_type_wireless` attributes to `iosxe_device_tracking_policy` resource and data source
 - Add `relay_bootp_ignore` attribute to `iosxe_dhcp` resource and data source
 - Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)

@@ -52,6 +52,18 @@ attributes:
   - yang_name: description
     example: My description
     exclude_test: true
+  - yang_name: match/access-group/index
+    tf_name: match_access_group_index_legacy
+    description: Numbered Access List. Use this for versions before `17.18`.
+    example: 100
+    exclude_test: true
+    test_tags: [IOSXE1712]
+  # TODO: Remove exclude_test once a 17.18.x device is available in CI
+  - yang_name: match/access-group/index_list
+    tf_name: match_access_group_index_list
+    description: Numbered Access List. Use this for versions `17.18` and later.
+    example: 100
+    exclude_test: true
   - yang_name: match/access-group/name
     example: AG1
     exclude_test: true

@@ -82,9 +82,6 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Name of the policy map").String,
 				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 203),
-				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -227,11 +224,11 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 									"authenticate_using_aaa_authc_list": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify authentication method list").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Deprecated. Specify authentication method list").String,
 										Optional:            true,
 									},
 									"authenticate_using_aaa_authz_list": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify authorization method list").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Deprecated. Specify authorization method list").String,
 										Optional:            true,
 									},
 									"authenticate_using_both": schema.BoolAttribute{
