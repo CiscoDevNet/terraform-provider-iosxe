@@ -346,6 +346,10 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Optional:            true,
 									},
+									"service_policy": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
 								},
 							},
 						},
