@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `authenticate_using_authc_list` and `authenticate_using_authz_list` attributes to `iosxe_policy_map_event` resource and data source for the non-deprecated AAA method list leaves (`authenticate/using/authc-list`, `authenticate/using/authz-list`). Rename the existing attributes targeting the deprecated `authenticate/using/aaa` container to `authenticate_using_aaa_authc_list_legacy` and `authenticate_using_aaa_authz_list_legacy`.
 - Add `iosxe_key_chain` resource and data source for key chain management (`key chain`), including keys with cryptographic algorithms (hmac-sha-256, hmac-sha-512, md5, etc.), key strings, accept/send lifetimes, and support for TCP AO and MACsec key chain modes
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
 - Add `authentication_key_chain`, `authentication_message_digest`, and `authentication_null` attributes to `iosxe_interface_ospf` resource and data source for OSPF interface authentication mode selection (key-chain, message-digest, or null)
