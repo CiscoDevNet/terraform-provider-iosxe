@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add minimum version documentation (IOS-XE >= 17.16.1) to `passive_interface_disable_*` attributes on `iosxe_ospf` and `iosxe_ospf_vrf` resources
 - Add `iosxe_key_chain` resource and data source for key chain management (`key chain`), including keys with cryptographic algorithms (hmac-sha-256, hmac-sha-512, md5, etc.), key strings, accept/send lifetimes, and support for TCP AO and MACsec key chain modes
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
 - Add `authentication_key_chain`, `authentication_message_digest`, and `authentication_null` attributes to `iosxe_interface_ospf` resource and data source for OSPF interface authentication mode selection (key-chain, message-digest, or null)
