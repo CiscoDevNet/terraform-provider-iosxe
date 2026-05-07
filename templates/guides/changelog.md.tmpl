@@ -30,6 +30,8 @@ description: |-
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
+- Add `lifetime`, `match_address_local_interface_loopback`, and `match_address_local_interface_loopback_legacy` attributes to `iosxe_crypto_ikev2_profile` resource and data source. The `match_address_local_interface_loopback` attribute is a list targeting the 17.18+ `interface-options-local` YANG path. The `match_address_local_interface_loopback_legacy` attribute is a scalar for pre-17.18 compatibility using the deprecated `interface-options` path.
+- Add `set_pfs_group`, `set_security_association_lifetime_seconds`, and `set_security_association_lifetime_seconds_legacy` attributes to `iosxe_crypto_ipsec_profile` resource and data source
 - Add `evpn_ethernet_segments_legacy` attribute to `iosxe_interface_port_channel` resource and data source for IOS-XE 17.12 compatibility. The legacy attribute uses the pre-17.15 YANG path (`evpn/ethernet-segment`) while the existing `evpn_ethernet_segments` attribute targets the 17.15+ path (`evpn/ethernet-segment-choice`).
 - Fix panic in route-map (and other list-entry resources) when adding a new entry before an existing one that contains list-type match/set attributes. The `getDeletedItems` (RESTCONF) and `addDeletedItemsXML` (NETCONF) functions had swapped loop indices when comparing list element values between state and plan.
 
