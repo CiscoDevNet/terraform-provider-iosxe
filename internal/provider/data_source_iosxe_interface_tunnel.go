@@ -332,6 +332,26 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 					},
 				},
 			},
+			"bandwidth": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"tunnel_bandwidth_transmit": schema.Int64Attribute{
+				MarkdownDescription: "Transmit bandwidth",
+				Computed:            true,
+			},
+			"tunnel_bandwidth_receive": schema.Int64Attribute{
+				MarkdownDescription: "Receive bandwidth",
+				Computed:            true,
+			},
+			"service_policy_input": schema.StringAttribute{
+				MarkdownDescription: "Assign policy-map to the input of an interface",
+				Computed:            true,
+			},
+			"service_policy_output": schema.StringAttribute{
+				MarkdownDescription: "Assign policy-map to the output of an interface",
+				Computed:            true,
+			},
 			"zone_member_security": schema.StringAttribute{
 				MarkdownDescription: "Security zone",
 				Computed:            true,

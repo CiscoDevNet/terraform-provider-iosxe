@@ -209,6 +209,23 @@ attributes:
       - yang_name: direction
         id: true
         example: input
+  - yang_name: bandwidth/kilobits
+    tf_name: bandwidth
+    example: 1000000
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit
+    tf_name: tunnel_bandwidth_transmit
+    example: 1000
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive
+    tf_name: tunnel_bandwidth_receive
+    example: 1000
+  - yang_name: Cisco-IOS-XE-policy:service-policy/input
+    tf_name: service_policy_input
+    example: POLICY1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-policy:service-policy/output
+    tf_name: service_policy_output
+    example: POLICY1
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-zone:zone-member/security
     tf_name: zone_member_security
     example: INSIDE
