@@ -44,7 +44,11 @@ Read-Only:
 - `ipv6_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
+- `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
+- `ipv6_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv6_unicast_redistribute_static` (Boolean) Static routes
+- `ipv6_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
+- `ipv6_unicast_redistribute_static_route_map` (String) Route map reference
 - `name` (String)
 
 <a id="nestedatt--vrfs--ipv6_unicast_networks"></a>

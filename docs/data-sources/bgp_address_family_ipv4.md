@@ -44,7 +44,11 @@ data "iosxe_bgp_address_family_ipv4" "example" {
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
+- `ipv4_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
+- `ipv4_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+- `ipv4_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
+- `ipv4_unicast_redistribute_static_route_map` (String) Route map reference
 
 <a id="nestedatt--ipv4_unicast_admin_distances"></a>
 ### Nested Schema for `ipv4_unicast_admin_distances`

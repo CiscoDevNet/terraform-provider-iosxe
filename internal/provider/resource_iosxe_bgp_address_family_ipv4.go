@@ -108,9 +108,31 @@ func (r *BGPAddressFamilyIPv4Resource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
 				Optional:            true,
 			},
+			"ipv4_unicast_redistribute_connected_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"ipv4_unicast_redistribute_connected_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
 			"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
 				Optional:            true,
+			},
+			"ipv4_unicast_redistribute_static_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"ipv4_unicast_redistribute_static_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
 			},
 			"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure BGP aggregate entries").String,
