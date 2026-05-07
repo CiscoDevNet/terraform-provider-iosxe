@@ -46,9 +46,6 @@ func TestAccDataSourceIosxePolicyMapEvent(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_retries", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_retry_time", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_priority", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_aaa_config", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_authc_list", "listname1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_authz_list", "listname2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_both", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.replace", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.restrict", "true"))
@@ -124,9 +121,6 @@ func testAccDataSourceIosxePolicyMapEventConfig() string {
 	config += `			authenticate_using_retries = 2` + "\n"
 	config += `			authenticate_using_retry_time = 0` + "\n"
 	config += `			authenticate_using_priority = 10` + "\n"
-	config += `			authenticate_using_aaa_config = true` + "\n"
-	config += `			authenticate_using_authc_list = "listname1"` + "\n"
-	config += `			authenticate_using_authz_list = "listname2"` + "\n"
 	config += `			authenticate_using_both = true` + "\n"
 	config += `			replace = true` + "\n"
 	config += `			restrict = true` + "\n"

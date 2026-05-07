@@ -19,9 +19,6 @@ resource "iosxe_policy_map_event" "example" {
           authenticate_using_retries                        = 2
           authenticate_using_retry_time                     = 0
           authenticate_using_priority                       = 10
-          authenticate_using_aaa_config                     = true
-          authenticate_using_authc_list                     = "listname1"
-          authenticate_using_authz_list                     = "listname2"
           authenticate_using_both                           = true
           replace                                           = true
           restrict                                          = true
