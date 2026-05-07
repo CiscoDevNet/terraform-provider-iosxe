@@ -63,6 +63,9 @@ resource "iosxe_interface_tunnel" "example" {
   tunnel_vrf                       = "VRF1"
   ip_igmp_version                  = 3
   ip_tcp_adjust_mss                = 1400
+  bandwidth                        = 1000000
+  tunnel_bandwidth_transmit        = 1000
+  tunnel_bandwidth_receive         = 1000
 }
 ```
 
@@ -77,6 +80,7 @@ resource "iosxe_interface_tunnel" "example" {
 
 - `arp_timeout` (Number) Set ARP cache timeout
   - Range: `0`-`2147483`
+- `bandwidth` (Number) - Range: `1`-`200000000`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
 - `bfd_enable` (Boolean) Enable BFD under the interface
 - `bfd_interval` (Number) - Range: `50`-`9999`
@@ -126,8 +130,14 @@ resource "iosxe_interface_tunnel" "example" {
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `service_policy_input` (String) Assign policy-map to the input of an interface
+- `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
+- `tunnel_bandwidth_receive` (Number) Receive bandwidth
+  - Range: `1`-`10000000`
+- `tunnel_bandwidth_transmit` (Number) Transmit bandwidth
+  - Range: `1`-`10000000`
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) IPSec policy profile

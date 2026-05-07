@@ -79,6 +79,9 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_flow_monitors.0.name", "MON1"))
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_flow_monitors.0.direction", "input"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bandwidth", "1000000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_bandwidth_transmit", "1000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_bandwidth_receive", "1000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -187,6 +190,9 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 		config += `		direction = "input"` + "\n"
 		config += `	}]` + "\n"
 	}
+	config += `	bandwidth = 1000000` + "\n"
+	config += `	tunnel_bandwidth_transmit = 1000` + "\n"
+	config += `	tunnel_bandwidth_receive = 1000` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 

@@ -112,6 +112,7 @@ Optional:
   - Range: `0`-`100`
 - `queue_limit` (Number) - Range: `1`-`64000000`
 - `queue_limit_type` (String) - Choices: `bytes`, `ms`, `packets`, `us`
+- `service_policy` (String)
 - `set_dscp` (String)
 - `shape_average_bit_rate` (Number) Target Bit Rate (bits/sec)
   - Range: `1000`-`100000000000`

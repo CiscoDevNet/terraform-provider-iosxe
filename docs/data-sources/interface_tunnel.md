@@ -32,6 +32,7 @@ data "iosxe_interface_tunnel" "example" {
 ### Read-Only
 
 - `arp_timeout` (Number) Set ARP cache timeout
+- `bandwidth` (Number)
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
 - `bfd_enable` (Boolean) Enable BFD under the interface
 - `bfd_interval` (Number)
@@ -71,8 +72,12 @@ data "iosxe_interface_tunnel" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `service_policy_input` (String) Assign policy-map to the input of an interface
+- `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
+- `tunnel_bandwidth_receive` (Number) Receive bandwidth
+- `tunnel_bandwidth_transmit` (Number) Transmit bandwidth
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) IPSec policy profile

@@ -68,15 +68,19 @@ attributes:
             example: 0
           - yang_name: authenticate/using/priority
             example: 10
+          # TODO: Remove exclude_test once a 17.18.x device is available in CI
           - yang_name: authenticate/using/aaa-config
             description: Configure AAA method list. Required when using `authenticate_using_authc_list` or `authenticate_using_authz_list` (versions `17.18` and later).
             example: true
+            exclude_test: true
           - yang_name: authenticate/using/authc-list
             description: Specify authentication method list. Use this for versions `17.18` and later.
             example: listname1
+            exclude_test: true
           - yang_name: authenticate/using/authz-list
             description: Specify authorization method list. Use this for versions `17.18` and later.
             example: listname2
+            exclude_test: true
           - yang_name: authenticate/using/aaa/authc-list
             tf_name: authenticate_using_aaa_authc_list_legacy
             description: Specify authentication method list. Use this for versions before `17.18`.

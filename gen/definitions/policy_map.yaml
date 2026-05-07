@@ -204,6 +204,11 @@ attributes:
             tf_name: set_dscp
             example: ef
             exclude_test: true
+          - yang_name: action-param/service-policy-case/service-policy
+            xpath: service-policy
+            tf_name: service_policy
+            example: CHILD-POLICY
+            exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=CLASS1]
