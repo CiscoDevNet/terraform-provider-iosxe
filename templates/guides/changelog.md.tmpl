@@ -10,6 +10,9 @@ description: |-
 ## Unreleased
 
 - Add `authenticate_using_authc_list` and `authenticate_using_authz_list` attributes to `iosxe_policy_map_event` resource and data source for the non-deprecated AAA method list leaves (`authenticate/using/authc-list`, `authenticate/using/authz-list`). Rename the existing attributes targeting the deprecated `authenticate/using/aaa` container to `authenticate_using_aaa_authc_list_legacy` and `authenticate_using_aaa_authz_list_legacy`.
+- Add `bandwidth`, `tunnel_bandwidth_transmit`, `tunnel_bandwidth_receive`, `service_policy_input`, and `service_policy_output` attributes to `iosxe_interface_tunnel` resource and data source
+- Add minimum version documentation (IOS-XE >= 17.16.1) to `passive_interface_disable_*` attributes on `iosxe_ospf` and `iosxe_ospf_vrf` resources
+- Add `service_policy` attribute to `iosxe_policy_map` resource and data source for attaching a child service-policy under a policy-map class action (`service-policy <name>`)
 - Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association. DHCP option IP addresses use `ip` (`ip-ordered`, 17.15+) and `ip_legacy` (`ip-new`, pre-17.15) attributes to handle the YANG deprecation of `ip-new` in favor of `ip-ordered`
 - Add `iosxe_key_chain` resource and data source for key chain management (`key chain`), including keys with cryptographic algorithms (hmac-sha-256, hmac-sha-512, md5, etc.), key strings, accept/send lifetimes, and support for TCP AO and MACsec key chain modes
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
