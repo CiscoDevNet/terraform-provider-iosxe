@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &CryptoIKEv2ProfileDataSource{}
-	_ datasource.DataSourceWithConfigure = &CryptoIKEv2ProfileDataSource{}
+	_ datasource.DataSource              = &DHCPPoolDataSource{}
+	_ datasource.DataSourceWithConfigure = &DHCPPoolDataSource{}
 )
 
-func NewCryptoIKEv2ProfileDataSource() datasource.DataSource {
-	return &CryptoIKEv2ProfileDataSource{}
+func NewDHCPPoolDataSource() datasource.DataSource {
+	return &DHCPPoolDataSource{}
 }
 
-type CryptoIKEv2ProfileDataSource struct {
+type DHCPPoolDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *CryptoIKEv2ProfileDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_crypto_ikev2_profile"
+func (d *DHCPPoolDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_dhcp_pool"
 }
 
-func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *DHCPPoolDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Crypto IKEv2 Profile configuration.",
+		MarkdownDescription: "This data source can read the DHCP Pool configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -72,117 +72,144 @@ func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasourc
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"description": schema.StringAttribute{
-				MarkdownDescription: "Specify a description of this profile",
+			"vrf": schema.StringAttribute{
+				MarkdownDescription: "Associate this pool with a VRF",
 				Computed:            true,
 			},
-			"authentication_remote_pre_share": schema.BoolAttribute{
-				MarkdownDescription: "Pre-Shared Key",
+			"domain_name": schema.StringAttribute{
+				MarkdownDescription: "Domain name",
 				Computed:            true,
 			},
-			"authentication_local_pre_share": schema.BoolAttribute{
-				MarkdownDescription: "Pre-Shared Key",
+			"bootfile": schema.StringAttribute{
+				MarkdownDescription: "Boot file name",
 				Computed:            true,
 			},
-			"identity_local_address": schema.StringAttribute{
-				MarkdownDescription: "address",
+			"client_name": schema.StringAttribute{
+				MarkdownDescription: "Client name",
 				Computed:            true,
 			},
-			"identity_local_key_id": schema.StringAttribute{
-				MarkdownDescription: "key-id opaque string - proprietary types of identification key-id string",
+			"network_number": schema.StringAttribute{
+				MarkdownDescription: "Network number",
 				Computed:            true,
 			},
-			"match_inbound_only": schema.BoolAttribute{
-				MarkdownDescription: "Match the profile for incoming connections only",
+			"network_mask": schema.StringAttribute{
+				MarkdownDescription: "Network mask",
 				Computed:            true,
 			},
-			"match_address_local_ip": schema.StringAttribute{
-				MarkdownDescription: "",
-				Computed:            true,
-			},
-			"match_fvrf": schema.StringAttribute{
-				MarkdownDescription: "",
-				Computed:            true,
-			},
-			"match_fvrf_any": schema.BoolAttribute{
-				MarkdownDescription: "Any fvrf",
-				Computed:            true,
-			},
-			"match_identity_remote_ipv4_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: "",
+			"secondary_networks": schema.ListNestedAttribute{
+				MarkdownDescription: "Secondary number and mask",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: "",
+						"number": schema.StringAttribute{
+							MarkdownDescription: "Network number",
 							Computed:            true,
 						},
 						"mask": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Network mask",
+							Computed:            true,
+						},
+						"secondary": schema.BoolAttribute{
+							MarkdownDescription: "Configure as secondary subnet",
 							Computed:            true,
 						},
 					},
 				},
 			},
-			"match_identity_remote_ipv6_prefixes": schema.ListAttribute{
-				MarkdownDescription: "",
+			"host_number": schema.StringAttribute{
+				MarkdownDescription: "Client IP address",
+				Computed:            true,
+			},
+			"host_mask": schema.StringAttribute{
+				MarkdownDescription: "Network mask",
+				Computed:            true,
+			},
+			"default_routers": schema.ListAttribute{
+				MarkdownDescription: "Default routers",
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
-			"match_identity_remote_keys": schema.ListAttribute{
-				MarkdownDescription: "key-id opaque string",
+			"dns_servers": schema.ListAttribute{
+				MarkdownDescription: "DNS servers",
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
-			"keyring_local": schema.StringAttribute{
-				MarkdownDescription: "Keyring name",
+			"next_servers": schema.ListAttribute{
+				MarkdownDescription: "Next server IP addresses",
+				ElementType:         types.StringType,
 				Computed:            true,
 			},
-			"ivrf": schema.StringAttribute{
-				MarkdownDescription: "I-VRF of the profile",
+			"lease_days": schema.Int64Attribute{
+				MarkdownDescription: "Lease days",
 				Computed:            true,
 			},
-			"dpd_interval": schema.Int64Attribute{
-				MarkdownDescription: "",
+			"lease_hours": schema.Int64Attribute{
+				MarkdownDescription: "Lease hours",
 				Computed:            true,
 			},
-			"dpd_retry": schema.Int64Attribute{
-				MarkdownDescription: "",
+			"lease_minutes": schema.Int64Attribute{
+				MarkdownDescription: "Lease minutes",
 				Computed:            true,
 			},
-			"dpd_query": schema.StringAttribute{
-				MarkdownDescription: "",
+			"lease_infinite": schema.BoolAttribute{
+				MarkdownDescription: "Infinite lease",
 				Computed:            true,
 			},
-			"lifetime": schema.Int64Attribute{
-				MarkdownDescription: "IKEv2 SA lifetime in seconds",
+			"utilization_mark_high": schema.Int64Attribute{
+				MarkdownDescription: "High utilization mark percentage",
 				Computed:            true,
 			},
-			"match_address_local_interface_loopback_legacy": schema.Int64Attribute{
-				MarkdownDescription: "Loopback interface. Use this for IOS-XE versions before `17.18.1`.",
+			"utilization_mark_high_log": schema.BoolAttribute{
+				MarkdownDescription: "Log when high utilization is detected",
 				Computed:            true,
 			},
-			"match_address_local_interface_loopback": schema.ListNestedAttribute{
+			"utilization_mark_low": schema.Int64Attribute{
+				MarkdownDescription: "Low utilization mark percentage",
+				Computed:            true,
+			},
+			"utilization_mark_low_log": schema.BoolAttribute{
+				MarkdownDescription: "Log when low utilization is detected",
+				Computed:            true,
+			},
+			"subnet_prefix_length": schema.Int64Attribute{
+				MarkdownDescription: "Subnet prefix length",
+				Computed:            true,
+			},
+			"options": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"loopback_number": schema.Int64Attribute{
-							MarkdownDescription: "",
+						"option_code": schema.Int64Attribute{
+							MarkdownDescription: "DHCP option code",
+							Computed:            true,
+						},
+						"ascii": schema.StringAttribute{
+							MarkdownDescription: "Data is an NVT ASCII string",
+							Computed:            true,
+						},
+						"hex": schema.StringAttribute{
+							MarkdownDescription: "Data is a hexadecimal string",
+							Computed:            true,
+						},
+						"ip": schema.ListAttribute{
+							MarkdownDescription: "Data is one or more IP addresses. Use this for versions `17.15` and later.",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"ip_legacy": schema.ListAttribute{
+							MarkdownDescription: "Data is one or more IP addresses. Use this for versions before `17.15`.",
+							ElementType:         types.StringType,
 							Computed:            true,
 						},
 					},
 				},
-			},
-			"config_exchange_request": schema.BoolAttribute{
-				MarkdownDescription: "enable config-exchange request",
-				Computed:            true,
 			},
 		},
 	}
 }
 
-func (d *CryptoIKEv2ProfileDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *DHCPPoolDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -194,8 +221,8 @@ func (d *CryptoIKEv2ProfileDataSource) Configure(_ context.Context, req datasour
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *CryptoIKEv2ProfileDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config CryptoIKEv2ProfileData
+func (d *DHCPPoolDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config DHCPPoolData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -215,7 +242,7 @@ func (d *CryptoIKEv2ProfileDataSource) Read(ctx context.Context, req datasource.
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = CryptoIKEv2ProfileData{Device: config.Device}
+			config = DHCPPoolData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

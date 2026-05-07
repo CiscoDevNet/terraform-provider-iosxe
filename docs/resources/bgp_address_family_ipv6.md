@@ -14,10 +14,14 @@ This resource can manage the BGP Address Family IPv6 configuration.
 
 ```terraform
 resource "iosxe_bgp_address_family_ipv6" "example" {
-  asn                                 = "65000"
-  af_name                             = "unicast"
-  ipv6_unicast_redistribute_connected = true
-  ipv6_unicast_redistribute_static    = true
+  asn                                           = "65000"
+  af_name                                       = "unicast"
+  ipv6_unicast_redistribute_connected           = true
+  ipv6_unicast_redistribute_connected_route_map = "RM_BGP6_CONNECTED"
+  ipv6_unicast_redistribute_connected_metric    = 100
+  ipv6_unicast_redistribute_static              = true
+  ipv6_unicast_redistribute_static_route_map    = "RM_BGP6_STATIC"
+  ipv6_unicast_redistribute_static_metric       = 200
   ipv6_unicast_networks = [
     {
       network   = "2001:1234::/64"
@@ -43,7 +47,13 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
 - `device` (String) A device name from the provider configuration.
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
+- `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`4294967295`
+- `ipv6_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv6_unicast_redistribute_static` (Boolean) Static routes
+- `ipv6_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`4294967295`
+- `ipv6_unicast_redistribute_static_route_map` (String) Route map reference
 
 ### Read-Only
 

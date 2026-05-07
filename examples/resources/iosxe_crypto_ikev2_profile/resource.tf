@@ -18,5 +18,6 @@ resource "iosxe_crypto_ikev2_profile" "example" {
   dpd_interval               = 10
   dpd_retry                  = 2
   dpd_query                  = "periodic"
+  lifetime                   = 28800
   config_exchange_request    = false
 }
