@@ -22,6 +22,7 @@ attributes:
     xpath: set/security-association/lifetime/seconds-case
     tf_name: set_security_association_lifetime_seconds
     example: 3600
+    test_tags: [IOSXE1715]
   - yang_name: set/security-association/lifetime/seconds
     xpath: set/security-association/lifetime/seconds
     tf_name: set_security_association_lifetime_seconds_legacy

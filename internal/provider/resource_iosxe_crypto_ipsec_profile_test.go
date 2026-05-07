@@ -39,7 +39,9 @@ func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_transform_set.0", "TS1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_ikev2_profile", "vpn300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_pfs_group", "group20"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_security_association_lifetime_seconds", "3600"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_security_association_lifetime_seconds", "3600"))
+	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_security_association_lifetime_seconds_legacy", "3600"))
 	}
@@ -124,7 +126,9 @@ func testAccIosxeCryptoIPSecProfileConfig_all() string {
 	config += `	set_transform_set = ["TS1"]` + "\n"
 	config += `	set_ikev2_profile = "vpn300"` + "\n"
 	config += `	set_pfs_group = "group20"` + "\n"
-	config += `	set_security_association_lifetime_seconds = 3600` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	set_security_association_lifetime_seconds = 3600` + "\n"
+	}
 	if os.Getenv("IOSXE1712") != "" {
 		config += `	set_security_association_lifetime_seconds_legacy = 3600` + "\n"
 	}
