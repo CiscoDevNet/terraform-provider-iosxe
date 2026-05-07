@@ -33,7 +33,11 @@ import (
 func TestAccDataSourceIosxeBGPAddressFamilyIPv4(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_redistribute_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_redistribute_connected_route_map", "RM_BGP_CONNECTED"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_redistribute_connected_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_redistribute_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_redistribute_static_route_map", "RM_BGP_STATIC"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_redistribute_static_metric", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_aggregate_addresses.0.ipv4_address", "10.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_aggregate_addresses.0.ipv4_mask", "255.255.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks_mask.0.network", "12.0.0.0"))
@@ -86,7 +90,11 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4Config() string {
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
 	config += `	ipv4_unicast_redistribute_connected = true` + "\n"
+	config += `	ipv4_unicast_redistribute_connected_route_map = "RM_BGP_CONNECTED"` + "\n"
+	config += `	ipv4_unicast_redistribute_connected_metric = 100` + "\n"
 	config += `	ipv4_unicast_redistribute_static = true` + "\n"
+	config += `	ipv4_unicast_redistribute_static_route_map = "RM_BGP_STATIC"` + "\n"
+	config += `	ipv4_unicast_redistribute_static_metric = 200` + "\n"
 	config += `	ipv4_unicast_aggregate_addresses = [{` + "\n"
 	config += `		ipv4_address = "10.0.0.0"` + "\n"
 	config += `		ipv4_mask = "255.255.0.0"` + "\n"

@@ -18,10 +18,12 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
   af_name = "unicast"
   vrfs = [
     {
-      name                                = "VRF1"
-      ipv4_unicast_advertise_l2vpn_evpn   = true
-      ipv4_unicast_redistribute_connected = true
-      ipv4_unicast_router_id_loopback     = 101
+      name                                          = "VRF1"
+      ipv4_unicast_advertise_l2vpn_evpn             = true
+      ipv4_unicast_redistribute_connected           = true
+      ipv4_unicast_redistribute_connected_route_map = "RM_BGP_CONNECTED"
+      ipv4_unicast_redistribute_connected_metric    = 100
+      ipv4_unicast_router_id_loopback               = 101
       ipv4_unicast_aggregate_addresses = [
         {
           ipv4_address = "50.0.0.0"
@@ -29,7 +31,9 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
           summary_only = true
         }
       ]
-      ipv4_unicast_redistribute_static = true
+      ipv4_unicast_redistribute_static           = true
+      ipv4_unicast_redistribute_static_route_map = "RM_BGP_STATIC"
+      ipv4_unicast_redistribute_static_metric    = 200
       ipv4_unicast_networks_mask = [
         {
           network   = "12.0.0.0"
@@ -104,7 +108,13 @@ Optional:
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
+- `ipv4_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`4294967295`
+- `ipv4_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+- `ipv4_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`4294967295`
+- `ipv4_unicast_redistribute_static_route_map` (String) Route map reference
 - `ipv4_unicast_router_id_ip` (String) Manually configured router identifier
 - `ipv4_unicast_router_id_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`

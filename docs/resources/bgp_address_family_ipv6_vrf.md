@@ -18,10 +18,14 @@ resource "iosxe_bgp_address_family_ipv6_vrf" "example" {
   af_name = "unicast"
   vrfs = [
     {
-      name                                = "VRF1"
-      ipv6_unicast_advertise_l2vpn_evpn   = true
-      ipv6_unicast_redistribute_connected = true
-      ipv6_unicast_redistribute_static    = true
+      name                                          = "VRF1"
+      ipv6_unicast_advertise_l2vpn_evpn             = true
+      ipv6_unicast_redistribute_connected           = true
+      ipv6_unicast_redistribute_connected_route_map = "RM_BGP6_CONNECTED"
+      ipv6_unicast_redistribute_connected_metric    = 100
+      ipv6_unicast_redistribute_static              = true
+      ipv6_unicast_redistribute_static_route_map    = "RM_BGP6_STATIC"
+      ipv6_unicast_redistribute_static_metric       = 200
       ipv6_unicast_networks = [
         {
           network   = "2001:1234::/64"
@@ -66,7 +70,13 @@ Optional:
 - `ipv6_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
+- `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`4294967295`
+- `ipv6_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv6_unicast_redistribute_static` (Boolean) Static routes
+- `ipv6_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`4294967295`
+- `ipv6_unicast_redistribute_static_route_map` (String) Route map reference
 
 <a id="nestedatt--vrfs--ipv6_unicast_networks"></a>
 ### Nested Schema for `vrfs.ipv6_unicast_networks`
