@@ -9,7 +9,7 @@ description: |-
 
 ## Unreleased
 
-- Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association
+- Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association. DHCP option IP addresses use `ip` (`ip-ordered`, 17.15+) and `ip_legacy` (`ip-new`, pre-17.15) attributes to handle the YANG deprecation of `ip-new` in favor of `ip-ordered`
 - Add `iosxe_key_chain` resource and data source for key chain management (`key chain`), including keys with cryptographic algorithms (hmac-sha-256, hmac-sha-512, md5, etc.), key strings, accept/send lifetimes, and support for TCP AO and MACsec key chain modes
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
 - Add `authentication_key_chain`, `authentication_message_digest`, and `authentication_null` attributes to `iosxe_interface_ospf` resource and data source for OSPF interface authentication mode selection (key-chain, message-digest, or null)

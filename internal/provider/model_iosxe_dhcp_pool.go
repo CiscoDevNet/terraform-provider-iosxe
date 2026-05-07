@@ -79,6 +79,7 @@ type DHCPPoolOptions struct {
 	Ascii      types.String `tfsdk:"ascii"`
 	Hex        types.String `tfsdk:"hex"`
 	Ip         types.List   `tfsdk:"ip"`
+	IpLegacy   types.List   `tfsdk:"ip_legacy"`
 }
 
 type DHCPPoolData struct {
@@ -118,6 +119,7 @@ type DHCPPoolOptionsData struct {
 	Ascii      types.String `tfsdk:"ascii"`
 	Hex        types.String `tfsdk:"hex"`
 	Ip         types.List   `tfsdk:"ip"`
+	IpLegacy   types.List   `tfsdk:"ip_legacy"`
 }
 
 // End of section. //template:end types
@@ -268,6 +270,11 @@ func (data DHCPPool) toBody(ctx context.Context, config DHCPPool) string {
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				var values []string
 				item.Ip.ElementsAs(ctx, &values, false)
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"option.option-range"+"."+strconv.Itoa(index)+"."+"ip-ordered", values)
+			}
+			if !item.IpLegacy.IsNull() && !item.IpLegacy.IsUnknown() {
+				var values []string
+				item.IpLegacy.ElementsAs(ctx, &values, false)
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"option.option-range"+"."+strconv.Itoa(index)+"."+"ip-new", values)
 			}
 		}
@@ -402,6 +409,13 @@ func (data DHCPPool) toBodyXML(ctx context.Context, config DHCPPool) string {
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				var values []string
 				item.Ip.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "ip-ordered", v)
+				}
+			}
+			if !item.IpLegacy.IsNull() && !item.IpLegacy.IsUnknown() {
+				var values []string
+				item.IpLegacy.ElementsAs(ctx, &values, false)
 				for _, v := range values {
 					cBody = helpers.AppendFromXPath(cBody, "ip-new", v)
 				}
@@ -623,10 +637,15 @@ func (data *DHCPPool) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Options[i].Hex = types.StringNull()
 		}
-		if value := r.Get("ip-new"); value.Exists() && !data.Options[i].Ip.IsNull() {
+		if value := r.Get("ip-ordered"); value.Exists() && !data.Options[i].Ip.IsNull() {
 			data.Options[i].Ip = helpers.GetStringList(value.Array())
 		} else {
 			data.Options[i].Ip = types.ListNull(types.StringType)
+		}
+		if value := r.Get("ip-new"); value.Exists() && !data.Options[i].IpLegacy.IsNull() {
+			data.Options[i].IpLegacy = helpers.GetStringList(value.Array())
+		} else {
+			data.Options[i].IpLegacy = types.ListNull(types.StringType)
 		}
 	}
 }
@@ -834,10 +853,15 @@ func (data *DHCPPool) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Options[i].Hex = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "ip-new"); value.Exists() && !data.Options[i].Ip.IsNull() {
+		if value := helpers.GetFromXPath(r, "ip-ordered"); value.Exists() && !data.Options[i].Ip.IsNull() {
 			data.Options[i].Ip = helpers.GetStringListXML(value.Array())
 		} else {
 			data.Options[i].Ip = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "ip-new"); value.Exists() && !data.Options[i].IpLegacy.IsNull() {
+			data.Options[i].IpLegacy = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Options[i].IpLegacy = types.ListNull(types.StringType)
 		}
 	}
 }
@@ -955,10 +979,15 @@ func (data *DHCPPool) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("hex-new.hex-line"); cValue.Exists() {
 				item.Hex = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get("ip-new"); cValue.Exists() {
+			if cValue := v.Get("ip-ordered"); cValue.Exists() {
 				item.Ip = helpers.GetStringList(cValue.Array())
 			} else {
 				item.Ip = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("ip-new"); cValue.Exists() {
+				item.IpLegacy = helpers.GetStringList(cValue.Array())
+			} else {
+				item.IpLegacy = types.ListNull(types.StringType)
 			}
 			data.Options = append(data.Options, item)
 			return true
@@ -1079,10 +1108,15 @@ func (data *DHCPPoolData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("hex-new.hex-line"); cValue.Exists() {
 				item.Hex = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get("ip-new"); cValue.Exists() {
+			if cValue := v.Get("ip-ordered"); cValue.Exists() {
 				item.Ip = helpers.GetStringList(cValue.Array())
 			} else {
 				item.Ip = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("ip-new"); cValue.Exists() {
+				item.IpLegacy = helpers.GetStringList(cValue.Array())
+			} else {
+				item.IpLegacy = types.ListNull(types.StringType)
 			}
 			data.Options = append(data.Options, item)
 			return true
@@ -1199,10 +1233,15 @@ func (data *DHCPPool) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "hex-new/hex-line"); cValue.Exists() {
 				item.Hex = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "ip-new"); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "ip-ordered"); cValue.Exists() {
 				item.Ip = helpers.GetStringListXML(cValue.Array())
 			} else {
 				item.Ip = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "ip-new"); cValue.Exists() {
+				item.IpLegacy = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.IpLegacy = types.ListNull(types.StringType)
 			}
 			data.Options = append(data.Options, item)
 			return true
@@ -1319,10 +1358,15 @@ func (data *DHCPPoolData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "hex-new/hex-line"); cValue.Exists() {
 				item.Hex = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "ip-new"); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "ip-ordered"); cValue.Exists() {
 				item.Ip = helpers.GetStringListXML(cValue.Array())
 			} else {
 				item.Ip = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "ip-new"); cValue.Exists() {
+				item.IpLegacy = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.IpLegacy = types.ListNull(types.StringType)
 			}
 			data.Options = append(data.Options, item)
 			return true
@@ -1354,9 +1398,30 @@ func (data *DHCPPool) getDeletedItems(ctx context.Context, state DHCPPool) []str
 				found = false
 			}
 			if found {
+				if !state.Options[i].IpLegacy.IsNull() {
+					if data.Options[j].IpLegacy.IsNull() {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-new", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					} else {
+						var dataValues, stateValues []string
+						data.Options[i].IpLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Options[j].IpLegacy.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+							}
+						}
+					}
+				}
 				if !state.Options[i].Ip.IsNull() {
 					if data.Options[j].Ip.IsNull() {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-new", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-ordered", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
 						data.Options[i].Ip.ElementsAs(ctx, &dataValues, false)
@@ -1370,7 +1435,7 @@ func (data *DHCPPool) getDeletedItems(ctx context.Context, state DHCPPool) []str
 								}
 							}
 							if !found {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-ordered=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
 							}
 						}
 					}
@@ -1566,12 +1631,37 @@ func (data *DHCPPool) addDeletedItemsXML(ctx context.Context, state DHCPPool, bo
 				found = false
 			}
 			if found {
+				if !state.Options[i].IpLegacy.IsNull() {
+					if data.Options[j].IpLegacy.IsNull() {
+						var values []string
+						state.Options[i].IpLegacy.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/option/option-range%v/ip-new[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Options[i].IpLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Options[j].IpLegacy.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/option/option-range%v/ip-new[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
 				if !state.Options[i].Ip.IsNull() {
 					if data.Options[j].Ip.IsNull() {
 						var values []string
 						state.Options[i].Ip.ElementsAs(ctx, &values, false)
 						for _, v := range values {
-							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/option/option-range%v/ip-new[.=%v]", predicates, v))
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/option/option-range%v/ip-ordered[.=%v]", predicates, v))
 						}
 					} else {
 						var dataValues, stateValues []string
@@ -1586,7 +1676,7 @@ func (data *DHCPPool) addDeletedItemsXML(ctx context.Context, state DHCPPool, bo
 								}
 							}
 							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/option/option-range%v/ip-new[.=%v]", predicates, v))
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/option/option-range%v/ip-ordered[.=%v]", predicates, v))
 							}
 						}
 					}
