@@ -53,7 +53,11 @@ Read-Only:
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
+- `ipv4_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
+- `ipv4_unicast_redistribute_connected_route_map` (String) Route map reference
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+- `ipv4_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
+- `ipv4_unicast_redistribute_static_route_map` (String) Route map reference
 - `ipv4_unicast_router_id_ip` (String) Manually configured router identifier
 - `ipv4_unicast_router_id_loopback` (Number) Loopback interface
 - `name` (String)

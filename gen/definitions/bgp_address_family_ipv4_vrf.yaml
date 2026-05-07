@@ -22,6 +22,12 @@ attributes:
       - yang_name: ipv4-unicast/redistribute-vrf/connected
         tf_name: ipv4_unicast_redistribute_connected
         example: true
+      - yang_name: ipv4-unicast/redistribute-vrf/connected/route-map
+        tf_name: ipv4_unicast_redistribute_connected_route_map
+        example: RM_BGP_CONNECTED
+      - yang_name: ipv4-unicast/redistribute-vrf/connected/metric
+        tf_name: ipv4_unicast_redistribute_connected_metric
+        example: 100
       - yang_name: ipv4-unicast/bgp/router-id/id-choice/interface/interface/interface-choice/Loopback/Loopback
         xpath: ipv4-unicast/bgp/router-id/interface/Loopback
         tf_name: ipv4_unicast_router_id_loopback
@@ -46,6 +52,14 @@ attributes:
       - yang_name: ipv4-unicast/redistribute-vrf/static
         tf_name: ipv4_unicast_redistribute_static
         example: true
+      - yang_name: ipv4-unicast/redistribute-vrf/static/static-choice/default/default/route-map
+        tf_name: ipv4_unicast_redistribute_static_route_map
+        xpath: ipv4-unicast/redistribute-vrf/static/default/route-map
+        example: RM_BGP_STATIC
+      - yang_name: ipv4-unicast/redistribute-vrf/static/static-choice/default/default/metric
+        tf_name: ipv4_unicast_redistribute_static_metric
+        xpath: ipv4-unicast/redistribute-vrf/static/default/metric
+        example: 200
       - yang_name: ipv4-unicast/network/with-mask
         tf_name: ipv4_unicast_networks_mask
         type: List

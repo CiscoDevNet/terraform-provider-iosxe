@@ -171,11 +171,11 @@ func (d *PolicyMapEventDataSource) Schema(ctx context.Context, req datasource.Sc
 										Computed:            true,
 									},
 									"authenticate_using_aaa_authc_list": schema.StringAttribute{
-										MarkdownDescription: "Specify authentication method list",
+										MarkdownDescription: "Deprecated. Specify authentication method list",
 										Computed:            true,
 									},
 									"authenticate_using_aaa_authz_list": schema.StringAttribute{
-										MarkdownDescription: "Specify authorization method list",
+										MarkdownDescription: "Deprecated. Specify authorization method list",
 										Computed:            true,
 									},
 									"authenticate_using_both": schema.BoolAttribute{

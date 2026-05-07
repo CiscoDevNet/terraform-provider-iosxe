@@ -128,6 +128,18 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 					int64validator.Between(1, 65535),
 				},
 			},
+			"authentication_key_chain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"authentication_message_digest": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").String,
+				Optional:            true,
+			},
+			"authentication_null": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use no authentication").String,
+				Optional:            true,
+			},
 			"mtu_ignore": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Ignores the MTU in DBD packets").String,
 				Optional:            true,

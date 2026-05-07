@@ -50,6 +50,9 @@ type InterfaceOSPF struct {
 	Cost                         types.Int64                      `tfsdk:"cost"`
 	DeadInterval                 types.Int64                      `tfsdk:"dead_interval"`
 	HelloInterval                types.Int64                      `tfsdk:"hello_interval"`
+	AuthenticationKeyChain       types.String                     `tfsdk:"authentication_key_chain"`
+	AuthenticationMessageDigest  types.Bool                       `tfsdk:"authentication_message_digest"`
+	AuthenticationNull           types.Bool                       `tfsdk:"authentication_null"`
 	MtuIgnore                    types.Bool                       `tfsdk:"mtu_ignore"`
 	NetworkTypeBroadcast         types.Bool                       `tfsdk:"network_type_broadcast"`
 	NetworkTypeNonBroadcast      types.Bool                       `tfsdk:"network_type_non_broadcast"`
@@ -87,6 +90,9 @@ type InterfaceOSPFData struct {
 	Cost                         types.Int64                          `tfsdk:"cost"`
 	DeadInterval                 types.Int64                          `tfsdk:"dead_interval"`
 	HelloInterval                types.Int64                          `tfsdk:"hello_interval"`
+	AuthenticationKeyChain       types.String                         `tfsdk:"authentication_key_chain"`
+	AuthenticationMessageDigest  types.Bool                           `tfsdk:"authentication_message_digest"`
+	AuthenticationNull           types.Bool                           `tfsdk:"authentication_null"`
 	MtuIgnore                    types.Bool                           `tfsdk:"mtu_ignore"`
 	NetworkTypeBroadcast         types.Bool                           `tfsdk:"network_type_broadcast"`
 	NetworkTypeNonBroadcast      types.Bool                           `tfsdk:"network_type_non_broadcast"`
@@ -164,6 +170,19 @@ func (data InterfaceOSPF) toBody(ctx context.Context, config InterfaceOSPF) stri
 	}
 	if !data.HelloInterval.IsNull() && !data.HelloInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hello-interval", strconv.FormatInt(data.HelloInterval.ValueInt64(), 10))
+	}
+	if !data.AuthenticationKeyChain.IsNull() && !data.AuthenticationKeyChain.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.key-chain", data.AuthenticationKeyChain.ValueString())
+	}
+	if !data.AuthenticationMessageDigest.IsNull() && !data.AuthenticationMessageDigest.IsUnknown() {
+		if data.AuthenticationMessageDigest.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.message-digest", map[string]string{})
+		}
+	}
+	if !data.AuthenticationNull.IsNull() && !data.AuthenticationNull.IsUnknown() {
+		if data.AuthenticationNull.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.null", map[string]string{})
+		}
 	}
 	if !data.MtuIgnore.IsNull() && !data.MtuIgnore.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mtu-ignore", data.MtuIgnore.ValueBool())
@@ -261,6 +280,23 @@ func (data InterfaceOSPF) toBodyXML(ctx context.Context, config InterfaceOSPF) s
 	}
 	if !data.HelloInterval.IsNull() && !data.HelloInterval.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/hello-interval", strconv.FormatInt(data.HelloInterval.ValueInt64(), 10))
+	}
+	if !data.AuthenticationKeyChain.IsNull() && !data.AuthenticationKeyChain.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/key-chain", data.AuthenticationKeyChain.ValueString())
+	}
+	if !data.AuthenticationMessageDigest.IsNull() && !data.AuthenticationMessageDigest.IsUnknown() {
+		if data.AuthenticationMessageDigest.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/message-digest", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/message-digest")
+		}
+	}
+	if !data.AuthenticationNull.IsNull() && !data.AuthenticationNull.IsUnknown() {
+		if data.AuthenticationNull.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/authentication/null", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/authentication/null")
+		}
 	}
 	if !data.MtuIgnore.IsNull() && !data.MtuIgnore.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/mtu-ignore", data.MtuIgnore.ValueBool())
@@ -383,6 +419,29 @@ func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result)
 		data.HelloInterval = types.Int64Value(value.Int())
 	} else {
 		data.HelloInterval = types.Int64Null()
+	}
+	if value := res.Get(prefix + "authentication.key-chain"); value.Exists() && !data.AuthenticationKeyChain.IsNull() {
+		data.AuthenticationKeyChain = types.StringValue(value.String())
+	} else {
+		data.AuthenticationKeyChain = types.StringNull()
+	}
+	if value := res.Get(prefix + "authentication.message-digest"); !data.AuthenticationMessageDigest.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMessageDigest = types.BoolValue(true)
+		} else {
+			data.AuthenticationMessageDigest = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMessageDigest = types.BoolNull()
+	}
+	if value := res.Get(prefix + "authentication.null"); !data.AuthenticationNull.IsNull() {
+		if value.Exists() {
+			data.AuthenticationNull = types.BoolValue(true)
+		} else {
+			data.AuthenticationNull = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationNull = types.BoolNull()
 	}
 	if value := res.Get(prefix + "mtu-ignore"); !data.MtuIgnore.IsNull() {
 		if value.Exists() {
@@ -575,6 +634,29 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.HelloInterval = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/key-chain"); value.Exists() && !data.AuthenticationKeyChain.IsNull() {
+		data.AuthenticationKeyChain = types.StringValue(value.String())
+	} else {
+		data.AuthenticationKeyChain = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/message-digest"); !data.AuthenticationMessageDigest.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMessageDigest = types.BoolValue(true)
+		} else {
+			data.AuthenticationMessageDigest = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMessageDigest = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/null"); !data.AuthenticationNull.IsNull() {
+		if value.Exists() {
+			data.AuthenticationNull = types.BoolValue(true)
+		} else {
+			data.AuthenticationNull = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationNull = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu-ignore"); !data.MtuIgnore.IsNull() {
 		if value.Exists() {
 			data.MtuIgnore = types.BoolValue(value.Bool())
@@ -764,6 +846,19 @@ func (data *InterfaceOSPF) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "hello-interval"); value.Exists() {
 		data.HelloInterval = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "authentication.key-chain"); value.Exists() {
+		data.AuthenticationKeyChain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "authentication.message-digest"); value.Exists() {
+		data.AuthenticationMessageDigest = types.BoolValue(true)
+	} else {
+		data.AuthenticationMessageDigest = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "authentication.null"); value.Exists() {
+		data.AuthenticationNull = types.BoolValue(true)
+	} else {
+		data.AuthenticationNull = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
 	} else {
@@ -865,6 +960,19 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "hello-interval"); value.Exists() {
 		data.HelloInterval = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "authentication.key-chain"); value.Exists() {
+		data.AuthenticationKeyChain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "authentication.message-digest"); value.Exists() {
+		data.AuthenticationMessageDigest = types.BoolValue(true)
+	} else {
+		data.AuthenticationMessageDigest = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "authentication.null"); value.Exists() {
+		data.AuthenticationNull = types.BoolValue(true)
+	} else {
+		data.AuthenticationNull = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
 	} else {
@@ -962,6 +1070,19 @@ func (data *InterfaceOSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hello-interval"); value.Exists() {
 		data.HelloInterval = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/key-chain"); value.Exists() {
+		data.AuthenticationKeyChain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/message-digest"); value.Exists() {
+		data.AuthenticationMessageDigest = types.BoolValue(true)
+	} else {
+		data.AuthenticationMessageDigest = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/null"); value.Exists() {
+		data.AuthenticationNull = types.BoolValue(true)
+	} else {
+		data.AuthenticationNull = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
 	} else {
@@ -1058,6 +1179,19 @@ func (data *InterfaceOSPFData) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hello-interval"); value.Exists() {
 		data.HelloInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/key-chain"); value.Exists() {
+		data.AuthenticationKeyChain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/message-digest"); value.Exists() {
+		data.AuthenticationMessageDigest = types.BoolValue(true)
+	} else {
+		data.AuthenticationMessageDigest = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/authentication/null"); value.Exists() {
+		data.AuthenticationNull = types.BoolValue(true)
+	} else {
+		data.AuthenticationNull = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
@@ -1272,6 +1406,15 @@ func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceO
 	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu-ignore", state.getPath()))
 	}
+	if !state.AuthenticationNull.IsNull() && data.AuthenticationNull.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/null", state.getPath()))
+	}
+	if !state.AuthenticationMessageDigest.IsNull() && data.AuthenticationMessageDigest.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/message-digest", state.getPath()))
+	}
+	if !state.AuthenticationKeyChain.IsNull() && data.AuthenticationKeyChain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/key-chain", state.getPath()))
+	}
 	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/hello-interval", state.getPath()))
 	}
@@ -1435,6 +1578,15 @@ func (data *InterfaceOSPF) addDeletedItemsXML(ctx context.Context, state Interfa
 	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu-ignore")
 	}
+	if !state.AuthenticationNull.IsNull() && data.AuthenticationNull.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/null")
+	}
+	if !state.AuthenticationMessageDigest.IsNull() && data.AuthenticationMessageDigest.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/message-digest")
+	}
+	if !state.AuthenticationKeyChain.IsNull() && data.AuthenticationKeyChain.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/authentication/key-chain")
+	}
 	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/hello-interval")
 	}
@@ -1467,6 +1619,12 @@ func (data *InterfaceOSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/broadcast", data.getPath()))
+	}
+	if !data.AuthenticationNull.IsNull() && !data.AuthenticationNull.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/authentication/null", data.getPath()))
+	}
+	if !data.AuthenticationMessageDigest.IsNull() && !data.AuthenticationMessageDigest.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/authentication/message-digest", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -1513,6 +1671,15 @@ func (data *InterfaceOSPF) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.MtuIgnore.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu-ignore", data.getPath()))
+	}
+	if !data.AuthenticationNull.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/null", data.getPath()))
+	}
+	if !data.AuthenticationMessageDigest.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/message-digest", data.getPath()))
+	}
+	if !data.AuthenticationKeyChain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/key-chain", data.getPath()))
 	}
 	if !data.HelloInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/hello-interval", data.getPath()))
@@ -1583,6 +1750,15 @@ func (data *InterfaceOSPF) addDeletePathsXML(ctx context.Context, body string) s
 	}
 	if !data.MtuIgnore.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mtu-ignore")
+	}
+	if !data.AuthenticationNull.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/null")
+	}
+	if !data.AuthenticationMessageDigest.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/message-digest")
+	}
+	if !data.AuthenticationKeyChain.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/authentication/key-chain")
 	}
 	if !data.HelloInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/hello-interval")

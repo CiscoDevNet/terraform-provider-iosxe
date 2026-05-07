@@ -2472,8 +2472,8 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/output/output", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Vty[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
-						state.Vty[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						data.Vty[j].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[i].TransportOutput.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -2511,8 +2511,8 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Vty[i].TransportInput.ElementsAs(ctx, &dataValues, false)
-						state.Vty[j].TransportInput.ElementsAs(ctx, &stateValues, false)
+						data.Vty[j].TransportInput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[i].TransportInput.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -2627,8 +2627,8 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/transport/output/output", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Console[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
-						state.Console[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						data.Console[j].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Console[i].TransportOutput.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -2803,8 +2803,8 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Vty[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
-						state.Vty[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						data.Vty[j].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[i].TransportOutput.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -2846,8 +2846,8 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Vty[i].TransportInput.ElementsAs(ctx, &dataValues, false)
-						state.Vty[j].TransportInput.ElementsAs(ctx, &stateValues, false)
+						data.Vty[j].TransportInput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[i].TransportInput.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -2976,8 +2976,8 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Console[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
-						state.Console[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						data.Console[j].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Console[i].TransportOutput.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
