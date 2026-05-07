@@ -78,6 +78,7 @@ Read-Only:
 - `queue_buffers_ratio` (Number) Relative buffer size for queue
 - `queue_limit` (Number)
 - `queue_limit_type` (String)
+- `service_policy` (String)
 - `set_dscp` (String)
 - `shape_average_bit_rate` (Number) Target Bit Rate (bits/sec)
 - `shape_average_bits_per_interval_excess` (Number) bits per interval, excess.
