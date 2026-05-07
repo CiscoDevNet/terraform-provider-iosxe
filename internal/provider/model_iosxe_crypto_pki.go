@@ -734,8 +734,8 @@ func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []s
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/revocation-check", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &dataValues, false)
-						state.Trustpoints[j].RevocationCheck.ElementsAs(ctx, &stateValues, false)
+						data.Trustpoints[j].RevocationCheck.ElementsAs(ctx, &dataValues, false)
+						state.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -826,8 +826,8 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &dataValues, false)
-						state.Trustpoints[j].RevocationCheck.ElementsAs(ctx, &stateValues, false)
+						data.Trustpoints[j].RevocationCheck.ElementsAs(ctx, &dataValues, false)
+						state.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {

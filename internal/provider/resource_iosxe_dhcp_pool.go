@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -47,26 +48,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &DeviceTrackingPolicyResource{}
-	_ resource.ResourceWithImportState = &DeviceTrackingPolicyResource{}
+	_ resource.Resource                = &DHCPPoolResource{}
+	_ resource.ResourceWithImportState = &DHCPPoolResource{}
 )
 
-func NewDeviceTrackingPolicyResource() resource.Resource {
-	return &DeviceTrackingPolicyResource{}
+func NewDHCPPoolResource() resource.Resource {
+	return &DHCPPoolResource{}
 }
 
-type DeviceTrackingPolicyResource struct {
+type DHCPPoolResource struct {
 	data *IosxeProviderData
 }
 
-func (r *DeviceTrackingPolicyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_device_tracking_policy"
+func (r *DHCPPoolResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_dhcp_pool"
 }
 
-func (r *DeviceTrackingPolicyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *DHCPPoolResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Device Tracking Policy configuration.",
+		MarkdownDescription: "This resource can manage the DHCP Pool configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -90,152 +91,196 @@ func (r *DeviceTrackingPolicyResource) Schema(ctx context.Context, req resource.
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 236),
+				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"trusted_port": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("setup trusted port").String,
+			"vrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Associate this pool with a VRF").String,
 				Optional:            true,
 			},
-			"device_role": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The role of the device attached to the port").AddStringEnumDescription("node", "router", "switch").String,
+			"domain_name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Domain name").String,
+				Optional:            true,
+			},
+			"bootfile": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Boot file name").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("node", "router", "switch"),
+					stringvalidator.LengthBetween(1, 127),
 				},
 			},
-			"device_role_node_legacy": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"client_name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Client name").String,
 				Optional:            true,
 			},
-			"device_role_switch_legacy": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"network_number": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Network number").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+				},
+			},
+			"network_mask": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
 				Optional:            true,
 			},
-			"device_role_router_legacy": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"secondary_networks": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secondary number and mask").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"number": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Network number").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
+							Optional:            true,
+						},
+						"secondary": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure as secondary subnet").AddDefaultValueDescription("true").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(true),
+						},
+					},
+				},
+			},
+			"host_number": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Client IP address").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+				},
+			},
+			"host_mask": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+				},
+			},
+			"default_routers": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Default routers").String,
+				ElementType:         types.StringType,
 				Optional:            true,
 			},
-			"data_glean_log_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("only generate a syslog upon data packet notification").String,
+			"dns_servers": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DNS servers").String,
+				ElementType:         types.StringType,
 				Optional:            true,
 			},
-			"data_glean_recovery_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("use DHCP as the recovery protocol").String,
+			"next_servers": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Next server IP addresses").String,
+				ElementType:         types.StringType,
 				Optional:            true,
 			},
-			"data_glean_recovery_ndp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("use NDP as the recovery protocol").String,
-				Optional:            true,
-			},
-			"prefix_glean": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Glean prefixes in RA and DHCP-PD traffic").String,
-				Optional:            true,
-			},
-			"prefix_glean_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Glean only prefixes i.e. do not glean host addresses").String,
-				Optional:            true,
-			},
-			"destination_glean_log_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"destination_glean_recovery_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("use DHCP as the recovery protocol").String,
-				Optional:            true,
-			},
-			"protocol_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in ARP packets").AddDefaultValueDescription("true").String,
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-			},
-			"protocol_arp_prefix_list": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
-				Optional:            true,
-			},
-			"protocol_dhcp4": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in DHCPv4 packets").AddDefaultValueDescription("true").String,
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-			},
-			"protocol_dhcp4_prefix_list": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
-				Optional:            true,
-			},
-			"protocol_dhcp6": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in DHCPv6 packets").AddDefaultValueDescription("true").String,
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-			},
-			"protocol_dhcp6_prefix_list": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
-				Optional:            true,
-			},
-			"protocol_ndp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in NDP packets").AddDefaultValueDescription("true").String,
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-			},
-			"protocol_ndp_prefix_list": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
-				Optional:            true,
-			},
-			"tracking_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"tracking_enable_reachable_lifetime_seconds": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Seconds").AddIntegerRangeDescription(1, 86400).String,
+			"lease_days": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Lease days").AddIntegerRangeDescription(0, 365).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 86400),
+					int64validator.Between(0, 365),
 				},
 			},
-			"tracking_enable_reachable_lifetime_infinite": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Keep in REACHABLE forever").String,
-				Optional:            true,
-			},
-			"tracking_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Tracking on or off").String,
-				Optional:            true,
-			},
-			"tracking_disable_stale_lifetime": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Default maximum time in STALE").String,
-				Optional:            true,
-			},
-			"limit_address_count": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure maximum address per port").AddIntegerRangeDescription(1, 32000).String,
+			"lease_hours": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Lease hours").AddIntegerRangeDescription(0, 23).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 32000),
+					int64validator.Between(0, 23),
 				},
 			},
-			"security_level_glean": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("glean addresses passively").String,
+			"lease_minutes": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Lease minutes").AddIntegerRangeDescription(0, 59).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 59),
+				},
+			},
+			"lease_infinite": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Infinite lease").String,
 				Optional:            true,
 			},
-			"security_level_guard": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inspect and drop un-authorized messages (default)").String,
+			"utilization_mark_high": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("High utilization mark percentage").AddIntegerRangeDescription(1, 100).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 100),
+				},
+			},
+			"utilization_mark_high_log": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Log when high utilization is detected").String,
 				Optional:            true,
 			},
-			"security_level_inspect": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("glean and Validate message").String,
+			"utilization_mark_low": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Low utilization mark percentage").AddIntegerRangeDescription(1, 100).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 100),
+				},
+			},
+			"utilization_mark_low_log": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Log when low utilization is detected").String,
 				Optional:            true,
 			},
-			"medium_type_wireless": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force medium type to wireless").String,
+			"subnet_prefix_length": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Subnet prefix length").AddIntegerRangeDescription(1, 32).String,
 				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 32),
+				},
+			},
+			"options": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"option_code": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("DHCP option code").AddIntegerRangeDescription(0, 254).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 254),
+							},
+						},
+						"ascii": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Data is an NVT ASCII string").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 225),
+							},
+						},
+						"hex": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Data is a hexadecimal string").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 180),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9a-fA-F]{4}\.*)*(([0-9a-fA-F]{2})|([0-9a-fA-F]{4})))`), ""),
+							},
+						},
+						"ip": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Data is one or more IP addresses. Use this for versions `17.15` and later.").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"ip_legacy": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Data is one or more IP addresses. Use this for versions before `17.15`.").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+					},
+				},
 			},
 		},
 	}
 }
 
-func (r *DeviceTrackingPolicyResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *DHCPPoolResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -247,8 +292,8 @@ func (r *DeviceTrackingPolicyResource) Configure(_ context.Context, req resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *DeviceTrackingPolicyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config DeviceTrackingPolicy
+func (r *DHCPPoolResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config DHCPPool
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -338,8 +383,8 @@ func (r *DeviceTrackingPolicyResource) Create(ctx context.Context, req resource.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *DeviceTrackingPolicyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state DeviceTrackingPolicy
+func (r *DHCPPoolResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state DHCPPool
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -365,7 +410,7 @@ func (r *DeviceTrackingPolicyResource) Read(ctx context.Context, req resource.Re
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = DeviceTrackingPolicy{Device: state.Device, Id: state.Id}
+				state = DHCPPool{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -421,8 +466,8 @@ func (r *DeviceTrackingPolicyResource) Read(ctx context.Context, req resource.Re
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *DeviceTrackingPolicyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config DeviceTrackingPolicy
+func (r *DHCPPoolResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config DHCPPool
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -529,8 +574,8 @@ func (r *DeviceTrackingPolicyResource) Update(ctx context.Context, req resource.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *DeviceTrackingPolicyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state DeviceTrackingPolicy
+func (r *DHCPPoolResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state DHCPPool
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -628,7 +673,7 @@ func (r *DeviceTrackingPolicyResource) Delete(ctx context.Context, req resource.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *DeviceTrackingPolicyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *DHCPPoolResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -647,7 +692,7 @@ func (r *DeviceTrackingPolicyResource) ImportState(ctx context.Context, req reso
 	}
 
 	// construct path for 'id' attribute
-	var state DeviceTrackingPolicy
+	var state DHCPPool
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

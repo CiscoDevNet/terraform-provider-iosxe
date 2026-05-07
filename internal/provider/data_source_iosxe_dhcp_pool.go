@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &InterfaceOSPFDataSource{}
-	_ datasource.DataSourceWithConfigure = &InterfaceOSPFDataSource{}
+	_ datasource.DataSource              = &DHCPPoolDataSource{}
+	_ datasource.DataSourceWithConfigure = &DHCPPoolDataSource{}
 )
 
-func NewInterfaceOSPFDataSource() datasource.DataSource {
-	return &InterfaceOSPFDataSource{}
+func NewDHCPPoolDataSource() datasource.DataSource {
+	return &DHCPPoolDataSource{}
 }
 
-type InterfaceOSPFDataSource struct {
+type DHCPPoolDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *InterfaceOSPFDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_ospf"
+func (d *DHCPPoolDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_dhcp_pool"
 }
 
-func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *DHCPPoolDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Interface OSPF configuration.",
+		MarkdownDescription: "This data source can read the DHCP Pool configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -68,118 +68,138 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: "Interface type",
-				Required:            true,
-			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"cost": schema.Int64Attribute{
-				MarkdownDescription: "Route cost of this interface",
+			"vrf": schema.StringAttribute{
+				MarkdownDescription: "Associate this pool with a VRF",
 				Computed:            true,
 			},
-			"dead_interval": schema.Int64Attribute{
-				MarkdownDescription: "Interval after which a neighbor is declared dead",
+			"domain_name": schema.StringAttribute{
+				MarkdownDescription: "Domain name",
 				Computed:            true,
 			},
-			"hello_interval": schema.Int64Attribute{
-				MarkdownDescription: "Time between HELLO packets",
+			"bootfile": schema.StringAttribute{
+				MarkdownDescription: "Boot file name",
 				Computed:            true,
 			},
-			"authentication_key_chain": schema.StringAttribute{
-				MarkdownDescription: "",
+			"client_name": schema.StringAttribute{
+				MarkdownDescription: "Client name",
 				Computed:            true,
 			},
-			"authentication_message_digest": schema.BoolAttribute{
-				MarkdownDescription: "Use message-digest authentication",
+			"network_number": schema.StringAttribute{
+				MarkdownDescription: "Network number",
 				Computed:            true,
 			},
-			"authentication_null": schema.BoolAttribute{
-				MarkdownDescription: "Use no authentication",
+			"network_mask": schema.StringAttribute{
+				MarkdownDescription: "Network mask",
 				Computed:            true,
 			},
-			"mtu_ignore": schema.BoolAttribute{
-				MarkdownDescription: "Ignores the MTU in DBD packets",
-				Computed:            true,
-			},
-			"network_type_broadcast": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF broadcast multi-access network",
-				Computed:            true,
-			},
-			"network_type_non_broadcast": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF NBMA network",
-				Computed:            true,
-			},
-			"network_type_point_to_multipoint": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF point-to-multipoint network",
-				Computed:            true,
-			},
-			"network_type_point_to_point": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF point-to-point network",
-				Computed:            true,
-			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: "Router priority",
-				Computed:            true,
-			},
-			"ttl_security_hops": schema.Int64Attribute{
-				MarkdownDescription: "IP hops",
-				Computed:            true,
-			},
-			"process_ids": schema.ListNestedAttribute{
-				MarkdownDescription: "",
+			"secondary_networks": schema.ListNestedAttribute{
+				MarkdownDescription: "Secondary number and mask",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: "Process ID",
+						"number": schema.StringAttribute{
+							MarkdownDescription: "Network number",
 							Computed:            true,
 						},
-						"areas": schema.ListNestedAttribute{
-							MarkdownDescription: "",
+						"mask": schema.StringAttribute{
+							MarkdownDescription: "Network mask",
 							Computed:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"area_id": schema.StringAttribute{
-										MarkdownDescription: "Set the OSPF area ID",
-										Computed:            true,
-									},
-								},
-							},
 						},
-					},
-				},
-			},
-			"multi_area_ids": schema.ListNestedAttribute{
-				MarkdownDescription: "Set the OSPF multi-area ID",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"area_id": schema.StringAttribute{
-							MarkdownDescription: "OSPF multi-area ID",
+						"secondary": schema.BoolAttribute{
+							MarkdownDescription: "Configure as secondary subnet",
 							Computed:            true,
 						},
 					},
 				},
 			},
-			"message_digest_keys": schema.ListNestedAttribute{
-				MarkdownDescription: "Message digest authentication password (key)",
+			"host_number": schema.StringAttribute{
+				MarkdownDescription: "Client IP address",
+				Computed:            true,
+			},
+			"host_mask": schema.StringAttribute{
+				MarkdownDescription: "Network mask",
+				Computed:            true,
+			},
+			"default_routers": schema.ListAttribute{
+				MarkdownDescription: "Default routers",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"dns_servers": schema.ListAttribute{
+				MarkdownDescription: "DNS servers",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"next_servers": schema.ListAttribute{
+				MarkdownDescription: "Next server IP addresses",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"lease_days": schema.Int64Attribute{
+				MarkdownDescription: "Lease days",
+				Computed:            true,
+			},
+			"lease_hours": schema.Int64Attribute{
+				MarkdownDescription: "Lease hours",
+				Computed:            true,
+			},
+			"lease_minutes": schema.Int64Attribute{
+				MarkdownDescription: "Lease minutes",
+				Computed:            true,
+			},
+			"lease_infinite": schema.BoolAttribute{
+				MarkdownDescription: "Infinite lease",
+				Computed:            true,
+			},
+			"utilization_mark_high": schema.Int64Attribute{
+				MarkdownDescription: "High utilization mark percentage",
+				Computed:            true,
+			},
+			"utilization_mark_high_log": schema.BoolAttribute{
+				MarkdownDescription: "Log when high utilization is detected",
+				Computed:            true,
+			},
+			"utilization_mark_low": schema.Int64Attribute{
+				MarkdownDescription: "Low utilization mark percentage",
+				Computed:            true,
+			},
+			"utilization_mark_low_log": schema.BoolAttribute{
+				MarkdownDescription: "Log when low utilization is detected",
+				Computed:            true,
+			},
+			"subnet_prefix_length": schema.Int64Attribute{
+				MarkdownDescription: "Subnet prefix length",
+				Computed:            true,
+			},
+			"options": schema.ListNestedAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: "Key ID",
+						"option_code": schema.Int64Attribute{
+							MarkdownDescription: "DHCP option code",
 							Computed:            true,
 						},
-						"md5_auth_key": schema.StringAttribute{
-							MarkdownDescription: "The OSPF password (key) (only the first 16 characters are used)",
+						"ascii": schema.StringAttribute{
+							MarkdownDescription: "Data is an NVT ASCII string",
 							Computed:            true,
-							Sensitive:           true,
 						},
-						"md5_auth_type": schema.Int64Attribute{
-							MarkdownDescription: "Encryption type (0 for not yet encrypted, 7 for proprietary)",
+						"hex": schema.StringAttribute{
+							MarkdownDescription: "Data is a hexadecimal string",
+							Computed:            true,
+						},
+						"ip": schema.ListAttribute{
+							MarkdownDescription: "Data is one or more IP addresses. Use this for versions `17.15` and later.",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"ip_legacy": schema.ListAttribute{
+							MarkdownDescription: "Data is one or more IP addresses. Use this for versions before `17.15`.",
+							ElementType:         types.StringType,
 							Computed:            true,
 						},
 					},
@@ -189,7 +209,7 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 	}
 }
 
-func (d *InterfaceOSPFDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *DHCPPoolDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -201,8 +221,8 @@ func (d *InterfaceOSPFDataSource) Configure(_ context.Context, req datasource.Co
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *InterfaceOSPFDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config InterfaceOSPFData
+func (d *DHCPPoolDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config DHCPPoolData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -222,7 +242,7 @@ func (d *InterfaceOSPFDataSource) Read(ctx context.Context, req datasource.ReadR
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
-			config = InterfaceOSPFData{Device: config.Device}
+			config = DHCPPoolData{Device: config.Device}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

@@ -344,3 +344,61 @@ func testAccIosxeRouteMapConfig_all() string {
 }
 
 // End of section. //template:end testAccConfigAll
+
+func TestAccIosxeRouteMap_AddBeforeExisting(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccIosxeRouteMapPrerequisitesConfig + testAccIosxeRouteMapConfig_singleEntry(),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.seq", "1000"),
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.operation", "permit"),
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_ip_address_prefix_lists.0", "PFL1"),
+				),
+			},
+			{
+				Config: testAccIosxeRouteMapPrerequisitesConfig + testAccIosxeRouteMapConfig_addBeforeExisting(),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.seq", "500"),
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.operation", "permit"),
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_ip_address_prefix_lists.0", "PFL1"),
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.1.seq", "1000"),
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.1.operation", "permit"),
+					resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.1.match_ip_address_prefix_lists.0", "PFL1"),
+				),
+			},
+		},
+	})
+}
+
+func testAccIosxeRouteMapConfig_singleEntry() string {
+	config := `resource "iosxe_route_map" "test" {` + "\n"
+	config += `	name = "RM1"` + "\n"
+	config += `	entries = [{` + "\n"
+	config += `		seq = 1000` + "\n"
+	config += `		operation = "permit"` + "\n"
+	config += `		match_ip_address_prefix_lists = ["PFL1"]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `}` + "\n"
+	return config
+}
+
+func testAccIosxeRouteMapConfig_addBeforeExisting() string {
+	config := `resource "iosxe_route_map" "test" {` + "\n"
+	config += `	name = "RM1"` + "\n"
+	config += `	entries = [{` + "\n"
+	config += `		seq = 500` + "\n"
+	config += `		operation = "permit"` + "\n"
+	config += `		match_ip_address_prefix_lists = ["PFL1"]` + "\n"
+	config += `	},{` + "\n"
+	config += `		seq = 1000` + "\n"
+	config += `		operation = "permit"` + "\n"
+	config += `		match_ip_address_prefix_lists = ["PFL1"]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `}` + "\n"
+	return config
+}

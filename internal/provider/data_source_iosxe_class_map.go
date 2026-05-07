@@ -155,6 +155,15 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "Class-Map description",
 				Computed:            true,
 			},
+			"match_access_group_index_legacy": schema.StringAttribute{
+				MarkdownDescription: "Numbered Access List. Use this for versions before `17.18`.",
+				Computed:            true,
+			},
+			"match_access_group_index_list": schema.ListAttribute{
+				MarkdownDescription: "Numbered Access List. Use this for versions `17.18` and later.",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
 			"match_access_group_name": schema.ListAttribute{
 				MarkdownDescription: "Named Access List",
 				ElementType:         types.StringType,
