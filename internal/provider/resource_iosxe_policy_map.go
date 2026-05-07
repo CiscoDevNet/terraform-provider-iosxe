@@ -82,9 +82,6 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Name of the policy map").String,
 				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 203),
-				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},

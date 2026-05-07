@@ -15,6 +15,20 @@ attributes:
     xpath: set/isakmp-profile
     example: vpn300
     exclude_test: true
+  - yang_name: set/pfs/group
+    tf_name: set_pfs_group
+    example: group20
+  - yang_name: set/security-association/lifetime/days-seconds/seconds/seconds-case
+    xpath: set/security-association/lifetime/seconds-case
+    tf_name: set_security_association_lifetime_seconds
+    example: 3600
+    test_tags: [IOSXE1715]
+  - yang_name: set/security-association/lifetime/seconds
+    xpath: set/security-association/lifetime/seconds
+    tf_name: set_security_association_lifetime_seconds_legacy
+    description: Security association lifetime in seconds. Use this for IOS-XE versions before `17.15.1`.
+    example: 3600
+    test_tags: [IOSXE1712]
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set[tag=TS1]

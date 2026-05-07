@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -34,6 +35,13 @@ func TestAccDataSourceIosxeCryptoIPSecProfile(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_transform_set.0", "TS1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_ikev2_profile", "vpn300"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_pfs_group", "group20"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_security_association_lifetime_seconds", "3600"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_security_association_lifetime_seconds_legacy", "3600"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -78,6 +86,13 @@ func testAccDataSourceIosxeCryptoIPSecProfileConfig() string {
 	config += `	name = "vpn200"` + "\n"
 	config += `	set_transform_set = ["TS1"]` + "\n"
 	config += `	set_ikev2_profile = "vpn300"` + "\n"
+	config += `	set_pfs_group = "group20"` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	set_security_association_lifetime_seconds = 3600` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	set_security_association_lifetime_seconds_legacy = 3600` + "\n"
+	}
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 

@@ -42,60 +42,72 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type CryptoIKEv2Profile struct {
-	Device                           types.String                                         `tfsdk:"device"`
-	Id                               types.String                                         `tfsdk:"id"`
-	DeleteMode                       types.String                                         `tfsdk:"delete_mode"`
-	Name                             types.String                                         `tfsdk:"name"`
-	Description                      types.String                                         `tfsdk:"description"`
-	AuthenticationRemotePreShare     types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
-	AuthenticationLocalPreShare      types.Bool                                           `tfsdk:"authentication_local_pre_share"`
-	IdentityLocalAddress             types.String                                         `tfsdk:"identity_local_address"`
-	IdentityLocalKeyId               types.String                                         `tfsdk:"identity_local_key_id"`
-	MatchInboundOnly                 types.Bool                                           `tfsdk:"match_inbound_only"`
-	MatchAddressLocalIp              types.String                                         `tfsdk:"match_address_local_ip"`
-	MatchFvrf                        types.String                                         `tfsdk:"match_fvrf"`
-	MatchFvrfAny                     types.Bool                                           `tfsdk:"match_fvrf_any"`
-	MatchIdentityRemoteIpv4Addresses []CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses `tfsdk:"match_identity_remote_ipv4_addresses"`
-	MatchIdentityRemoteIpv6Prefixes  types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
-	MatchIdentityRemoteKeys          types.List                                           `tfsdk:"match_identity_remote_keys"`
-	KeyringLocal                     types.String                                         `tfsdk:"keyring_local"`
-	Ivrf                             types.String                                         `tfsdk:"ivrf"`
-	DpdInterval                      types.Int64                                          `tfsdk:"dpd_interval"`
-	DpdRetry                         types.Int64                                          `tfsdk:"dpd_retry"`
-	DpdQuery                         types.String                                         `tfsdk:"dpd_query"`
-	ConfigExchangeRequest            types.Bool                                           `tfsdk:"config_exchange_request"`
+	Device                                   types.String                                           `tfsdk:"device"`
+	Id                                       types.String                                           `tfsdk:"id"`
+	DeleteMode                               types.String                                           `tfsdk:"delete_mode"`
+	Name                                     types.String                                           `tfsdk:"name"`
+	Description                              types.String                                           `tfsdk:"description"`
+	AuthenticationRemotePreShare             types.Bool                                             `tfsdk:"authentication_remote_pre_share"`
+	AuthenticationLocalPreShare              types.Bool                                             `tfsdk:"authentication_local_pre_share"`
+	IdentityLocalAddress                     types.String                                           `tfsdk:"identity_local_address"`
+	IdentityLocalKeyId                       types.String                                           `tfsdk:"identity_local_key_id"`
+	MatchInboundOnly                         types.Bool                                             `tfsdk:"match_inbound_only"`
+	MatchAddressLocalIp                      types.String                                           `tfsdk:"match_address_local_ip"`
+	MatchFvrf                                types.String                                           `tfsdk:"match_fvrf"`
+	MatchFvrfAny                             types.Bool                                             `tfsdk:"match_fvrf_any"`
+	MatchIdentityRemoteIpv4Addresses         []CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses   `tfsdk:"match_identity_remote_ipv4_addresses"`
+	MatchIdentityRemoteIpv6Prefixes          types.List                                             `tfsdk:"match_identity_remote_ipv6_prefixes"`
+	MatchIdentityRemoteKeys                  types.List                                             `tfsdk:"match_identity_remote_keys"`
+	KeyringLocal                             types.String                                           `tfsdk:"keyring_local"`
+	Ivrf                                     types.String                                           `tfsdk:"ivrf"`
+	DpdInterval                              types.Int64                                            `tfsdk:"dpd_interval"`
+	DpdRetry                                 types.Int64                                            `tfsdk:"dpd_retry"`
+	DpdQuery                                 types.String                                           `tfsdk:"dpd_query"`
+	Lifetime                                 types.Int64                                            `tfsdk:"lifetime"`
+	MatchAddressLocalInterfaceLoopbackLegacy types.Int64                                            `tfsdk:"match_address_local_interface_loopback_legacy"`
+	MatchAddressLocalInterfaceLoopback       []CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback `tfsdk:"match_address_local_interface_loopback"`
+	ConfigExchangeRequest                    types.Bool                                             `tfsdk:"config_exchange_request"`
 }
 type CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses struct {
 	Address types.String `tfsdk:"address"`
 	Mask    types.String `tfsdk:"mask"`
 }
+type CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback struct {
+	LoopbackNumber types.Int64 `tfsdk:"loopback_number"`
+}
 
 type CryptoIKEv2ProfileData struct {
-	Device                           types.String                                             `tfsdk:"device"`
-	Id                               types.String                                             `tfsdk:"id"`
-	Name                             types.String                                             `tfsdk:"name"`
-	Description                      types.String                                             `tfsdk:"description"`
-	AuthenticationRemotePreShare     types.Bool                                               `tfsdk:"authentication_remote_pre_share"`
-	AuthenticationLocalPreShare      types.Bool                                               `tfsdk:"authentication_local_pre_share"`
-	IdentityLocalAddress             types.String                                             `tfsdk:"identity_local_address"`
-	IdentityLocalKeyId               types.String                                             `tfsdk:"identity_local_key_id"`
-	MatchInboundOnly                 types.Bool                                               `tfsdk:"match_inbound_only"`
-	MatchAddressLocalIp              types.String                                             `tfsdk:"match_address_local_ip"`
-	MatchFvrf                        types.String                                             `tfsdk:"match_fvrf"`
-	MatchFvrfAny                     types.Bool                                               `tfsdk:"match_fvrf_any"`
-	MatchIdentityRemoteIpv4Addresses []CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData `tfsdk:"match_identity_remote_ipv4_addresses"`
-	MatchIdentityRemoteIpv6Prefixes  types.List                                               `tfsdk:"match_identity_remote_ipv6_prefixes"`
-	MatchIdentityRemoteKeys          types.List                                               `tfsdk:"match_identity_remote_keys"`
-	KeyringLocal                     types.String                                             `tfsdk:"keyring_local"`
-	Ivrf                             types.String                                             `tfsdk:"ivrf"`
-	DpdInterval                      types.Int64                                              `tfsdk:"dpd_interval"`
-	DpdRetry                         types.Int64                                              `tfsdk:"dpd_retry"`
-	DpdQuery                         types.String                                             `tfsdk:"dpd_query"`
-	ConfigExchangeRequest            types.Bool                                               `tfsdk:"config_exchange_request"`
+	Device                                   types.String                                               `tfsdk:"device"`
+	Id                                       types.String                                               `tfsdk:"id"`
+	Name                                     types.String                                               `tfsdk:"name"`
+	Description                              types.String                                               `tfsdk:"description"`
+	AuthenticationRemotePreShare             types.Bool                                                 `tfsdk:"authentication_remote_pre_share"`
+	AuthenticationLocalPreShare              types.Bool                                                 `tfsdk:"authentication_local_pre_share"`
+	IdentityLocalAddress                     types.String                                               `tfsdk:"identity_local_address"`
+	IdentityLocalKeyId                       types.String                                               `tfsdk:"identity_local_key_id"`
+	MatchInboundOnly                         types.Bool                                                 `tfsdk:"match_inbound_only"`
+	MatchAddressLocalIp                      types.String                                               `tfsdk:"match_address_local_ip"`
+	MatchFvrf                                types.String                                               `tfsdk:"match_fvrf"`
+	MatchFvrfAny                             types.Bool                                                 `tfsdk:"match_fvrf_any"`
+	MatchIdentityRemoteIpv4Addresses         []CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData   `tfsdk:"match_identity_remote_ipv4_addresses"`
+	MatchIdentityRemoteIpv6Prefixes          types.List                                                 `tfsdk:"match_identity_remote_ipv6_prefixes"`
+	MatchIdentityRemoteKeys                  types.List                                                 `tfsdk:"match_identity_remote_keys"`
+	KeyringLocal                             types.String                                               `tfsdk:"keyring_local"`
+	Ivrf                                     types.String                                               `tfsdk:"ivrf"`
+	DpdInterval                              types.Int64                                                `tfsdk:"dpd_interval"`
+	DpdRetry                                 types.Int64                                                `tfsdk:"dpd_retry"`
+	DpdQuery                                 types.String                                               `tfsdk:"dpd_query"`
+	Lifetime                                 types.Int64                                                `tfsdk:"lifetime"`
+	MatchAddressLocalInterfaceLoopbackLegacy types.Int64                                                `tfsdk:"match_address_local_interface_loopback_legacy"`
+	MatchAddressLocalInterfaceLoopback       []CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData `tfsdk:"match_address_local_interface_loopback"`
+	ConfigExchangeRequest                    types.Bool                                                 `tfsdk:"config_exchange_request"`
 }
 type CryptoIKEv2ProfileMatchIdentityRemoteIpv4AddressesData struct {
 	Address types.String `tfsdk:"address"`
 	Mask    types.String `tfsdk:"mask"`
+}
+type CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData struct {
+	LoopbackNumber types.Int64 `tfsdk:"loopback_number"`
 }
 
 // End of section. //template:end types
@@ -203,6 +215,12 @@ func (data CryptoIKEv2Profile) toBody(ctx context.Context, config CryptoIKEv2Pro
 	if !data.DpdQuery.IsNull() && !data.DpdQuery.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd.query", data.DpdQuery.ValueString())
 	}
+	if !data.Lifetime.IsNull() && !data.Lifetime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"lifetime.seconds", strconv.FormatInt(data.Lifetime.ValueInt64(), 10))
+	}
+	if !data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() && !data.MatchAddressLocalInterfaceLoopbackLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.address.local.interface-options.Loopback", strconv.FormatInt(data.MatchAddressLocalInterfaceLoopbackLegacy.ValueInt64(), 10))
+	}
 	if !data.ConfigExchangeRequest.IsNull() && !data.ConfigExchangeRequest.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"config-exchange.request-1", data.ConfigExchangeRequest.ValueBool())
 	}
@@ -214,6 +232,14 @@ func (data CryptoIKEv2Profile) toBody(ctx context.Context, config CryptoIKEv2Pro
 			}
 			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.identity.remote.address.ipv4"+"."+strconv.Itoa(index)+"."+"ipv4-mask", item.Mask.ValueString())
+			}
+		}
+	}
+	if len(data.MatchAddressLocalInterfaceLoopback) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.address.local.interface-options-local.Loopback", []interface{}{})
+		for index, item := range data.MatchAddressLocalInterfaceLoopback {
+			if !item.LoopbackNumber.IsNull() && !item.LoopbackNumber.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.address.local.interface-options-local.Loopback"+"."+strconv.Itoa(index)+"."+"Loopback", strconv.FormatInt(item.LoopbackNumber.ValueInt64(), 10))
 			}
 		}
 	}
@@ -312,6 +338,21 @@ func (data CryptoIKEv2Profile) toBodyXML(ctx context.Context, config CryptoIKEv2
 	}
 	if !data.DpdQuery.IsNull() && !data.DpdQuery.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/dpd/query", data.DpdQuery.ValueString())
+	}
+	if !data.Lifetime.IsNull() && !data.Lifetime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/lifetime/seconds", strconv.FormatInt(data.Lifetime.ValueInt64(), 10))
+	}
+	if !data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() && !data.MatchAddressLocalInterfaceLoopbackLegacy.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/address/local/interface-options/Loopback", strconv.FormatInt(data.MatchAddressLocalInterfaceLoopbackLegacy.ValueInt64(), 10))
+	}
+	if len(data.MatchAddressLocalInterfaceLoopback) > 0 {
+		for _, item := range data.MatchAddressLocalInterfaceLoopback {
+			cBody := netconf.Body{}
+			if !item.LoopbackNumber.IsNull() && !item.LoopbackNumber.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "Loopback", strconv.FormatInt(item.LoopbackNumber.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/match/address/local/interface-options-local/Loopback", cBody.Res())
+		}
 	}
 	if !data.ConfigExchangeRequest.IsNull() && !data.ConfigExchangeRequest.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/config-exchange/request-1", data.ConfigExchangeRequest.ValueBool())
@@ -467,6 +508,45 @@ func (data *CryptoIKEv2Profile) updateFromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.DpdQuery = types.StringNull()
 	}
+	if value := res.Get(prefix + "lifetime.seconds"); value.Exists() && !data.Lifetime.IsNull() {
+		data.Lifetime = types.Int64Value(value.Int())
+	} else {
+		data.Lifetime = types.Int64Null()
+	}
+	if value := res.Get(prefix + "match.address.local.interface-options.Loopback"); value.Exists() && !data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Value(value.Int())
+	} else {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Null()
+	}
+	for i := range data.MatchAddressLocalInterfaceLoopback {
+		keys := [...]string{"Loopback"}
+		keyValues := [...]string{strconv.FormatInt(data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
+
+		var r gjson.Result
+		res.Get(prefix + "match.address.local.interface-options-local.Loopback").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("Loopback"); value.Exists() && !data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.IsNull() {
+			data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber = types.Int64Value(value.Int())
+		} else {
+			data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber = types.Int64Null()
+		}
+	}
 	if value := res.Get(prefix + "config-exchange.request-1"); !data.ConfigExchangeRequest.IsNull() {
 		if value.Exists() {
 			data.ConfigExchangeRequest = types.BoolValue(value.Bool())
@@ -616,6 +696,45 @@ func (data *CryptoIKEv2Profile) updateFromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.DpdQuery = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/lifetime/seconds"); value.Exists() && !data.Lifetime.IsNull() {
+		data.Lifetime = types.Int64Value(value.Int())
+	} else {
+		data.Lifetime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/address/local/interface-options/Loopback"); value.Exists() && !data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Value(value.Int())
+	} else {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Null()
+	}
+	for i := range data.MatchAddressLocalInterfaceLoopback {
+		keys := [...]string{"Loopback"}
+		keyValues := [...]string{strconv.FormatInt(data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/address/local/interface-options-local/Loopback").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "Loopback"); value.Exists() && !data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.IsNull() {
+			data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber = types.Int64Value(value.Int())
+		} else {
+			data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber = types.Int64Null()
+		}
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/config-exchange/request-1"); !data.ConfigExchangeRequest.IsNull() {
 		if value.Exists() {
 			data.ConfigExchangeRequest = types.BoolValue(value.Bool())
@@ -708,6 +827,23 @@ func (data *CryptoIKEv2Profile) fromBody(ctx context.Context, res gjson.Result) 
 	if value := res.Get(prefix + "dpd.query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "lifetime.seconds"); value.Exists() {
+		data.Lifetime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "match.address.local.interface-options.Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "match.address.local.interface-options-local.Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopback = make([]CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback{}
+			if cValue := v.Get("Loopback"); cValue.Exists() {
+				item.LoopbackNumber = types.Int64Value(cValue.Int())
+			}
+			data.MatchAddressLocalInterfaceLoopback = append(data.MatchAddressLocalInterfaceLoopback, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "config-exchange.request-1"); value.Exists() {
 		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
 	} else {
@@ -798,6 +934,23 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 	if value := res.Get(prefix + "dpd.query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "lifetime.seconds"); value.Exists() {
+		data.Lifetime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "match.address.local.interface-options.Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "match.address.local.interface-options-local.Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopback = make([]CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData{}
+			if cValue := v.Get("Loopback"); cValue.Exists() {
+				item.LoopbackNumber = types.Int64Value(cValue.Int())
+			}
+			data.MatchAddressLocalInterfaceLoopback = append(data.MatchAddressLocalInterfaceLoopback, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "config-exchange.request-1"); value.Exists() {
 		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
 	} else {
@@ -883,6 +1036,23 @@ func (data *CryptoIKEv2Profile) fromBodyXML(ctx context.Context, res xmldot.Resu
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd/query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/lifetime/seconds"); value.Exists() {
+		data.Lifetime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/address/local/interface-options/Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/address/local/interface-options-local/Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopback = make([]CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopback{}
+			if cValue := helpers.GetFromXPath(v, "Loopback"); cValue.Exists() {
+				item.LoopbackNumber = types.Int64Value(cValue.Int())
+			}
+			data.MatchAddressLocalInterfaceLoopback = append(data.MatchAddressLocalInterfaceLoopback, item)
+			return true
+		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/config-exchange/request-1"); value.Exists() {
 		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
@@ -970,6 +1140,23 @@ func (data *CryptoIKEv2ProfileData) fromBodyXML(ctx context.Context, res xmldot.
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd/query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/lifetime/seconds"); value.Exists() {
+		data.Lifetime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/address/local/interface-options/Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/address/local/interface-options-local/Loopback"); value.Exists() {
+		data.MatchAddressLocalInterfaceLoopback = make([]CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2ProfileMatchAddressLocalInterfaceLoopbackData{}
+			if cValue := helpers.GetFromXPath(v, "Loopback"); cValue.Exists() {
+				item.LoopbackNumber = types.Int64Value(cValue.Int())
+			}
+			data.MatchAddressLocalInterfaceLoopback = append(data.MatchAddressLocalInterfaceLoopback, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/config-exchange/request-1"); value.Exists() {
 		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
 	} else {
@@ -985,6 +1172,37 @@ func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state Crypt
 	deletedItems := make([]string, 0)
 	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/config-exchange/request-1", state.getPath()))
+	}
+	for i := range state.MatchAddressLocalInterfaceLoopback {
+		stateKeyValues := [...]string{strconv.FormatInt(state.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MatchAddressLocalInterfaceLoopback {
+			found = true
+			if state.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64() != data.MatchAddressLocalInterfaceLoopback[j].LoopbackNumber.ValueInt64() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local/interface-options-local/Loopback=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() && data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local/interface-options/Loopback", state.getPath()))
+	}
+	if !state.Lifetime.IsNull() && data.Lifetime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/lifetime/seconds", state.getPath()))
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
@@ -1110,6 +1328,42 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 	b := netconf.NewBody(body)
 	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/config-exchange/request-1")
+	}
+	for i := range state.MatchAddressLocalInterfaceLoopback {
+		stateKeys := [...]string{"Loopback"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MatchAddressLocalInterfaceLoopback {
+			found = true
+			if state.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64() != data.MatchAddressLocalInterfaceLoopback[j].LoopbackNumber.ValueInt64() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/address/local/interface-options-local/Loopback%v", predicates))
+		}
+	}
+	if !state.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() && data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/address/local/interface-options/Loopback")
+	}
+	if !state.Lifetime.IsNull() && data.Lifetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/lifetime/seconds")
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
@@ -1273,6 +1527,17 @@ func (data *CryptoIKEv2Profile) getDeletePaths(ctx context.Context) []string {
 	if !data.ConfigExchangeRequest.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/config-exchange/request-1", data.getPath()))
 	}
+	for i := range data.MatchAddressLocalInterfaceLoopback {
+		keyValues := [...]string{strconv.FormatInt(data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local/interface-options-local/Loopback=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local/interface-options/Loopback", data.getPath()))
+	}
+	if !data.Lifetime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/lifetime/seconds", data.getPath()))
+	}
 	if !data.DpdQuery.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))
 	}
@@ -1338,6 +1603,22 @@ func (data *CryptoIKEv2Profile) addDeletePathsXML(ctx context.Context, body stri
 	b := netconf.NewBody(body)
 	if !data.ConfigExchangeRequest.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/config-exchange/request-1")
+	}
+	for i := range data.MatchAddressLocalInterfaceLoopback {
+		keys := [...]string{"Loopback"}
+		keyValues := [...]string{strconv.FormatInt(data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/match/address/local/interface-options-local/Loopback%v", predicates))
+	}
+	if !data.MatchAddressLocalInterfaceLoopbackLegacy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/address/local/interface-options/Loopback")
+	}
+	if !data.Lifetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/lifetime/seconds")
 	}
 	if !data.DpdQuery.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd")

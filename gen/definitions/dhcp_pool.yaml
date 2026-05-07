@@ -1,0 +1,160 @@
+---
+name: DHCP Pool
+path: /Cisco-IOS-XE-native:native/ip/dhcp/Cisco-IOS-XE-dhcp:pool[id=%s]
+doc_category: System
+attributes:
+  - yang_name: id
+    tf_name: name
+    example: POOL1
+  - yang_name: vrf
+    description: Associate this pool with a VRF
+    example: VRF1
+    exclude_test: true
+  - yang_name: domain-name
+    example: example.com
+  - yang_name: bootfile
+    description: Boot file name
+    example: boot.cfg
+  - yang_name: client-name
+    description: Client name
+    example: client1
+    exclude_test: true
+  - yang_name: network/primary-network/number
+    tf_name: network_number
+    description: Network number
+    example: 10.1.1.0
+  - yang_name: network/primary-network/mask
+    tf_name: network_mask
+    description: Network mask
+    example: 255.255.255.0
+  - yang_name: network/secondary-network
+    tf_name: secondary_networks
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: number
+        description: Network number
+        example: 10.1.2.0
+        id: true
+      - yang_name: mask
+        description: Network mask
+        example: 255.255.255.0
+      - yang_name: secondary
+        description: Configure as secondary subnet
+        example: true
+        default_value: true
+  - yang_name: host/number
+    tf_name: host_number
+    description: Client IP address
+    example: 10.1.1.100
+    exclude_test: true
+  - yang_name: host/mask
+    tf_name: host_mask
+    description: Network mask
+    example: 255.255.255.0
+    exclude_test: true
+  - yang_name: default-router/default-router-list
+    tf_name: default_routers
+    type: StringList
+    description: Default routers
+    example: 10.1.1.1
+  - yang_name: dns-server/dns-server-list
+    tf_name: dns_servers
+    type: StringList
+    description: DNS servers
+    example: 10.1.1.1
+  - yang_name: next-server
+    tf_name: next_servers
+    type: StringList
+    description: Next server IP addresses
+    example: 10.1.1.1
+    exclude_test: true
+  - yang_name: lease/lease/lease-value/lease-value/days
+    xpath: lease/lease-value/days
+    tf_name: lease_days
+    description: Lease days
+    example: 1
+  - yang_name: lease/lease/lease-value/lease-value/hours
+    xpath: lease/lease-value/hours
+    tf_name: lease_hours
+    description: Lease hours
+    example: 12
+  - yang_name: lease/lease/lease-value/lease-value/minutes
+    xpath: lease/lease-value/minutes
+    tf_name: lease_minutes
+    description: Lease minutes
+    example: 30
+  - yang_name: lease/lease/infinite/infinite
+    xpath: lease/infinite
+    tf_name: lease_infinite
+    description: Infinite lease
+    example: true
+    exclude_test: true
+  - yang_name: utilization/mark/high/high-value
+    tf_name: utilization_mark_high
+    description: High utilization mark percentage
+    example: 80
+    exclude_test: true
+  - yang_name: utilization/mark/high/log
+    tf_name: utilization_mark_high_log
+    description: Log when high utilization is detected
+    example: true
+    exclude_test: true
+  - yang_name: utilization/mark/low/low-value
+    tf_name: utilization_mark_low
+    description: Low utilization mark percentage
+    example: 20
+    exclude_test: true
+  - yang_name: utilization/mark/low/log
+    tf_name: utilization_mark_low_log
+    description: Log when low utilization is detected
+    example: true
+    exclude_test: true
+  - yang_name: subnet/prefix-length
+    tf_name: subnet_prefix_length
+    description: Subnet prefix length
+    example: 24
+    exclude_test: true
+  - yang_name: option/option-range
+    tf_name: options
+    type: List
+    attributes:
+      - yang_name: option-range
+        tf_name: option_code
+        description: DHCP option code
+        example: 150
+        id: true
+      - yang_name: option-range-choice/ascii-case/ascii-new
+        xpath: ascii-new
+        tf_name: ascii
+        description: Data is an NVT ASCII string
+        example: 10.1.1.1
+      - yang_name: option-range-choice/hex-case/hex-new/hex-line
+        xpath: hex-new/hex-line
+        tf_name: hex
+        description: Data is a hexadecimal string
+        exclude_test: true
+        example: 0a0101010a010102
+      - yang_name: option-range-choice/ip-case/ip-ordered
+        xpath: ip-ordered
+        tf_name: ip
+        type: StringList
+        description: Data is one or more IP addresses. Use this for versions `17.15` and later.
+        exclude_test: true
+        example: 10.1.1.1
+      - yang_name: option-range-choice/ip-case/ip-new
+        xpath: ip-new
+        tf_name: ip_legacy
+        type: StringList
+        description: Data is one or more IP addresses. Use this for versions before `17.15`.
+        exclude_test: true
+        example: 10.1.1.1
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
