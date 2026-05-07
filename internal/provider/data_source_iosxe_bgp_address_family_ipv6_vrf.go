@@ -93,8 +93,24 @@ func (d *BGPAddressFamilyIPv6VRFDataSource) Schema(ctx context.Context, req data
 							MarkdownDescription: "Connected",
 							Computed:            true,
 						},
+						"ipv6_unicast_redistribute_connected_route_map": schema.StringAttribute{
+							MarkdownDescription: "Route map reference",
+							Computed:            true,
+						},
+						"ipv6_unicast_redistribute_connected_metric": schema.Int64Attribute{
+							MarkdownDescription: "Metric for redistributed routes",
+							Computed:            true,
+						},
 						"ipv6_unicast_redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: "Static routes",
+							Computed:            true,
+						},
+						"ipv6_unicast_redistribute_static_route_map": schema.StringAttribute{
+							MarkdownDescription: "Route map reference",
+							Computed:            true,
+						},
+						"ipv6_unicast_redistribute_static_metric": schema.Int64Attribute{
+							MarkdownDescription: "Metric for redistributed routes",
 							Computed:            true,
 						},
 						"ipv6_unicast_networks": schema.ListNestedAttribute{

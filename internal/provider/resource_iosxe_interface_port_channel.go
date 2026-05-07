@@ -448,6 +448,21 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 					},
 				},
 			},
+			"evpn_ethernet_segments_legacy": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ethernet segment local discriminator value, DEPRECATED").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"es_value": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Ethernet segment local discriminator value, DEPRECATED").AddIntegerRangeDescription(1, 65535).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 65535),
+							},
+						},
+					},
+				},
+			},
 			"ip_igmp_version": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IGMP version").AddIntegerRangeDescription(1, 3).String,
 				Optional:            true,
@@ -485,6 +500,10 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 						},
 					},
 				},
+			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
+				Optional:            true,
 			},
 		},
 	}

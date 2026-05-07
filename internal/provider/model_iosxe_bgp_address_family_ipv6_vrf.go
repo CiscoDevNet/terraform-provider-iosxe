@@ -50,11 +50,15 @@ type BGPAddressFamilyIPv6VRF struct {
 	Vrfs       []BGPAddressFamilyIPv6VRFVrfs `tfsdk:"vrfs"`
 }
 type BGPAddressFamilyIPv6VRFVrfs struct {
-	Name                             types.String                                     `tfsdk:"name"`
-	Ipv6UnicastAdvertiseL2vpnEvpn    types.Bool                                       `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
-	Ipv6UnicastRedistributeConnected types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_connected"`
-	Ipv6UnicastRedistributeStatic    types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_static"`
-	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+	Name                                     types.String                                     `tfsdk:"name"`
+	Ipv6UnicastAdvertiseL2vpnEvpn            types.Bool                                       `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
+	Ipv6UnicastRedistributeConnected         types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeConnectedRouteMap types.String                                     `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
+	Ipv6UnicastRedistributeConnectedMetric   types.Int64                                      `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
+	Ipv6UnicastRedistributeStatic            types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastRedistributeStaticRouteMap    types.String                                     `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
+	Ipv6UnicastRedistributeStaticMetric      types.Int64                                      `tfsdk:"ipv6_unicast_redistribute_static_metric"`
+	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
 type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks struct {
 	Network  types.String `tfsdk:"network"`
@@ -71,11 +75,15 @@ type BGPAddressFamilyIPv6VRFData struct {
 	Vrfs   []BGPAddressFamilyIPv6VRFVrfsData `tfsdk:"vrfs"`
 }
 type BGPAddressFamilyIPv6VRFVrfsData struct {
-	Name                             types.String                                         `tfsdk:"name"`
-	Ipv6UnicastAdvertiseL2vpnEvpn    types.Bool                                           `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
-	Ipv6UnicastRedistributeConnected types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_connected"`
-	Ipv6UnicastRedistributeStatic    types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_static"`
-	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData `tfsdk:"ipv6_unicast_networks"`
+	Name                                     types.String                                         `tfsdk:"name"`
+	Ipv6UnicastAdvertiseL2vpnEvpn            types.Bool                                           `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
+	Ipv6UnicastRedistributeConnected         types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeConnectedRouteMap types.String                                         `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
+	Ipv6UnicastRedistributeConnectedMetric   types.Int64                                          `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
+	Ipv6UnicastRedistributeStatic            types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastRedistributeStaticRouteMap    types.String                                         `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
+	Ipv6UnicastRedistributeStaticMetric      types.Int64                                          `tfsdk:"ipv6_unicast_redistribute_static_metric"`
+	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData `tfsdk:"ipv6_unicast_networks"`
 }
 type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData struct {
 	Network  types.String `tfsdk:"network"`
@@ -145,10 +153,22 @@ func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context, config BGPAddres
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.connected", map[string]string{})
 				}
 			}
+			if !item.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && !item.Ipv6UnicastRedistributeConnectedRouteMap.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.connected.route-map", item.Ipv6UnicastRedistributeConnectedRouteMap.ValueString())
+			}
+			if !item.Ipv6UnicastRedistributeConnectedMetric.IsNull() && !item.Ipv6UnicastRedistributeConnectedMetric.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.connected.metric", strconv.FormatInt(item.Ipv6UnicastRedistributeConnectedMetric.ValueInt64(), 10))
+			}
 			if !item.Ipv6UnicastRedistributeStatic.IsNull() && !item.Ipv6UnicastRedistributeStatic.IsUnknown() {
 				if item.Ipv6UnicastRedistributeStatic.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.static", map[string]string{})
 				}
+			}
+			if !item.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && !item.Ipv6UnicastRedistributeStaticRouteMap.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.static.route-map", item.Ipv6UnicastRedistributeStaticRouteMap.ValueString())
+			}
+			if !item.Ipv6UnicastRedistributeStaticMetric.IsNull() && !item.Ipv6UnicastRedistributeStaticMetric.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.static.metric", strconv.FormatInt(item.Ipv6UnicastRedistributeStaticMetric.ValueInt64(), 10))
 			}
 			if len(item.Ipv6UnicastNetworks) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.network", []interface{}{})
@@ -205,12 +225,24 @@ func (data BGPAddressFamilyIPv6VRF) toBodyXML(ctx context.Context, config BGPAdd
 					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/redistribute-v6/connected")
 				}
 			}
+			if !item.Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && !item.Ipv6UnicastRedistributeConnectedRouteMap.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/connected/route-map", item.Ipv6UnicastRedistributeConnectedRouteMap.ValueString())
+			}
+			if !item.Ipv6UnicastRedistributeConnectedMetric.IsNull() && !item.Ipv6UnicastRedistributeConnectedMetric.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/connected/metric", strconv.FormatInt(item.Ipv6UnicastRedistributeConnectedMetric.ValueInt64(), 10))
+			}
 			if !item.Ipv6UnicastRedistributeStatic.IsNull() && !item.Ipv6UnicastRedistributeStatic.IsUnknown() {
 				if item.Ipv6UnicastRedistributeStatic.ValueBool() {
 					cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/static", "")
 				} else {
 					cBody = helpers.RemoveFromXPath(cBody, "ipv6-unicast/redistribute-v6/static")
 				}
+			}
+			if !item.Ipv6UnicastRedistributeStaticRouteMap.IsNull() && !item.Ipv6UnicastRedistributeStaticRouteMap.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/static/route-map", item.Ipv6UnicastRedistributeStaticRouteMap.ValueString())
+			}
+			if !item.Ipv6UnicastRedistributeStaticMetric.IsNull() && !item.Ipv6UnicastRedistributeStaticMetric.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/static/metric", strconv.FormatInt(item.Ipv6UnicastRedistributeStaticMetric.ValueInt64(), 10))
 			}
 			if len(item.Ipv6UnicastNetworks) > 0 {
 				for _, citem := range item.Ipv6UnicastNetworks {
@@ -308,6 +340,16 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBody(ctx context.Context, res gjs
 		} else {
 			data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolNull()
 		}
+		if value := r.Get("ipv6-unicast.redistribute-v6.connected.route-map"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap = types.StringNull()
+		}
+		if value := r.Get("ipv6-unicast.redistribute-v6.connected.metric"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric = types.Int64Null()
+		}
 		if value := r.Get("ipv6-unicast.redistribute-v6.static"); !data.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() {
 			if value.Exists() {
 				data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolValue(true)
@@ -316,6 +358,16 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBody(ctx context.Context, res gjs
 			}
 		} else {
 			data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolNull()
+		}
+		if value := r.Get("ipv6-unicast.redistribute-v6.static.route-map"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap = types.StringNull()
+		}
+		if value := r.Get("ipv6-unicast.redistribute-v6.static.metric"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric = types.Int64Null()
 		}
 		for ci := range data.Vrfs[i].Ipv6UnicastNetworks {
 			keys := [...]string{"number"}
@@ -428,6 +480,16 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBodyXML(ctx context.Context, res 
 		} else {
 			data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolNull()
 		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/redistribute-v6/connected/route-map"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/redistribute-v6/connected/metric"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric = types.Int64Null()
+		}
 		if value := helpers.GetFromXPath(r, "ipv6-unicast/redistribute-v6/static"); !data.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() {
 			if value.Exists() {
 				data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolValue(true)
@@ -436,6 +498,16 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBodyXML(ctx context.Context, res 
 			}
 		} else {
 			data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/redistribute-v6/static/route-map"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/redistribute-v6/static/metric"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric = types.Int64Null()
 		}
 		for ci := range data.Vrfs[i].Ipv6UnicastNetworks {
 			keys := [...]string{"number"}
@@ -518,10 +590,22 @@ func (data *BGPAddressFamilyIPv6VRF) fromBody(ctx context.Context, res gjson.Res
 			} else {
 				item.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.connected.route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.connected.metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(cValue.Int())
+			}
 			if cValue := v.Get("ipv6-unicast.redistribute-v6.static"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.static.route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.static.metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("ipv6-unicast.network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
@@ -579,10 +663,22 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 			} else {
 				item.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.connected.route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.connected.metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(cValue.Int())
+			}
 			if cValue := v.Get("ipv6-unicast.redistribute-v6.static"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.static.route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv6-unicast.redistribute-v6.static.metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("ipv6-unicast.network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData, 0)
@@ -636,10 +732,22 @@ func (data *BGPAddressFamilyIPv6VRF) fromBodyXML(ctx context.Context, res xmldot
 			} else {
 				item.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/connected/route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/connected/metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(cValue.Int())
+			}
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static/route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static/metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
@@ -693,10 +801,22 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBodyXML(ctx context.Context, res xm
 			} else {
 				item.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/connected/route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/connected/metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeConnectedMetric = types.Int64Value(cValue.Int())
+			}
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
 				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static/route-map"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticRouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static/metric"); cValue.Exists() {
+				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData, 0)
@@ -786,8 +906,20 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state 
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticMetric.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/static/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/static/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStatic.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/static", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/connected/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/connected/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnected.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/connected", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -874,8 +1006,20 @@ func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, sta
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v", predicates, cpredicates))
 					}
 				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticMetric.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static/metric", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticRouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticRouteMap.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static/route-map", predicates))
+				}
 				if !state.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStatic.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnectedMetric.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/connected/metric", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnectedRouteMap.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/connected/route-map", predicates))
 				}
 				if !state.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnected.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/connected", predicates))

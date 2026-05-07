@@ -80,8 +80,24 @@ func (d *BGPAddressFamilyIPv4DataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Connected",
 				Computed:            true,
 			},
+			"ipv4_unicast_redistribute_connected_route_map": schema.StringAttribute{
+				MarkdownDescription: "Route map reference",
+				Computed:            true,
+			},
+			"ipv4_unicast_redistribute_connected_metric": schema.Int64Attribute{
+				MarkdownDescription: "Metric for redistributed routes",
+				Computed:            true,
+			},
 			"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 				MarkdownDescription: "Static routes",
+				Computed:            true,
+			},
+			"ipv4_unicast_redistribute_static_route_map": schema.StringAttribute{
+				MarkdownDescription: "Route map reference",
+				Computed:            true,
+			},
+			"ipv4_unicast_redistribute_static_metric": schema.Int64Attribute{
+				MarkdownDescription: "Metric for redistributed routes",
 				Computed:            true,
 			},
 			"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{

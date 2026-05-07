@@ -26,10 +26,12 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -113,6 +115,120 @@ func (r *DeviceTrackingPolicyResource) Schema(ctx context.Context, req resource.
 			},
 			"device_role_router_legacy": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"data_glean_log_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("only generate a syslog upon data packet notification").String,
+				Optional:            true,
+			},
+			"data_glean_recovery_dhcp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("use DHCP as the recovery protocol").String,
+				Optional:            true,
+			},
+			"data_glean_recovery_ndp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("use NDP as the recovery protocol").String,
+				Optional:            true,
+			},
+			"prefix_glean": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Glean prefixes in RA and DHCP-PD traffic").String,
+				Optional:            true,
+			},
+			"prefix_glean_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Glean only prefixes i.e. do not glean host addresses").String,
+				Optional:            true,
+			},
+			"destination_glean_log_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"destination_glean_recovery_dhcp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("use DHCP as the recovery protocol").String,
+				Optional:            true,
+			},
+			"protocol_arp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in ARP packets").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
+			},
+			"protocol_arp_prefix_list": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
+				Optional:            true,
+			},
+			"protocol_dhcp4": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in DHCPv4 packets").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
+			},
+			"protocol_dhcp4_prefix_list": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
+				Optional:            true,
+			},
+			"protocol_dhcp6": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in DHCPv6 packets").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
+			},
+			"protocol_dhcp6_prefix_list": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
+				Optional:            true,
+			},
+			"protocol_ndp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Glean addresses in NDP packets").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
+			},
+			"protocol_ndp_prefix_list": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Name of the prefix-list to be matched").String,
+				Optional:            true,
+			},
+			"tracking_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"tracking_enable_reachable_lifetime_seconds": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Seconds").AddIntegerRangeDescription(1, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 86400),
+				},
+			},
+			"tracking_enable_reachable_lifetime_infinite": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Keep in REACHABLE forever").String,
+				Optional:            true,
+			},
+			"tracking_disable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Tracking on or off").String,
+				Optional:            true,
+			},
+			"tracking_disable_stale_lifetime": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Default maximum time in STALE").String,
+				Optional:            true,
+			},
+			"limit_address_count": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure maximum address per port").AddIntegerRangeDescription(1, 32000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 32000),
+				},
+			},
+			"security_level_glean": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("glean addresses passively").String,
+				Optional:            true,
+			},
+			"security_level_guard": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("inspect and drop un-authorized messages (default)").String,
+				Optional:            true,
+			},
+			"security_level_inspect": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("glean and Validate message").String,
+				Optional:            true,
+			},
+			"medium_type_wireless": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Force medium type to wireless").String,
 				Optional:            true,
 			},
 		},

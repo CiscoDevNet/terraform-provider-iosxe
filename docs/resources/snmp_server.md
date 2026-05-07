@@ -151,6 +151,7 @@ resource "iosxe_snmp_server" "example" {
       username                         = "USER1"
       grpname                          = "GROUP1"
       v3_auth_algorithm                = "sha"
+      v3_auth_sha2                     = "256"
       v3_auth_password                 = "Cisco123"
       v3_auth_priv_aes_algorithm       = "128"
       v3_auth_priv_aes_password        = "Cisco123"
@@ -524,6 +525,8 @@ Optional:
 - `v3_auth_priv_des_password` (String, Sensitive) Authentication password for user
 - `v3_auth_priv_des_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `v3_auth_priv_des_password_wo_version` (Number) The write-only version of the attribute.
+- `v3_auth_sha2` (String) Use HMAC SHA-2 algorithm for authentication
+  - Choices: `256`, `384`, `512`
 
 
 <a id="nestedatt--views"></a>

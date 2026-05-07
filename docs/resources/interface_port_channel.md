@@ -106,6 +106,7 @@ resource "iosxe_interface_port_channel" "example" {
 - `device_tracking` (Boolean) Configure device-tracking on the interface
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
 - `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
+- `evpn_ethernet_segments_legacy` (Attributes List) Ethernet segment local discriminator value, DEPRECATED (see [below for nested schema](#nestedatt--evpn_ethernet_segments_legacy))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -151,6 +152,7 @@ resource "iosxe_interface_port_channel" "example" {
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `vrf_forwarding` (String) Configure forwarding table
+- `zone_member_security` (String) Security zone
 
 ### Read-Only
 
@@ -170,6 +172,15 @@ Required:
 Required:
 
 - `es_value` (Number) Ethernet segment local discriminator value
+  - Range: `1`-`65535`
+
+
+<a id="nestedatt--evpn_ethernet_segments_legacy"></a>
+### Nested Schema for `evpn_ethernet_segments_legacy`
+
+Required:
+
+- `es_value` (Number) Ethernet segment local discriminator value, DEPRECATED
   - Range: `1`-`65535`
 
 

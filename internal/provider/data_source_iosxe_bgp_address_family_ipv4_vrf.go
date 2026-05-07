@@ -93,6 +93,14 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 							MarkdownDescription: "Connected",
 							Computed:            true,
 						},
+						"ipv4_unicast_redistribute_connected_route_map": schema.StringAttribute{
+							MarkdownDescription: "Route map reference",
+							Computed:            true,
+						},
+						"ipv4_unicast_redistribute_connected_metric": schema.Int64Attribute{
+							MarkdownDescription: "Metric for redistributed routes",
+							Computed:            true,
+						},
 						"ipv4_unicast_router_id_loopback": schema.Int64Attribute{
 							MarkdownDescription: "Loopback interface",
 							Computed:            true,
@@ -123,6 +131,14 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 						},
 						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: "Static routes",
+							Computed:            true,
+						},
+						"ipv4_unicast_redistribute_static_route_map": schema.StringAttribute{
+							MarkdownDescription: "Route map reference",
+							Computed:            true,
+						},
+						"ipv4_unicast_redistribute_static_metric": schema.Int64Attribute{
+							MarkdownDescription: "Metric for redistributed routes",
 							Computed:            true,
 						},
 						"ipv4_unicast_networks_mask": schema.ListNestedAttribute{

@@ -33,6 +33,9 @@ data "iosxe_interface_ospf" "example" {
 
 ### Read-Only
 
+- `authentication_key_chain` (String)
+- `authentication_message_digest` (Boolean) Use message-digest authentication
+- `authentication_null` (Boolean) Use no authentication
 - `cost` (Number) Route cost of this interface
 - `dead_interval` (Number) Interval after which a neighbor is declared dead
 - `hello_interval` (Number) Time between HELLO packets

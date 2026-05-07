@@ -1890,8 +1890,8 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []{{ if or (eq .Type "StringList") (eq .Type "StringSet") }}string{{else}}int{{end}}
-						data.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
-						state.{{$list}}[j].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
+						data.{{$list}}[j].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
+						state.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -1946,8 +1946,8 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 								} else {
 									var dataValues, stateValues []{{ if or (eq .Type "StringList") (eq .Type "StringSet") }}string{{else}}int{{end}}
-									data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
-									state.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
+									data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
+									state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
 									for _, v := range stateValues {
 										found := false
 										for _, vv := range dataValues {
@@ -2072,8 +2072,8 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 						}
 					} else {
 						var dataValues, stateValues []{{ if or (eq .Type "StringList") (eq .Type "StringSet") }}string{{else}}int{{end}}
-						data.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
-						state.{{$list}}[j].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
+						data.{{$list}}[j].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
+						state.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -2137,8 +2137,8 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 									}
 								} else {
 									var dataValues, stateValues []{{ if or (eq .Type "StringList") (eq .Type "StringSet") }}string{{else}}int{{end}}
-									data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
-									state.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
+									data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
+									state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
 									for _, v := range stateValues {
 										found := false
 										for _, vv := range dataValues {

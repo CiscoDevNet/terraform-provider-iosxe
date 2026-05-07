@@ -180,6 +180,15 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringvalidator.LengthBetween(1, 200),
 				},
 			},
+			"match_access_group_index_legacy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Numbered Access List. Use this for versions before `17.18`.").String,
+				Optional:            true,
+			},
+			"match_access_group_index_list": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Numbered Access List. Use this for versions `17.18` and later.").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
 			"match_access_group_name": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Named Access List").String,
 				ElementType:         types.StringType,
@@ -192,6 +201,23 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 			},
 			"match_ip_precedence": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Match IP precedence").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"match_protocol": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("List of protocols to match").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"protocols": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of the protocol to match").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"match_class_map": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Class map").String,
 				ElementType:         types.StringType,
 				Optional:            true,
 			},

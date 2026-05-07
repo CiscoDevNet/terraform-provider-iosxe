@@ -689,6 +689,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewDeviceTrackingResource,
 		NewDeviceTrackingPolicyResource,
 		NewDHCPResource,
+		NewDHCPPoolResource,
 		NewDot1xResource,
 		NewEEMResource,
 		NewErrdisableResource,
@@ -714,7 +715,9 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewInterfaceSwitchportResource,
 		NewInterfaceTunnelResource,
 		NewInterfaceVLANResource,
+		NewIPv6PrefixListResource,
 		NewISISResource,
+		NewKeyChainResource,
 		NewL2VFIResource,
 		NewLicenseResource,
 		NewLineResource,
@@ -729,6 +732,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewObjectGroupResource,
 		NewOSPFResource,
 		NewOSPFVRFResource,
+		NewParameterMapResource,
 		NewPIMResource,
 		NewPIMIPv6Resource,
 		NewPlatformResource,
@@ -758,6 +762,8 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewVLANGroupResource,
 		NewVRFResource,
 		NewVTPResource,
+		NewZonePairSecurityResource,
+		NewZoneSecurityResource,
 	}
 }
 
@@ -815,6 +821,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewDeviceTrackingDataSource,
 		NewDeviceTrackingPolicyDataSource,
 		NewDHCPDataSource,
+		NewDHCPPoolDataSource,
 		NewDot1xDataSource,
 		NewEEMDataSource,
 		NewErrdisableDataSource,
@@ -840,7 +847,9 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewInterfaceSwitchportDataSource,
 		NewInterfaceTunnelDataSource,
 		NewInterfaceVLANDataSource,
+		NewIPv6PrefixListDataSource,
 		NewISISDataSource,
+		NewKeyChainDataSource,
 		NewL2VFIDataSource,
 		NewLicenseDataSource,
 		NewLineDataSource,
@@ -855,6 +864,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewObjectGroupDataSource,
 		NewOSPFDataSource,
 		NewOSPFVRFDataSource,
+		NewParameterMapDataSource,
 		NewPIMDataSource,
 		NewPIMIPv6DataSource,
 		NewPlatformDataSource,
@@ -884,6 +894,8 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewVLANGroupDataSource,
 		NewVRFDataSource,
 		NewVTPDataSource,
+		NewZonePairSecurityDataSource,
+		NewZoneSecurityDataSource,
 	}
 }
 

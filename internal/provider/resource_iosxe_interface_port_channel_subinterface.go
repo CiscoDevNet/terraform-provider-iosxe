@@ -415,6 +415,10 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 					},
 				},
 			},
+			"zone_member_security": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
+				Optional:            true,
+			},
 		},
 	}
 }

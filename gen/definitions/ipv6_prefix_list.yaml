@@ -1,0 +1,32 @@
+---
+name: IPv6 Prefix List
+path: /Cisco-IOS-XE-native:native/ipv6/prefix-lists
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: prefixes
+    type: List
+    attributes:
+      - yang_name: name
+        example: PREFIX_LIST_1
+        id: true
+      - yang_name: "no"
+        tf_name: seq
+        example: 10
+        id: true
+      - yang_name: action
+        example: permit
+      - yang_name: ip
+        example: "2001:db8::/32"
+      - yang_name: ge
+        example: 48
+      - yang_name: le
+        example: 128
+  - yang_name: prefix-list-description
+    type: List
+    attributes:
+      - yang_name: name
+        example: PREFIX_LIST_1
+        id: true
+      - yang_name: description
+        example: My IPv6 prefix list

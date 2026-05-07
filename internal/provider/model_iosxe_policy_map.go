@@ -51,8 +51,12 @@ type PolicyMap struct {
 	Classes     []PolicyMapClasses `tfsdk:"classes"`
 }
 type PolicyMapClasses struct {
-	Name    types.String              `tfsdk:"name"`
-	Actions []PolicyMapClassesActions `tfsdk:"actions"`
+	Name               types.String              `tfsdk:"name"`
+	ClassType          types.String              `tfsdk:"class_type"`
+	PolicyAction       types.String              `tfsdk:"policy_action"`
+	PolicyLog          types.Bool                `tfsdk:"policy_log"`
+	PolicyParameterMap types.String              `tfsdk:"policy_parameter_map"`
+	Actions            []PolicyMapClassesActions `tfsdk:"actions"`
 }
 type PolicyMapClassesActions struct {
 	Type                                 types.String `tfsdk:"type"`
@@ -99,8 +103,12 @@ type PolicyMapData struct {
 	Classes     []PolicyMapClassesData `tfsdk:"classes"`
 }
 type PolicyMapClassesData struct {
-	Name    types.String                  `tfsdk:"name"`
-	Actions []PolicyMapClassesActionsData `tfsdk:"actions"`
+	Name               types.String                  `tfsdk:"name"`
+	ClassType          types.String                  `tfsdk:"class_type"`
+	PolicyAction       types.String                  `tfsdk:"policy_action"`
+	PolicyLog          types.Bool                    `tfsdk:"policy_log"`
+	PolicyParameterMap types.String                  `tfsdk:"policy_parameter_map"`
+	Actions            []PolicyMapClassesActionsData `tfsdk:"actions"`
 }
 type PolicyMapClassesActionsData struct {
 	Type                                 types.String `tfsdk:"type"`
@@ -198,6 +206,20 @@ func (data PolicyMap) toBody(ctx context.Context, config PolicyMap) string {
 		for index, item := range data.Classes {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.ClassType.IsNull() && !item.ClassType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"type", item.ClassType.ValueString())
+			}
+			if !item.PolicyAction.IsNull() && !item.PolicyAction.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"policy.action", item.PolicyAction.ValueString())
+			}
+			if !item.PolicyLog.IsNull() && !item.PolicyLog.IsUnknown() {
+				if item.PolicyLog.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"policy.log", map[string]string{})
+				}
+			}
+			if !item.PolicyParameterMap.IsNull() && !item.PolicyParameterMap.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"policy.parameter-map", item.PolicyParameterMap.ValueString())
 			}
 			if len(item.Actions) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list", []interface{}{})
@@ -344,6 +366,22 @@ func (data PolicyMap) toBodyXML(ctx context.Context, config PolicyMap) string {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.ClassType.IsNull() && !item.ClassType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "type", item.ClassType.ValueString())
+			}
+			if !item.PolicyAction.IsNull() && !item.PolicyAction.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "policy/action", item.PolicyAction.ValueString())
+			}
+			if !item.PolicyLog.IsNull() && !item.PolicyLog.IsUnknown() {
+				if item.PolicyLog.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "policy/log", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "policy/log")
+				}
+			}
+			if !item.PolicyParameterMap.IsNull() && !item.PolicyParameterMap.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "policy/parameter-map", item.PolicyParameterMap.ValueString())
 			}
 			if len(item.Actions) > 0 {
 				for _, citem := range item.Actions {
@@ -541,6 +579,30 @@ func (data *PolicyMap) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Classes[i].Name = types.StringValue(value.String())
 		} else {
 			data.Classes[i].Name = types.StringNull()
+		}
+		if value := r.Get("type"); value.Exists() && !data.Classes[i].ClassType.IsNull() {
+			data.Classes[i].ClassType = types.StringValue(value.String())
+		} else {
+			data.Classes[i].ClassType = types.StringNull()
+		}
+		if value := r.Get("policy.action"); value.Exists() && !data.Classes[i].PolicyAction.IsNull() {
+			data.Classes[i].PolicyAction = types.StringValue(value.String())
+		} else {
+			data.Classes[i].PolicyAction = types.StringNull()
+		}
+		if value := r.Get("policy.log"); !data.Classes[i].PolicyLog.IsNull() {
+			if value.Exists() {
+				data.Classes[i].PolicyLog = types.BoolValue(true)
+			} else {
+				data.Classes[i].PolicyLog = types.BoolValue(false)
+			}
+		} else {
+			data.Classes[i].PolicyLog = types.BoolNull()
+		}
+		if value := r.Get("policy.parameter-map"); value.Exists() && !data.Classes[i].PolicyParameterMap.IsNull() {
+			data.Classes[i].PolicyParameterMap = types.StringValue(value.String())
+		} else {
+			data.Classes[i].PolicyParameterMap = types.StringNull()
 		}
 		for ci := range data.Classes[i].Actions {
 			keys := [...]string{"action-type"}
@@ -810,6 +872,30 @@ func (data *PolicyMap) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 		} else {
 			data.Classes[i].Name = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "type"); value.Exists() && !data.Classes[i].ClassType.IsNull() {
+			data.Classes[i].ClassType = types.StringValue(value.String())
+		} else {
+			data.Classes[i].ClassType = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "policy/action"); value.Exists() && !data.Classes[i].PolicyAction.IsNull() {
+			data.Classes[i].PolicyAction = types.StringValue(value.String())
+		} else {
+			data.Classes[i].PolicyAction = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "policy/log"); !data.Classes[i].PolicyLog.IsNull() {
+			if value.Exists() {
+				data.Classes[i].PolicyLog = types.BoolValue(true)
+			} else {
+				data.Classes[i].PolicyLog = types.BoolValue(false)
+			}
+		} else {
+			data.Classes[i].PolicyLog = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "policy/parameter-map"); value.Exists() && !data.Classes[i].PolicyParameterMap.IsNull() {
+			data.Classes[i].PolicyParameterMap = types.StringValue(value.String())
+		} else {
+			data.Classes[i].PolicyParameterMap = types.StringNull()
+		}
 		for ci := range data.Classes[i].Actions {
 			keys := [...]string{"action-type"}
 			keyValues := [...]string{data.Classes[i].Actions[ci].Type.ValueString()}
@@ -1048,6 +1134,20 @@ func (data *PolicyMap) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("type"); cValue.Exists() {
+				item.ClassType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("policy.action"); cValue.Exists() {
+				item.PolicyAction = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("policy.log"); cValue.Exists() {
+				item.PolicyLog = types.BoolValue(true)
+			} else {
+				item.PolicyLog = types.BoolValue(false)
+			}
+			if cValue := v.Get("policy.parameter-map"); cValue.Exists() {
+				item.PolicyParameterMap = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("action-list"); cValue.Exists() {
 				item.Actions = make([]PolicyMapClassesActions, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -1197,6 +1297,20 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("type"); cValue.Exists() {
+				item.ClassType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("policy.action"); cValue.Exists() {
+				item.PolicyAction = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("policy.log"); cValue.Exists() {
+				item.PolicyLog = types.BoolValue(true)
+			} else {
+				item.PolicyLog = types.BoolValue(false)
+			}
+			if cValue := v.Get("policy.parameter-map"); cValue.Exists() {
+				item.PolicyParameterMap = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("action-list"); cValue.Exists() {
 				item.Actions = make([]PolicyMapClassesActionsData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -1342,6 +1456,20 @@ func (data *PolicyMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "type"); cValue.Exists() {
+				item.ClassType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "policy/action"); cValue.Exists() {
+				item.PolicyAction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "policy/log"); cValue.Exists() {
+				item.PolicyLog = types.BoolValue(true)
+			} else {
+				item.PolicyLog = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "policy/parameter-map"); cValue.Exists() {
+				item.PolicyParameterMap = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "action-list"); cValue.Exists() {
 				item.Actions = make([]PolicyMapClassesActions, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
@@ -1486,6 +1614,20 @@ func (data *PolicyMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			item := PolicyMapClassesData{}
 			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "type"); cValue.Exists() {
+				item.ClassType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "policy/action"); cValue.Exists() {
+				item.PolicyAction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "policy/log"); cValue.Exists() {
+				item.PolicyLog = types.BoolValue(true)
+			} else {
+				item.PolicyLog = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "policy/parameter-map"); cValue.Exists() {
+				item.PolicyParameterMap = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "action-list"); cValue.Exists() {
 				item.Actions = make([]PolicyMapClassesActionsData, 0)
@@ -1751,6 +1893,18 @@ func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []s
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
+				if !state.Classes[i].PolicyParameterMap.IsNull() && data.Classes[j].PolicyParameterMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/policy/parameter-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Classes[i].PolicyLog.IsNull() && data.Classes[j].PolicyLog.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/policy/log", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Classes[i].PolicyAction.IsNull() && data.Classes[j].PolicyAction.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/policy/action", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Classes[i].ClassType.IsNull() && data.Classes[j].ClassType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1923,6 +2077,18 @@ func (data *PolicyMap) addDeletedItemsXML(ctx context.Context, state PolicyMap, 
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v", predicates, cpredicates))
 					}
 				}
+				if !state.Classes[i].PolicyParameterMap.IsNull() && data.Classes[j].PolicyParameterMap.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/policy/parameter-map", predicates))
+				}
+				if !state.Classes[i].PolicyLog.IsNull() && data.Classes[j].PolicyLog.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/policy/log", predicates))
+				}
+				if !state.Classes[i].PolicyAction.IsNull() && data.Classes[j].PolicyAction.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/policy/action", predicates))
+				}
+				if !state.Classes[i].ClassType.IsNull() && data.Classes[j].ClassType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/type", predicates))
+				}
 				break
 			}
 		}
@@ -1974,6 +2140,9 @@ func (data *PolicyMap) getEmptyLeafsDelete(ctx context.Context) []string {
 			if !data.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && !data.Classes[i].Actions[ci].ShapeAverageMs.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/ms", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
+		}
+		if !data.Classes[i].PolicyLog.IsNull() && !data.Classes[i].PolicyLog.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class=%v/policy/log", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 	if !data.Subscriber.IsNull() && !data.Subscriber.ValueBool() {
