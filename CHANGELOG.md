@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add `iosxe_ipv6_local_pool` resource and data source for IPv6 local address pool configuration (`ipv6 local pool`), including pool name, start prefix address, assigned prefix length, and pool group
+- Add `iosxe_ipv6_dhcp_pool` resource and data source for IPv6 DHCP pool configuration (`ipv6 dhcp pool`), including prefix delegation (pool and per-prefix), address allocation, DNS servers, domain names, vendor-specific options with suboptions, link addresses, SNTP servers, bootfile URL, information refresh, and import options
 - Add `bandwidth`, `tunnel_bandwidth_transmit`, `tunnel_bandwidth_receive`, `service_policy_input`, and `service_policy_output` attributes to `iosxe_interface_tunnel` resource and data source
 - Add minimum version documentation (IOS-XE >= 17.16.1) to `passive_interface_disable_*` attributes on `iosxe_ospf` and `iosxe_ospf_vrf` resources
 - Add `service_policy` attribute to `iosxe_policy_map` resource and data source for attaching a child service-policy under a policy-map class action (`service-policy <name>`)
