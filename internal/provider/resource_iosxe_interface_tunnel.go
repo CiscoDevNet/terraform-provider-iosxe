@@ -419,6 +419,35 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					},
 				},
 			},
+			"bandwidth": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 200000000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 200000000),
+				},
+			},
+			"tunnel_bandwidth_transmit": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Transmit bandwidth").AddIntegerRangeDescription(1, 10000000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000000),
+				},
+			},
+			"tunnel_bandwidth_receive": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Receive bandwidth").AddIntegerRangeDescription(1, 10000000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000000),
+				},
+			},
+			"service_policy_input": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the input of an interface").String,
+				Optional:            true,
+			},
+			"service_policy_output": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the output of an interface").String,
+				Optional:            true,
+			},
 			"zone_member_security": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
 				Optional:            true,

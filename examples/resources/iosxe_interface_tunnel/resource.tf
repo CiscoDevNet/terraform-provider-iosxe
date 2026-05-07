@@ -48,4 +48,7 @@ resource "iosxe_interface_tunnel" "example" {
   tunnel_vrf                       = "VRF1"
   ip_igmp_version                  = 3
   ip_tcp_adjust_mss                = 1400
+  bandwidth                        = 1000000
+  tunnel_bandwidth_transmit        = 1000
+  tunnel_bandwidth_receive         = 1000
 }

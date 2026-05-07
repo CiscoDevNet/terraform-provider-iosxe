@@ -95,6 +95,11 @@ type InterfaceTunnel struct {
 	IpNatOutside                       types.Bool                              `tfsdk:"ip_nat_outside"`
 	IpFlowMonitors                     []InterfaceTunnelIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
 	Ipv6FlowMonitors                   []InterfaceTunnelIpv6FlowMonitors       `tfsdk:"ipv6_flow_monitors"`
+	Bandwidth                          types.Int64                             `tfsdk:"bandwidth"`
+	TunnelBandwidthTransmit            types.Int64                             `tfsdk:"tunnel_bandwidth_transmit"`
+	TunnelBandwidthReceive             types.Int64                             `tfsdk:"tunnel_bandwidth_receive"`
+	ServicePolicyInput                 types.String                            `tfsdk:"service_policy_input"`
+	ServicePolicyOutput                types.String                            `tfsdk:"service_policy_output"`
 	ZoneMemberSecurity                 types.String                            `tfsdk:"zone_member_security"`
 }
 type InterfaceTunnelIpv6LinkLocalAddresses struct {
@@ -172,6 +177,11 @@ type InterfaceTunnelData struct {
 	IpNatOutside                       types.Bool                                  `tfsdk:"ip_nat_outside"`
 	IpFlowMonitors                     []InterfaceTunnelIpFlowMonitorsData         `tfsdk:"ip_flow_monitors"`
 	Ipv6FlowMonitors                   []InterfaceTunnelIpv6FlowMonitorsData       `tfsdk:"ipv6_flow_monitors"`
+	Bandwidth                          types.Int64                                 `tfsdk:"bandwidth"`
+	TunnelBandwidthTransmit            types.Int64                                 `tfsdk:"tunnel_bandwidth_transmit"`
+	TunnelBandwidthReceive             types.Int64                                 `tfsdk:"tunnel_bandwidth_receive"`
+	ServicePolicyInput                 types.String                                `tfsdk:"service_policy_input"`
+	ServicePolicyOutput                types.String                                `tfsdk:"service_policy_output"`
 	ZoneMemberSecurity                 types.String                                `tfsdk:"zone_member_security"`
 }
 type InterfaceTunnelIpv6LinkLocalAddressesData struct {
@@ -394,6 +404,21 @@ func (data InterfaceTunnel) toBody(ctx context.Context, config InterfaceTunnel) 
 		if data.IpNatOutside.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
 		}
+	}
+	if !data.Bandwidth.IsNull() && !data.Bandwidth.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bandwidth.kilobits", strconv.FormatInt(data.Bandwidth.ValueInt64(), 10))
+	}
+	if !data.TunnelBandwidthTransmit.IsNull() && !data.TunnelBandwidthTransmit.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.bandwidth.transmit", strconv.FormatInt(data.TunnelBandwidthTransmit.ValueInt64(), 10))
+	}
+	if !data.TunnelBandwidthReceive.IsNull() && !data.TunnelBandwidthReceive.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.bandwidth.receive", strconv.FormatInt(data.TunnelBandwidthReceive.ValueInt64(), 10))
+	}
+	if !data.ServicePolicyInput.IsNull() && !data.ServicePolicyInput.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-policy:service-policy.input", data.ServicePolicyInput.ValueString())
+	}
+	if !data.ServicePolicyOutput.IsNull() && !data.ServicePolicyOutput.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-policy:service-policy.output", data.ServicePolicyOutput.ValueString())
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-zone:zone-member.security", data.ZoneMemberSecurity.ValueString())
@@ -724,6 +749,21 @@ func (data InterfaceTunnel) toBodyXML(ctx context.Context, config InterfaceTunne
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-flow:flow/monitor-new", cBody.Res())
 		}
+	}
+	if !data.Bandwidth.IsNull() && !data.Bandwidth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/bandwidth/kilobits", strconv.FormatInt(data.Bandwidth.ValueInt64(), 10))
+	}
+	if !data.TunnelBandwidthTransmit.IsNull() && !data.TunnelBandwidthTransmit.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit", strconv.FormatInt(data.TunnelBandwidthTransmit.ValueInt64(), 10))
+	}
+	if !data.TunnelBandwidthReceive.IsNull() && !data.TunnelBandwidthReceive.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive", strconv.FormatInt(data.TunnelBandwidthReceive.ValueInt64(), 10))
+	}
+	if !data.ServicePolicyInput.IsNull() && !data.ServicePolicyInput.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/input", data.ServicePolicyInput.ValueString())
+	}
+	if !data.ServicePolicyOutput.IsNull() && !data.ServicePolicyOutput.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/output", data.ServicePolicyOutput.ValueString())
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
@@ -1214,6 +1254,31 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() && !data.Bandwidth.IsNull() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	} else {
+		data.Bandwidth = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.bandwidth.transmit"); value.Exists() && !data.TunnelBandwidthTransmit.IsNull() {
+		data.TunnelBandwidthTransmit = types.Int64Value(value.Int())
+	} else {
+		data.TunnelBandwidthTransmit = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.bandwidth.receive"); value.Exists() && !data.TunnelBandwidthReceive.IsNull() {
+		data.TunnelBandwidthReceive = types.Int64Value(value.Int())
+	} else {
+		data.TunnelBandwidthReceive = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.input"); value.Exists() && !data.ServicePolicyInput.IsNull() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyInput = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.output"); value.Exists() && !data.ServicePolicyOutput.IsNull() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyOutput = types.StringNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	} else {
@@ -1696,6 +1761,31 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bandwidth/kilobits"); value.Exists() && !data.Bandwidth.IsNull() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	} else {
+		data.Bandwidth = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit"); value.Exists() && !data.TunnelBandwidthTransmit.IsNull() {
+		data.TunnelBandwidthTransmit = types.Int64Value(value.Int())
+	} else {
+		data.TunnelBandwidthTransmit = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive"); value.Exists() && !data.TunnelBandwidthReceive.IsNull() {
+		data.TunnelBandwidthReceive = types.Int64Value(value.Int())
+	} else {
+		data.TunnelBandwidthReceive = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() && !data.ServicePolicyInput.IsNull() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyInput = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/output"); value.Exists() && !data.ServicePolicyOutput.IsNull() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyOutput = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	} else {
@@ -1959,6 +2049,21 @@ func (data *InterfaceTunnel) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.bandwidth.transmit"); value.Exists() {
+		data.TunnelBandwidthTransmit = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.bandwidth.receive"); value.Exists() {
+		data.TunnelBandwidthReceive = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.output"); value.Exists() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -2220,6 +2325,21 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 			return true
 		})
 	}
+	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.bandwidth.transmit"); value.Exists() {
+		data.TunnelBandwidthTransmit = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.bandwidth.receive"); value.Exists() {
+		data.TunnelBandwidthReceive = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.output"); value.Exists() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -2476,6 +2596,21 @@ func (data *InterfaceTunnel) fromBodyXML(ctx context.Context, res xmldot.Result)
 			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bandwidth/kilobits"); value.Exists() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit"); value.Exists() {
+		data.TunnelBandwidthTransmit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive"); value.Exists() {
+		data.TunnelBandwidthReceive = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/output"); value.Exists() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
@@ -2734,6 +2869,21 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bandwidth/kilobits"); value.Exists() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit"); value.Exists() {
+		data.TunnelBandwidthTransmit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive"); value.Exists() {
+		data.TunnelBandwidthReceive = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/input"); value.Exists() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/output"); value.Exists() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -2747,6 +2897,21 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	deletedItems := make([]string, 0)
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", state.getPath()))
+	}
+	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", state.getPath()))
+	}
+	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
+	}
+	if !state.TunnelBandwidthReceive.IsNull() && data.TunnelBandwidthReceive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive", state.getPath()))
+	}
+	if !state.TunnelBandwidthTransmit.IsNull() && data.TunnelBandwidthTransmit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit", state.getPath()))
+	}
+	if !state.Bandwidth.IsNull() && data.Bandwidth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bandwidth/kilobits", state.getPath()))
 	}
 	for i := range state.Ipv6FlowMonitors {
 		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
@@ -3038,6 +3203,21 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 	b := netconf.NewBody(body)
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
+	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-policy:service-policy/output")
+	}
+	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-policy:service-policy/input")
+	}
+	if !state.TunnelBandwidthReceive.IsNull() && data.TunnelBandwidthReceive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive")
+	}
+	if !state.TunnelBandwidthTransmit.IsNull() && data.TunnelBandwidthTransmit.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit")
+	}
+	if !state.Bandwidth.IsNull() && data.Bandwidth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bandwidth/kilobits")
 	}
 	for i := range state.Ipv6FlowMonitors {
 		stateKeys := [...]string{"name", "direction"}
@@ -3421,6 +3601,21 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	if !data.ZoneMemberSecurity.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", data.getPath()))
 	}
+	if !data.ServicePolicyOutput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", data.getPath()))
+	}
+	if !data.ServicePolicyInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
+	}
+	if !data.TunnelBandwidthReceive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive", data.getPath()))
+	}
+	if !data.TunnelBandwidthTransmit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit", data.getPath()))
+	}
+	if !data.Bandwidth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bandwidth/kilobits", data.getPath()))
+	}
 	for i := range data.Ipv6FlowMonitors {
 		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
 
@@ -3587,6 +3782,21 @@ func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string)
 	b := netconf.NewBody(body)
 	if !data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
+	if !data.ServicePolicyOutput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/output")
+	}
+	if !data.ServicePolicyInput.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-policy:service-policy/input")
+	}
+	if !data.TunnelBandwidthReceive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/receive")
+	}
+	if !data.TunnelBandwidthTransmit.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/bandwidth/transmit")
+	}
+	if !data.Bandwidth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bandwidth/kilobits")
 	}
 	for i := range data.Ipv6FlowMonitors {
 		keys := [...]string{"name", "direction"}
