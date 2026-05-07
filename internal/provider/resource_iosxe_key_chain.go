@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -46,26 +47,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &PolicyMapResource{}
-	_ resource.ResourceWithImportState = &PolicyMapResource{}
+	_ resource.Resource                = &KeyChainResource{}
+	_ resource.ResourceWithImportState = &KeyChainResource{}
 )
 
-func NewPolicyMapResource() resource.Resource {
-	return &PolicyMapResource{}
+func NewKeyChainResource() resource.Resource {
+	return &KeyChainResource{}
 }
 
-type PolicyMapResource struct {
+type KeyChainResource struct {
 	data *IosxeProviderData
 }
 
-func (r *PolicyMapResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_policy_map"
+func (r *KeyChainResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_key_chain"
 }
 
-func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *KeyChainResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Policy Map configuration.",
+		MarkdownDescription: "This resource can manage the Key Chain configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -80,271 +81,305 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name of the policy map").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("type of the policy-map").AddStringEnumDescription("access-control", "appnav", "control", "epbr", "inspect", "ngsw-qos", "packet-service", "performance-monitor", "queueing", "service", "service-chain", "umbrella").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("access-control", "appnav", "control", "epbr", "inspect", "ngsw-qos", "packet-service", "performance-monitor", "queueing", "service", "service-chain", "umbrella"),
-				},
-			},
-			"subscriber": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Domain name of the policy map").String,
+			"macsec": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
-			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Policy-Map description").String,
+			"tcp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 200),
-				},
 			},
-			"classes": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("policy criteria").String,
+			"keys": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure a key").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+						"id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key identifier - (0-2147483674) for regular key chain and hex number with even number digits for macsec key chain").String,
 							Required:            true,
 						},
-						"class_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("type of the class-map").AddStringEnumDescription("inspect").String,
+						"cryptographic_algorithm": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("hmac-sha-1", "hmac-sha-256", "hmac-sha-384", "hmac-sha-512", "md5").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("inspect"),
+								stringvalidator.OneOf("hmac-sha-1", "hmac-sha-256", "hmac-sha-384", "hmac-sha-512", "md5"),
 							},
 						},
-						"policy_action": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cxsc", "drop", "inspect", "pass").String,
+						"cryptographic_algorithm_tcp": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("aes-128-cmac", "hmac-sha-1", "hmac-sha-256").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("cxsc", "drop", "inspect", "pass"),
+								stringvalidator.OneOf("aes-128-cmac", "hmac-sha-1", "hmac-sha-256"),
 							},
 						},
-						"policy_log": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Send logging message for drop or pass").String,
+						"cryptographic_algorithm_macsec": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("aes-128-cmac", "aes-256-cmac").String,
 							Optional:            true,
-						},
-						"policy_parameter_map": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"actions": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"type": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("bandwidth", "compression", "dbl", "drop", "estimate", "fair-queue", "forward", "netflow-sampler", "police", "priority", "queue-buffers", "queue-limit", "random-detect", "service-policy", "set", "shape", "trust").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.OneOf("bandwidth", "compression", "dbl", "drop", "estimate", "fair-queue", "forward", "netflow-sampler", "police", "priority", "queue-buffers", "queue-limit", "random-detect", "service-policy", "set", "shape", "trust"),
-										},
-									},
-									"bandwidth_bits": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 100000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 100000000),
-										},
-									},
-									"bandwidth_percent": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("% of total Bandwidth").AddIntegerRangeDescription(1, 100).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 100),
-										},
-									},
-									"bandwidth_remaining_option": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("percent", "ratio").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.OneOf("percent", "ratio"),
-										},
-									},
-									"bandwidth_remaining_percent": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("% of the remaining bandwidth").AddIntegerRangeDescription(1, 100).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 100),
-										},
-									},
-									"bandwidth_remaining_ratio": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("ratio for sharing excess bandwidth").AddIntegerRangeDescription(1, 65536).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 65536),
-										},
-									},
-									"priority_level": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Multi-Level Priority Queue").AddIntegerRangeDescription(1, 2).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 2),
-										},
-									},
-									"priority_burst": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(32, 2000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(32, 2000000),
-										},
-									},
-									"queue_limit": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 64000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 64000000),
-										},
-									},
-									"queue_limit_type": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("bytes", "ms", "packets", "us").String,
-										Optional:            true,
-										Validators: []validator.String{
-											stringvalidator.OneOf("bytes", "ms", "packets", "us"),
-										},
-									},
-									"shape_average_bit_rate": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Target Bit Rate (bits/sec)").AddIntegerRangeDescription(1000, 100000000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1000, 100000000000),
-										},
-									},
-									"shape_average_bits_per_interval_sustained": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("bits per interval, sustained. Recommend not to configure, algo finds the best value").AddIntegerRangeDescription(32, 800000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(32, 800000000),
-										},
-									},
-									"shape_average_bits_per_interval_excess": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("bits per interval, excess.").AddIntegerRangeDescription(0, 154400000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(0, 154400000),
-										},
-									},
-									"shape_average_percent": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("% of interface bandwidth for Committed information rate").AddIntegerRangeDescription(0, 100).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(0, 100),
-										},
-									},
-									"shape_average_burst_size_sustained": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("sustained burst in milliseconds. Recommend not to configure it, the algorithm will find out the best value").AddIntegerRangeDescription(10, 2000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(10, 2000),
-										},
-									},
-									"shape_average_ms": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("milliseconds").String,
-										Optional:            true,
-									},
-									"police_target_bitrate_conform_transmit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
-										Optional:            true,
-									},
-									"police_target_bitrate_exceed_transmit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
-										Optional:            true,
-									},
-									"police_target_bitrate": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Target bit rate (bits per second) (postfix k, m, g optional),decimal point allowed").AddIntegerRangeDescription(8000, 100000000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(8000, 100000000000),
-										},
-									},
-									"police_target_bitrate_conform_burst_byte": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Burst Byte").AddIntegerRangeDescription(100, 512000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(100, 512000000),
-										},
-									},
-									"police_target_bitrate_excess_burst_byte": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Burst Byte").AddIntegerRangeDescription(100, 512000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(100, 512000000),
-										},
-									},
-									"police_target_bitrate_exceed_drop": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("drop packet").String,
-										Optional:            true,
-									},
-									"police_cir": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Committed information rate").AddIntegerRangeDescription(8000, 100000000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(8000, 100000000000),
-										},
-									},
-									"police_bc": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Conform burst").AddIntegerRangeDescription(1000, 512000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1000, 512000000),
-										},
-									},
-									"police_be": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Excess burst").AddIntegerRangeDescription(1000, 512000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1000, 512000000),
-										},
-									},
-									"police_pir": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Peak Information Rate").AddIntegerRangeDescription(8000, 64000000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(8000, 64000000000),
-										},
-									},
-									"police_pir_be": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Excess burst").AddIntegerRangeDescription(1000, 512000000).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1000, 512000000),
-										},
-									},
-									"police_cir_conform_transmit": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
-										Optional:            true,
-									},
-									"police_cir_exceed_drop": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("drop packet").String,
-										Optional:            true,
-									},
-									"police_rate_percent": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 100).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(0, 100),
-										},
-									},
-									"queue_buffers_ratio": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Relative buffer size for queue").AddIntegerRangeDescription(0, 100).String,
-										Optional:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(0, 100),
-										},
-									},
-									"set_dscp": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-								},
+							Validators: []validator.String{
+								stringvalidator.OneOf("aes-128-cmac", "aes-256-cmac"),
 							},
+						},
+						"key_string_encryption": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key encryption method").AddStringEnumDescription("0", "6", "7").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0", "6", "7"),
+							},
+						},
+						"key_string_key": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							Sensitive:           true,
+						},
+						"key_string_key_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"key_string_key_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
+						"accept_lifetime_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							Optional:            true,
+						},
+						"accept_lifetime_start_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"accept_lifetime_start_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"accept_lifetime_start_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"accept_lifetime_start_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"accept_lifetime_duration": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime duration (in seconds)").AddIntegerRangeDescription(1, 2147483646).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483646),
+							},
+						},
+						"accept_lifetime_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							Optional:            true,
+						},
+						"accept_lifetime_end_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"accept_lifetime_end_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"accept_lifetime_end_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"accept_lifetime_end_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"send_lifetime_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							Optional:            true,
+						},
+						"send_lifetime_start_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"send_lifetime_start_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"send_lifetime_start_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"send_lifetime_start_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"send_lifetime_duration": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime duration (in seconds)").AddIntegerRangeDescription(1, 2147483646).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483646),
+							},
+						},
+						"send_lifetime_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							Optional:            true,
+						},
+						"send_lifetime_end_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"send_lifetime_end_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"send_lifetime_end_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"send_lifetime_end_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"macsec_lifetime_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify time in local timezone").String,
+							Optional:            true,
+						},
+						"macsec_lifetime_start_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"macsec_lifetime_start_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"macsec_lifetime_start_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"macsec_lifetime_start_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime start year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"macsec_lifetime_duration": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime duration (in seconds)").AddIntegerRangeDescription(1, 2147483646).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483646),
+							},
+						},
+						"macsec_lifetime_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lifetime").String,
+							Optional:            true,
+						},
+						"macsec_lifetime_end_time": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end time").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-1]?[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])`), ""),
+							},
+						},
+						"macsec_lifetime_end_month": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end month").AddStringEnumDescription("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
+							},
+						},
+						"macsec_lifetime_end_day": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end day").AddIntegerRangeDescription(1, 31).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 31),
+							},
+						},
+						"macsec_lifetime_end_year": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key lifetime end year").AddIntegerRangeDescription(1993, 2035).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1993, 2035),
+							},
+						},
+						"send_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("configure a send id").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+						"recv_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("configure a receive id").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+						"include_tcp_options": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Include tcp options in HMAC calculation").String,
+							Optional:            true,
+						},
+						"accept_ao_mismatch": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Accept packets with HMAC mismatch").String,
+							Optional:            true,
 						},
 					},
 				},
@@ -353,7 +388,7 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 	}
 }
 
-func (r *PolicyMapResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *KeyChainResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -365,8 +400,8 @@ func (r *PolicyMapResource) Configure(_ context.Context, req resource.ConfigureR
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *PolicyMapResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config PolicyMap
+func (r *KeyChainResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config KeyChain
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -456,8 +491,8 @@ func (r *PolicyMapResource) Create(ctx context.Context, req resource.CreateReque
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *PolicyMapResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state PolicyMap
+func (r *KeyChainResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state KeyChain
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -483,7 +518,7 @@ func (r *PolicyMapResource) Read(ctx context.Context, req resource.ReadRequest, 
 		if device.Protocol == "restconf" {
 			res, err := device.RestconfClient.GetData(state.Id.ValueString())
 			if res.StatusCode == 404 {
-				state = PolicyMap{Device: state.Device, Id: state.Id}
+				state = KeyChain{Device: state.Device, Id: state.Id}
 			} else {
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -539,8 +574,8 @@ func (r *PolicyMapResource) Read(ctx context.Context, req resource.ReadRequest, 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *PolicyMapResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config PolicyMap
+func (r *KeyChainResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config KeyChain
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -647,8 +682,8 @@ func (r *PolicyMapResource) Update(ctx context.Context, req resource.UpdateReque
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *PolicyMapResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state PolicyMap
+func (r *KeyChainResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state KeyChain
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -741,7 +776,7 @@ func (r *PolicyMapResource) Delete(ctx context.Context, req resource.DeleteReque
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *PolicyMapResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *KeyChainResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -760,7 +795,7 @@ func (r *PolicyMapResource) ImportState(ctx context.Context, req resource.Import
 	}
 
 	// construct path for 'id' attribute
-	var state PolicyMap
+	var state KeyChain
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

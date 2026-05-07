@@ -850,8 +850,8 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mst/configuration/instance=%v/vlan-ids", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []int
-						data.MstInstances[i].VlanIds.ElementsAs(ctx, &dataValues, false)
-						state.MstInstances[j].VlanIds.ElementsAs(ctx, &stateValues, false)
+						data.MstInstances[j].VlanIds.ElementsAs(ctx, &dataValues, false)
+						state.MstInstances[i].VlanIds.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -968,8 +968,8 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 						}
 					} else {
 						var dataValues, stateValues []int
-						data.MstInstances[i].VlanIds.ElementsAs(ctx, &dataValues, false)
-						state.MstInstances[j].VlanIds.ElementsAs(ctx, &stateValues, false)
+						data.MstInstances[j].VlanIds.ElementsAs(ctx, &dataValues, false)
+						state.MstInstances[i].VlanIds.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {

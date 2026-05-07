@@ -4595,8 +4595,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/rt/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetExtcomunityRt.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetExtcomunityRt.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetExtcomunityRt.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetExtcomunityRt.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4631,8 +4631,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetCommunities.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetCommunities.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetCommunities.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetCommunities.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4704,8 +4704,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/extcommunity/rt/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetExtcomunityRtLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetExtcomunityRtLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetExtcomunityRtLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetExtcomunityRtLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4740,8 +4740,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/community/community-well-known/community-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetCommunitiesLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetCommunitiesLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetCommunitiesLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetCommunitiesLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4809,8 +4809,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ipv6/next-hop/ipv6", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpv6NextHop.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpv6NextHop.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpv6NextHop.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6NextHop.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4830,8 +4830,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ipv6/default/next-hop/ipv6", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpv6DefaultNextHop.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpv6DefaultNextHop.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpv6DefaultNextHop.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6DefaultNextHop.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4854,8 +4854,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ipv6/address/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpv6Address.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpv6Address.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpv6Address.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6Address.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4884,8 +4884,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4905,8 +4905,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/global/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4926,8 +4926,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/default/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpDefaultNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpDefaultNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpDefaultNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpDefaultNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4947,8 +4947,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/default/global/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4971,8 +4971,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/interface-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetInterfaces.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetInterfaces.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetInterfaces.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetInterfaces.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -4995,8 +4995,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/default/interface-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetDefaultInterfaces.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetDefaultInterfaces.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetDefaultInterfaces.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetDefaultInterfaces.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5016,8 +5016,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/local-preference/values", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchLocalPreferences.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchLocalPreferences.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchLocalPreferences.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchLocalPreferences.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5037,8 +5037,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/extcommunity/extcommunity-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchExtcommunityLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchExtcommunityLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchExtcommunityLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchExtcommunityLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5061,8 +5061,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/bgp-community/community-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchCommunityLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchCommunityLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchCommunityLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchCommunityLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5082,8 +5082,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/as-path/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchAsPaths.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchAsPaths.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchAsPaths.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchAsPaths.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5103,8 +5103,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/local-preference/values", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchLocalPreferencesLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchLocalPreferencesLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchLocalPreferencesLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchLocalPreferencesLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5124,8 +5124,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/extcommunity/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchExtcommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchExtcommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchExtcommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchExtcommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5145,8 +5145,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/community/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchCommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchCommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchCommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchCommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5166,8 +5166,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/as-path/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchAsPathsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchAsPathsLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchAsPathsLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchAsPathsLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5190,8 +5190,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/tag/tag_value", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchTags.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchTags.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchTags.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchTags.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5217,8 +5217,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/ospfv3", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolOspfv3.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolOspfv3.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolOspfv3.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolOspfv3.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5238,8 +5238,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/ospf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolOspf.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolOspf.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolOspf.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolOspf.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5265,8 +5265,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/eigrp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolEigrp.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolEigrp.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolEigrp.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolEigrp.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5289,8 +5289,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/bgp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolBgp.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolBgp.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolBgp.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolBgp.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5346,8 +5346,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/next-hop/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpNextHopPrefixLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpNextHopPrefixLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpNextHopPrefixLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpNextHopPrefixLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5367,8 +5367,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/next-hop/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpNextHopAccessLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpNextHopAccessLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpNextHopAccessLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpNextHopAccessLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5388,8 +5388,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/address/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpAddressPrefixLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpAddressPrefixLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpAddressPrefixLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpAddressPrefixLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5409,8 +5409,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/address/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpAddressAccessLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpAddressAccessLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpAddressAccessLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpAddressAccessLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5430,8 +5430,8 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/interface/interface", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchInterfaces.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchInterfaces.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchInterfaces.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchInterfaces.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5522,8 +5522,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetExtcomunityRt.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetExtcomunityRt.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetExtcomunityRt.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetExtcomunityRt.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5562,8 +5562,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetCommunities.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetCommunities.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetCommunities.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetCommunities.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5644,8 +5644,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetExtcomunityRtLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetExtcomunityRtLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetExtcomunityRtLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetExtcomunityRtLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5684,8 +5684,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetCommunitiesLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetCommunitiesLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetCommunitiesLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetCommunitiesLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5757,8 +5757,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpv6NextHop.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpv6NextHop.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpv6NextHop.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6NextHop.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5782,8 +5782,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpv6DefaultNextHop.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpv6DefaultNextHop.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpv6DefaultNextHop.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6DefaultNextHop.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5810,8 +5810,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpv6Address.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpv6Address.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpv6Address.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpv6Address.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5844,8 +5844,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5869,8 +5869,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5894,8 +5894,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpDefaultNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpDefaultNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpDefaultNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpDefaultNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5919,8 +5919,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5947,8 +5947,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetInterfaces.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetInterfaces.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetInterfaces.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetInterfaces.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -5975,8 +5975,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].SetDefaultInterfaces.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].SetDefaultInterfaces.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].SetDefaultInterfaces.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].SetDefaultInterfaces.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6000,8 +6000,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchLocalPreferences.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchLocalPreferences.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchLocalPreferences.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchLocalPreferences.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6025,8 +6025,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchExtcommunityLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchExtcommunityLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchExtcommunityLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchExtcommunityLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6053,8 +6053,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchCommunityLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchCommunityLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchCommunityLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchCommunityLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6078,8 +6078,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchAsPaths.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchAsPaths.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchAsPaths.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchAsPaths.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6103,8 +6103,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchLocalPreferencesLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchLocalPreferencesLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchLocalPreferencesLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchLocalPreferencesLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6128,8 +6128,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchExtcommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchExtcommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchExtcommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchExtcommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6153,8 +6153,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchCommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchCommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchCommunityListsLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchCommunityListsLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6178,8 +6178,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchAsPathsLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchAsPathsLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchAsPathsLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchAsPathsLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6206,8 +6206,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []int
-						data.Entries[i].MatchTags.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchTags.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchTags.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchTags.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6237,8 +6237,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolOspfv3.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolOspfv3.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolOspfv3.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolOspfv3.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6262,8 +6262,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolOspf.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolOspf.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolOspf.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolOspf.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6293,8 +6293,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolEigrp.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolEigrp.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolEigrp.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolEigrp.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6321,8 +6321,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchSourceProtocolBgp.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchSourceProtocolBgp.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchSourceProtocolBgp.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchSourceProtocolBgp.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6382,8 +6382,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpNextHopPrefixLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpNextHopPrefixLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpNextHopPrefixLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpNextHopPrefixLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6407,8 +6407,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpNextHopAccessLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpNextHopAccessLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpNextHopAccessLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpNextHopAccessLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6432,8 +6432,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpAddressPrefixLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpAddressPrefixLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpAddressPrefixLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpAddressPrefixLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6457,8 +6457,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchIpAddressAccessLists.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchIpAddressAccessLists.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchIpAddressAccessLists.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchIpAddressAccessLists.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -6482,8 +6482,8 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Entries[i].MatchInterfaces.ElementsAs(ctx, &dataValues, false)
-						state.Entries[j].MatchInterfaces.ElementsAs(ctx, &stateValues, false)
+						data.Entries[j].MatchInterfaces.ElementsAs(ctx, &dataValues, false)
+						state.Entries[i].MatchInterfaces.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
