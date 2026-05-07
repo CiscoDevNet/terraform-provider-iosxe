@@ -373,7 +373,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional:            true,
 			},
 			"passive_interface_disable_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -385,7 +385,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_two_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("TwoGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -397,7 +397,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_five_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("FiveGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -409,7 +409,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_ten_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("TenGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -421,7 +421,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_twenty_five_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("TwentyFiveGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -433,7 +433,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_forty_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("FortyGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -445,7 +445,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_hundred_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("HundredGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -457,7 +457,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_two_hundred_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("TwoHundredGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -469,7 +469,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_four_hundred_gigabit_ethernets": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("FourHundredGigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -481,7 +481,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_loopbacks": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -493,7 +493,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_vlans": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Vlan interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -505,7 +505,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_tunnels": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Tunnel interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -517,7 +517,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_port_channels": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Port-channel interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -529,7 +529,7 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"passive_interface_disable_port_channel_subinterfaces": schema.SetNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Port-channel subinterfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

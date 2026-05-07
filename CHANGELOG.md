@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add minimum version documentation (IOS-XE >= 17.16.1) to `passive_interface_disable_*` attributes on `iosxe_ospf` and `iosxe_ospf_vrf` resources
 - Add `service_policy` attribute to `iosxe_policy_map` resource and data source for attaching a child service-policy under a policy-map class action (`service-policy <name>`)
 - Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association. DHCP option IP addresses use `ip` (`ip-ordered`, 17.15+) and `ip_legacy` (`ip-new`, pre-17.15) attributes to handle the YANG deprecation of `ip-new` in favor of `ip-ordered`
 - Add `iosxe_key_chain` resource and data source for key chain management (`key chain`), including keys with cryptographic algorithms (hmac-sha-256, hmac-sha-512, md5, etc.), key strings, accept/send lifetimes, and support for TCP AO and MACsec key chain modes
