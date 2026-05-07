@@ -1403,8 +1403,8 @@ func (data *DHCPPool) getDeletedItems(ctx context.Context, state DHCPPool) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-new", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Options[i].IpLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Options[j].IpLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Options[j].IpLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Options[i].IpLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -1424,8 +1424,8 @@ func (data *DHCPPool) getDeletedItems(ctx context.Context, state DHCPPool) []str
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/option/option-range=%v/ip-ordered", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Options[i].Ip.ElementsAs(ctx, &dataValues, false)
-						state.Options[j].Ip.ElementsAs(ctx, &stateValues, false)
+						data.Options[j].Ip.ElementsAs(ctx, &dataValues, false)
+						state.Options[i].Ip.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -1640,8 +1640,8 @@ func (data *DHCPPool) addDeletedItemsXML(ctx context.Context, state DHCPPool, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Options[i].IpLegacy.ElementsAs(ctx, &dataValues, false)
-						state.Options[j].IpLegacy.ElementsAs(ctx, &stateValues, false)
+						data.Options[j].IpLegacy.ElementsAs(ctx, &dataValues, false)
+						state.Options[i].IpLegacy.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -1665,8 +1665,8 @@ func (data *DHCPPool) addDeletedItemsXML(ctx context.Context, state DHCPPool, bo
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Options[i].Ip.ElementsAs(ctx, &dataValues, false)
-						state.Options[j].Ip.ElementsAs(ctx, &stateValues, false)
+						data.Options[j].Ip.ElementsAs(ctx, &dataValues, false)
+						state.Options[i].Ip.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
