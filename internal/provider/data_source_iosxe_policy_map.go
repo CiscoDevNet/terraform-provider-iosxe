@@ -242,6 +242,10 @@ func (d *PolicyMapDataSource) Schema(ctx context.Context, req datasource.SchemaR
 										MarkdownDescription: "",
 										Computed:            true,
 									},
+									"service_policy": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
 								},
 							},
 						},

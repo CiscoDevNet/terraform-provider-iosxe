@@ -85,6 +85,18 @@ func (d *CryptoIPSecProfileDataSource) Schema(ctx context.Context, req datasourc
 				MarkdownDescription: "Specify isakmp Profile",
 				Computed:            true,
 			},
+			"set_pfs_group": schema.StringAttribute{
+				MarkdownDescription: "List of supported DH groups",
+				Computed:            true,
+			},
+			"set_security_association_lifetime_seconds": schema.Int64Attribute{
+				MarkdownDescription: "Time-based key duration in seconds",
+				Computed:            true,
+			},
+			"set_security_association_lifetime_seconds_legacy": schema.Int64Attribute{
+				MarkdownDescription: "Security association lifetime in seconds. Use this for IOS-XE versions before `17.15.1`.",
+				Computed:            true,
+			},
 		},
 	}
 }

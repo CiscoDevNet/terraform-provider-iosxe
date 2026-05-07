@@ -38,11 +38,15 @@ func TestAccIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_advertise_l2vpn_evpn", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_connected_route_map", "RM_BGP_CONNECTED"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_connected_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_router_id_loopback", "101"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.ipv4_address", "50.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.ipv4_mask", "255.255.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.summary_only", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_static_route_map", "RM_BGP_STATIC"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_static_metric", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks_mask.0.network", "12.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks_mask.0.mask", "255.255.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks_mask.0.route_map", "RM1"))
@@ -153,6 +157,8 @@ func testAccIosxeBGPAddressFamilyIPv4VRFConfig_all() string {
 	config += `		name = "VRF1"` + "\n"
 	config += `		ipv4_unicast_advertise_l2vpn_evpn = true` + "\n"
 	config += `		ipv4_unicast_redistribute_connected = true` + "\n"
+	config += `		ipv4_unicast_redistribute_connected_route_map = "RM_BGP_CONNECTED"` + "\n"
+	config += `		ipv4_unicast_redistribute_connected_metric = 100` + "\n"
 	config += `		ipv4_unicast_router_id_loopback = 101` + "\n"
 	config += `		ipv4_unicast_aggregate_addresses = [{` + "\n"
 	config += `			ipv4_address = "50.0.0.0"` + "\n"
@@ -160,6 +166,8 @@ func testAccIosxeBGPAddressFamilyIPv4VRFConfig_all() string {
 	config += `			summary_only = true` + "\n"
 	config += `		}]` + "\n"
 	config += `		ipv4_unicast_redistribute_static = true` + "\n"
+	config += `		ipv4_unicast_redistribute_static_route_map = "RM_BGP_STATIC"` + "\n"
+	config += `		ipv4_unicast_redistribute_static_metric = 200` + "\n"
 	config += `		ipv4_unicast_networks_mask = [{` + "\n"
 	config += `			network = "12.0.0.0"` + "\n"
 	config += `			mask = "255.255.0.0"` + "\n"

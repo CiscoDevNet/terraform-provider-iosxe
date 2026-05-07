@@ -38,7 +38,11 @@ func TestAccIosxeBGPAddressFamilyIPv6VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_advertise_l2vpn_evpn", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_connected_route_map", "RM_BGP6_CONNECTED"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_connected_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_static_route_map", "RM_BGP6_STATIC"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_static_metric", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.network", "2001:1234::/64"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.route_map", "RM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.backdoor", "true"))
@@ -134,7 +138,11 @@ func testAccIosxeBGPAddressFamilyIPv6VRFConfig_all() string {
 	config += `		name = "VRF1"` + "\n"
 	config += `		ipv6_unicast_advertise_l2vpn_evpn = true` + "\n"
 	config += `		ipv6_unicast_redistribute_connected = true` + "\n"
+	config += `		ipv6_unicast_redistribute_connected_route_map = "RM_BGP6_CONNECTED"` + "\n"
+	config += `		ipv6_unicast_redistribute_connected_metric = 100` + "\n"
 	config += `		ipv6_unicast_redistribute_static = true` + "\n"
+	config += `		ipv6_unicast_redistribute_static_route_map = "RM_BGP6_STATIC"` + "\n"
+	config += `		ipv6_unicast_redistribute_static_metric = 200` + "\n"
 	config += `		ipv6_unicast_networks = [{` + "\n"
 	config += `			network = "2001:1234::/64"` + "\n"
 	config += `			route_map = "RM1"` + "\n"
