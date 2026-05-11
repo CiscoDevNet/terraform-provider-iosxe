@@ -2,6 +2,7 @@
 name: Zone Pair Security
 path: /Cisco-IOS-XE-native:native/zone-pair/Cisco-IOS-XE-zone:security[id=%v]
 no_delete_attributes: true
+test_tags: [C8000V]
 doc_category: Security
 attributes:
   - yang_name: id
