@@ -116,6 +116,14 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Direction the flow was monitored in",
 				Computed:            true,
 			},
+			"match_flow_cts_destination_group_tag": schema.BoolAttribute{
+				MarkdownDescription: "destination group-tag",
+				Computed:            true,
+			},
+			"match_flow_cts_source_group_tag": schema.BoolAttribute{
+				MarkdownDescription: "source group-tag",
+				Computed:            true,
+			},
 			"match_application_name": schema.BoolAttribute{
 				MarkdownDescription: "Application name",
 				Computed:            true,

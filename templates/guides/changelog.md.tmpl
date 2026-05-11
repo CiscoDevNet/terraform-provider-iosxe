@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
 - Add `bandwidth`, `tunnel_bandwidth_transmit`, `tunnel_bandwidth_receive`, `service_policy_input`, and `service_policy_output` attributes to `iosxe_interface_tunnel` resource and data source
 - Add minimum version documentation (IOS-XE >= 17.16.1) to `passive_interface_disable_*` attributes on `iosxe_ospf` and `iosxe_ospf_vrf` resources
 - Add `service_policy` attribute to `iosxe_policy_map` resource and data source for attaching a child service-policy under a policy-map class action (`service-policy <name>`)

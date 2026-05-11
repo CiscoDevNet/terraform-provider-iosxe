@@ -54,6 +54,8 @@ type FlowRecord struct {
 	MatchTransportDestinationPort                  types.Bool   `tfsdk:"match_transport_destination_port"`
 	MatchInterfaceInput                            types.Bool   `tfsdk:"match_interface_input"`
 	MatchFlowDirection                             types.Bool   `tfsdk:"match_flow_direction"`
+	MatchFlowCtsDestinationGroupTag                types.Bool   `tfsdk:"match_flow_cts_destination_group_tag"`
+	MatchFlowCtsSourceGroupTag                     types.Bool   `tfsdk:"match_flow_cts_source_group_tag"`
 	MatchApplicationName                           types.Bool   `tfsdk:"match_application_name"`
 	MatchFlowObservationPoint                      types.Bool   `tfsdk:"match_flow_observation_point"`
 	MatchIpv4Version                               types.Bool   `tfsdk:"match_ipv4_version"`
@@ -104,6 +106,8 @@ type FlowRecordData struct {
 	MatchTransportDestinationPort                  types.Bool   `tfsdk:"match_transport_destination_port"`
 	MatchInterfaceInput                            types.Bool   `tfsdk:"match_interface_input"`
 	MatchFlowDirection                             types.Bool   `tfsdk:"match_flow_direction"`
+	MatchFlowCtsDestinationGroupTag                types.Bool   `tfsdk:"match_flow_cts_destination_group_tag"`
+	MatchFlowCtsSourceGroupTag                     types.Bool   `tfsdk:"match_flow_cts_source_group_tag"`
 	MatchApplicationName                           types.Bool   `tfsdk:"match_application_name"`
 	MatchFlowObservationPoint                      types.Bool   `tfsdk:"match_flow_observation_point"`
 	MatchIpv4Version                               types.Bool   `tfsdk:"match_ipv4_version"`
@@ -235,6 +239,16 @@ func (data FlowRecord) toBody(ctx context.Context, config FlowRecord) string {
 	if !data.MatchFlowDirection.IsNull() && !data.MatchFlowDirection.IsUnknown() {
 		if data.MatchFlowDirection.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.flow.direction", map[string]string{})
+		}
+	}
+	if !data.MatchFlowCtsDestinationGroupTag.IsNull() && !data.MatchFlowCtsDestinationGroupTag.IsUnknown() {
+		if data.MatchFlowCtsDestinationGroupTag.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.flow.cts.destination.group-tag", map[string]string{})
+		}
+	}
+	if !data.MatchFlowCtsSourceGroupTag.IsNull() && !data.MatchFlowCtsSourceGroupTag.IsUnknown() {
+		if data.MatchFlowCtsSourceGroupTag.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.flow.cts.source.group-tag", map[string]string{})
 		}
 	}
 	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.IsUnknown() {
@@ -483,6 +497,20 @@ func (data FlowRecord) toBodyXML(ctx context.Context, config FlowRecord) string 
 			body = helpers.SetFromXPath(body, data.getXPath()+"/match/flow/direction", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/flow/direction")
+		}
+	}
+	if !data.MatchFlowCtsDestinationGroupTag.IsNull() && !data.MatchFlowCtsDestinationGroupTag.IsUnknown() {
+		if data.MatchFlowCtsDestinationGroupTag.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/flow/cts/destination/group-tag", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/flow/cts/destination/group-tag")
+		}
+	}
+	if !data.MatchFlowCtsSourceGroupTag.IsNull() && !data.MatchFlowCtsSourceGroupTag.IsUnknown() {
+		if data.MatchFlowCtsSourceGroupTag.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/flow/cts/source/group-tag", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/flow/cts/source/group-tag")
 		}
 	}
 	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.IsUnknown() {
@@ -827,6 +855,24 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.MatchFlowDirection = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.flow.cts.destination.group-tag"); !data.MatchFlowCtsDestinationGroupTag.IsNull() {
+		if value.Exists() {
+			data.MatchFlowCtsDestinationGroupTag = types.BoolValue(true)
+		} else {
+			data.MatchFlowCtsDestinationGroupTag = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.flow.cts.source.group-tag"); !data.MatchFlowCtsSourceGroupTag.IsNull() {
+		if value.Exists() {
+			data.MatchFlowCtsSourceGroupTag = types.BoolValue(true)
+		} else {
+			data.MatchFlowCtsSourceGroupTag = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFlowCtsSourceGroupTag = types.BoolNull()
 	}
 	if value := res.Get(prefix + "match.application.name"); !data.MatchApplicationName.IsNull() {
 		if value.Exists() {
@@ -1228,6 +1274,24 @@ func (data *FlowRecord) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.MatchFlowDirection = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/cts/destination/group-tag"); !data.MatchFlowCtsDestinationGroupTag.IsNull() {
+		if value.Exists() {
+			data.MatchFlowCtsDestinationGroupTag = types.BoolValue(true)
+		} else {
+			data.MatchFlowCtsDestinationGroupTag = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/cts/source/group-tag"); !data.MatchFlowCtsSourceGroupTag.IsNull() {
+		if value.Exists() {
+			data.MatchFlowCtsSourceGroupTag = types.BoolValue(true)
+		} else {
+			data.MatchFlowCtsSourceGroupTag = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFlowCtsSourceGroupTag = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/application/name"); !data.MatchApplicationName.IsNull() {
 		if value.Exists() {
 			data.MatchApplicationName = types.BoolValue(true)
@@ -1585,6 +1649,16 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchFlowDirection = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.flow.cts.destination.group-tag"); value.Exists() {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.flow.cts.source.group-tag"); value.Exists() {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "match.application.name"); value.Exists() {
 		data.MatchApplicationName = types.BoolValue(true)
 	} else {
@@ -1812,6 +1886,16 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchFlowDirection = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.flow.cts.destination.group-tag"); value.Exists() {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.flow.cts.source.group-tag"); value.Exists() {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "match.application.name"); value.Exists() {
 		data.MatchApplicationName = types.BoolValue(true)
 	} else {
@@ -2035,6 +2119,16 @@ func (data *FlowRecord) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MatchFlowDirection = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/cts/destination/group-tag"); value.Exists() {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/cts/source/group-tag"); value.Exists() {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/application/name"); value.Exists() {
 		data.MatchApplicationName = types.BoolValue(true)
 	} else {
@@ -2257,6 +2351,16 @@ func (data *FlowRecordData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		data.MatchFlowDirection = types.BoolValue(true)
 	} else {
 		data.MatchFlowDirection = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/cts/destination/group-tag"); value.Exists() {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsDestinationGroupTag = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/flow/cts/source/group-tag"); value.Exists() {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(true)
+	} else {
+		data.MatchFlowCtsSourceGroupTag = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/application/name"); value.Exists() {
 		data.MatchApplicationName = types.BoolValue(true)
@@ -2528,6 +2632,12 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 	if !state.MatchApplicationName.IsNull() && data.MatchApplicationName.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/application/name", state.getPath()))
 	}
+	if !state.MatchFlowCtsSourceGroupTag.IsNull() && data.MatchFlowCtsSourceGroupTag.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/cts/source/group-tag", state.getPath()))
+	}
+	if !state.MatchFlowCtsDestinationGroupTag.IsNull() && data.MatchFlowCtsDestinationGroupTag.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/cts/destination/group-tag", state.getPath()))
+	}
 	if !state.MatchFlowDirection.IsNull() && data.MatchFlowDirection.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/direction", state.getPath()))
 	}
@@ -2670,6 +2780,12 @@ func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord
 	if !state.MatchApplicationName.IsNull() && data.MatchApplicationName.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/application/name")
 	}
+	if !state.MatchFlowCtsSourceGroupTag.IsNull() && data.MatchFlowCtsSourceGroupTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/cts/source/group-tag")
+	}
+	if !state.MatchFlowCtsDestinationGroupTag.IsNull() && data.MatchFlowCtsDestinationGroupTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/cts/destination/group-tag")
+	}
 	if !state.MatchFlowDirection.IsNull() && data.MatchFlowDirection.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/flow/direction")
 	}
@@ -2810,6 +2926,12 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/application/name", data.getPath()))
 	}
+	if !data.MatchFlowCtsSourceGroupTag.IsNull() && !data.MatchFlowCtsSourceGroupTag.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/cts/source/group-tag", data.getPath()))
+	}
+	if !data.MatchFlowCtsDestinationGroupTag.IsNull() && !data.MatchFlowCtsDestinationGroupTag.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/cts/destination/group-tag", data.getPath()))
+	}
 	if !data.MatchFlowDirection.IsNull() && !data.MatchFlowDirection.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
 	}
@@ -2948,6 +3070,12 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.MatchApplicationName.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/application/name", data.getPath()))
+	}
+	if !data.MatchFlowCtsSourceGroupTag.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/cts/source/group-tag", data.getPath()))
+	}
+	if !data.MatchFlowCtsDestinationGroupTag.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/cts/destination/group-tag", data.getPath()))
 	}
 	if !data.MatchFlowDirection.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
@@ -3090,6 +3218,12 @@ func (data *FlowRecord) addDeletePathsXML(ctx context.Context, body string) stri
 	}
 	if !data.MatchApplicationName.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/application/name")
+	}
+	if !data.MatchFlowCtsSourceGroupTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/flow/cts/source/group-tag")
+	}
+	if !data.MatchFlowCtsDestinationGroupTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/flow/cts/destination/group-tag")
 	}
 	if !data.MatchFlowDirection.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/flow/direction")
