@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,6 +32,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeZonePairSecurity(t *testing.T) {
+	if os.Getenv("C8000V") == "" {
+		t.Skip("skipping test, set environment variable C8000V")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_zone_pair_security.test", "source", "INSIDE"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_zone_pair_security.test", "destination", "OUTSIDE"))
@@ -41,7 +45,7 @@ func TestAccDataSourceIosxeZonePairSecurity(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeZonePairSecurityConfig(),
+				Config: testAccDataSourceIosxeZonePairSecurityPrerequisitesConfig + testAccDataSourceIosxeZonePairSecurityConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -51,6 +55,34 @@ func TestAccDataSourceIosxeZonePairSecurity(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeZonePairSecurityPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/zone/Cisco-IOS-XE-zone:security[id=INSIDE]"
+	delete = false
+	attributes = {
+		"id" = "INSIDE"
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/zone/Cisco-IOS-XE-zone:security[id=OUTSIDE]"
+	delete = false
+	attributes = {
+		"id" = "OUTSIDE"
+	}
+}
+
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=PM_IN_TO_OUT]"
+	delete = false
+	attributes = {
+		"name" = "PM_IN_TO_OUT"
+		"type" = "inspect"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -62,6 +94,7 @@ func testAccDataSourceIosxeZonePairSecurityConfig() string {
 	config += `	destination = "OUTSIDE"` + "\n"
 	config += `	description = "Inside to outside traffic policy"` + "\n"
 	config += `	service_policy_type_inspect = "PM_IN_TO_OUT"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

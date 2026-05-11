@@ -20,7 +20,7 @@ resource "iosxe_object_group" "example" {
       description = "My FQDN object group"
       patterns = [
         {
-          fqdn_pattern = "test-fqdn-pattern"
+          fqdn_pattern = ".*\\.cisco\\.com"
         }
       ]
     }
