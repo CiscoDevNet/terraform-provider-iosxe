@@ -48,6 +48,7 @@ type InterfacePortChannel struct {
 	Name                           types.Int64                                          `tfsdk:"name"`
 	Description                    types.String                                         `tfsdk:"description"`
 	Shutdown                       types.Bool                                           `tfsdk:"shutdown"`
+	Mtu                            types.Int64                                          `tfsdk:"mtu"`
 	Switchport                     types.Bool                                           `tfsdk:"switchport"`
 	IpProxyArp                     types.Bool                                           `tfsdk:"ip_proxy_arp"`
 	IpRedirects                    types.Bool                                           `tfsdk:"ip_redirects"`
@@ -147,6 +148,7 @@ type InterfacePortChannelData struct {
 	Name                           types.Int64                                              `tfsdk:"name"`
 	Description                    types.String                                             `tfsdk:"description"`
 	Shutdown                       types.Bool                                               `tfsdk:"shutdown"`
+	Mtu                            types.Int64                                              `tfsdk:"mtu"`
 	Switchport                     types.Bool                                               `tfsdk:"switchport"`
 	IpProxyArp                     types.Bool                                               `tfsdk:"ip_proxy_arp"`
 	IpRedirects                    types.Bool                                               `tfsdk:"ip_redirects"`
@@ -292,6 +294,9 @@ func (data InterfacePortChannel) toBody(ctx context.Context, config InterfacePor
 		if data.Shutdown.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", map[string]string{})
 		}
+	}
+	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
 	}
 	if !data.Switchport.IsNull() && !data.Switchport.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport-conf.switchport", data.Switchport.ValueBool())
@@ -607,6 +612,9 @@ func (data InterfacePortChannel) toBodyXML(ctx context.Context, config Interface
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
 		}
+	}
+	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
 	}
 	if !data.Switchport.IsNull() && !data.Switchport.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/switchport-conf/switchport", data.Switchport.ValueBool())
@@ -995,6 +1003,11 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 		}
 	} else {
 		data.Shutdown = types.BoolNull()
+	}
+	if value := res.Get(prefix + "mtu"); value.Exists() && !data.Mtu.IsNull() {
+		data.Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Mtu = types.Int64Null()
 	}
 	if value := res.Get(prefix + "switchport-conf.switchport"); !data.Switchport.IsNull() {
 		if value.Exists() {
@@ -1671,6 +1684,11 @@ func (data *InterfacePortChannel) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() && !data.Mtu.IsNull() {
+		data.Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Mtu = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport-conf/switchport"); !data.Switchport.IsNull() {
 		if value.Exists() {
 			data.Switchport = types.BoolValue(value.Bool())
@@ -2339,6 +2357,9 @@ func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
 		data.Switchport = types.BoolValue(value.Bool())
 	} else {
@@ -2693,6 +2714,9 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
 		data.Switchport = types.BoolValue(value.Bool())
 	} else {
@@ -3043,6 +3067,9 @@ func (data *InterfacePortChannel) fromBodyXML(ctx context.Context, res xmldot.Re
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport-conf/switchport"); value.Exists() {
 		data.Switchport = types.BoolValue(value.Bool())
 	} else {
@@ -3392,6 +3419,9 @@ func (data *InterfacePortChannelData) fromBodyXML(ctx context.Context, res xmldo
 		data.Shutdown = types.BoolValue(true)
 	} else {
 		data.Shutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport-conf/switchport"); value.Exists() {
 		data.Switchport = types.BoolValue(value.Bool())
@@ -4116,6 +4146,9 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport-conf/switchport", state.getPath()))
 	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu", state.getPath()))
+	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
 	}
@@ -4552,6 +4585,9 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport-conf/switchport")
 	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu")
+	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
@@ -4870,6 +4906,9 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	if !data.Switchport.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport-conf/switchport", data.getPath()))
 	}
+	if !data.Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu", data.getPath()))
+	}
 	if !data.Shutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
@@ -5121,6 +5160,9 @@ func (data *InterfacePortChannel) addDeletePathsXML(ctx context.Context, body st
 	}
 	if !data.Switchport.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport-conf/switchport")
+	}
+	if !data.Mtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mtu")
 	}
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")

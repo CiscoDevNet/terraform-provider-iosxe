@@ -39,6 +39,7 @@ data "iosxe_interface_loopback" "example" {
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_igmp_version` (Number) IGMP version
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP

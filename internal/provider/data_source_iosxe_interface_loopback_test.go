@@ -40,6 +40,7 @@ func TestAccDataSourceIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ipv4_address", "200.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ipv4_address_mask", "255.255.255.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_mtu", "1400"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_access_group_in_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_access_group_out_enable", "true"))
@@ -96,6 +97,7 @@ func testAccDataSourceIosxeInterfaceLoopbackConfig() string {
 	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv4_address = "200.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.255"` + "\n"
+	config += `	ip_mtu = 1400` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"
 	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"

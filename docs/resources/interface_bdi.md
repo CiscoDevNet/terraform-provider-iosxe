@@ -16,6 +16,7 @@ This resource can manage the Interface BDI configuration.
 resource "iosxe_interface_bdi" "example" {
   name        = "100"
   mac_address = "0000.11AA.22BB"
+  ip_mtu      = 1400
 }
 ```
 
@@ -31,6 +32,8 @@ resource "iosxe_interface_bdi" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
+  - Range: `68`-`18000`
 - `mac_address` (String) Manually set interface MAC address
 - `zone_member_security` (String) Security zone
 
