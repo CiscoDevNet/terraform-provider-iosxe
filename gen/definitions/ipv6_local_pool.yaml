@@ -1,0 +1,19 @@
+---
+name: IPv6 Local Pool
+path: /Cisco-IOS-XE-native:native/ipv6/local/pool[id=%s]
+doc_category: System
+attributes:
+  - yang_name: id
+    tf_name: name
+    description: IPv6 local pool name
+    example: DHCPv6-PD
+  - yang_name: start-address
+    description: IPv6 pool prefix
+    example: "2001:db8::/48"
+  - yang_name: prefix-length
+    description: Prefix length to assign from pool
+    example: 64
+  - yang_name: group
+    description: Pool group name
+    example: GROUP1
+    exclude_test: true
