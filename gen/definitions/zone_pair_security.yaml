@@ -18,3 +18,21 @@ attributes:
   - yang_name: service-policy/type/inspect
     tf_name: service_policy_type_inspect
     example: PM_IN_TO_OUT
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/zone/Cisco-IOS-XE-zone:security[id=INSIDE]
+    no_delete: true
+    attributes:
+      - name: id
+        value: INSIDE
+  - path: /Cisco-IOS-XE-native:native/zone/Cisco-IOS-XE-zone:security[id=OUTSIDE]
+    no_delete: true
+    attributes:
+      - name: id
+        value: OUTSIDE
+  - path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=PM_IN_TO_OUT]
+    no_delete: true
+    attributes:
+      - name: name
+        value: PM_IN_TO_OUT
+      - name: type
+        value: inspect
