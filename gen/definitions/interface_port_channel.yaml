@@ -227,7 +227,15 @@ attributes:
     xpath: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment-num/ethernet-segment
     tf_name: evpn_ethernet_segments
     type: List
-    exclude_test: true  # For some reason it works with RESTCONF but fails with NETCONF, further investigation needed.
+    test_tags: [IOSXE1715]
+    attributes:
+      - yang_name: es-value
+        id: true
+        example: 1
+  - yang_name: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment
+    tf_name: evpn_ethernet_segments_legacy
+    type: List
+    test_tags: [IOSXE1712]
     attributes:
       - yang_name: es-value
         id: true

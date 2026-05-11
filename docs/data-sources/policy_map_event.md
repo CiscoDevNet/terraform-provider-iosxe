@@ -58,8 +58,11 @@ Read-Only:
 - `activate_service_template_config_precedence` (Number) Template precedence
 - `activate_service_template_config_replace_all` (Boolean) Replace all existing authorization data and services
 - `activate_service_template_config_service_template` (String) activate service template
-- `authenticate_using_aaa_authc_list` (String) Specify authentication method list
-- `authenticate_using_aaa_authz_list` (String) Specify authorization method list
+- `authenticate_using_aaa_authc_list_legacy` (String) Specify authentication method list. Use this for versions before `17.18`.
+- `authenticate_using_aaa_authz_list_legacy` (String) Specify authorization method list. Use this for versions before `17.18`.
+- `authenticate_using_aaa_config` (Boolean) Configure AAA method list. Required when using `authenticate_using_authc_list` or `authenticate_using_authz_list` (versions `17.18` and later).
+- `authenticate_using_authc_list` (String) Specify authentication method list. Use this for versions `17.18` and later.
+- `authenticate_using_authz_list` (String) Specify authorization method list. Use this for versions `17.18` and later.
 - `authenticate_using_both` (Boolean) Enabling Dot1x Authenticator & Supplicant
 - `authenticate_using_method` (String) method/protocol to be used for authentication
 - `authenticate_using_parameter_map` (String) Specify parameter map name

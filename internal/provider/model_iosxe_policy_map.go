@@ -91,6 +91,7 @@ type PolicyMapClassesActions struct {
 	PoliceRatePercent                    types.Int64  `tfsdk:"police_rate_percent"`
 	QueueBuffersRatio                    types.Int64  `tfsdk:"queue_buffers_ratio"`
 	SetDscp                              types.String `tfsdk:"set_dscp"`
+	ServicePolicy                        types.String `tfsdk:"service_policy"`
 }
 
 type PolicyMapData struct {
@@ -143,6 +144,7 @@ type PolicyMapClassesActionsData struct {
 	PoliceRatePercent                    types.Int64  `tfsdk:"police_rate_percent"`
 	QueueBuffersRatio                    types.Int64  `tfsdk:"queue_buffers_ratio"`
 	SetDscp                              types.String `tfsdk:"set_dscp"`
+	ServicePolicy                        types.String `tfsdk:"service_policy"`
 }
 
 // End of section. //template:end types
@@ -332,6 +334,9 @@ func (data PolicyMap) toBody(ctx context.Context, config PolicyMap) string {
 					if !citem.SetDscp.IsNull() && !citem.SetDscp.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"set.dscp.dscp-val", citem.SetDscp.ValueString())
 					}
+					if !citem.ServicePolicy.IsNull() && !citem.ServicePolicy.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"service-policy", citem.ServicePolicy.ValueString())
+					}
 				}
 			}
 		}
@@ -505,6 +510,9 @@ func (data PolicyMap) toBodyXML(ctx context.Context, config PolicyMap) string {
 					}
 					if !citem.SetDscp.IsNull() && !citem.SetDscp.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "set/dscp/dscp-val", citem.SetDscp.ValueString())
+					}
+					if !citem.ServicePolicy.IsNull() && !citem.ServicePolicy.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "service-policy", citem.ServicePolicy.ValueString())
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "action-list", ccBody.Res())
 				}
@@ -811,6 +819,11 @@ func (data *PolicyMap) updateFromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				data.Classes[i].Actions[ci].SetDscp = types.StringNull()
 			}
+			if value := cr.Get("service-policy"); value.Exists() && !data.Classes[i].Actions[ci].ServicePolicy.IsNull() {
+				data.Classes[i].Actions[ci].ServicePolicy = types.StringValue(value.String())
+			} else {
+				data.Classes[i].Actions[ci].ServicePolicy = types.StringNull()
+			}
 		}
 	}
 }
@@ -1103,6 +1116,11 @@ func (data *PolicyMap) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 			} else {
 				data.Classes[i].Actions[ci].SetDscp = types.StringNull()
 			}
+			if value := helpers.GetFromXPath(cr, "service-policy"); value.Exists() && !data.Classes[i].Actions[ci].ServicePolicy.IsNull() {
+				data.Classes[i].Actions[ci].ServicePolicy = types.StringValue(value.String())
+			} else {
+				data.Classes[i].Actions[ci].ServicePolicy = types.StringNull()
+			}
 		}
 	}
 }
@@ -1259,6 +1277,9 @@ func (data *PolicyMap) fromBody(ctx context.Context, res gjson.Result) {
 					}
 					if ccValue := cv.Get("set.dscp.dscp-val"); ccValue.Exists() {
 						cItem.SetDscp = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("service-policy"); ccValue.Exists() {
+						cItem.ServicePolicy = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -1423,6 +1444,9 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("set.dscp.dscp-val"); ccValue.Exists() {
 						cItem.SetDscp = types.StringValue(ccValue.String())
 					}
+					if ccValue := cv.Get("service-policy"); ccValue.Exists() {
+						cItem.ServicePolicy = types.StringValue(ccValue.String())
+					}
 					item.Actions = append(item.Actions, cItem)
 					return true
 				})
@@ -1581,6 +1605,9 @@ func (data *PolicyMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					}
 					if ccValue := helpers.GetFromXPath(cv, "set/dscp/dscp-val"); ccValue.Exists() {
 						cItem.SetDscp = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "service-policy"); ccValue.Exists() {
+						cItem.ServicePolicy = types.StringValue(ccValue.String())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -1741,6 +1768,9 @@ func (data *PolicyMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					if ccValue := helpers.GetFromXPath(cv, "set/dscp/dscp-val"); ccValue.Exists() {
 						cItem.SetDscp = types.StringValue(ccValue.String())
 					}
+					if ccValue := helpers.GetFromXPath(cv, "service-policy"); ccValue.Exists() {
+						cItem.ServicePolicy = types.StringValue(ccValue.String())
+					}
 					item.Actions = append(item.Actions, cItem)
 					return true
 				})
@@ -1793,6 +1823,9 @@ func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []s
 							found = false
 						}
 						if found {
+							if !state.Classes[i].Actions[ci].ServicePolicy.IsNull() && data.Classes[j].Actions[cj].ServicePolicy.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/service-policy", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							if !state.Classes[i].Actions[ci].SetDscp.IsNull() && data.Classes[j].Actions[cj].SetDscp.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/set/dscp/dscp-val", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
@@ -1977,6 +2010,9 @@ func (data *PolicyMap) addDeletedItemsXML(ctx context.Context, state PolicyMap, 
 							found = false
 						}
 						if found {
+							if !state.Classes[i].Actions[ci].ServicePolicy.IsNull() && data.Classes[j].Actions[cj].ServicePolicy.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/service-policy", predicates, cpredicates))
+							}
 							if !state.Classes[i].Actions[ci].SetDscp.IsNull() && data.Classes[j].Actions[cj].SetDscp.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/set/dscp/dscp-val", predicates, cpredicates))
 							}

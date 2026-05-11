@@ -121,6 +121,17 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 							MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
 							Optional:            true,
 						},
+						"ipv4_unicast_redistribute_connected_route_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+							Optional:            true,
+						},
+						"ipv4_unicast_redistribute_connected_metric": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 4294967295).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 4294967295),
+							},
+						},
 						"ipv4_unicast_router_id_loopback": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
 							Optional:            true,
@@ -164,6 +175,17 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
 							Optional:            true,
+						},
+						"ipv4_unicast_redistribute_static_route_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+							Optional:            true,
+						},
+						"ipv4_unicast_redistribute_static_metric": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 4294967295).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 4294967295),
+							},
 						},
 						"ipv4_unicast_networks_mask": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,

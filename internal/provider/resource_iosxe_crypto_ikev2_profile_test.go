@@ -49,6 +49,7 @@ func TestAccIosxeCryptoIKEv2Profile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_interval", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_retry", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_query", "periodic"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "lifetime", "28800"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "config_exchange_request", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -143,6 +144,7 @@ func testAccIosxeCryptoIKEv2ProfileConfig_all() string {
 	config += `	dpd_interval = 10` + "\n"
 	config += `	dpd_retry = 2` + "\n"
 	config += `	dpd_query = "periodic"` + "\n"
+	config += `	lifetime = 28800` + "\n"
 	config += `	config_exchange_request = false` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"

@@ -8107,8 +8107,8 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 									deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf=%v/host-name=%v/ip-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 								} else {
 									var dataValues, stateValues []string
-									data.IpHostsVrf[i].Hosts[ci].Ips.ElementsAs(ctx, &dataValues, false)
-									state.IpHostsVrf[j].Hosts[cj].Ips.ElementsAs(ctx, &stateValues, false)
+									data.IpHostsVrf[j].Hosts[cj].Ips.ElementsAs(ctx, &dataValues, false)
+									state.IpHostsVrf[i].Hosts[ci].Ips.ElementsAs(ctx, &stateValues, false)
 									for _, v := range stateValues {
 										found := false
 										for _, vv := range dataValues {
@@ -8160,8 +8160,8 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/host-list=%v/ip-list-ordered", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.IpHosts[i].Ips.ElementsAs(ctx, &dataValues, false)
-						state.IpHosts[j].Ips.ElementsAs(ctx, &stateValues, false)
+						data.IpHosts[j].Ips.ElementsAs(ctx, &dataValues, false)
+						state.IpHosts[i].Ips.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -8546,8 +8546,8 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/vrf=%v/server-ip-list-ordered", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.IpNameServersVrf[i].Servers.ElementsAs(ctx, &dataValues, false)
-						state.IpNameServersVrf[j].Servers.ElementsAs(ctx, &stateValues, false)
+						data.IpNameServersVrf[j].Servers.ElementsAs(ctx, &dataValues, false)
+						state.IpNameServersVrf[i].Servers.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -9066,8 +9066,8 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 									}
 								} else {
 									var dataValues, stateValues []string
-									data.IpHostsVrf[i].Hosts[ci].Ips.ElementsAs(ctx, &dataValues, false)
-									state.IpHostsVrf[j].Hosts[cj].Ips.ElementsAs(ctx, &stateValues, false)
+									data.IpHostsVrf[j].Hosts[cj].Ips.ElementsAs(ctx, &dataValues, false)
+									state.IpHostsVrf[i].Hosts[ci].Ips.ElementsAs(ctx, &stateValues, false)
 									for _, v := range stateValues {
 										found := false
 										for _, vv := range dataValues {
@@ -9077,7 +9077,7 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 											}
 										}
 										if !found {
-											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/vrf%v/host-name%v/ip-list=[.%v]", predicates, cpredicates, v))
+											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/vrf%v/host-name%v/ip-list[.=%v]", predicates, cpredicates, v))
 										}
 									}
 								}
@@ -9128,8 +9128,8 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.IpHosts[i].Ips.ElementsAs(ctx, &dataValues, false)
-						state.IpHosts[j].Ips.ElementsAs(ctx, &stateValues, false)
+						data.IpHosts[j].Ips.ElementsAs(ctx, &dataValues, false)
+						state.IpHosts[i].Ips.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -9543,8 +9543,8 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.IpNameServersVrf[i].Servers.ElementsAs(ctx, &dataValues, false)
-						state.IpNameServersVrf[j].Servers.ElementsAs(ctx, &stateValues, false)
+						data.IpNameServersVrf[j].Servers.ElementsAs(ctx, &dataValues, false)
+						state.IpNameServersVrf[i].Servers.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {

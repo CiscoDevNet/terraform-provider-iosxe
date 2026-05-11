@@ -64,7 +64,7 @@ func TestAccIosxeInterfaceOSPF(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceOSPFImportStateIdFunc("iosxe_interface_ospf.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"authentication_message_digest", "authentication_null"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

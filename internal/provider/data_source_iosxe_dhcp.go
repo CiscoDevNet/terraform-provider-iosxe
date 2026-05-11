@@ -88,6 +88,10 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Insert VPN sub-options and change the giaddr to the outgoing interface",
 				Computed:            true,
 			},
+			"relay_bootp_ignore": schema.BoolAttribute{
+				MarkdownDescription: "Configure this DHCP relay to ignore to BOOTP requests.",
+				Computed:            true,
+			},
 			"snooping": schema.BoolAttribute{
 				MarkdownDescription: "DHCP Snooping",
 				Computed:            true,

@@ -82,9 +82,6 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Name of the policy map").String,
 				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 203),
-				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -226,12 +223,24 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 											int64validator.Between(1, 254),
 										},
 									},
-									"authenticate_using_aaa_authc_list": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify authentication method list").String,
+									"authenticate_using_aaa_config": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Configure AAA method list. Required when using `authenticate_using_authc_list` or `authenticate_using_authz_list` (versions `17.18` and later).").String,
 										Optional:            true,
 									},
-									"authenticate_using_aaa_authz_list": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify authorization method list").String,
+									"authenticate_using_authc_list": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify authentication method list. Use this for versions `17.18` and later.").String,
+										Optional:            true,
+									},
+									"authenticate_using_authz_list": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify authorization method list. Use this for versions `17.18` and later.").String,
+										Optional:            true,
+									},
+									"authenticate_using_aaa_authc_list_legacy": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify authentication method list. Use this for versions before `17.18`.").String,
+										Optional:            true,
+									},
+									"authenticate_using_aaa_authz_list_legacy": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify authorization method list. Use this for versions before `17.18`.").String,
 										Optional:            true,
 									},
 									"authenticate_using_both": schema.BoolAttribute{

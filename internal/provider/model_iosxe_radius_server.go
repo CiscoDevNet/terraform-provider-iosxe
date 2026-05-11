@@ -802,8 +802,8 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/send-attribute", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.Attributes[i].SendAttributes.ElementsAs(ctx, &dataValues, false)
-						state.Attributes[j].SendAttributes.ElementsAs(ctx, &stateValues, false)
+						data.Attributes[j].SendAttributes.ElementsAs(ctx, &dataValues, false)
+						state.Attributes[i].SendAttributes.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -916,8 +916,8 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 						}
 					} else {
 						var dataValues, stateValues []string
-						data.Attributes[i].SendAttributes.ElementsAs(ctx, &dataValues, false)
-						state.Attributes[j].SendAttributes.ElementsAs(ctx, &stateValues, false)
+						data.Attributes[j].SendAttributes.ElementsAs(ctx, &dataValues, false)
+						state.Attributes[i].SendAttributes.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {

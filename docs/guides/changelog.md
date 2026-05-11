@@ -9,12 +9,26 @@ description: |-
 
 ## Unreleased
 
+- Add `authenticate_using_authc_list` and `authenticate_using_authz_list` attributes to `iosxe_policy_map_event` resource and data source for the non-deprecated AAA method list leaves (`authenticate/using/authc-list`, `authenticate/using/authz-list`). Rename the existing attributes targeting the deprecated `authenticate/using/aaa` container to `authenticate_using_aaa_authc_list_legacy` and `authenticate_using_aaa_authz_list_legacy`.
+- Add `bandwidth`, `tunnel_bandwidth_transmit`, `tunnel_bandwidth_receive`, `service_policy_input`, and `service_policy_output` attributes to `iosxe_interface_tunnel` resource and data source
+- Add minimum version documentation (IOS-XE >= 17.16.1) to `passive_interface_disable_*` attributes on `iosxe_ospf` and `iosxe_ospf_vrf` resources
+- Add `service_policy` attribute to `iosxe_policy_map` resource and data source for attaching a child service-policy under a policy-map class action (`service-policy <name>`)
+- Add `iosxe_dhcp_pool` resource and data source for DHCP server pool configuration, including pool name, network/host settings, default routers, DNS servers, lease duration, DHCP options, next servers, domain name, bootfile, utilization marks, and VRF association. DHCP option IP addresses use `ip` (`ip-ordered`, 17.15+) and `ip_legacy` (`ip-new`, pre-17.15) attributes to handle the YANG deprecation of `ip-new` in favor of `ip-ordered`
+- Add `iosxe_key_chain` resource and data source for key chain management (`key chain`), including keys with cryptographic algorithms (hmac-sha-256, hmac-sha-512, md5, etc.), key strings, accept/send lifetimes, and support for TCP AO and MACsec key chain modes
 - Add `mtu` attribute to `iosxe_interface_port_channel` resource and data source
 - Add `ip_mtu` attribute to `iosxe_interface_loopback` and `iosxe_interface_vlan` resources and data sources
 - Add `source_port_equal_2` through `source_port_equal_10` attributes to `iosxe_access_list_extended` resource and data source
+- Add `ipv4_unicast_redistribute_connected_route_map`, `ipv4_unicast_redistribute_connected_metric`, `ipv4_unicast_redistribute_static_route_map`, and `ipv4_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv4` resource and data source
+- Add `ipv6_unicast_redistribute_connected_route_map`, `ipv6_unicast_redistribute_connected_metric`, `ipv6_unicast_redistribute_static_route_map`, and `ipv6_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv6` resource and data source
+- Add `ipv4_unicast_redistribute_connected_route_map`, `ipv4_unicast_redistribute_connected_metric`, `ipv4_unicast_redistribute_static_route_map`, and `ipv4_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv4_vrf` resource and data source
+- Add `ipv6_unicast_redistribute_connected_route_map`, `ipv6_unicast_redistribute_connected_metric`, `ipv6_unicast_redistribute_static_route_map`, and `ipv6_unicast_redistribute_static_metric` attributes to `iosxe_bgp_address_family_ipv6_vrf` resource and data source
+- Add `authentication_key_chain`, `authentication_message_digest`, and `authentication_null` attributes to `iosxe_interface_ospf` resource and data source for OSPF interface authentication mode selection (key-chain, message-digest, or null)
 
 ## 0.18.0
 
+- Add `match_access_group_index_legacy` and `match_access_group_index_list` attributes to `iosxe_class_map` resource and data source for matching on numbered ACLs (`match access-group <1-199 | 1300-2699>`)
+- Add `data_glean_log_only`, `data_glean_recovery_dhcp`, `data_glean_recovery_ndp`, `prefix_glean`, `prefix_glean_only`, `destination_glean_log_only`, `destination_glean_recovery_dhcp`, `protocol_arp`, `protocol_arp_prefix_list`, `protocol_dhcp4`, `protocol_dhcp4_prefix_list`, `protocol_dhcp6`, `protocol_dhcp6_prefix_list`, `protocol_ndp`, `protocol_ndp_prefix_list`, `tracking_enable`, `tracking_enable_reachable_lifetime_seconds`, `tracking_enable_reachable_lifetime_infinite`, `tracking_disable`, `tracking_disable_stale_lifetime`, `limit_address_count`, `security_level_glean`, `security_level_guard`, `security_level_inspect`, and `medium_type_wireless` attributes to `iosxe_device_tracking_policy` resource and data source
+- Add `relay_bootp_ignore` attribute to `iosxe_dhcp` resource and data source
 - Add `iosxe_zone_security` resource and data source for Zone-Based Firewall zone definitions (`zone security <name>`, `description`)
 - Add `zone_member_security` attribute to `iosxe_interface_ethernet`, `iosxe_interface_loopback`, `iosxe_interface_vlan`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, and `iosxe_interface_bdi` resources and data sources for ZBF interface zone assignment
 - Add `iosxe_zone_pair_security` resource and data source
@@ -22,6 +36,10 @@ description: |-
 - Add `iosxe_object_group` resource and data source with FQDN (`object-group fqdn`) and network (`object-group network`) object group support, including name, description, nested group references, host entries, network addresses, address ranges, and regex FQDN patterns
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
+- Add `lifetime`, `match_address_local_interface_loopback`, and `match_address_local_interface_loopback_legacy` attributes to `iosxe_crypto_ikev2_profile` resource and data source. The `match_address_local_interface_loopback` attribute is a list targeting the 17.18+ `interface-options-local` YANG path. The `match_address_local_interface_loopback_legacy` attribute is a scalar for pre-17.18 compatibility using the deprecated `interface-options` path.
+- Add `set_pfs_group`, `set_security_association_lifetime_seconds`, and `set_security_association_lifetime_seconds_legacy` attributes to `iosxe_crypto_ipsec_profile` resource and data source
+- Add `evpn_ethernet_segments_legacy` attribute to `iosxe_interface_port_channel` resource and data source for IOS-XE 17.12 compatibility. The legacy attribute uses the pre-17.15 YANG path (`evpn/ethernet-segment`) while the existing `evpn_ethernet_segments` attribute targets the 17.15+ path (`evpn/ethernet-segment-choice`).
+- Fix panic in route-map (and other list-entry resources) when adding a new entry before an existing one that contains list-type match/set attributes. The `getDeletedItems` (RESTCONF) and `addDeletedItemsXML` (NETCONF) functions had swapped loop indices when comparing list element values between state and plan.
 
 ## 0.17.0
 
