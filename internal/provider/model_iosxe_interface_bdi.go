@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -44,6 +45,7 @@ type InterfaceBDI struct {
 	DeleteMode         types.String `tfsdk:"delete_mode"`
 	Name               types.String `tfsdk:"name"`
 	MacAddress         types.String `tfsdk:"mac_address"`
+	IpMtu              types.Int64  `tfsdk:"ip_mtu"`
 	ZoneMemberSecurity types.String `tfsdk:"zone_member_security"`
 }
 
@@ -52,6 +54,7 @@ type InterfaceBDIData struct {
 	Id                 types.String `tfsdk:"id"`
 	Name               types.String `tfsdk:"name"`
 	MacAddress         types.String `tfsdk:"mac_address"`
+	IpMtu              types.Int64  `tfsdk:"ip_mtu"`
 	ZoneMemberSecurity types.String `tfsdk:"zone_member_security"`
 }
 
@@ -103,6 +106,9 @@ func (data InterfaceBDI) toBody(ctx context.Context, config InterfaceBDI) string
 	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mac-address", data.MacAddress.ValueString())
 	}
+	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.mtu", strconv.FormatInt(data.IpMtu.ValueInt64(), 10))
+	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-zone:zone-member.security", data.ZoneMemberSecurity.ValueString())
 	}
@@ -120,6 +126,9 @@ func (data InterfaceBDI) toBodyXML(ctx context.Context, config InterfaceBDI) str
 	}
 	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/mac-address", data.MacAddress.ValueString())
+	}
+	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/mtu", strconv.FormatInt(data.IpMtu.ValueInt64(), 10))
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
@@ -150,6 +159,11 @@ func (data *InterfaceBDI) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.MacAddress = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() && !data.IpMtu.IsNull() {
+		data.IpMtu = types.Int64Value(value.Int())
+	} else {
+		data.IpMtu = types.Int64Null()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	} else {
@@ -172,6 +186,11 @@ func (data *InterfaceBDI) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.MacAddress = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() && !data.IpMtu.IsNull() {
+		data.IpMtu = types.Int64Value(value.Int())
+	} else {
+		data.IpMtu = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	} else {
@@ -191,6 +210,9 @@ func (data *InterfaceBDI) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -208,6 +230,9 @@ func (data *InterfaceBDIData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -220,6 +245,9 @@ func (data *InterfaceBDIData) fromBody(ctx context.Context, res gjson.Result) {
 func (data *InterfaceBDI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
@@ -234,6 +262,9 @@ func (data *InterfaceBDIData) fromBodyXML(ctx context.Context, res xmldot.Result
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -247,6 +278,9 @@ func (data *InterfaceBDI) getDeletedItems(ctx context.Context, state InterfaceBD
 	deletedItems := make([]string, 0)
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", state.getPath()))
+	}
+	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/mtu", state.getPath()))
 	}
 	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac-address", state.getPath()))
@@ -263,6 +297,9 @@ func (data *InterfaceBDI) addDeletedItemsXML(ctx context.Context, state Interfac
 	b := netconf.NewBody(body)
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
+	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/mtu")
 	}
 	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac-address")
@@ -291,6 +328,9 @@ func (data *InterfaceBDI) getDeletePaths(ctx context.Context) []string {
 	if !data.ZoneMemberSecurity.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", data.getPath()))
 	}
+	if !data.IpMtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/mtu", data.getPath()))
+	}
 	if !data.MacAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac-address", data.getPath()))
 	}
@@ -306,6 +346,9 @@ func (data *InterfaceBDI) addDeletePathsXML(ctx context.Context, body string) st
 	b := netconf.NewBody(body)
 	if !data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
+	if !data.IpMtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/mtu")
 	}
 	if !data.MacAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac-address")

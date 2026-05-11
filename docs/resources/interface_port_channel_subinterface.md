@@ -24,6 +24,7 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
   vrf_forwarding              = "VRF1"
   ipv4_address                = "192.68.1.1"
   ipv4_address_mask           = "255.255.255.0"
+  ip_mtu                      = 1400
   ip_access_group_in_enable   = true
   ip_access_group_in          = "1"
   ip_access_group_out_enable  = true
@@ -111,6 +112,8 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
+  - Range: `68`-`18000`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP

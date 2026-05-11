@@ -56,6 +56,7 @@ type InterfacePortChannelSubinterface struct {
 	Ipv4Address                  types.String                                             `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                                             `tfsdk:"ipv4_address_mask"`
 	Ipv4AddressDhcp              types.Bool                                               `tfsdk:"ipv4_address_dhcp"`
+	IpMtu                        types.Int64                                              `tfsdk:"ip_mtu"`
 	IpAccessGroupInEnable        types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
@@ -134,6 +135,7 @@ type InterfacePortChannelSubinterfaceData struct {
 	Ipv4Address                  types.String                                                 `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                                                 `tfsdk:"ipv4_address_mask"`
 	Ipv4AddressDhcp              types.Bool                                                   `tfsdk:"ipv4_address_dhcp"`
+	IpMtu                        types.Int64                                                  `tfsdk:"ip_mtu"`
 	IpAccessGroupInEnable        types.Bool                                                   `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn              types.String                                                 `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                                   `tfsdk:"ip_access_group_out_enable"`
@@ -276,6 +278,9 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context, config 
 		if data.Ipv4AddressDhcp.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.dhcp", map[string]string{})
 		}
+	}
+	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.mtu", strconv.FormatInt(data.IpMtu.ValueInt64(), 10))
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
@@ -538,6 +543,9 @@ func (data InterfacePortChannelSubinterface) toBodyXML(ctx context.Context, conf
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/address/dhcp")
 		}
+	}
+	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/mtu", strconv.FormatInt(data.IpMtu.ValueInt64(), 10))
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
@@ -886,6 +894,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 		}
 	} else {
 		data.Ipv4AddressDhcp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() && !data.IpMtu.IsNull() {
+		data.IpMtu = types.Int64Value(value.Int())
+	} else {
+		data.IpMtu = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
@@ -1414,6 +1427,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBodyXML(ctx context.Cont
 	} else {
 		data.Ipv4AddressDhcp = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() && !data.IpMtu.IsNull() {
+		data.IpMtu = types.Int64Value(value.Int())
+	} else {
+		data.IpMtu = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
 			data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -1916,6 +1934,9 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 	} else {
 		data.Ipv4AddressDhcp = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
@@ -2198,6 +2219,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	} else {
 		data.Ipv4AddressDhcp = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
@@ -2476,6 +2500,9 @@ func (data *InterfacePortChannelSubinterface) fromBodyXML(ctx context.Context, r
 	} else {
 		data.Ipv4AddressDhcp = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
@@ -2753,6 +2780,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBodyXML(ctx context.Contex
 		data.Ipv4AddressDhcp = types.BoolValue(true)
 	} else {
 		data.Ipv4AddressDhcp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group/in/acl/in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -3247,6 +3277,9 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
 	}
+	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/mtu", state.getPath()))
+	}
 	if !state.Ipv4AddressDhcp.IsNull() && data.Ipv4AddressDhcp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/dhcp", state.getPath()))
 	}
@@ -3566,6 +3599,9 @@ func (data *InterfacePortChannelSubinterface) addDeletedItemsXML(ctx context.Con
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/in")
 	}
+	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/mtu")
+	}
 	if !state.Ipv4AddressDhcp.IsNull() && data.Ipv4AddressDhcp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/dhcp")
 	}
@@ -3835,6 +3871,9 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	if !data.IpAccessGroupInEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
+	if !data.IpMtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/mtu", data.getPath()))
+	}
 	if !data.Ipv4AddressDhcp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/dhcp", data.getPath()))
 	}
@@ -4029,6 +4068,9 @@ func (data *InterfacePortChannelSubinterface) addDeletePathsXML(ctx context.Cont
 	}
 	if !data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/in")
+	}
+	if !data.IpMtu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/mtu")
 	}
 	if !data.Ipv4AddressDhcp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/dhcp")
