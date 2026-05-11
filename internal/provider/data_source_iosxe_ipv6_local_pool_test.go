@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,6 +32,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeIPv6LocalPool(t *testing.T) {
+	if os.Getenv("ISR") == "" {
+		t.Skip("skipping test, set environment variable ISR")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_local_pool.test", "start_address", "2001:db8::/48"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ipv6_local_pool.test", "prefix_length", "64"))

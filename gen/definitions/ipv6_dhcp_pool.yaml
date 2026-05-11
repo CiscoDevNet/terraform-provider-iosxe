@@ -1,6 +1,7 @@
 ---
 name: IPv6 DHCP Pool
 path: /Cisco-IOS-XE-native:native/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool[name=%s]
+test_tags: [ISR]
 doc_category: System
 attributes:
   - yang_name: name
