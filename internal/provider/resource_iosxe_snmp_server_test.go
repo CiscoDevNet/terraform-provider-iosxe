@@ -677,9 +677,6 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `		username = "USER1"` + "\n"
 	config += `		grpname = "GROUP1"` + "\n"
 	config += `		v3_auth_algorithm = "sha"` + "\n"
-	if os.Getenv("IOSXE1715") != "" {
-		config += `		v3_auth_sha2 = "256"` + "\n"
-	}
 	config += `		v3_auth_password = "Cisco123"` + "\n"
 	config += `		v3_auth_priv_aes_algorithm = "128"` + "\n"
 	config += `		v3_auth_priv_aes_password = "Cisco123"` + "\n"
