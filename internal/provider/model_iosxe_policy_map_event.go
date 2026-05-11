@@ -73,8 +73,11 @@ type PolicyMapEventClassNumbersActionNumbers struct {
 	AuthenticateUsingRetries                     types.Int64  `tfsdk:"authenticate_using_retries"`
 	AuthenticateUsingRetryTime                   types.Int64  `tfsdk:"authenticate_using_retry_time"`
 	AuthenticateUsingPriority                    types.Int64  `tfsdk:"authenticate_using_priority"`
-	AuthenticateUsingAaaAuthcList                types.String `tfsdk:"authenticate_using_aaa_authc_list"`
-	AuthenticateUsingAaaAuthzList                types.String `tfsdk:"authenticate_using_aaa_authz_list"`
+	AuthenticateUsingAaaConfig                   types.Bool   `tfsdk:"authenticate_using_aaa_config"`
+	AuthenticateUsingAuthcList                   types.String `tfsdk:"authenticate_using_authc_list"`
+	AuthenticateUsingAuthzList                   types.String `tfsdk:"authenticate_using_authz_list"`
+	AuthenticateUsingAaaAuthcListLegacy          types.String `tfsdk:"authenticate_using_aaa_authc_list_legacy"`
+	AuthenticateUsingAaaAuthzListLegacy          types.String `tfsdk:"authenticate_using_aaa_authz_list_legacy"`
 	AuthenticateUsingBoth                        types.Bool   `tfsdk:"authenticate_using_both"`
 	AuthenticateUsingParameterMap                types.String `tfsdk:"authenticate_using_parameter_map"`
 	Replace                                      types.Bool   `tfsdk:"replace"`
@@ -125,8 +128,11 @@ type PolicyMapEventClassNumbersActionNumbersData struct {
 	AuthenticateUsingRetries                     types.Int64  `tfsdk:"authenticate_using_retries"`
 	AuthenticateUsingRetryTime                   types.Int64  `tfsdk:"authenticate_using_retry_time"`
 	AuthenticateUsingPriority                    types.Int64  `tfsdk:"authenticate_using_priority"`
-	AuthenticateUsingAaaAuthcList                types.String `tfsdk:"authenticate_using_aaa_authc_list"`
-	AuthenticateUsingAaaAuthzList                types.String `tfsdk:"authenticate_using_aaa_authz_list"`
+	AuthenticateUsingAaaConfig                   types.Bool   `tfsdk:"authenticate_using_aaa_config"`
+	AuthenticateUsingAuthcList                   types.String `tfsdk:"authenticate_using_authc_list"`
+	AuthenticateUsingAuthzList                   types.String `tfsdk:"authenticate_using_authz_list"`
+	AuthenticateUsingAaaAuthcListLegacy          types.String `tfsdk:"authenticate_using_aaa_authc_list_legacy"`
+	AuthenticateUsingAaaAuthzListLegacy          types.String `tfsdk:"authenticate_using_aaa_authz_list_legacy"`
 	AuthenticateUsingBoth                        types.Bool   `tfsdk:"authenticate_using_both"`
 	AuthenticateUsingParameterMap                types.String `tfsdk:"authenticate_using_parameter_map"`
 	Replace                                      types.Bool   `tfsdk:"replace"`
@@ -265,11 +271,22 @@ func (data PolicyMapEvent) toBody(ctx context.Context, config PolicyMapEvent) st
 					if !citem.AuthenticateUsingPriority.IsNull() && !citem.AuthenticateUsingPriority.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.priority", strconv.FormatInt(citem.AuthenticateUsingPriority.ValueInt64(), 10))
 					}
-					if !citem.AuthenticateUsingAaaAuthcList.IsNull() && !citem.AuthenticateUsingAaaAuthcList.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.aaa.authc-list", citem.AuthenticateUsingAaaAuthcList.ValueString())
+					if !citem.AuthenticateUsingAaaConfig.IsNull() && !citem.AuthenticateUsingAaaConfig.IsUnknown() {
+						if citem.AuthenticateUsingAaaConfig.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.aaa-config", map[string]string{})
+						}
 					}
-					if !citem.AuthenticateUsingAaaAuthzList.IsNull() && !citem.AuthenticateUsingAaaAuthzList.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.aaa.authz-list", citem.AuthenticateUsingAaaAuthzList.ValueString())
+					if !citem.AuthenticateUsingAuthcList.IsNull() && !citem.AuthenticateUsingAuthcList.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.authc-list", citem.AuthenticateUsingAuthcList.ValueString())
+					}
+					if !citem.AuthenticateUsingAuthzList.IsNull() && !citem.AuthenticateUsingAuthzList.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.authz-list", citem.AuthenticateUsingAuthzList.ValueString())
+					}
+					if !citem.AuthenticateUsingAaaAuthcListLegacy.IsNull() && !citem.AuthenticateUsingAaaAuthcListLegacy.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.aaa.authc-list", citem.AuthenticateUsingAaaAuthcListLegacy.ValueString())
+					}
+					if !citem.AuthenticateUsingAaaAuthzListLegacy.IsNull() && !citem.AuthenticateUsingAaaAuthzListLegacy.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.aaa.authz-list", citem.AuthenticateUsingAaaAuthzListLegacy.ValueString())
 					}
 					if !citem.AuthenticateUsingBoth.IsNull() && !citem.AuthenticateUsingBoth.IsUnknown() {
 						if citem.AuthenticateUsingBoth.ValueBool() {
@@ -436,11 +453,24 @@ func (data PolicyMapEvent) toBodyXML(ctx context.Context, config PolicyMapEvent)
 					if !citem.AuthenticateUsingPriority.IsNull() && !citem.AuthenticateUsingPriority.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/priority", strconv.FormatInt(citem.AuthenticateUsingPriority.ValueInt64(), 10))
 					}
-					if !citem.AuthenticateUsingAaaAuthcList.IsNull() && !citem.AuthenticateUsingAaaAuthcList.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa/authc-list", citem.AuthenticateUsingAaaAuthcList.ValueString())
+					if !citem.AuthenticateUsingAaaConfig.IsNull() && !citem.AuthenticateUsingAaaConfig.IsUnknown() {
+						if citem.AuthenticateUsingAaaConfig.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa-config", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "authenticate/using/aaa-config")
+						}
 					}
-					if !citem.AuthenticateUsingAaaAuthzList.IsNull() && !citem.AuthenticateUsingAaaAuthzList.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa/authz-list", citem.AuthenticateUsingAaaAuthzList.ValueString())
+					if !citem.AuthenticateUsingAuthcList.IsNull() && !citem.AuthenticateUsingAuthcList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/authc-list", citem.AuthenticateUsingAuthcList.ValueString())
+					}
+					if !citem.AuthenticateUsingAuthzList.IsNull() && !citem.AuthenticateUsingAuthzList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/authz-list", citem.AuthenticateUsingAuthzList.ValueString())
+					}
+					if !citem.AuthenticateUsingAaaAuthcListLegacy.IsNull() && !citem.AuthenticateUsingAaaAuthcListLegacy.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa/authc-list", citem.AuthenticateUsingAaaAuthcListLegacy.ValueString())
+					}
+					if !citem.AuthenticateUsingAaaAuthzListLegacy.IsNull() && !citem.AuthenticateUsingAaaAuthzListLegacy.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "authenticate/using/aaa/authz-list", citem.AuthenticateUsingAaaAuthzListLegacy.ValueString())
 					}
 					if !citem.AuthenticateUsingBoth.IsNull() && !citem.AuthenticateUsingBoth.IsUnknown() {
 						if citem.AuthenticateUsingBoth.ValueBool() {
@@ -720,15 +750,34 @@ func (data *PolicyMapEvent) updateFromBody(ctx context.Context, res gjson.Result
 			} else {
 				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority = types.Int64Null()
 			}
-			if value := cr.Get("authenticate.using.aaa.authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringValue(value.String())
+			if value := cr.Get("authenticate.using.aaa-config"); !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig = types.BoolValue(false)
+				}
 			} else {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringNull()
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig = types.BoolNull()
 			}
-			if value := cr.Get("authenticate.using.aaa.authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringValue(value.String())
+			if value := cr.Get("authenticate.using.authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList = types.StringValue(value.String())
 			} else {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringNull()
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList = types.StringNull()
+			}
+			if value := cr.Get("authenticate.using.authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList = types.StringNull()
+			}
+			if value := cr.Get("authenticate.using.aaa.authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy = types.StringNull()
+			}
+			if value := cr.Get("authenticate.using.aaa.authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy = types.StringNull()
 			}
 			if value := cr.Get("authenticate.using.both"); !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() {
 				if value.Exists() {
@@ -1027,15 +1076,34 @@ func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Re
 			} else {
 				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority = types.Int64Null()
 			}
-			if value := helpers.GetFromXPath(cr, "authenticate/using/aaa/authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringValue(value.String())
+			if value := helpers.GetFromXPath(cr, "authenticate/using/aaa-config"); !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig = types.BoolValue(false)
+				}
 			} else {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringNull()
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig = types.BoolNull()
 			}
-			if value := helpers.GetFromXPath(cr, "authenticate/using/aaa/authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringValue(value.String())
+			if value := helpers.GetFromXPath(cr, "authenticate/using/authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList = types.StringValue(value.String())
 			} else {
-				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringNull()
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/aaa/authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "authenticate/using/aaa/authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy = types.StringNull()
 			}
 			if value := helpers.GetFromXPath(cr, "authenticate/using/both"); !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() {
 				if value.Exists() {
@@ -1247,11 +1315,22 @@ func (data *PolicyMapEvent) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("authenticate.using.priority"); ccValue.Exists() {
 						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
 					}
+					if ccValue := cv.Get("authenticate.using.aaa-config"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("authenticate.using.authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthzList = types.StringValue(ccValue.String())
+					}
 					if ccValue := cv.Get("authenticate.using.aaa.authc-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthcListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := cv.Get("authenticate.using.aaa.authz-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthzListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := cv.Get("authenticate.using.both"); ccValue.Exists() {
 						cItem.AuthenticateUsingBoth = types.BoolValue(true)
@@ -1417,11 +1496,22 @@ func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) 
 					if ccValue := cv.Get("authenticate.using.priority"); ccValue.Exists() {
 						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
 					}
+					if ccValue := cv.Get("authenticate.using.aaa-config"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("authenticate.using.authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthzList = types.StringValue(ccValue.String())
+					}
 					if ccValue := cv.Get("authenticate.using.aaa.authc-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthcListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := cv.Get("authenticate.using.aaa.authz-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthzListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := cv.Get("authenticate.using.both"); ccValue.Exists() {
 						cItem.AuthenticateUsingBoth = types.BoolValue(true)
@@ -1583,11 +1673,22 @@ func (data *PolicyMapEvent) fromBodyXML(ctx context.Context, res xmldot.Result) 
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/priority"); ccValue.Exists() {
 						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
 					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa-config"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthzList = types.StringValue(ccValue.String())
+					}
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authc-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthcListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authz-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthzListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/both"); ccValue.Exists() {
 						cItem.AuthenticateUsingBoth = types.BoolValue(true)
@@ -1749,11 +1850,22 @@ func (data *PolicyMapEventData) fromBodyXML(ctx context.Context, res xmldot.Resu
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/priority"); ccValue.Exists() {
 						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
 					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa-config"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingAaaConfig = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAuthzList = types.StringValue(ccValue.String())
+					}
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authc-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthcListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/aaa/authz-list"); ccValue.Exists() {
-						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+						cItem.AuthenticateUsingAaaAuthzListLegacy = types.StringValue(ccValue.String())
 					}
 					if ccValue := helpers.GetFromXPath(cv, "authenticate/using/both"); ccValue.Exists() {
 						cItem.AuthenticateUsingBoth = types.BoolValue(true)
@@ -1923,11 +2035,20 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzListLegacy.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authz-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcListLegacy.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authc-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAuthzList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/authz-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAuthcList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/authc-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaConfig.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa-config", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/priority", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
@@ -2104,11 +2225,20 @@ func (data *PolicyMapEvent) addDeletedItemsXML(ctx context.Context, state Policy
 							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/both", predicates, cpredicates))
 							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzListLegacy.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzListLegacy.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authz-list", predicates, cpredicates))
 							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcListLegacy.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcListLegacy.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authc-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAuthzList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/authz-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAuthcList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/authc-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaConfig.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa-config", predicates, cpredicates))
 							}
 							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/priority", predicates, cpredicates))
@@ -2227,6 +2357,9 @@ func (data *PolicyMapEvent) getEmptyLeafsDelete(ctx context.Context) []string {
 			}
 			if !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaConfig.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa-config", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 			if !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/replace-all", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
