@@ -13,7 +13,7 @@ require (
 	github.com/netascode/go-restconf v0.1.18
 	github.com/netascode/xmldot v0.5.1
 	github.com/openconfig/goyang v1.6.3
-	github.com/tidwall/gjson v1.18.0
+	github.com/tidwall/gjson v1.19.0
 	github.com/tidwall/sjson v1.2.5
 	golang.org/x/tools v0.44.0
 	gopkg.in/yaml.v3 v3.0.1
