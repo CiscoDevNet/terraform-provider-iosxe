@@ -112,6 +112,10 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				MarkdownDescription: "IP Address negotiated via DHCP",
 				Computed:            true,
 			},
+			"ip_mtu": schema.Int64Attribute{
+				MarkdownDescription: "Set IP Maximum Transmission Unit",
+				Computed:            true,
+			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: "inbound packets",
 				Computed:            true,

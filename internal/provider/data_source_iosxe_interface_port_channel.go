@@ -80,6 +80,10 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Shutdown the selected interface",
 				Computed:            true,
 			},
+			"mtu": schema.Int64Attribute{
+				MarkdownDescription: "Set the interface Maximum Transmission Unit (MTU)",
+				Computed:            true,
+			},
 			"switchport": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,

@@ -32,5 +32,6 @@ data "iosxe_interface_bdi" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
 - `mac_address` (String) Manually set interface MAC address
 - `zone_member_security` (String) Security zone
