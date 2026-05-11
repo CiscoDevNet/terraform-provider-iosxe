@@ -66,6 +66,67 @@ attributes:
     exclude_test: true
   - yang_name: ipv6/address/dhcp
     example: true
+  - yang_name: ipv6/dhcp/client-server-relay-choice/server/server
+    tf_name: ipv6_dhcp_servers
+    xpath: ipv6/dhcp/Cisco-IOS-XE-dhcp:server
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: word
+        tf_name: pool_name
+        description: DHCP pool name
+        id: true
+        example: DHCPv6-PD
+      - yang_name: allow-hint
+        description: Allow hint from client
+        example: true
+      - yang_name: rapid-commit
+        description: Enable Rapid-Commit
+        example: true
+      - yang_name: preference
+        description: Server preference value
+        example: 100
+  - yang_name: ipv6/dhcp/client-server-relay-choice/client/client/pd/pd-prefix/prefix-name
+    xpath: ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/prefix-name
+    tf_name: ipv6_dhcp_client_pd
+    description: IPv6 DHCP client prefix-delegation name
+    exclude_test: true
+    example: ISP_PREFIX
+  - yang_name: ipv6/dhcp/client-server-relay-choice/client/client/pd/pd-prefix/rapid-commit
+    xpath: ipv6/dhcp/Cisco-IOS-XE-dhcp:client/pd/pd-prefix/rapid-commit
+    tf_name: ipv6_dhcp_client_pd_rapid_commit
+    description: Enable Rapid-Commit for prefix-delegation
+    exclude_test: true
+    example: true
+  - yang_name: ipv6/dhcp/client-server-relay-choice/relay/relay/destination/address
+    xpath: ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/destination/address
+    tf_name: ipv6_dhcp_relay_destinations
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: ipv6-address
+        tf_name: address
+        description: Relay destination IPv6 address
+        id: true
+        example: "2001:db8::1"
+      - yang_name: interface-list
+        tf_name: interface
+        type: StringList
+        description: Interface for relay address
+        example: GigabitEthernet1
+  - yang_name: ipv6/dhcp/client-server-relay-choice/relay/relay/trust
+    xpath: ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/trust
+    tf_name: ipv6_dhcp_relay_trust
+    description: Interface is trusted to process relay-replies
+    exclude_test: true
+    example: true
+  - yang_name: ipv6/dhcp/client-server-relay-choice/relay/relay/option/vpn
+    xpath: ipv6/dhcp/Cisco-IOS-XE-dhcp:relay/option/vpn
+    tf_name: ipv6_dhcp_relay_option_vpn
+    description: Insert VSS option in Relay-Forward Messages
+    exclude_test: true
+    example: true
+
   - yang_name: ipv6/address/link-local-address
     tf_name: ipv6_link_local_addresses
     type: List

@@ -44,6 +44,7 @@
 - Add `iosxe_ipv6_prefix_list` resource and data source
 - Add `iosxe_parameter_map` resource and data source
 - Add `authenticate_using_authc_list` and `authenticate_using_authz_list` attributes to `iosxe_policy_map_event` resource and data source for the non-deprecated AAA method list leaves (`authenticate/using/authc-list`, `authenticate/using/authz-list`)
+- Add `ipv6_dhcp_servers`, `ipv6_dhcp_client_pd`, `ipv6_dhcp_client_pd_rapid_commit`, `ipv6_dhcp_relay_destinations`, `ipv6_dhcp_relay_trust`, and `ipv6_dhcp_relay_option_vpn` attributes to `iosxe_interface_ethernet`, `iosxe_interface_vlan`, `iosxe_interface_loopback`, `iosxe_interface_tunnel`, `iosxe_interface_port_channel`, and `iosxe_interface_port_channel_subinterface` resources and data sources for IPv6 DHCPv6 server binding (`ipv6 dhcp server`), client prefix-delegation (`ipv6 dhcp client pd`), and relay configuration (`ipv6 dhcp relay`)
 - Add `bandwidth`, `tunnel_bandwidth_transmit`, `tunnel_bandwidth_receive`, `service_policy_input`, and `service_policy_output` attributes to `iosxe_interface_tunnel` resource and data source
 - Add minimum version documentation (IOS-XE >= 17.16.1) to `passive_interface_disable_*` attributes on `iosxe_ospf` and `iosxe_ospf_vrf` resources
 - Add `service_policy` attribute to `iosxe_policy_map` resource and data source for attaching a child service-policy under a policy-map class action (`service-policy <name>`)

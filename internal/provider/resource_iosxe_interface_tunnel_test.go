@@ -104,7 +104,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceTunnelImportStateIdFunc("iosxe_interface_tunnel.test"),
-				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ipv4_address_dhcp", "tunnel_mode_ipsec_ipv4", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ipv4_address_dhcp", "tunnel_mode_ipsec_ipv4", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

@@ -66,6 +66,12 @@ data "iosxe_interface_vlan" "example" {
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
+- `ipv6_dhcp_client_pd` (String) IPv6 DHCP client prefix-delegation name
+- `ipv6_dhcp_client_pd_rapid_commit` (Boolean) Enable Rapid-Commit for prefix-delegation
+- `ipv6_dhcp_relay_destinations` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_dhcp_relay_destinations))
+- `ipv6_dhcp_relay_option_vpn` (Boolean) Insert VSS option in Relay-Forward Messages
+- `ipv6_dhcp_relay_trust` (Boolean) Interface is trusted to process relay-replies
+- `ipv6_dhcp_servers` (Attributes List) Act as an IPv6 DHCP server (see [below for nested schema](#nestedatt--ipv6_dhcp_servers))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
@@ -94,6 +100,26 @@ Read-Only:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
 - `prefix` (String) IPv6 prefix
+
+
+<a id="nestedatt--ipv6_dhcp_relay_destinations"></a>
+### Nested Schema for `ipv6_dhcp_relay_destinations`
+
+Read-Only:
+
+- `address` (String) Relay destination IPv6 address
+- `interface` (List of String) Interface for relay address
+
+
+<a id="nestedatt--ipv6_dhcp_servers"></a>
+### Nested Schema for `ipv6_dhcp_servers`
+
+Read-Only:
+
+- `allow_hint` (Boolean) Allow hint from client
+- `pool_name` (String) DHCP pool name
+- `preference` (Number) Server preference value
+- `rapid_commit` (Boolean) Enable Rapid-Commit
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>
