@@ -38,6 +38,7 @@ attributes:
         example: RM1
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/ipv6
+    no_delete: true
     attributes:
       - name: unicast-routing
         value: ""

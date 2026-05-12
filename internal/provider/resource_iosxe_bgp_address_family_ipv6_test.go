@@ -87,6 +87,7 @@ func iosxeBGPAddressFamilyIPv6ImportStateIdFunc(resourceName string) resource.Im
 const testAccIosxeBGPAddressFamilyIPv6PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/ipv6"
+	delete = false
 	attributes = {
 		"unicast-routing" = ""
 	}

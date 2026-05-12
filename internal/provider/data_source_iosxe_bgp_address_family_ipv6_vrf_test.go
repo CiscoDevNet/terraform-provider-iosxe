@@ -62,6 +62,7 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv6VRF(t *testing.T) {
 const testAccDataSourceIosxeBGPAddressFamilyIPv6VRFPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/ipv6"
+	delete = false
 	attributes = {
 		"unicast-routing" = ""
 	}

@@ -1,6 +1,7 @@
 ---
 name: IPv6 Local Pool
 path: /Cisco-IOS-XE-native:native/ipv6/local/pool[id=%s]
+test_tags: [ISR]
 doc_category: System
 attributes:
   - yang_name: id
