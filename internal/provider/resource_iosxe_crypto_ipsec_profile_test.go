@@ -61,7 +61,7 @@ func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeCryptoIPSecProfileImportStateIdFunc("iosxe_crypto_ipsec_profile.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"set_security_association_lifetime_seconds_legacy"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

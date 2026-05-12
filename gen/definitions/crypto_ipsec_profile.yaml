@@ -29,6 +29,7 @@ attributes:
     description: Security association lifetime in seconds. Use this for IOS-XE versions before `17.15.1`.
     example: 3600
     test_tags: [IOSXE1712]
+    allow_import_changes: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set[tag=TS1]

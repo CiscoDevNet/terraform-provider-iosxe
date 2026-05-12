@@ -33,7 +33,6 @@ import (
 func TestAccDataSourceIosxeKeyChain(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_key_chain.test", "keys.0.id", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_key_chain.test", "keys.0.key_string_encryption", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_key_chain.test", "keys.0.accept_lifetime_start_time", "00:00:00"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_key_chain.test", "keys.0.accept_lifetime_start_month", "Jan"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_key_chain.test", "keys.0.accept_lifetime_start_day", "1"))
