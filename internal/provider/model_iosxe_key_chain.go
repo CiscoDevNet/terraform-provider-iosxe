@@ -643,11 +643,6 @@ func (data *KeyChain) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Keys[i].CryptographicAlgorithmMacsec = types.StringNull()
 		}
-		if value := r.Get("key-string.encryption"); value.Exists() && !data.Keys[i].KeyStringEncryption.IsNull() {
-			data.Keys[i].KeyStringEncryption = types.StringValue(value.String())
-		} else {
-			data.Keys[i].KeyStringEncryption = types.StringNull()
-		}
 		if value := r.Get("accept-lifetime.lifetime-group-v1.local"); !data.Keys[i].AcceptLifetimeLocal.IsNull() {
 			if value.Exists() {
 				data.Keys[i].AcceptLifetimeLocal = types.BoolValue(true)
@@ -934,11 +929,6 @@ func (data *KeyChain) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 			data.Keys[i].CryptographicAlgorithmMacsec = types.StringValue(value.String())
 		} else {
 			data.Keys[i].CryptographicAlgorithmMacsec = types.StringNull()
-		}
-		if value := helpers.GetFromXPath(r, "key-string/encryption"); value.Exists() && !data.Keys[i].KeyStringEncryption.IsNull() {
-			data.Keys[i].KeyStringEncryption = types.StringValue(value.String())
-		} else {
-			data.Keys[i].KeyStringEncryption = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "accept-lifetime/lifetime-group-v1/local"); !data.Keys[i].AcceptLifetimeLocal.IsNull() {
 			if value.Exists() {
