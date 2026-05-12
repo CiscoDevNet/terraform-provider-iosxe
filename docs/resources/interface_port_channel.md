@@ -17,6 +17,7 @@ resource "iosxe_interface_port_channel" "example" {
   name                           = 10
   description                    = "My Interface Description"
   shutdown                       = false
+  mtu                            = 1500
   switchport                     = false
   ip_proxy_arp                   = false
   ip_redirects                   = false
@@ -141,6 +142,8 @@ resource "iosxe_interface_port_channel" "example" {
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
+  - Range: `64`-`18000`
 - `negotiation_auto` (Boolean) Enable link autonegotiation
 - `shutdown` (Boolean) Shutdown the selected interface
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps

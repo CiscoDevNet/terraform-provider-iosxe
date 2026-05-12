@@ -1,0 +1,184 @@
+---
+name: IPv6 DHCP Pool
+path: /Cisco-IOS-XE-native:native/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool[name=%s]
+test_tags: [ISR]
+doc_category: System
+attributes:
+  - yang_name: name
+    example: DHCPv6-PD
+  - yang_name: vrf
+    description: VRF name
+    example: VRF1
+    exclude_test: true
+  - yang_name: address/prefix
+    tf_name: address_prefixes
+    type: List
+    description: IPv6 address allocation prefix
+    exclude_test: true
+    attributes:
+      - yang_name: ipv6-address
+        tf_name: address
+        description: IPv6 prefix address
+        example: "2001:db8:1::/64"
+        id: true
+      - yang_name: lifetime/valid-lifetime
+        tf_name: valid_lifetime
+        description: Valid lifetime in seconds or infinite
+        example: 2592000
+      - yang_name: lifetime/preferred-lifetime
+        tf_name: preferred_lifetime
+        description: Preferred lifetime in seconds or infinite
+        example: 604800
+  - yang_name: prefix-delegation/pool/pool-name
+    tf_name: prefix_delegation_pool_name
+    description: IPv6 prefix delegation pool name
+    example: DHCPv6-PD
+  - yang_name: prefix-delegation/pool/lifetime/valid-lifetime
+    tf_name: prefix_delegation_pool_valid_lifetime
+    description: Valid lifetime in seconds or infinite
+    example: 2592000
+    exclude_test: true
+  - yang_name: prefix-delegation/pool/lifetime/preferred-lifetime
+    tf_name: prefix_delegation_pool_preferred_lifetime
+    description: Preferred lifetime in seconds or infinite
+    example: 604800
+    exclude_test: true
+  - yang_name: prefix-delegation/pd-prefix
+    tf_name: prefix_delegation_prefixes
+    type: List
+    description: IPv6 prefix delegation prefix
+    exclude_test: true
+    attributes:
+      - yang_name: ipv6-prefix
+        tf_name: prefix
+        description: IPv6 prefix
+        example: "2001:db8:2::/48"
+        id: true
+      - yang_name: Hex-string
+        tf_name: hex_string
+        description: DHCPv6 unique identifier (hex)
+        example: 00030001AABBCCDDEEFF
+      - yang_name: iaid
+        description: DHCPv6 IAID (hex)
+        example: "00000001"
+      - yang_name: lifetime/valid-lifetime
+        tf_name: valid_lifetime
+        description: Valid lifetime in seconds or infinite
+        example: 2592000
+      - yang_name: lifetime/preferred-lifetime
+        tf_name: preferred_lifetime
+        description: Preferred lifetime in seconds or infinite
+        example: 604800
+  - yang_name: dns-server
+    tf_name: dns_servers
+    type: StringList
+    description: DNS server addresses
+    example: "2001:4860:4860::8888"
+  - yang_name: domain-names
+    type: StringList
+    description: Domain names
+    example: example.com
+  - yang_name: link-address
+    tf_name: link_addresses
+    type: List
+    description: Link-address to match
+    exclude_test: true
+    attributes:
+      - yang_name: address
+        description: IPv6 prefix
+        example: "2001:db8:3::/64"
+        id: true
+  - yang_name: bootfile-url
+    description: Boot file URL
+    example: tftp://[2001:db8::1]/boot.cfg
+    exclude_test: true
+  - yang_name: option/include-all
+    tf_name: option_include_all
+    description: Include all DHCPv6 configured options in REPLY
+    example: true
+    exclude_test: true
+  - yang_name: vendor-specific
+    tf_name: vendor_specifics
+    type: List
+    description: Vendor-specific options
+    attributes:
+      - yang_name: value
+        tf_name: enterprise_id
+        description: Enterprise ID
+        example: 9
+        id: true
+      - yang_name: suboption
+        tf_name: suboptions
+        type: List
+        attributes:
+          - yang_name: number
+            description: Suboption number
+            example: 1
+            id: true
+          - yang_name: address
+            description: IPv6 address value
+            example: "2001:db8::1"
+          - yang_name: ascii
+            description: ASCII string value
+            exclude_test: true
+          - yang_name: hex
+            description: Hex string value
+            exclude_test: true
+  - yang_name: import/dns-server
+    tf_name: import_dns_server
+    description: Import DNS address from interface
+    example: true
+    exclude_test: true
+  - yang_name: import/domain-name
+    tf_name: import_domain_name
+    description: Import domain name from interface
+    example: true
+    exclude_test: true
+  - yang_name: sntp/address
+    tf_name: sntp_addresses
+    type: StringList
+    description: SNTP server addresses
+    exclude_test: true
+    example: "2001:db8::123"
+  - yang_name: information/refresh/refresh/refresh-value/refresh-value/days
+    xpath: information/refresh/refresh-value/days
+    tf_name: information_refresh_days
+    description: Information refresh days
+    exclude_test: true
+    example: 1
+  - yang_name: information/refresh/refresh/refresh-value/refresh-value/hours
+    xpath: information/refresh/refresh-value/hours
+    tf_name: information_refresh_hours
+    description: Information refresh hours
+    exclude_test: true
+    example: 12
+  - yang_name: information/refresh/refresh/refresh-value/refresh-value/minutes
+    xpath: information/refresh/refresh-value/minutes
+    tf_name: information_refresh_minutes
+    description: Information refresh minutes
+    exclude_test: true
+    example: 30
+  - yang_name: information/refresh/refresh/infinite/infinite
+    xpath: information/refresh/infinite
+    tf_name: information_refresh_infinite
+    description: Infinite information refresh
+    example: true
+    exclude_test: true
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/ipv6/local/pool[id=DHCPv6-PD]
+    no_delete: true
+    attributes:
+      - name: id
+        value: DHCPv6-PD
+      - name: start-address
+        value: "2001:db8::/48"
+      - name: prefix-length
+        value: 64
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv6
+        value: ""

@@ -23,6 +23,7 @@ resource "iosxe_interface_loopback" "example" {
   vrf_forwarding             = "VRF1"
   ipv4_address               = "200.1.1.1"
   ipv4_address_mask          = "255.255.255.255"
+  ip_mtu                     = 1400
   ip_access_group_in_enable  = true
   ip_access_group_in         = "1"
   ip_access_group_out_enable = true
@@ -68,6 +69,8 @@ resource "iosxe_interface_loopback" "example" {
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_igmp_version` (Number) IGMP version
   - Range: `1`-`3`
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
+  - Range: `68`-`18000`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_proxy_arp` (Boolean) Enable proxy ARP

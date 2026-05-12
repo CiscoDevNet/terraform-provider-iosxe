@@ -26,6 +26,7 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -95,6 +96,13 @@ func (r *InterfaceBDIResource) Schema(ctx context.Context, req resource.SchemaRe
 			"mac_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Manually set interface MAC address").String,
 				Optional:            true,
+			},
+			"ip_mtu": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set IP Maximum Transmission Unit").AddIntegerRangeDescription(68, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(68, 18000),
+				},
 			},
 			"zone_member_security": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,

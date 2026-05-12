@@ -29,7 +29,7 @@ attributes:
           - yang_name: fqdn-pattern
             tf_name: fqdn_pattern
             id: true
-            example: test-fqdn-pattern
+            example: .*\\.cisco\\.com
   - yang_name: Cisco-IOS-XE-object-group:network
     tf_name: network
     type: List

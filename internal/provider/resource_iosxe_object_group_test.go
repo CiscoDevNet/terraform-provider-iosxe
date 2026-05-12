@@ -36,7 +36,7 @@ func TestAccIosxeObjectGroup(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "fqdn.0.name", "FQDN_GROUP_1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "fqdn.0.description", "My FQDN object group"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "fqdn.0.patterns.0.fqdn_pattern", "test-fqdn-pattern"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "fqdn.0.patterns.0.fqdn_pattern", ".*\\.cisco\\.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.name", "NETWORK_GROUP_1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.description", "My network object group"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.hosts.0.ipv4_host", "10.1.1.1"))
@@ -101,7 +101,7 @@ func testAccIosxeObjectGroupConfig_all() string {
 	config += `		name = "FQDN_GROUP_1"` + "\n"
 	config += `		description = "My FQDN object group"` + "\n"
 	config += `		patterns = [{` + "\n"
-	config += `			fqdn_pattern = "test-fqdn-pattern"` + "\n"
+	config += `			fqdn_pattern = ".*\\.cisco\\.com"` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	network = [{` + "\n"

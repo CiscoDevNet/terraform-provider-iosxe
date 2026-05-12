@@ -935,6 +935,7 @@ attributes:
         tf_name: v3_auth_sha2
         example: 256
         write_only: true
+        exclude_test: true
       - yang_name: v3/auth-config/password
         tf_name: v3_auth_password
         write_only: true

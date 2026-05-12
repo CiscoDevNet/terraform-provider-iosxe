@@ -170,12 +170,24 @@ func (d *PolicyMapEventDataSource) Schema(ctx context.Context, req datasource.Sc
 										MarkdownDescription: "Method priority",
 										Computed:            true,
 									},
-									"authenticate_using_aaa_authc_list": schema.StringAttribute{
-										MarkdownDescription: "Deprecated. Specify authentication method list",
+									"authenticate_using_aaa_config": schema.BoolAttribute{
+										MarkdownDescription: "Configure AAA method list. Required when using `authenticate_using_authc_list` or `authenticate_using_authz_list` (versions `17.18` and later).",
 										Computed:            true,
 									},
-									"authenticate_using_aaa_authz_list": schema.StringAttribute{
-										MarkdownDescription: "Deprecated. Specify authorization method list",
+									"authenticate_using_authc_list": schema.StringAttribute{
+										MarkdownDescription: "Specify authentication method list. Use this for versions `17.18` and later.",
+										Computed:            true,
+									},
+									"authenticate_using_authz_list": schema.StringAttribute{
+										MarkdownDescription: "Specify authorization method list. Use this for versions `17.18` and later.",
+										Computed:            true,
+									},
+									"authenticate_using_aaa_authc_list_legacy": schema.StringAttribute{
+										MarkdownDescription: "Specify authentication method list. Use this for versions before `17.18`.",
+										Computed:            true,
+									},
+									"authenticate_using_aaa_authz_list_legacy": schema.StringAttribute{
+										MarkdownDescription: "Specify authorization method list. Use this for versions before `17.18`.",
 										Computed:            true,
 									},
 									"authenticate_using_both": schema.BoolAttribute{

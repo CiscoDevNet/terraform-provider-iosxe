@@ -39,6 +39,8 @@ attributes:
     tf_name: ipv4_address_dhcp
     exclude_test: true
     example: true
+  - yang_name: ip/mtu
+    example: 1400
   - yang_name: ip/access-group/in/apply-type/apply-intf/acl/in
     xpath: ip/access-group/in/acl/in
     tf_name: ip_access_group_in_enable
