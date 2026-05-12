@@ -1,6 +1,7 @@
 ---
 name: Parameter Map
 path: /Cisco-IOS-XE-native:native/parameter-map/type/Cisco-IOS-XE-policy:inspect[name=%v]
+test_tags: [C8000V]
 doc_category: QoS
 attributes:
   - yang_name: name

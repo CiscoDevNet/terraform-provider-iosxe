@@ -1,6 +1,7 @@
 ---
 name: Zone Security
 path: /Cisco-IOS-XE-native:native/zone/Cisco-IOS-XE-zone:security[id=%v]
+test_tags: [C8000V]
 doc_category: Security
 attributes:
   - yang_name: id
