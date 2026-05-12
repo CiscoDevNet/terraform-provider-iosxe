@@ -26,6 +26,21 @@ resource "iosxe_interface_ospfv3" "example" {
   hello_interval                   = 5
   mtu_ignore                       = true
   priority                         = 10
+  process_ids = [
+    {
+      id = 1
+      ipv4_areas = [
+        {
+          id = "0"
+        }
+      ]
+      ipv6_areas = [
+        {
+          id = "0"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -57,10 +72,38 @@ resource "iosxe_interface_ospfv3" "example" {
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
 - `priority` (Number) Router priority
   - Range: `0`-`255`
+- `process_ids` (Attributes List) (see [below for nested schema](#nestedatt--process_ids))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--process_ids"></a>
+### Nested Schema for `process_ids`
+
+Required:
+
+- `id` (Number) - Range: `1`-`65535`
+
+Optional:
+
+- `ipv4_areas` (Attributes List) Set the OSPF area ID (see [below for nested schema](#nestedatt--process_ids--ipv4_areas))
+- `ipv6_areas` (Attributes List) Set the OSPF area ID (see [below for nested schema](#nestedatt--process_ids--ipv6_areas))
+
+<a id="nestedatt--process_ids--ipv4_areas"></a>
+### Nested Schema for `process_ids.ipv4_areas`
+
+Required:
+
+- `id` (String)
+
+
+<a id="nestedatt--process_ids--ipv6_areas"></a>
+### Nested Schema for `process_ids.ipv6_areas`
+
+Required:
+
+- `id` (String)
 
 ## Import
 

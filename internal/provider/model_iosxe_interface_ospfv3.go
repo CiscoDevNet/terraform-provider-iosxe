@@ -24,8 +24,10 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -40,38 +42,62 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceOSPFv3 struct {
-	Device                       types.String `tfsdk:"device"`
-	Id                           types.String `tfsdk:"id"`
-	DeleteMode                   types.String `tfsdk:"delete_mode"`
-	Type                         types.String `tfsdk:"type"`
-	Name                         types.String `tfsdk:"name"`
-	NetworkTypeBroadcast         types.Bool   `tfsdk:"network_type_broadcast"`
-	NetworkTypeNonBroadcast      types.Bool   `tfsdk:"network_type_non_broadcast"`
-	NetworkTypePointToMultipoint types.Bool   `tfsdk:"network_type_point_to_multipoint"`
-	NetworkTypePointToPoint      types.Bool   `tfsdk:"network_type_point_to_point"`
-	Bfd                          types.Bool   `tfsdk:"bfd"`
-	Cost                         types.Int64  `tfsdk:"cost"`
-	DeadInterval                 types.Int64  `tfsdk:"dead_interval"`
-	HelloInterval                types.Int64  `tfsdk:"hello_interval"`
-	MtuIgnore                    types.Bool   `tfsdk:"mtu_ignore"`
-	Priority                     types.Int64  `tfsdk:"priority"`
+	Device                       types.String                `tfsdk:"device"`
+	Id                           types.String                `tfsdk:"id"`
+	DeleteMode                   types.String                `tfsdk:"delete_mode"`
+	Type                         types.String                `tfsdk:"type"`
+	Name                         types.String                `tfsdk:"name"`
+	NetworkTypeBroadcast         types.Bool                  `tfsdk:"network_type_broadcast"`
+	NetworkTypeNonBroadcast      types.Bool                  `tfsdk:"network_type_non_broadcast"`
+	NetworkTypePointToMultipoint types.Bool                  `tfsdk:"network_type_point_to_multipoint"`
+	NetworkTypePointToPoint      types.Bool                  `tfsdk:"network_type_point_to_point"`
+	Bfd                          types.Bool                  `tfsdk:"bfd"`
+	Cost                         types.Int64                 `tfsdk:"cost"`
+	DeadInterval                 types.Int64                 `tfsdk:"dead_interval"`
+	HelloInterval                types.Int64                 `tfsdk:"hello_interval"`
+	MtuIgnore                    types.Bool                  `tfsdk:"mtu_ignore"`
+	Priority                     types.Int64                 `tfsdk:"priority"`
+	ProcessIds                   []InterfaceOSPFv3ProcessIds `tfsdk:"process_ids"`
+}
+type InterfaceOSPFv3ProcessIds struct {
+	Id        types.Int64                          `tfsdk:"id"`
+	Ipv4Areas []InterfaceOSPFv3ProcessIdsIpv4Areas `tfsdk:"ipv4_areas"`
+	Ipv6Areas []InterfaceOSPFv3ProcessIdsIpv6Areas `tfsdk:"ipv6_areas"`
+}
+type InterfaceOSPFv3ProcessIdsIpv4Areas struct {
+	Id types.String `tfsdk:"id"`
+}
+type InterfaceOSPFv3ProcessIdsIpv6Areas struct {
+	Id types.String `tfsdk:"id"`
 }
 
 type InterfaceOSPFv3Data struct {
-	Device                       types.String `tfsdk:"device"`
-	Id                           types.String `tfsdk:"id"`
-	Type                         types.String `tfsdk:"type"`
-	Name                         types.String `tfsdk:"name"`
-	NetworkTypeBroadcast         types.Bool   `tfsdk:"network_type_broadcast"`
-	NetworkTypeNonBroadcast      types.Bool   `tfsdk:"network_type_non_broadcast"`
-	NetworkTypePointToMultipoint types.Bool   `tfsdk:"network_type_point_to_multipoint"`
-	NetworkTypePointToPoint      types.Bool   `tfsdk:"network_type_point_to_point"`
-	Bfd                          types.Bool   `tfsdk:"bfd"`
-	Cost                         types.Int64  `tfsdk:"cost"`
-	DeadInterval                 types.Int64  `tfsdk:"dead_interval"`
-	HelloInterval                types.Int64  `tfsdk:"hello_interval"`
-	MtuIgnore                    types.Bool   `tfsdk:"mtu_ignore"`
-	Priority                     types.Int64  `tfsdk:"priority"`
+	Device                       types.String                    `tfsdk:"device"`
+	Id                           types.String                    `tfsdk:"id"`
+	Type                         types.String                    `tfsdk:"type"`
+	Name                         types.String                    `tfsdk:"name"`
+	NetworkTypeBroadcast         types.Bool                      `tfsdk:"network_type_broadcast"`
+	NetworkTypeNonBroadcast      types.Bool                      `tfsdk:"network_type_non_broadcast"`
+	NetworkTypePointToMultipoint types.Bool                      `tfsdk:"network_type_point_to_multipoint"`
+	NetworkTypePointToPoint      types.Bool                      `tfsdk:"network_type_point_to_point"`
+	Bfd                          types.Bool                      `tfsdk:"bfd"`
+	Cost                         types.Int64                     `tfsdk:"cost"`
+	DeadInterval                 types.Int64                     `tfsdk:"dead_interval"`
+	HelloInterval                types.Int64                     `tfsdk:"hello_interval"`
+	MtuIgnore                    types.Bool                      `tfsdk:"mtu_ignore"`
+	Priority                     types.Int64                     `tfsdk:"priority"`
+	ProcessIds                   []InterfaceOSPFv3ProcessIdsData `tfsdk:"process_ids"`
+}
+type InterfaceOSPFv3ProcessIdsData struct {
+	Id        types.Int64                              `tfsdk:"id"`
+	Ipv4Areas []InterfaceOSPFv3ProcessIdsIpv4AreasData `tfsdk:"ipv4_areas"`
+	Ipv6Areas []InterfaceOSPFv3ProcessIdsIpv6AreasData `tfsdk:"ipv6_areas"`
+}
+type InterfaceOSPFv3ProcessIdsIpv4AreasData struct {
+	Id types.String `tfsdk:"id"`
+}
+type InterfaceOSPFv3ProcessIdsIpv6AreasData struct {
+	Id types.String `tfsdk:"id"`
 }
 
 // End of section. //template:end types
@@ -158,6 +184,30 @@ func (data InterfaceOSPFv3) toBody(ctx context.Context, config InterfaceOSPFv3) 
 	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
 	}
+	if len(data.ProcessIds) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"process-id", []interface{}{})
+		for index, item := range data.ProcessIds {
+			if !item.Id.IsNull() && !item.Id.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"process-id"+"."+strconv.Itoa(index)+"."+"id", strconv.FormatInt(item.Id.ValueInt64(), 10))
+			}
+			if len(item.Ipv4Areas) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"process-id"+"."+strconv.Itoa(index)+"."+"ipv4.area", []interface{}{})
+				for cindex, citem := range item.Ipv4Areas {
+					if !citem.Id.IsNull() && !citem.Id.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"process-id"+"."+strconv.Itoa(index)+"."+"ipv4.area"+"."+strconv.Itoa(cindex)+"."+"id", citem.Id.ValueString())
+					}
+				}
+			}
+			if len(item.Ipv6Areas) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"process-id"+"."+strconv.Itoa(index)+"."+"ipv6.area", []interface{}{})
+				for cindex, citem := range item.Ipv6Areas {
+					if !citem.Id.IsNull() && !citem.Id.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"process-id"+"."+strconv.Itoa(index)+"."+"ipv6.area"+"."+strconv.Itoa(cindex)+"."+"id", citem.Id.ValueString())
+					}
+				}
+			}
+		}
+	}
 	return body
 }
 
@@ -220,6 +270,33 @@ func (data InterfaceOSPFv3) toBodyXML(ctx context.Context, config InterfaceOSPFv
 	}
 	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
+	}
+	if len(data.ProcessIds) > 0 {
+		for _, item := range data.ProcessIds {
+			cBody := netconf.Body{}
+			if !item.Id.IsNull() && !item.Id.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.Id.ValueInt64(), 10))
+			}
+			if len(item.Ipv4Areas) > 0 {
+				for _, citem := range item.Ipv4Areas {
+					ccBody := netconf.Body{}
+					if !citem.Id.IsNull() && !citem.Id.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "id", citem.Id.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "ipv4/area", ccBody.Res())
+				}
+			}
+			if len(item.Ipv6Areas) > 0 {
+				for _, citem := range item.Ipv6Areas {
+					ccBody := netconf.Body{}
+					if !citem.Id.IsNull() && !citem.Id.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "id", citem.Id.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "ipv6/area", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/process-id", cBody.Res())
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -311,6 +388,93 @@ func (data *InterfaceOSPFv3) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.Priority = types.Int64Null()
 	}
+	for i := range data.ProcessIds {
+		keys := [...]string{"id"}
+		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
+
+		var r gjson.Result
+		res.Get(prefix + "process-id").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("id"); value.Exists() && !data.ProcessIds[i].Id.IsNull() {
+			data.ProcessIds[i].Id = types.Int64Value(value.Int())
+		} else {
+			data.ProcessIds[i].Id = types.Int64Null()
+		}
+		for ci := range data.ProcessIds[i].Ipv4Areas {
+			keys := [...]string{"id"}
+			keyValues := [...]string{data.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()}
+
+			var cr gjson.Result
+			r.Get("ipv4.area").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("id"); value.Exists() && !data.ProcessIds[i].Ipv4Areas[ci].Id.IsNull() {
+				data.ProcessIds[i].Ipv4Areas[ci].Id = types.StringValue(value.String())
+			} else {
+				data.ProcessIds[i].Ipv4Areas[ci].Id = types.StringNull()
+			}
+		}
+		for ci := range data.ProcessIds[i].Ipv6Areas {
+			keys := [...]string{"id"}
+			keyValues := [...]string{data.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()}
+
+			var cr gjson.Result
+			r.Get("ipv6.area").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("id"); value.Exists() && !data.ProcessIds[i].Ipv6Areas[ci].Id.IsNull() {
+				data.ProcessIds[i].Ipv6Areas[ci].Id = types.StringValue(value.String())
+			} else {
+				data.ProcessIds[i].Ipv6Areas[ci].Id = types.StringNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -392,6 +556,93 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Priority = types.Int64Null()
 	}
+	for i := range data.ProcessIds {
+		keys := [...]string{"id"}
+		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.ProcessIds[i].Id.IsNull() {
+			data.ProcessIds[i].Id = types.Int64Value(value.Int())
+		} else {
+			data.ProcessIds[i].Id = types.Int64Null()
+		}
+		for ci := range data.ProcessIds[i].Ipv4Areas {
+			keys := [...]string{"id"}
+			keyValues := [...]string{data.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "ipv4/area").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "id"); value.Exists() && !data.ProcessIds[i].Ipv4Areas[ci].Id.IsNull() {
+				data.ProcessIds[i].Ipv4Areas[ci].Id = types.StringValue(value.String())
+			} else {
+				data.ProcessIds[i].Ipv4Areas[ci].Id = types.StringNull()
+			}
+		}
+		for ci := range data.ProcessIds[i].Ipv6Areas {
+			keys := [...]string{"id"}
+			keyValues := [...]string{data.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "ipv6/area").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "id"); value.Exists() && !data.ProcessIds[i].Ipv6Areas[ci].Id.IsNull() {
+				data.ProcessIds[i].Ipv6Areas[ci].Id = types.StringValue(value.String())
+			} else {
+				data.ProcessIds[i].Ipv6Areas[ci].Id = types.StringNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -444,6 +695,39 @@ func (data *InterfaceOSPFv3) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "process-id"); value.Exists() {
+		data.ProcessIds = make([]InterfaceOSPFv3ProcessIds, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceOSPFv3ProcessIds{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv4.area"); cValue.Exists() {
+				item.Ipv4Areas = make([]InterfaceOSPFv3ProcessIdsIpv4Areas, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv4Areas{}
+					if ccValue := cv.Get("id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv4Areas = append(item.Ipv4Areas, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ipv6.area"); cValue.Exists() {
+				item.Ipv6Areas = make([]InterfaceOSPFv3ProcessIdsIpv6Areas, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv6Areas{}
+					if ccValue := cv.Get("id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv6Areas = append(item.Ipv6Areas, cItem)
+					return true
+				})
+			}
+			data.ProcessIds = append(data.ProcessIds, item)
+			return true
+		})
 	}
 }
 
@@ -498,6 +782,39 @@ func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result)
 	if value := res.Get(prefix + "priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "process-id"); value.Exists() {
+		data.ProcessIds = make([]InterfaceOSPFv3ProcessIdsData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceOSPFv3ProcessIdsData{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv4.area"); cValue.Exists() {
+				item.Ipv4Areas = make([]InterfaceOSPFv3ProcessIdsIpv4AreasData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv4AreasData{}
+					if ccValue := cv.Get("id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv4Areas = append(item.Ipv4Areas, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ipv6.area"); cValue.Exists() {
+				item.Ipv6Areas = make([]InterfaceOSPFv3ProcessIdsIpv6AreasData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv6AreasData{}
+					if ccValue := cv.Get("id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv6Areas = append(item.Ipv6Areas, cItem)
+					return true
+				})
+			}
+			data.ProcessIds = append(data.ProcessIds, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -546,6 +863,39 @@ func (data *InterfaceOSPFv3) fromBodyXML(ctx context.Context, res xmldot.Result)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id"); value.Exists() {
+		data.ProcessIds = make([]InterfaceOSPFv3ProcessIds, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceOSPFv3ProcessIds{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv4/area"); cValue.Exists() {
+				item.Ipv4Areas = make([]InterfaceOSPFv3ProcessIdsIpv4Areas, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv4Areas{}
+					if ccValue := helpers.GetFromXPath(cv, "id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv4Areas = append(item.Ipv4Areas, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6/area"); cValue.Exists() {
+				item.Ipv6Areas = make([]InterfaceOSPFv3ProcessIdsIpv6Areas, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv6Areas{}
+					if ccValue := helpers.GetFromXPath(cv, "id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv6Areas = append(item.Ipv6Areas, cItem)
+					return true
+				})
+			}
+			data.ProcessIds = append(data.ProcessIds, item)
+			return true
+		})
 	}
 }
 
@@ -596,6 +946,39 @@ func (data *InterfaceOSPFv3Data) fromBodyXML(ctx context.Context, res xmldot.Res
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id"); value.Exists() {
+		data.ProcessIds = make([]InterfaceOSPFv3ProcessIdsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceOSPFv3ProcessIdsData{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Id = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv4/area"); cValue.Exists() {
+				item.Ipv4Areas = make([]InterfaceOSPFv3ProcessIdsIpv4AreasData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv4AreasData{}
+					if ccValue := helpers.GetFromXPath(cv, "id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv4Areas = append(item.Ipv4Areas, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6/area"); cValue.Exists() {
+				item.Ipv6Areas = make([]InterfaceOSPFv3ProcessIdsIpv6AreasData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := InterfaceOSPFv3ProcessIdsIpv6AreasData{}
+					if ccValue := helpers.GetFromXPath(cv, "id"); ccValue.Exists() {
+						cItem.Id = types.StringValue(ccValue.String())
+					}
+					item.Ipv6Areas = append(item.Ipv6Areas, cItem)
+					return true
+				})
+			}
+			data.ProcessIds = append(data.ProcessIds, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -604,6 +987,81 @@ func (data *InterfaceOSPFv3Data) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state InterfaceOSPFv3) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.ProcessIds {
+		stateKeyValues := [...]string{strconv.FormatInt(state.ProcessIds[i].Id.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ProcessIds[i].Id.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ProcessIds {
+			found = true
+			if state.ProcessIds[i].Id.ValueInt64() != data.ProcessIds[j].Id.ValueInt64() {
+				found = false
+			}
+			if found {
+				for ci := range state.ProcessIds[i].Ipv6Areas {
+					cstateKeyValues := [...]string{state.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.ProcessIds[j].Ipv6Areas {
+						found = true
+						if state.ProcessIds[i].Ipv6Areas[ci].Id.ValueString() != data.ProcessIds[j].Ipv6Areas[cj].Id.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/process-id=%v/ipv6/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.ProcessIds[i].Ipv4Areas {
+					cstateKeyValues := [...]string{state.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.ProcessIds[j].Ipv4Areas {
+						found = true
+						if state.ProcessIds[i].Ipv4Areas[ci].Id.ValueString() != data.ProcessIds[j].Ipv4Areas[cj].Id.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/process-id=%v/ipv4/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/process-id=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.Priority.IsNull() && data.Priority.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
 	}
@@ -644,6 +1102,96 @@ func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state Interfac
 
 func (data *InterfaceOSPFv3) addDeletedItemsXML(ctx context.Context, state InterfaceOSPFv3, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.ProcessIds {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.ProcessIds[i].Id.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ProcessIds[i].Id.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ProcessIds {
+			found = true
+			if state.ProcessIds[i].Id.ValueInt64() != data.ProcessIds[j].Id.ValueInt64() {
+				found = false
+			}
+			if found {
+				for ci := range state.ProcessIds[i].Ipv6Areas {
+					cstateKeys := [...]string{"id"}
+					cstateKeyValues := [...]string{state.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.ProcessIds[i].Ipv6Areas[ci].Id.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.ProcessIds[j].Ipv6Areas {
+						found = true
+						if state.ProcessIds[i].Ipv6Areas[ci].Id.ValueString() != data.ProcessIds[j].Ipv6Areas[cj].Id.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/process-id%v/ipv6/area%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.ProcessIds[i].Ipv4Areas {
+					cstateKeys := [...]string{"id"}
+					cstateKeyValues := [...]string{state.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.ProcessIds[i].Ipv4Areas[ci].Id.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.ProcessIds[j].Ipv4Areas {
+						found = true
+						if state.ProcessIds[i].Ipv4Areas[ci].Id.ValueString() != data.ProcessIds[j].Ipv4Areas[cj].Id.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/process-id%v/ipv4/area%v", predicates, cpredicates))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/process-id%v", predicates))
+		}
+	}
 	if !state.Priority.IsNull() && data.Priority.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
 	}
@@ -685,6 +1233,7 @@ func (data *InterfaceOSPFv3) addDeletedItemsXML(ctx context.Context, state Inter
 
 func (data *InterfaceOSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	if !data.MtuIgnore.IsNull() && !data.MtuIgnore.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mtu-ignore", data.getPath()))
 	}
@@ -713,6 +1262,11 @@ func (data *InterfaceOSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.ProcessIds {
+		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/process-id=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	if !data.Priority.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
 	}
@@ -753,6 +1307,16 @@ func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceOSPFv3) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.ProcessIds {
+		keys := [...]string{"id"}
+		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/process-id%v", predicates))
+	}
 	if !data.Priority.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/priority")
 	}

@@ -159,6 +159,45 @@ func (r *InterfaceOSPFv3Resource) Schema(ctx context.Context, req resource.Schem
 					int64validator.Between(0, 255),
 				},
 			},
+			"process_ids": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 65535).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 65535),
+							},
+						},
+						"ipv4_areas": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF area ID").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+								},
+							},
+						},
+						"ipv6_areas": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF area ID").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

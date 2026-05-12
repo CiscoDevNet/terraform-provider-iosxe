@@ -58,9 +58,45 @@ attributes:
     example: true
   - yang_name: priority
     example: 10
+  - yang_name: process-id
+    tf_name: process_ids
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: 1
+      - yang_name: ipv4/area
+        tf_name: ipv4_areas
+        type: List
+        attributes:
+          - yang_name: id
+            id: true
+            example: 0
+      - yang_name: ipv6/area
+        tf_name: ipv6_areas
+        type: List
+        attributes:
+          - yang_name: id
+            id: true
+            example: 0
 
 test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/ipv6
+    no_delete: true
+    attributes:
+      - name: unicast-routing
+        value: ""
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3[id=1]
+    attributes:
+      - name: address-family/ipv4/unicast
+        value: ""
+      - name: address-family/ipv6/unicast
+        value: ""
+    dependencies: [0]
   - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]
     attributes:
       - name: name
         value: 1
+      - name: ipv6/enable
+        value: ""
+    dependencies: [1]
