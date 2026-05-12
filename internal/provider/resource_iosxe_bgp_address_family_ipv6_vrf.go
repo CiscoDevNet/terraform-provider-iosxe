@@ -147,6 +147,36 @@ func (r *BGPAddressFamilyIPv6VRFResource) Schema(ctx context.Context, req resour
 								int64validator.Between(0, 4294967295),
 							},
 						},
+						"ipv6_unicast_router_id_loopback": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 2147483647),
+							},
+						},
+						"ipv6_unicast_router_id_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Manually configured router identifier").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"ipv6_unicast_aggregate_addresses": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure BGP aggregate entries").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv6_address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+										},
+									},
+								},
+							},
+						},
 						"ipv6_unicast_networks": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
 							Optional:            true,
@@ -173,6 +203,68 @@ func (r *BGPAddressFamilyIPv6VRFResource) Schema(ctx context.Context, req resour
 										Optional:            true,
 									},
 								},
+							},
+						},
+						"ipv6_unicast_admin_distances": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"distance": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Administrative distance").AddIntegerRangeDescription(1, 255).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 255),
+										},
+									},
+									"source_ipv6_address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Prefix to match source address").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+										},
+									},
+									"prefix_list_name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix list name to match routes from the source").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+						"ipv6_unicast_distance_bgp_external": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Distance for routes external to the AS").AddIntegerRangeDescription(1, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 255),
+							},
+						},
+						"ipv6_unicast_distance_bgp_internal": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Distance for routes internal to the AS").AddIntegerRangeDescription(1, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 255),
+							},
+						},
+						"ipv6_unicast_distance_bgp_local": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Distance for local routes").AddIntegerRangeDescription(1, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 255),
+							},
+						},
+						"ipv6_unicast_maximum_paths_ebgp": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("eBGP-multipath").AddIntegerRangeDescription(1, 32).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 32),
+							},
+						},
+						"ipv6_unicast_maximum_paths_ibgp": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 32).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 32),
 							},
 						},
 					},

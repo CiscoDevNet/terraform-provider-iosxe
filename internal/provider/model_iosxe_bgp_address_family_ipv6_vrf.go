@@ -50,21 +50,38 @@ type BGPAddressFamilyIPv6VRF struct {
 	Vrfs       []BGPAddressFamilyIPv6VRFVrfs `tfsdk:"vrfs"`
 }
 type BGPAddressFamilyIPv6VRFVrfs struct {
-	Name                                     types.String                                     `tfsdk:"name"`
-	Ipv6UnicastAdvertiseL2vpnEvpn            types.Bool                                       `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
-	Ipv6UnicastRedistributeConnected         types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_connected"`
-	Ipv6UnicastRedistributeConnectedRouteMap types.String                                     `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
-	Ipv6UnicastRedistributeConnectedMetric   types.Int64                                      `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
-	Ipv6UnicastRedistributeStatic            types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_static"`
-	Ipv6UnicastRedistributeStaticRouteMap    types.String                                     `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
-	Ipv6UnicastRedistributeStaticMetric      types.Int64                                      `tfsdk:"ipv6_unicast_redistribute_static_metric"`
-	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+	Name                                     types.String                                               `tfsdk:"name"`
+	Ipv6UnicastAdvertiseL2vpnEvpn            types.Bool                                                 `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
+	Ipv6UnicastRedistributeConnected         types.Bool                                                 `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeConnectedRouteMap types.String                                               `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
+	Ipv6UnicastRedistributeConnectedMetric   types.Int64                                                `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
+	Ipv6UnicastRedistributeStatic            types.Bool                                                 `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastRedistributeStaticRouteMap    types.String                                               `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
+	Ipv6UnicastRedistributeStaticMetric      types.Int64                                                `tfsdk:"ipv6_unicast_redistribute_static_metric"`
+	Ipv6UnicastRouterIdLoopback              types.Int64                                                `tfsdk:"ipv6_unicast_router_id_loopback"`
+	Ipv6UnicastRouterIdIp                    types.String                                               `tfsdk:"ipv6_unicast_router_id_ip"`
+	Ipv6UnicastAggregateAddresses            []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddresses `tfsdk:"ipv6_unicast_aggregate_addresses"`
+	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks           `tfsdk:"ipv6_unicast_networks"`
+	Ipv6UnicastAdminDistances                []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistances     `tfsdk:"ipv6_unicast_admin_distances"`
+	Ipv6UnicastDistanceBgpExternal           types.Int64                                                `tfsdk:"ipv6_unicast_distance_bgp_external"`
+	Ipv6UnicastDistanceBgpInternal           types.Int64                                                `tfsdk:"ipv6_unicast_distance_bgp_internal"`
+	Ipv6UnicastDistanceBgpLocal              types.Int64                                                `tfsdk:"ipv6_unicast_distance_bgp_local"`
+	Ipv6UnicastMaximumPathsEbgp              types.Int64                                                `tfsdk:"ipv6_unicast_maximum_paths_ebgp"`
+	Ipv6UnicastMaximumPathsIbgp              types.Int64                                                `tfsdk:"ipv6_unicast_maximum_paths_ibgp"`
+}
+type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddresses struct {
+	Ipv6Address types.String `tfsdk:"ipv6_address"`
 }
 type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks struct {
 	Network  types.String `tfsdk:"network"`
 	RouteMap types.String `tfsdk:"route_map"`
 	Backdoor types.Bool   `tfsdk:"backdoor"`
 	Evpn     types.Bool   `tfsdk:"evpn"`
+}
+type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistances struct {
+	Distance          types.Int64  `tfsdk:"distance"`
+	SourceIpv6Address types.String `tfsdk:"source_ipv6_address"`
+	PrefixListName    types.String `tfsdk:"prefix_list_name"`
 }
 
 type BGPAddressFamilyIPv6VRFData struct {
@@ -75,21 +92,38 @@ type BGPAddressFamilyIPv6VRFData struct {
 	Vrfs   []BGPAddressFamilyIPv6VRFVrfsData `tfsdk:"vrfs"`
 }
 type BGPAddressFamilyIPv6VRFVrfsData struct {
-	Name                                     types.String                                         `tfsdk:"name"`
-	Ipv6UnicastAdvertiseL2vpnEvpn            types.Bool                                           `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
-	Ipv6UnicastRedistributeConnected         types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_connected"`
-	Ipv6UnicastRedistributeConnectedRouteMap types.String                                         `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
-	Ipv6UnicastRedistributeConnectedMetric   types.Int64                                          `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
-	Ipv6UnicastRedistributeStatic            types.Bool                                           `tfsdk:"ipv6_unicast_redistribute_static"`
-	Ipv6UnicastRedistributeStaticRouteMap    types.String                                         `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
-	Ipv6UnicastRedistributeStaticMetric      types.Int64                                          `tfsdk:"ipv6_unicast_redistribute_static_metric"`
-	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData `tfsdk:"ipv6_unicast_networks"`
+	Name                                     types.String                                                   `tfsdk:"name"`
+	Ipv6UnicastAdvertiseL2vpnEvpn            types.Bool                                                     `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
+	Ipv6UnicastRedistributeConnected         types.Bool                                                     `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeConnectedRouteMap types.String                                                   `tfsdk:"ipv6_unicast_redistribute_connected_route_map"`
+	Ipv6UnicastRedistributeConnectedMetric   types.Int64                                                    `tfsdk:"ipv6_unicast_redistribute_connected_metric"`
+	Ipv6UnicastRedistributeStatic            types.Bool                                                     `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastRedistributeStaticRouteMap    types.String                                                   `tfsdk:"ipv6_unicast_redistribute_static_route_map"`
+	Ipv6UnicastRedistributeStaticMetric      types.Int64                                                    `tfsdk:"ipv6_unicast_redistribute_static_metric"`
+	Ipv6UnicastRouterIdLoopback              types.Int64                                                    `tfsdk:"ipv6_unicast_router_id_loopback"`
+	Ipv6UnicastRouterIdIp                    types.String                                                   `tfsdk:"ipv6_unicast_router_id_ip"`
+	Ipv6UnicastAggregateAddresses            []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddressesData `tfsdk:"ipv6_unicast_aggregate_addresses"`
+	Ipv6UnicastNetworks                      []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData           `tfsdk:"ipv6_unicast_networks"`
+	Ipv6UnicastAdminDistances                []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistancesData     `tfsdk:"ipv6_unicast_admin_distances"`
+	Ipv6UnicastDistanceBgpExternal           types.Int64                                                    `tfsdk:"ipv6_unicast_distance_bgp_external"`
+	Ipv6UnicastDistanceBgpInternal           types.Int64                                                    `tfsdk:"ipv6_unicast_distance_bgp_internal"`
+	Ipv6UnicastDistanceBgpLocal              types.Int64                                                    `tfsdk:"ipv6_unicast_distance_bgp_local"`
+	Ipv6UnicastMaximumPathsEbgp              types.Int64                                                    `tfsdk:"ipv6_unicast_maximum_paths_ebgp"`
+	Ipv6UnicastMaximumPathsIbgp              types.Int64                                                    `tfsdk:"ipv6_unicast_maximum_paths_ibgp"`
+}
+type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddressesData struct {
+	Ipv6Address types.String `tfsdk:"ipv6_address"`
 }
 type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData struct {
 	Network  types.String `tfsdk:"network"`
 	RouteMap types.String `tfsdk:"route_map"`
 	Backdoor types.Bool   `tfsdk:"backdoor"`
 	Evpn     types.Bool   `tfsdk:"evpn"`
+}
+type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistancesData struct {
+	Distance          types.Int64  `tfsdk:"distance"`
+	SourceIpv6Address types.String `tfsdk:"source_ipv6_address"`
+	PrefixListName    types.String `tfsdk:"prefix_list_name"`
 }
 
 // End of section. //template:end types
@@ -170,6 +204,35 @@ func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context, config BGPAddres
 			if !item.Ipv6UnicastRedistributeStaticMetric.IsNull() && !item.Ipv6UnicastRedistributeStaticMetric.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.static.metric", strconv.FormatInt(item.Ipv6UnicastRedistributeStaticMetric.ValueInt64(), 10))
 			}
+			if !item.Ipv6UnicastRouterIdLoopback.IsNull() && !item.Ipv6UnicastRouterIdLoopback.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.bgp.router-id.interface.Loopback", strconv.FormatInt(item.Ipv6UnicastRouterIdLoopback.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastRouterIdIp.IsNull() && !item.Ipv6UnicastRouterIdIp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.bgp.router-id.ip-id", item.Ipv6UnicastRouterIdIp.ValueString())
+			}
+			if !item.Ipv6UnicastDistanceBgpExternal.IsNull() && !item.Ipv6UnicastDistanceBgpExternal.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.distance.bgp.extern-as", strconv.FormatInt(item.Ipv6UnicastDistanceBgpExternal.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastDistanceBgpInternal.IsNull() && !item.Ipv6UnicastDistanceBgpInternal.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.distance.bgp.internal-as", strconv.FormatInt(item.Ipv6UnicastDistanceBgpInternal.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastDistanceBgpLocal.IsNull() && !item.Ipv6UnicastDistanceBgpLocal.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.distance.bgp.local", strconv.FormatInt(item.Ipv6UnicastDistanceBgpLocal.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastMaximumPathsEbgp.IsNull() && !item.Ipv6UnicastMaximumPathsEbgp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.maximum-paths.ebgp", strconv.FormatInt(item.Ipv6UnicastMaximumPathsEbgp.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastMaximumPathsIbgp.IsNull() && !item.Ipv6UnicastMaximumPathsIbgp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.maximum-paths.ibgp.max", strconv.FormatInt(item.Ipv6UnicastMaximumPathsIbgp.ValueInt64(), 10))
+			}
+			if len(item.Ipv6UnicastAggregateAddresses) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.aggregate-address", []interface{}{})
+				for cindex, citem := range item.Ipv6UnicastAggregateAddresses {
+					if !citem.Ipv6Address.IsNull() && !citem.Ipv6Address.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.aggregate-address"+"."+strconv.Itoa(cindex)+"."+"ipv6-address", citem.Ipv6Address.ValueString())
+					}
+				}
+			}
 			if len(item.Ipv6UnicastNetworks) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.network", []interface{}{})
 				for cindex, citem := range item.Ipv6UnicastNetworks {
@@ -188,6 +251,20 @@ func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context, config BGPAddres
 						if citem.Evpn.ValueBool() {
 							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.network"+"."+strconv.Itoa(cindex)+"."+"evpn", map[string]string{})
 						}
+					}
+				}
+			}
+			if len(item.Ipv6UnicastAdminDistances) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.distance.adm-distance", []interface{}{})
+				for cindex, citem := range item.Ipv6UnicastAdminDistances {
+					if !citem.Distance.IsNull() && !citem.Distance.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.distance.adm-distance"+"."+strconv.Itoa(cindex)+"."+"distance", strconv.FormatInt(citem.Distance.ValueInt64(), 10))
+					}
+					if !citem.SourceIpv6Address.IsNull() && !citem.SourceIpv6Address.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.distance.adm-distance"+"."+strconv.Itoa(cindex)+"."+"src-ipv6-address", citem.SourceIpv6Address.ValueString())
+					}
+					if !citem.PrefixListName.IsNull() && !citem.PrefixListName.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.distance.adm-distance"+"."+strconv.Itoa(cindex)+"."+"prefix-list-name", citem.PrefixListName.ValueString())
 					}
 				}
 			}
@@ -244,6 +321,21 @@ func (data BGPAddressFamilyIPv6VRF) toBodyXML(ctx context.Context, config BGPAdd
 			if !item.Ipv6UnicastRedistributeStaticMetric.IsNull() && !item.Ipv6UnicastRedistributeStaticMetric.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/redistribute-v6/static/metric", strconv.FormatInt(item.Ipv6UnicastRedistributeStaticMetric.ValueInt64(), 10))
 			}
+			if !item.Ipv6UnicastRouterIdLoopback.IsNull() && !item.Ipv6UnicastRouterIdLoopback.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/bgp/router-id/interface/Loopback", strconv.FormatInt(item.Ipv6UnicastRouterIdLoopback.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastRouterIdIp.IsNull() && !item.Ipv6UnicastRouterIdIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/bgp/router-id/ip-id", item.Ipv6UnicastRouterIdIp.ValueString())
+			}
+			if len(item.Ipv6UnicastAggregateAddresses) > 0 {
+				for _, citem := range item.Ipv6UnicastAggregateAddresses {
+					ccBody := netconf.Body{}
+					if !citem.Ipv6Address.IsNull() && !citem.Ipv6Address.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv6-address", citem.Ipv6Address.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "ipv6-unicast/aggregate-address", ccBody.Res())
+				}
+			}
 			if len(item.Ipv6UnicastNetworks) > 0 {
 				for _, citem := range item.Ipv6UnicastNetworks {
 					ccBody := netconf.Body{}
@@ -269,6 +361,36 @@ func (data BGPAddressFamilyIPv6VRF) toBodyXML(ctx context.Context, config BGPAdd
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "ipv6-unicast/network", ccBody.Res())
 				}
+			}
+			if len(item.Ipv6UnicastAdminDistances) > 0 {
+				for _, citem := range item.Ipv6UnicastAdminDistances {
+					ccBody := netconf.Body{}
+					if !citem.Distance.IsNull() && !citem.Distance.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "distance", strconv.FormatInt(citem.Distance.ValueInt64(), 10))
+					}
+					if !citem.SourceIpv6Address.IsNull() && !citem.SourceIpv6Address.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "src-ipv6-address", citem.SourceIpv6Address.ValueString())
+					}
+					if !citem.PrefixListName.IsNull() && !citem.PrefixListName.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "prefix-list-name", citem.PrefixListName.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "ipv6-unicast/distance/adm-distance", ccBody.Res())
+				}
+			}
+			if !item.Ipv6UnicastDistanceBgpExternal.IsNull() && !item.Ipv6UnicastDistanceBgpExternal.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/distance/bgp/extern-as", strconv.FormatInt(item.Ipv6UnicastDistanceBgpExternal.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastDistanceBgpInternal.IsNull() && !item.Ipv6UnicastDistanceBgpInternal.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/distance/bgp/internal-as", strconv.FormatInt(item.Ipv6UnicastDistanceBgpInternal.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastDistanceBgpLocal.IsNull() && !item.Ipv6UnicastDistanceBgpLocal.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/distance/bgp/local", strconv.FormatInt(item.Ipv6UnicastDistanceBgpLocal.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastMaximumPathsEbgp.IsNull() && !item.Ipv6UnicastMaximumPathsEbgp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/maximum-paths/ebgp", strconv.FormatInt(item.Ipv6UnicastMaximumPathsEbgp.ValueInt64(), 10))
+			}
+			if !item.Ipv6UnicastMaximumPathsIbgp.IsNull() && !item.Ipv6UnicastMaximumPathsIbgp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv6-unicast/maximum-paths/ibgp/max", strconv.FormatInt(item.Ipv6UnicastMaximumPathsIbgp.ValueInt64(), 10))
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vrf", cBody.Res())
 		}
@@ -369,6 +491,45 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBody(ctx context.Context, res gjs
 		} else {
 			data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric = types.Int64Null()
 		}
+		if value := r.Get("ipv6-unicast.bgp.router-id.interface.Loopback"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRouterIdLoopback.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRouterIdLoopback = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRouterIdLoopback = types.Int64Null()
+		}
+		if value := r.Get("ipv6-unicast.bgp.router-id.ip-id"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRouterIdIp.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRouterIdIp = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRouterIdIp = types.StringNull()
+		}
+		for ci := range data.Vrfs[i].Ipv6UnicastAggregateAddresses {
+			keys := [...]string{"ipv6-address"}
+			keyValues := [...]string{data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString()}
+
+			var cr gjson.Result
+			r.Get("ipv6-unicast.aggregate-address").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("ipv6-address"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address = types.StringNull()
+			}
+		}
 		for ci := range data.Vrfs[i].Ipv6UnicastNetworks {
 			keys := [...]string{"number"}
 			keyValues := [...]string{data.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()}
@@ -420,6 +581,70 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBody(ctx context.Context, res gjs
 			} else {
 				data.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn = types.BoolNull()
 			}
+		}
+		for ci := range data.Vrfs[i].Ipv6UnicastAdminDistances {
+			keys := [...]string{"distance", "src-ipv6-address"}
+			keyValues := [...]string{strconv.FormatInt(data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64(), 10), data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString()}
+
+			var cr gjson.Result
+			r.Get("ipv6-unicast.distance.adm-distance").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("distance"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance = types.Int64Null()
+			}
+			if value := cr.Get("src-ipv6-address"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address = types.StringNull()
+			}
+			if value := cr.Get("prefix-list-name"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName = types.StringNull()
+			}
+		}
+		if value := r.Get("ipv6-unicast.distance.bgp.extern-as"); value.Exists() && !data.Vrfs[i].Ipv6UnicastDistanceBgpExternal.IsNull() {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpExternal = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpExternal = types.Int64Null()
+		}
+		if value := r.Get("ipv6-unicast.distance.bgp.internal-as"); value.Exists() && !data.Vrfs[i].Ipv6UnicastDistanceBgpInternal.IsNull() {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpInternal = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpInternal = types.Int64Null()
+		}
+		if value := r.Get("ipv6-unicast.distance.bgp.local"); value.Exists() && !data.Vrfs[i].Ipv6UnicastDistanceBgpLocal.IsNull() {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpLocal = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpLocal = types.Int64Null()
+		}
+		if value := r.Get("ipv6-unicast.maximum-paths.ebgp"); value.Exists() && !data.Vrfs[i].Ipv6UnicastMaximumPathsEbgp.IsNull() {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsEbgp = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsEbgp = types.Int64Null()
+		}
+		if value := r.Get("ipv6-unicast.maximum-paths.ibgp.max"); value.Exists() && !data.Vrfs[i].Ipv6UnicastMaximumPathsIbgp.IsNull() {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsIbgp = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsIbgp = types.Int64Null()
 		}
 	}
 }
@@ -509,6 +734,45 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBodyXML(ctx context.Context, res 
 		} else {
 			data.Vrfs[i].Ipv6UnicastRedistributeStaticMetric = types.Int64Null()
 		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/bgp/router-id/interface/Loopback"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRouterIdLoopback.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRouterIdLoopback = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRouterIdLoopback = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/bgp/router-id/ip-id"); value.Exists() && !data.Vrfs[i].Ipv6UnicastRouterIdIp.IsNull() {
+			data.Vrfs[i].Ipv6UnicastRouterIdIp = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Ipv6UnicastRouterIdIp = types.StringNull()
+		}
+		for ci := range data.Vrfs[i].Ipv6UnicastAggregateAddresses {
+			keys := [...]string{"ipv6-address"}
+			keyValues := [...]string{data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "ipv6-unicast/aggregate-address").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "ipv6-address"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address = types.StringNull()
+			}
+		}
 		for ci := range data.Vrfs[i].Ipv6UnicastNetworks {
 			keys := [...]string{"number"}
 			keyValues := [...]string{data.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()}
@@ -561,6 +825,70 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBodyXML(ctx context.Context, res 
 				data.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn = types.BoolNull()
 			}
 		}
+		for ci := range data.Vrfs[i].Ipv6UnicastAdminDistances {
+			keys := [...]string{"distance", "src-ipv6-address"}
+			keyValues := [...]string{strconv.FormatInt(data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64(), 10), data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "ipv6-unicast/distance/adm-distance").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "distance"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "src-ipv6-address"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "prefix-list-name"); value.Exists() && !data.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName.IsNull() {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName = types.StringNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/distance/bgp/extern-as"); value.Exists() && !data.Vrfs[i].Ipv6UnicastDistanceBgpExternal.IsNull() {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpExternal = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpExternal = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/distance/bgp/internal-as"); value.Exists() && !data.Vrfs[i].Ipv6UnicastDistanceBgpInternal.IsNull() {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpInternal = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpInternal = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/distance/bgp/local"); value.Exists() && !data.Vrfs[i].Ipv6UnicastDistanceBgpLocal.IsNull() {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpLocal = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastDistanceBgpLocal = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/maximum-paths/ebgp"); value.Exists() && !data.Vrfs[i].Ipv6UnicastMaximumPathsEbgp.IsNull() {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsEbgp = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsEbgp = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "ipv6-unicast/maximum-paths/ibgp/max"); value.Exists() && !data.Vrfs[i].Ipv6UnicastMaximumPathsIbgp.IsNull() {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsIbgp = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv6UnicastMaximumPathsIbgp = types.Int64Null()
+		}
 	}
 }
 
@@ -607,6 +935,23 @@ func (data *BGPAddressFamilyIPv6VRF) fromBody(ctx context.Context, res gjson.Res
 			if cValue := v.Get("ipv6-unicast.redistribute-v6.static.metric"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
+			if cValue := v.Get("ipv6-unicast.bgp.router-id.interface.Loopback"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.bgp.router-id.ip-id"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv6-unicast.aggregate-address"); cValue.Exists() {
+				item.Ipv6UnicastAggregateAddresses = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddresses, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddresses{}
+					if ccValue := cv.Get("ipv6-address"); ccValue.Exists() {
+						cItem.Ipv6Address = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAggregateAddresses = append(item.Ipv6UnicastAggregateAddresses, cItem)
+					return true
+				})
+			}
 			if cValue := v.Get("ipv6-unicast.network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -630,6 +975,38 @@ func (data *BGPAddressFamilyIPv6VRF) fromBody(ctx context.Context, res gjson.Res
 					item.Ipv6UnicastNetworks = append(item.Ipv6UnicastNetworks, cItem)
 					return true
 				})
+			}
+			if cValue := v.Get("ipv6-unicast.distance.adm-distance"); cValue.Exists() {
+				item.Ipv6UnicastAdminDistances = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistances, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistances{}
+					if ccValue := cv.Get("distance"); ccValue.Exists() {
+						cItem.Distance = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("src-ipv6-address"); ccValue.Exists() {
+						cItem.SourceIpv6Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("prefix-list-name"); ccValue.Exists() {
+						cItem.PrefixListName = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAdminDistances = append(item.Ipv6UnicastAdminDistances, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ipv6-unicast.distance.bgp.extern-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpExternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.distance.bgp.internal-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpInternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.distance.bgp.local"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpLocal = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.maximum-paths.ebgp"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsEbgp = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.maximum-paths.ibgp.max"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
 			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
@@ -680,6 +1057,23 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 			if cValue := v.Get("ipv6-unicast.redistribute-v6.static.metric"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
+			if cValue := v.Get("ipv6-unicast.bgp.router-id.interface.Loopback"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.bgp.router-id.ip-id"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdIp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv6-unicast.aggregate-address"); cValue.Exists() {
+				item.Ipv6UnicastAggregateAddresses = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddressesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddressesData{}
+					if ccValue := cv.Get("ipv6-address"); ccValue.Exists() {
+						cItem.Ipv6Address = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAggregateAddresses = append(item.Ipv6UnicastAggregateAddresses, cItem)
+					return true
+				})
+			}
 			if cValue := v.Get("ipv6-unicast.network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -703,6 +1097,38 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 					item.Ipv6UnicastNetworks = append(item.Ipv6UnicastNetworks, cItem)
 					return true
 				})
+			}
+			if cValue := v.Get("ipv6-unicast.distance.adm-distance"); cValue.Exists() {
+				item.Ipv6UnicastAdminDistances = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistancesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistancesData{}
+					if ccValue := cv.Get("distance"); ccValue.Exists() {
+						cItem.Distance = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("src-ipv6-address"); ccValue.Exists() {
+						cItem.SourceIpv6Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("prefix-list-name"); ccValue.Exists() {
+						cItem.PrefixListName = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAdminDistances = append(item.Ipv6UnicastAdminDistances, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ipv6-unicast.distance.bgp.extern-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpExternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.distance.bgp.internal-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpInternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.distance.bgp.local"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpLocal = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.maximum-paths.ebgp"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsEbgp = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv6-unicast.maximum-paths.ibgp.max"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
 			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
@@ -749,6 +1175,23 @@ func (data *BGPAddressFamilyIPv6VRF) fromBodyXML(ctx context.Context, res xmldot
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static/metric"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/bgp/router-id/interface/Loopback"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/bgp/router-id/ip-id"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/aggregate-address"); cValue.Exists() {
+				item.Ipv6UnicastAggregateAddresses = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddresses, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddresses{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv6-address"); ccValue.Exists() {
+						cItem.Ipv6Address = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAggregateAddresses = append(item.Ipv6UnicastAggregateAddresses, cItem)
+					return true
+				})
+			}
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
@@ -772,6 +1215,38 @@ func (data *BGPAddressFamilyIPv6VRF) fromBodyXML(ctx context.Context, res xmldot
 					item.Ipv6UnicastNetworks = append(item.Ipv6UnicastNetworks, cItem)
 					return true
 				})
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/adm-distance"); cValue.Exists() {
+				item.Ipv6UnicastAdminDistances = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistances, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistances{}
+					if ccValue := helpers.GetFromXPath(cv, "distance"); ccValue.Exists() {
+						cItem.Distance = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "src-ipv6-address"); ccValue.Exists() {
+						cItem.SourceIpv6Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "prefix-list-name"); ccValue.Exists() {
+						cItem.PrefixListName = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAdminDistances = append(item.Ipv6UnicastAdminDistances, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/bgp/extern-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpExternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/bgp/internal-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpInternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/bgp/local"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpLocal = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/maximum-paths/ebgp"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsEbgp = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/maximum-paths/ibgp/max"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
 			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
@@ -818,6 +1293,23 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBodyXML(ctx context.Context, res xm
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/redistribute-v6/static/metric"); cValue.Exists() {
 				item.Ipv6UnicastRedistributeStaticMetric = types.Int64Value(cValue.Int())
 			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/bgp/router-id/interface/Loopback"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/bgp/router-id/ip-id"); cValue.Exists() {
+				item.Ipv6UnicastRouterIdIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/aggregate-address"); cValue.Exists() {
+				item.Ipv6UnicastAggregateAddresses = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddressesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAggregateAddressesData{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv6-address"); ccValue.Exists() {
+						cItem.Ipv6Address = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAggregateAddresses = append(item.Ipv6UnicastAggregateAddresses, cItem)
+					return true
+				})
+			}
 			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworksData, 0)
 				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
@@ -841,6 +1333,38 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBodyXML(ctx context.Context, res xm
 					item.Ipv6UnicastNetworks = append(item.Ipv6UnicastNetworks, cItem)
 					return true
 				})
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/adm-distance"); cValue.Exists() {
+				item.Ipv6UnicastAdminDistances = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistancesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := BGPAddressFamilyIPv6VRFVrfsIpv6UnicastAdminDistancesData{}
+					if ccValue := helpers.GetFromXPath(cv, "distance"); ccValue.Exists() {
+						cItem.Distance = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "src-ipv6-address"); ccValue.Exists() {
+						cItem.SourceIpv6Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "prefix-list-name"); ccValue.Exists() {
+						cItem.PrefixListName = types.StringValue(ccValue.String())
+					}
+					item.Ipv6UnicastAdminDistances = append(item.Ipv6UnicastAdminDistances, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/bgp/extern-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpExternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/bgp/internal-as"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpInternal = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/distance/bgp/local"); cValue.Exists() {
+				item.Ipv6UnicastDistanceBgpLocal = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/maximum-paths/ebgp"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsEbgp = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "ipv6-unicast/maximum-paths/ibgp/max"); cValue.Exists() {
+				item.Ipv6UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
 			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
@@ -872,6 +1396,55 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state 
 				found = false
 			}
 			if found {
+				if !state.Vrfs[i].Ipv6UnicastMaximumPathsIbgp.IsNull() && data.Vrfs[j].Ipv6UnicastMaximumPathsIbgp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/maximum-paths/ibgp/max", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastMaximumPathsEbgp.IsNull() && data.Vrfs[j].Ipv6UnicastMaximumPathsEbgp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/maximum-paths/ebgp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpLocal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpLocal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/distance/bgp/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpInternal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpInternal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/distance/bgp/internal-as", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpExternal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpExternal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/distance/bgp/extern-as", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				for ci := range state.Vrfs[i].Ipv6UnicastAdminDistances {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64(), 10), state.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv6UnicastAdminDistances {
+						found = true
+						if state.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64() != data.Vrfs[j].Ipv6UnicastAdminDistances[cj].Distance.ValueInt64() {
+							found = false
+						}
+						if state.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString() != data.Vrfs[j].Ipv6UnicastAdminDistances[cj].SourceIpv6Address.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName.IsNull() && data.Vrfs[j].Ipv6UnicastAdminDistances[cj].PrefixListName.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/distance/adm-distance=%v/prefix-list-name", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/distance/adm-distance=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
 				for ci := range state.Vrfs[i].Ipv6UnicastNetworks {
 					cstateKeyValues := [...]string{state.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()}
 
@@ -905,6 +1478,37 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state 
 					if !found {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
+				}
+				for ci := range state.Vrfs[i].Ipv6UnicastAggregateAddresses {
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv6UnicastAggregateAddresses {
+						found = true
+						if state.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString() != data.Vrfs[j].Ipv6UnicastAggregateAddresses[cj].Ipv6Address.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/aggregate-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.Vrfs[i].Ipv6UnicastRouterIdIp.IsNull() && data.Vrfs[j].Ipv6UnicastRouterIdIp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/bgp/router-id/ip-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRouterIdLoopback.IsNull() && data.Vrfs[j].Ipv6UnicastRouterIdLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/bgp/router-id/interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticMetric.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/static/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -967,6 +1571,60 @@ func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, sta
 				found = false
 			}
 			if found {
+				if !state.Vrfs[i].Ipv6UnicastMaximumPathsIbgp.IsNull() && data.Vrfs[j].Ipv6UnicastMaximumPathsIbgp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/maximum-paths/ibgp/max", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastMaximumPathsEbgp.IsNull() && data.Vrfs[j].Ipv6UnicastMaximumPathsEbgp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/maximum-paths/ebgp", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpLocal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpLocal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/bgp/local", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpInternal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpInternal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/bgp/internal-as", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastDistanceBgpExternal.IsNull() && data.Vrfs[j].Ipv6UnicastDistanceBgpExternal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/bgp/extern-as", predicates))
+				}
+				for ci := range state.Vrfs[i].Ipv6UnicastAdminDistances {
+					cstateKeys := [...]string{"distance", "src-ipv6-address"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64(), 10), state.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv6UnicastAdminDistances {
+						found = true
+						if state.Vrfs[i].Ipv6UnicastAdminDistances[ci].Distance.ValueInt64() != data.Vrfs[j].Ipv6UnicastAdminDistances[cj].Distance.ValueInt64() {
+							found = false
+						}
+						if state.Vrfs[i].Ipv6UnicastAdminDistances[ci].SourceIpv6Address.ValueString() != data.Vrfs[j].Ipv6UnicastAdminDistances[cj].SourceIpv6Address.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Ipv6UnicastAdminDistances[ci].PrefixListName.IsNull() && data.Vrfs[j].Ipv6UnicastAdminDistances[cj].PrefixListName.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/adm-distance%v/prefix-list-name", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/distance/adm-distance%v", predicates, cpredicates))
+					}
+				}
 				for ci := range state.Vrfs[i].Ipv6UnicastNetworks {
 					cstateKeys := [...]string{"number"}
 					cstateKeyValues := [...]string{state.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()}
@@ -1005,6 +1663,42 @@ func (data *BGPAddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, sta
 					if !found {
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/network%v", predicates, cpredicates))
 					}
+				}
+				for ci := range state.Vrfs[i].Ipv6UnicastAggregateAddresses {
+					cstateKeys := [...]string{"ipv6-address"}
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv6UnicastAggregateAddresses {
+						found = true
+						if state.Vrfs[i].Ipv6UnicastAggregateAddresses[ci].Ipv6Address.ValueString() != data.Vrfs[j].Ipv6UnicastAggregateAddresses[cj].Ipv6Address.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/aggregate-address%v", predicates, cpredicates))
+					}
+				}
+				if !state.Vrfs[i].Ipv6UnicastRouterIdIp.IsNull() && data.Vrfs[j].Ipv6UnicastRouterIdIp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/bgp/router-id/ip-id", predicates))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRouterIdLoopback.IsNull() && data.Vrfs[j].Ipv6UnicastRouterIdLoopback.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/bgp/router-id/interface/Loopback", predicates))
 				}
 				if !state.Vrfs[i].Ipv6UnicastRedistributeStaticMetric.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStaticMetric.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv6-unicast/redistribute-v6/static/metric", predicates))
@@ -1058,6 +1752,7 @@ func (data *BGPAddressFamilyIPv6VRF) getEmptyLeafsDelete(ctx context.Context) []
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v/backdoor", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}
+
 		if !data.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && !data.Vrfs[i].Ipv6UnicastRedistributeStatic.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/static", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
