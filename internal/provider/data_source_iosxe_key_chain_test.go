@@ -67,7 +67,6 @@ func testAccDataSourceIosxeKeyChainConfig() string {
 	config += `	name = "OSPF-AUTH"` + "\n"
 	config += `	keys = [{` + "\n"
 	config += `		id = "1"` + "\n"
-	config += `		key_string_encryption = "0"` + "\n"
 	config += `		key_string_key = "mySecretKey123"` + "\n"
 	config += `		accept_lifetime_start_time = "00:00:00"` + "\n"
 	config += `		accept_lifetime_start_month = "Jan"` + "\n"
