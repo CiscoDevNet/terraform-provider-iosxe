@@ -33,6 +33,7 @@ attributes:
         exclude_test: true
       - yang_name: key-string/encryption
         tf_name: key_string_encryption
+        write_only: true
         example: 0
       - yang_name: key-string/key
         tf_name: key_string_key
