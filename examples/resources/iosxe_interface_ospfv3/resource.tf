@@ -11,4 +11,21 @@ resource "iosxe_interface_ospfv3" "example" {
   hello_interval                   = 5
   mtu_ignore                       = true
   priority                         = 10
+  process_ids = [
+    {
+      id = 1
+      ipv4_areas = [
+        {
+          id       = "0"
+          instance = 64
+        }
+      ]
+      ipv6_areas = [
+        {
+          id       = "0"
+          instance = 0
+        }
+      ]
+    }
+  ]
 }

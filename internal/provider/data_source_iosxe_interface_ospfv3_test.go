@@ -42,6 +42,11 @@ func TestAccDataSourceIosxeInterfaceOSPFv3(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "hello_interval", "5"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "mtu_ignore", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "process_ids.0.id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "process_ids.0.ipv4_areas.0.id", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "process_ids.0.ipv4_areas.0.instance", "64"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "process_ids.0.ipv6_areas.0.id", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "process_ids.0.ipv6_areas.0.instance", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -59,10 +64,29 @@ func TestAccDataSourceIosxeInterfaceOSPFv3(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfaceOSPFv3PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/ipv6"
+	delete = false
+	attributes = {
+		"unicast-routing" = ""
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3[id=1]"
+	attributes = {
+		"address-family/ipv4/unicast" = ""
+		"address-family/ipv6/unicast" = ""
+	}
+	depends_on = [iosxe_yang.PreReq0, ]
+}
+
+resource "iosxe_yang" "PreReq2" {
 	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
+		"ipv6/enable" = ""
 	}
+	depends_on = [iosxe_yang.PreReq1, ]
 }
 
 `
@@ -86,7 +110,18 @@ func testAccDataSourceIosxeInterfaceOSPFv3Config() string {
 	config += `	hello_interval = 5` + "\n"
 	config += `	mtu_ignore = true` + "\n"
 	config += `	priority = 10` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
+	config += `	process_ids = [{` + "\n"
+	config += `		id = 1` + "\n"
+	config += `		ipv4_areas = [{` + "\n"
+	config += `			id = "0"` + "\n"
+	config += `			instance = 64` + "\n"
+	config += `		}]` + "\n"
+	config += `		ipv6_areas = [{` + "\n"
+	config += `			id = "0"` + "\n"
+	config += `			instance = 0` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
