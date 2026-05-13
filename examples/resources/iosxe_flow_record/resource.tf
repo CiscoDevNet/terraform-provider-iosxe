@@ -9,6 +9,8 @@ resource "iosxe_flow_record" "example" {
   match_transport_destination_port             = true
   match_interface_input                        = true
   match_flow_direction                         = true
+  match_flow_cts_destination_group_tag         = true
+  match_flow_cts_source_group_tag              = true
   match_datalink_mac_source_address_input      = true
   match_datalink_mac_destination_address_input = true
   match_ipv4_ttl                               = true
