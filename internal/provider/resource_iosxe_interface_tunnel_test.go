@@ -34,6 +34,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfaceTunnel(t *testing.T) {
+	if os.Getenv("C8000V") == "" {
+		t.Skip("skipping test, set environment variable C8000V")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "name", "90"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "description", "My Interface Description"))
