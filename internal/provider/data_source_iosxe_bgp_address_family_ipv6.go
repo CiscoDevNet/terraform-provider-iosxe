@@ -100,6 +100,18 @@ func (d *BGPAddressFamilyIPv6DataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Metric for redistributed routes",
 				Computed:            true,
 			},
+			"ipv6_unicast_aggregate_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: "Configure BGP aggregate entries",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv6_address": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"ipv6_unicast_networks": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify a network to announce via BGP",
 				Computed:            true,
@@ -119,6 +131,46 @@ func (d *BGPAddressFamilyIPv6DataSource) Schema(ctx context.Context, req datasou
 						},
 					},
 				},
+			},
+			"ipv6_unicast_admin_distances": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"distance": schema.Int64Attribute{
+							MarkdownDescription: "Administrative distance",
+							Computed:            true,
+						},
+						"source_ipv6_address": schema.StringAttribute{
+							MarkdownDescription: "Prefix to match source address",
+							Computed:            true,
+						},
+						"prefix_list_name": schema.StringAttribute{
+							MarkdownDescription: "IPv6 prefix list name to match routes from the source",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_unicast_distance_bgp_external": schema.Int64Attribute{
+				MarkdownDescription: "Distance for routes external to the AS",
+				Computed:            true,
+			},
+			"ipv6_unicast_distance_bgp_internal": schema.Int64Attribute{
+				MarkdownDescription: "Distance for routes internal to the AS",
+				Computed:            true,
+			},
+			"ipv6_unicast_distance_bgp_local": schema.Int64Attribute{
+				MarkdownDescription: "Distance for local routes",
+				Computed:            true,
+			},
+			"ipv6_unicast_maximum_paths_ebgp": schema.Int64Attribute{
+				MarkdownDescription: "eBGP-multipath",
+				Computed:            true,
+			},
+			"ipv6_unicast_maximum_paths_ibgp": schema.Int64Attribute{
+				MarkdownDescription: "iBGP-multipath",
+				Computed:            true,
 			},
 		},
 	}

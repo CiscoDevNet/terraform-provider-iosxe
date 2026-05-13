@@ -9,6 +9,8 @@ description: |-
 
 ## Unreleased
 
+- Add `ipv6_unicast_aggregate_addresses`, `ipv6_unicast_admin_distances`, `ipv6_unicast_distance_bgp_external`, `ipv6_unicast_distance_bgp_internal`, `ipv6_unicast_distance_bgp_local`, `ipv6_unicast_maximum_paths_ebgp`, `ipv6_unicast_maximum_paths_ibgp`, `ipv6_unicast_router_id_ip`, `ipv6_unicast_router_id_loopback` attributes to `iosxe_bgp_address_family_ipv6_vrf` resource and data source
+- Add `ipv6_unicast_aggregate_addresses`, `ipv6_unicast_admin_distances`, `ipv6_unicast_distance_bgp_external`, `ipv6_unicast_distance_bgp_internal`, `ipv6_unicast_distance_bgp_local`, `ipv6_unicast_maximum_paths_ebgp`, `ipv6_unicast_maximum_paths_ibgp` attributes to `iosxe_bgp_address_family_ipv6` resource and data source
 - Add `iosxe_ipv6_local_pool` resource and data source for IPv6 local address pool configuration (`ipv6 local pool`), including pool name, start prefix address, assigned prefix length, and pool group
 - Add `iosxe_ipv6_dhcp_pool` resource and data source for IPv6 DHCP pool configuration (`ipv6 dhcp pool`), including prefix delegation (pool and per-prefix), address allocation, DNS servers, domain names, vendor-specific options with suboptions, link addresses, SNTP servers, bootfile URL, information refresh, and import options
 - Add `authenticate_using_authc_list` and `authenticate_using_authz_list` attributes to `iosxe_policy_map_event` resource and data source for the non-deprecated AAA method list leaves (`authenticate/using/authc-list`, `authenticate/using/authz-list`). Rename the existing attributes targeting the deprecated `authenticate/using/aaa` container to `authenticate_using_aaa_authc_list_legacy` and `authenticate_using_aaa_authz_list_legacy`.

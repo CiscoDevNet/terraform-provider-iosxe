@@ -38,9 +38,17 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv6(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_redistribute_static", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_redistribute_static_route_map", "RM_BGP6_STATIC"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_redistribute_static_metric", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_aggregate_addresses.0.ipv6_address", "2001:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.network", "2001:1234::/64"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.route_map", "RM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.backdoor", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_admin_distances.0.distance", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_admin_distances.0.source_ipv6_address", "2001:DB8::/48"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_distance_bgp_external", "20"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_distance_bgp_internal", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_distance_bgp_local", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_maximum_paths_ebgp", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_maximum_paths_ibgp", "2"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -89,11 +97,23 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv6Config() string {
 	config += `	ipv6_unicast_redistribute_static = true` + "\n"
 	config += `	ipv6_unicast_redistribute_static_route_map = "RM_BGP6_STATIC"` + "\n"
 	config += `	ipv6_unicast_redistribute_static_metric = 200` + "\n"
+	config += `	ipv6_unicast_aggregate_addresses = [{` + "\n"
+	config += `		ipv6_address = "2001:DB8::/32"` + "\n"
+	config += `	}]` + "\n"
 	config += `	ipv6_unicast_networks = [{` + "\n"
 	config += `		network = "2001:1234::/64"` + "\n"
 	config += `		route_map = "RM1"` + "\n"
 	config += `		backdoor = true` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv6_unicast_admin_distances = [{` + "\n"
+	config += `		distance = 200` + "\n"
+	config += `		source_ipv6_address = "2001:DB8::/48"` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv6_unicast_distance_bgp_external = 20` + "\n"
+	config += `	ipv6_unicast_distance_bgp_internal = 200` + "\n"
+	config += `	ipv6_unicast_distance_bgp_local = 200` + "\n"
+	config += `	ipv6_unicast_maximum_paths_ebgp = 2` + "\n"
+	config += `	ipv6_unicast_maximum_paths_ibgp = 2` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
