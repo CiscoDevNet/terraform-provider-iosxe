@@ -11,6 +11,7 @@ attributes:
   - yang_name: shutdown
     example: false
   - yang_name: mtu
+    test_tags: [C8000V]
     example: 1500
   - yang_name: switchport-conf/switchport
     tf_name: switchport

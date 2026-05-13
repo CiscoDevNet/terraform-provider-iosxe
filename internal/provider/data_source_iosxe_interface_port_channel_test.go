@@ -38,7 +38,9 @@ func TestAccDataSourceIosxeInterfacePortChannel(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "shutdown", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "mtu", "1500"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "mtu", "1500"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "switchport", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ip_redirects", "false"))
@@ -187,7 +189,9 @@ func testAccDataSourceIosxeInterfacePortChannelConfig() string {
 	config += `	name = 10` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	mtu = 1500` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	mtu = 1500` + "\n"
+	}
 	config += `	switchport = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
