@@ -78,7 +78,9 @@ type IosxeProvider struct {
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
-	version string
+	version    string
+	lastData   *IosxeProviderData
+	lastDataMu sync.Mutex
 }
 
 // IosxeProviderModel describes the provider data model.
@@ -221,6 +223,19 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 }
 
 func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+	// Close any previously-configured NETCONF connections to prevent session
+	// exhaustion. The terraform-plugin-framework does not provide a shutdown
+	// hook, so connections from prior Configure calls would otherwise leak.
+	p.lastDataMu.Lock()
+	if p.lastData != nil {
+		for _, device := range p.lastData.Devices {
+			if device.NetconfClient != nil {
+				device.NetconfClient.Close()
+			}
+		}
+	}
+	p.lastDataMu.Unlock()
+
 	// Retrieve provider data from configuration
 	var config IosxeProviderModel
 	diags := req.Config.Get(ctx, &config)
@@ -630,6 +645,11 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	resp.DataSourceData = &data
 	resp.ResourceData = &data
+
+	// Store reference for cleanup on next Configure call
+	p.lastDataMu.Lock()
+	p.lastData = &data
+	p.lastDataMu.Unlock()
 }
 
 func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource {
