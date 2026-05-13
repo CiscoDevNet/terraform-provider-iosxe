@@ -180,6 +180,13 @@ func (r *InterfaceOSPFv3Resource) Schema(ctx context.Context, req resource.Schem
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Required:            true,
 									},
+									"instance": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF instance").AddIntegerRangeDescription(64, 95).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(64, 95),
+										},
+									},
 								},
 							},
 						},
@@ -191,6 +198,13 @@ func (r *InterfaceOSPFv3Resource) Schema(ctx context.Context, req resource.Schem
 									"id": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Required:            true,
+									},
+									"instance": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF instance").AddIntegerRangeDescription(0, 31).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 31),
+										},
 									},
 								},
 							},

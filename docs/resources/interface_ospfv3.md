@@ -31,12 +31,14 @@ resource "iosxe_interface_ospfv3" "example" {
       id = 1
       ipv4_areas = [
         {
-          id = "0"
+          id       = "0"
+          instance = 64
         }
       ]
       ipv6_areas = [
         {
-          id = "0"
+          id       = "0"
+          instance = 0
         }
       ]
     }
@@ -97,6 +99,11 @@ Required:
 
 - `id` (String)
 
+Optional:
+
+- `instance` (Number) Set the OSPF instance
+  - Range: `64`-`95`
+
 
 <a id="nestedatt--process_ids--ipv6_areas"></a>
 ### Nested Schema for `process_ids.ipv6_areas`
@@ -104,6 +111,11 @@ Required:
 Required:
 
 - `id` (String)
+
+Optional:
+
+- `instance` (Number) Set the OSPF instance
+  - Range: `0`-`31`
 
 ## Import
 

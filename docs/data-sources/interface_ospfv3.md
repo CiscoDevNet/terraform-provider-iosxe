@@ -61,6 +61,7 @@ Read-Only:
 Read-Only:
 
 - `id` (String)
+- `instance` (Number) Set the OSPF instance
 
 
 <a id="nestedatt--process_ids--ipv6_areas"></a>
@@ -69,3 +70,4 @@ Read-Only:
 Read-Only:
 
 - `id` (String)
+- `instance` (Number) Set the OSPF instance

@@ -72,12 +72,16 @@ attributes:
           - yang_name: id
             id: true
             example: 0
+          - yang_name: instance
+            example: 64
       - yang_name: ipv6/area
         tf_name: ipv6_areas
         type: List
         attributes:
           - yang_name: id
             id: true
+            example: 0
+          - yang_name: instance
             example: 0
 
 test_prerequisites:

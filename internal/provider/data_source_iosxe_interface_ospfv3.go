@@ -134,6 +134,10 @@ func (d *InterfaceOSPFv3DataSource) Schema(ctx context.Context, req datasource.S
 										MarkdownDescription: "",
 										Computed:            true,
 									},
+									"instance": schema.Int64Attribute{
+										MarkdownDescription: "Set the OSPF instance",
+										Computed:            true,
+									},
 								},
 							},
 						},
@@ -144,6 +148,10 @@ func (d *InterfaceOSPFv3DataSource) Schema(ctx context.Context, req datasource.S
 								Attributes: map[string]schema.Attribute{
 									"id": schema.StringAttribute{
 										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"instance": schema.Int64Attribute{
+										MarkdownDescription: "Set the OSPF instance",
 										Computed:            true,
 									},
 								},

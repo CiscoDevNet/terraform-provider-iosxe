@@ -46,7 +46,9 @@ func TestAccIosxeInterfaceOSPFv3(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "priority", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "process_ids.0.id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "process_ids.0.ipv4_areas.0.id", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "process_ids.0.ipv4_areas.0.instance", "64"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "process_ids.0.ipv6_areas.0.id", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "process_ids.0.ipv6_areas.0.instance", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -151,9 +153,11 @@ func testAccIosxeInterfaceOSPFv3Config_all() string {
 	config += `		id = 1` + "\n"
 	config += `		ipv4_areas = [{` + "\n"
 	config += `			id = "0"` + "\n"
+	config += `			instance = 64` + "\n"
 	config += `		}]` + "\n"
 	config += `		ipv6_areas = [{` + "\n"
 	config += `			id = "0"` + "\n"
+	config += `			instance = 0` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
