@@ -11,6 +11,8 @@ description: |-
 
 - Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
 - Add `process_ids` attribute to `iosxe_interface_ospfv3` resource and data source
+- Add `ipv6_unicast_aggregate_addresses`, `ipv6_unicast_admin_distances`, `ipv6_unicast_distance_bgp_external`, `ipv6_unicast_distance_bgp_internal`, `ipv6_unicast_distance_bgp_local`, `ipv6_unicast_maximum_paths_ebgp`, `ipv6_unicast_maximum_paths_ibgp`, `ipv6_unicast_router_id_ip`, `ipv6_unicast_router_id_loopback` attributes to `iosxe_bgp_address_family_ipv6_vrf` resource and data source
+- Add `ipv6_unicast_aggregate_addresses`, `ipv6_unicast_admin_distances`, `ipv6_unicast_distance_bgp_external`, `ipv6_unicast_distance_bgp_internal`, `ipv6_unicast_distance_bgp_local`, `ipv6_unicast_maximum_paths_ebgp`, `ipv6_unicast_maximum_paths_ibgp` attributes to `iosxe_bgp_address_family_ipv6` resource and data source
 
 ## 0.18.0
 

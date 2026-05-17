@@ -26,6 +26,12 @@ resource "iosxe_bgp_address_family_ipv6_vrf" "example" {
       ipv6_unicast_redistribute_static              = true
       ipv6_unicast_redistribute_static_route_map    = "RM_BGP6_STATIC"
       ipv6_unicast_redistribute_static_metric       = 200
+      ipv6_unicast_router_id_loopback               = 101
+      ipv6_unicast_aggregate_addresses = [
+        {
+          ipv6_address = "2001:DB8::/32"
+        }
+      ]
       ipv6_unicast_networks = [
         {
           network   = "2001:1234::/64"
@@ -34,6 +40,17 @@ resource "iosxe_bgp_address_family_ipv6_vrf" "example" {
           evpn      = false
         }
       ]
+      ipv6_unicast_admin_distances = [
+        {
+          distance            = 200
+          source_ipv6_address = "2001:DB8::/48"
+        }
+      ]
+      ipv6_unicast_distance_bgp_external = 20
+      ipv6_unicast_distance_bgp_internal = 200
+      ipv6_unicast_distance_bgp_local    = 200
+      ipv6_unicast_maximum_paths_ebgp    = 2
+      ipv6_unicast_maximum_paths_ibgp    = 2
     }
   ]
 }
@@ -67,7 +84,18 @@ Required:
 
 Optional:
 
+- `ipv6_unicast_admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_admin_distances))
 - `ipv6_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
+- `ipv6_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_aggregate_addresses))
+- `ipv6_unicast_distance_bgp_external` (Number) Distance for routes external to the AS
+  - Range: `1`-`255`
+- `ipv6_unicast_distance_bgp_internal` (Number) Distance for routes internal to the AS
+  - Range: `1`-`255`
+- `ipv6_unicast_distance_bgp_local` (Number) Distance for local routes
+  - Range: `1`-`255`
+- `ipv6_unicast_maximum_paths_ebgp` (Number) eBGP-multipath
+  - Range: `1`-`32`
+- `ipv6_unicast_maximum_paths_ibgp` (Number) - Range: `1`-`32`
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
 - `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
@@ -77,6 +105,31 @@ Optional:
 - `ipv6_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
   - Range: `0`-`4294967295`
 - `ipv6_unicast_redistribute_static_route_map` (String) Route map reference
+- `ipv6_unicast_router_id_ip` (String) Manually configured router identifier
+- `ipv6_unicast_router_id_loopback` (Number) Loopback interface
+  - Range: `0`-`2147483647`
+
+<a id="nestedatt--vrfs--ipv6_unicast_admin_distances"></a>
+### Nested Schema for `vrfs.ipv6_unicast_admin_distances`
+
+Required:
+
+- `distance` (Number) Administrative distance
+  - Range: `1`-`255`
+- `source_ipv6_address` (String) Prefix to match source address
+
+Optional:
+
+- `prefix_list_name` (String) IPv6 prefix list name to match routes from the source
+
+
+<a id="nestedatt--vrfs--ipv6_unicast_aggregate_addresses"></a>
+### Nested Schema for `vrfs.ipv6_unicast_aggregate_addresses`
+
+Required:
+
+- `ipv6_address` (String)
+
 
 <a id="nestedatt--vrfs--ipv6_unicast_networks"></a>
 ### Nested Schema for `vrfs.ipv6_unicast_networks`

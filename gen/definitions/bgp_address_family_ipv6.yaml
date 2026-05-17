@@ -26,6 +26,13 @@ attributes:
   - yang_name: ipv6-unicast/redistribute-v6/static/metric
     tf_name: ipv6_unicast_redistribute_static_metric
     example: 200
+  - yang_name: ipv6-unicast/aggregate-address
+    tf_name: ipv6_unicast_aggregate_addresses
+    type: List
+    attributes:
+      - yang_name: ipv6-address
+        id: true
+        example: 2001:DB8::/32
   - yang_name: ipv6-unicast/network
     tf_name: ipv6_unicast_networks
     type: List
@@ -38,6 +45,35 @@ attributes:
         example: RM1
       - yang_name: backdoor
         example: true
+  - yang_name: ipv6-unicast/distance/adm-distance
+    tf_name: ipv6_unicast_admin_distances
+    type: List
+    attributes:
+      - yang_name: distance
+        id: true
+        example: 200
+      - yang_name: src-ipv6-address
+        tf_name: source_ipv6_address
+        id: true
+        example: 2001:DB8::/48
+      - yang_name: prefix-list-name
+        example: 100
+        exclude_test: true
+  - yang_name: ipv6-unicast/distance/bgp/extern-as
+    tf_name: ipv6_unicast_distance_bgp_external
+    example: 20
+  - yang_name: ipv6-unicast/distance/bgp/internal-as
+    tf_name: ipv6_unicast_distance_bgp_internal
+    example: 200
+  - yang_name: ipv6-unicast/distance/bgp/local
+    example: 200
+  - yang_name: ipv6-unicast/maximum-paths/ebgp
+    tf_name: ipv6_unicast_maximum_paths_ebgp
+    example: 2
+  - yang_name: ipv6-unicast/maximum-paths/ibgp-leaf
+    tf_name: ipv6_unicast_maximum_paths_ibgp
+    example: 2
+
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/ipv6
     no_delete: true
