@@ -45,6 +45,8 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_transport_destination_port", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_interface_input", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_flow_direction", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_flow_cts_destination_group_tag", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_flow_cts_source_group_tag", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_datalink_mac_source_address_input", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_record.test", "match_datalink_mac_destination_address_input", "true"))
 	if os.Getenv("C9000V") != "" {
@@ -134,6 +136,8 @@ func testAccIosxeFlowRecordConfig_all() string {
 	config += `	match_transport_destination_port = true` + "\n"
 	config += `	match_interface_input = true` + "\n"
 	config += `	match_flow_direction = true` + "\n"
+	config += `	match_flow_cts_destination_group_tag = true` + "\n"
+	config += `	match_flow_cts_source_group_tag = true` + "\n"
 	config += `	match_datalink_mac_source_address_input = true` + "\n"
 	config += `	match_datalink_mac_destination_address_input = true` + "\n"
 	if os.Getenv("C9000V") != "" {

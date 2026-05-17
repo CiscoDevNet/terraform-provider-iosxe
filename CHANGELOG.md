@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
+
 ## 0.18.0
 
 - BREAKING CHANGE: Rename `authenticate_using_authc_list` and `authenticate_using_authz_list` attributes of `iosxe_policy_map_event` resource and data source (targeting the deprecated `authenticate/using/aaa` container) to `authenticate_using_aaa_authc_list_legacy` and `authenticate_using_aaa_authz_list_legacy`

@@ -57,6 +57,8 @@ data "iosxe_flow_record" "example" {
 - `match_datalink_mac_source_address_input` (Boolean) Source MAC address from packet at input
 - `match_datalink_source_vlan_id` (Boolean) Match source VLAN ID, available on router platforms (C8K, CSR1K)
 - `match_datalink_vlan` (String) Match VLAN input/output, available on switch platforms (C9K)
+- `match_flow_cts_destination_group_tag` (Boolean) destination group-tag
+- `match_flow_cts_source_group_tag` (Boolean) source group-tag
 - `match_flow_direction` (Boolean) Direction the flow was monitored in
 - `match_flow_observation_point` (Boolean) Observation point ID
 - `match_interface_input` (Boolean) The input interface
