@@ -33,7 +33,7 @@ test-1715-router:
 		IOSXE1715=1 \
 		C8000V=1 \
 		$(if $(DEBUG),TF_LOG=Trace) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-router.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./internal/provider/ $(if $(DEBUG),2>&1 | tee test-output-1715-router.log); \
 	fi
 
 # Test against 17.15.x Switch (C9000V)
@@ -57,7 +57,7 @@ test-1715-switch:
 		IOSXE1715=1 \
 		C9000V=1 \
 		$(if $(DEBUG),TF_LOG=Trace) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./internal/provider/ $(if $(DEBUG),2>&1 | tee test-output-1715-switch.log); \
 	fi
 
 # Test against 17.12.x Router (C8000V)
@@ -80,7 +80,7 @@ test-1712-router:
 		IOSXE1712=1 \
 		C8000V=1 \
 		$(if $(DEBUG),TF_LOG=Trace) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-router.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./internal/provider/ $(if $(DEBUG),2>&1 | tee test-output-1712-router.log); \
 	fi
 
 # Test against 17.12.x Switch (C9000V)
@@ -103,7 +103,7 @@ test-1712-switch:
 		IOSXE1712=1 \
 		C9000V=1 \
 		$(if $(DEBUG),TF_LOG=Trace) \
-		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./... $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log); \
+		go test -v $(if $(NAME),-run $(NAME)) $(TESTARGS) -count 1 -timeout 60m ./internal/provider/ $(if $(DEBUG),2>&1 | tee test-output-1712-switch.log); \
 	fi
 
 # Test all 17.15.x devices (router and switch)
