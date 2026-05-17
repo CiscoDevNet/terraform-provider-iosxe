@@ -2,6 +2,7 @@
 name: Interface Tunnel
 path: /Cisco-IOS-XE-native:native/interface/Tunnel[name=%s]
 doc_category: Interface
+test_tags: [C8000V]
 no_delete:
 attributes:
   - yang_name: name
