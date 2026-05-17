@@ -70,9 +70,6 @@ func TestAccDataSourceIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ip_arp_inspection_limit_rate", "1000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "logging_event_link_status_enable", "false"))
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "evpn_ethernet_segments.0.es_value", "1"))
-	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "evpn_ethernet_segments_legacy.0.es_value", "1"))
 	}
@@ -227,11 +224,6 @@ func testAccDataSourceIosxeInterfacePortChannelConfig() string {
 	config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	config += `	load_interval = 30` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
-	if os.Getenv("IOSXE1715") != "" {
-		config += `	evpn_ethernet_segments = [{` + "\n"
-		config += `		es_value = 1` + "\n"
-		config += `	}]` + "\n"
-	}
 	if os.Getenv("IOSXE1712") != "" {
 		config += `	evpn_ethernet_segments_legacy = [{` + "\n"
 		config += `		es_value = 1` + "\n"
