@@ -44,3 +44,30 @@ data "iosxe_interface_ospfv3" "example" {
 - `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
 - `priority` (Number) Router priority
+- `process_ids` (Attributes List) (see [below for nested schema](#nestedatt--process_ids))
+
+<a id="nestedatt--process_ids"></a>
+### Nested Schema for `process_ids`
+
+Read-Only:
+
+- `id` (Number)
+- `ipv4_areas` (Attributes List) Set the OSPF area ID (see [below for nested schema](#nestedatt--process_ids--ipv4_areas))
+- `ipv6_areas` (Attributes List) Set the OSPF area ID (see [below for nested schema](#nestedatt--process_ids--ipv6_areas))
+
+<a id="nestedatt--process_ids--ipv4_areas"></a>
+### Nested Schema for `process_ids.ipv4_areas`
+
+Read-Only:
+
+- `id` (String)
+- `instance` (Number) Set the OSPF instance
+
+
+<a id="nestedatt--process_ids--ipv6_areas"></a>
+### Nested Schema for `process_ids.ipv6_areas`
+
+Read-Only:
+
+- `id` (String)
+- `instance` (Number) Set the OSPF instance
