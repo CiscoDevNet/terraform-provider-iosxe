@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
+- Add `process_ids` attribute to `iosxe_interface_ospfv3` resource and data source
 
 ## 0.18.0
 
