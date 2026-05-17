@@ -29,6 +29,10 @@ attributes:
     example: true
   - yang_name: match/flow/direction
     example: true
+  - yang_name: match/flow/cts/destination/group-tag
+    example: true
+  - yang_name: match/flow/cts/source/group-tag
+    example: true
   - yang_name: match/application/name
     example: true
     exclude_test: true
