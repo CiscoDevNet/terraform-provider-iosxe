@@ -18,7 +18,6 @@ resource "iosxe_key_chain" "example" {
   keys = [
     {
       id                          = "1"
-      key_string_encryption       = "0"
       key_string_key              = "mySecretKey123"
       accept_lifetime_start_time  = "00:00:00"
       accept_lifetime_start_month = "Jan"
