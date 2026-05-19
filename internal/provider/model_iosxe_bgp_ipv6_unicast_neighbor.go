@@ -25,17 +25,12 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -90,17 +85,6 @@ func (data BGPIPv6UnicastNeighborData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv6=unicast/ipv6-unicast/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data BGPIPv6UnicastNeighbor) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data BGPIPv6UnicastNeighbor) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv6[af-name=unicast]/ipv6-unicast/neighbor[id=%s]"
@@ -115,53 +99,6 @@ func (data BGPIPv6UnicastNeighborData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data BGPIPv6UnicastNeighbor) toBody(ctx context.Context, config BGPIPv6UnicastNeighbor) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
-	}
-	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
-		if data.Activate.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"activate", map[string]string{})
-		}
-	}
-	if !data.SendCommunity.IsNull() && !data.SendCommunity.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"send-community.send-community-where", data.SendCommunity.ValueString())
-	}
-	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
-		if data.RouteReflectorClient.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-reflector-client", map[string]string{})
-		}
-	}
-	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"soft-reconfiguration", data.SoftReconfiguration.ValueString())
-	}
-	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.IsUnknown() {
-		if data.DefaultOriginate.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-originate", map[string]string{})
-		}
-	}
-	if !data.DefaultOriginateRouteMap.IsNull() && !data.DefaultOriginateRouteMap.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-originate.route-map", data.DefaultOriginateRouteMap.ValueString())
-	}
-	if len(data.RouteMaps) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
-		for index, item := range data.RouteMaps {
-			if !item.InOut.IsNull() && !item.InOut.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map"+"."+strconv.Itoa(index)+"."+"inout", item.InOut.ValueString())
-			}
-			if !item.RouteMapName.IsNull() && !item.RouteMapName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map"+"."+strconv.Itoa(index)+"."+"route-map-name", item.RouteMapName.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -220,98 +157,6 @@ func (data BGPIPv6UnicastNeighbor) toBodyXML(ctx context.Context, config BGPIPv6
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *BGPIPv6UnicastNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.Ip.IsNull() {
-		data.Ip = types.StringValue(value.String())
-	} else {
-		data.Ip = types.StringNull()
-	}
-	if value := res.Get(prefix + "activate"); !data.Activate.IsNull() {
-		if value.Exists() {
-			data.Activate = types.BoolValue(true)
-		} else {
-			data.Activate = types.BoolValue(false)
-		}
-	} else {
-		data.Activate = types.BoolNull()
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() && !data.SendCommunity.IsNull() {
-		data.SendCommunity = types.StringValue(value.String())
-	} else {
-		data.SendCommunity = types.StringNull()
-	}
-	if value := res.Get(prefix + "route-reflector-client"); !data.RouteReflectorClient.IsNull() {
-		if value.Exists() {
-			data.RouteReflectorClient = types.BoolValue(true)
-		} else {
-			data.RouteReflectorClient = types.BoolValue(false)
-		}
-	} else {
-		data.RouteReflectorClient = types.BoolNull()
-	}
-	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() && !data.SoftReconfiguration.IsNull() {
-		data.SoftReconfiguration = types.StringValue(value.String())
-	} else {
-		data.SoftReconfiguration = types.StringNull()
-	}
-	if value := res.Get(prefix + "default-originate"); !data.DefaultOriginate.IsNull() {
-		if value.Exists() {
-			data.DefaultOriginate = types.BoolValue(true)
-		} else {
-			data.DefaultOriginate = types.BoolValue(false)
-		}
-	} else {
-		data.DefaultOriginate = types.BoolNull()
-	}
-	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() && !data.DefaultOriginateRouteMap.IsNull() {
-		data.DefaultOriginateRouteMap = types.StringValue(value.String())
-	} else {
-		data.DefaultOriginateRouteMap = types.StringNull()
-	}
-	for i := range data.RouteMaps {
-		keys := [...]string{"inout"}
-		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "route-map").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("inout"); value.Exists() && !data.RouteMaps[i].InOut.IsNull() {
-			data.RouteMaps[i].InOut = types.StringValue(value.String())
-		} else {
-			data.RouteMaps[i].InOut = types.StringNull()
-		}
-		if value := r.Get("route-map-name"); value.Exists() && !data.RouteMaps[i].RouteMapName.IsNull() {
-			data.RouteMaps[i].RouteMapName = types.StringValue(value.String())
-		} else {
-			data.RouteMaps[i].RouteMapName = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -400,104 +245,6 @@ func (data *BGPIPv6UnicastNeighbor) updateFromBodyXML(ctx context.Context, res x
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *BGPIPv6UnicastNeighbor) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
-		data.SendCommunity = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-reflector-client"); value.Exists() {
-		data.RouteReflectorClient = types.BoolValue(true)
-	} else {
-		data.RouteReflectorClient = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
-		data.SoftReconfiguration = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "default-originate"); value.Exists() {
-		data.DefaultOriginate = types.BoolValue(true)
-	} else {
-		data.DefaultOriginate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() {
-		data.DefaultOriginateRouteMap = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPIPv6UnicastNeighborRouteMaps, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPIPv6UnicastNeighborRouteMaps{}
-			if cValue := v.Get("inout"); cValue.Exists() {
-				item.InOut = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("route-map-name"); cValue.Exists() {
-				item.RouteMapName = types.StringValue(cValue.String())
-			}
-			data.RouteMaps = append(data.RouteMaps, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *BGPIPv6UnicastNeighborData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
-		data.SendCommunity = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-reflector-client"); value.Exists() {
-		data.RouteReflectorClient = types.BoolValue(true)
-	} else {
-		data.RouteReflectorClient = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
-		data.SoftReconfiguration = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "default-originate"); value.Exists() {
-		data.DefaultOriginate = types.BoolValue(true)
-	} else {
-		data.DefaultOriginate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() {
-		data.DefaultOriginateRouteMap = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPIPv6UnicastNeighborRouteMapsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPIPv6UnicastNeighborRouteMapsData{}
-			if cValue := v.Get("inout"); cValue.Exists() {
-				item.InOut = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("route-map-name"); cValue.Exists() {
-				item.RouteMapName = types.StringValue(cValue.String())
-			}
-			data.RouteMaps = append(data.RouteMaps, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -589,59 +336,6 @@ func (data *BGPIPv6UnicastNeighborData) fromBodyXML(ctx context.Context, res xml
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state BGPIPv6UnicastNeighbor) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.RouteMaps {
-		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.RouteMaps[i].InOut.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.RouteMaps {
-			found = true
-			if state.RouteMaps[i].InOut.ValueString() != data.RouteMaps[j].InOut.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v/route-map-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate/route-map", state.getPath()))
-	}
-	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate", state.getPath()))
-	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
-	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
-	}
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *BGPIPv6UnicastNeighbor) addDeletedItemsXML(ctx context.Context, state BGPIPv6UnicastNeighbor, body string) string {
@@ -700,56 +394,6 @@ func (data *BGPIPv6UnicastNeighbor) addDeletedItemsXML(ctx context.Context, stat
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *BGPIPv6UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-originate", data.getPath()))
-	}
-	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
-	}
-	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *BGPIPv6UnicastNeighbor) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.RouteMaps {
-		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-map=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.DefaultOriginateRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate/route-map", data.getPath()))
-	}
-	if !data.DefaultOriginate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate", data.getPath()))
-	}
-	if !data.SoftReconfiguration.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
-	}
-	if !data.RouteReflectorClient.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
-	}
-	if !data.SendCommunity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
