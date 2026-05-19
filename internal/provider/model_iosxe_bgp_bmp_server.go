@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -92,17 +89,6 @@ func (data BGPBMPServerData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/bmp/server=%v", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.ServerId.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data BGPBMPServer) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data BGPBMPServer) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/bmp/server[id=%v]"
@@ -117,59 +103,6 @@ func (data BGPBMPServerData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data BGPBMPServer) toBody(ctx context.Context, config BGPBMPServer) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.ServerId.IsNull() && !data.ServerId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", strconv.FormatInt(data.ServerId.ValueInt64(), 10))
-	}
-	if !data.Address.IsNull() && !data.Address.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-config.address", data.Address.ValueString())
-	}
-	if !data.PortNumber.IsNull() && !data.PortNumber.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address-config.port-number", strconv.FormatInt(data.PortNumber.ValueInt64(), 10))
-	}
-	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
-		if data.Activate.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"activate", map[string]string{})
-		}
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
-	}
-	if !data.FailureRetryDelay.IsNull() && !data.FailureRetryDelay.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"failure-retry-delay", strconv.FormatInt(data.FailureRetryDelay.ValueInt64(), 10))
-	}
-	if !data.FlappingDelay.IsNull() && !data.FlappingDelay.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"flapping-delay", strconv.FormatInt(data.FlappingDelay.ValueInt64(), 10))
-	}
-	if !data.InitialDelay.IsNull() && !data.InitialDelay.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"initial-delay", strconv.FormatInt(data.InitialDelay.ValueInt64(), 10))
-	}
-	if !data.StatsReportingPeriod.IsNull() && !data.StatsReportingPeriod.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"stats-reporting-period", strconv.FormatInt(data.StatsReportingPeriod.ValueInt64(), 10))
-	}
-	if !data.IpDscp.IsNull() && !data.IpDscp.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.ip.dscp", data.IpDscp.ValueString())
-	}
-	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
-	}
-	if !data.UpdateSourceGigabitEthernet.IsNull() && !data.UpdateSourceGigabitEthernet.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.GigabitEthernet", data.UpdateSourceGigabitEthernet.ValueString())
-	}
-	if !data.UpdateSourceTenGigabitEthernet.IsNull() && !data.UpdateSourceTenGigabitEthernet.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.TenGigabitEthernet", data.UpdateSourceTenGigabitEthernet.ValueString())
-	}
-	if !data.UpdateSourceVlan.IsNull() && !data.UpdateSourceVlan.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.Vlan", strconv.FormatInt(data.UpdateSourceVlan.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -229,91 +162,6 @@ func (data BGPBMPServer) toBodyXML(ctx context.Context, config BGPBMPServer) str
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *BGPBMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.ServerId.IsNull() {
-		data.ServerId = types.Int64Value(value.Int())
-	} else {
-		data.ServerId = types.Int64Null()
-	}
-	if value := res.Get(prefix + "address-config.address"); value.Exists() && !data.Address.IsNull() {
-		data.Address = types.StringValue(value.String())
-	} else {
-		data.Address = types.StringNull()
-	}
-	if value := res.Get(prefix + "address-config.port-number"); value.Exists() && !data.PortNumber.IsNull() {
-		data.PortNumber = types.Int64Value(value.Int())
-	} else {
-		data.PortNumber = types.Int64Null()
-	}
-	if value := res.Get(prefix + "activate"); !data.Activate.IsNull() {
-		if value.Exists() {
-			data.Activate = types.BoolValue(true)
-		} else {
-			data.Activate = types.BoolValue(false)
-		}
-	} else {
-		data.Activate = types.BoolNull()
-	}
-	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
-		data.Description = types.StringValue(value.String())
-	} else {
-		data.Description = types.StringNull()
-	}
-	if value := res.Get(prefix + "failure-retry-delay"); value.Exists() && !data.FailureRetryDelay.IsNull() {
-		data.FailureRetryDelay = types.Int64Value(value.Int())
-	} else {
-		data.FailureRetryDelay = types.Int64Null()
-	}
-	if value := res.Get(prefix + "flapping-delay"); value.Exists() && !data.FlappingDelay.IsNull() {
-		data.FlappingDelay = types.Int64Value(value.Int())
-	} else {
-		data.FlappingDelay = types.Int64Null()
-	}
-	if value := res.Get(prefix + "initial-delay"); value.Exists() && !data.InitialDelay.IsNull() {
-		data.InitialDelay = types.Int64Value(value.Int())
-	} else {
-		data.InitialDelay = types.Int64Null()
-	}
-	if value := res.Get(prefix + "stats-reporting-period"); value.Exists() && !data.StatsReportingPeriod.IsNull() {
-		data.StatsReportingPeriod = types.Int64Value(value.Int())
-	} else {
-		data.StatsReportingPeriod = types.Int64Null()
-	}
-	if value := res.Get(prefix + "set.ip.dscp"); value.Exists() && !data.IpDscp.IsNull() {
-		data.IpDscp = types.StringValue(value.String())
-	} else {
-		data.IpDscp = types.StringNull()
-	}
-	if value := res.Get(prefix + "update-source.Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
-	} else {
-		data.UpdateSourceLoopback = types.Int64Null()
-	}
-	if value := res.Get(prefix + "update-source.GigabitEthernet"); value.Exists() && !data.UpdateSourceGigabitEthernet.IsNull() {
-		data.UpdateSourceGigabitEthernet = types.StringValue(value.String())
-	} else {
-		data.UpdateSourceGigabitEthernet = types.StringNull()
-	}
-	if value := res.Get(prefix + "update-source.TenGigabitEthernet"); value.Exists() && !data.UpdateSourceTenGigabitEthernet.IsNull() {
-		data.UpdateSourceTenGigabitEthernet = types.StringValue(value.String())
-	} else {
-		data.UpdateSourceTenGigabitEthernet = types.StringNull()
-	}
-	if value := res.Get(prefix + "update-source.Vlan"); value.Exists() && !data.UpdateSourceVlan.IsNull() {
-		data.UpdateSourceVlan = types.Int64Value(value.Int())
-	} else {
-		data.UpdateSourceVlan = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -395,110 +243,6 @@ func (data *BGPBMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *BGPBMPServer) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "address-config.address"); value.Exists() {
-		data.Address = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "address-config.port-number"); value.Exists() {
-		data.PortNumber = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "failure-retry-delay"); value.Exists() {
-		data.FailureRetryDelay = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "flapping-delay"); value.Exists() {
-		data.FlappingDelay = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "initial-delay"); value.Exists() {
-		data.InitialDelay = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "stats-reporting-period"); value.Exists() {
-		data.StatsReportingPeriod = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "set.ip.dscp"); value.Exists() {
-		data.IpDscp = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "update-source.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "update-source.GigabitEthernet"); value.Exists() {
-		data.UpdateSourceGigabitEthernet = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "update-source.TenGigabitEthernet"); value.Exists() {
-		data.UpdateSourceTenGigabitEthernet = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "update-source.Vlan"); value.Exists() {
-		data.UpdateSourceVlan = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *BGPBMPServerData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "address-config.address"); value.Exists() {
-		data.Address = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "address-config.port-number"); value.Exists() {
-		data.PortNumber = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "failure-retry-delay"); value.Exists() {
-		data.FailureRetryDelay = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "flapping-delay"); value.Exists() {
-		data.FlappingDelay = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "initial-delay"); value.Exists() {
-		data.InitialDelay = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "stats-reporting-period"); value.Exists() {
-		data.StatsReportingPeriod = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "set.ip.dscp"); value.Exists() {
-		data.IpDscp = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "update-source.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "update-source.GigabitEthernet"); value.Exists() {
-		data.UpdateSourceGigabitEthernet = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "update-source.TenGigabitEthernet"); value.Exists() {
-		data.UpdateSourceTenGigabitEthernet = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "update-source.Vlan"); value.Exists() {
-		data.UpdateSourceVlan = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -596,55 +340,6 @@ func (data *BGPBMPServerData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *BGPBMPServer) getDeletedItems(ctx context.Context, state BGPBMPServer) []string {
-	deletedItems := make([]string, 0)
-	if !state.UpdateSourceVlan.IsNull() && data.UpdateSourceVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/Vlan", state.getPath()))
-	}
-	if !state.UpdateSourceTenGigabitEthernet.IsNull() && data.UpdateSourceTenGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/TenGigabitEthernet", state.getPath()))
-	}
-	if !state.UpdateSourceGigabitEthernet.IsNull() && data.UpdateSourceGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/GigabitEthernet", state.getPath()))
-	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/Loopback", state.getPath()))
-	}
-	if !state.IpDscp.IsNull() && data.IpDscp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/ip/dscp", state.getPath()))
-	}
-	if !state.StatsReportingPeriod.IsNull() && data.StatsReportingPeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/stats-reporting-period", state.getPath()))
-	}
-	if !state.InitialDelay.IsNull() && data.InitialDelay.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/initial-delay", state.getPath()))
-	}
-	if !state.FlappingDelay.IsNull() && data.FlappingDelay.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/flapping-delay", state.getPath()))
-	}
-	if !state.FailureRetryDelay.IsNull() && data.FailureRetryDelay.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/failure-retry-delay", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.Activate.IsNull() && data.Activate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/activate", state.getPath()))
-	}
-	if !state.PortNumber.IsNull() && data.PortNumber.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-config/port-number", state.getPath()))
-	}
-	if !state.Address.IsNull() && data.Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/address-config/address", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *BGPBMPServer) addDeletedItemsXML(ctx context.Context, state BGPBMPServer, body string) string {
@@ -694,68 +389,6 @@ func (data *BGPBMPServer) addDeletedItemsXML(ctx context.Context, state BGPBMPSe
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *BGPBMPServer) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *BGPBMPServer) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.UpdateSourceVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/Vlan", data.getPath()))
-	}
-	if !data.UpdateSourceTenGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/TenGigabitEthernet", data.getPath()))
-	}
-	if !data.UpdateSourceGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/GigabitEthernet", data.getPath()))
-	}
-	if !data.UpdateSourceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/Loopback", data.getPath()))
-	}
-	if !data.IpDscp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/ip/dscp", data.getPath()))
-	}
-	if !data.StatsReportingPeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/stats-reporting-period", data.getPath()))
-	}
-	if !data.InitialDelay.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/initial-delay", data.getPath()))
-	}
-	if !data.FlappingDelay.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/flapping-delay", data.getPath()))
-	}
-	if !data.FailureRetryDelay.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/failure-retry-delay", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.Activate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/activate", data.getPath()))
-	}
-	if !data.PortNumber.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-config/port-number", data.getPath()))
-	}
-	if !data.Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/address-config/address", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
