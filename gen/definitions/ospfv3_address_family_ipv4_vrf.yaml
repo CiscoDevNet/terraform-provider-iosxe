@@ -1,0 +1,116 @@
+---
+name: OSPFv3 Address Family IPv4 VRF
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3[id=%v]/address-family/ipv4/vrf[vrf=%s]
+doc_category: OSPF
+attributes:
+  - yang_name: id
+    tf_name: process_id
+    example: 2
+  - yang_name: vrf
+    example: VRF1
+  - yang_name: unicast
+    example: true
+  - yang_name: capability-vrf
+    example: vrf-lite
+  - yang_name: bfd/all-interfaces
+    example: true
+  - yang_name: default-information/originate
+    example: true
+  - yang_name: default-information/originate/always
+    example: true
+  - yang_name: default-information/originate/metric
+    example: 1000
+  - yang_name: distance-ipv4/distance
+    tf_name: distance
+    example: 120
+  - yang_name: log-adjacency-changes
+    example: true
+  - yang_name: log-adjacency-changes/detail
+    example: true
+  - yang_name: router-id
+    example: 1.2.3.4
+  - yang_name: shutdown
+    example: false
+  - yang_name: auto-cost/reference-bandwidth
+    example: 40000
+  - yang_name: timers/lsa/arrival
+    example: 15
+  - yang_name: timers/pacing/lsa-group
+    example: 15
+  - yang_name: timers/throttle/lsa/all/delay
+    example: 0
+  - yang_name: timers/throttle/lsa/all/min-delay
+    example: 50
+  - yang_name: timers/throttle/lsa/all/max-delay
+    example: 5000
+  - yang_name: timers/throttle/spf/delay
+    example: 10
+  - yang_name: timers/throttle/spf/min-delay
+    example: 50
+  - yang_name: timers/throttle/spf/max-delay
+    example: 5000
+  - yang_name: max-metric/router-lsa-config
+    example: true
+  - yang_name: max-metric/router-lsa-config/stub-prefix-lsa
+    example: true
+  - yang_name: max-metric/router-lsa-config/inter-area-lsas/metric
+    example: 16711680
+  - yang_name: max-metric/router-lsa-config/external-lsa/metric
+    example: 16711680
+  - yang_name: max-metric/router-lsa-config/on-startup/time-wait-for-bgp-choice/time/time
+    exclude_test: true
+    xpath: max-metric/router-lsa-config/on-startup/time
+    tf_name: max_metric_router_config_lsa_on_startup_time
+    example: 60
+  - yang_name: max-metric/router-lsa-config/on-startup/time-wait-for-bgp-choice/wait-for-bgp/wait-for-bgp
+    xpath: max-metric/router-lsa-config/on-startup/wait-for-bgp
+    tf_name: max_metric_router_config_lsa_on_startup_wait_for_bgp
+    example: true
+  - yang_name: redistribute/static
+    example: true
+  - yang_name: redistribute/connected
+    example: true
+  - yang_name: summary-prefix
+    type: List
+    attributes:
+      - yang_name: prefix
+        example: 3.3.3.0/24
+        id: true
+  - yang_name: area-config
+    tf_name: areas
+    type: List
+    attributes:
+      - yang_name: area-id
+        id: true
+        example: 5
+      - yang_name: nssa
+        example: true
+      - yang_name: nssa/default-information-originate
+        example: true
+      - yang_name: nssa/default-information-originate/metric
+        example: 100
+      - yang_name: nssa/default-information-originate/metric-type
+        example: 1
+      - yang_name: nssa/no-summary
+        example: true
+      - yang_name: nssa/no-redistribution
+        example: true
+  - yang_name: passive-interface/passive-interface-choice/default/default
+    xpath: passive-interface/default
+    tf_name: passive_interface_default
+    example: true
+  - yang_name: passive-interface/passive-interface-choice/interface/interface
+    xpath: passive-interface/interface
+    tf_name: passive_interface
+    example: Loopback0
+    exclude_test: true
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
+
