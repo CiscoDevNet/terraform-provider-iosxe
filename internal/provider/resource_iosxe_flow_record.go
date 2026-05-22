@@ -140,6 +140,14 @@ func (r *FlowRecordResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Direction the flow was monitored in").String,
 				Optional:            true,
 			},
+			"match_flow_cts_destination_group_tag": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("destination group-tag").String,
+				Optional:            true,
+			},
+			"match_flow_cts_source_group_tag": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("source group-tag").String,
+				Optional:            true,
+			},
 			"match_application_name": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Application name").String,
 				Optional:            true,

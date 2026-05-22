@@ -22,6 +22,11 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
   ipv6_unicast_redistribute_static              = true
   ipv6_unicast_redistribute_static_route_map    = "RM_BGP6_STATIC"
   ipv6_unicast_redistribute_static_metric       = 200
+  ipv6_unicast_aggregate_addresses = [
+    {
+      ipv6_address = "2001:DB8::/32"
+    }
+  ]
   ipv6_unicast_networks = [
     {
       network   = "2001:1234::/64"
@@ -29,6 +34,17 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
       backdoor  = true
     }
   ]
+  ipv6_unicast_admin_distances = [
+    {
+      distance            = 200
+      source_ipv6_address = "2001:DB8::/48"
+    }
+  ]
+  ipv6_unicast_distance_bgp_external = 20
+  ipv6_unicast_distance_bgp_internal = 200
+  ipv6_unicast_distance_bgp_local    = 200
+  ipv6_unicast_maximum_paths_ebgp    = 2
+  ipv6_unicast_maximum_paths_ibgp    = 2
 }
 ```
 
@@ -45,6 +61,18 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `ipv6_unicast_admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_unicast_admin_distances))
+- `ipv6_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--ipv6_unicast_aggregate_addresses))
+- `ipv6_unicast_distance_bgp_external` (Number) Distance for routes external to the AS
+  - Range: `1`-`255`
+- `ipv6_unicast_distance_bgp_internal` (Number) Distance for routes internal to the AS
+  - Range: `1`-`255`
+- `ipv6_unicast_distance_bgp_local` (Number) Distance for local routes
+  - Range: `1`-`255`
+- `ipv6_unicast_maximum_paths_ebgp` (Number) eBGP-multipath
+  - Range: `1`-`32`
+- `ipv6_unicast_maximum_paths_ibgp` (Number) iBGP-multipath
+  - Range: `1`-`32`
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
 - `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
@@ -58,6 +86,28 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv6_unicast_admin_distances"></a>
+### Nested Schema for `ipv6_unicast_admin_distances`
+
+Required:
+
+- `distance` (Number) Administrative distance
+  - Range: `1`-`255`
+- `source_ipv6_address` (String) Prefix to match source address
+
+Optional:
+
+- `prefix_list_name` (String) IPv6 prefix list name to match routes from the source
+
+
+<a id="nestedatt--ipv6_unicast_aggregate_addresses"></a>
+### Nested Schema for `ipv6_unicast_aggregate_addresses`
+
+Required:
+
+- `ipv6_address` (String)
+
 
 <a id="nestedatt--ipv6_unicast_networks"></a>
 ### Nested Schema for `ipv6_unicast_networks`

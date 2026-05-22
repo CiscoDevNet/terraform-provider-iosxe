@@ -41,7 +41,14 @@ data "iosxe_bgp_address_family_ipv6_vrf" "example" {
 
 Read-Only:
 
+- `ipv6_unicast_admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_admin_distances))
 - `ipv6_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
+- `ipv6_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_aggregate_addresses))
+- `ipv6_unicast_distance_bgp_external` (Number) Distance for routes external to the AS
+- `ipv6_unicast_distance_bgp_internal` (Number) Distance for routes internal to the AS
+- `ipv6_unicast_distance_bgp_local` (Number) Distance for local routes
+- `ipv6_unicast_maximum_paths_ebgp` (Number) eBGP-multipath
+- `ipv6_unicast_maximum_paths_ibgp` (Number)
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_networks))
 - `ipv6_unicast_redistribute_connected` (Boolean) Connected
 - `ipv6_unicast_redistribute_connected_metric` (Number) Metric for redistributed routes
@@ -49,7 +56,27 @@ Read-Only:
 - `ipv6_unicast_redistribute_static` (Boolean) Static routes
 - `ipv6_unicast_redistribute_static_metric` (Number) Metric for redistributed routes
 - `ipv6_unicast_redistribute_static_route_map` (String) Route map reference
+- `ipv6_unicast_router_id_ip` (String) Manually configured router identifier
+- `ipv6_unicast_router_id_loopback` (Number) Loopback interface
 - `name` (String)
+
+<a id="nestedatt--vrfs--ipv6_unicast_admin_distances"></a>
+### Nested Schema for `vrfs.ipv6_unicast_admin_distances`
+
+Read-Only:
+
+- `distance` (Number) Administrative distance
+- `prefix_list_name` (String) IPv6 prefix list name to match routes from the source
+- `source_ipv6_address` (String) Prefix to match source address
+
+
+<a id="nestedatt--vrfs--ipv6_unicast_aggregate_addresses"></a>
+### Nested Schema for `vrfs.ipv6_unicast_aggregate_addresses`
+
+Read-Only:
+
+- `ipv6_address` (String)
+
 
 <a id="nestedatt--vrfs--ipv6_unicast_networks"></a>
 ### Nested Schema for `vrfs.ipv6_unicast_networks`
