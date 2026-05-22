@@ -1834,7 +1834,7 @@ func (data *RouteMap) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Entries[i].SetCommunityNoneLegacy = types.BoolNull()
 		}
 		if value := r.Get("set.community.community-well-known.community-list"); value.Exists() && !data.Entries[i].SetCommunitiesLegacy.IsNull() {
-			data.Entries[i].SetCommunitiesLegacy = helpers.GetStringList(value.Array())
+			data.Entries[i].SetCommunitiesLegacy = helpers.GetNormalizedCommunityList(value.Array())
 		} else {
 			data.Entries[i].SetCommunitiesLegacy = types.ListNull(types.StringType)
 		}
@@ -1963,7 +1963,7 @@ func (data *RouteMap) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Entries[i].SetCommunityNone = types.BoolNull()
 		}
 		if value := r.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.bgp-community.community-well-known.community-list"); value.Exists() && !data.Entries[i].SetCommunities.IsNull() {
-			data.Entries[i].SetCommunities = helpers.GetStringList(value.Array())
+			data.Entries[i].SetCommunities = helpers.GetNormalizedCommunityList(value.Array())
 		} else {
 			data.Entries[i].SetCommunities = types.ListNull(types.StringType)
 		}
@@ -2528,7 +2528,7 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 			data.Entries[i].SetCommunityNoneLegacy = types.BoolNull()
 		}
 		if value := helpers.GetFromXPath(r, "set/community/community-well-known/community-list"); value.Exists() && !data.Entries[i].SetCommunitiesLegacy.IsNull() {
-			data.Entries[i].SetCommunitiesLegacy = helpers.GetStringListXML(value.Array())
+			data.Entries[i].SetCommunitiesLegacy = helpers.GetNormalizedCommunityListXML(value.Array())
 		} else {
 			data.Entries[i].SetCommunitiesLegacy = types.ListNull(types.StringType)
 		}
@@ -2657,7 +2657,7 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 			data.Entries[i].SetCommunityNone = types.BoolNull()
 		}
 		if value := helpers.GetFromXPath(r, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list"); value.Exists() && !data.Entries[i].SetCommunities.IsNull() {
-			data.Entries[i].SetCommunities = helpers.GetStringListXML(value.Array())
+			data.Entries[i].SetCommunities = helpers.GetNormalizedCommunityListXML(value.Array())
 		} else {
 			data.Entries[i].SetCommunities = types.ListNull(types.StringType)
 		}
@@ -3064,7 +3064,7 @@ func (data *RouteMap) fromBody(ctx context.Context, res gjson.Result) {
 				item.SetCommunityNoneLegacy = types.BoolValue(false)
 			}
 			if cValue := v.Get("set.community.community-well-known.community-list"); cValue.Exists() {
-				item.SetCommunitiesLegacy = helpers.GetStringList(cValue.Array())
+				item.SetCommunitiesLegacy = helpers.GetNormalizedCommunityList(cValue.Array())
 			} else {
 				item.SetCommunitiesLegacy = types.ListNull(types.StringType)
 			}
@@ -3137,7 +3137,7 @@ func (data *RouteMap) fromBody(ctx context.Context, res gjson.Result) {
 				item.SetCommunityNone = types.BoolValue(false)
 			}
 			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.bgp-community.community-well-known.community-list"); cValue.Exists() {
-				item.SetCommunities = helpers.GetStringList(cValue.Array())
+				item.SetCommunities = helpers.GetNormalizedCommunityList(cValue.Array())
 			} else {
 				item.SetCommunities = types.ListNull(types.StringType)
 			}
@@ -3521,7 +3521,7 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 				item.SetCommunityNoneLegacy = types.BoolValue(false)
 			}
 			if cValue := v.Get("set.community.community-well-known.community-list"); cValue.Exists() {
-				item.SetCommunitiesLegacy = helpers.GetStringList(cValue.Array())
+				item.SetCommunitiesLegacy = helpers.GetNormalizedCommunityList(cValue.Array())
 			} else {
 				item.SetCommunitiesLegacy = types.ListNull(types.StringType)
 			}
@@ -3594,7 +3594,7 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 				item.SetCommunityNone = types.BoolValue(false)
 			}
 			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.bgp-community.community-well-known.community-list"); cValue.Exists() {
-				item.SetCommunities = helpers.GetStringList(cValue.Array())
+				item.SetCommunities = helpers.GetNormalizedCommunityList(cValue.Array())
 			} else {
 				item.SetCommunities = types.ListNull(types.StringType)
 			}
@@ -3974,7 +3974,7 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.SetCommunityNoneLegacy = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "set/community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunitiesLegacy = helpers.GetStringListXML(cValue.Array())
+				item.SetCommunitiesLegacy = helpers.GetNormalizedCommunityListXML(cValue.Array())
 			} else {
 				item.SetCommunitiesLegacy = types.ListNull(types.StringType)
 			}
@@ -4047,7 +4047,7 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.SetCommunityNone = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunities = helpers.GetStringListXML(cValue.Array())
+				item.SetCommunities = helpers.GetNormalizedCommunityListXML(cValue.Array())
 			} else {
 				item.SetCommunities = types.ListNull(types.StringType)
 			}
@@ -4427,7 +4427,7 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.SetCommunityNoneLegacy = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "set/community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunitiesLegacy = helpers.GetStringListXML(cValue.Array())
+				item.SetCommunitiesLegacy = helpers.GetNormalizedCommunityListXML(cValue.Array())
 			} else {
 				item.SetCommunitiesLegacy = types.ListNull(types.StringType)
 			}
@@ -4500,7 +4500,7 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.SetCommunityNone = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list"); cValue.Exists() {
-				item.SetCommunities = helpers.GetStringListXML(cValue.Array())
+				item.SetCommunities = helpers.GetNormalizedCommunityListXML(cValue.Array())
 			} else {
 				item.SetCommunities = types.ListNull(types.StringType)
 			}

@@ -18,6 +18,10 @@
 package helpers
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/netascode/xmldot"
@@ -133,4 +137,38 @@ func RemoveEmptyStrings(s []string) []string {
 		}
 	}
 	return r
+}
+
+// NormalizeCommunityValue converts a decimal BGP community integer to AA:NN notation.
+// Standard communities are 32-bit: upper 16 bits = AS number, lower 16 bits = value.
+// Values already in colon notation or well-known names pass through unchanged.
+func NormalizeCommunityValue(val string) string {
+	if strings.Contains(val, ":") {
+		return val
+	}
+	n, err := strconv.ParseUint(val, 10, 32)
+	if err != nil {
+		return val
+	}
+	return fmt.Sprintf("%d:%d", n/65536, n%65536)
+}
+
+// GetNormalizedCommunityList converts a slice of gjson.Result to a Terraform types.List,
+// normalizing decimal BGP community values to AA:NN notation.
+func GetNormalizedCommunityList(result []gjson.Result) types.List {
+	v := make([]attr.Value, len(result))
+	for r := range result {
+		v[r] = types.StringValue(NormalizeCommunityValue(result[r].String()))
+	}
+	return types.ListValueMust(types.StringType, v)
+}
+
+// GetNormalizedCommunityListXML converts a slice of xmldot.Result to a Terraform types.List,
+// normalizing decimal BGP community values to AA:NN notation.
+func GetNormalizedCommunityListXML(result []xmldot.Result) types.List {
+	v := make([]attr.Value, len(result))
+	for r := range result {
+		v[r] = types.StringValue(NormalizeCommunityValue(result[r].String()))
+	}
+	return types.ListValueMust(types.StringType, v)
 }
