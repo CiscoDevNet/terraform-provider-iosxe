@@ -85,6 +85,9 @@ func TestNetconfTrailingWhitespaceTrimModifier_UpdateMultilineMatch(t *testing.T
 }
 
 func TestNetconfTrailingWhitespaceTrimModifier_UpdateValuesDiffer(t *testing.T) {
+	// When config and state are genuinely different (drift or intentional change),
+	// the plan modifier must return the raw config value to satisfy Terraform's
+	// plan validation (planned value must == config value when changing).
 	modifier := UseNetconfTrailingWhitespaceTrimming()
 	req := planmodifier.StringRequest{
 		ConfigValue: types.StringValue("New banner text  "),
@@ -97,7 +100,8 @@ func TestNetconfTrailingWhitespaceTrimModifier_UpdateValuesDiffer(t *testing.T) 
 
 	modifier.PlanModifyString(context.Background(), req, resp)
 
-	expected := "New banner text"
+	// Must return raw config value, not normalized, to pass Terraform plan validation
+	expected := "New banner text  "
 	if resp.PlanValue.ValueString() != expected {
 		t.Errorf("UPDATE values differ: got %q, want %q", resp.PlanValue.ValueString(), expected)
 	}
