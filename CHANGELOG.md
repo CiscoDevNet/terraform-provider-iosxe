@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Fix perpetual `terraform plan` drift on `iosxe_route_map` `set_communities` where IOS-XE returns decimal integers instead of the configured `AA:NN` notation by normalizing community values on read
+- Fix `iosxe_banner` "Provider produced invalid plan" error when recovering from device drift (out-of-band configuration changes)
 - Add `iosxe_ospfv3`, `iosxe_ospfv3_address_family_ipv4_vrf` and `iosxe_ospfv3_address_family_ipv6_vrf` resources and data sources
 - Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
 - Add `process_ids` attribute to `iosxe_interface_ospfv3` resource and data source
@@ -40,6 +42,7 @@
 - Add `lifetime`, `match_address_local_interface_loopback`, and `match_address_local_interface_loopback_legacy` attributes to `iosxe_crypto_ikev2_profile` resource and data source. The `match_address_local_interface_loopback` attribute is a list targeting the 17.18+ `interface-options-local` YANG path. The `match_address_local_interface_loopback_legacy` attribute is a scalar for pre-17.18 compatibility using the deprecated `interface-options` path.
 - Add `set_pfs_group`, `set_security_association_lifetime_seconds`, and `set_security_association_lifetime_seconds_legacy` attributes to `iosxe_crypto_ipsec_profile` resource and data source
 - Add `v3_auth_sha2` attribute to `iosxe_snmp_server` resource and data source for SNMPv3 user SHA-2 authentication (SHA-256, SHA-384, SHA-512)
+- Fix missing NETCONF namespace declaration on intermediate XML elements when `AppendFromXPath` is the first function to create a container with a namespace-prefixed path. This caused `unknown-element` errors for any leaf-list attribute under an augmented container (e.g., `set_communities` in `iosxe_route_map` under `Cisco-IOS-XE-bgp:bgp-route-map-set`) when no sibling scalar attribute was also configured.
 - Fix panic in route-map (and other list-entry resources) when adding a new entry before an existing one that contains list-type match/set attributes. The `getDeletedItems` (RESTCONF) and `addDeletedItemsXML` (NETCONF) functions had swapped loop indices when comparing list element values between state and plan.
 
 ## 0.17.0

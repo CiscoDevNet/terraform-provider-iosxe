@@ -90,6 +90,8 @@ func (m netconfTrailingWhitespaceTrimModifier) PlanModifyString(ctx context.Cont
 		return
 	}
 
-	// Values are different - use the normalized config value
-	resp.PlanValue = types.StringValue(configNormalized)
+	// Values are genuinely different (real config change or drift recovery).
+	// Return the raw config value so Terraform's plan validation passes —
+	// it requires planned value == config value when changing.
+	resp.PlanValue = req.ConfigValue
 }
