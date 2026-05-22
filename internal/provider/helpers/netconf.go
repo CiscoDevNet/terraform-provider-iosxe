@@ -1162,6 +1162,12 @@ func AppendFromXPath(body netconf.Body, xPath string, value any) netconf.Body {
 		body = setWithNamespaces(body, fullPath, value)
 	}
 
+	// Augment namespaces for intermediate path elements using the original xPath
+	// which preserves namespace prefixes (e.g. "Cisco-IOS-XE-bgp:bgp-route-map-set").
+	// setWithNamespaces only receives cleaned pathSegments and cannot detect these.
+	dotXPath := strings.ReplaceAll(strings.TrimPrefix(xPath, "/"), "/", ".")
+	body = augmentNamespaces(body, dotXPath)
+
 	return body
 }
 
