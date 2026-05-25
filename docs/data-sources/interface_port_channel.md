@@ -50,6 +50,8 @@ data "iosxe_interface_port_channel" "example" {
 - `bfd_interval_multiplier` (Number) Multiplier value used to compute holddown
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
+- `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
+- `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
 - `description` (String) Interface specific description
 - `device_tracking` (Boolean) Configure device-tracking on the interface
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
@@ -92,6 +94,10 @@ data "iosxe_interface_port_channel" "example" {
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
+- `spanning_tree_portfast` (Boolean) (DEPRECATED) Spanning tree portfast options
+- `spanning_tree_portfast_disable` (Boolean) (DEPRECATED) Disable portfast for this interface
+- `spanning_tree_portfast_edge` (Boolean) (DEPRECATED) Enable portfast edge on the interface
+- `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
 - `vrf_forwarding` (String) Configure forwarding table
