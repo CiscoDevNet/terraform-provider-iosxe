@@ -101,6 +101,7 @@ resource "iosxe_yang" "PreReq0" {
 resource "iosxe_yang" "PreReq1" {
 	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3[id=1]"
 	attributes = {
+		"id" = "1"
 		"address-family/ipv4/unicast" = ""
 		"address-family/ipv6/unicast" = ""
 	}
