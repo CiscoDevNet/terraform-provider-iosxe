@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable`, `spanning_tree_portfast_trunk`, and `spanning_tree_portfast_edge` attributes to `iosxe_interface_port_channel` resource and data source
 - Fix perpetual `terraform plan` drift on `iosxe_route_map` `set_communities` where IOS-XE returns decimal integers instead of the configured `AA:NN` notation by normalizing community values on read
 - Fix `iosxe_banner` "Provider produced invalid plan" error when recovering from device drift (out-of-band configuration changes)
 - Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
