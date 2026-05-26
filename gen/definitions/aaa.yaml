@@ -7,6 +7,7 @@ test_tags: [AAA]
 attributes:
   - yang_name: Cisco-IOS-XE-aaa:new-model
     example: true
+    no_delete: true
   - yang_name: Cisco-IOS-XE-aaa:server/radius/dynamic-author
     example: true
   - yang_name: Cisco-IOS-XE-aaa:session-id
