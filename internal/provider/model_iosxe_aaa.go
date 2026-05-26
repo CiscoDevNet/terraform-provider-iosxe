@@ -1897,9 +1897,6 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 	if !state.ServerRadiusDynamicAuthor.IsNull() && data.ServerRadiusDynamicAuthor.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", state.getPath()))
 	}
-	if !state.NewModel.IsNull() && data.NewModel.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", state.getPath()))
-	}
 
 	return deletedItems
 }
@@ -2141,9 +2138,6 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 	if !state.ServerRadiusDynamicAuthor.IsNull() && data.ServerRadiusDynamicAuthor.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author")
 	}
-	if !state.NewModel.IsNull() && data.NewModel.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:new-model")
-	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -2202,9 +2196,6 @@ func (data *AAA) getDeletePaths(ctx context.Context) []string {
 	if !data.ServerRadiusDynamicAuthor.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", data.getPath()))
 	}
-	if !data.NewModel.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", data.getPath()))
-	}
 
 	return deletePaths
 }
@@ -2259,9 +2250,6 @@ func (data *AAA) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.ServerRadiusDynamicAuthor.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author")
-	}
-	if !data.NewModel.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:new-model")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
