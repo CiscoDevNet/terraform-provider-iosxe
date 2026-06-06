@@ -92,6 +92,8 @@ test_prerequisites:
         value: ""
   - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3[id=1]
     attributes:
+      - name: id
+        value: 1
       - name: address-family/ipv4/unicast
         value: ""
       - name: address-family/ipv6/unicast

@@ -1466,6 +1466,54 @@ func TestAppendFromXPath_EmptyValue(t *testing.T) {
 	t.Log("✓ Empty values (presence containers) appended successfully")
 }
 
+// TestAppendFromXPath_IntermediateNamespace verifies that AppendFromXPath adds xmlns
+// declarations to intermediate path elements with namespace prefixes, even when no
+// prior SetFromXPath call has created the container structure.
+// Reproduces issue #1403: route-map set_communities fails when it's the only BGP
+// attribute because bgp-route-map-set is missing its xmlns declaration.
+func TestAppendFromXPath_IntermediateNamespace(t *testing.T) {
+	body := netconf.Body{}
+	body = AppendFromXPath(body, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", "1:1")
+	body = AppendFromXPath(body, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", "2:2")
+
+	t.Log("Generated XML:")
+	t.Log(body.Res())
+
+	// Verify values were appended
+	r0 := xmldot.Get(body.Res(), "set.bgp-route-map-set.bgp-community.community-well-known.community-list.0")
+	r1 := xmldot.Get(body.Res(), "set.bgp-route-map-set.bgp-community.community-well-known.community-list.1")
+	if r0.String() != "1:1" {
+		t.Errorf("Expected first community-list to be '1:1', got '%s'", r0.String())
+	}
+	if r1.String() != "2:2" {
+		t.Errorf("Expected second community-list to be '2:2', got '%s'", r1.String())
+	}
+
+	// Verify xmlns is present on the intermediate bgp-route-map-set element
+	if !strings.Contains(body.Res(), `xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp"`) {
+		t.Errorf("Missing Cisco-IOS-XE-bgp namespace declaration on bgp-route-map-set element.\nGot: %s", body.Res())
+	}
+}
+
+// TestAppendFromXPath_IntermediateNamespaceIdempotent verifies that calling
+// AppendFromXPath multiple times does not duplicate xmlns declarations.
+func TestAppendFromXPath_IntermediateNamespaceIdempotent(t *testing.T) {
+	body := netconf.Body{}
+	body = AppendFromXPath(body, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", "1:1")
+	body = AppendFromXPath(body, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", "2:2")
+	body = AppendFromXPath(body, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", "3:3")
+
+	t.Log("Generated XML:")
+	t.Log(body.Res())
+
+	// Count xmlns occurrences — should appear exactly once
+	xmlStr := body.Res()
+	count := strings.Count(xmlStr, `xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-bgp"`)
+	if count != 1 {
+		t.Errorf("Expected exactly 1 xmlns declaration for Cisco-IOS-XE-bgp, got %d.\nXML: %s", count, xmlStr)
+	}
+}
+
 // TestRemoveFromXPath_DebugCleanup tests the cleanup mechanism in isolation
 func TestRemoveFromXPath_DebugCleanup(t *testing.T) {
 	body := netconf.Body{}

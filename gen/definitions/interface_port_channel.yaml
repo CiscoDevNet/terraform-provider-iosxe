@@ -196,6 +196,28 @@ attributes:
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
     example: point-to-point
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/bpduguard-choice/enable/enable
+    xpath: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable
+    tf_name: bpduguard_enable
+    example: false
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/bpduguard-choice/disable/disable
+    xpath: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable
+    tf_name: bpduguard_disable
+    example: false
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable
+    example: false
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge
+    example: false
+    exclude_test: true
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
     exclude_test: true

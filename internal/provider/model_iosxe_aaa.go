@@ -1156,9 +1156,6 @@ func (data *AAA) addDeletedItemsXML(ctx context.Context, state AAA, body string)
 	if !state.ServerRadiusDynamicAuthor.IsNull() && data.ServerRadiusDynamicAuthor.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author")
 	}
-	if !state.NewModel.IsNull() && data.NewModel.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:new-model")
-	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -1214,9 +1211,6 @@ func (data *AAA) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.ServerRadiusDynamicAuthor.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author")
-	}
-	if !data.NewModel.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:new-model")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)

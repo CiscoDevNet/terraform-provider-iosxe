@@ -400,6 +400,30 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 					stringvalidator.OneOf("point-to-point", "shared"),
 				},
 			},
+			"bpduguard_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BPDU guard for this interface").String,
+				Optional:            true,
+			},
+			"bpduguard_disable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Disable BPDU guard for this interface").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("(DEPRECATED) Spanning tree portfast options").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast_disable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("(DEPRECATED) Disable portfast for this interface").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast_trunk": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("(DEPRECATED) Enable portfast on the interface even in trunk mode").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast_edge": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("(DEPRECATED) Enable portfast edge on the interface").String,
+				Optional:            true,
+			},
 			"ip_dhcp_snooping_trust": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping trust config").String,
 				Optional:            true,

@@ -320,6 +320,30 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Specify a link type for spanning tree tree protocol use",
 				Computed:            true,
 			},
+			"bpduguard_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable BPDU guard for this interface",
+				Computed:            true,
+			},
+			"bpduguard_disable": schema.BoolAttribute{
+				MarkdownDescription: "Disable BPDU guard for this interface",
+				Computed:            true,
+			},
+			"spanning_tree_portfast": schema.BoolAttribute{
+				MarkdownDescription: "(DEPRECATED) Spanning tree portfast options",
+				Computed:            true,
+			},
+			"spanning_tree_portfast_disable": schema.BoolAttribute{
+				MarkdownDescription: "(DEPRECATED) Disable portfast for this interface",
+				Computed:            true,
+			},
+			"spanning_tree_portfast_trunk": schema.BoolAttribute{
+				MarkdownDescription: "(DEPRECATED) Enable portfast on the interface even in trunk mode",
+				Computed:            true,
+			},
+			"spanning_tree_portfast_edge": schema.BoolAttribute{
+				MarkdownDescription: "(DEPRECATED) Enable portfast edge on the interface",
+				Computed:            true,
+			},
 			"ip_dhcp_snooping_trust": schema.BoolAttribute{
 				MarkdownDescription: "DHCP Snooping trust config",
 				Computed:            true,
