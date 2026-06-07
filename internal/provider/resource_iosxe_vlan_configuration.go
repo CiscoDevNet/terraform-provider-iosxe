@@ -183,9 +183,9 @@ func (r *VLANConfigurationResource) Create(ctx context.Context, req resource.Cre
 
 	if device.Managed {
 		// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		locked := helpers.AcquireNetconfLock(device.OpMutex, device.ReuseConnection, true)
 		if locked {
-			defer device.NetconfOpMutex.Unlock()
+			defer device.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
@@ -236,9 +236,9 @@ func (r *VLANConfigurationResource) Read(ctx context.Context, req resource.ReadR
 		}
 
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		locked := helpers.AcquireNetconfLock(device.OpMutex, device.ReuseConnection, false)
 		if locked {
-			defer device.NetconfOpMutex.Unlock()
+			defer device.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
@@ -309,9 +309,9 @@ func (r *VLANConfigurationResource) Update(ctx context.Context, req resource.Upd
 
 	if device.Managed {
 		// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		locked := helpers.AcquireNetconfLock(device.OpMutex, device.ReuseConnection, true)
 		if locked {
-			defer device.NetconfOpMutex.Unlock()
+			defer device.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
@@ -356,9 +356,9 @@ func (r *VLANConfigurationResource) Delete(ctx context.Context, req resource.Del
 		deleteMode := "all"
 
 		// NETCONF - Serialize write operations
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		locked := helpers.AcquireNetconfLock(device.OpMutex, device.ReuseConnection, true)
 		if locked {
-			defer device.NetconfOpMutex.Unlock()
+			defer device.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 

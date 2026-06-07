@@ -110,9 +110,9 @@ func (r *CommitResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	if d.Managed {
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, true)
+		locked := helpers.AcquireNetconfLock(d.OpMutex, d.ReuseConnection, true)
 		if locked {
-			defer d.NetconfOpMutex.Unlock()
+			defer d.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
@@ -177,9 +177,9 @@ func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	if d.Managed {
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, true)
+		locked := helpers.AcquireNetconfLock(d.OpMutex, d.ReuseConnection, true)
 		if locked {
-			defer d.NetconfOpMutex.Unlock()
+			defer d.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 

@@ -73,6 +73,38 @@ type IosxeProvider struct {
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
 	version string
+
+	// clientCache reuses NETCONF clients across the many Configure() calls
+	// the framework makes within one provider process (parallel acceptance
+	// tests are the hot path). Without it, each Configure builds a fresh
+	// *netconf.Client and pays a fresh SSH+NETCONF handshake the first time
+	// it's used, even when the destination is unchanged.
+	//
+	// Sharing the client across Configure passes is also why OpMutex must be
+	// a pointer: every IosxeProviderDataDevice built from the same cache
+	// entry must serialize NETCONF operations through the same mutex,
+	// otherwise reuse_connection=false racing Close()/Open() is undefined.
+	//
+	// Cache key: host, port, username, insecure. Credentials and tuning
+	// params (password, retries, lock-release timeout) are assumed stable
+	// for the life of a provider instance — Terraform resolves them once at
+	// configuration time and a different provider config means a new
+	// process. If that assumption ever breaks, extend the key.
+	//
+	// Memory: entries are never evicted. Bounded in practice by the number
+	// of distinct device endpoints a provider instance ever talks to.
+	clientCache   map[string]*cachedNetconfClient
+	clientCacheMu sync.Mutex
+}
+
+// cachedNetconfClient is what actually lives in IosxeProvider.clientCache.
+// It holds only the bits that must be shared across Configure() passes —
+// the NETCONF client and the operation mutex — never the per-Configure
+// policy fields (ReuseConnection, AutoCommit, Managed), which are rebuilt
+// fresh into each IosxeProviderDataDevice from the current Configure call.
+type cachedNetconfClient struct {
+	Client  *netconf.Client
+	OpMutex *sync.Mutex
 }
 
 // IosxeProviderModel describes the provider data model.
@@ -105,7 +137,60 @@ type IosxeProviderDataDevice struct {
 	ReuseConnection bool
 	AutoCommit      bool
 	Managed         bool
-	NetconfOpMutex  sync.Mutex // Serializes NETCONF operations (all ops when reuse disabled, writes only when reuse enabled)
+	// OpMutex serializes NETCONF operations (all ops when reuse disabled,
+	// writes only when reuse enabled). Pointer so the same mutex is shared
+	// across every IosxeProviderDataDevice built from the same cached
+	// client — see IosxeProvider.clientCache.
+	//
+	// Stale connection caveat: if the cached client's underlying SSH
+	// session dies (idle timeout, network blip, device reboot), every
+	// caller through this mutex will hit the same dead socket. Recovery
+	// relies on netconf.Client.Open() being idempotent and reconnecting
+	// lazily; if that assumption ever breaks we'll need an explicit health
+	// check or per-call retry layer.
+	OpMutex *sync.Mutex
+}
+
+// getOrCreateCachedDevice returns a per-Configure IosxeProviderDataDevice
+// backed by a process-wide cached *netconf.Client and *sync.Mutex.
+//
+// On a cache hit the policy fields (ReuseConnection/AutoCommit/Managed) take
+// the current Configure call's values; the client and mutex come from the
+// cache. On a miss, build() is called under the cache lock to construct the
+// client. build() must be cheap (no I/O); netconf.NewClient is — it builds
+// the client struct without dialing, since go-netconf opens the SSH session
+// lazily on first use.
+func (p *IosxeProvider) getOrCreateCachedDevice(
+	key string,
+	build func() (*netconf.Client, error),
+	reuseConnection, autoCommit, managed bool,
+) (*IosxeProviderDataDevice, error) {
+	p.clientCacheMu.Lock()
+	defer p.clientCacheMu.Unlock()
+
+	cached, ok := p.clientCache[key]
+	if !ok {
+		client, err := build()
+		if err != nil {
+			return nil, err
+		}
+		cached = &cachedNetconfClient{Client: client, OpMutex: &sync.Mutex{}}
+		p.clientCache[key] = cached
+	}
+
+	return &IosxeProviderDataDevice{
+		NetconfClient:   cached.Client,
+		ReuseConnection: reuseConnection,
+		AutoCommit:      autoCommit,
+		Managed:         managed,
+		OpMutex:         cached.OpMutex,
+	}, nil
+}
+
+// netconfCacheKey builds the IosxeProvider.clientCache key. Single source of
+// truth so call sites can't drift in what they include.
+func netconfCacheKey(host string, port int, username string, insecure bool) string {
+	return fmt.Sprintf("netconf:%s:%d:%s:%t", host, port, username, insecure)
 }
 
 func (p *IosxeProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -412,21 +497,27 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	// Create default NETCONF client
 	// Parse host:port - go-netconf requires port to be set separately via Port() option
 	netconfHost, netconfPort := parseHostPort(host, 830)
-	logger := helpers.NewTflogAdapter(host)
-	opts := []func(*netconf.Client){
-		netconf.Username(username),
-		netconf.Password(password),
-		netconf.MaxRetries(int(retries)),
-		netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
-		netconf.WithLogger(logger),
-	}
-	if netconfPort != 830 {
-		opts = append(opts, netconf.Port(netconfPort))
-	}
-	if insecure {
-		opts = append(opts, netconf.InsecureSkipHostKeyVerification())
-	}
-	c, err := netconf.NewClient(netconfHost, opts...)
+	defaultDevice, err := p.getOrCreateCachedDevice(
+		netconfCacheKey(netconfHost, netconfPort, username, insecure),
+		func() (*netconf.Client, error) {
+			logger := helpers.NewTflogAdapter(host)
+			opts := []func(*netconf.Client){
+				netconf.Username(username),
+				netconf.Password(password),
+				netconf.MaxRetries(int(retries)),
+				netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
+				netconf.WithLogger(logger),
+			}
+			if netconfPort != 830 {
+				opts = append(opts, netconf.Port(netconfPort))
+			}
+			if insecure {
+				opts = append(opts, netconf.InsecureSkipHostKeyVerification())
+			}
+			return netconf.NewClient(netconfHost, opts...)
+		},
+		reuseConnection, autoCommit, true,
+	)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to create NETCONF client",
@@ -434,7 +525,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		)
 		return
 	}
-	data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
+	data.Devices[""] = defaultDevice
 
 	for _, device := range config.Devices {
 		var managed bool
@@ -457,21 +548,27 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		// Parse host:port - go-netconf requires port to be set separately via Port() option
 		devNetconfHost, devNetconfPort := parseHostPort(deviceHost, 830)
 		deviceID := device.Name.ValueString()
-		devLogger := helpers.NewTflogAdapter(deviceID)
-		devOpts := []func(*netconf.Client){
-			netconf.Username(username),
-			netconf.Password(password),
-			netconf.MaxRetries(int(retries)),
-			netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
-			netconf.WithLogger(devLogger),
-		}
-		if devNetconfPort != 830 {
-			devOpts = append(devOpts, netconf.Port(devNetconfPort))
-		}
-		if insecure {
-			devOpts = append(devOpts, netconf.InsecureSkipHostKeyVerification())
-		}
-		devClient, devErr := netconf.NewClient(devNetconfHost, devOpts...)
+		devDevice, devErr := p.getOrCreateCachedDevice(
+			netconfCacheKey(devNetconfHost, devNetconfPort, username, insecure),
+			func() (*netconf.Client, error) {
+				devLogger := helpers.NewTflogAdapter(deviceID)
+				devOpts := []func(*netconf.Client){
+					netconf.Username(username),
+					netconf.Password(password),
+					netconf.MaxRetries(int(retries)),
+					netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
+					netconf.WithLogger(devLogger),
+				}
+				if devNetconfPort != 830 {
+					devOpts = append(devOpts, netconf.Port(devNetconfPort))
+				}
+				if insecure {
+					devOpts = append(devOpts, netconf.InsecureSkipHostKeyVerification())
+				}
+				return netconf.NewClient(devNetconfHost, devOpts...)
+			},
+			reuseConnection, autoCommit, managed,
+		)
 		if devErr != nil {
 			resp.Diagnostics.AddError(
 				"Unable to create NETCONF client",
@@ -479,7 +576,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: devClient, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
+		data.Devices[device.Name.ValueString()] = devDevice
 	}
 
 	resp.DataSourceData = &data
@@ -767,7 +864,8 @@ func (p *IosxeProvider) Actions(_ context.Context) []func() action.Action {
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &IosxeProvider{
-			version: version,
+			version:     version,
+			clientCache: make(map[string]*cachedNetconfClient),
 		}
 	}
 }

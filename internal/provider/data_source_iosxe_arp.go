@@ -175,9 +175,9 @@ func (d *ARPDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 	}
 
 	// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-	locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+	locked := helpers.AcquireNetconfLock(device.OpMutex, device.ReuseConnection, false)
 	if locked {
-		defer device.NetconfOpMutex.Unlock()
+		defer device.OpMutex.Unlock()
 	}
 	defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 

@@ -3014,3 +3014,16 @@ func TestTrimNetconfTrailingWhitespace_BannerScenarios(t *testing.T) {
 		})
 	}
 }
+
+// TestEditConfig_EmptyBodySkip verifies that EditConfig short-circuits when
+// the body is empty so that no NETCONF round-trip is attempted. We pass a nil
+// client; if the function attempted to call any method on it, the test would
+// panic.
+func TestEditConfig_EmptyBodySkip(t *testing.T) {
+	if err := EditConfig(t.Context(), nil, "", true); err != nil {
+		t.Fatalf("EditConfig with empty body returned error: %v", err)
+	}
+	if err := EditConfig(t.Context(), nil, "", false); err != nil {
+		t.Fatalf("EditConfig with empty body (commit=false) returned error: %v", err)
+	}
+}

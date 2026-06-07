@@ -98,9 +98,9 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 
 	if d.Managed {
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+		locked := helpers.AcquireNetconfLock(d.OpMutex, d.ReuseConnection, false)
 		if locked {
-			defer d.NetconfOpMutex.Unlock()
+			defer d.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
@@ -147,9 +147,9 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 
 	if d.Managed {
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+		locked := helpers.AcquireNetconfLock(d.OpMutex, d.ReuseConnection, false)
 		if locked {
-			defer d.NetconfOpMutex.Unlock()
+			defer d.OpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 

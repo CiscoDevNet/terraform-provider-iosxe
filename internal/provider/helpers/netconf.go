@@ -153,6 +153,15 @@ func FormatNetconfError(err error) string {
 //   - body: string
 //   - commit: bool
 func EditConfig(ctx context.Context, client *netconf.Client, body string, commit bool) error {
+	// No changes to make: skip the entire lock + edit + commit round-trip.
+	// Generated Update/Delete paths can produce empty bodies (no-op updates,
+	// deletes whose target is already gone); without this short-circuit we
+	// would still pay an SSH+NETCONF handshake when reuse_connection=false.
+	if body == "" {
+		tflog.Debug(ctx, "EditConfig called with empty body, skipping")
+		return nil
+	}
+
 	// Ensure connection is open before checking capabilities
 	// With lazy connections, Open() is idempotent and safe to call multiple times
 	if err := client.Open(); err != nil {
