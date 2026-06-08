@@ -49,7 +49,6 @@ jobs:
     timeout-minutes: 20
     strategy:
       fail-fast: true
-      max-parallel: 1
       matrix:
         # list whatever Terraform versions here you would like to support
         terraform:
