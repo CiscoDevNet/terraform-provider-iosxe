@@ -39,12 +39,14 @@ jobs:
       - run: git diff --exit-code
       - run: go build -v .
 
-  # Run acceptance tests in a matrix with Terraform CLI versions
+  # Run non-device tests (helper/unit tests) in a matrix with Terraform CLI versions.
+  # Acceptance tests (resource.Test / resource.UnitTest) auto-skip without TF_ACC=1,
+  # so a plain `go test ./...` runs the unit tests and silently skips device tests.
   test:
     name: Terraform Provider Acceptance Tests
     needs: [build]
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 20
     strategy:
       fail-fast: true
       max-parallel: 1
@@ -53,6 +55,9 @@ jobs:
         terraform:
           - "1.0.*"
           - "1.5.*"
+          - "1.10.*"
+          - "1.15.*"
+
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
@@ -64,10 +69,5 @@ jobs:
           terraform_version: ${{ matrix.terraform }}
           terraform_wrapper: false
       - run: go mod download
-      # - env:
-      #     TF_ACC: "1"
-      #     IOSXE_USERNAME: ${{ secrets.IOSXE_USERNAME }}
-      #     IOSXE_PASSWORD: ${{ secrets.IOSXE_PASSWORD }}
-      #     IOSXE_URL: ${{ secrets.IOSXE_URL }}
-      #   run: go test -v -cover -timeout 45m ./internal/provider/
-      #   timeout-minutes: 45
+      - run: go test -v -cover -timeout 10m ./...
+        timeout-minutes: 15

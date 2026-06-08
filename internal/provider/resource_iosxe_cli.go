@@ -55,7 +55,7 @@ func (r *CliResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"However, it only supports native IOS configuration CLIs that have corresponding IOS-XE YANG model support. " +
 			"This mode does not support non-native IOS config CLIs for features such as wireless, app-hosting, telemetry, etc.\n\n" +
 			"- **Raw mode (`raw = true`)**: Uses `config-ios-cli-rpc` RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. " +
-			"However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF/RESTCONF is used as a transport mechanism only.",
+			"However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF is used as a transport mechanism only.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
