@@ -2,6 +2,7 @@
 name: Interface Port Channel
 path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=%v]
 doc_category: Interface
+default_delete_attributes: true
 test_tags: [C9000V]
 attributes:
   - yang_name: name

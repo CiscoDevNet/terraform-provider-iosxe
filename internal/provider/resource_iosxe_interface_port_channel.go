@@ -853,7 +853,7 @@ func (r *InterfacePortChannelResource) Delete(ctx context.Context, req resource.
 	}
 
 	if device.Managed {
-		deleteMode := "all"
+		deleteMode := "attributes"
 		if state.DeleteMode.ValueString() == "all" {
 			deleteMode = "all"
 		} else if state.DeleteMode.ValueString() == "attributes" {
