@@ -182,7 +182,6 @@ resource "iosxe_yang" "PreReq8" {
 
 func testAccDataSourceIosxeInterfacePortChannelConfig() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = 10` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"

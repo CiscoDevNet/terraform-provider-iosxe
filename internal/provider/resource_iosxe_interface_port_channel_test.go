@@ -221,6 +221,7 @@ func testAccIosxeInterfacePortChannelConfig_minimum() string {
 
 func testAccIosxeInterfacePortChannelConfig_all() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
+	config += `	delete_mode = "all"` + "\n"
 	config += `	name = 10` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
