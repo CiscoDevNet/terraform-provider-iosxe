@@ -56,7 +56,7 @@ attributes:
     example: 100
   - yang_name: Cisco-IOS-XE-switch:voice/vlan/vlan
     tf_name: voice_vlan
-    example: "100"
+    example: "200"
   # NEW v2 attributes - trunk allowed VLANs (non-deprecated YANG paths)
   - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlan-choice/vlans-case/vlans
     xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans
