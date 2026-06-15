@@ -590,7 +590,11 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := res.Get(prefix+"{{toDotPath .XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+		{{- if .ReadFilter}}
+		data.{{toGoName .TfName}} = helpers.{{.ReadFilter}}(value.Array())
+		{{- else}}
 		data.{{toGoName .TfName}} = helpers.GetStringList(value.Array())
+		{{- end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -677,7 +681,11 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 		}
 		{{- else if eq .Type "StringList"}}
 		if value := r.Get("{{toDotPath .XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
+			{{- if .ReadFilter}}
+			data.{{$list}}[i].{{toGoName .TfName}} = helpers.{{.ReadFilter}}(value.Array())
+			{{- else}}
 			data.{{$list}}[i].{{toGoName .TfName}} = helpers.GetStringList(value.Array())
+			{{- end}}
 		} else {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.ListNull(types.StringType)
 		}
@@ -764,7 +772,11 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 			}
 			{{- else if eq .Type "StringList"}}
 			if value := cr.Get("{{toDotPath .XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
+				{{- if .ReadFilter}}
+				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = helpers.{{.ReadFilter}}(value.Array())
+				{{- else}}
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = helpers.GetStringList(value.Array())
+				{{- end}}
 			} else {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -842,7 +854,11 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+		{{- if .ReadFilter}}
+		data.{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(value.Array())
+		{{- else}}
 		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		{{- end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -928,7 +944,11 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		}
 		{{- else if eq .Type "StringList"}}
 		if value := helpers.GetFromXPath(r, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
+			{{- if .ReadFilter}}
+			data.{{$list}}[i].{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(value.Array())
+			{{- else}}
 			data.{{$list}}[i].{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+			{{- end}}
 		} else {
 			data.{{$list}}[i].{{toGoName .TfName}} = types.ListNull(types.StringType)
 		}
@@ -1014,7 +1034,11 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 			}
 			{{- else if eq .Type "StringList"}}
 			if value := helpers.GetFromXPath(cr, "{{.XPath}}"); value.Exists() && !data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
+				{{- if .ReadFilter}}
+				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(value.Array())
+				{{- else}}
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+				{{- end}}
 			} else {
 				data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -1091,7 +1115,11 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := res.Get(prefix+"{{toDotPath .XPath}}"); value.Exists() {
+		{{- if .ReadFilter}}
+		data.{{toGoName .TfName}} = helpers.{{.ReadFilter}}(value.Array())
+		{{- else}}
 		data.{{toGoName .TfName}} = helpers.GetStringList(value.Array())
+		{{- end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -1147,7 +1175,11 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := v.Get("{{toDotPath .XPath}}"); cValue.Exists() {
+				{{- if .ReadFilter}}
+				item.{{toGoName .TfName}} = helpers.{{.ReadFilter}}(cValue.Array())
+				{{- else}}
 				item.{{toGoName .TfName}} = helpers.GetStringList(cValue.Array())
+				{{- end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -1203,7 +1235,11 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := cv.Get("{{toDotPath .XPath}}"); ccValue.Exists() {
+						{{- if .ReadFilter}}
+						cItem.{{toGoName .TfName}} = helpers.{{.ReadFilter}}(ccValue.Array())
+						{{- else}}
 						cItem.{{toGoName .TfName}} = helpers.GetStringList(ccValue.Array())
+						{{- end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}
@@ -1286,7 +1322,11 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := res.Get(prefix+"{{toDotPath .XPath}}"); value.Exists() {
+		{{- if .ReadFilter}}
+		data.{{toGoName .TfName}} = helpers.{{.ReadFilter}}(value.Array())
+		{{- else}}
 		data.{{toGoName .TfName}} = helpers.GetStringList(value.Array())
+		{{- end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -1342,7 +1382,11 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := v.Get("{{toDotPath .XPath}}"); cValue.Exists() {
+				{{- if .ReadFilter}}
+				item.{{toGoName .TfName}} = helpers.{{.ReadFilter}}(cValue.Array())
+				{{- else}}
 				item.{{toGoName .TfName}} = helpers.GetStringList(cValue.Array())
+				{{- end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -1398,7 +1442,11 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := cv.Get("{{toDotPath .XPath}}"); ccValue.Exists() {
+						{{- if .ReadFilter}}
+						cItem.{{toGoName .TfName}} = helpers.{{.ReadFilter}}(ccValue.Array())
+						{{- else}}
 						cItem.{{toGoName .TfName}} = helpers.GetStringList(ccValue.Array())
+						{{- end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}
@@ -1477,7 +1525,11 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+		{{- if .ReadFilter}}
+		data.{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(value.Array())
+		{{- else}}
 		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		{{- end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -1533,7 +1585,11 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
+				{{- if .ReadFilter}}
+				item.{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(cValue.Array())
+				{{- else}}
 				item.{{toGoName .TfName}} = helpers.GetStringListXML(cValue.Array())
+				{{- end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -1589,7 +1645,11 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
+						{{- if .ReadFilter}}
+						cItem.{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(ccValue.Array())
+						{{- else}}
 						cItem.{{toGoName .TfName}} = helpers.GetStringListXML(ccValue.Array())
+						{{- end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}
@@ -1668,7 +1728,11 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 	}
 	{{- else if eq .Type "StringList"}}
 	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+		{{- if .ReadFilter}}
+		data.{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(value.Array())
+		{{- else}}
 		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
+		{{- end}}
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
@@ -1724,7 +1788,11 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 			}
 			{{- else if eq .Type "StringList"}}
 			if cValue := helpers.GetFromXPath(v, "{{.XPath}}"); cValue.Exists() {
+				{{- if .ReadFilter}}
+				item.{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(cValue.Array())
+				{{- else}}
 				item.{{toGoName .TfName}} = helpers.GetStringListXML(cValue.Array())
+				{{- end}}
 			} else {
 				item.{{toGoName .TfName}} = types.ListNull(types.StringType)
 			}
@@ -1780,7 +1848,11 @@ func (data *{{camelCase .Name}}Data) fromBodyXML(ctx context.Context, res xmldot
 					}
 					{{- else if eq .Type "StringList"}}
 					if ccValue := helpers.GetFromXPath(cv, "{{.XPath}}"); ccValue.Exists() {
+						{{- if .ReadFilter}}
+						cItem.{{toGoName .TfName}} = helpers.{{.ReadFilter}}XML(ccValue.Array())
+						{{- else}}
 						cItem.{{toGoName .TfName}} = helpers.GetStringListXML(ccValue.Array())
+						{{- end}}
 					} else {
 						cItem.{{toGoName .TfName}} = types.ListNull(types.StringType)
 					}

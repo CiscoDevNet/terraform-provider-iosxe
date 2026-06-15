@@ -2,6 +2,7 @@
 name: Interface Port Channel
 path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=%v]
 doc_category: Interface
+default_delete_attributes: true
 test_tags: [C9000V]
 attributes:
   - yang_name: name
@@ -195,6 +196,28 @@ attributes:
     example: 1000
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
     example: point-to-point
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/bpduguard-choice/enable/enable
+    xpath: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable
+    tf_name: bpduguard_enable
+    example: false
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/bpduguard-choice/disable/disable
+    xpath: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable
+    tf_name: bpduguard_disable
+    example: false
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable
+    example: false
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge
+    example: false
     exclude_test: true
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
