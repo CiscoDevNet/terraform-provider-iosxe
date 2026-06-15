@@ -9,6 +9,7 @@ resource "iosxe_interface_switchport" "example" {
   mode_trunk                    = true
   nonegotiate                   = false
   access_vlan                   = "100"
+  voice_vlan                    = "100"
   trunk_allowed_vlans           = "100,101"
   trunk_native_vlan             = 100
   host                          = false

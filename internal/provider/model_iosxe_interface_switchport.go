@@ -55,6 +55,7 @@ type InterfaceSwitchport struct {
 	ModeTrunk                   types.Bool                                `tfsdk:"mode_trunk"`
 	Nonegotiate                 types.Bool                                `tfsdk:"nonegotiate"`
 	AccessVlan                  types.String                              `tfsdk:"access_vlan"`
+	VoiceVlan                   types.String                              `tfsdk:"voice_vlan"`
 	TrunkAllowedVlans           types.String                              `tfsdk:"trunk_allowed_vlans"`
 	TrunkAllowedVlansNone       types.Bool                                `tfsdk:"trunk_allowed_vlans_none"`
 	TrunkAllowedVlansAll        types.Bool                                `tfsdk:"trunk_allowed_vlans_all"`
@@ -84,6 +85,7 @@ type InterfaceSwitchportData struct {
 	ModeTrunk                   types.Bool                                    `tfsdk:"mode_trunk"`
 	Nonegotiate                 types.Bool                                    `tfsdk:"nonegotiate"`
 	AccessVlan                  types.String                                  `tfsdk:"access_vlan"`
+	VoiceVlan                   types.String                                  `tfsdk:"voice_vlan"`
 	TrunkAllowedVlans           types.String                                  `tfsdk:"trunk_allowed_vlans"`
 	TrunkAllowedVlansNone       types.Bool                                    `tfsdk:"trunk_allowed_vlans_none"`
 	TrunkAllowedVlansAll        types.Bool                                    `tfsdk:"trunk_allowed_vlans_all"`
@@ -179,6 +181,9 @@ func (data InterfaceSwitchport) toBody(ctx context.Context, config InterfaceSwit
 	}
 	if !data.AccessVlan.IsNull() && !data.AccessVlan.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:access.vlan.vlan", data.AccessVlan.ValueString())
+	}
+	if !data.VoiceVlan.IsNull() && !data.VoiceVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:voice.vlan.vlan", data.VoiceVlan.ValueString())
 	}
 	if !data.TrunkAllowedVlans.IsNull() && !data.TrunkAllowedVlans.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.vlan-choices.vlans", data.TrunkAllowedVlans.ValueString())
@@ -284,6 +289,9 @@ func (data InterfaceSwitchport) toBodyXML(ctx context.Context, config InterfaceS
 	}
 	if !data.AccessVlan.IsNull() && !data.AccessVlan.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:access/vlan/vlan", data.AccessVlan.ValueString())
+	}
+	if !data.VoiceVlan.IsNull() && !data.VoiceVlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:voice/vlan/vlan", data.VoiceVlan.ValueString())
 	}
 	if !data.TrunkAllowedVlans.IsNull() && !data.TrunkAllowedVlans.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans", data.TrunkAllowedVlans.ValueString())
@@ -420,6 +428,11 @@ func (data *InterfaceSwitchport) updateFromBody(ctx context.Context, res gjson.R
 	} else {
 		data.AccessVlan = types.StringNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:voice.vlan.vlan"); value.Exists() && !data.VoiceVlan.IsNull() {
+		data.VoiceVlan = types.StringValue(value.String())
+	} else {
+		data.VoiceVlan = types.StringNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.vlan-choices.vlans"); value.Exists() && !data.TrunkAllowedVlans.IsNull() {
 		data.TrunkAllowedVlans = types.StringValue(value.String())
 	} else {
@@ -551,6 +564,11 @@ func (data *InterfaceSwitchport) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.AccessVlan = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:voice/vlan/vlan"); value.Exists() && !data.VoiceVlan.IsNull() {
+		data.VoiceVlan = types.StringValue(value.String())
+	} else {
+		data.VoiceVlan = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans"); value.Exists() && !data.TrunkAllowedVlans.IsNull() {
 		data.TrunkAllowedVlans = types.StringValue(value.String())
 	} else {
@@ -656,6 +674,9 @@ func (data *InterfaceSwitchport) fromBody(ctx context.Context, res gjson.Result)
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:access.vlan.vlan"); value.Exists() {
 		data.AccessVlan = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:voice.vlan.vlan"); value.Exists() {
+		data.VoiceVlan = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.vlan-choices.vlans"); value.Exists() {
 		data.TrunkAllowedVlans = types.StringValue(value.String())
 	}
@@ -756,6 +777,9 @@ func (data *InterfaceSwitchportData) fromBody(ctx context.Context, res gjson.Res
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:access.vlan.vlan"); value.Exists() {
 		data.AccessVlan = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:voice.vlan.vlan"); value.Exists() {
+		data.VoiceVlan = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan-v2.vlan-choices.vlans"); value.Exists() {
 		data.TrunkAllowedVlans = types.StringValue(value.String())
 	}
@@ -852,6 +876,9 @@ func (data *InterfaceSwitchport) fromBodyXML(ctx context.Context, res xmldot.Res
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:access/vlan/vlan"); value.Exists() {
 		data.AccessVlan = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:voice/vlan/vlan"); value.Exists() {
+		data.VoiceVlan = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans"); value.Exists() {
 		data.TrunkAllowedVlans = types.StringValue(value.String())
 	}
@@ -947,6 +974,9 @@ func (data *InterfaceSwitchportData) fromBodyXML(ctx context.Context, res xmldot
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:access/vlan/vlan"); value.Exists() {
 		data.AccessVlan = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:voice/vlan/vlan"); value.Exists() {
+		data.VoiceVlan = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans"); value.Exists() {
 		data.TrunkAllowedVlans = types.StringValue(value.String())
@@ -1062,6 +1092,9 @@ func (data *InterfaceSwitchport) getDeletedItems(ctx context.Context, state Inte
 	if !state.TrunkAllowedVlans.IsNull() && data.TrunkAllowedVlans.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans", state.getPath()))
 	}
+	if !state.VoiceVlan.IsNull() && data.VoiceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:voice/vlan/vlan", state.getPath()))
+	}
 	if !state.AccessVlan.IsNull() && data.AccessVlan.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:access/vlan/vlan", state.getPath()))
 	}
@@ -1155,6 +1188,9 @@ func (data *InterfaceSwitchport) addDeletedItemsXML(ctx context.Context, state I
 	}
 	if !state.TrunkAllowedVlans.IsNull() && data.TrunkAllowedVlans.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans")
+	}
+	if !state.VoiceVlan.IsNull() && data.VoiceVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:voice/vlan/vlan")
 	}
 	if !state.AccessVlan.IsNull() && data.AccessVlan.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-switch:access/vlan/vlan")
@@ -1267,6 +1303,9 @@ func (data *InterfaceSwitchport) getDeletePaths(ctx context.Context) []string {
 	if !data.TrunkAllowedVlans.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans", data.getPath()))
 	}
+	if !data.VoiceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:voice/vlan/vlan", data.getPath()))
+	}
 	if !data.AccessVlan.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:access/vlan/vlan", data.getPath()))
 	}
@@ -1340,6 +1379,9 @@ func (data *InterfaceSwitchport) addDeletePathsXML(ctx context.Context, body str
 	}
 	if !data.TrunkAllowedVlans.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/vlans")
+	}
+	if !data.VoiceVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:voice/vlan/vlan")
 	}
 	if !data.AccessVlan.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-switch:access/vlan/vlan")

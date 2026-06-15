@@ -24,6 +24,7 @@ resource "iosxe_interface_switchport" "example" {
   mode_trunk                    = true
   nonegotiate                   = false
   access_vlan                   = "100"
+  voice_vlan                    = "100"
   trunk_allowed_vlans           = "100,101"
   trunk_native_vlan             = 100
   host                          = false
@@ -63,6 +64,7 @@ resource "iosxe_interface_switchport" "example" {
 - `trunk_allowed_vlans_remove` (String) VLAN IDs of disallowed VLANs when this port is in trunking mode
 - `trunk_native_vlan` (Number) - Range: `1`-`4094`
 - `trunk_native_vlan_tag` (Boolean)
+- `voice_vlan` (String)
 
 ### Read-Only
 
