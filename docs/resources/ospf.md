@@ -14,13 +14,15 @@ This resource can manage the OSPF configuration.
 
 ```terraform
 resource "iosxe_ospf" "example" {
-  process_id                           = 1
-  bfd_all_interfaces                   = true
-  default_information_originate        = true
-  default_information_originate_always = true
-  default_metric                       = 21
-  distance                             = 120
-  domain_tag                           = 10
+  process_id                                = 1
+  bfd_all_interfaces                        = true
+  default_information_originate             = true
+  default_information_originate_always      = true
+  default_information_originate_metric      = 100
+  default_information_originate_metric_type = 1
+  default_metric                            = 21
+  distance                                  = 120
+  domain_tag                                = 10
   neighbors = [
     {
       ip       = "2.2.2.2"
@@ -68,7 +70,13 @@ resource "iosxe_ospf" "example" {
   max_metric_router_lsa_on_startup_time          = 60
   fast_reroute_per_prefix_enable_prefix_priority = "high"
   redistribute_static_subnets                    = true
+  redistribute_static_metric                     = 100
+  redistribute_static_metric_type                = "1"
+  redistribute_static_tag                        = 100
   redistribute_connected_subnets                 = true
+  redistribute_connected_metric                  = 100
+  redistribute_connected_metric_type             = "1"
+  redistribute_connected_tag                     = 100
 }
 ```
 
@@ -88,6 +96,11 @@ resource "iosxe_ospf" "example" {
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
+- `default_information_originate_metric` (Number) OSPF default metric
+  - Range: `1`-`16777214`
+- `default_information_originate_metric_type` (Number) OSPF metric type for default routes
+  - Range: `1`-`2`
+- `default_information_originate_route_map` (String) Route map reference
 - `default_metric` (Number) Set metric of redistributed routes
   - Range: `1`-`16777214`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
@@ -95,6 +108,8 @@ resource "iosxe_ospf" "example" {
 - `device` (String) A device name from the provider configuration.
 - `distance` (Number) Administrative distance
   - Range: `1`-`255`
+- `distribute_list_in_access_lists` (Attributes Set) (see [below for nested schema](#nestedatt--distribute_list_in_access_lists))
+- `distribute_list_out_access_lists` (Attributes Set) (see [below for nested schema](#nestedatt--distribute_list_out_access_lists))
 - `domain_tag` (Number) OSPF domain-tag
   - Range: `1`-`4294967295`
 - `fast_reroute_per_prefix_enable_prefix_priority` (String) Priority of prefixes to be protected
@@ -134,8 +149,25 @@ resource "iosxe_ospf" "example" {
 - `passive_interface_disable_vlans` (Attributes Set) Vlan interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1. (see [below for nested schema](#nestedatt--passive_interface_disable_vlans))
 - `priority` (Number) OSPF topology priority
   - Range: `0`-`127`
+- `redistribute_connected_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`16777214`
+- `redistribute_connected_metric_type` (String) OSPF/IS-IS exterior metric type for redistributed routes
+  - Choices: `1`, `2`
+- `redistribute_connected_nssa_only` (Boolean) Limit redistributed routes to NSSA areas
+- `redistribute_connected_route_map` (String) Route map reference
 - `redistribute_connected_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+- `redistribute_connected_tag` (Number) Set tag for routes redistributed into OSPF
+  - Range: `0`-`4294967295`
+- `redistribute_ospf` (Attributes List) Open Shortest Path First (OSPF) (see [below for nested schema](#nestedatt--redistribute_ospf))
+- `redistribute_static_metric` (Number) Metric for redistributed routes
+  - Range: `0`-`16777214`
+- `redistribute_static_metric_type` (String) OSPF/IS-IS exterior metric type for redistributed routes
+  - Choices: `1`, `2`
+- `redistribute_static_nssa_only` (Boolean) Limit redistributed routes to NSSA areas
+- `redistribute_static_route_map` (String) Route map reference
 - `redistribute_static_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+- `redistribute_static_tag` (Number) Set tag for routes redistributed into OSPF
+  - Range: `0`-`4294967295`
 - `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
 - `summary_addresses` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_addresses))
@@ -162,6 +194,30 @@ Optional:
   - Range: `1`-`2`
 - `nssa_no_redistribution` (Boolean) No redistribution into this NSSA area
 - `nssa_no_summary` (Boolean) Do not send summary LSA into NSSA
+
+
+<a id="nestedatt--distribute_list_in_access_lists"></a>
+### Nested Schema for `distribute_list_in_access_lists`
+
+Required:
+
+- `in` (String)
+
+Optional:
+
+- `access_list` (String)
+
+
+<a id="nestedatt--distribute_list_out_access_lists"></a>
+### Nested Schema for `distribute_list_out_access_lists`
+
+Required:
+
+- `out` (String)
+
+Optional:
+
+- `access_list` (String)
 
 
 <a id="nestedatt--neighbors"></a>
@@ -302,6 +358,37 @@ Required:
 Required:
 
 - `name` (String)
+
+
+<a id="nestedatt--redistribute_ospf"></a>
+### Nested Schema for `redistribute_ospf`
+
+Required:
+
+- `process_id` (Number) Process ID
+  - Range: `1`-`65535`
+
+Optional:
+
+- `match_external_1` (String) Redistribute OSPF external routes
+  - Choices: `1`, `2`
+- `match_external_2` (String) Redistribute OSPF external routes
+  - Choices: `1`, `2`
+- `match_internal` (Boolean) Redistribute OSPF internal routes
+- `match_nssa_external_1` (String) Redistribute OSPF NSSA external routes
+  - Choices: `1`, `2`
+- `match_nssa_external_2` (String) Redistribute OSPF NSSA external routes
+  - Choices: `1`, `2`
+- `metric` (Number) Metric for redistributed routes
+  - Range: `0`-`16777214`
+- `metric_type` (String) OSPF/IS-IS exterior metric type for redistributed routes
+  - Choices: `1`, `2`
+- `nssa_only` (Boolean) Limit redistributed routes to NSSA areas
+- `route_map` (String) Route map reference
+- `subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+- `tag` (Number) Set tag for routes redistributed into OSPF
+  - Range: `0`-`4294967295`
+- `vrf` (String) VPN Routing/Forwarding Instance
 
 
 <a id="nestedatt--summary_addresses"></a>

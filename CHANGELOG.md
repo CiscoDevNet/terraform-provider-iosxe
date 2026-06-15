@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `default_information_originate_metric`, `default_information_originate_metric_type`, `default_information_originate_route_map`, `redistribute_static_metric`, `redistribute_static_metric_type`, `redistribute_static_route_map`, `redistribute_static_tag`, `redistribute_static_nssa_only`, `redistribute_connected_metric`, `redistribute_connected_metric_type`, `redistribute_connected_route_map`, `redistribute_connected_tag`, `redistribute_connected_nssa_only`, `redistribute_ospf`, `distribute_list_in_access_lists`, and `distribute_list_out_access_lists` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix `iosxe_aaa` resource attempting to delete the `new_model` attribute on update or destroy. IOS-XE does not permit removal of `aaa new-model` once configured (`no aaa new-model` is rejected by the device with active AAA dependents); the leaf is now marked `no_delete: true`
 - Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable`, `spanning_tree_portfast_trunk`, and `spanning_tree_portfast_edge` attributes to `iosxe_interface_port_channel` resource and data source
 - Fix perpetual `terraform plan` drift on `iosxe_route_map` `set_communities` where IOS-XE returns decimal integers instead of the configured `AA:NN` notation by normalizing community values on read

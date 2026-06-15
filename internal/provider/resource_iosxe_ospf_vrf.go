@@ -118,6 +118,24 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: helpers.NewAttributeDescription("Always advertise default route").String,
 				Optional:            true,
 			},
+			"default_information_originate_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF default metric").AddIntegerRangeDescription(1, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 16777214),
+				},
+			},
+			"default_information_originate_metric_type": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF metric type for default routes").AddIntegerRangeDescription(1, 2).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2),
+				},
+			},
+			"default_information_originate_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
 			"default_metric": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set metric of redistributed routes").AddIntegerRangeDescription(1, 16777214).String,
 				Optional:            true,
@@ -203,9 +221,179 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
 				Optional:            true,
 			},
+			"redistribute_static_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 16777214),
+				},
+			},
+			"redistribute_static_metric_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF/IS-IS exterior metric type for redistributed routes").AddStringEnumDescription("1", "2").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("1", "2"),
+				},
+			},
+			"redistribute_static_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"redistribute_static_tag": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set tag for routes redistributed into OSPF").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
+			"redistribute_static_nssa_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+				Optional:            true,
+			},
 			"redistribute_connected_subnets": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
 				Optional:            true,
+			},
+			"redistribute_connected_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 16777214),
+				},
+			},
+			"redistribute_connected_metric_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF/IS-IS exterior metric type for redistributed routes").AddStringEnumDescription("1", "2").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("1", "2"),
+				},
+			},
+			"redistribute_connected_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"redistribute_connected_tag": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set tag for routes redistributed into OSPF").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
+			"redistribute_connected_nssa_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+				Optional:            true,
+			},
+			"redistribute_ospf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Open Shortest Path First (OSPF)").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"process_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Process ID").AddIntegerRangeDescription(1, 65535).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 65535),
+							},
+						},
+						"match_internal": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF internal routes").String,
+							Optional:            true,
+						},
+						"match_external_1": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"match_external_2": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"match_nssa_external_1": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF NSSA external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"match_nssa_external_2": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF NSSA external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"metric": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 16777214),
+							},
+						},
+						"metric_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF/IS-IS exterior metric type for redistributed routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"subnets": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
+							Optional:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+							Optional:            true,
+						},
+						"tag": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set tag for routes redistributed into OSPF").AddIntegerRangeDescription(0, 4294967295).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 4294967295),
+							},
+						},
+						"nssa_only": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"distribute_list_in_access_lists": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"in": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"access_list": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"distribute_list_out_access_lists": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"out": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"access_list": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+					},
+				},
 			},
 			"mpls_ldp_autoconfig": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP automatic configuration").String,
