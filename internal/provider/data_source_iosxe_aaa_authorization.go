@@ -348,6 +348,10 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 					},
 				},
 			},
+			"console": schema.BoolAttribute{
+				MarkdownDescription: "For enabling console authorization",
+				Computed:            true,
+			},
 		},
 	}
 }

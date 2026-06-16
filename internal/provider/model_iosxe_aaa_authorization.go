@@ -49,6 +49,7 @@ type AAAAuthorization struct {
 	Commands       []AAAAuthorizationCommands    `tfsdk:"commands"`
 	ConfigCommands types.Bool                    `tfsdk:"config_commands"`
 	ConfigLists    []AAAAuthorizationConfigLists `tfsdk:"config_lists"`
+	Console        types.Bool                    `tfsdk:"console"`
 }
 type AAAAuthorizationExecs struct {
 	Name              types.String `tfsdk:"name"`
@@ -128,6 +129,7 @@ type AAAAuthorizationData struct {
 	Commands       []AAAAuthorizationCommandsData    `tfsdk:"commands"`
 	ConfigCommands types.Bool                        `tfsdk:"config_commands"`
 	ConfigLists    []AAAAuthorizationConfigListsData `tfsdk:"config_lists"`
+	Console        types.Bool                        `tfsdk:"console"`
 }
 type AAAAuthorizationExecsData struct {
 	Name              types.String `tfsdk:"name"`
@@ -242,6 +244,11 @@ func (data AAAAuthorization) toBody(ctx context.Context, config AAAAuthorization
 	if !data.ConfigCommands.IsNull() && !data.ConfigCommands.IsUnknown() {
 		if data.ConfigCommands.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"config-commands", map[string]string{})
+		}
+	}
+	if !data.Console.IsNull() && !data.Console.IsUnknown() {
+		if data.Console.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console", map[string]string{})
 		}
 	}
 	if len(data.Execs) > 0 {
@@ -922,6 +929,13 @@ func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorizat
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/configuration/config-list", cBody.Res())
 		}
 	}
+	if !data.Console.IsNull() && !data.Console.IsUnknown() {
+		if data.Console.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/console", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/console")
+		}
+	}
 	bodyString, err := body.String()
 	if err != nil {
 		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
@@ -1516,6 +1530,15 @@ func (data *AAAAuthorization) updateFromBody(ctx context.Context, res gjson.Resu
 			data.ConfigLists[i].Group1Tacacs = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "console"); !data.Console.IsNull() {
+		if value.Exists() {
+			data.Console = types.BoolValue(true)
+		} else {
+			data.Console = types.BoolValue(false)
+		}
+	} else {
+		data.Console = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2101,6 +2124,15 @@ func (data *AAAAuthorization) updateFromBodyXML(ctx context.Context, res xmldot.
 			data.ConfigLists[i].Group1Tacacs = types.BoolNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console"); !data.Console.IsNull() {
+		if value.Exists() {
+			data.Console = types.BoolValue(true)
+		} else {
+			data.Console = types.BoolValue(false)
+		}
+	} else {
+		data.Console = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -2415,6 +2447,11 @@ func (data *AAAAuthorization) fromBody(ctx context.Context, res gjson.Result) {
 			data.ConfigLists = append(data.ConfigLists, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "console"); value.Exists() {
+		data.Console = types.BoolValue(true)
+	} else {
+		data.Console = types.BoolValue(false)
 	}
 }
 
@@ -2731,6 +2768,11 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 			return true
 		})
 	}
+	if value := res.Get(prefix + "console"); value.Exists() {
+		data.Console = types.BoolValue(true)
+	} else {
+		data.Console = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3041,6 +3083,11 @@ func (data *AAAAuthorization) fromBodyXML(ctx context.Context, res xmldot.Result
 			data.ConfigLists = append(data.ConfigLists, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console"); value.Exists() {
+		data.Console = types.BoolValue(true)
+	} else {
+		data.Console = types.BoolValue(false)
 	}
 }
 
@@ -3353,6 +3400,11 @@ func (data *AAAAuthorizationData) fromBodyXML(ctx context.Context, res xmldot.Re
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console"); value.Exists() {
+		data.Console = types.BoolValue(true)
+	} else {
+		data.Console = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -3361,6 +3413,9 @@ func (data *AAAAuthorizationData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuthorization) []string {
 	deletedItems := make([]string, 0)
+	if !state.Console.IsNull() && data.Console.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/console", state.getPath()))
+	}
 	for i := range state.ConfigLists {
 		stateKeyValues := [...]string{state.ConfigLists[i].Name.ValueString()}
 
@@ -3648,6 +3703,9 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 
 func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAAuthorization, body string) string {
 	b := netconf.NewBody(body)
+	if !state.Console.IsNull() && data.Console.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/console")
+	}
 	for i := range state.ConfigLists {
 		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.ConfigLists[i].Name.ValueString()}
@@ -3956,6 +4014,9 @@ func (data *AAAAuthorization) addDeletedItemsXML(ctx context.Context, state AAAA
 
 func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.Console.IsNull() && !data.Console.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/console", data.getPath()))
+	}
 
 	for i := range data.ConfigLists {
 		keyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
@@ -4111,6 +4172,9 @@ func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string 
 
 func (data *AAAAuthorization) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.Console.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/console", data.getPath()))
+	}
 	for i := range data.ConfigLists {
 		keyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
 
@@ -4144,6 +4208,9 @@ func (data *AAAAuthorization) getDeletePaths(ctx context.Context) []string {
 
 func (data *AAAAuthorization) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.Console.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/console")
+	}
 	for i := range data.ConfigLists {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
