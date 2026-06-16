@@ -205,6 +205,9 @@ type System struct {
 	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
 	MldSnooping                                            types.Bool                                          `tfsdk:"mld_snooping"`
 	MldSnoopingQuerier                                     types.Bool                                          `tfsdk:"mld_snooping_querier"`
+	PowerRedundancyModeCombined                            types.Bool                                          `tfsdk:"power_redundancy_mode_combined"`
+	PowerSupplyAutolcShutdown                              types.Bool                                          `tfsdk:"power_supply_autolc_shutdown"`
+	PowerSupplyAutolcPriority                              types.List                                          `tfsdk:"power_supply_autolc_priority"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -429,6 +432,9 @@ type SystemData struct {
 	TableMaps                                              []SystemTableMapsData                                   `tfsdk:"table_maps"`
 	MldSnooping                                            types.Bool                                              `tfsdk:"mld_snooping"`
 	MldSnoopingQuerier                                     types.Bool                                              `tfsdk:"mld_snooping_querier"`
+	PowerRedundancyModeCombined                            types.Bool                                              `tfsdk:"power_redundancy_mode_combined"`
+	PowerSupplyAutolcShutdown                              types.Bool                                              `tfsdk:"power_supply_autolc_shutdown"`
+	PowerSupplyAutolcPriority                              types.List                                              `tfsdk:"power_supply_autolc_priority"`
 }
 type SystemMulticastRoutingVrfsData struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -1054,6 +1060,21 @@ func (data System) toBody(ctx context.Context, config System) string {
 		if data.MldSnoopingQuerier.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-mld:mld.snooping-container.snooping.querier-conf.querier", map[string]string{})
 		}
+	}
+	if !data.PowerRedundancyModeCombined.IsNull() && !data.PowerRedundancyModeCombined.IsUnknown() {
+		if data.PowerRedundancyModeCombined.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-power:power.redundancy-mode-config.combined", map[string]string{})
+		}
+	}
+	if !data.PowerSupplyAutolcShutdown.IsNull() && !data.PowerSupplyAutolcShutdown.IsUnknown() {
+		if data.PowerSupplyAutolcShutdown.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-power:power.supply.autoLC.shutdown", map[string]string{})
+		}
+	}
+	if !data.PowerSupplyAutolcPriority.IsNull() && !data.PowerSupplyAutolcPriority.IsUnknown() {
+		var values []int
+		data.PowerSupplyAutolcPriority.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-power:power.supply.autoLC.priority", values)
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -2030,6 +2051,27 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
+		}
+	}
+	if !data.PowerRedundancyModeCombined.IsNull() && !data.PowerRedundancyModeCombined.IsUnknown() {
+		if data.PowerRedundancyModeCombined.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined")
+		}
+	}
+	if !data.PowerSupplyAutolcShutdown.IsNull() && !data.PowerSupplyAutolcShutdown.IsUnknown() {
+		if data.PowerSupplyAutolcShutdown.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown")
+		}
+	}
+	if !data.PowerSupplyAutolcPriority.IsNull() && !data.PowerSupplyAutolcPriority.IsUnknown() {
+		var values []int
+		data.PowerSupplyAutolcPriority.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/priority", v)
 		}
 	}
 	bodyString, err := body.String()
@@ -3410,6 +3452,29 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.redundancy-mode-config.combined"); !data.PowerRedundancyModeCombined.IsNull() {
+		if value.Exists() {
+			data.PowerRedundancyModeCombined = types.BoolValue(true)
+		} else {
+			data.PowerRedundancyModeCombined = types.BoolValue(false)
+		}
+	} else {
+		data.PowerRedundancyModeCombined = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.supply.autoLC.shutdown"); !data.PowerSupplyAutolcShutdown.IsNull() {
+		if value.Exists() {
+			data.PowerSupplyAutolcShutdown = types.BoolValue(true)
+		} else {
+			data.PowerSupplyAutolcShutdown = types.BoolValue(false)
+		}
+	} else {
+		data.PowerSupplyAutolcShutdown = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.supply.autoLC.priority"); value.Exists() && !data.PowerSupplyAutolcPriority.IsNull() {
+		data.PowerSupplyAutolcPriority = helpers.GetInt64List(value.Array())
+	} else {
+		data.PowerSupplyAutolcPriority = types.ListNull(types.Int64Type)
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -4779,6 +4844,29 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined"); !data.PowerRedundancyModeCombined.IsNull() {
+		if value.Exists() {
+			data.PowerRedundancyModeCombined = types.BoolValue(true)
+		} else {
+			data.PowerRedundancyModeCombined = types.BoolValue(false)
+		}
+	} else {
+		data.PowerRedundancyModeCombined = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown"); !data.PowerSupplyAutolcShutdown.IsNull() {
+		if value.Exists() {
+			data.PowerSupplyAutolcShutdown = types.BoolValue(true)
+		} else {
+			data.PowerSupplyAutolcShutdown = types.BoolValue(false)
+		}
+	} else {
+		data.PowerSupplyAutolcShutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/priority"); value.Exists() && !data.PowerSupplyAutolcPriority.IsNull() {
+		data.PowerSupplyAutolcPriority = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.PowerSupplyAutolcPriority = types.ListNull(types.Int64Type)
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -5539,6 +5627,21 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 		data.MldSnoopingQuerier = types.BoolValue(true)
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.redundancy-mode-config.combined"); value.Exists() {
+		data.PowerRedundancyModeCombined = types.BoolValue(true)
+	} else {
+		data.PowerRedundancyModeCombined = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.supply.autoLC.shutdown"); value.Exists() {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(true)
+	} else {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.supply.autoLC.priority"); value.Exists() {
+		data.PowerSupplyAutolcPriority = helpers.GetInt64List(value.Array())
+	} else {
+		data.PowerSupplyAutolcPriority = types.ListNull(types.Int64Type)
 	}
 }
 
@@ -6301,6 +6404,21 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.redundancy-mode-config.combined"); value.Exists() {
+		data.PowerRedundancyModeCombined = types.BoolValue(true)
+	} else {
+		data.PowerRedundancyModeCombined = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.supply.autoLC.shutdown"); value.Exists() {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(true)
+	} else {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-power:power.supply.autoLC.priority"); value.Exists() {
+		data.PowerSupplyAutolcPriority = helpers.GetInt64List(value.Array())
+	} else {
+		data.PowerSupplyAutolcPriority = types.ListNull(types.Int64Type)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -7057,6 +7175,21 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MldSnoopingQuerier = types.BoolValue(true)
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined"); value.Exists() {
+		data.PowerRedundancyModeCombined = types.BoolValue(true)
+	} else {
+		data.PowerRedundancyModeCombined = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown"); value.Exists() {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(true)
+	} else {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/priority"); value.Exists() {
+		data.PowerSupplyAutolcPriority = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.PowerSupplyAutolcPriority = types.ListNull(types.Int64Type)
 	}
 }
 
@@ -7815,6 +7948,21 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined"); value.Exists() {
+		data.PowerRedundancyModeCombined = types.BoolValue(true)
+	} else {
+		data.PowerRedundancyModeCombined = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown"); value.Exists() {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(true)
+	} else {
+		data.PowerSupplyAutolcShutdown = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/priority"); value.Exists() {
+		data.PowerSupplyAutolcPriority = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.PowerSupplyAutolcPriority = types.ListNull(types.Int64Type)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -7823,6 +7971,33 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.PowerSupplyAutolcPriority.IsNull() {
+		if data.PowerSupplyAutolcPriority.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/supply/autoLC/priority", state.getPath()))
+		} else {
+			var dataValues, stateValues []int
+			data.PowerSupplyAutolcPriority.ElementsAs(ctx, &dataValues, false)
+			state.PowerSupplyAutolcPriority.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/supply/autoLC/priority=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.PowerSupplyAutolcShutdown.IsNull() && data.PowerSupplyAutolcShutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/supply/autoLC/shutdown", state.getPath()))
+	}
+	if !state.PowerRedundancyModeCombined.IsNull() && data.PowerRedundancyModeCombined.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/redundancy-mode-config/combined", state.getPath()))
+	}
 	if !state.MldSnoopingQuerier.IsNull() && data.MldSnoopingQuerier.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", state.getPath()))
 	}
@@ -8749,6 +8924,37 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) addDeletedItemsXML(ctx context.Context, state System, body string) string {
 	b := netconf.NewBody(body)
+	if !state.PowerSupplyAutolcPriority.IsNull() {
+		if data.PowerSupplyAutolcPriority.IsNull() {
+			var values []string
+			state.PowerSupplyAutolcPriority.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/priority[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []int
+			data.PowerSupplyAutolcPriority.ElementsAs(ctx, &dataValues, false)
+			state.PowerSupplyAutolcPriority.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/priority[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.PowerSupplyAutolcShutdown.IsNull() && data.PowerSupplyAutolcShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown")
+	}
+	if !state.PowerRedundancyModeCombined.IsNull() && data.PowerRedundancyModeCombined.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined")
+	}
 	if !state.MldSnoopingQuerier.IsNull() && data.MldSnoopingQuerier.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 	}
@@ -9761,6 +9967,12 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.PowerSupplyAutolcShutdown.IsNull() && !data.PowerSupplyAutolcShutdown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/supply/autoLC/shutdown", data.getPath()))
+	}
+	if !data.PowerRedundancyModeCombined.IsNull() && !data.PowerRedundancyModeCombined.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/redundancy-mode-config/combined", data.getPath()))
+	}
 	if !data.MldSnoopingQuerier.IsNull() && !data.MldSnoopingQuerier.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", data.getPath()))
 	}
@@ -9895,6 +10107,15 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.PowerSupplyAutolcPriority.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/supply/autoLC/priority", data.getPath()))
+	}
+	if !data.PowerSupplyAutolcShutdown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/supply/autoLC/shutdown", data.getPath()))
+	}
+	if !data.PowerRedundancyModeCombined.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-power:power/redundancy-mode-config/combined", data.getPath()))
+	}
 	if !data.MldSnoopingQuerier.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", data.getPath()))
 	}
@@ -10401,6 +10622,19 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 
 func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.PowerSupplyAutolcPriority.IsNull() {
+		var values []int64
+		data.PowerSupplyAutolcPriority.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/priority[.=%v]", v))
+		}
+	}
+	if !data.PowerSupplyAutolcShutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-power:power/supply/autoLC/shutdown")
+	}
+	if !data.PowerRedundancyModeCombined.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined")
+	}
 	if !data.MldSnoopingQuerier.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 	}
