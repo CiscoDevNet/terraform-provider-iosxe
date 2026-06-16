@@ -21,7 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -32,9 +31,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeStackwiseVirtual(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
-	}
+	if os.Getenv("C9500") == "" {
+        t.Skip("skipping test, set environment variable C9500")
+    }
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_stackwise_virtual.test", "domain", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_stackwise_virtual.test", "dual_active_detection_pagp", "true"))
@@ -45,7 +44,7 @@ func TestAccDataSourceIosxeStackwiseVirtual(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceIosxeStackwiseVirtualConfig(),
-				Check:  resource.ComposeTestCheckFunc(checks...),
+				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
@@ -65,7 +64,7 @@ func testAccDataSourceIosxeStackwiseVirtualConfig() string {
 	config += `	dual_active_detection_pagp = true` + "\n"
 	config += `	dual_active_detection_pagp_trust_channel_group = 1` + "\n"
 	config += `}` + "\n"
-
+	
 	config += `
 		data "iosxe_stackwise_virtual" "test" {
 			depends_on = [iosxe_stackwise_virtual.test]

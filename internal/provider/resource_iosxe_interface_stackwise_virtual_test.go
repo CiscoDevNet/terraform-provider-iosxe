@@ -21,8 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"fmt"
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -34,9 +32,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfaceStackwiseVirtual(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
-	}
+	if os.Getenv("C9500") == "" {
+        t.Skip("skipping test, set environment variable C9500")
+    }
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_stackwise_virtual.test", "link", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_stackwise_virtual.test", "dual_active_detection", "true"))
@@ -49,15 +47,15 @@ func TestAccIosxeInterfaceStackwiseVirtual(t *testing.T) {
 			},
 			{
 				Config: testAccIosxeInterfaceStackwiseVirtualConfig_all(),
-				Check:  resource.ComposeTestCheckFunc(checks...),
+				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_interface_stackwise_virtual.test",
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeInterfaceStackwiseVirtualImportStateIdFunc("iosxe_interface_stackwise_virtual.test"),
-				ImportStateVerifyIgnore: []string{},
-				Check:                   resource.ComposeTestCheckFunc(checks...),
+				ResourceName:  "iosxe_interface_stackwise_virtual.test",
+				ImportState:   true,
+				ImportStateVerify: true,
+				ImportStateIdFunc: iosxeInterfaceStackwiseVirtualImportStateIdFunc("iosxe_interface_stackwise_virtual.test"),
+				ImportStateVerifyIgnore: []string{  },
+				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
@@ -73,7 +71,7 @@ func iosxeInterfaceStackwiseVirtualImportStateIdFunc(resourceName string) resour
 		Type := primary.Attributes["type"]
 		Name := primary.Attributes["name"]
 
-		return fmt.Sprintf("%s,%s", Type, Name), nil
+		return fmt.Sprintf("%s,%s", Type,Name), nil
 	}
 }
 

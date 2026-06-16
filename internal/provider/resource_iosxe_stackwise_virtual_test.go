@@ -21,8 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"fmt"
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -34,9 +32,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeStackwiseVirtual(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
-	}
+	if os.Getenv("C9500") == "" {
+        t.Skip("skipping test, set environment variable C9500")
+    }
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_stackwise_virtual.test", "domain", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_stackwise_virtual.test", "dual_active_detection_pagp", "true"))
@@ -50,15 +48,15 @@ func TestAccIosxeStackwiseVirtual(t *testing.T) {
 			},
 			{
 				Config: testAccIosxeStackwiseVirtualConfig_all(),
-				Check:  resource.ComposeTestCheckFunc(checks...),
+				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_stackwise_virtual.test",
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeStackwiseVirtualImportStateIdFunc("iosxe_stackwise_virtual.test"),
-				ImportStateVerifyIgnore: []string{},
-				Check:                   resource.ComposeTestCheckFunc(checks...),
+				ResourceName:  "iosxe_stackwise_virtual.test",
+				ImportState:   true,
+				ImportStateVerify: true,
+				ImportStateIdFunc: iosxeStackwiseVirtualImportStateIdFunc("iosxe_stackwise_virtual.test"),
+				ImportStateVerifyIgnore: []string{  },
+				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
@@ -71,7 +69,7 @@ func TestAccIosxeStackwiseVirtual(t *testing.T) {
 func iosxeStackwiseVirtualImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 
-		return fmt.Sprintf(""), nil
+		return fmt.Sprintf("", ), nil
 	}
 }
 
