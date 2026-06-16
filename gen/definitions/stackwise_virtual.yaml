@@ -1,0 +1,16 @@
+---
+name: Stackwise Virtual
+path: /Cisco-IOS-XE-native:native/stackwise-virtual
+test_tags: [C9000V]
+doc_category: System
+attributes:
+  - yang_name: Cisco-IOS-XE-stackwise-virtual:domain/domain
+    tf_name: domain
+    example: 10
+  - yang_name: Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp
+    tf_name: dual_active_detection_pagp
+    type_yang_bool: presence
+    example: true
+  - yang_name: Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp/trust/channel-group/channel-group-number
+    tf_name: dual_active_detection_pagp_trust_channel_group
+    example: 1
