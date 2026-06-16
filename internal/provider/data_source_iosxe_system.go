@@ -899,6 +899,10 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "MLD querier disable/enable",
 				Computed:            true,
 			},
+			"mac_address_table_aging_time": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

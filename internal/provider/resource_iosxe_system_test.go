@@ -107,6 +107,7 @@ func TestAccIosxeSystem(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "mld_snooping_querier", "true"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "mac_address_table_aging_time", "14400"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -259,6 +260,7 @@ func testAccIosxeSystemConfig_all() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	mld_snooping_querier = true` + "\n"
 	}
+	config += `	mac_address_table_aging_time = 14400` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

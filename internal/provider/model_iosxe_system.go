@@ -205,6 +205,7 @@ type System struct {
 	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
 	MldSnooping                                            types.Bool                                          `tfsdk:"mld_snooping"`
 	MldSnoopingQuerier                                     types.Bool                                          `tfsdk:"mld_snooping_querier"`
+	MacAddressTableAgingTime                               types.Int64                                         `tfsdk:"mac_address_table_aging_time"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -429,6 +430,7 @@ type SystemData struct {
 	TableMaps                                              []SystemTableMapsData                                   `tfsdk:"table_maps"`
 	MldSnooping                                            types.Bool                                              `tfsdk:"mld_snooping"`
 	MldSnoopingQuerier                                     types.Bool                                              `tfsdk:"mld_snooping_querier"`
+	MacAddressTableAgingTime                               types.Int64                                             `tfsdk:"mac_address_table_aging_time"`
 }
 type SystemMulticastRoutingVrfsData struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -1054,6 +1056,9 @@ func (data System) toBody(ctx context.Context, config System) string {
 		if data.MldSnoopingQuerier.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-mld:mld.snooping-container.snooping.querier-conf.querier", map[string]string{})
 		}
+	}
+	if !data.MacAddressTableAgingTime.IsNull() && !data.MacAddressTableAgingTime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mac.address-table.aging-time.val", strconv.FormatInt(data.MacAddressTableAgingTime.ValueInt64(), 10))
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -2031,6 +2036,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 		}
+	}
+	if !data.MacAddressTableAgingTime.IsNull() && !data.MacAddressTableAgingTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mac/address-table/aging-time/val", strconv.FormatInt(data.MacAddressTableAgingTime.ValueInt64(), 10))
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -3410,6 +3418,11 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolNull()
 	}
+	if value := res.Get(prefix + "mac.address-table.aging-time.val"); value.Exists() && !data.MacAddressTableAgingTime.IsNull() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
+	} else {
+		data.MacAddressTableAgingTime = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -4779,6 +4792,11 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac/address-table/aging-time/val"); value.Exists() && !data.MacAddressTableAgingTime.IsNull() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
+	} else {
+		data.MacAddressTableAgingTime = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -5539,6 +5557,9 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 		data.MldSnoopingQuerier = types.BoolValue(true)
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "mac.address-table.aging-time.val"); value.Exists() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
 	}
 }
 
@@ -6301,6 +6322,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "mac.address-table.aging-time.val"); value.Exists() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -7057,6 +7081,9 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MldSnoopingQuerier = types.BoolValue(true)
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac/address-table/aging-time/val"); value.Exists() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
 	}
 }
 
@@ -7815,6 +7842,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac/address-table/aging-time/val"); value.Exists() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -7823,6 +7853,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.MacAddressTableAgingTime.IsNull() && data.MacAddressTableAgingTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac/address-table/aging-time/val", state.getPath()))
+	}
 	if !state.MldSnoopingQuerier.IsNull() && data.MldSnoopingQuerier.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", state.getPath()))
 	}
@@ -8749,6 +8782,9 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) addDeletedItemsXML(ctx context.Context, state System, body string) string {
 	b := netconf.NewBody(body)
+	if !state.MacAddressTableAgingTime.IsNull() && data.MacAddressTableAgingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/address-table/aging-time/val")
+	}
 	if !state.MldSnoopingQuerier.IsNull() && data.MldSnoopingQuerier.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 	}
@@ -9895,6 +9931,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.MacAddressTableAgingTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac/address-table/aging-time/val", data.getPath()))
+	}
 	if !data.MldSnoopingQuerier.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier", data.getPath()))
 	}
@@ -10401,6 +10440,9 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 
 func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.MacAddressTableAgingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/address-table/aging-time/val")
+	}
 	if !data.MldSnoopingQuerier.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 	}

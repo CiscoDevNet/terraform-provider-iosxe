@@ -790,6 +790,9 @@ attributes:
     tf_name: mld_snooping_querier
     example: true
     test_tags: [C9000V]
+  - yang_name: mac/address-table/aging-time/val
+    tf_name: mac_address_table_aging_time
+    example: 14400
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
