@@ -47,6 +47,7 @@ type DeviceTracking struct {
 	TrackingAutoSourceFallbackMask     types.String `tfsdk:"tracking_auto_source_fallback_mask"`
 	TrackingAutoSourceFallbackOverride types.Bool   `tfsdk:"tracking_auto_source_fallback_override"`
 	TrackingRetryInterval              types.Int64  `tfsdk:"tracking_retry_interval"`
+	BindingReachableLifetime           types.Int64  `tfsdk:"binding_reachable_lifetime"`
 }
 
 type DeviceTrackingData struct {
@@ -57,6 +58,7 @@ type DeviceTrackingData struct {
 	TrackingAutoSourceFallbackMask     types.String `tfsdk:"tracking_auto_source_fallback_mask"`
 	TrackingAutoSourceFallbackOverride types.Bool   `tfsdk:"tracking_auto_source_fallback_override"`
 	TrackingRetryInterval              types.Int64  `tfsdk:"tracking_retry_interval"`
+	BindingReachableLifetime           types.Int64  `tfsdk:"binding_reachable_lifetime"`
 }
 
 // End of section. //template:end types
@@ -118,6 +120,9 @@ func (data DeviceTracking) toBody(ctx context.Context, config DeviceTracking) st
 	if !data.TrackingRetryInterval.IsNull() && !data.TrackingRetryInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:tracking.retry-interval", strconv.FormatInt(data.TrackingRetryInterval.ValueInt64(), 10))
 	}
+	if !data.BindingReachableLifetime.IsNull() && !data.BindingReachableLifetime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds", strconv.FormatInt(data.BindingReachableLifetime.ValueInt64(), 10))
+	}
 	return body
 }
 
@@ -149,6 +154,9 @@ func (data DeviceTracking) toBodyXML(ctx context.Context, config DeviceTracking)
 	}
 	if !data.TrackingRetryInterval.IsNull() && !data.TrackingRetryInterval.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/retry-interval", strconv.FormatInt(data.TrackingRetryInterval.ValueInt64(), 10))
+	}
+	if !data.BindingReachableLifetime.IsNull() && !data.BindingReachableLifetime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds", strconv.FormatInt(data.BindingReachableLifetime.ValueInt64(), 10))
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -199,6 +207,11 @@ func (data *DeviceTracking) updateFromBody(ctx context.Context, res gjson.Result
 	} else {
 		data.TrackingRetryInterval = types.Int64Null()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds"); value.Exists() && !data.BindingReachableLifetime.IsNull() {
+		data.BindingReachableLifetime = types.Int64Value(value.Int())
+	} else {
+		data.BindingReachableLifetime = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -239,6 +252,11 @@ func (data *DeviceTracking) updateFromBodyXML(ctx context.Context, res xmldot.Re
 	} else {
 		data.TrackingRetryInterval = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds"); value.Exists() && !data.BindingReachableLifetime.IsNull() {
+		data.BindingReachableLifetime = types.Int64Value(value.Int())
+	} else {
+		data.BindingReachableLifetime = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -268,6 +286,9 @@ func (data *DeviceTracking) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.retry-interval"); value.Exists() {
 		data.TrackingRetryInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds"); value.Exists() {
+		data.BindingReachableLifetime = types.Int64Value(value.Int())
 	}
 }
 
@@ -299,6 +320,9 @@ func (data *DeviceTrackingData) fromBody(ctx context.Context, res gjson.Result) 
 	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.retry-interval"); value.Exists() {
 		data.TrackingRetryInterval = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds"); value.Exists() {
+		data.BindingReachableLifetime = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -324,6 +348,9 @@ func (data *DeviceTracking) fromBodyXML(ctx context.Context, res xmldot.Result) 
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/retry-interval"); value.Exists() {
 		data.TrackingRetryInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds"); value.Exists() {
+		data.BindingReachableLifetime = types.Int64Value(value.Int())
 	}
 }
 
@@ -351,6 +378,9 @@ func (data *DeviceTrackingData) fromBodyXML(ctx context.Context, res xmldot.Resu
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/retry-interval"); value.Exists() {
 		data.TrackingRetryInterval = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds"); value.Exists() {
+		data.BindingReachableLifetime = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -359,6 +389,9 @@ func (data *DeviceTrackingData) fromBodyXML(ctx context.Context, res xmldot.Resu
 
 func (data *DeviceTracking) getDeletedItems(ctx context.Context, state DeviceTracking) []string {
 	deletedItems := make([]string, 0)
+	if !state.BindingReachableLifetime.IsNull() && data.BindingReachableLifetime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds", state.getPath()))
+	}
 	if !state.TrackingRetryInterval.IsNull() && data.TrackingRetryInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/retry-interval", state.getPath()))
 	}
@@ -384,6 +417,9 @@ func (data *DeviceTracking) getDeletedItems(ctx context.Context, state DeviceTra
 
 func (data *DeviceTracking) addDeletedItemsXML(ctx context.Context, state DeviceTracking, body string) string {
 	b := netconf.NewBody(body)
+	if !state.BindingReachableLifetime.IsNull() && data.BindingReachableLifetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds")
+	}
 	if !state.TrackingRetryInterval.IsNull() && data.TrackingRetryInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/retry-interval")
 	}
@@ -426,6 +462,9 @@ func (data *DeviceTracking) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *DeviceTracking) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.BindingReachableLifetime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds", data.getPath()))
+	}
 	if !data.TrackingRetryInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/retry-interval", data.getPath()))
 	}
@@ -451,6 +490,9 @@ func (data *DeviceTracking) getDeletePaths(ctx context.Context) []string {
 
 func (data *DeviceTracking) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.BindingReachableLifetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds")
+	}
 	if !data.TrackingRetryInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-device-tracking:tracking/retry-interval")
 	}
