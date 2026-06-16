@@ -101,6 +101,11 @@ type LineAux struct {
 	ExecTimeoutSeconds  types.Int64  `tfsdk:"exec_timeout_seconds"`
 	Monitor             types.Bool   `tfsdk:"monitor"`
 	Stopbits            types.String `tfsdk:"stopbits"`
+	PasswordLevel       types.Int64  `tfsdk:"password_level"`
+	PasswordType        types.String `tfsdk:"password_type"`
+	Password            types.String `tfsdk:"password"`
+	PasswordWO          types.String `tfsdk:"password_wo"`
+	PasswordWOVersion   types.Int64  `tfsdk:"password_wo_version"`
 	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
 }
 type LineVtyAccessClasses struct {
@@ -166,6 +171,9 @@ type LineAuxData struct {
 	ExecTimeoutSeconds  types.Int64  `tfsdk:"exec_timeout_seconds"`
 	Monitor             types.Bool   `tfsdk:"monitor"`
 	Stopbits            types.String `tfsdk:"stopbits"`
+	PasswordLevel       types.Int64  `tfsdk:"password_level"`
+	PasswordType        types.String `tfsdk:"password_type"`
+	Password            types.String `tfsdk:"password"`
 	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
 }
 type LineVtyAccessClassesData struct {
@@ -406,6 +414,14 @@ func (data Line) toBody(ctx context.Context, config Line) string {
 	if len(data.Aux) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux", []interface{}{})
 		for index, item := range data.Aux {
+			var configItem LineAux
+			for _, ci := range config.Aux {
+				if ci.First.ValueString() != item.First.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			if !item.First.IsNull() && !item.First.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"first", item.First.ValueString())
 			}
@@ -430,6 +446,19 @@ func (data Line) toBody(ctx context.Context, config Line) string {
 			}
 			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"stopbits", item.Stopbits.ValueString())
+			}
+			if !item.PasswordLevel.IsNull() && !item.PasswordLevel.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"password.level", strconv.FormatInt(item.PasswordLevel.ValueInt64(), 10))
+			}
+			if !item.PasswordType.IsNull() && !item.PasswordType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"password.type", item.PasswordType.ValueString())
+			}
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				if !configItem.PasswordWO.IsNull() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"password.secret", configItem.PasswordWO.ValueString())
+				} else {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
+				}
 			}
 			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
 				if item.TransportOutputNone.ValueBool() {
@@ -671,6 +700,14 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 	}
 	if len(data.Aux) > 0 {
 		for _, item := range data.Aux {
+			var configItem LineAux
+			for _, ci := range config.Aux {
+				if ci.First.ValueString() != item.First.ValueString() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.First.IsNull() && !item.First.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "first", item.First.ValueString())
@@ -700,6 +737,19 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 			}
 			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "stopbits", item.Stopbits.ValueString())
+			}
+			if !item.PasswordLevel.IsNull() && !item.PasswordLevel.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/level", strconv.FormatInt(item.PasswordLevel.ValueInt64(), 10))
+			}
+			if !item.PasswordType.IsNull() && !item.PasswordType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/type", item.PasswordType.ValueString())
+			}
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				if !configItem.PasswordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", configItem.PasswordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+				}
 			}
 			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
 				if item.TransportOutputNone.ValueBool() {
@@ -1093,6 +1143,11 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Aux[i].Stopbits = types.StringNull()
 		}
+		if value := r.Get("password.level"); value.Exists() && !data.Aux[i].PasswordLevel.IsNull() {
+			data.Aux[i].PasswordLevel = types.Int64Value(value.Int())
+		} else {
+			data.Aux[i].PasswordLevel = types.Int64Null()
+		}
 		if value := r.Get("transport.output.none"); !data.Aux[i].TransportOutputNone.IsNull() {
 			if value.Exists() {
 				data.Aux[i].TransportOutputNone = types.BoolValue(true)
@@ -1476,6 +1531,11 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Aux[i].Stopbits = types.StringNull()
 		}
+		if value := helpers.GetFromXPath(r, "password/level"); value.Exists() && !data.Aux[i].PasswordLevel.IsNull() {
+			data.Aux[i].PasswordLevel = types.Int64Value(value.Int())
+		} else {
+			data.Aux[i].PasswordLevel = types.Int64Null()
+		}
 		if value := helpers.GetFromXPath(r, "transport/output/none"); !data.Aux[i].TransportOutputNone.IsNull() {
 			if value.Exists() {
 				data.Aux[i].TransportOutputNone = types.BoolValue(true)
@@ -1700,6 +1760,15 @@ func (data *Line) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("stopbits"); cValue.Exists() {
 				item.Stopbits = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("password.level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password.type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("password.secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("transport.output.none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
 			} else {
@@ -1923,6 +1992,15 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("stopbits"); cValue.Exists() {
 				item.Stopbits = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("password.level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password.type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("password.secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("transport.output.none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
 			} else {
@@ -2142,6 +2220,15 @@ func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
 				item.Stopbits = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "password/level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
 			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
 			} else {
@@ -2360,6 +2447,15 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
 				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
 				item.TransportOutputNone = types.BoolValue(true)
