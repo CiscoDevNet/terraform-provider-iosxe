@@ -1,7 +1,7 @@
 ---
 name: Interface Stackwise Virtual
 path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/stackwise-virtual
-augment_path: /Cisco-IOS-XE-native:native/interface/TenGigabitEthernet[name=%v]/stackwise-virtual
+augment_path: /Cisco-IOS-XE-native:native/interface/HundredGigE[name=%v]/stackwise-virtual
 test_tags: [C9500]
 doc_category: Interface
 attributes:
