@@ -1,0 +1,8 @@
+---
+name: Crypto PKI Certificate Pool
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki/certificate/pool
+doc_category: Crypto
+test_tags: [CRYPTO_PKI_CERTIFICATE_POOL]
+attributes:
+  - yang_name: cabundle
+    example: ios_core.p7b
