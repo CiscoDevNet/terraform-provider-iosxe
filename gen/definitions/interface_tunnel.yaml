@@ -38,6 +38,7 @@ attributes:
     attributes:
       - yang_name: address
         id: true
+        normalize_ipv6: true
         example: fe80::9656:d028:8652:66ba
       - yang_name: link-local
         example: true
@@ -47,6 +48,7 @@ attributes:
     attributes:
       - yang_name: prefix
         id: true
+        normalize_ipv6: true
         example: 2005:DB8::/32
       - yang_name: eui-64
         example: true

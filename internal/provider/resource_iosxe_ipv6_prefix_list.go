@@ -113,6 +113,9 @@ func (r *IPv6PrefixListResource) Schema(ctx context.Context, req resource.Schema
 								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
 							},
+							PlanModifiers: []planmodifier.String{
+								helpers.UseIPv6Normalization(),
+							},
 						},
 						"ge": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Minimum prefix length to be matched").AddIntegerRangeDescription(1, 128).String,

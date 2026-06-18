@@ -17,6 +17,7 @@ attributes:
       - yang_name: action
         example: permit
       - yang_name: ip
+        normalize_ipv6: true
         example: "2001:db8::/32"
       - yang_name: ge
         example: 48
