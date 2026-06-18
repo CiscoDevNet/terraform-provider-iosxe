@@ -45,6 +45,7 @@ type ObjectGroup struct {
 	Id      types.String         `tfsdk:"id"`
 	Fqdn    []ObjectGroupFqdn    `tfsdk:"fqdn"`
 	Network []ObjectGroupNetwork `tfsdk:"network"`
+	Service []ObjectGroupService `tfsdk:"service"`
 }
 type ObjectGroupFqdn struct {
 	Name         types.String                  `tfsdk:"name"`
@@ -59,6 +60,91 @@ type ObjectGroupNetwork struct {
 	NetworkAddresses []ObjectGroupNetworkNetworkAddresses `tfsdk:"network_addresses"`
 	AddressRanges    []ObjectGroupNetworkAddressRanges    `tfsdk:"address_ranges"`
 	GroupObjects     []ObjectGroupNetworkGroupObjects     `tfsdk:"group_objects"`
+}
+type ObjectGroupService struct {
+	Name                           types.String                                       `tfsdk:"name"`
+	Description                    types.String                                       `tfsdk:"description"`
+	GroupObjects                   []ObjectGroupServiceGroupObjects                   `tfsdk:"group_objects"`
+	ProtocolNumbers                types.Set                                          `tfsdk:"protocol_numbers"`
+	Ahp                            types.Bool                                         `tfsdk:"ahp"`
+	Eigrp                          types.Bool                                         `tfsdk:"eigrp"`
+	Esp                            types.Bool                                         `tfsdk:"esp"`
+	Gre                            types.Bool                                         `tfsdk:"gre"`
+	Icmp                           types.Bool                                         `tfsdk:"icmp"`
+	Igmp                           types.Bool                                         `tfsdk:"igmp"`
+	Ip                             types.Bool                                         `tfsdk:"ip"`
+	Ipinip                         types.Bool                                         `tfsdk:"ipinip"`
+	Nos                            types.Bool                                         `tfsdk:"nos"`
+	Ospf                           types.Bool                                         `tfsdk:"ospf"`
+	Pcp                            types.Bool                                         `tfsdk:"pcp"`
+	Pim                            types.Bool                                         `tfsdk:"pim"`
+	Tcp                            types.Bool                                         `tfsdk:"tcp"`
+	Udp                            types.Bool                                         `tfsdk:"udp"`
+	IcmpPortNumber                 types.Int64                                        `tfsdk:"icmp_port_number"`
+	IcmpAlternateAddress           types.Bool                                         `tfsdk:"icmp_alternate_address"`
+	IcmpConversionError            types.Bool                                         `tfsdk:"icmp_conversion_error"`
+	IcmpEcho                       types.Bool                                         `tfsdk:"icmp_echo"`
+	IcmpEchoReply                  types.Bool                                         `tfsdk:"icmp_echo_reply"`
+	IcmpInformationReply           types.Bool                                         `tfsdk:"icmp_information_reply"`
+	IcmpInformationRequest         types.Bool                                         `tfsdk:"icmp_information_request"`
+	IcmpMaskReply                  types.Bool                                         `tfsdk:"icmp_mask_reply"`
+	IcmpMaskRequest                types.Bool                                         `tfsdk:"icmp_mask_request"`
+	IcmpMobileRedirect             types.Bool                                         `tfsdk:"icmp_mobile_redirect"`
+	IcmpParameterProblem           types.Bool                                         `tfsdk:"icmp_parameter_problem"`
+	IcmpRedirect                   types.Bool                                         `tfsdk:"icmp_redirect"`
+	IcmpRouterAdvertisement        types.Bool                                         `tfsdk:"icmp_router_advertisement"`
+	IcmpRouterSolicitation         types.Bool                                         `tfsdk:"icmp_router_solicitation"`
+	IcmpSourceQuench               types.Bool                                         `tfsdk:"icmp_source_quench"`
+	IcmpTimeExceeded               types.Bool                                         `tfsdk:"icmp_time_exceeded"`
+	IcmpTimestampReply             types.Bool                                         `tfsdk:"icmp_timestamp_reply"`
+	IcmpTimestampRequest           types.Bool                                         `tfsdk:"icmp_timestamp_request"`
+	IcmpTraceroute                 types.Bool                                         `tfsdk:"icmp_traceroute"`
+	IcmpUnreachable                types.Bool                                         `tfsdk:"icmp_unreachable"`
+	TcpDstPortListOp               []ObjectGroupServiceTcpDstPortListOp               `tfsdk:"tcp_dst_port_list_op"`
+	TcpDstPortList                 []ObjectGroupServiceTcpDstPortList                 `tfsdk:"tcp_dst_port_list"`
+	TcpDstPortRanges               []ObjectGroupServiceTcpDstPortRanges               `tfsdk:"tcp_dst_port_ranges"`
+	TcpSrcPortListOp               []ObjectGroupServiceTcpSrcPortListOp               `tfsdk:"tcp_src_port_list_op"`
+	TcpSrcPortList                 []ObjectGroupServiceTcpSrcPortList                 `tfsdk:"tcp_src_port_list"`
+	TcpSrcPortRanges               []ObjectGroupServiceTcpSrcPortRanges               `tfsdk:"tcp_src_port_ranges"`
+	TcpSrcDstPortListOp            []ObjectGroupServiceTcpSrcDstPortListOp            `tfsdk:"tcp_src_dst_port_list_op"`
+	TcpSrcDstPortList              []ObjectGroupServiceTcpSrcDstPortList              `tfsdk:"tcp_src_dst_port_list"`
+	TcpSrcDstPortListSrcOp         []ObjectGroupServiceTcpSrcDstPortListSrcOp         `tfsdk:"tcp_src_dst_port_list_src_op"`
+	TcpSrcDstPortListDstOp         []ObjectGroupServiceTcpSrcDstPortListDstOp         `tfsdk:"tcp_src_dst_port_list_dst_op"`
+	TcpSrcRangeDstPortListOp       []ObjectGroupServiceTcpSrcRangeDstPortListOp       `tfsdk:"tcp_src_range_dst_port_list_op"`
+	TcpSrcRangeDstPortList         []ObjectGroupServiceTcpSrcRangeDstPortList         `tfsdk:"tcp_src_range_dst_port_list"`
+	TcpSrcDstRangePortListOp       []ObjectGroupServiceTcpSrcDstRangePortListOp       `tfsdk:"tcp_src_dst_range_port_list_op"`
+	TcpSrcDstRangePortList         []ObjectGroupServiceTcpSrcDstRangePortList         `tfsdk:"tcp_src_dst_range_port_list"`
+	TcpSrcRangeDstRangePortList    []ObjectGroupServiceTcpSrcRangeDstRangePortList    `tfsdk:"tcp_src_range_dst_range_port_list"`
+	UdpDstPortListOp               []ObjectGroupServiceUdpDstPortListOp               `tfsdk:"udp_dst_port_list_op"`
+	UdpDstPortList                 []ObjectGroupServiceUdpDstPortList                 `tfsdk:"udp_dst_port_list"`
+	UdpDstPortRanges               []ObjectGroupServiceUdpDstPortRanges               `tfsdk:"udp_dst_port_ranges"`
+	UdpSrcPortListOp               []ObjectGroupServiceUdpSrcPortListOp               `tfsdk:"udp_src_port_list_op"`
+	UdpSrcPortList                 []ObjectGroupServiceUdpSrcPortList                 `tfsdk:"udp_src_port_list"`
+	UdpSrcPortRanges               []ObjectGroupServiceUdpSrcPortRanges               `tfsdk:"udp_src_port_ranges"`
+	UdpSrcDstPortListOp            []ObjectGroupServiceUdpSrcDstPortListOp            `tfsdk:"udp_src_dst_port_list_op"`
+	UdpSrcDstPortList              []ObjectGroupServiceUdpSrcDstPortList              `tfsdk:"udp_src_dst_port_list"`
+	UdpSrcDstPortListSrcOp         []ObjectGroupServiceUdpSrcDstPortListSrcOp         `tfsdk:"udp_src_dst_port_list_src_op"`
+	UdpSrcDstPortListDstOp         []ObjectGroupServiceUdpSrcDstPortListDstOp         `tfsdk:"udp_src_dst_port_list_dst_op"`
+	UdpSrcRangeDstPortListOp       []ObjectGroupServiceUdpSrcRangeDstPortListOp       `tfsdk:"udp_src_range_dst_port_list_op"`
+	UdpSrcRangeDstPortList         []ObjectGroupServiceUdpSrcRangeDstPortList         `tfsdk:"udp_src_range_dst_port_list"`
+	UdpSrcDstRangePortListOp       []ObjectGroupServiceUdpSrcDstRangePortListOp       `tfsdk:"udp_src_dst_range_port_list_op"`
+	UdpSrcDstRangePortList         []ObjectGroupServiceUdpSrcDstRangePortList         `tfsdk:"udp_src_dst_range_port_list"`
+	UdpSrcRangeDstRangePortList    []ObjectGroupServiceUdpSrcRangeDstRangePortList    `tfsdk:"udp_src_range_dst_range_port_list"`
+	TcpUdpDstPortListOp            []ObjectGroupServiceTcpUdpDstPortListOp            `tfsdk:"tcp_udp_dst_port_list_op"`
+	TcpUdpDstPortList              []ObjectGroupServiceTcpUdpDstPortList              `tfsdk:"tcp_udp_dst_port_list"`
+	TcpUdpDstPortRanges            []ObjectGroupServiceTcpUdpDstPortRanges            `tfsdk:"tcp_udp_dst_port_ranges"`
+	TcpUdpSrcPortListOp            []ObjectGroupServiceTcpUdpSrcPortListOp            `tfsdk:"tcp_udp_src_port_list_op"`
+	TcpUdpSrcPortList              []ObjectGroupServiceTcpUdpSrcPortList              `tfsdk:"tcp_udp_src_port_list"`
+	TcpUdpSrcPortRanges            []ObjectGroupServiceTcpUdpSrcPortRanges            `tfsdk:"tcp_udp_src_port_ranges"`
+	TcpUdpSrcDstPortListOp         []ObjectGroupServiceTcpUdpSrcDstPortListOp         `tfsdk:"tcp_udp_src_dst_port_list_op"`
+	TcpUdpSrcDstPortList           []ObjectGroupServiceTcpUdpSrcDstPortList           `tfsdk:"tcp_udp_src_dst_port_list"`
+	TcpUdpSrcDstPortListSrcOp      []ObjectGroupServiceTcpUdpSrcDstPortListSrcOp      `tfsdk:"tcp_udp_src_dst_port_list_src_op"`
+	TcpUdpSrcDstPortListDstOp      []ObjectGroupServiceTcpUdpSrcDstPortListDstOp      `tfsdk:"tcp_udp_src_dst_port_list_dst_op"`
+	TcpUdpSrcRangeDstPortListOp    []ObjectGroupServiceTcpUdpSrcRangeDstPortListOp    `tfsdk:"tcp_udp_src_range_dst_port_list_op"`
+	TcpUdpSrcRangeDstPortList      []ObjectGroupServiceTcpUdpSrcRangeDstPortList      `tfsdk:"tcp_udp_src_range_dst_port_list"`
+	TcpUdpSrcDstRangePortListOp    []ObjectGroupServiceTcpUdpSrcDstRangePortListOp    `tfsdk:"tcp_udp_src_dst_range_port_list_op"`
+	TcpUdpSrcDstRangePortList      []ObjectGroupServiceTcpUdpSrcDstRangePortList      `tfsdk:"tcp_udp_src_dst_range_port_list"`
+	TcpUdpSrcRangeDstRangePortList []ObjectGroupServiceTcpUdpSrcRangeDstRangePortList `tfsdk:"tcp_udp_src_range_dst_range_port_list"`
 }
 type ObjectGroupFqdnGroupObjects struct {
 	GroupName types.String `tfsdk:"group_name"`
@@ -80,12 +166,226 @@ type ObjectGroupNetworkAddressRanges struct {
 type ObjectGroupNetworkGroupObjects struct {
 	GroupName types.String `tfsdk:"group_name"`
 }
+type ObjectGroupServiceGroupObjects struct {
+	GroupName types.String `tfsdk:"group_name"`
+}
+type ObjectGroupServiceTcpDstPortListOp struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpDstPortList struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpDstPortRanges struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpSrcPortListOp struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpSrcPortList struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpSrcPortRanges struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortListOp struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortList struct {
+	SrcPort types.String `tfsdk:"src_port"`
+	DstPort types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortListSrcOp struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortListDstOp struct {
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcRangeDstPortListOp struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	Operator   types.String `tfsdk:"operator"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcRangeDstPortList struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstRangePortListOp struct {
+	Operator   types.String `tfsdk:"operator"`
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpSrcDstRangePortList struct {
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpSrcRangeDstRangePortList struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceUdpDstPortListOp struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpDstPortList struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpDstPortRanges struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceUdpSrcPortListOp struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpSrcPortList struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpSrcPortRanges struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortListOp struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortList struct {
+	SrcPort types.String `tfsdk:"src_port"`
+	DstPort types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortListSrcOp struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortListDstOp struct {
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcRangeDstPortListOp struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	Operator   types.String `tfsdk:"operator"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcRangeDstPortList struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstRangePortListOp struct {
+	Operator   types.String `tfsdk:"operator"`
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceUdpSrcDstRangePortList struct {
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceUdpSrcRangeDstRangePortList struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpUdpDstPortListOp struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpDstPortList struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpDstPortRanges struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcPortListOp struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpSrcPortList struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpSrcPortRanges struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortListOp struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortList struct {
+	SrcPort types.String `tfsdk:"src_port"`
+	DstPort types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortListSrcOp struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortListDstOp struct {
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcRangeDstPortListOp struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	Operator   types.String `tfsdk:"operator"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcRangeDstPortList struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstRangePortListOp struct {
+	Operator   types.String `tfsdk:"operator"`
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstRangePortList struct {
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcRangeDstRangePortList struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
 
 type ObjectGroupData struct {
 	Device  types.String             `tfsdk:"device"`
 	Id      types.String             `tfsdk:"id"`
 	Fqdn    []ObjectGroupFqdnData    `tfsdk:"fqdn"`
 	Network []ObjectGroupNetworkData `tfsdk:"network"`
+	Service []ObjectGroupServiceData `tfsdk:"service"`
 }
 type ObjectGroupFqdnData struct {
 	Name         types.String                      `tfsdk:"name"`
@@ -100,6 +400,91 @@ type ObjectGroupNetworkData struct {
 	NetworkAddresses []ObjectGroupNetworkNetworkAddressesData `tfsdk:"network_addresses"`
 	AddressRanges    []ObjectGroupNetworkAddressRangesData    `tfsdk:"address_ranges"`
 	GroupObjects     []ObjectGroupNetworkGroupObjectsData     `tfsdk:"group_objects"`
+}
+type ObjectGroupServiceData struct {
+	Name                           types.String                                           `tfsdk:"name"`
+	Description                    types.String                                           `tfsdk:"description"`
+	GroupObjects                   []ObjectGroupServiceGroupObjectsData                   `tfsdk:"group_objects"`
+	ProtocolNumbers                types.Set                                              `tfsdk:"protocol_numbers"`
+	Ahp                            types.Bool                                             `tfsdk:"ahp"`
+	Eigrp                          types.Bool                                             `tfsdk:"eigrp"`
+	Esp                            types.Bool                                             `tfsdk:"esp"`
+	Gre                            types.Bool                                             `tfsdk:"gre"`
+	Icmp                           types.Bool                                             `tfsdk:"icmp"`
+	Igmp                           types.Bool                                             `tfsdk:"igmp"`
+	Ip                             types.Bool                                             `tfsdk:"ip"`
+	Ipinip                         types.Bool                                             `tfsdk:"ipinip"`
+	Nos                            types.Bool                                             `tfsdk:"nos"`
+	Ospf                           types.Bool                                             `tfsdk:"ospf"`
+	Pcp                            types.Bool                                             `tfsdk:"pcp"`
+	Pim                            types.Bool                                             `tfsdk:"pim"`
+	Tcp                            types.Bool                                             `tfsdk:"tcp"`
+	Udp                            types.Bool                                             `tfsdk:"udp"`
+	IcmpPortNumber                 types.Int64                                            `tfsdk:"icmp_port_number"`
+	IcmpAlternateAddress           types.Bool                                             `tfsdk:"icmp_alternate_address"`
+	IcmpConversionError            types.Bool                                             `tfsdk:"icmp_conversion_error"`
+	IcmpEcho                       types.Bool                                             `tfsdk:"icmp_echo"`
+	IcmpEchoReply                  types.Bool                                             `tfsdk:"icmp_echo_reply"`
+	IcmpInformationReply           types.Bool                                             `tfsdk:"icmp_information_reply"`
+	IcmpInformationRequest         types.Bool                                             `tfsdk:"icmp_information_request"`
+	IcmpMaskReply                  types.Bool                                             `tfsdk:"icmp_mask_reply"`
+	IcmpMaskRequest                types.Bool                                             `tfsdk:"icmp_mask_request"`
+	IcmpMobileRedirect             types.Bool                                             `tfsdk:"icmp_mobile_redirect"`
+	IcmpParameterProblem           types.Bool                                             `tfsdk:"icmp_parameter_problem"`
+	IcmpRedirect                   types.Bool                                             `tfsdk:"icmp_redirect"`
+	IcmpRouterAdvertisement        types.Bool                                             `tfsdk:"icmp_router_advertisement"`
+	IcmpRouterSolicitation         types.Bool                                             `tfsdk:"icmp_router_solicitation"`
+	IcmpSourceQuench               types.Bool                                             `tfsdk:"icmp_source_quench"`
+	IcmpTimeExceeded               types.Bool                                             `tfsdk:"icmp_time_exceeded"`
+	IcmpTimestampReply             types.Bool                                             `tfsdk:"icmp_timestamp_reply"`
+	IcmpTimestampRequest           types.Bool                                             `tfsdk:"icmp_timestamp_request"`
+	IcmpTraceroute                 types.Bool                                             `tfsdk:"icmp_traceroute"`
+	IcmpUnreachable                types.Bool                                             `tfsdk:"icmp_unreachable"`
+	TcpDstPortListOp               []ObjectGroupServiceTcpDstPortListOpData               `tfsdk:"tcp_dst_port_list_op"`
+	TcpDstPortList                 []ObjectGroupServiceTcpDstPortListData                 `tfsdk:"tcp_dst_port_list"`
+	TcpDstPortRanges               []ObjectGroupServiceTcpDstPortRangesData               `tfsdk:"tcp_dst_port_ranges"`
+	TcpSrcPortListOp               []ObjectGroupServiceTcpSrcPortListOpData               `tfsdk:"tcp_src_port_list_op"`
+	TcpSrcPortList                 []ObjectGroupServiceTcpSrcPortListData                 `tfsdk:"tcp_src_port_list"`
+	TcpSrcPortRanges               []ObjectGroupServiceTcpSrcPortRangesData               `tfsdk:"tcp_src_port_ranges"`
+	TcpSrcDstPortListOp            []ObjectGroupServiceTcpSrcDstPortListOpData            `tfsdk:"tcp_src_dst_port_list_op"`
+	TcpSrcDstPortList              []ObjectGroupServiceTcpSrcDstPortListData              `tfsdk:"tcp_src_dst_port_list"`
+	TcpSrcDstPortListSrcOp         []ObjectGroupServiceTcpSrcDstPortListSrcOpData         `tfsdk:"tcp_src_dst_port_list_src_op"`
+	TcpSrcDstPortListDstOp         []ObjectGroupServiceTcpSrcDstPortListDstOpData         `tfsdk:"tcp_src_dst_port_list_dst_op"`
+	TcpSrcRangeDstPortListOp       []ObjectGroupServiceTcpSrcRangeDstPortListOpData       `tfsdk:"tcp_src_range_dst_port_list_op"`
+	TcpSrcRangeDstPortList         []ObjectGroupServiceTcpSrcRangeDstPortListData         `tfsdk:"tcp_src_range_dst_port_list"`
+	TcpSrcDstRangePortListOp       []ObjectGroupServiceTcpSrcDstRangePortListOpData       `tfsdk:"tcp_src_dst_range_port_list_op"`
+	TcpSrcDstRangePortList         []ObjectGroupServiceTcpSrcDstRangePortListData         `tfsdk:"tcp_src_dst_range_port_list"`
+	TcpSrcRangeDstRangePortList    []ObjectGroupServiceTcpSrcRangeDstRangePortListData    `tfsdk:"tcp_src_range_dst_range_port_list"`
+	UdpDstPortListOp               []ObjectGroupServiceUdpDstPortListOpData               `tfsdk:"udp_dst_port_list_op"`
+	UdpDstPortList                 []ObjectGroupServiceUdpDstPortListData                 `tfsdk:"udp_dst_port_list"`
+	UdpDstPortRanges               []ObjectGroupServiceUdpDstPortRangesData               `tfsdk:"udp_dst_port_ranges"`
+	UdpSrcPortListOp               []ObjectGroupServiceUdpSrcPortListOpData               `tfsdk:"udp_src_port_list_op"`
+	UdpSrcPortList                 []ObjectGroupServiceUdpSrcPortListData                 `tfsdk:"udp_src_port_list"`
+	UdpSrcPortRanges               []ObjectGroupServiceUdpSrcPortRangesData               `tfsdk:"udp_src_port_ranges"`
+	UdpSrcDstPortListOp            []ObjectGroupServiceUdpSrcDstPortListOpData            `tfsdk:"udp_src_dst_port_list_op"`
+	UdpSrcDstPortList              []ObjectGroupServiceUdpSrcDstPortListData              `tfsdk:"udp_src_dst_port_list"`
+	UdpSrcDstPortListSrcOp         []ObjectGroupServiceUdpSrcDstPortListSrcOpData         `tfsdk:"udp_src_dst_port_list_src_op"`
+	UdpSrcDstPortListDstOp         []ObjectGroupServiceUdpSrcDstPortListDstOpData         `tfsdk:"udp_src_dst_port_list_dst_op"`
+	UdpSrcRangeDstPortListOp       []ObjectGroupServiceUdpSrcRangeDstPortListOpData       `tfsdk:"udp_src_range_dst_port_list_op"`
+	UdpSrcRangeDstPortList         []ObjectGroupServiceUdpSrcRangeDstPortListData         `tfsdk:"udp_src_range_dst_port_list"`
+	UdpSrcDstRangePortListOp       []ObjectGroupServiceUdpSrcDstRangePortListOpData       `tfsdk:"udp_src_dst_range_port_list_op"`
+	UdpSrcDstRangePortList         []ObjectGroupServiceUdpSrcDstRangePortListData         `tfsdk:"udp_src_dst_range_port_list"`
+	UdpSrcRangeDstRangePortList    []ObjectGroupServiceUdpSrcRangeDstRangePortListData    `tfsdk:"udp_src_range_dst_range_port_list"`
+	TcpUdpDstPortListOp            []ObjectGroupServiceTcpUdpDstPortListOpData            `tfsdk:"tcp_udp_dst_port_list_op"`
+	TcpUdpDstPortList              []ObjectGroupServiceTcpUdpDstPortListData              `tfsdk:"tcp_udp_dst_port_list"`
+	TcpUdpDstPortRanges            []ObjectGroupServiceTcpUdpDstPortRangesData            `tfsdk:"tcp_udp_dst_port_ranges"`
+	TcpUdpSrcPortListOp            []ObjectGroupServiceTcpUdpSrcPortListOpData            `tfsdk:"tcp_udp_src_port_list_op"`
+	TcpUdpSrcPortList              []ObjectGroupServiceTcpUdpSrcPortListData              `tfsdk:"tcp_udp_src_port_list"`
+	TcpUdpSrcPortRanges            []ObjectGroupServiceTcpUdpSrcPortRangesData            `tfsdk:"tcp_udp_src_port_ranges"`
+	TcpUdpSrcDstPortListOp         []ObjectGroupServiceTcpUdpSrcDstPortListOpData         `tfsdk:"tcp_udp_src_dst_port_list_op"`
+	TcpUdpSrcDstPortList           []ObjectGroupServiceTcpUdpSrcDstPortListData           `tfsdk:"tcp_udp_src_dst_port_list"`
+	TcpUdpSrcDstPortListSrcOp      []ObjectGroupServiceTcpUdpSrcDstPortListSrcOpData      `tfsdk:"tcp_udp_src_dst_port_list_src_op"`
+	TcpUdpSrcDstPortListDstOp      []ObjectGroupServiceTcpUdpSrcDstPortListDstOpData      `tfsdk:"tcp_udp_src_dst_port_list_dst_op"`
+	TcpUdpSrcRangeDstPortListOp    []ObjectGroupServiceTcpUdpSrcRangeDstPortListOpData    `tfsdk:"tcp_udp_src_range_dst_port_list_op"`
+	TcpUdpSrcRangeDstPortList      []ObjectGroupServiceTcpUdpSrcRangeDstPortListData      `tfsdk:"tcp_udp_src_range_dst_port_list"`
+	TcpUdpSrcDstRangePortListOp    []ObjectGroupServiceTcpUdpSrcDstRangePortListOpData    `tfsdk:"tcp_udp_src_dst_range_port_list_op"`
+	TcpUdpSrcDstRangePortList      []ObjectGroupServiceTcpUdpSrcDstRangePortListData      `tfsdk:"tcp_udp_src_dst_range_port_list"`
+	TcpUdpSrcRangeDstRangePortList []ObjectGroupServiceTcpUdpSrcRangeDstRangePortListData `tfsdk:"tcp_udp_src_range_dst_range_port_list"`
 }
 type ObjectGroupFqdnGroupObjectsData struct {
 	GroupName types.String `tfsdk:"group_name"`
@@ -120,6 +505,219 @@ type ObjectGroupNetworkAddressRangesData struct {
 }
 type ObjectGroupNetworkGroupObjectsData struct {
 	GroupName types.String `tfsdk:"group_name"`
+}
+type ObjectGroupServiceGroupObjectsData struct {
+	GroupName types.String `tfsdk:"group_name"`
+}
+type ObjectGroupServiceTcpDstPortListOpData struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpDstPortListData struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpDstPortRangesData struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpSrcPortListOpData struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpSrcPortListData struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpSrcPortRangesData struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortListOpData struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortListData struct {
+	SrcPort types.String `tfsdk:"src_port"`
+	DstPort types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortListSrcOpData struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstPortListDstOpData struct {
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcRangeDstPortListOpData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	Operator   types.String `tfsdk:"operator"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcRangeDstPortListData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpSrcDstRangePortListOpData struct {
+	Operator   types.String `tfsdk:"operator"`
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpSrcDstRangePortListData struct {
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpSrcRangeDstRangePortListData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceUdpDstPortListOpData struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpDstPortListData struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpDstPortRangesData struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceUdpSrcPortListOpData struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpSrcPortListData struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceUdpSrcPortRangesData struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortListOpData struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortListData struct {
+	SrcPort types.String `tfsdk:"src_port"`
+	DstPort types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortListSrcOpData struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstPortListDstOpData struct {
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcRangeDstPortListOpData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	Operator   types.String `tfsdk:"operator"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcRangeDstPortListData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceUdpSrcDstRangePortListOpData struct {
+	Operator   types.String `tfsdk:"operator"`
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceUdpSrcDstRangePortListData struct {
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceUdpSrcRangeDstRangePortListData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpUdpDstPortListOpData struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpDstPortListData struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpDstPortRangesData struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcPortListOpData struct {
+	Operator types.String `tfsdk:"operator"`
+	Port     types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpSrcPortListData struct {
+	Port types.String `tfsdk:"port"`
+}
+type ObjectGroupServiceTcpUdpSrcPortRangesData struct {
+	MinPort types.String `tfsdk:"min_port"`
+	MaxPort types.String `tfsdk:"max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortListOpData struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortListData struct {
+	SrcPort types.String `tfsdk:"src_port"`
+	DstPort types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortListSrcOpData struct {
+	SrcOperator types.String `tfsdk:"src_operator"`
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstPortListDstOpData struct {
+	SrcPort     types.String `tfsdk:"src_port"`
+	DstOperator types.String `tfsdk:"dst_operator"`
+	DstPort     types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcRangeDstPortListOpData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	Operator   types.String `tfsdk:"operator"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcRangeDstPortListData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstPort    types.String `tfsdk:"dst_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstRangePortListOpData struct {
+	Operator   types.String `tfsdk:"operator"`
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcDstRangePortListData struct {
+	SrcPort    types.String `tfsdk:"src_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
+}
+type ObjectGroupServiceTcpUdpSrcRangeDstRangePortListData struct {
+	SrcMinPort types.String `tfsdk:"src_min_port"`
+	SrcMaxPort types.String `tfsdk:"src_max_port"`
+	DstMinPort types.String `tfsdk:"dst_min_port"`
+	DstMaxPort types.String `tfsdk:"dst_max_port"`
 }
 
 // End of section. //template:end types
@@ -238,6 +836,783 @@ func (data ObjectGroup) toBody(ctx context.Context, config ObjectGroup) string {
 			}
 		}
 	}
+	if len(data.Service) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service", []interface{}{})
+		for index, item := range data.Service {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Description.IsNull() && !item.Description.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"description", item.Description.ValueString())
+			}
+			if !item.ProtocolNumbers.IsNull() && !item.ProtocolNumbers.IsUnknown() {
+				var values []int
+				item.ProtocolNumbers.ElementsAs(ctx, &values, false)
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"protocal-number", values)
+			}
+			if !item.Ahp.IsNull() && !item.Ahp.IsUnknown() {
+				if item.Ahp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"ahp", map[string]string{})
+				}
+			}
+			if !item.Eigrp.IsNull() && !item.Eigrp.IsUnknown() {
+				if item.Eigrp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"eigrp", map[string]string{})
+				}
+			}
+			if !item.Esp.IsNull() && !item.Esp.IsUnknown() {
+				if item.Esp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"esp", map[string]string{})
+				}
+			}
+			if !item.Gre.IsNull() && !item.Gre.IsUnknown() {
+				if item.Gre.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"gre", map[string]string{})
+				}
+			}
+			if !item.Icmp.IsNull() && !item.Icmp.IsUnknown() {
+				if item.Icmp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp", map[string]string{})
+				}
+			}
+			if !item.Igmp.IsNull() && !item.Igmp.IsUnknown() {
+				if item.Igmp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"igmp", map[string]string{})
+				}
+			}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				if item.Ip.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"ip", map[string]string{})
+				}
+			}
+			if !item.Ipinip.IsNull() && !item.Ipinip.IsUnknown() {
+				if item.Ipinip.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"ipinip", map[string]string{})
+				}
+			}
+			if !item.Nos.IsNull() && !item.Nos.IsUnknown() {
+				if item.Nos.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"nos", map[string]string{})
+				}
+			}
+			if !item.Ospf.IsNull() && !item.Ospf.IsUnknown() {
+				if item.Ospf.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"ospf", map[string]string{})
+				}
+			}
+			if !item.Pcp.IsNull() && !item.Pcp.IsUnknown() {
+				if item.Pcp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"pcp", map[string]string{})
+				}
+			}
+			if !item.Pim.IsNull() && !item.Pim.IsUnknown() {
+				if item.Pim.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"pim", map[string]string{})
+				}
+			}
+			if !item.Tcp.IsNull() && !item.Tcp.IsUnknown() {
+				if item.Tcp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp", map[string]string{})
+				}
+			}
+			if !item.Udp.IsNull() && !item.Udp.IsUnknown() {
+				if item.Udp.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp", map[string]string{})
+				}
+			}
+			if !item.IcmpPortNumber.IsNull() && !item.IcmpPortNumber.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.port-number", strconv.FormatInt(item.IcmpPortNumber.ValueInt64(), 10))
+			}
+			if !item.IcmpAlternateAddress.IsNull() && !item.IcmpAlternateAddress.IsUnknown() {
+				if item.IcmpAlternateAddress.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.alternate-address", map[string]string{})
+				}
+			}
+			if !item.IcmpConversionError.IsNull() && !item.IcmpConversionError.IsUnknown() {
+				if item.IcmpConversionError.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.conversion-error", map[string]string{})
+				}
+			}
+			if !item.IcmpEcho.IsNull() && !item.IcmpEcho.IsUnknown() {
+				if item.IcmpEcho.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.echo", map[string]string{})
+				}
+			}
+			if !item.IcmpEchoReply.IsNull() && !item.IcmpEchoReply.IsUnknown() {
+				if item.IcmpEchoReply.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.echo-reply", map[string]string{})
+				}
+			}
+			if !item.IcmpInformationReply.IsNull() && !item.IcmpInformationReply.IsUnknown() {
+				if item.IcmpInformationReply.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.information-reply", map[string]string{})
+				}
+			}
+			if !item.IcmpInformationRequest.IsNull() && !item.IcmpInformationRequest.IsUnknown() {
+				if item.IcmpInformationRequest.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.information-request", map[string]string{})
+				}
+			}
+			if !item.IcmpMaskReply.IsNull() && !item.IcmpMaskReply.IsUnknown() {
+				if item.IcmpMaskReply.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.mask-reply", map[string]string{})
+				}
+			}
+			if !item.IcmpMaskRequest.IsNull() && !item.IcmpMaskRequest.IsUnknown() {
+				if item.IcmpMaskRequest.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.mask-request", map[string]string{})
+				}
+			}
+			if !item.IcmpMobileRedirect.IsNull() && !item.IcmpMobileRedirect.IsUnknown() {
+				if item.IcmpMobileRedirect.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.mobile-redirect", map[string]string{})
+				}
+			}
+			if !item.IcmpParameterProblem.IsNull() && !item.IcmpParameterProblem.IsUnknown() {
+				if item.IcmpParameterProblem.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.parameter-problem", map[string]string{})
+				}
+			}
+			if !item.IcmpRedirect.IsNull() && !item.IcmpRedirect.IsUnknown() {
+				if item.IcmpRedirect.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.redirect", map[string]string{})
+				}
+			}
+			if !item.IcmpRouterAdvertisement.IsNull() && !item.IcmpRouterAdvertisement.IsUnknown() {
+				if item.IcmpRouterAdvertisement.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.router-advertisement", map[string]string{})
+				}
+			}
+			if !item.IcmpRouterSolicitation.IsNull() && !item.IcmpRouterSolicitation.IsUnknown() {
+				if item.IcmpRouterSolicitation.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.router-solicitation", map[string]string{})
+				}
+			}
+			if !item.IcmpSourceQuench.IsNull() && !item.IcmpSourceQuench.IsUnknown() {
+				if item.IcmpSourceQuench.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.source-quench", map[string]string{})
+				}
+			}
+			if !item.IcmpTimeExceeded.IsNull() && !item.IcmpTimeExceeded.IsUnknown() {
+				if item.IcmpTimeExceeded.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.time-exceeded", map[string]string{})
+				}
+			}
+			if !item.IcmpTimestampReply.IsNull() && !item.IcmpTimestampReply.IsUnknown() {
+				if item.IcmpTimestampReply.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.timestamp-reply", map[string]string{})
+				}
+			}
+			if !item.IcmpTimestampRequest.IsNull() && !item.IcmpTimestampRequest.IsUnknown() {
+				if item.IcmpTimestampRequest.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.timestamp-request", map[string]string{})
+				}
+			}
+			if !item.IcmpTraceroute.IsNull() && !item.IcmpTraceroute.IsUnknown() {
+				if item.IcmpTraceroute.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.traceroute", map[string]string{})
+				}
+			}
+			if !item.IcmpUnreachable.IsNull() && !item.IcmpUnreachable.IsUnknown() {
+				if item.IcmpUnreachable.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"icmp-conf.icmp.unreachable", map[string]string{})
+				}
+			}
+			if len(item.GroupObjects) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"group-objects", []interface{}{})
+				for cindex, citem := range item.GroupObjects {
+					if !citem.GroupName.IsNull() && !citem.GroupName.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"group-objects"+"."+strconv.Itoa(cindex)+"."+"service-group", citem.GroupName.ValueString())
+					}
+				}
+			}
+			if len(item.TcpDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-port-list-op", []interface{}{})
+				for cindex, citem := range item.TcpDstPortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-port-list-op"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-port-list-op"+"."+strconv.Itoa(cindex)+"."+"tcp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-port-list-no-op", []interface{}{})
+				for cindex, citem := range item.TcpDstPortList {
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-port-list-no-op"+"."+strconv.Itoa(cindex)+"."+"tcp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpDstPortRanges) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-range-port-list.range", []interface{}{})
+				for cindex, citem := range item.TcpDstPortRanges {
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-range-port-list.range"+"."+strconv.Itoa(cindex)+"."+"tcp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-range-port-list.range"+"."+strconv.Itoa(cindex)+"."+"tcp-max-port", citem.MaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcPortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcPortList {
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcPortRanges) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-port-list.source.range", []interface{}{})
+				for cindex, citem := range item.TcpSrcPortRanges {
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-port-list.source.range"+"."+strconv.Itoa(cindex)+"."+"tcp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-port-list.source.range"+"."+strconv.Itoa(cindex)+"."+"tcp-max-port", citem.MaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcDstPortListOp {
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcDstPortList {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcDstPortListSrcOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-src-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcDstPortListSrcOp {
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcDstPortListDstOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-dst-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcDstPortListDstOp {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcRangeDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcRangeDstPortListOp {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcRangeDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcRangeDstPortList {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcDstRangePortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcDstRangePortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcDstRangePortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcDstRangePortList {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpSrcRangeDstRangePortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-range-port-list.source", []interface{}{})
+				for cindex, citem := range item.TcpSrcRangeDstRangePortList {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-conf.tcp.tcp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-port-list-op", []interface{}{})
+				for cindex, citem := range item.UdpDstPortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-port-list-op"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-port-list-op"+"."+strconv.Itoa(cindex)+"."+"udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.UdpDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-port-list-no-op", []interface{}{})
+				for cindex, citem := range item.UdpDstPortList {
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-port-list-no-op"+"."+strconv.Itoa(cindex)+"."+"udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.UdpDstPortRanges) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-range-port-list.range", []interface{}{})
+				for cindex, citem := range item.UdpDstPortRanges {
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-range-port-list.range"+"."+strconv.Itoa(cindex)+"."+"udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-range-port-list.range"+"."+strconv.Itoa(cindex)+"."+"udp-max-port", citem.MaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcPortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcPortList {
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcPortRanges) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-port-list.source.range", []interface{}{})
+				for cindex, citem := range item.UdpSrcPortRanges {
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-port-list.source.range"+"."+strconv.Itoa(cindex)+"."+"udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-port-list.source.range"+"."+strconv.Itoa(cindex)+"."+"udp-max-port", citem.MaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcDstPortListOp {
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcDstPortList {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcDstPortListSrcOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-src-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcDstPortListSrcOp {
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcDstPortListDstOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-dst-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcDstPortListDstOp {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcRangeDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcRangeDstPortListOp {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcRangeDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcRangeDstPortList {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcDstRangePortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcDstRangePortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcDstRangePortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcDstRangePortList {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.UdpSrcRangeDstRangePortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-range-port-list.source", []interface{}{})
+				for cindex, citem := range item.UdpSrcRangeDstRangePortList {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"udp-conf.udp.udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-port-list-op", []interface{}{})
+				for cindex, citem := range item.TcpUdpDstPortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-port-list-op"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-port-list-op"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-port-list-no-op", []interface{}{})
+				for cindex, citem := range item.TcpUdpDstPortList {
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-port-list-no-op"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpDstPortRanges) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-range-port-list.range", []interface{}{})
+				for cindex, citem := range item.TcpUdpDstPortRanges {
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-range-port-list.range"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-range-port-list.range"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-max-port", citem.MaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcPortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcPortList {
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-port", citem.Port.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcPortRanges) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-port-list.source.range", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcPortRanges {
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-port-list.source.range"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-port-list.source.range"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-max-port", citem.MaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcDstPortListOp {
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcDstPortList {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcDstPortListSrcOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-src-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcDstPortListSrcOp {
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-src-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcDstPortListDstOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-dst-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcDstPortListDstOp {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-port-list-dst-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcRangeDstPortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcRangeDstPortListOp {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcRangeDstPortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcRangeDstPortList {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcDstRangePortListOp) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcDstRangePortListOp {
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"operator", citem.Operator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcDstRangePortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-no-op.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcDstRangePortList {
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-dst-range-port-list-no-op.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+			if len(item.TcpUdpSrcRangeDstRangePortList) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-range-port-list.source", []interface{}{})
+				for cindex, citem := range item.TcpUdpSrcRangeDstRangePortList {
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-object-group:service"+"."+strconv.Itoa(index)+"."+"tcp-udp.tcp-udp-src-range-dst-range-port-list.source"+"."+strconv.Itoa(cindex)+"."+"tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+				}
+			}
+		}
+	}
 	return body
 }
 
@@ -329,6 +1704,898 @@ func (data ObjectGroup) toBodyXML(ctx context.Context, config ObjectGroup) strin
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-object-group:network", cBody.Res())
+		}
+	}
+	if len(data.Service) > 0 {
+		for _, item := range data.Service {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Description.IsNull() && !item.Description.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
+			}
+			if len(item.GroupObjects) > 0 {
+				for _, citem := range item.GroupObjects {
+					ccBody := netconf.Body{}
+					if !citem.GroupName.IsNull() && !citem.GroupName.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "service-group", citem.GroupName.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "group-objects", ccBody.Res())
+				}
+			}
+			if !item.ProtocolNumbers.IsNull() && !item.ProtocolNumbers.IsUnknown() {
+				var values []int
+				item.ProtocolNumbers.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "protocal-number", v)
+				}
+			}
+			if !item.Ahp.IsNull() && !item.Ahp.IsUnknown() {
+				if item.Ahp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ahp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ahp")
+				}
+			}
+			if !item.Eigrp.IsNull() && !item.Eigrp.IsUnknown() {
+				if item.Eigrp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "eigrp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "eigrp")
+				}
+			}
+			if !item.Esp.IsNull() && !item.Esp.IsUnknown() {
+				if item.Esp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "esp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "esp")
+				}
+			}
+			if !item.Gre.IsNull() && !item.Gre.IsUnknown() {
+				if item.Gre.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "gre", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "gre")
+				}
+			}
+			if !item.Icmp.IsNull() && !item.Icmp.IsUnknown() {
+				if item.Icmp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp")
+				}
+			}
+			if !item.Igmp.IsNull() && !item.Igmp.IsUnknown() {
+				if item.Igmp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "igmp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "igmp")
+				}
+			}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				if item.Ip.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ip", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ip")
+				}
+			}
+			if !item.Ipinip.IsNull() && !item.Ipinip.IsUnknown() {
+				if item.Ipinip.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ipinip", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ipinip")
+				}
+			}
+			if !item.Nos.IsNull() && !item.Nos.IsUnknown() {
+				if item.Nos.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nos", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nos")
+				}
+			}
+			if !item.Ospf.IsNull() && !item.Ospf.IsUnknown() {
+				if item.Ospf.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ospf", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ospf")
+				}
+			}
+			if !item.Pcp.IsNull() && !item.Pcp.IsUnknown() {
+				if item.Pcp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "pcp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "pcp")
+				}
+			}
+			if !item.Pim.IsNull() && !item.Pim.IsUnknown() {
+				if item.Pim.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "pim", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "pim")
+				}
+			}
+			if !item.Tcp.IsNull() && !item.Tcp.IsUnknown() {
+				if item.Tcp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tcp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tcp")
+				}
+			}
+			if !item.Udp.IsNull() && !item.Udp.IsUnknown() {
+				if item.Udp.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "udp", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "udp")
+				}
+			}
+			if !item.IcmpPortNumber.IsNull() && !item.IcmpPortNumber.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/port-number", strconv.FormatInt(item.IcmpPortNumber.ValueInt64(), 10))
+			}
+			if !item.IcmpAlternateAddress.IsNull() && !item.IcmpAlternateAddress.IsUnknown() {
+				if item.IcmpAlternateAddress.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/alternate-address", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/alternate-address")
+				}
+			}
+			if !item.IcmpConversionError.IsNull() && !item.IcmpConversionError.IsUnknown() {
+				if item.IcmpConversionError.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/conversion-error", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/conversion-error")
+				}
+			}
+			if !item.IcmpEcho.IsNull() && !item.IcmpEcho.IsUnknown() {
+				if item.IcmpEcho.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/echo", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/echo")
+				}
+			}
+			if !item.IcmpEchoReply.IsNull() && !item.IcmpEchoReply.IsUnknown() {
+				if item.IcmpEchoReply.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/echo-reply", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/echo-reply")
+				}
+			}
+			if !item.IcmpInformationReply.IsNull() && !item.IcmpInformationReply.IsUnknown() {
+				if item.IcmpInformationReply.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/information-reply", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/information-reply")
+				}
+			}
+			if !item.IcmpInformationRequest.IsNull() && !item.IcmpInformationRequest.IsUnknown() {
+				if item.IcmpInformationRequest.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/information-request", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/information-request")
+				}
+			}
+			if !item.IcmpMaskReply.IsNull() && !item.IcmpMaskReply.IsUnknown() {
+				if item.IcmpMaskReply.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/mask-reply", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/mask-reply")
+				}
+			}
+			if !item.IcmpMaskRequest.IsNull() && !item.IcmpMaskRequest.IsUnknown() {
+				if item.IcmpMaskRequest.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/mask-request", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/mask-request")
+				}
+			}
+			if !item.IcmpMobileRedirect.IsNull() && !item.IcmpMobileRedirect.IsUnknown() {
+				if item.IcmpMobileRedirect.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/mobile-redirect", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/mobile-redirect")
+				}
+			}
+			if !item.IcmpParameterProblem.IsNull() && !item.IcmpParameterProblem.IsUnknown() {
+				if item.IcmpParameterProblem.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/parameter-problem", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/parameter-problem")
+				}
+			}
+			if !item.IcmpRedirect.IsNull() && !item.IcmpRedirect.IsUnknown() {
+				if item.IcmpRedirect.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/redirect", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/redirect")
+				}
+			}
+			if !item.IcmpRouterAdvertisement.IsNull() && !item.IcmpRouterAdvertisement.IsUnknown() {
+				if item.IcmpRouterAdvertisement.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/router-advertisement", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/router-advertisement")
+				}
+			}
+			if !item.IcmpRouterSolicitation.IsNull() && !item.IcmpRouterSolicitation.IsUnknown() {
+				if item.IcmpRouterSolicitation.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/router-solicitation", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/router-solicitation")
+				}
+			}
+			if !item.IcmpSourceQuench.IsNull() && !item.IcmpSourceQuench.IsUnknown() {
+				if item.IcmpSourceQuench.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/source-quench", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/source-quench")
+				}
+			}
+			if !item.IcmpTimeExceeded.IsNull() && !item.IcmpTimeExceeded.IsUnknown() {
+				if item.IcmpTimeExceeded.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/time-exceeded", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/time-exceeded")
+				}
+			}
+			if !item.IcmpTimestampReply.IsNull() && !item.IcmpTimestampReply.IsUnknown() {
+				if item.IcmpTimestampReply.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/timestamp-reply", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/timestamp-reply")
+				}
+			}
+			if !item.IcmpTimestampRequest.IsNull() && !item.IcmpTimestampRequest.IsUnknown() {
+				if item.IcmpTimestampRequest.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/timestamp-request", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/timestamp-request")
+				}
+			}
+			if !item.IcmpTraceroute.IsNull() && !item.IcmpTraceroute.IsUnknown() {
+				if item.IcmpTraceroute.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/traceroute", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/traceroute")
+				}
+			}
+			if !item.IcmpUnreachable.IsNull() && !item.IcmpUnreachable.IsUnknown() {
+				if item.IcmpUnreachable.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "icmp-conf/icmp/unreachable", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "icmp-conf/icmp/unreachable")
+				}
+			}
+			if len(item.TcpDstPortListOp) > 0 {
+				for _, citem := range item.TcpDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-port-list-op", ccBody.Res())
+				}
+			}
+			if len(item.TcpDstPortList) > 0 {
+				for _, citem := range item.TcpDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-port-list-no-op", ccBody.Res())
+				}
+			}
+			if len(item.TcpDstPortRanges) > 0 {
+				for _, citem := range item.TcpDstPortRanges {
+					ccBody := netconf.Body{}
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-max-port", citem.MaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-range-port-list/range", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcPortListOp) > 0 {
+				for _, citem := range item.TcpSrcPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcPortList) > 0 {
+				for _, citem := range item.TcpSrcPortList {
+					ccBody := netconf.Body{}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcPortRanges) > 0 {
+				for _, citem := range item.TcpSrcPortRanges {
+					ccBody := netconf.Body{}
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-max-port", citem.MaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-port-list/source/range", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcDstPortListOp) > 0 {
+				for _, citem := range item.TcpSrcDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcDstPortList) > 0 {
+				for _, citem := range item.TcpSrcDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcDstPortListSrcOp) > 0 {
+				for _, citem := range item.TcpSrcDstPortListSrcOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcDstPortListDstOp) > 0 {
+				for _, citem := range item.TcpSrcDstPortListDstOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcRangeDstPortListOp) > 0 {
+				for _, citem := range item.TcpSrcRangeDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcRangeDstPortList) > 0 {
+				for _, citem := range item.TcpSrcRangeDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcDstRangePortListOp) > 0 {
+				for _, citem := range item.TcpSrcDstRangePortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcDstRangePortList) > 0 {
+				for _, citem := range item.TcpSrcDstRangePortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpSrcRangeDstRangePortList) > 0 {
+				for _, citem := range item.TcpSrcRangeDstRangePortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpDstPortListOp) > 0 {
+				for _, citem := range item.UdpDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-port-list-op", ccBody.Res())
+				}
+			}
+			if len(item.UdpDstPortList) > 0 {
+				for _, citem := range item.UdpDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-port-list-no-op", ccBody.Res())
+				}
+			}
+			if len(item.UdpDstPortRanges) > 0 {
+				for _, citem := range item.UdpDstPortRanges {
+					ccBody := netconf.Body{}
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-max-port", citem.MaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-range-port-list/range", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcPortListOp) > 0 {
+				for _, citem := range item.UdpSrcPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcPortList) > 0 {
+				for _, citem := range item.UdpSrcPortList {
+					ccBody := netconf.Body{}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcPortRanges) > 0 {
+				for _, citem := range item.UdpSrcPortRanges {
+					ccBody := netconf.Body{}
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-max-port", citem.MaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-port-list/source/range", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcDstPortListOp) > 0 {
+				for _, citem := range item.UdpSrcDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcDstPortList) > 0 {
+				for _, citem := range item.UdpSrcDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcDstPortListSrcOp) > 0 {
+				for _, citem := range item.UdpSrcDstPortListSrcOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-src-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcDstPortListDstOp) > 0 {
+				for _, citem := range item.UdpSrcDstPortListDstOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-port-list-dst-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcRangeDstPortListOp) > 0 {
+				for _, citem := range item.UdpSrcRangeDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-dst-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcRangeDstPortList) > 0 {
+				for _, citem := range item.UdpSrcRangeDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcDstRangePortListOp) > 0 {
+				for _, citem := range item.UdpSrcDstRangePortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-range-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcDstRangePortList) > 0 {
+				for _, citem := range item.UdpSrcDstRangePortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.UdpSrcRangeDstRangePortList) > 0 {
+				for _, citem := range item.UdpSrcRangeDstRangePortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "udp-conf/udp/udp-src-range-dst-range-port-list/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpDstPortListOp) > 0 {
+				for _, citem := range item.TcpUdpDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-port-list-op", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpDstPortList) > 0 {
+				for _, citem := range item.TcpUdpDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-port-list-no-op", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpDstPortRanges) > 0 {
+				for _, citem := range item.TcpUdpDstPortRanges {
+					ccBody := netconf.Body{}
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-max-port", citem.MaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-range-port-list/range", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcPortListOp) > 0 {
+				for _, citem := range item.TcpUdpSrcPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcPortList) > 0 {
+				for _, citem := range item.TcpUdpSrcPortList {
+					ccBody := netconf.Body{}
+					if !citem.Port.IsNull() && !citem.Port.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-port", citem.Port.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcPortRanges) > 0 {
+				for _, citem := range item.TcpUdpSrcPortRanges {
+					ccBody := netconf.Body{}
+					if !citem.MinPort.IsNull() && !citem.MinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-min-port", citem.MinPort.ValueString())
+					}
+					if !citem.MaxPort.IsNull() && !citem.MaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-max-port", citem.MaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-port-list/source/range", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcDstPortListOp) > 0 {
+				for _, citem := range item.TcpUdpSrcDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcDstPortList) > 0 {
+				for _, citem := range item.TcpUdpSrcDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcDstPortListSrcOp) > 0 {
+				for _, citem := range item.TcpUdpSrcDstPortListSrcOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcOperator.IsNull() && !citem.SrcOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "src-operator", citem.SrcOperator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcDstPortListDstOp) > 0 {
+				for _, citem := range item.TcpUdpSrcDstPortListDstOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstOperator.IsNull() && !citem.DstOperator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "dst-operator", citem.DstOperator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcRangeDstPortListOp) > 0 {
+				for _, citem := range item.TcpUdpSrcRangeDstPortListOp {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcRangeDstPortList) > 0 {
+				for _, citem := range item.TcpUdpSrcRangeDstPortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstPort.IsNull() && !citem.DstPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-port", citem.DstPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcDstRangePortListOp) > 0 {
+				for _, citem := range item.TcpUdpSrcDstRangePortListOp {
+					ccBody := netconf.Body{}
+					if !citem.Operator.IsNull() && !citem.Operator.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "operator", citem.Operator.ValueString())
+					}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcDstRangePortList) > 0 {
+				for _, citem := range item.TcpUdpSrcDstRangePortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcPort.IsNull() && !citem.SrcPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-port", citem.SrcPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source", ccBody.Res())
+				}
+			}
+			if len(item.TcpUdpSrcRangeDstRangePortList) > 0 {
+				for _, citem := range item.TcpUdpSrcRangeDstRangePortList {
+					ccBody := netconf.Body{}
+					if !citem.SrcMinPort.IsNull() && !citem.SrcMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-min-port", citem.SrcMinPort.ValueString())
+					}
+					if !citem.SrcMaxPort.IsNull() && !citem.SrcMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-src-max-port", citem.SrcMaxPort.ValueString())
+					}
+					if !citem.DstMinPort.IsNull() && !citem.DstMinPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-min-port", citem.DstMinPort.ValueString())
+					}
+					if !citem.DstMaxPort.IsNull() && !citem.DstMaxPort.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "tcp-udp-dst-max-port", citem.DstMaxPort.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-object-group:service", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -599,6 +2866,2056 @@ func (data *ObjectGroup) updateFromBody(ctx context.Context, res gjson.Result) {
 			}
 		}
 	}
+	for i := range data.Service {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Service[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-object-group:service").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Service[i].Name.IsNull() {
+			data.Service[i].Name = types.StringValue(value.String())
+		} else {
+			data.Service[i].Name = types.StringNull()
+		}
+		if value := r.Get("description"); value.Exists() && !data.Service[i].Description.IsNull() {
+			data.Service[i].Description = types.StringValue(value.String())
+		} else {
+			data.Service[i].Description = types.StringNull()
+		}
+		for ci := range data.Service[i].GroupObjects {
+			keys := [...]string{"service-group"}
+			keyValues := [...]string{data.Service[i].GroupObjects[ci].GroupName.ValueString()}
+
+			var cr gjson.Result
+			r.Get("group-objects").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("service-group"); value.Exists() && !data.Service[i].GroupObjects[ci].GroupName.IsNull() {
+				data.Service[i].GroupObjects[ci].GroupName = types.StringValue(value.String())
+			} else {
+				data.Service[i].GroupObjects[ci].GroupName = types.StringNull()
+			}
+		}
+		if value := r.Get("protocal-number"); value.Exists() && !data.Service[i].ProtocolNumbers.IsNull() {
+			data.Service[i].ProtocolNumbers = helpers.GetInt64Set(value.Array())
+		} else {
+			data.Service[i].ProtocolNumbers = types.SetNull(types.Int64Type)
+		}
+		if value := r.Get("ahp"); !data.Service[i].Ahp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ahp = types.BoolValue(true)
+			} else {
+				data.Service[i].Ahp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ahp = types.BoolNull()
+		}
+		if value := r.Get("eigrp"); !data.Service[i].Eigrp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Eigrp = types.BoolValue(true)
+			} else {
+				data.Service[i].Eigrp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Eigrp = types.BoolNull()
+		}
+		if value := r.Get("esp"); !data.Service[i].Esp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Esp = types.BoolValue(true)
+			} else {
+				data.Service[i].Esp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Esp = types.BoolNull()
+		}
+		if value := r.Get("gre"); !data.Service[i].Gre.IsNull() {
+			if value.Exists() {
+				data.Service[i].Gre = types.BoolValue(true)
+			} else {
+				data.Service[i].Gre = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Gre = types.BoolNull()
+		}
+		if value := r.Get("icmp"); !data.Service[i].Icmp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Icmp = types.BoolValue(true)
+			} else {
+				data.Service[i].Icmp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Icmp = types.BoolNull()
+		}
+		if value := r.Get("igmp"); !data.Service[i].Igmp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Igmp = types.BoolValue(true)
+			} else {
+				data.Service[i].Igmp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Igmp = types.BoolNull()
+		}
+		if value := r.Get("ip"); !data.Service[i].Ip.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ip = types.BoolValue(true)
+			} else {
+				data.Service[i].Ip = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ip = types.BoolNull()
+		}
+		if value := r.Get("ipinip"); !data.Service[i].Ipinip.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ipinip = types.BoolValue(true)
+			} else {
+				data.Service[i].Ipinip = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ipinip = types.BoolNull()
+		}
+		if value := r.Get("nos"); !data.Service[i].Nos.IsNull() {
+			if value.Exists() {
+				data.Service[i].Nos = types.BoolValue(true)
+			} else {
+				data.Service[i].Nos = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Nos = types.BoolNull()
+		}
+		if value := r.Get("ospf"); !data.Service[i].Ospf.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ospf = types.BoolValue(true)
+			} else {
+				data.Service[i].Ospf = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ospf = types.BoolNull()
+		}
+		if value := r.Get("pcp"); !data.Service[i].Pcp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Pcp = types.BoolValue(true)
+			} else {
+				data.Service[i].Pcp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Pcp = types.BoolNull()
+		}
+		if value := r.Get("pim"); !data.Service[i].Pim.IsNull() {
+			if value.Exists() {
+				data.Service[i].Pim = types.BoolValue(true)
+			} else {
+				data.Service[i].Pim = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Pim = types.BoolNull()
+		}
+		if value := r.Get("tcp"); !data.Service[i].Tcp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Tcp = types.BoolValue(true)
+			} else {
+				data.Service[i].Tcp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Tcp = types.BoolNull()
+		}
+		if value := r.Get("udp"); !data.Service[i].Udp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Udp = types.BoolValue(true)
+			} else {
+				data.Service[i].Udp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Udp = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.port-number"); value.Exists() && !data.Service[i].IcmpPortNumber.IsNull() {
+			data.Service[i].IcmpPortNumber = types.Int64Value(value.Int())
+		} else {
+			data.Service[i].IcmpPortNumber = types.Int64Null()
+		}
+		if value := r.Get("icmp-conf.icmp.alternate-address"); !data.Service[i].IcmpAlternateAddress.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpAlternateAddress = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpAlternateAddress = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpAlternateAddress = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.conversion-error"); !data.Service[i].IcmpConversionError.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpConversionError = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpConversionError = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpConversionError = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.echo"); !data.Service[i].IcmpEcho.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpEcho = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpEcho = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpEcho = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.echo-reply"); !data.Service[i].IcmpEchoReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpEchoReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpEchoReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpEchoReply = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.information-reply"); !data.Service[i].IcmpInformationReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpInformationReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpInformationReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpInformationReply = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.information-request"); !data.Service[i].IcmpInformationRequest.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpInformationRequest = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpInformationRequest = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpInformationRequest = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.mask-reply"); !data.Service[i].IcmpMaskReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpMaskReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpMaskReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpMaskReply = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.mask-request"); !data.Service[i].IcmpMaskRequest.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpMaskRequest = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpMaskRequest = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpMaskRequest = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.mobile-redirect"); !data.Service[i].IcmpMobileRedirect.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpMobileRedirect = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpMobileRedirect = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpMobileRedirect = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.parameter-problem"); !data.Service[i].IcmpParameterProblem.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpParameterProblem = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpParameterProblem = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpParameterProblem = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.redirect"); !data.Service[i].IcmpRedirect.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpRedirect = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpRedirect = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpRedirect = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.router-advertisement"); !data.Service[i].IcmpRouterAdvertisement.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpRouterAdvertisement = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpRouterAdvertisement = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpRouterAdvertisement = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.router-solicitation"); !data.Service[i].IcmpRouterSolicitation.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpRouterSolicitation = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpRouterSolicitation = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpRouterSolicitation = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.source-quench"); !data.Service[i].IcmpSourceQuench.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpSourceQuench = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpSourceQuench = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpSourceQuench = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.time-exceeded"); !data.Service[i].IcmpTimeExceeded.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTimeExceeded = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTimeExceeded = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTimeExceeded = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.timestamp-reply"); !data.Service[i].IcmpTimestampReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTimestampReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTimestampReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTimestampReply = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.timestamp-request"); !data.Service[i].IcmpTimestampRequest.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTimestampRequest = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTimestampRequest = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTimestampRequest = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.traceroute"); !data.Service[i].IcmpTraceroute.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTraceroute = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTraceroute = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTraceroute = types.BoolNull()
+		}
+		if value := r.Get("icmp-conf.icmp.unreachable"); !data.Service[i].IcmpUnreachable.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpUnreachable = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpUnreachable = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpUnreachable = types.BoolNull()
+		}
+		for ci := range data.Service[i].TcpDstPortListOp {
+			keys := [...]string{"operator", "tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpDstPortListOp[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-port-list-op").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-port"); value.Exists() && !data.Service[i].TcpDstPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpDstPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpDstPortList {
+			keys := [...]string{"tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpDstPortList[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-port-list-no-op").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-port"); value.Exists() && !data.Service[i].TcpDstPortList[ci].Port.IsNull() {
+				data.Service[i].TcpDstPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpDstPortRanges {
+			keys := [...]string{"tcp-min-port", "tcp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-range-port-list.range").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-min-port"); value.Exists() && !data.Service[i].TcpDstPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpDstPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-max-port"); value.Exists() && !data.Service[i].TcpDstPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpDstPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcPortListOp {
+			keys := [...]string{"operator", "tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcPortListOp[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpSrcPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpSrcPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-port"); value.Exists() && !data.Service[i].TcpSrcPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpSrcPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcPortList {
+			keys := [...]string{"tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcPortList[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-port"); value.Exists() && !data.Service[i].TcpSrcPortList[ci].Port.IsNull() {
+				data.Service[i].TcpSrcPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcPortRanges {
+			keys := [...]string{"tcp-min-port", "tcp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-range-port-list.source.range").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-min-port"); value.Exists() && !data.Service[i].TcpSrcPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-max-port"); value.Exists() && !data.Service[i].TcpSrcPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpSrcPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortListOp {
+			keys := [...]string{"src-operator", "tcp-src-port", "dst-operator", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-dst-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("src-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("dst-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortList {
+			keys := [...]string{"tcp-src-port", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-dst-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortList[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortListSrcOp {
+			keys := [...]string{"src-operator", "tcp-src-port", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-dst-port-list-src-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("src-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortListDstOp {
+			keys := [...]string{"tcp-src-port", "dst-operator", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-dst-port-list-dst-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("dst-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcRangeDstPortListOp {
+			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "operator", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-range-dst-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-src-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcRangeDstPortList {
+			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-range-dst-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-src-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstRangePortListOp {
+			keys := [...]string{"operator", "tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-dst-range-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-min-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-max-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstRangePortList {
+			keys := [...]string{"tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-dst-range-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortList[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-min-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-max-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcRangeDstRangePortList {
+			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-conf.tcp.tcp-src-range-dst-range-port-list.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-src-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-dst-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpDstPortListOp {
+			keys := [...]string{"operator", "udp-port"}
+			keyValues := [...]string{data.Service[i].UdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpDstPortListOp[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-port-list-op").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].UdpDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("udp-port"); value.Exists() && !data.Service[i].UdpDstPortListOp[ci].Port.IsNull() {
+				data.Service[i].UdpDstPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpDstPortList {
+			keys := [...]string{"udp-port"}
+			keyValues := [...]string{data.Service[i].UdpDstPortList[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-port-list-no-op").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-port"); value.Exists() && !data.Service[i].UdpDstPortList[ci].Port.IsNull() {
+				data.Service[i].UdpDstPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpDstPortRanges {
+			keys := [...]string{"udp-min-port", "udp-max-port"}
+			keyValues := [...]string{data.Service[i].UdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-range-port-list.range").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-min-port"); value.Exists() && !data.Service[i].UdpDstPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].UdpDstPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-max-port"); value.Exists() && !data.Service[i].UdpDstPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].UdpDstPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcPortListOp {
+			keys := [...]string{"operator", "udp-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcPortListOp[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].UdpSrcPortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpSrcPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("udp-port"); value.Exists() && !data.Service[i].UdpSrcPortListOp[ci].Port.IsNull() {
+				data.Service[i].UdpSrcPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcPortList {
+			keys := [...]string{"udp-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcPortList[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-port"); value.Exists() && !data.Service[i].UdpSrcPortList[ci].Port.IsNull() {
+				data.Service[i].UdpSrcPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcPortRanges {
+			keys := [...]string{"udp-min-port", "udp-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-range-port-list.source.range").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-min-port"); value.Exists() && !data.Service[i].UdpSrcPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].UdpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-max-port"); value.Exists() && !data.Service[i].UdpSrcPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].UdpSrcPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortListOp {
+			keys := [...]string{"src-operator", "udp-src-port", "dst-operator", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-dst-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("src-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := cr.Get("udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("dst-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].DstOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstOperator = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortList {
+			keys := [...]string{"udp-src-port", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-dst-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortList[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortList[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortListSrcOp {
+			keys := [...]string{"src-operator", "udp-src-port", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-dst-port-list-src-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("src-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := cr.Get("udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortListDstOp {
+			keys := [...]string{"udp-src-port", "dst-operator", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-dst-port-list-dst-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("dst-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcRangeDstPortListOp {
+			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "operator", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-range-dst-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-src-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcRangeDstPortList {
+			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-range-dst-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-src-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstRangePortListOp {
+			keys := [...]string{"operator", "udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-dst-range-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-min-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-max-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstRangePortList {
+			keys := [...]string{"udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-dst-range-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortList[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortList[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-min-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-max-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcRangeDstRangePortList {
+			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-min-port", "udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("udp-conf.udp.udp-src-range-dst-range-port-list.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-src-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("udp-dst-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpDstPortListOp {
+			keys := [...]string{"operator", "tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-port-list-op").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpUdpDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpDstPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpUdpDstPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpDstPortList {
+			keys := [...]string{"tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpDstPortList[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-port-list-no-op").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpDstPortList[ci].Port.IsNull() {
+				data.Service[i].TcpUdpDstPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpDstPortRanges {
+			keys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-range-port-list.range").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-min-port"); value.Exists() && !data.Service[i].TcpUdpDstPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpUdpDstPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-max-port"); value.Exists() && !data.Service[i].TcpUdpDstPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpUdpDstPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcPortListOp {
+			keys := [...]string{"operator", "tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpUdpSrcPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcPortList {
+			keys := [...]string{"tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortList[ci].Port.IsNull() {
+				data.Service[i].TcpUdpSrcPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcPortRanges {
+			keys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-range-port-list.source.range").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortListOp {
+			keys := [...]string{"src-operator", "tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-dst-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("src-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("dst-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortList {
+			keys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-dst-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortListSrcOp {
+			keys := [...]string{"src-operator", "tcp-udp-src-port", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-dst-port-list-src-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("src-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortListDstOp {
+			keys := [...]string{"tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-dst-port-list-dst-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("dst-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcRangeDstPortListOp {
+			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "operator", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-range-dst-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-src-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcRangeDstPortList {
+			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-range-dst-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-src-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstRangePortListOp {
+			keys := [...]string{"operator", "tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-dst-range-port-list-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstRangePortList {
+			keys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-dst-range-port-list-no-op.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcRangeDstRangePortList {
+			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr gjson.Result
+			r.Get("tcp-udp.tcp-udp-src-range-dst-range-port-list.source").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-src-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := cr.Get("tcp-udp-dst-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -858,6 +5175,2056 @@ func (data *ObjectGroup) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 			}
 		}
 	}
+	for i := range data.Service {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Service[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:service").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Service[i].Name.IsNull() {
+			data.Service[i].Name = types.StringValue(value.String())
+		} else {
+			data.Service[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "description"); value.Exists() && !data.Service[i].Description.IsNull() {
+			data.Service[i].Description = types.StringValue(value.String())
+		} else {
+			data.Service[i].Description = types.StringNull()
+		}
+		for ci := range data.Service[i].GroupObjects {
+			keys := [...]string{"service-group"}
+			keyValues := [...]string{data.Service[i].GroupObjects[ci].GroupName.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "group-objects").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "service-group"); value.Exists() && !data.Service[i].GroupObjects[ci].GroupName.IsNull() {
+				data.Service[i].GroupObjects[ci].GroupName = types.StringValue(value.String())
+			} else {
+				data.Service[i].GroupObjects[ci].GroupName = types.StringNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "protocal-number"); value.Exists() && !data.Service[i].ProtocolNumbers.IsNull() {
+			data.Service[i].ProtocolNumbers = helpers.GetInt64SetXML(value.Array())
+		} else {
+			data.Service[i].ProtocolNumbers = types.SetNull(types.Int64Type)
+		}
+		if value := helpers.GetFromXPath(r, "ahp"); !data.Service[i].Ahp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ahp = types.BoolValue(true)
+			} else {
+				data.Service[i].Ahp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ahp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "eigrp"); !data.Service[i].Eigrp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Eigrp = types.BoolValue(true)
+			} else {
+				data.Service[i].Eigrp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Eigrp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "esp"); !data.Service[i].Esp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Esp = types.BoolValue(true)
+			} else {
+				data.Service[i].Esp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Esp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "gre"); !data.Service[i].Gre.IsNull() {
+			if value.Exists() {
+				data.Service[i].Gre = types.BoolValue(true)
+			} else {
+				data.Service[i].Gre = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Gre = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp"); !data.Service[i].Icmp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Icmp = types.BoolValue(true)
+			} else {
+				data.Service[i].Icmp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Icmp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "igmp"); !data.Service[i].Igmp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Igmp = types.BoolValue(true)
+			} else {
+				data.Service[i].Igmp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Igmp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ip"); !data.Service[i].Ip.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ip = types.BoolValue(true)
+			} else {
+				data.Service[i].Ip = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ip = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ipinip"); !data.Service[i].Ipinip.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ipinip = types.BoolValue(true)
+			} else {
+				data.Service[i].Ipinip = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ipinip = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nos"); !data.Service[i].Nos.IsNull() {
+			if value.Exists() {
+				data.Service[i].Nos = types.BoolValue(true)
+			} else {
+				data.Service[i].Nos = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Nos = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ospf"); !data.Service[i].Ospf.IsNull() {
+			if value.Exists() {
+				data.Service[i].Ospf = types.BoolValue(true)
+			} else {
+				data.Service[i].Ospf = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Ospf = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "pcp"); !data.Service[i].Pcp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Pcp = types.BoolValue(true)
+			} else {
+				data.Service[i].Pcp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Pcp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "pim"); !data.Service[i].Pim.IsNull() {
+			if value.Exists() {
+				data.Service[i].Pim = types.BoolValue(true)
+			} else {
+				data.Service[i].Pim = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Pim = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tcp"); !data.Service[i].Tcp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Tcp = types.BoolValue(true)
+			} else {
+				data.Service[i].Tcp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Tcp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "udp"); !data.Service[i].Udp.IsNull() {
+			if value.Exists() {
+				data.Service[i].Udp = types.BoolValue(true)
+			} else {
+				data.Service[i].Udp = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].Udp = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/port-number"); value.Exists() && !data.Service[i].IcmpPortNumber.IsNull() {
+			data.Service[i].IcmpPortNumber = types.Int64Value(value.Int())
+		} else {
+			data.Service[i].IcmpPortNumber = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/alternate-address"); !data.Service[i].IcmpAlternateAddress.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpAlternateAddress = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpAlternateAddress = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpAlternateAddress = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/conversion-error"); !data.Service[i].IcmpConversionError.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpConversionError = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpConversionError = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpConversionError = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/echo"); !data.Service[i].IcmpEcho.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpEcho = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpEcho = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpEcho = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/echo-reply"); !data.Service[i].IcmpEchoReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpEchoReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpEchoReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpEchoReply = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/information-reply"); !data.Service[i].IcmpInformationReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpInformationReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpInformationReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpInformationReply = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/information-request"); !data.Service[i].IcmpInformationRequest.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpInformationRequest = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpInformationRequest = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpInformationRequest = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/mask-reply"); !data.Service[i].IcmpMaskReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpMaskReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpMaskReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpMaskReply = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/mask-request"); !data.Service[i].IcmpMaskRequest.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpMaskRequest = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpMaskRequest = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpMaskRequest = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/mobile-redirect"); !data.Service[i].IcmpMobileRedirect.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpMobileRedirect = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpMobileRedirect = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpMobileRedirect = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/parameter-problem"); !data.Service[i].IcmpParameterProblem.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpParameterProblem = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpParameterProblem = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpParameterProblem = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/redirect"); !data.Service[i].IcmpRedirect.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpRedirect = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpRedirect = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpRedirect = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/router-advertisement"); !data.Service[i].IcmpRouterAdvertisement.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpRouterAdvertisement = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpRouterAdvertisement = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpRouterAdvertisement = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/router-solicitation"); !data.Service[i].IcmpRouterSolicitation.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpRouterSolicitation = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpRouterSolicitation = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpRouterSolicitation = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/source-quench"); !data.Service[i].IcmpSourceQuench.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpSourceQuench = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpSourceQuench = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpSourceQuench = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/time-exceeded"); !data.Service[i].IcmpTimeExceeded.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTimeExceeded = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTimeExceeded = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTimeExceeded = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/timestamp-reply"); !data.Service[i].IcmpTimestampReply.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTimestampReply = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTimestampReply = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTimestampReply = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/timestamp-request"); !data.Service[i].IcmpTimestampRequest.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTimestampRequest = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTimestampRequest = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTimestampRequest = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/traceroute"); !data.Service[i].IcmpTraceroute.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpTraceroute = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpTraceroute = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpTraceroute = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "icmp-conf/icmp/unreachable"); !data.Service[i].IcmpUnreachable.IsNull() {
+			if value.Exists() {
+				data.Service[i].IcmpUnreachable = types.BoolValue(true)
+			} else {
+				data.Service[i].IcmpUnreachable = types.BoolValue(false)
+			}
+		} else {
+			data.Service[i].IcmpUnreachable = types.BoolNull()
+		}
+		for ci := range data.Service[i].TcpDstPortListOp {
+			keys := [...]string{"operator", "tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpDstPortListOp[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-port-list-op").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-port"); value.Exists() && !data.Service[i].TcpDstPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpDstPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpDstPortList {
+			keys := [...]string{"tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpDstPortList[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-port-list-no-op").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-port"); value.Exists() && !data.Service[i].TcpDstPortList[ci].Port.IsNull() {
+				data.Service[i].TcpDstPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpDstPortRanges {
+			keys := [...]string{"tcp-min-port", "tcp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-range-port-list/range").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-min-port"); value.Exists() && !data.Service[i].TcpDstPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpDstPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-max-port"); value.Exists() && !data.Service[i].TcpDstPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpDstPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpDstPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcPortListOp {
+			keys := [...]string{"operator", "tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcPortListOp[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpSrcPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpSrcPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-port"); value.Exists() && !data.Service[i].TcpSrcPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpSrcPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcPortList {
+			keys := [...]string{"tcp-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcPortList[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-port"); value.Exists() && !data.Service[i].TcpSrcPortList[ci].Port.IsNull() {
+				data.Service[i].TcpSrcPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcPortRanges {
+			keys := [...]string{"tcp-min-port", "tcp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-port-list/source/range").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-min-port"); value.Exists() && !data.Service[i].TcpSrcPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-max-port"); value.Exists() && !data.Service[i].TcpSrcPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpSrcPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortListOp {
+			keys := [...]string{"src-operator", "tcp-src-port", "dst-operator", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "dst-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortList {
+			keys := [...]string{"tcp-src-port", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortList[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortListSrcOp {
+			keys := [...]string{"src-operator", "tcp-src-port", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstPortListDstOp {
+			keys := [...]string{"tcp-src-port", "dst-operator", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "dst-operator"); value.Exists() && !data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcRangeDstPortListOp {
+			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "operator", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-src-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcRangeDstPortList {
+			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-src-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstRangePortListOp {
+			keys := [...]string{"operator", "tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-min-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-max-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcDstRangePortList {
+			keys := [...]string{"tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-src-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortList[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-min-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-max-port"); value.Exists() && !data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpSrcRangeDstRangePortList {
+			keys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-src-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-src-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-min-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-dst-max-port"); value.Exists() && !data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpDstPortListOp {
+			keys := [...]string{"operator", "udp-port"}
+			keyValues := [...]string{data.Service[i].UdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpDstPortListOp[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-port-list-op").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].UdpDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-port"); value.Exists() && !data.Service[i].UdpDstPortListOp[ci].Port.IsNull() {
+				data.Service[i].UdpDstPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpDstPortList {
+			keys := [...]string{"udp-port"}
+			keyValues := [...]string{data.Service[i].UdpDstPortList[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-port-list-no-op").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-port"); value.Exists() && !data.Service[i].UdpDstPortList[ci].Port.IsNull() {
+				data.Service[i].UdpDstPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpDstPortRanges {
+			keys := [...]string{"udp-min-port", "udp-max-port"}
+			keyValues := [...]string{data.Service[i].UdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-range-port-list/range").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-min-port"); value.Exists() && !data.Service[i].UdpDstPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].UdpDstPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-max-port"); value.Exists() && !data.Service[i].UdpDstPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].UdpDstPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpDstPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcPortListOp {
+			keys := [...]string{"operator", "udp-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcPortListOp[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].UdpSrcPortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpSrcPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-port"); value.Exists() && !data.Service[i].UdpSrcPortListOp[ci].Port.IsNull() {
+				data.Service[i].UdpSrcPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcPortList {
+			keys := [...]string{"udp-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcPortList[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-port"); value.Exists() && !data.Service[i].UdpSrcPortList[ci].Port.IsNull() {
+				data.Service[i].UdpSrcPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcPortRanges {
+			keys := [...]string{"udp-min-port", "udp-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-port-list/source/range").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-min-port"); value.Exists() && !data.Service[i].UdpSrcPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].UdpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-max-port"); value.Exists() && !data.Service[i].UdpSrcPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].UdpSrcPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortListOp {
+			keys := [...]string{"src-operator", "udp-src-port", "dst-operator", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "dst-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].DstOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortList {
+			keys := [...]string{"udp-src-port", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortList[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortList[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortListSrcOp {
+			keys := [...]string{"src-operator", "udp-src-port", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-src-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstPortListDstOp {
+			keys := [...]string{"udp-src-port", "dst-operator", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-port-list-dst-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "dst-operator"); value.Exists() && !data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.IsNull() {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcRangeDstPortListOp {
+			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "operator", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-dst-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-src-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcRangeDstPortList {
+			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-src-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstRangePortListOp {
+			keys := [...]string{"operator", "udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-range-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].Operator.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-min-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-max-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcDstRangePortList {
+			keys := [...]string{"udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-src-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortList[ci].SrcPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortList[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-min-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-max-port"); value.Exists() && !data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].UdpSrcRangeDstRangePortList {
+			keys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-min-port", "udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "udp-conf/udp/udp-src-range-dst-range-port-list/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "udp-src-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-src-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-min-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "udp-dst-max-port"); value.Exists() && !data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpDstPortListOp {
+			keys := [...]string{"operator", "tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-port-list-op").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpUdpDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpDstPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpUdpDstPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpDstPortList {
+			keys := [...]string{"tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpDstPortList[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-port-list-no-op").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpDstPortList[ci].Port.IsNull() {
+				data.Service[i].TcpUdpDstPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpDstPortRanges {
+			keys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-range-port-list/range").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-min-port"); value.Exists() && !data.Service[i].TcpUdpDstPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpUdpDstPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-max-port"); value.Exists() && !data.Service[i].TcpUdpDstPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpUdpDstPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpDstPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcPortListOp {
+			keys := [...]string{"operator", "tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpUdpSrcPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortListOp[ci].Port.IsNull() {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortListOp[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcPortList {
+			keys := [...]string{"tcp-udp-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortList[ci].Port.IsNull() {
+				data.Service[i].TcpUdpSrcPortList[ci].Port = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortList[ci].Port = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcPortRanges {
+			keys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString(), data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-port-list/source/range").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortRanges[ci].MinPort.IsNull() {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcPortRanges[ci].MaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortListOp {
+			keys := [...]string{"src-operator", "tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "dst-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortList {
+			keys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortList[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortListSrcOp {
+			keys := [...]string{"src-operator", "tcp-udp-src-port", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "src-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstPortListDstOp {
+			keys := [...]string{"tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "dst-operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcRangeDstPortListOp {
+			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "operator", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcRangeDstPortList {
+			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstRangePortListOp {
+			keys := [...]string{"operator", "tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "operator"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcDstRangePortList {
+			keys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+		for ci := range data.Service[i].TcpUdpSrcRangeDstRangePortList {
+			keys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+			keyValues := [...]string{data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-src-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-min-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "tcp-udp-dst-max-port"); value.Exists() && !data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.IsNull() {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringValue(value.String())
+			} else {
+				data.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort = types.StringNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -966,6 +7333,924 @@ func (data *ObjectGroup) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			data.Network = append(data.Network, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-object-group:service"); value.Exists() {
+		data.Service = make([]ObjectGroupService, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ObjectGroupService{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupServiceGroupObjects, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceGroupObjects{}
+					if ccValue := cv.Get("service-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("protocal-number"); cValue.Exists() {
+				item.ProtocolNumbers = helpers.GetInt64Set(cValue.Array())
+			} else {
+				item.ProtocolNumbers = types.SetNull(types.Int64Type)
+			}
+			if cValue := v.Get("ahp"); cValue.Exists() {
+				item.Ahp = types.BoolValue(true)
+			} else {
+				item.Ahp = types.BoolValue(false)
+			}
+			if cValue := v.Get("eigrp"); cValue.Exists() {
+				item.Eigrp = types.BoolValue(true)
+			} else {
+				item.Eigrp = types.BoolValue(false)
+			}
+			if cValue := v.Get("esp"); cValue.Exists() {
+				item.Esp = types.BoolValue(true)
+			} else {
+				item.Esp = types.BoolValue(false)
+			}
+			if cValue := v.Get("gre"); cValue.Exists() {
+				item.Gre = types.BoolValue(true)
+			} else {
+				item.Gre = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp"); cValue.Exists() {
+				item.Icmp = types.BoolValue(true)
+			} else {
+				item.Icmp = types.BoolValue(false)
+			}
+			if cValue := v.Get("igmp"); cValue.Exists() {
+				item.Igmp = types.BoolValue(true)
+			} else {
+				item.Igmp = types.BoolValue(false)
+			}
+			if cValue := v.Get("ip"); cValue.Exists() {
+				item.Ip = types.BoolValue(true)
+			} else {
+				item.Ip = types.BoolValue(false)
+			}
+			if cValue := v.Get("ipinip"); cValue.Exists() {
+				item.Ipinip = types.BoolValue(true)
+			} else {
+				item.Ipinip = types.BoolValue(false)
+			}
+			if cValue := v.Get("nos"); cValue.Exists() {
+				item.Nos = types.BoolValue(true)
+			} else {
+				item.Nos = types.BoolValue(false)
+			}
+			if cValue := v.Get("ospf"); cValue.Exists() {
+				item.Ospf = types.BoolValue(true)
+			} else {
+				item.Ospf = types.BoolValue(false)
+			}
+			if cValue := v.Get("pcp"); cValue.Exists() {
+				item.Pcp = types.BoolValue(true)
+			} else {
+				item.Pcp = types.BoolValue(false)
+			}
+			if cValue := v.Get("pim"); cValue.Exists() {
+				item.Pim = types.BoolValue(true)
+			} else {
+				item.Pim = types.BoolValue(false)
+			}
+			if cValue := v.Get("tcp"); cValue.Exists() {
+				item.Tcp = types.BoolValue(true)
+			} else {
+				item.Tcp = types.BoolValue(false)
+			}
+			if cValue := v.Get("udp"); cValue.Exists() {
+				item.Udp = types.BoolValue(true)
+			} else {
+				item.Udp = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.port-number"); cValue.Exists() {
+				item.IcmpPortNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("icmp-conf.icmp.alternate-address"); cValue.Exists() {
+				item.IcmpAlternateAddress = types.BoolValue(true)
+			} else {
+				item.IcmpAlternateAddress = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.conversion-error"); cValue.Exists() {
+				item.IcmpConversionError = types.BoolValue(true)
+			} else {
+				item.IcmpConversionError = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.echo"); cValue.Exists() {
+				item.IcmpEcho = types.BoolValue(true)
+			} else {
+				item.IcmpEcho = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.echo-reply"); cValue.Exists() {
+				item.IcmpEchoReply = types.BoolValue(true)
+			} else {
+				item.IcmpEchoReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.information-reply"); cValue.Exists() {
+				item.IcmpInformationReply = types.BoolValue(true)
+			} else {
+				item.IcmpInformationReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.information-request"); cValue.Exists() {
+				item.IcmpInformationRequest = types.BoolValue(true)
+			} else {
+				item.IcmpInformationRequest = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.mask-reply"); cValue.Exists() {
+				item.IcmpMaskReply = types.BoolValue(true)
+			} else {
+				item.IcmpMaskReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.mask-request"); cValue.Exists() {
+				item.IcmpMaskRequest = types.BoolValue(true)
+			} else {
+				item.IcmpMaskRequest = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.mobile-redirect"); cValue.Exists() {
+				item.IcmpMobileRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpMobileRedirect = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.parameter-problem"); cValue.Exists() {
+				item.IcmpParameterProblem = types.BoolValue(true)
+			} else {
+				item.IcmpParameterProblem = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.redirect"); cValue.Exists() {
+				item.IcmpRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpRedirect = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.router-advertisement"); cValue.Exists() {
+				item.IcmpRouterAdvertisement = types.BoolValue(true)
+			} else {
+				item.IcmpRouterAdvertisement = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.router-solicitation"); cValue.Exists() {
+				item.IcmpRouterSolicitation = types.BoolValue(true)
+			} else {
+				item.IcmpRouterSolicitation = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.source-quench"); cValue.Exists() {
+				item.IcmpSourceQuench = types.BoolValue(true)
+			} else {
+				item.IcmpSourceQuench = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.time-exceeded"); cValue.Exists() {
+				item.IcmpTimeExceeded = types.BoolValue(true)
+			} else {
+				item.IcmpTimeExceeded = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.timestamp-reply"); cValue.Exists() {
+				item.IcmpTimestampReply = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.timestamp-request"); cValue.Exists() {
+				item.IcmpTimestampRequest = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampRequest = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.traceroute"); cValue.Exists() {
+				item.IcmpTraceroute = types.BoolValue(true)
+			} else {
+				item.IcmpTraceroute = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.unreachable"); cValue.Exists() {
+				item.IcmpUnreachable = types.BoolValue(true)
+			} else {
+				item.IcmpUnreachable = types.BoolValue(false)
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-port-list-op"); cValue.Exists() {
+				item.TcpDstPortListOp = make([]ObjectGroupServiceTcpDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortListOp = append(item.TcpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-port-list-no-op"); cValue.Exists() {
+				item.TcpDstPortList = make([]ObjectGroupServiceTcpDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortList{}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortList = append(item.TcpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-range-port-list.range"); cValue.Exists() {
+				item.TcpDstPortRanges = make([]ObjectGroupServiceTcpDstPortRanges, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortRanges{}
+					if ccValue := cv.Get("tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortRanges = append(item.TcpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcPortListOp = make([]ObjectGroupServiceTcpSrcPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortListOp = append(item.TcpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcPortList = make([]ObjectGroupServiceTcpSrcPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortList{}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortList = append(item.TcpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-port-list.source.range"); cValue.Exists() {
+				item.TcpSrcPortRanges = make([]ObjectGroupServiceTcpSrcPortRanges, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortRanges{}
+					if ccValue := cv.Get("tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortRanges = append(item.TcpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortListOp = make([]ObjectGroupServiceTcpSrcDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListOp{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListOp = append(item.TcpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortList = make([]ObjectGroupServiceTcpSrcDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortList{}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortList = append(item.TcpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-src-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpSrcDstPortListSrcOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListSrcOp{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListSrcOp = append(item.TcpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-dst-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpSrcDstPortListDstOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListDstOp{}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListDstOp = append(item.TcpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpSrcRangeDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortListOp{}
+					if ccValue := cv.Get("tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortListOp = append(item.TcpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortList = make([]ObjectGroupServiceTcpSrcRangeDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortList{}
+					if ccValue := cv.Get("tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortList = append(item.TcpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-range-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpSrcDstRangePortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortListOp = append(item.TcpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-range-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcDstRangePortList = make([]ObjectGroupServiceTcpSrcDstRangePortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortList{}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortList = append(item.TcpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-dst-range-port-list.source"); cValue.Exists() {
+				item.TcpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpSrcRangeDstRangePortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstRangePortList{}
+					if ccValue := cv.Get("tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstRangePortList = append(item.TcpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-port-list-op"); cValue.Exists() {
+				item.UdpDstPortListOp = make([]ObjectGroupServiceUdpDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortListOp = append(item.UdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-port-list-no-op"); cValue.Exists() {
+				item.UdpDstPortList = make([]ObjectGroupServiceUdpDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortList{}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortList = append(item.UdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-range-port-list.range"); cValue.Exists() {
+				item.UdpDstPortRanges = make([]ObjectGroupServiceUdpDstPortRanges, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortRanges{}
+					if ccValue := cv.Get("udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortRanges = append(item.UdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcPortListOp = make([]ObjectGroupServiceUdpSrcPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortListOp = append(item.UdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcPortList = make([]ObjectGroupServiceUdpSrcPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortList{}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortList = append(item.UdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-port-list.source.range"); cValue.Exists() {
+				item.UdpSrcPortRanges = make([]ObjectGroupServiceUdpSrcPortRanges, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortRanges{}
+					if ccValue := cv.Get("udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortRanges = append(item.UdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortListOp = make([]ObjectGroupServiceUdpSrcDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListOp{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListOp = append(item.UdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortList = make([]ObjectGroupServiceUdpSrcDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortList{}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortList = append(item.UdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-src-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortListSrcOp = make([]ObjectGroupServiceUdpSrcDstPortListSrcOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListSrcOp{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListSrcOp = append(item.UdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-dst-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortListDstOp = make([]ObjectGroupServiceUdpSrcDstPortListDstOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListDstOp{}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListDstOp = append(item.UdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-dst-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortListOp = make([]ObjectGroupServiceUdpSrcRangeDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortListOp{}
+					if ccValue := cv.Get("udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortListOp = append(item.UdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-dst-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortList = make([]ObjectGroupServiceUdpSrcRangeDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortList{}
+					if ccValue := cv.Get("udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortList = append(item.UdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-range-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcDstRangePortListOp = make([]ObjectGroupServiceUdpSrcDstRangePortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortListOp = append(item.UdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-range-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcDstRangePortList = make([]ObjectGroupServiceUdpSrcDstRangePortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortList{}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortList = append(item.UdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-dst-range-port-list.source"); cValue.Exists() {
+				item.UdpSrcRangeDstRangePortList = make([]ObjectGroupServiceUdpSrcRangeDstRangePortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstRangePortList{}
+					if ccValue := cv.Get("udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstRangePortList = append(item.UdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-port-list-op"); cValue.Exists() {
+				item.TcpUdpDstPortListOp = make([]ObjectGroupServiceTcpUdpDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortListOp = append(item.TcpUdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-port-list-no-op"); cValue.Exists() {
+				item.TcpUdpDstPortList = make([]ObjectGroupServiceTcpUdpDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortList{}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortList = append(item.TcpUdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-range-port-list.range"); cValue.Exists() {
+				item.TcpUdpDstPortRanges = make([]ObjectGroupServiceTcpUdpDstPortRanges, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortRanges{}
+					if ccValue := cv.Get("tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortRanges = append(item.TcpUdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcPortListOp = make([]ObjectGroupServiceTcpUdpSrcPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortListOp = append(item.TcpUdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcPortList = make([]ObjectGroupServiceTcpUdpSrcPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortList{}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortList = append(item.TcpUdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-port-list.source.range"); cValue.Exists() {
+				item.TcpUdpSrcPortRanges = make([]ObjectGroupServiceTcpUdpSrcPortRanges, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortRanges{}
+					if ccValue := cv.Get("tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortRanges = append(item.TcpUdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListOp{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListOp = append(item.TcpUdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortList = make([]ObjectGroupServiceTcpUdpSrcDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortList{}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortList = append(item.TcpUdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-src-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListSrcOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListSrcOp{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListSrcOp = append(item.TcpUdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-dst-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListDstOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListDstOp{}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListDstOp = append(item.TcpUdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortListOp{}
+					if ccValue := cv.Get("tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortListOp = append(item.TcpUdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortList{}
+					if ccValue := cv.Get("tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortList = append(item.TcpUdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-range-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpUdpSrcDstRangePortListOp, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortListOp{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortListOp = append(item.TcpUdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-range-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcDstRangePortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortList{}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortList = append(item.TcpUdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-dst-range-port-list.source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstRangePortList, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstRangePortList{}
+					if ccValue := cv.Get("tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstRangePortList = append(item.TcpUdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			data.Service = append(data.Service, item)
 			return true
 		})
 	}
@@ -1080,6 +8365,924 @@ func (data *ObjectGroupData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-object-group:service"); value.Exists() {
+		data.Service = make([]ObjectGroupServiceData, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ObjectGroupServiceData{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupServiceGroupObjectsData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceGroupObjectsData{}
+					if ccValue := cv.Get("service-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("protocal-number"); cValue.Exists() {
+				item.ProtocolNumbers = helpers.GetInt64Set(cValue.Array())
+			} else {
+				item.ProtocolNumbers = types.SetNull(types.Int64Type)
+			}
+			if cValue := v.Get("ahp"); cValue.Exists() {
+				item.Ahp = types.BoolValue(true)
+			} else {
+				item.Ahp = types.BoolValue(false)
+			}
+			if cValue := v.Get("eigrp"); cValue.Exists() {
+				item.Eigrp = types.BoolValue(true)
+			} else {
+				item.Eigrp = types.BoolValue(false)
+			}
+			if cValue := v.Get("esp"); cValue.Exists() {
+				item.Esp = types.BoolValue(true)
+			} else {
+				item.Esp = types.BoolValue(false)
+			}
+			if cValue := v.Get("gre"); cValue.Exists() {
+				item.Gre = types.BoolValue(true)
+			} else {
+				item.Gre = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp"); cValue.Exists() {
+				item.Icmp = types.BoolValue(true)
+			} else {
+				item.Icmp = types.BoolValue(false)
+			}
+			if cValue := v.Get("igmp"); cValue.Exists() {
+				item.Igmp = types.BoolValue(true)
+			} else {
+				item.Igmp = types.BoolValue(false)
+			}
+			if cValue := v.Get("ip"); cValue.Exists() {
+				item.Ip = types.BoolValue(true)
+			} else {
+				item.Ip = types.BoolValue(false)
+			}
+			if cValue := v.Get("ipinip"); cValue.Exists() {
+				item.Ipinip = types.BoolValue(true)
+			} else {
+				item.Ipinip = types.BoolValue(false)
+			}
+			if cValue := v.Get("nos"); cValue.Exists() {
+				item.Nos = types.BoolValue(true)
+			} else {
+				item.Nos = types.BoolValue(false)
+			}
+			if cValue := v.Get("ospf"); cValue.Exists() {
+				item.Ospf = types.BoolValue(true)
+			} else {
+				item.Ospf = types.BoolValue(false)
+			}
+			if cValue := v.Get("pcp"); cValue.Exists() {
+				item.Pcp = types.BoolValue(true)
+			} else {
+				item.Pcp = types.BoolValue(false)
+			}
+			if cValue := v.Get("pim"); cValue.Exists() {
+				item.Pim = types.BoolValue(true)
+			} else {
+				item.Pim = types.BoolValue(false)
+			}
+			if cValue := v.Get("tcp"); cValue.Exists() {
+				item.Tcp = types.BoolValue(true)
+			} else {
+				item.Tcp = types.BoolValue(false)
+			}
+			if cValue := v.Get("udp"); cValue.Exists() {
+				item.Udp = types.BoolValue(true)
+			} else {
+				item.Udp = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.port-number"); cValue.Exists() {
+				item.IcmpPortNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("icmp-conf.icmp.alternate-address"); cValue.Exists() {
+				item.IcmpAlternateAddress = types.BoolValue(true)
+			} else {
+				item.IcmpAlternateAddress = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.conversion-error"); cValue.Exists() {
+				item.IcmpConversionError = types.BoolValue(true)
+			} else {
+				item.IcmpConversionError = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.echo"); cValue.Exists() {
+				item.IcmpEcho = types.BoolValue(true)
+			} else {
+				item.IcmpEcho = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.echo-reply"); cValue.Exists() {
+				item.IcmpEchoReply = types.BoolValue(true)
+			} else {
+				item.IcmpEchoReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.information-reply"); cValue.Exists() {
+				item.IcmpInformationReply = types.BoolValue(true)
+			} else {
+				item.IcmpInformationReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.information-request"); cValue.Exists() {
+				item.IcmpInformationRequest = types.BoolValue(true)
+			} else {
+				item.IcmpInformationRequest = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.mask-reply"); cValue.Exists() {
+				item.IcmpMaskReply = types.BoolValue(true)
+			} else {
+				item.IcmpMaskReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.mask-request"); cValue.Exists() {
+				item.IcmpMaskRequest = types.BoolValue(true)
+			} else {
+				item.IcmpMaskRequest = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.mobile-redirect"); cValue.Exists() {
+				item.IcmpMobileRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpMobileRedirect = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.parameter-problem"); cValue.Exists() {
+				item.IcmpParameterProblem = types.BoolValue(true)
+			} else {
+				item.IcmpParameterProblem = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.redirect"); cValue.Exists() {
+				item.IcmpRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpRedirect = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.router-advertisement"); cValue.Exists() {
+				item.IcmpRouterAdvertisement = types.BoolValue(true)
+			} else {
+				item.IcmpRouterAdvertisement = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.router-solicitation"); cValue.Exists() {
+				item.IcmpRouterSolicitation = types.BoolValue(true)
+			} else {
+				item.IcmpRouterSolicitation = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.source-quench"); cValue.Exists() {
+				item.IcmpSourceQuench = types.BoolValue(true)
+			} else {
+				item.IcmpSourceQuench = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.time-exceeded"); cValue.Exists() {
+				item.IcmpTimeExceeded = types.BoolValue(true)
+			} else {
+				item.IcmpTimeExceeded = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.timestamp-reply"); cValue.Exists() {
+				item.IcmpTimestampReply = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampReply = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.timestamp-request"); cValue.Exists() {
+				item.IcmpTimestampRequest = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampRequest = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.traceroute"); cValue.Exists() {
+				item.IcmpTraceroute = types.BoolValue(true)
+			} else {
+				item.IcmpTraceroute = types.BoolValue(false)
+			}
+			if cValue := v.Get("icmp-conf.icmp.unreachable"); cValue.Exists() {
+				item.IcmpUnreachable = types.BoolValue(true)
+			} else {
+				item.IcmpUnreachable = types.BoolValue(false)
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-port-list-op"); cValue.Exists() {
+				item.TcpDstPortListOp = make([]ObjectGroupServiceTcpDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortListOp = append(item.TcpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-port-list-no-op"); cValue.Exists() {
+				item.TcpDstPortList = make([]ObjectGroupServiceTcpDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortListData{}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortList = append(item.TcpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-range-port-list.range"); cValue.Exists() {
+				item.TcpDstPortRanges = make([]ObjectGroupServiceTcpDstPortRangesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortRangesData{}
+					if ccValue := cv.Get("tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortRanges = append(item.TcpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcPortListOp = make([]ObjectGroupServiceTcpSrcPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortListOp = append(item.TcpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcPortList = make([]ObjectGroupServiceTcpSrcPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortListData{}
+					if ccValue := cv.Get("tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortList = append(item.TcpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-port-list.source.range"); cValue.Exists() {
+				item.TcpSrcPortRanges = make([]ObjectGroupServiceTcpSrcPortRangesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortRangesData{}
+					if ccValue := cv.Get("tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortRanges = append(item.TcpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortListOp = make([]ObjectGroupServiceTcpSrcDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListOpData{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListOp = append(item.TcpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortList = make([]ObjectGroupServiceTcpSrcDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListData{}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortList = append(item.TcpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-src-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpSrcDstPortListSrcOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListSrcOpData{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListSrcOp = append(item.TcpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-port-list-dst-op.source"); cValue.Exists() {
+				item.TcpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpSrcDstPortListDstOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListDstOpData{}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListDstOp = append(item.TcpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpSrcRangeDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortListOpData{}
+					if ccValue := cv.Get("tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortListOp = append(item.TcpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortList = make([]ObjectGroupServiceTcpSrcRangeDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortListData{}
+					if ccValue := cv.Get("tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortList = append(item.TcpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-range-port-list-op.source"); cValue.Exists() {
+				item.TcpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpSrcDstRangePortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortListOp = append(item.TcpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-dst-range-port-list-no-op.source"); cValue.Exists() {
+				item.TcpSrcDstRangePortList = make([]ObjectGroupServiceTcpSrcDstRangePortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortListData{}
+					if ccValue := cv.Get("tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortList = append(item.TcpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-conf.tcp.tcp-src-range-dst-range-port-list.source"); cValue.Exists() {
+				item.TcpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpSrcRangeDstRangePortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstRangePortListData{}
+					if ccValue := cv.Get("tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstRangePortList = append(item.TcpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-port-list-op"); cValue.Exists() {
+				item.UdpDstPortListOp = make([]ObjectGroupServiceUdpDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortListOp = append(item.UdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-port-list-no-op"); cValue.Exists() {
+				item.UdpDstPortList = make([]ObjectGroupServiceUdpDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortListData{}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortList = append(item.UdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-range-port-list.range"); cValue.Exists() {
+				item.UdpDstPortRanges = make([]ObjectGroupServiceUdpDstPortRangesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortRangesData{}
+					if ccValue := cv.Get("udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortRanges = append(item.UdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcPortListOp = make([]ObjectGroupServiceUdpSrcPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortListOp = append(item.UdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcPortList = make([]ObjectGroupServiceUdpSrcPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortListData{}
+					if ccValue := cv.Get("udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortList = append(item.UdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-port-list.source.range"); cValue.Exists() {
+				item.UdpSrcPortRanges = make([]ObjectGroupServiceUdpSrcPortRangesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortRangesData{}
+					if ccValue := cv.Get("udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortRanges = append(item.UdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortListOp = make([]ObjectGroupServiceUdpSrcDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListOpData{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListOp = append(item.UdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortList = make([]ObjectGroupServiceUdpSrcDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListData{}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortList = append(item.UdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-src-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortListSrcOp = make([]ObjectGroupServiceUdpSrcDstPortListSrcOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListSrcOpData{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListSrcOp = append(item.UdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-port-list-dst-op.source"); cValue.Exists() {
+				item.UdpSrcDstPortListDstOp = make([]ObjectGroupServiceUdpSrcDstPortListDstOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListDstOpData{}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListDstOp = append(item.UdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-dst-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortListOp = make([]ObjectGroupServiceUdpSrcRangeDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortListOpData{}
+					if ccValue := cv.Get("udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortListOp = append(item.UdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-dst-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortList = make([]ObjectGroupServiceUdpSrcRangeDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortListData{}
+					if ccValue := cv.Get("udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortList = append(item.UdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-range-port-list-op.source"); cValue.Exists() {
+				item.UdpSrcDstRangePortListOp = make([]ObjectGroupServiceUdpSrcDstRangePortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortListOp = append(item.UdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-dst-range-port-list-no-op.source"); cValue.Exists() {
+				item.UdpSrcDstRangePortList = make([]ObjectGroupServiceUdpSrcDstRangePortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortListData{}
+					if ccValue := cv.Get("udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortList = append(item.UdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("udp-conf.udp.udp-src-range-dst-range-port-list.source"); cValue.Exists() {
+				item.UdpSrcRangeDstRangePortList = make([]ObjectGroupServiceUdpSrcRangeDstRangePortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstRangePortListData{}
+					if ccValue := cv.Get("udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstRangePortList = append(item.UdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-port-list-op"); cValue.Exists() {
+				item.TcpUdpDstPortListOp = make([]ObjectGroupServiceTcpUdpDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortListOp = append(item.TcpUdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-port-list-no-op"); cValue.Exists() {
+				item.TcpUdpDstPortList = make([]ObjectGroupServiceTcpUdpDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortListData{}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortList = append(item.TcpUdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-range-port-list.range"); cValue.Exists() {
+				item.TcpUdpDstPortRanges = make([]ObjectGroupServiceTcpUdpDstPortRangesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortRangesData{}
+					if ccValue := cv.Get("tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortRanges = append(item.TcpUdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcPortListOp = make([]ObjectGroupServiceTcpUdpSrcPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortListOp = append(item.TcpUdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcPortList = make([]ObjectGroupServiceTcpUdpSrcPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortListData{}
+					if ccValue := cv.Get("tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortList = append(item.TcpUdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-port-list.source.range"); cValue.Exists() {
+				item.TcpUdpSrcPortRanges = make([]ObjectGroupServiceTcpUdpSrcPortRangesData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortRangesData{}
+					if ccValue := cv.Get("tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortRanges = append(item.TcpUdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListOpData{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListOp = append(item.TcpUdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortList = make([]ObjectGroupServiceTcpUdpSrcDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListData{}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortList = append(item.TcpUdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-src-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListSrcOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListSrcOpData{}
+					if ccValue := cv.Get("src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListSrcOp = append(item.TcpUdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-port-list-dst-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListDstOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListDstOpData{}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListDstOp = append(item.TcpUdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-dst-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortListOpData{}
+					if ccValue := cv.Get("tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortListOp = append(item.TcpUdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-dst-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortListData{}
+					if ccValue := cv.Get("tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortList = append(item.TcpUdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-range-port-list-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpUdpSrcDstRangePortListOpData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortListOpData{}
+					if ccValue := cv.Get("operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortListOp = append(item.TcpUdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-dst-range-port-list-no-op.source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcDstRangePortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortListData{}
+					if ccValue := cv.Get("tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortList = append(item.TcpUdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("tcp-udp.tcp-udp-src-range-dst-range-port-list.source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstRangePortListData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstRangePortListData{}
+					if ccValue := cv.Get("tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstRangePortList = append(item.TcpUdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			data.Service = append(data.Service, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1184,6 +9387,924 @@ func (data *ObjectGroup) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			data.Network = append(data.Network, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:service"); value.Exists() {
+		data.Service = make([]ObjectGroupService, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ObjectGroupService{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupServiceGroupObjects, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceGroupObjects{}
+					if ccValue := helpers.GetFromXPath(cv, "service-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "protocal-number"); cValue.Exists() {
+				item.ProtocolNumbers = helpers.GetInt64SetXML(cValue.Array())
+			} else {
+				item.ProtocolNumbers = types.SetNull(types.Int64Type)
+			}
+			if cValue := helpers.GetFromXPath(v, "ahp"); cValue.Exists() {
+				item.Ahp = types.BoolValue(true)
+			} else {
+				item.Ahp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "eigrp"); cValue.Exists() {
+				item.Eigrp = types.BoolValue(true)
+			} else {
+				item.Eigrp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "esp"); cValue.Exists() {
+				item.Esp = types.BoolValue(true)
+			} else {
+				item.Esp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "gre"); cValue.Exists() {
+				item.Gre = types.BoolValue(true)
+			} else {
+				item.Gre = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp"); cValue.Exists() {
+				item.Icmp = types.BoolValue(true)
+			} else {
+				item.Icmp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "igmp"); cValue.Exists() {
+				item.Igmp = types.BoolValue(true)
+			} else {
+				item.Igmp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.BoolValue(true)
+			} else {
+				item.Ip = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipinip"); cValue.Exists() {
+				item.Ipinip = types.BoolValue(true)
+			} else {
+				item.Ipinip = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nos"); cValue.Exists() {
+				item.Nos = types.BoolValue(true)
+			} else {
+				item.Nos = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ospf"); cValue.Exists() {
+				item.Ospf = types.BoolValue(true)
+			} else {
+				item.Ospf = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pcp"); cValue.Exists() {
+				item.Pcp = types.BoolValue(true)
+			} else {
+				item.Pcp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pim"); cValue.Exists() {
+				item.Pim = types.BoolValue(true)
+			} else {
+				item.Pim = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp"); cValue.Exists() {
+				item.Tcp = types.BoolValue(true)
+			} else {
+				item.Tcp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "udp"); cValue.Exists() {
+				item.Udp = types.BoolValue(true)
+			} else {
+				item.Udp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/port-number"); cValue.Exists() {
+				item.IcmpPortNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/alternate-address"); cValue.Exists() {
+				item.IcmpAlternateAddress = types.BoolValue(true)
+			} else {
+				item.IcmpAlternateAddress = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/conversion-error"); cValue.Exists() {
+				item.IcmpConversionError = types.BoolValue(true)
+			} else {
+				item.IcmpConversionError = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/echo"); cValue.Exists() {
+				item.IcmpEcho = types.BoolValue(true)
+			} else {
+				item.IcmpEcho = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/echo-reply"); cValue.Exists() {
+				item.IcmpEchoReply = types.BoolValue(true)
+			} else {
+				item.IcmpEchoReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/information-reply"); cValue.Exists() {
+				item.IcmpInformationReply = types.BoolValue(true)
+			} else {
+				item.IcmpInformationReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/information-request"); cValue.Exists() {
+				item.IcmpInformationRequest = types.BoolValue(true)
+			} else {
+				item.IcmpInformationRequest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/mask-reply"); cValue.Exists() {
+				item.IcmpMaskReply = types.BoolValue(true)
+			} else {
+				item.IcmpMaskReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/mask-request"); cValue.Exists() {
+				item.IcmpMaskRequest = types.BoolValue(true)
+			} else {
+				item.IcmpMaskRequest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/mobile-redirect"); cValue.Exists() {
+				item.IcmpMobileRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpMobileRedirect = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/parameter-problem"); cValue.Exists() {
+				item.IcmpParameterProblem = types.BoolValue(true)
+			} else {
+				item.IcmpParameterProblem = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/redirect"); cValue.Exists() {
+				item.IcmpRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpRedirect = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/router-advertisement"); cValue.Exists() {
+				item.IcmpRouterAdvertisement = types.BoolValue(true)
+			} else {
+				item.IcmpRouterAdvertisement = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/router-solicitation"); cValue.Exists() {
+				item.IcmpRouterSolicitation = types.BoolValue(true)
+			} else {
+				item.IcmpRouterSolicitation = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/source-quench"); cValue.Exists() {
+				item.IcmpSourceQuench = types.BoolValue(true)
+			} else {
+				item.IcmpSourceQuench = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/time-exceeded"); cValue.Exists() {
+				item.IcmpTimeExceeded = types.BoolValue(true)
+			} else {
+				item.IcmpTimeExceeded = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/timestamp-reply"); cValue.Exists() {
+				item.IcmpTimestampReply = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/timestamp-request"); cValue.Exists() {
+				item.IcmpTimestampRequest = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampRequest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/traceroute"); cValue.Exists() {
+				item.IcmpTraceroute = types.BoolValue(true)
+			} else {
+				item.IcmpTraceroute = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/unreachable"); cValue.Exists() {
+				item.IcmpUnreachable = types.BoolValue(true)
+			} else {
+				item.IcmpUnreachable = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-port-list-op"); cValue.Exists() {
+				item.TcpDstPortListOp = make([]ObjectGroupServiceTcpDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortListOp = append(item.TcpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-port-list-no-op"); cValue.Exists() {
+				item.TcpDstPortList = make([]ObjectGroupServiceTcpDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortList = append(item.TcpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-range-port-list/range"); cValue.Exists() {
+				item.TcpDstPortRanges = make([]ObjectGroupServiceTcpDstPortRanges, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortRanges{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortRanges = append(item.TcpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcPortListOp = make([]ObjectGroupServiceTcpSrcPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortListOp = append(item.TcpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcPortList = make([]ObjectGroupServiceTcpSrcPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortList = append(item.TcpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-port-list/source/range"); cValue.Exists() {
+				item.TcpSrcPortRanges = make([]ObjectGroupServiceTcpSrcPortRanges, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortRanges{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortRanges = append(item.TcpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortListOp = make([]ObjectGroupServiceTcpSrcDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListOp = append(item.TcpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortList = make([]ObjectGroupServiceTcpSrcDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortList = append(item.TcpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpSrcDstPortListSrcOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListSrcOp{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListSrcOp = append(item.TcpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpSrcDstPortListDstOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListDstOp{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListDstOp = append(item.TcpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpSrcRangeDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortListOp = append(item.TcpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortList = make([]ObjectGroupServiceTcpSrcRangeDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortList = append(item.TcpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpSrcDstRangePortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortListOp = append(item.TcpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcDstRangePortList = make([]ObjectGroupServiceTcpSrcDstRangePortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortList = append(item.TcpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source"); cValue.Exists() {
+				item.TcpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpSrcRangeDstRangePortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstRangePortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstRangePortList = append(item.TcpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-port-list-op"); cValue.Exists() {
+				item.UdpDstPortListOp = make([]ObjectGroupServiceUdpDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortListOp = append(item.UdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-port-list-no-op"); cValue.Exists() {
+				item.UdpDstPortList = make([]ObjectGroupServiceUdpDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortList = append(item.UdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-range-port-list/range"); cValue.Exists() {
+				item.UdpDstPortRanges = make([]ObjectGroupServiceUdpDstPortRanges, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortRanges{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortRanges = append(item.UdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcPortListOp = make([]ObjectGroupServiceUdpSrcPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortListOp = append(item.UdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcPortList = make([]ObjectGroupServiceUdpSrcPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortList = append(item.UdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-port-list/source/range"); cValue.Exists() {
+				item.UdpSrcPortRanges = make([]ObjectGroupServiceUdpSrcPortRanges, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortRanges{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortRanges = append(item.UdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortListOp = make([]ObjectGroupServiceUdpSrcDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListOp = append(item.UdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortList = make([]ObjectGroupServiceUdpSrcDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortList = append(item.UdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-src-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortListSrcOp = make([]ObjectGroupServiceUdpSrcDstPortListSrcOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListSrcOp{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListSrcOp = append(item.UdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-dst-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortListDstOp = make([]ObjectGroupServiceUdpSrcDstPortListDstOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListDstOp{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListDstOp = append(item.UdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-dst-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortListOp = make([]ObjectGroupServiceUdpSrcRangeDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortListOp = append(item.UdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortList = make([]ObjectGroupServiceUdpSrcRangeDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortList = append(item.UdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-range-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcDstRangePortListOp = make([]ObjectGroupServiceUdpSrcDstRangePortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortListOp = append(item.UdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcDstRangePortList = make([]ObjectGroupServiceUdpSrcDstRangePortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortList{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortList = append(item.UdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-dst-range-port-list/source"); cValue.Exists() {
+				item.UdpSrcRangeDstRangePortList = make([]ObjectGroupServiceUdpSrcRangeDstRangePortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstRangePortList{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstRangePortList = append(item.UdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-port-list-op"); cValue.Exists() {
+				item.TcpUdpDstPortListOp = make([]ObjectGroupServiceTcpUdpDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortListOp = append(item.TcpUdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-port-list-no-op"); cValue.Exists() {
+				item.TcpUdpDstPortList = make([]ObjectGroupServiceTcpUdpDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortList = append(item.TcpUdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-range-port-list/range"); cValue.Exists() {
+				item.TcpUdpDstPortRanges = make([]ObjectGroupServiceTcpUdpDstPortRanges, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortRanges{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortRanges = append(item.TcpUdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcPortListOp = make([]ObjectGroupServiceTcpUdpSrcPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortListOp = append(item.TcpUdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcPortList = make([]ObjectGroupServiceTcpUdpSrcPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortList = append(item.TcpUdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-port-list/source/range"); cValue.Exists() {
+				item.TcpUdpSrcPortRanges = make([]ObjectGroupServiceTcpUdpSrcPortRanges, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortRanges{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortRanges = append(item.TcpUdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListOp = append(item.TcpUdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortList = make([]ObjectGroupServiceTcpUdpSrcDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortList = append(item.TcpUdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListSrcOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListSrcOp{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListSrcOp = append(item.TcpUdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListDstOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListDstOp{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListDstOp = append(item.TcpUdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortListOp = append(item.TcpUdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortList = append(item.TcpUdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpUdpSrcDstRangePortListOp, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortListOp{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortListOp = append(item.TcpUdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcDstRangePortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortList = append(item.TcpUdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstRangePortList, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstRangePortList{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstRangePortList = append(item.TcpUdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			data.Service = append(data.Service, item)
 			return true
 		})
 	}
@@ -1294,6 +10415,924 @@ func (data *ObjectGroupData) fromBodyXML(ctx context.Context, res xmldot.Result)
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-object-group:service"); value.Exists() {
+		data.Service = make([]ObjectGroupServiceData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ObjectGroupServiceData{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "group-objects"); cValue.Exists() {
+				item.GroupObjects = make([]ObjectGroupServiceGroupObjectsData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceGroupObjectsData{}
+					if ccValue := helpers.GetFromXPath(cv, "service-group"); ccValue.Exists() {
+						cItem.GroupName = types.StringValue(ccValue.String())
+					}
+					item.GroupObjects = append(item.GroupObjects, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "protocal-number"); cValue.Exists() {
+				item.ProtocolNumbers = helpers.GetInt64SetXML(cValue.Array())
+			} else {
+				item.ProtocolNumbers = types.SetNull(types.Int64Type)
+			}
+			if cValue := helpers.GetFromXPath(v, "ahp"); cValue.Exists() {
+				item.Ahp = types.BoolValue(true)
+			} else {
+				item.Ahp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "eigrp"); cValue.Exists() {
+				item.Eigrp = types.BoolValue(true)
+			} else {
+				item.Eigrp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "esp"); cValue.Exists() {
+				item.Esp = types.BoolValue(true)
+			} else {
+				item.Esp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "gre"); cValue.Exists() {
+				item.Gre = types.BoolValue(true)
+			} else {
+				item.Gre = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp"); cValue.Exists() {
+				item.Icmp = types.BoolValue(true)
+			} else {
+				item.Icmp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "igmp"); cValue.Exists() {
+				item.Igmp = types.BoolValue(true)
+			} else {
+				item.Igmp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.BoolValue(true)
+			} else {
+				item.Ip = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ipinip"); cValue.Exists() {
+				item.Ipinip = types.BoolValue(true)
+			} else {
+				item.Ipinip = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nos"); cValue.Exists() {
+				item.Nos = types.BoolValue(true)
+			} else {
+				item.Nos = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ospf"); cValue.Exists() {
+				item.Ospf = types.BoolValue(true)
+			} else {
+				item.Ospf = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pcp"); cValue.Exists() {
+				item.Pcp = types.BoolValue(true)
+			} else {
+				item.Pcp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "pim"); cValue.Exists() {
+				item.Pim = types.BoolValue(true)
+			} else {
+				item.Pim = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp"); cValue.Exists() {
+				item.Tcp = types.BoolValue(true)
+			} else {
+				item.Tcp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "udp"); cValue.Exists() {
+				item.Udp = types.BoolValue(true)
+			} else {
+				item.Udp = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/port-number"); cValue.Exists() {
+				item.IcmpPortNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/alternate-address"); cValue.Exists() {
+				item.IcmpAlternateAddress = types.BoolValue(true)
+			} else {
+				item.IcmpAlternateAddress = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/conversion-error"); cValue.Exists() {
+				item.IcmpConversionError = types.BoolValue(true)
+			} else {
+				item.IcmpConversionError = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/echo"); cValue.Exists() {
+				item.IcmpEcho = types.BoolValue(true)
+			} else {
+				item.IcmpEcho = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/echo-reply"); cValue.Exists() {
+				item.IcmpEchoReply = types.BoolValue(true)
+			} else {
+				item.IcmpEchoReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/information-reply"); cValue.Exists() {
+				item.IcmpInformationReply = types.BoolValue(true)
+			} else {
+				item.IcmpInformationReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/information-request"); cValue.Exists() {
+				item.IcmpInformationRequest = types.BoolValue(true)
+			} else {
+				item.IcmpInformationRequest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/mask-reply"); cValue.Exists() {
+				item.IcmpMaskReply = types.BoolValue(true)
+			} else {
+				item.IcmpMaskReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/mask-request"); cValue.Exists() {
+				item.IcmpMaskRequest = types.BoolValue(true)
+			} else {
+				item.IcmpMaskRequest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/mobile-redirect"); cValue.Exists() {
+				item.IcmpMobileRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpMobileRedirect = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/parameter-problem"); cValue.Exists() {
+				item.IcmpParameterProblem = types.BoolValue(true)
+			} else {
+				item.IcmpParameterProblem = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/redirect"); cValue.Exists() {
+				item.IcmpRedirect = types.BoolValue(true)
+			} else {
+				item.IcmpRedirect = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/router-advertisement"); cValue.Exists() {
+				item.IcmpRouterAdvertisement = types.BoolValue(true)
+			} else {
+				item.IcmpRouterAdvertisement = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/router-solicitation"); cValue.Exists() {
+				item.IcmpRouterSolicitation = types.BoolValue(true)
+			} else {
+				item.IcmpRouterSolicitation = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/source-quench"); cValue.Exists() {
+				item.IcmpSourceQuench = types.BoolValue(true)
+			} else {
+				item.IcmpSourceQuench = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/time-exceeded"); cValue.Exists() {
+				item.IcmpTimeExceeded = types.BoolValue(true)
+			} else {
+				item.IcmpTimeExceeded = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/timestamp-reply"); cValue.Exists() {
+				item.IcmpTimestampReply = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampReply = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/timestamp-request"); cValue.Exists() {
+				item.IcmpTimestampRequest = types.BoolValue(true)
+			} else {
+				item.IcmpTimestampRequest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/traceroute"); cValue.Exists() {
+				item.IcmpTraceroute = types.BoolValue(true)
+			} else {
+				item.IcmpTraceroute = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "icmp-conf/icmp/unreachable"); cValue.Exists() {
+				item.IcmpUnreachable = types.BoolValue(true)
+			} else {
+				item.IcmpUnreachable = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-port-list-op"); cValue.Exists() {
+				item.TcpDstPortListOp = make([]ObjectGroupServiceTcpDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortListOp = append(item.TcpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-port-list-no-op"); cValue.Exists() {
+				item.TcpDstPortList = make([]ObjectGroupServiceTcpDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortList = append(item.TcpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-range-port-list/range"); cValue.Exists() {
+				item.TcpDstPortRanges = make([]ObjectGroupServiceTcpDstPortRangesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpDstPortRangesData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpDstPortRanges = append(item.TcpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcPortListOp = make([]ObjectGroupServiceTcpSrcPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortListOp = append(item.TcpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcPortList = make([]ObjectGroupServiceTcpSrcPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortList = append(item.TcpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-port-list/source/range"); cValue.Exists() {
+				item.TcpSrcPortRanges = make([]ObjectGroupServiceTcpSrcPortRangesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcPortRangesData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcPortRanges = append(item.TcpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortListOp = make([]ObjectGroupServiceTcpSrcDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListOp = append(item.TcpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortList = make([]ObjectGroupServiceTcpSrcDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortList = append(item.TcpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-src-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpSrcDstPortListSrcOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListSrcOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListSrcOp = append(item.TcpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source"); cValue.Exists() {
+				item.TcpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpSrcDstPortListDstOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstPortListDstOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstPortListDstOp = append(item.TcpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpSrcRangeDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortListOp = append(item.TcpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcRangeDstPortList = make([]ObjectGroupServiceTcpSrcRangeDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstPortList = append(item.TcpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-range-port-list-op/source"); cValue.Exists() {
+				item.TcpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpSrcDstRangePortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortListOp = append(item.TcpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source"); cValue.Exists() {
+				item.TcpSrcDstRangePortList = make([]ObjectGroupServiceTcpSrcDstRangePortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcDstRangePortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcDstRangePortList = append(item.TcpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-conf/tcp/tcp-src-range-dst-range-port-list/source"); cValue.Exists() {
+				item.TcpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpSrcRangeDstRangePortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpSrcRangeDstRangePortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpSrcRangeDstRangePortList = append(item.TcpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-port-list-op"); cValue.Exists() {
+				item.UdpDstPortListOp = make([]ObjectGroupServiceUdpDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortListOp = append(item.UdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-port-list-no-op"); cValue.Exists() {
+				item.UdpDstPortList = make([]ObjectGroupServiceUdpDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortList = append(item.UdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-range-port-list/range"); cValue.Exists() {
+				item.UdpDstPortRanges = make([]ObjectGroupServiceUdpDstPortRangesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpDstPortRangesData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpDstPortRanges = append(item.UdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcPortListOp = make([]ObjectGroupServiceUdpSrcPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortListOp = append(item.UdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcPortList = make([]ObjectGroupServiceUdpSrcPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortList = append(item.UdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-port-list/source/range"); cValue.Exists() {
+				item.UdpSrcPortRanges = make([]ObjectGroupServiceUdpSrcPortRangesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcPortRangesData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcPortRanges = append(item.UdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortListOp = make([]ObjectGroupServiceUdpSrcDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListOp = append(item.UdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortList = make([]ObjectGroupServiceUdpSrcDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortList = append(item.UdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-src-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortListSrcOp = make([]ObjectGroupServiceUdpSrcDstPortListSrcOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListSrcOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListSrcOp = append(item.UdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-port-list-dst-op/source"); cValue.Exists() {
+				item.UdpSrcDstPortListDstOp = make([]ObjectGroupServiceUdpSrcDstPortListDstOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstPortListDstOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstPortListDstOp = append(item.UdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-dst-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortListOp = make([]ObjectGroupServiceUdpSrcRangeDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortListOp = append(item.UdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-dst-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcRangeDstPortList = make([]ObjectGroupServiceUdpSrcRangeDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstPortList = append(item.UdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-range-port-list-op/source"); cValue.Exists() {
+				item.UdpSrcDstRangePortListOp = make([]ObjectGroupServiceUdpSrcDstRangePortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortListOp = append(item.UdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-dst-range-port-list-no-op/source"); cValue.Exists() {
+				item.UdpSrcDstRangePortList = make([]ObjectGroupServiceUdpSrcDstRangePortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcDstRangePortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcDstRangePortList = append(item.UdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "udp-conf/udp/udp-src-range-dst-range-port-list/source"); cValue.Exists() {
+				item.UdpSrcRangeDstRangePortList = make([]ObjectGroupServiceUdpSrcRangeDstRangePortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceUdpSrcRangeDstRangePortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.UdpSrcRangeDstRangePortList = append(item.UdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-port-list-op"); cValue.Exists() {
+				item.TcpUdpDstPortListOp = make([]ObjectGroupServiceTcpUdpDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortListOp = append(item.TcpUdpDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-port-list-no-op"); cValue.Exists() {
+				item.TcpUdpDstPortList = make([]ObjectGroupServiceTcpUdpDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortList = append(item.TcpUdpDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-range-port-list/range"); cValue.Exists() {
+				item.TcpUdpDstPortRanges = make([]ObjectGroupServiceTcpUdpDstPortRangesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpDstPortRangesData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpDstPortRanges = append(item.TcpUdpDstPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcPortListOp = make([]ObjectGroupServiceTcpUdpSrcPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortListOp = append(item.TcpUdpSrcPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcPortList = make([]ObjectGroupServiceTcpUdpSrcPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-port"); ccValue.Exists() {
+						cItem.Port = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortList = append(item.TcpUdpSrcPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-port-list/source/range"); cValue.Exists() {
+				item.TcpUdpSrcPortRanges = make([]ObjectGroupServiceTcpUdpSrcPortRangesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcPortRangesData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-min-port"); ccValue.Exists() {
+						cItem.MinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-max-port"); ccValue.Exists() {
+						cItem.MaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcPortRanges = append(item.TcpUdpSrcPortRanges, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListOp = append(item.TcpUdpSrcDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortList = make([]ObjectGroupServiceTcpUdpSrcDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortList = append(item.TcpUdpSrcDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-src-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListSrcOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListSrcOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListSrcOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "src-operator"); ccValue.Exists() {
+						cItem.SrcOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListSrcOp = append(item.TcpUdpSrcDstPortListSrcOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-port-list-dst-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstPortListDstOp = make([]ObjectGroupServiceTcpUdpSrcDstPortListDstOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstPortListDstOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "dst-operator"); ccValue.Exists() {
+						cItem.DstOperator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstPortListDstOp = append(item.TcpUdpSrcDstPortListDstOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-dst-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortListOp = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortListOp = append(item.TcpUdpSrcRangeDstPortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstPortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstPortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstPortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-port"); ccValue.Exists() {
+						cItem.DstPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstPortList = append(item.TcpUdpSrcRangeDstPortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-range-port-list-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortListOp = make([]ObjectGroupServiceTcpUdpSrcDstRangePortListOpData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortListOpData{}
+					if ccValue := helpers.GetFromXPath(cv, "operator"); ccValue.Exists() {
+						cItem.Operator = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortListOp = append(item.TcpUdpSrcDstRangePortListOp, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source"); cValue.Exists() {
+				item.TcpUdpSrcDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcDstRangePortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcDstRangePortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-port"); ccValue.Exists() {
+						cItem.SrcPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcDstRangePortList = append(item.TcpUdpSrcDstRangePortList, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "tcp-udp/tcp-udp-src-range-dst-range-port-list/source"); cValue.Exists() {
+				item.TcpUdpSrcRangeDstRangePortList = make([]ObjectGroupServiceTcpUdpSrcRangeDstRangePortListData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := ObjectGroupServiceTcpUdpSrcRangeDstRangePortListData{}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-min-port"); ccValue.Exists() {
+						cItem.SrcMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-src-max-port"); ccValue.Exists() {
+						cItem.SrcMaxPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-min-port"); ccValue.Exists() {
+						cItem.DstMinPort = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "tcp-udp-dst-max-port"); ccValue.Exists() {
+						cItem.DstMaxPort = types.StringValue(ccValue.String())
+					}
+					item.TcpUdpSrcRangeDstRangePortList = append(item.TcpUdpSrcRangeDstRangePortList, cItem)
+					return true
+				})
+			}
+			data.Service = append(data.Service, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1302,6 +11341,1757 @@ func (data *ObjectGroupData) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 func (data *ObjectGroup) getDeletedItems(ctx context.Context, state ObjectGroup) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Service {
+		stateKeyValues := [...]string{state.Service[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Service[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Service {
+			found = true
+			if state.Service[i].Name.ValueString() != data.Service[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Service[i].TcpUdpSrcRangeDstRangePortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcRangeDstRangePortList {
+						found = true
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-range-dst-range-port-list/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstRangePortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstRangePortList {
+						found = true
+						if state.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstRangePortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstRangePortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-dst-range-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcRangeDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcRangeDstPortList {
+						found = true
+						if state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcRangeDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcRangeDstPortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-range-dst-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortListDstOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortListDstOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListDstOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListDstOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListDstOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-dst-port-list-dst-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortListSrcOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortListSrcOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListSrcOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListSrcOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListSrcOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-dst-port-list-src-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortList {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-dst-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-dst-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcPortRanges {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcPortRanges {
+						found = true
+						if state.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpUdpSrcPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpUdpSrcPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-range-port-list/source/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcPortList {
+						found = true
+						if state.Service[i].TcpUdpSrcPortList[ci].Port.ValueString() != data.Service[j].TcpUdpSrcPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcPortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpSrcPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString() != data.Service[j].TcpUdpSrcPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-src-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpDstPortRanges {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpDstPortRanges {
+						found = true
+						if state.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpUdpDstPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpUdpDstPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-range-port-list/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpDstPortList[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpDstPortList {
+						found = true
+						if state.Service[i].TcpUdpDstPortList[ci].Port.ValueString() != data.Service[j].TcpUdpDstPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-port-list-no-op=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpDstPortListOp {
+						found = true
+						if state.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString() != data.Service[j].TcpUdpDstPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-udp/tcp-udp-port-list-op=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcRangeDstRangePortList {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcRangeDstRangePortList {
+						found = true
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-range-dst-range-port-list/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstRangePortList {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstRangePortList {
+						found = true
+						if state.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstRangePortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].UdpSrcDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].UdpSrcDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-dst-range-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstRangePortListOp {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString(), state.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), state.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstRangePortListOp {
+						found = true
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-dst-range-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcRangeDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), state.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), state.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcRangeDstPortList {
+						found = true
+						if state.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString() != data.Service[j].UdpSrcRangeDstPortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstPortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString() != data.Service[j].UdpSrcRangeDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-range-dst-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcRangeDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), state.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString(), state.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcRangeDstPortListOp {
+						found = true
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-range-dst-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortListDstOp {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), state.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortListDstOp {
+						found = true
+						if state.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortListDstOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString() != data.Service[j].UdpSrcDstPortListDstOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortListDstOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-dst-port-list-dst-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortListSrcOp {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortListSrcOp {
+						found = true
+						if state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString() != data.Service[j].UdpSrcDstPortListSrcOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortListSrcOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortListSrcOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-dst-port-list-src-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortList {
+						found = true
+						if state.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-dst-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString(), state.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString(), state.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortListOp {
+						found = true
+						if state.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-dst-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcPortRanges {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString(), state.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcPortRanges {
+						found = true
+						if state.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString() != data.Service[j].UdpSrcPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString() != data.Service[j].UdpSrcPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-range-port-list/source/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcPortList {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcPortList[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcPortList {
+						found = true
+						if state.Service[i].UdpSrcPortList[ci].Port.ValueString() != data.Service[j].UdpSrcPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcPortListOp[ci].Operator.ValueString(), state.Service[i].UdpSrcPortListOp[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcPortListOp {
+						found = true
+						if state.Service[i].UdpSrcPortListOp[ci].Operator.ValueString() != data.Service[j].UdpSrcPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcPortListOp[ci].Port.ValueString() != data.Service[j].UdpSrcPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-src-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpDstPortRanges {
+					cstateKeyValues := [...]string{state.Service[i].UdpDstPortRanges[ci].MinPort.ValueString(), state.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpDstPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpDstPortRanges {
+						found = true
+						if state.Service[i].UdpDstPortRanges[ci].MinPort.ValueString() != data.Service[j].UdpDstPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString() != data.Service[j].UdpDstPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-range-port-list/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].UdpDstPortList[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpDstPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpDstPortList {
+						found = true
+						if state.Service[i].UdpDstPortList[ci].Port.ValueString() != data.Service[j].UdpDstPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-port-list-no-op=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].UdpDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].UdpDstPortListOp[ci].Operator.ValueString(), state.Service[i].UdpDstPortListOp[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpDstPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpDstPortListOp {
+						found = true
+						if state.Service[i].UdpDstPortListOp[ci].Operator.ValueString() != data.Service[j].UdpDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpDstPortListOp[ci].Port.ValueString() != data.Service[j].UdpDstPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp-conf/udp/udp-port-list-op=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcRangeDstRangePortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcRangeDstRangePortList {
+						found = true
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-range-dst-range-port-list/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstRangePortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstRangePortList {
+						found = true
+						if state.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstRangePortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpSrcDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpSrcDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstRangePortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString(), state.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), state.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstRangePortListOp {
+						found = true
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-dst-range-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcRangeDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcRangeDstPortList {
+						found = true
+						if state.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpSrcRangeDstPortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstPortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpSrcRangeDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcRangeDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), state.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcRangeDstPortListOp {
+						found = true
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-range-dst-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortListDstOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString(), state.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortListDstOp {
+						found = true
+						if state.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortListDstOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString() != data.Service[j].TcpSrcDstPortListDstOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortListDstOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortListSrcOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortListSrcOp {
+						found = true
+						if state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString() != data.Service[j].TcpSrcDstPortListSrcOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortListSrcOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortListSrcOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-dst-port-list-src-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortList {
+						found = true
+						if state.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-dst-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString(), state.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString(), state.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortListOp {
+						found = true
+						if state.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-dst-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcPortRanges {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcPortRanges {
+						found = true
+						if state.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpSrcPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpSrcPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-range-port-list/source/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcPortList[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcPortList {
+						found = true
+						if state.Service[i].TcpSrcPortList[ci].Port.ValueString() != data.Service[j].TcpSrcPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-port-list-no-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcPortListOp[ci].Operator.ValueString(), state.Service[i].TcpSrcPortListOp[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcPortListOp {
+						found = true
+						if state.Service[i].TcpSrcPortListOp[ci].Operator.ValueString() != data.Service[j].TcpSrcPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcPortListOp[ci].Port.ValueString() != data.Service[j].TcpSrcPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-src-port-list-op/source=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpDstPortRanges {
+					cstateKeyValues := [...]string{state.Service[i].TcpDstPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpDstPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpDstPortRanges {
+						found = true
+						if state.Service[i].TcpDstPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpDstPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpDstPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-range-port-list/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpDstPortList {
+					cstateKeyValues := [...]string{state.Service[i].TcpDstPortList[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpDstPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpDstPortList {
+						found = true
+						if state.Service[i].TcpDstPortList[ci].Port.ValueString() != data.Service[j].TcpDstPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-port-list-no-op=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Service[i].TcpDstPortListOp {
+					cstateKeyValues := [...]string{state.Service[i].TcpDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpDstPortListOp[ci].Port.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpDstPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpDstPortListOp {
+						found = true
+						if state.Service[i].TcpDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpDstPortListOp[ci].Port.ValueString() != data.Service[j].TcpDstPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp-conf/tcp/tcp-port-list-op=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.Service[i].IcmpUnreachable.IsNull() && data.Service[j].IcmpUnreachable.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/unreachable", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpTraceroute.IsNull() && data.Service[j].IcmpTraceroute.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/traceroute", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpTimestampRequest.IsNull() && data.Service[j].IcmpTimestampRequest.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/timestamp-request", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpTimestampReply.IsNull() && data.Service[j].IcmpTimestampReply.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/timestamp-reply", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpTimeExceeded.IsNull() && data.Service[j].IcmpTimeExceeded.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/time-exceeded", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpSourceQuench.IsNull() && data.Service[j].IcmpSourceQuench.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/source-quench", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpRouterSolicitation.IsNull() && data.Service[j].IcmpRouterSolicitation.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/router-solicitation", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpRouterAdvertisement.IsNull() && data.Service[j].IcmpRouterAdvertisement.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/router-advertisement", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpRedirect.IsNull() && data.Service[j].IcmpRedirect.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/redirect", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpParameterProblem.IsNull() && data.Service[j].IcmpParameterProblem.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/parameter-problem", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpMobileRedirect.IsNull() && data.Service[j].IcmpMobileRedirect.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/mobile-redirect", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpMaskRequest.IsNull() && data.Service[j].IcmpMaskRequest.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/mask-request", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpMaskReply.IsNull() && data.Service[j].IcmpMaskReply.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/mask-reply", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpInformationRequest.IsNull() && data.Service[j].IcmpInformationRequest.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/information-request", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpInformationReply.IsNull() && data.Service[j].IcmpInformationReply.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/information-reply", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpEchoReply.IsNull() && data.Service[j].IcmpEchoReply.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/echo-reply", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpEcho.IsNull() && data.Service[j].IcmpEcho.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/echo", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpConversionError.IsNull() && data.Service[j].IcmpConversionError.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/conversion-error", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpAlternateAddress.IsNull() && data.Service[j].IcmpAlternateAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/alternate-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].IcmpPortNumber.IsNull() && data.Service[j].IcmpPortNumber.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/port-number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Udp.IsNull() && data.Service[j].Udp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Tcp.IsNull() && data.Service[j].Tcp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Pim.IsNull() && data.Service[j].Pim.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/pim", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Pcp.IsNull() && data.Service[j].Pcp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/pcp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Ospf.IsNull() && data.Service[j].Ospf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ospf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Nos.IsNull() && data.Service[j].Nos.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/nos", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Ipinip.IsNull() && data.Service[j].Ipinip.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ipinip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Ip.IsNull() && data.Service[j].Ip.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Igmp.IsNull() && data.Service[j].Igmp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/igmp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Icmp.IsNull() && data.Service[j].Icmp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Gre.IsNull() && data.Service[j].Gre.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/gre", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Esp.IsNull() && data.Service[j].Esp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/esp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Eigrp.IsNull() && data.Service[j].Eigrp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/eigrp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].Ahp.IsNull() && data.Service[j].Ahp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ahp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Service[i].ProtocolNumbers.IsNull() {
+					if data.Service[j].ProtocolNumbers.IsNull() {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/protocal-number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					} else {
+						var dataValues, stateValues []int
+						data.Service[j].ProtocolNumbers.ElementsAs(ctx, &dataValues, false)
+						state.Service[i].ProtocolNumbers.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/protocal-number=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+							}
+						}
+					}
+				}
+				for ci := range state.Service[i].GroupObjects {
+					cstateKeyValues := [...]string{state.Service[i].GroupObjects[ci].GroupName.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].GroupObjects[ci].GroupName.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].GroupObjects {
+						found = true
+						if state.Service[i].GroupObjects[ci].GroupName.ValueString() != data.Service[j].GroupObjects[cj].GroupName.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/group-objects=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.Service[i].Description.IsNull() && data.Service[j].Description.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Network {
 		stateKeyValues := [...]string{state.Network[i].Name.ValueString()}
 
@@ -1530,6 +13320,1996 @@ func (data *ObjectGroup) getDeletedItems(ctx context.Context, state ObjectGroup)
 
 func (data *ObjectGroup) addDeletedItemsXML(ctx context.Context, state ObjectGroup, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.Service {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Service[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Service[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Service {
+			found = true
+			if state.Service[i].Name.ValueString() != data.Service[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Service[i].TcpUdpSrcRangeDstRangePortList {
+					cstateKeys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcRangeDstRangePortList {
+						found = true
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-range-dst-range-port-list/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstRangePortList {
+					cstateKeys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstRangePortList {
+						found = true
+						if state.Service[i].TcpUdpSrcDstRangePortList[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstRangePortListOp {
+					cstateKeys := [...]string{"operator", "tcp-udp-src-port", "tcp-udp-dst-min-port", "tcp-udp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstRangePortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMinPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString() != data.Service[j].TcpUdpSrcDstRangePortListOp[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-dst-range-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcRangeDstPortList {
+					cstateKeys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "tcp-udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcRangeDstPortList {
+						found = true
+						if state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcRangeDstPortListOp {
+					cstateKeys := [...]string{"tcp-udp-src-min-port", "tcp-udp-src-max-port", "operator", "tcp-udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcRangeDstPortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcRangeDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcRangeDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-range-dst-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortListDstOp {
+					cstateKeys := [...]string{"tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortListDstOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortListDstOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListDstOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListDstOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListDstOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListDstOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-dst-port-list-dst-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortListSrcOp {
+					cstateKeys := [...]string{"src-operator", "tcp-udp-src-port", "tcp-udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortListSrcOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListSrcOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListSrcOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListSrcOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListSrcOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-dst-port-list-src-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortList {
+					cstateKeys := [...]string{"tcp-udp-src-port", "tcp-udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortList {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortList[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-dst-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcDstPortListOp {
+					cstateKeys := [...]string{"src-operator", "tcp-udp-src-port", "dst-operator", "tcp-udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString(), state.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcDstPortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].DstOperator.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpUdpSrcDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-dst-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcPortRanges {
+					cstateKeys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcPortRanges {
+						found = true
+						if state.Service[i].TcpUdpSrcPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpUdpSrcPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpUdpSrcPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-range-port-list/source/range%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcPortList {
+					cstateKeys := [...]string{"tcp-udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcPortList {
+						found = true
+						if state.Service[i].TcpUdpSrcPortList[ci].Port.ValueString() != data.Service[j].TcpUdpSrcPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpSrcPortListOp {
+					cstateKeys := [...]string{"operator", "tcp-udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpSrcPortListOp {
+						found = true
+						if state.Service[i].TcpUdpSrcPortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpSrcPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpSrcPortListOp[ci].Port.ValueString() != data.Service[j].TcpUdpSrcPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-src-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpDstPortRanges {
+					cstateKeys := [...]string{"tcp-udp-min-port", "tcp-udp-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpDstPortRanges {
+						found = true
+						if state.Service[i].TcpUdpDstPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpUdpDstPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpDstPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpUdpDstPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-range-port-list/range%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpDstPortList {
+					cstateKeys := [...]string{"tcp-udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpDstPortList[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpDstPortList {
+						found = true
+						if state.Service[i].TcpUdpDstPortList[ci].Port.ValueString() != data.Service[j].TcpUdpDstPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-port-list-no-op%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpUdpDstPortListOp {
+					cstateKeys := [...]string{"operator", "tcp-udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpUdpDstPortListOp {
+						found = true
+						if state.Service[i].TcpUdpDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpUdpDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpUdpDstPortListOp[ci].Port.ValueString() != data.Service[j].TcpUdpDstPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-udp/tcp-udp-port-list-op%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcRangeDstRangePortList {
+					cstateKeys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-min-port", "udp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcRangeDstRangePortList {
+						found = true
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-range-dst-range-port-list/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstRangePortList {
+					cstateKeys := [...]string{"udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstRangePortList {
+						found = true
+						if state.Service[i].UdpSrcDstRangePortList[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstRangePortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].UdpSrcDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].UdpSrcDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-dst-range-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstRangePortListOp {
+					cstateKeys := [...]string{"operator", "udp-src-port", "udp-dst-min-port", "udp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString(), state.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), state.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstRangePortListOp {
+						found = true
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].Operator.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].DstMinPort.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstRangePortListOp[ci].DstMaxPort.ValueString() != data.Service[j].UdpSrcDstRangePortListOp[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-dst-range-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcRangeDstPortList {
+					cstateKeys := [...]string{"udp-src-min-port", "udp-src-max-port", "udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), state.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), state.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcRangeDstPortList {
+						found = true
+						if state.Service[i].UdpSrcRangeDstPortList[ci].SrcMinPort.ValueString() != data.Service[j].UdpSrcRangeDstPortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortList[ci].SrcMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstPortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortList[ci].DstPort.ValueString() != data.Service[j].UdpSrcRangeDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-range-dst-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcRangeDstPortListOp {
+					cstateKeys := [...]string{"udp-src-min-port", "udp-src-max-port", "operator", "udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), state.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString(), state.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcRangeDstPortListOp {
+						found = true
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].Operator.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcRangeDstPortListOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcRangeDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-range-dst-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortListDstOp {
+					cstateKeys := [...]string{"udp-src-port", "dst-operator", "udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString(), state.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortListDstOp {
+						found = true
+						if state.Service[i].UdpSrcDstPortListDstOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortListDstOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListDstOp[ci].DstOperator.ValueString() != data.Service[j].UdpSrcDstPortListDstOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListDstOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortListDstOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-dst-port-list-dst-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortListSrcOp {
+					cstateKeys := [...]string{"src-operator", "udp-src-port", "udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortListSrcOp {
+						found = true
+						if state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcOperator.ValueString() != data.Service[j].UdpSrcDstPortListSrcOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListSrcOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortListSrcOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListSrcOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortListSrcOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-dst-port-list-src-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortList {
+					cstateKeys := [...]string{"udp-src-port", "udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortList {
+						found = true
+						if state.Service[i].UdpSrcDstPortList[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortList[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-dst-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcDstPortListOp {
+					cstateKeys := [...]string{"src-operator", "udp-src-port", "dst-operator", "udp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString(), state.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString(), state.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString(), state.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcDstPortListOp {
+						found = true
+						if state.Service[i].UdpSrcDstPortListOp[ci].SrcOperator.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListOp[ci].SrcPort.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListOp[ci].DstOperator.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcDstPortListOp[ci].DstPort.ValueString() != data.Service[j].UdpSrcDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-dst-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcPortRanges {
+					cstateKeys := [...]string{"udp-min-port", "udp-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString(), state.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcPortRanges {
+						found = true
+						if state.Service[i].UdpSrcPortRanges[ci].MinPort.ValueString() != data.Service[j].UdpSrcPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcPortRanges[ci].MaxPort.ValueString() != data.Service[j].UdpSrcPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-range-port-list/source/range%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcPortList {
+					cstateKeys := [...]string{"udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcPortList[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcPortList {
+						found = true
+						if state.Service[i].UdpSrcPortList[ci].Port.ValueString() != data.Service[j].UdpSrcPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpSrcPortListOp {
+					cstateKeys := [...]string{"operator", "udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpSrcPortListOp[ci].Operator.ValueString(), state.Service[i].UdpSrcPortListOp[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpSrcPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpSrcPortListOp {
+						found = true
+						if state.Service[i].UdpSrcPortListOp[ci].Operator.ValueString() != data.Service[j].UdpSrcPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpSrcPortListOp[ci].Port.ValueString() != data.Service[j].UdpSrcPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-src-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpDstPortRanges {
+					cstateKeys := [...]string{"udp-min-port", "udp-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpDstPortRanges[ci].MinPort.ValueString(), state.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpDstPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpDstPortRanges {
+						found = true
+						if state.Service[i].UdpDstPortRanges[ci].MinPort.ValueString() != data.Service[j].UdpDstPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpDstPortRanges[ci].MaxPort.ValueString() != data.Service[j].UdpDstPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-range-port-list/range%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpDstPortList {
+					cstateKeys := [...]string{"udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpDstPortList[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpDstPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpDstPortList {
+						found = true
+						if state.Service[i].UdpDstPortList[ci].Port.ValueString() != data.Service[j].UdpDstPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-port-list-no-op%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].UdpDstPortListOp {
+					cstateKeys := [...]string{"operator", "udp-port"}
+					cstateKeyValues := [...]string{state.Service[i].UdpDstPortListOp[ci].Operator.ValueString(), state.Service[i].UdpDstPortListOp[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].UdpDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].UdpDstPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].UdpDstPortListOp {
+						found = true
+						if state.Service[i].UdpDstPortListOp[ci].Operator.ValueString() != data.Service[j].UdpDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].UdpDstPortListOp[ci].Port.ValueString() != data.Service[j].UdpDstPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp-conf/udp/udp-port-list-op%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcRangeDstRangePortList {
+					cstateKeys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcRangeDstRangePortList {
+						found = true
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-range-dst-range-port-list/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstRangePortList {
+					cstateKeys := [...]string{"tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString(), state.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstRangePortList {
+						found = true
+						if state.Service[i].TcpSrcDstRangePortList[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstRangePortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortList[ci].DstMinPort.ValueString() != data.Service[j].TcpSrcDstRangePortList[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortList[ci].DstMaxPort.ValueString() != data.Service[j].TcpSrcDstRangePortList[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstRangePortListOp {
+					cstateKeys := [...]string{"operator", "tcp-src-port", "tcp-dst-min-port", "tcp-dst-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString(), state.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString(), state.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstRangePortListOp {
+						found = true
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].Operator.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].DstMinPort.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].DstMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstRangePortListOp[ci].DstMaxPort.ValueString() != data.Service[j].TcpSrcDstRangePortListOp[cj].DstMaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-dst-range-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcRangeDstPortList {
+					cstateKeys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "tcp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString(), state.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString(), state.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcRangeDstPortList {
+						found = true
+						if state.Service[i].TcpSrcRangeDstPortList[ci].SrcMinPort.ValueString() != data.Service[j].TcpSrcRangeDstPortList[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortList[ci].SrcMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstPortList[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpSrcRangeDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcRangeDstPortListOp {
+					cstateKeys := [...]string{"tcp-src-min-port", "tcp-src-max-port", "operator", "tcp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString(), state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString(), state.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcRangeDstPortListOp {
+						found = true
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMinPort.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].SrcMinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].SrcMaxPort.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].SrcMaxPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcRangeDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcRangeDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-range-dst-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortListDstOp {
+					cstateKeys := [...]string{"tcp-src-port", "dst-operator", "tcp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString(), state.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortListDstOp {
+						found = true
+						if state.Service[i].TcpSrcDstPortListDstOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortListDstOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListDstOp[ci].DstOperator.ValueString() != data.Service[j].TcpSrcDstPortListDstOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListDstOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortListDstOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortListSrcOp {
+					cstateKeys := [...]string{"src-operator", "tcp-src-port", "tcp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString(), state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortListSrcOp {
+						found = true
+						if state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcOperator.ValueString() != data.Service[j].TcpSrcDstPortListSrcOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListSrcOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortListSrcOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListSrcOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortListSrcOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-dst-port-list-src-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortList {
+					cstateKeys := [...]string{"tcp-src-port", "tcp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortList {
+						found = true
+						if state.Service[i].TcpSrcDstPortList[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortList[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortList[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortList[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-dst-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcDstPortListOp {
+					cstateKeys := [...]string{"src-operator", "tcp-src-port", "dst-operator", "tcp-dst-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString(), state.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString(), state.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString(), state.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcDstPortListOp {
+						found = true
+						if state.Service[i].TcpSrcDstPortListOp[ci].SrcOperator.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].SrcOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListOp[ci].SrcPort.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].SrcPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListOp[ci].DstOperator.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].DstOperator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcDstPortListOp[ci].DstPort.ValueString() != data.Service[j].TcpSrcDstPortListOp[cj].DstPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-dst-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcPortRanges {
+					cstateKeys := [...]string{"tcp-min-port", "tcp-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcPortRanges {
+						found = true
+						if state.Service[i].TcpSrcPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpSrcPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpSrcPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-range-port-list/source/range%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcPortList {
+					cstateKeys := [...]string{"tcp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcPortList[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcPortList {
+						found = true
+						if state.Service[i].TcpSrcPortList[ci].Port.ValueString() != data.Service[j].TcpSrcPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-port-list-no-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpSrcPortListOp {
+					cstateKeys := [...]string{"operator", "tcp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpSrcPortListOp[ci].Operator.ValueString(), state.Service[i].TcpSrcPortListOp[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpSrcPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpSrcPortListOp {
+						found = true
+						if state.Service[i].TcpSrcPortListOp[ci].Operator.ValueString() != data.Service[j].TcpSrcPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpSrcPortListOp[ci].Port.ValueString() != data.Service[j].TcpSrcPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-src-port-list-op/source%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpDstPortRanges {
+					cstateKeys := [...]string{"tcp-min-port", "tcp-max-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpDstPortRanges[ci].MinPort.ValueString(), state.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpDstPortRanges[ci].MinPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpDstPortRanges {
+						found = true
+						if state.Service[i].TcpDstPortRanges[ci].MinPort.ValueString() != data.Service[j].TcpDstPortRanges[cj].MinPort.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpDstPortRanges[ci].MaxPort.ValueString() != data.Service[j].TcpDstPortRanges[cj].MaxPort.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-range-port-list/range%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpDstPortList {
+					cstateKeys := [...]string{"tcp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpDstPortList[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpDstPortList[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpDstPortList {
+						found = true
+						if state.Service[i].TcpDstPortList[ci].Port.ValueString() != data.Service[j].TcpDstPortList[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-port-list-no-op%v", predicates, cpredicates))
+					}
+				}
+				for ci := range state.Service[i].TcpDstPortListOp {
+					cstateKeys := [...]string{"operator", "tcp-port"}
+					cstateKeyValues := [...]string{state.Service[i].TcpDstPortListOp[ci].Operator.ValueString(), state.Service[i].TcpDstPortListOp[ci].Port.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].TcpDstPortListOp[ci].Operator.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Service[i].TcpDstPortListOp[ci].Port.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].TcpDstPortListOp {
+						found = true
+						if state.Service[i].TcpDstPortListOp[ci].Operator.ValueString() != data.Service[j].TcpDstPortListOp[cj].Operator.ValueString() {
+							found = false
+						}
+						if state.Service[i].TcpDstPortListOp[ci].Port.ValueString() != data.Service[j].TcpDstPortListOp[cj].Port.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp-conf/tcp/tcp-port-list-op%v", predicates, cpredicates))
+					}
+				}
+				if !state.Service[i].IcmpUnreachable.IsNull() && data.Service[j].IcmpUnreachable.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/unreachable", predicates))
+				}
+				if !state.Service[i].IcmpTraceroute.IsNull() && data.Service[j].IcmpTraceroute.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/traceroute", predicates))
+				}
+				if !state.Service[i].IcmpTimestampRequest.IsNull() && data.Service[j].IcmpTimestampRequest.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/timestamp-request", predicates))
+				}
+				if !state.Service[i].IcmpTimestampReply.IsNull() && data.Service[j].IcmpTimestampReply.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/timestamp-reply", predicates))
+				}
+				if !state.Service[i].IcmpTimeExceeded.IsNull() && data.Service[j].IcmpTimeExceeded.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/time-exceeded", predicates))
+				}
+				if !state.Service[i].IcmpSourceQuench.IsNull() && data.Service[j].IcmpSourceQuench.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/source-quench", predicates))
+				}
+				if !state.Service[i].IcmpRouterSolicitation.IsNull() && data.Service[j].IcmpRouterSolicitation.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/router-solicitation", predicates))
+				}
+				if !state.Service[i].IcmpRouterAdvertisement.IsNull() && data.Service[j].IcmpRouterAdvertisement.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/router-advertisement", predicates))
+				}
+				if !state.Service[i].IcmpRedirect.IsNull() && data.Service[j].IcmpRedirect.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/redirect", predicates))
+				}
+				if !state.Service[i].IcmpParameterProblem.IsNull() && data.Service[j].IcmpParameterProblem.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/parameter-problem", predicates))
+				}
+				if !state.Service[i].IcmpMobileRedirect.IsNull() && data.Service[j].IcmpMobileRedirect.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/mobile-redirect", predicates))
+				}
+				if !state.Service[i].IcmpMaskRequest.IsNull() && data.Service[j].IcmpMaskRequest.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/mask-request", predicates))
+				}
+				if !state.Service[i].IcmpMaskReply.IsNull() && data.Service[j].IcmpMaskReply.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/mask-reply", predicates))
+				}
+				if !state.Service[i].IcmpInformationRequest.IsNull() && data.Service[j].IcmpInformationRequest.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/information-request", predicates))
+				}
+				if !state.Service[i].IcmpInformationReply.IsNull() && data.Service[j].IcmpInformationReply.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/information-reply", predicates))
+				}
+				if !state.Service[i].IcmpEchoReply.IsNull() && data.Service[j].IcmpEchoReply.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/echo-reply", predicates))
+				}
+				if !state.Service[i].IcmpEcho.IsNull() && data.Service[j].IcmpEcho.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/echo", predicates))
+				}
+				if !state.Service[i].IcmpConversionError.IsNull() && data.Service[j].IcmpConversionError.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/conversion-error", predicates))
+				}
+				if !state.Service[i].IcmpAlternateAddress.IsNull() && data.Service[j].IcmpAlternateAddress.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/alternate-address", predicates))
+				}
+				if !state.Service[i].IcmpPortNumber.IsNull() && data.Service[j].IcmpPortNumber.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp-conf/icmp/port-number", predicates))
+				}
+				if !state.Service[i].Udp.IsNull() && data.Service[j].Udp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/udp", predicates))
+				}
+				if !state.Service[i].Tcp.IsNull() && data.Service[j].Tcp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/tcp", predicates))
+				}
+				if !state.Service[i].Pim.IsNull() && data.Service[j].Pim.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/pim", predicates))
+				}
+				if !state.Service[i].Pcp.IsNull() && data.Service[j].Pcp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/pcp", predicates))
+				}
+				if !state.Service[i].Ospf.IsNull() && data.Service[j].Ospf.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ospf", predicates))
+				}
+				if !state.Service[i].Nos.IsNull() && data.Service[j].Nos.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/nos", predicates))
+				}
+				if !state.Service[i].Ipinip.IsNull() && data.Service[j].Ipinip.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ipinip", predicates))
+				}
+				if !state.Service[i].Ip.IsNull() && data.Service[j].Ip.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ip", predicates))
+				}
+				if !state.Service[i].Igmp.IsNull() && data.Service[j].Igmp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/igmp", predicates))
+				}
+				if !state.Service[i].Icmp.IsNull() && data.Service[j].Icmp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/icmp", predicates))
+				}
+				if !state.Service[i].Gre.IsNull() && data.Service[j].Gre.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/gre", predicates))
+				}
+				if !state.Service[i].Esp.IsNull() && data.Service[j].Esp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/esp", predicates))
+				}
+				if !state.Service[i].Eigrp.IsNull() && data.Service[j].Eigrp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/eigrp", predicates))
+				}
+				if !state.Service[i].Ahp.IsNull() && data.Service[j].Ahp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/ahp", predicates))
+				}
+				if !state.Service[i].ProtocolNumbers.IsNull() {
+					if data.Service[j].ProtocolNumbers.IsNull() {
+						var values []string
+						state.Service[i].ProtocolNumbers.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/protocal-number[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []int
+						data.Service[j].ProtocolNumbers.ElementsAs(ctx, &dataValues, false)
+						state.Service[i].ProtocolNumbers.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/protocal-number[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				for ci := range state.Service[i].GroupObjects {
+					cstateKeys := [...]string{"service-group"}
+					cstateKeyValues := [...]string{state.Service[i].GroupObjects[ci].GroupName.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Service[i].GroupObjects[ci].GroupName.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Service[j].GroupObjects {
+						found = true
+						if state.Service[i].GroupObjects[ci].GroupName.ValueString() != data.Service[j].GroupObjects[cj].GroupName.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/group-objects%v", predicates, cpredicates))
+					}
+				}
+				if !state.Service[i].Description.IsNull() && data.Service[j].Description.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v/description", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-object-group:service%v", predicates))
+		}
+	}
 	for i := range state.Network {
 		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.Network[i].Name.ValueString()}
@@ -1800,6 +15580,111 @@ func (data *ObjectGroup) addDeletedItemsXML(ctx context.Context, state ObjectGro
 func (data *ObjectGroup) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.Service {
+		keyValues := [...]string{data.Service[i].Name.ValueString()}
+
+		if !data.Service[i].IcmpUnreachable.IsNull() && !data.Service[i].IcmpUnreachable.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/unreachable", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpTraceroute.IsNull() && !data.Service[i].IcmpTraceroute.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/traceroute", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpTimestampRequest.IsNull() && !data.Service[i].IcmpTimestampRequest.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/timestamp-request", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpTimestampReply.IsNull() && !data.Service[i].IcmpTimestampReply.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/timestamp-reply", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpTimeExceeded.IsNull() && !data.Service[i].IcmpTimeExceeded.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/time-exceeded", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpSourceQuench.IsNull() && !data.Service[i].IcmpSourceQuench.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/source-quench", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpRouterSolicitation.IsNull() && !data.Service[i].IcmpRouterSolicitation.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/router-solicitation", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpRouterAdvertisement.IsNull() && !data.Service[i].IcmpRouterAdvertisement.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/router-advertisement", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpRedirect.IsNull() && !data.Service[i].IcmpRedirect.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/redirect", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpParameterProblem.IsNull() && !data.Service[i].IcmpParameterProblem.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/parameter-problem", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpMobileRedirect.IsNull() && !data.Service[i].IcmpMobileRedirect.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/mobile-redirect", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpMaskRequest.IsNull() && !data.Service[i].IcmpMaskRequest.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/mask-request", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpMaskReply.IsNull() && !data.Service[i].IcmpMaskReply.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/mask-reply", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpInformationRequest.IsNull() && !data.Service[i].IcmpInformationRequest.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/information-request", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpInformationReply.IsNull() && !data.Service[i].IcmpInformationReply.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/information-reply", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpEchoReply.IsNull() && !data.Service[i].IcmpEchoReply.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/echo-reply", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpEcho.IsNull() && !data.Service[i].IcmpEcho.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/echo", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpConversionError.IsNull() && !data.Service[i].IcmpConversionError.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/conversion-error", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].IcmpAlternateAddress.IsNull() && !data.Service[i].IcmpAlternateAddress.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp-conf/icmp/alternate-address", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Udp.IsNull() && !data.Service[i].Udp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/udp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Tcp.IsNull() && !data.Service[i].Tcp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/tcp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Pim.IsNull() && !data.Service[i].Pim.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/pim", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Pcp.IsNull() && !data.Service[i].Pcp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/pcp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Ospf.IsNull() && !data.Service[i].Ospf.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ospf", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Nos.IsNull() && !data.Service[i].Nos.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/nos", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Ipinip.IsNull() && !data.Service[i].Ipinip.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ipinip", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Ip.IsNull() && !data.Service[i].Ip.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ip", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Igmp.IsNull() && !data.Service[i].Igmp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/igmp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Icmp.IsNull() && !data.Service[i].Icmp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/icmp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Gre.IsNull() && !data.Service[i].Gre.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/gre", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Esp.IsNull() && !data.Service[i].Esp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/esp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Eigrp.IsNull() && !data.Service[i].Eigrp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/eigrp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Service[i].Ahp.IsNull() && !data.Service[i].Ahp.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v/ahp", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -1809,6 +15694,11 @@ func (data *ObjectGroup) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *ObjectGroup) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Service {
+		keyValues := [...]string{data.Service[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-object-group:service=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Network {
 		keyValues := [...]string{data.Network[i].Name.ValueString()}
 
@@ -1829,6 +15719,16 @@ func (data *ObjectGroup) getDeletePaths(ctx context.Context) []string {
 
 func (data *ObjectGroup) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.Service {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Service[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-object-group:service%v", predicates))
+	}
 	for i := range data.Network {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.Network[i].Name.ValueString()}
