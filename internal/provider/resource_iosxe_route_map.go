@@ -106,7 +106,19 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 								stringvalidator.OneOf("deny", "permit"),
 							},
 						},
-						"description": schema.StringAttribute{
+						"descriptions": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("list of Route-map comments").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"description": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Route-map comment").String,
+										Required:            true,
+									},
+								},
+							},
+						},
+						"description_legacy": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Route-map comment").String,
 							Optional:            true,
 						},

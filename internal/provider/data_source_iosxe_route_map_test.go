@@ -21,7 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -35,7 +34,10 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.seq", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.operation", "permit"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.description", "Entry 10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.descriptions.0.description", "Entry 10"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.description_legacy", "Entry 10"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.continue", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_interfaces.0", "Loopback1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_ip_address_access_lists.0", "ACL1"))
@@ -154,8 +156,8 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeRouteMapPrerequisitesConfig + testAccDataSourceIosxeRouteMapConfig(),
-				Check:  resource.ComposeTestCheckFunc(checks...),
+				Config: testAccDataSourceIosxeRouteMapPrerequisitesConfig+testAccDataSourceIosxeRouteMapConfig(),
+				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
@@ -173,7 +175,6 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 `
-
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -184,7 +185,12 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	config += `	entries = [{` + "\n"
 	config += `		seq = 10` + "\n"
 	config += `		operation = "permit"` + "\n"
-	config += `		description = "Entry 10"` + "\n"
+	config += `		descriptions = [{` + "\n"
+	config += `			description = "Entry 10"` + "\n"
+	config += `		}]` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		description_legacy = "Entry 10"` + "\n"
+	}
 	config += `		continue = false` + "\n"
 	config += `		match_interfaces = ["Loopback1"]` + "\n"
 	config += `		match_ip_address_access_lists = ["ACL1"]` + "\n"
@@ -298,10 +304,10 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	config += `		set_extcomunity_vpn_distinguisher = "10:10"` + "\n"
 	config += `		set_local_preference = 110` + "\n"
 	config += `		set_weight = 10000` + "\n"
-	config += `	}]` + "\n"
+		config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
-
+	
 	config += `
 		data "iosxe_route_map" "test" {
 			name = "RM1"

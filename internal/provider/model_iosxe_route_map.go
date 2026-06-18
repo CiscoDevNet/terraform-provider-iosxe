@@ -50,7 +50,8 @@ type RouteMap struct {
 type RouteMapEntries struct {
 	Seq                                    types.Int64                         `tfsdk:"seq"`
 	Operation                              types.String                        `tfsdk:"operation"`
-	Description                            types.String                        `tfsdk:"description"`
+	Descriptions                           []RouteMapEntriesDescriptions       `tfsdk:"descriptions"`
+	DescriptionLegacy                      types.String                        `tfsdk:"description_legacy"`
 	Continue                               types.Bool                          `tfsdk:"continue"`
 	ContinueSequenceNumber                 types.Int64                         `tfsdk:"continue_sequence_number"`
 	MatchInterfaces                        types.List                          `tfsdk:"match_interfaces"`
@@ -151,6 +152,9 @@ type RouteMapEntries struct {
 	SetLocalPreference                     types.Int64                         `tfsdk:"set_local_preference"`
 	SetWeight                              types.Int64                         `tfsdk:"set_weight"`
 }
+type RouteMapEntriesDescriptions struct {
+	Description types.String `tfsdk:"description"`
+}
 type RouteMapEntriesSetAsPathReplaceAs struct {
 	AsNumber types.String `tfsdk:"as_number"`
 }
@@ -164,7 +168,8 @@ type RouteMapData struct {
 type RouteMapEntriesData struct {
 	Seq                                    types.Int64                             `tfsdk:"seq"`
 	Operation                              types.String                            `tfsdk:"operation"`
-	Description                            types.String                            `tfsdk:"description"`
+	Descriptions                           []RouteMapEntriesDescriptionsData       `tfsdk:"descriptions"`
+	DescriptionLegacy                      types.String                            `tfsdk:"description_legacy"`
 	Continue                               types.Bool                              `tfsdk:"continue"`
 	ContinueSequenceNumber                 types.Int64                             `tfsdk:"continue_sequence_number"`
 	MatchInterfaces                        types.List                              `tfsdk:"match_interfaces"`
@@ -265,6 +270,9 @@ type RouteMapEntriesData struct {
 	SetLocalPreference                     types.Int64                             `tfsdk:"set_local_preference"`
 	SetWeight                              types.Int64                             `tfsdk:"set_weight"`
 }
+type RouteMapEntriesDescriptionsData struct {
+	Description types.String `tfsdk:"description"`
+}
 type RouteMapEntriesSetAsPathReplaceAsData struct {
 	AsNumber types.String `tfsdk:"as_number"`
 }
@@ -323,8 +331,8 @@ func (data RouteMap) toBody(ctx context.Context, config RouteMap) string {
 			if !item.Operation.IsNull() && !item.Operation.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"operation", item.Operation.ValueString())
 			}
-			if !item.Description.IsNull() && !item.Description.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"description", item.Description.ValueString())
+			if !item.DescriptionLegacy.IsNull() && !item.DescriptionLegacy.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"description", item.DescriptionLegacy.ValueString())
 			}
 			if !item.Continue.IsNull() && !item.Continue.IsUnknown() {
 				if item.Continue.ValueBool() {
@@ -744,6 +752,14 @@ func (data RouteMap) toBody(ctx context.Context, config RouteMap) string {
 			if !item.SetWeight.IsNull() && !item.SetWeight.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"set.Cisco-IOS-XE-bgp:bgp-route-map-set.weight", strconv.FormatInt(item.SetWeight.ValueInt64(), 10))
 			}
+			if len(item.Descriptions) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"descriptions", []interface{}{})
+				for cindex, citem := range item.Descriptions {
+					if !citem.Description.IsNull() && !citem.Description.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"descriptions"+"."+strconv.Itoa(cindex)+"."+"description-leaf", citem.Description.ValueString())
+					}
+				}
+			}
 			if len(item.SetAsPathReplaceAs) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"set.Cisco-IOS-XE-bgp:bgp-route-map-set.as-path.replace.as-container", []interface{}{})
 				for cindex, citem := range item.SetAsPathReplaceAs {
@@ -775,8 +791,17 @@ func (data RouteMap) toBodyXML(ctx context.Context, config RouteMap) string {
 			if !item.Operation.IsNull() && !item.Operation.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "operation", item.Operation.ValueString())
 			}
-			if !item.Description.IsNull() && !item.Description.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
+			if len(item.Descriptions) > 0 {
+				for _, citem := range item.Descriptions {
+					ccBody := netconf.Body{}
+					if !citem.Description.IsNull() && !citem.Description.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "description-leaf", citem.Description.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "descriptions", ccBody.Res())
+				}
+			}
+			if !item.DescriptionLegacy.IsNull() && !item.DescriptionLegacy.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "description", item.DescriptionLegacy.ValueString())
 			}
 			if !item.Continue.IsNull() && !item.Continue.IsUnknown() {
 				if item.Continue.ValueBool() {
@@ -1386,10 +1411,39 @@ func (data *RouteMap) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Entries[i].Operation = types.StringNull()
 		}
-		if value := r.Get("description"); value.Exists() && !data.Entries[i].Description.IsNull() {
-			data.Entries[i].Description = types.StringValue(value.String())
+		for ci := range data.Entries[i].Descriptions {
+			keys := [...]string{"description-leaf"}
+			keyValues := [...]string{data.Entries[i].Descriptions[ci].Description.ValueString()}
+
+			var cr gjson.Result
+			r.Get("descriptions").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("description-leaf"); value.Exists() && !data.Entries[i].Descriptions[ci].Description.IsNull() {
+				data.Entries[i].Descriptions[ci].Description = types.StringValue(value.String())
+			} else {
+				data.Entries[i].Descriptions[ci].Description = types.StringNull()
+			}
+		}
+		if value := r.Get("description"); value.Exists() && !data.Entries[i].DescriptionLegacy.IsNull() {
+			data.Entries[i].DescriptionLegacy = types.StringValue(value.String())
 		} else {
-			data.Entries[i].Description = types.StringNull()
+			data.Entries[i].DescriptionLegacy = types.StringNull()
 		}
 		if value := r.Get("continue"); !data.Entries[i].Continue.IsNull() {
 			if value.Exists() {
@@ -2080,10 +2134,39 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].Operation = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "description"); value.Exists() && !data.Entries[i].Description.IsNull() {
-			data.Entries[i].Description = types.StringValue(value.String())
+		for ci := range data.Entries[i].Descriptions {
+			keys := [...]string{"description-leaf"}
+			keyValues := [...]string{data.Entries[i].Descriptions[ci].Description.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "descriptions").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "description-leaf"); value.Exists() && !data.Entries[i].Descriptions[ci].Description.IsNull() {
+				data.Entries[i].Descriptions[ci].Description = types.StringValue(value.String())
+			} else {
+				data.Entries[i].Descriptions[ci].Description = types.StringNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "description"); value.Exists() && !data.Entries[i].DescriptionLegacy.IsNull() {
+			data.Entries[i].DescriptionLegacy = types.StringValue(value.String())
 		} else {
-			data.Entries[i].Description = types.StringNull()
+			data.Entries[i].DescriptionLegacy = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "continue"); !data.Entries[i].Continue.IsNull() {
 			if value.Exists() {
@@ -2750,8 +2833,19 @@ func (data *RouteMap) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("operation"); cValue.Exists() {
 				item.Operation = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("descriptions"); cValue.Exists() {
+				item.Descriptions = make([]RouteMapEntriesDescriptions, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := RouteMapEntriesDescriptions{}
+					if ccValue := cv.Get("description-leaf"); ccValue.Exists() {
+						cItem.Description = types.StringValue(ccValue.String())
+					}
+					item.Descriptions = append(item.Descriptions, cItem)
+					return true
+				})
+			}
 			if cValue := v.Get("description"); cValue.Exists() {
-				item.Description = types.StringValue(cValue.String())
+				item.DescriptionLegacy = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("continue"); cValue.Exists() {
 				item.Continue = types.BoolValue(true)
@@ -3207,8 +3301,19 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("operation"); cValue.Exists() {
 				item.Operation = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("descriptions"); cValue.Exists() {
+				item.Descriptions = make([]RouteMapEntriesDescriptionsData, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := RouteMapEntriesDescriptionsData{}
+					if ccValue := cv.Get("description-leaf"); ccValue.Exists() {
+						cItem.Description = types.StringValue(ccValue.String())
+					}
+					item.Descriptions = append(item.Descriptions, cItem)
+					return true
+				})
+			}
 			if cValue := v.Get("description"); cValue.Exists() {
-				item.Description = types.StringValue(cValue.String())
+				item.DescriptionLegacy = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("continue"); cValue.Exists() {
 				item.Continue = types.BoolValue(true)
@@ -3660,8 +3765,19 @@ func (data *RouteMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "operation"); cValue.Exists() {
 				item.Operation = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "descriptions"); cValue.Exists() {
+				item.Descriptions = make([]RouteMapEntriesDescriptions, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := RouteMapEntriesDescriptions{}
+					if ccValue := helpers.GetFromXPath(cv, "description-leaf"); ccValue.Exists() {
+						cItem.Description = types.StringValue(ccValue.String())
+					}
+					item.Descriptions = append(item.Descriptions, cItem)
+					return true
+				})
+			}
 			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
-				item.Description = types.StringValue(cValue.String())
+				item.DescriptionLegacy = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "continue"); cValue.Exists() {
 				item.Continue = types.BoolValue(true)
@@ -4113,8 +4229,19 @@ func (data *RouteMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			if cValue := helpers.GetFromXPath(v, "operation"); cValue.Exists() {
 				item.Operation = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "descriptions"); cValue.Exists() {
+				item.Descriptions = make([]RouteMapEntriesDescriptionsData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := RouteMapEntriesDescriptionsData{}
+					if ccValue := helpers.GetFromXPath(cv, "description-leaf"); ccValue.Exists() {
+						cItem.Description = types.StringValue(ccValue.String())
+					}
+					item.Descriptions = append(item.Descriptions, cItem)
+					return true
+				})
+			}
 			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
-				item.Description = types.StringValue(cValue.String())
+				item.DescriptionLegacy = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "continue"); cValue.Exists() {
 				item.Continue = types.BoolValue(true)
@@ -5452,8 +5579,33 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 				if !state.Entries[i].Continue.IsNull() && data.Entries[j].Continue.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/continue", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Entries[i].Description.IsNull() && data.Entries[j].Description.IsNull() {
+				if !state.Entries[i].DescriptionLegacy.IsNull() && data.Entries[j].DescriptionLegacy.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				for ci := range state.Entries[i].Descriptions {
+					cstateKeyValues := [...]string{state.Entries[i].Descriptions[ci].Description.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Entries[i].Descriptions[ci].Description.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Entries[j].Descriptions {
+						found = true
+						if state.Entries[i].Descriptions[ci].Description.ValueString() != data.Entries[j].Descriptions[cj].Description.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/descriptions=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
 				}
 				if !state.Entries[i].Operation.IsNull() && data.Entries[j].Operation.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/operation", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -6504,8 +6656,38 @@ func (data *RouteMap) addDeletedItemsXML(ctx context.Context, state RouteMap, bo
 				if !state.Entries[i].Continue.IsNull() && data.Entries[j].Continue.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/continue", predicates))
 				}
-				if !state.Entries[i].Description.IsNull() && data.Entries[j].Description.IsNull() {
+				if !state.Entries[i].DescriptionLegacy.IsNull() && data.Entries[j].DescriptionLegacy.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/description", predicates))
+				}
+				for ci := range state.Entries[i].Descriptions {
+					cstateKeys := [...]string{"description-leaf"}
+					cstateKeyValues := [...]string{state.Entries[i].Descriptions[ci].Description.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Entries[i].Descriptions[ci].Description.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Entries[j].Descriptions {
+						found = true
+						if state.Entries[i].Descriptions[ci].Description.ValueString() != data.Entries[j].Descriptions[cj].Description.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/descriptions%v", predicates, cpredicates))
+					}
 				}
 				if !state.Entries[i].Operation.IsNull() && data.Entries[j].Operation.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq%v/operation", predicates))
@@ -6625,6 +6807,7 @@ func (data *RouteMap) getEmptyLeafsDelete(ctx context.Context) []string {
 		if !data.Entries[i].Continue.IsNull() && !data.Entries[i].Continue.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/continue", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
+
 	}
 
 	return emptyLeafsDelete
