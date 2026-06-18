@@ -42,80 +42,83 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfacePortChannel struct {
-	Device                         types.String                                         `tfsdk:"device"`
-	Id                             types.String                                         `tfsdk:"id"`
-	DeleteMode                     types.String                                         `tfsdk:"delete_mode"`
-	Name                           types.Int64                                          `tfsdk:"name"`
-	Description                    types.String                                         `tfsdk:"description"`
-	Shutdown                       types.Bool                                           `tfsdk:"shutdown"`
-	Mtu                            types.Int64                                          `tfsdk:"mtu"`
-	Switchport                     types.Bool                                           `tfsdk:"switchport"`
-	IpProxyArp                     types.Bool                                           `tfsdk:"ip_proxy_arp"`
-	IpRedirects                    types.Bool                                           `tfsdk:"ip_redirects"`
-	IpUnreachables                 types.Bool                                           `tfsdk:"ip_unreachables"`
-	VrfForwarding                  types.String                                         `tfsdk:"vrf_forwarding"`
-	Ipv4Address                    types.String                                         `tfsdk:"ipv4_address"`
-	Ipv4AddressMask                types.String                                         `tfsdk:"ipv4_address_mask"`
-	Ipv4AddressDhcp                types.Bool                                           `tfsdk:"ipv4_address_dhcp"`
-	IpAccessGroupInEnable          types.Bool                                           `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn                types.String                                         `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable         types.Bool                                           `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut               types.String                                         `tfsdk:"ip_access_group_out"`
-	IpDhcpRelaySourceInterface     types.String                                         `tfsdk:"ip_dhcp_relay_source_interface"`
-	SpanningTreeGuard              types.String                                         `tfsdk:"spanning_tree_guard"`
-	AutoQosClassify                types.Bool                                           `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice          types.Bool                                           `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust                   types.Bool                                           `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos                types.Bool                                           `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp               types.Bool                                           `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts                types.Bool                                           `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera           types.Bool                                           `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer        types.Bool                                           `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoipCiscoPhone          types.Bool                                           `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone      types.Bool                                           `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust               types.Bool                                           `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice                    types.String                                         `tfsdk:"trust_device"`
-	HelperAddresses                []InterfacePortChannelHelperAddresses                `tfsdk:"helper_addresses"`
-	BfdTemplate                    types.String                                         `tfsdk:"bfd_template"`
-	BfdEnable                      types.Bool                                           `tfsdk:"bfd_enable"`
-	BfdLocalAddress                types.String                                         `tfsdk:"bfd_local_address"`
-	BfdInterval                    types.Int64                                          `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx               types.Int64                                          `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier          types.Int64                                          `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                        types.Bool                                           `tfsdk:"bfd_echo"`
-	Ipv6Enable                     types.Bool                                           `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                        types.Int64                                          `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll            types.Bool                                           `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault   types.Bool                                           `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp                types.Bool                                           `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses         []InterfacePortChannelIpv6LinkLocalAddresses         `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                  []InterfacePortChannelIpv6Addresses                  `tfsdk:"ipv6_addresses"`
-	Ipv6FlowMonitors               []InterfacePortChannelIpv6FlowMonitors               `tfsdk:"ipv6_flow_monitors"`
-	ArpTimeout                     types.Int64                                          `tfsdk:"arp_timeout"`
-	IpArpInspectionTrust           types.Bool                                           `tfsdk:"ip_arp_inspection_trust"`
-	IpArpInspectionLimitRate       types.Int64                                          `tfsdk:"ip_arp_inspection_limit_rate"`
-	SpanningTreeLinkType           types.String                                         `tfsdk:"spanning_tree_link_type"`
-	BpduguardEnable                types.Bool                                           `tfsdk:"bpduguard_enable"`
-	BpduguardDisable               types.Bool                                           `tfsdk:"bpduguard_disable"`
-	SpanningTreePortfast           types.Bool                                           `tfsdk:"spanning_tree_portfast"`
-	SpanningTreePortfastDisable    types.Bool                                           `tfsdk:"spanning_tree_portfast_disable"`
-	SpanningTreePortfastTrunk      types.Bool                                           `tfsdk:"spanning_tree_portfast_trunk"`
-	SpanningTreePortfastEdge       types.Bool                                           `tfsdk:"spanning_tree_portfast_edge"`
-	IpDhcpSnoopingTrust            types.Bool                                           `tfsdk:"ip_dhcp_snooping_trust"`
-	LoadInterval                   types.Int64                                          `tfsdk:"load_interval"`
-	SnmpTrapLinkStatus             types.Bool                                           `tfsdk:"snmp_trap_link_status"`
-	LoggingEventLinkStatusEnable   types.Bool                                           `tfsdk:"logging_event_link_status_enable"`
-	DeviceTracking                 types.Bool                                           `tfsdk:"device_tracking"`
-	DeviceTrackingAttachedPolicies []InterfacePortChannelDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
-	NegotiationAuto                types.Bool                                           `tfsdk:"negotiation_auto"`
-	EvpnEthernetSegments           []InterfacePortChannelEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
-	EvpnEthernetSegmentsLegacy     []InterfacePortChannelEvpnEthernetSegmentsLegacy     `tfsdk:"evpn_ethernet_segments_legacy"`
-	IpIgmpVersion                  types.Int64                                          `tfsdk:"ip_igmp_version"`
-	IpRouterIsis                   types.String                                         `tfsdk:"ip_router_isis"`
-	IpNatInside                    types.Bool                                           `tfsdk:"ip_nat_inside"`
-	IpNatOutside                   types.Bool                                           `tfsdk:"ip_nat_outside"`
-	IpFlowMonitors                 []InterfacePortChannelIpFlowMonitors                 `tfsdk:"ip_flow_monitors"`
-	ZoneMemberSecurity             types.String                                         `tfsdk:"zone_member_security"`
+	Device                             types.String                                         `tfsdk:"device"`
+	Id                                 types.String                                         `tfsdk:"id"`
+	DeleteMode                         types.String                                         `tfsdk:"delete_mode"`
+	Name                               types.Int64                                          `tfsdk:"name"`
+	Description                        types.String                                         `tfsdk:"description"`
+	Shutdown                           types.Bool                                           `tfsdk:"shutdown"`
+	Mtu                                types.Int64                                          `tfsdk:"mtu"`
+	Switchport                         types.Bool                                           `tfsdk:"switchport"`
+	IpProxyArp                         types.Bool                                           `tfsdk:"ip_proxy_arp"`
+	IpRedirects                        types.Bool                                           `tfsdk:"ip_redirects"`
+	IpUnreachables                     types.Bool                                           `tfsdk:"ip_unreachables"`
+	VrfForwarding                      types.String                                         `tfsdk:"vrf_forwarding"`
+	Ipv4Address                        types.String                                         `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                    types.String                                         `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp                    types.Bool                                           `tfsdk:"ipv4_address_dhcp"`
+	IpAccessGroupInEnable              types.Bool                                           `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                    types.String                                         `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable             types.Bool                                           `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                   types.String                                         `tfsdk:"ip_access_group_out"`
+	IpDhcpRelaySourceInterface         types.String                                         `tfsdk:"ip_dhcp_relay_source_interface"`
+	SpanningTreeGuard                  types.String                                         `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify                    types.Bool                                           `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice              types.Bool                                           `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                       types.Bool                                           `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos                    types.Bool                                           `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp                   types.Bool                                           `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts                    types.Bool                                           `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera               types.Bool                                           `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer            types.Bool                                           `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoipCiscoPhone              types.Bool                                           `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone          types.Bool                                           `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust                   types.Bool                                           `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                        types.String                                         `tfsdk:"trust_device"`
+	HelperAddresses                    []InterfacePortChannelHelperAddresses                `tfsdk:"helper_addresses"`
+	BfdTemplate                        types.String                                         `tfsdk:"bfd_template"`
+	BfdEnable                          types.Bool                                           `tfsdk:"bfd_enable"`
+	BfdLocalAddress                    types.String                                         `tfsdk:"bfd_local_address"`
+	BfdInterval                        types.Int64                                          `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                   types.Int64                                          `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier              types.Int64                                          `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                            types.Bool                                           `tfsdk:"bfd_echo"`
+	Ipv6Enable                         types.Bool                                           `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                            types.Int64                                          `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll                types.Bool                                           `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault       types.Bool                                           `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                    types.Bool                                           `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses             []InterfacePortChannelIpv6LinkLocalAddresses         `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                      []InterfacePortChannelIpv6Addresses                  `tfsdk:"ipv6_addresses"`
+	Ipv6FlowMonitors                   []InterfacePortChannelIpv6FlowMonitors               `tfsdk:"ipv6_flow_monitors"`
+	ArpTimeout                         types.Int64                                          `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust               types.Bool                                           `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate           types.Int64                                          `tfsdk:"ip_arp_inspection_limit_rate"`
+	SpanningTreeLinkType               types.String                                         `tfsdk:"spanning_tree_link_type"`
+	BpduguardEnable                    types.Bool                                           `tfsdk:"bpduguard_enable"`
+	BpduguardDisable                   types.Bool                                           `tfsdk:"bpduguard_disable"`
+	SpanningTreePortfast               types.Bool                                           `tfsdk:"spanning_tree_portfast"`
+	SpanningTreePortfastDisable        types.Bool                                           `tfsdk:"spanning_tree_portfast_disable"`
+	SpanningTreePortfastTrunk          types.Bool                                           `tfsdk:"spanning_tree_portfast_trunk"`
+	SpanningTreePortfastEdge           types.Bool                                           `tfsdk:"spanning_tree_portfast_edge"`
+	IpDhcpSnoopingTrust                types.Bool                                           `tfsdk:"ip_dhcp_snooping_trust"`
+	LoadInterval                       types.Int64                                          `tfsdk:"load_interval"`
+	SnmpTrapLinkStatus                 types.Bool                                           `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable       types.Bool                                           `tfsdk:"logging_event_link_status_enable"`
+	DeviceTracking                     types.Bool                                           `tfsdk:"device_tracking"`
+	DeviceTrackingAttachedPolicies     []InterfacePortChannelDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
+	NegotiationAuto                    types.Bool                                           `tfsdk:"negotiation_auto"`
+	EvpnEthernetSegments               []InterfacePortChannelEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
+	EvpnEthernetSegmentsLegacy         []InterfacePortChannelEvpnEthernetSegmentsLegacy     `tfsdk:"evpn_ethernet_segments_legacy"`
+	IpIgmpVersion                      types.Int64                                          `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                       types.String                                         `tfsdk:"ip_router_isis"`
+	IpNatInside                        types.Bool                                           `tfsdk:"ip_nat_inside"`
+	IpNatOutside                       types.Bool                                           `tfsdk:"ip_nat_outside"`
+	IpVerifyUnicastSourceReachableVia  types.String                                         `tfsdk:"ip_verify_unicast_source_reachable_via"`
+	IpVerifyUnicastSourceAllowSelfPing types.Bool                                           `tfsdk:"ip_verify_unicast_source_allow_self_ping"`
+	IpVerifyUnicastSourceAllowDefault  types.Bool                                           `tfsdk:"ip_verify_unicast_source_allow_default"`
+	IpFlowMonitors                     []InterfacePortChannelIpFlowMonitors                 `tfsdk:"ip_flow_monitors"`
+	ZoneMemberSecurity                 types.String                                         `tfsdk:"zone_member_security"`
 }
 type InterfacePortChannelHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -149,79 +152,82 @@ type InterfacePortChannelIpFlowMonitors struct {
 }
 
 type InterfacePortChannelData struct {
-	Device                         types.String                                             `tfsdk:"device"`
-	Id                             types.String                                             `tfsdk:"id"`
-	Name                           types.Int64                                              `tfsdk:"name"`
-	Description                    types.String                                             `tfsdk:"description"`
-	Shutdown                       types.Bool                                               `tfsdk:"shutdown"`
-	Mtu                            types.Int64                                              `tfsdk:"mtu"`
-	Switchport                     types.Bool                                               `tfsdk:"switchport"`
-	IpProxyArp                     types.Bool                                               `tfsdk:"ip_proxy_arp"`
-	IpRedirects                    types.Bool                                               `tfsdk:"ip_redirects"`
-	IpUnreachables                 types.Bool                                               `tfsdk:"ip_unreachables"`
-	VrfForwarding                  types.String                                             `tfsdk:"vrf_forwarding"`
-	Ipv4Address                    types.String                                             `tfsdk:"ipv4_address"`
-	Ipv4AddressMask                types.String                                             `tfsdk:"ipv4_address_mask"`
-	Ipv4AddressDhcp                types.Bool                                               `tfsdk:"ipv4_address_dhcp"`
-	IpAccessGroupInEnable          types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn                types.String                                             `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable         types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut               types.String                                             `tfsdk:"ip_access_group_out"`
-	IpDhcpRelaySourceInterface     types.String                                             `tfsdk:"ip_dhcp_relay_source_interface"`
-	SpanningTreeGuard              types.String                                             `tfsdk:"spanning_tree_guard"`
-	AutoQosClassify                types.Bool                                               `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice          types.Bool                                               `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust                   types.Bool                                               `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos                types.Bool                                               `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp               types.Bool                                               `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts                types.Bool                                               `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera           types.Bool                                               `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer        types.Bool                                               `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoipCiscoPhone          types.Bool                                               `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone      types.Bool                                               `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust               types.Bool                                               `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice                    types.String                                             `tfsdk:"trust_device"`
-	HelperAddresses                []InterfacePortChannelHelperAddressesData                `tfsdk:"helper_addresses"`
-	BfdTemplate                    types.String                                             `tfsdk:"bfd_template"`
-	BfdEnable                      types.Bool                                               `tfsdk:"bfd_enable"`
-	BfdLocalAddress                types.String                                             `tfsdk:"bfd_local_address"`
-	BfdInterval                    types.Int64                                              `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx               types.Int64                                              `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier          types.Int64                                              `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                        types.Bool                                               `tfsdk:"bfd_echo"`
-	Ipv6Enable                     types.Bool                                               `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                        types.Int64                                              `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll            types.Bool                                               `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault   types.Bool                                               `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp                types.Bool                                               `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses         []InterfacePortChannelIpv6LinkLocalAddressesData         `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                  []InterfacePortChannelIpv6AddressesData                  `tfsdk:"ipv6_addresses"`
-	Ipv6FlowMonitors               []InterfacePortChannelIpv6FlowMonitorsData               `tfsdk:"ipv6_flow_monitors"`
-	ArpTimeout                     types.Int64                                              `tfsdk:"arp_timeout"`
-	IpArpInspectionTrust           types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
-	IpArpInspectionLimitRate       types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
-	SpanningTreeLinkType           types.String                                             `tfsdk:"spanning_tree_link_type"`
-	BpduguardEnable                types.Bool                                               `tfsdk:"bpduguard_enable"`
-	BpduguardDisable               types.Bool                                               `tfsdk:"bpduguard_disable"`
-	SpanningTreePortfast           types.Bool                                               `tfsdk:"spanning_tree_portfast"`
-	SpanningTreePortfastDisable    types.Bool                                               `tfsdk:"spanning_tree_portfast_disable"`
-	SpanningTreePortfastTrunk      types.Bool                                               `tfsdk:"spanning_tree_portfast_trunk"`
-	SpanningTreePortfastEdge       types.Bool                                               `tfsdk:"spanning_tree_portfast_edge"`
-	IpDhcpSnoopingTrust            types.Bool                                               `tfsdk:"ip_dhcp_snooping_trust"`
-	LoadInterval                   types.Int64                                              `tfsdk:"load_interval"`
-	SnmpTrapLinkStatus             types.Bool                                               `tfsdk:"snmp_trap_link_status"`
-	LoggingEventLinkStatusEnable   types.Bool                                               `tfsdk:"logging_event_link_status_enable"`
-	DeviceTracking                 types.Bool                                               `tfsdk:"device_tracking"`
-	DeviceTrackingAttachedPolicies []InterfacePortChannelDeviceTrackingAttachedPoliciesData `tfsdk:"device_tracking_attached_policies"`
-	NegotiationAuto                types.Bool                                               `tfsdk:"negotiation_auto"`
-	EvpnEthernetSegments           []InterfacePortChannelEvpnEthernetSegmentsData           `tfsdk:"evpn_ethernet_segments"`
-	EvpnEthernetSegmentsLegacy     []InterfacePortChannelEvpnEthernetSegmentsLegacyData     `tfsdk:"evpn_ethernet_segments_legacy"`
-	IpIgmpVersion                  types.Int64                                              `tfsdk:"ip_igmp_version"`
-	IpRouterIsis                   types.String                                             `tfsdk:"ip_router_isis"`
-	IpNatInside                    types.Bool                                               `tfsdk:"ip_nat_inside"`
-	IpNatOutside                   types.Bool                                               `tfsdk:"ip_nat_outside"`
-	IpFlowMonitors                 []InterfacePortChannelIpFlowMonitorsData                 `tfsdk:"ip_flow_monitors"`
-	ZoneMemberSecurity             types.String                                             `tfsdk:"zone_member_security"`
+	Device                             types.String                                             `tfsdk:"device"`
+	Id                                 types.String                                             `tfsdk:"id"`
+	Name                               types.Int64                                              `tfsdk:"name"`
+	Description                        types.String                                             `tfsdk:"description"`
+	Shutdown                           types.Bool                                               `tfsdk:"shutdown"`
+	Mtu                                types.Int64                                              `tfsdk:"mtu"`
+	Switchport                         types.Bool                                               `tfsdk:"switchport"`
+	IpProxyArp                         types.Bool                                               `tfsdk:"ip_proxy_arp"`
+	IpRedirects                        types.Bool                                               `tfsdk:"ip_redirects"`
+	IpUnreachables                     types.Bool                                               `tfsdk:"ip_unreachables"`
+	VrfForwarding                      types.String                                             `tfsdk:"vrf_forwarding"`
+	Ipv4Address                        types.String                                             `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                    types.String                                             `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp                    types.Bool                                               `tfsdk:"ipv4_address_dhcp"`
+	IpAccessGroupInEnable              types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                    types.String                                             `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable             types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                   types.String                                             `tfsdk:"ip_access_group_out"`
+	IpDhcpRelaySourceInterface         types.String                                             `tfsdk:"ip_dhcp_relay_source_interface"`
+	SpanningTreeGuard                  types.String                                             `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify                    types.Bool                                               `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice              types.Bool                                               `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                       types.Bool                                               `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos                    types.Bool                                               `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp                   types.Bool                                               `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts                    types.Bool                                               `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera               types.Bool                                               `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer            types.Bool                                               `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoipCiscoPhone              types.Bool                                               `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone          types.Bool                                               `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust                   types.Bool                                               `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                        types.String                                             `tfsdk:"trust_device"`
+	HelperAddresses                    []InterfacePortChannelHelperAddressesData                `tfsdk:"helper_addresses"`
+	BfdTemplate                        types.String                                             `tfsdk:"bfd_template"`
+	BfdEnable                          types.Bool                                               `tfsdk:"bfd_enable"`
+	BfdLocalAddress                    types.String                                             `tfsdk:"bfd_local_address"`
+	BfdInterval                        types.Int64                                              `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                   types.Int64                                              `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier              types.Int64                                              `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                            types.Bool                                               `tfsdk:"bfd_echo"`
+	Ipv6Enable                         types.Bool                                               `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                            types.Int64                                              `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll                types.Bool                                               `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault       types.Bool                                               `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                    types.Bool                                               `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses             []InterfacePortChannelIpv6LinkLocalAddressesData         `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                      []InterfacePortChannelIpv6AddressesData                  `tfsdk:"ipv6_addresses"`
+	Ipv6FlowMonitors                   []InterfacePortChannelIpv6FlowMonitorsData               `tfsdk:"ipv6_flow_monitors"`
+	ArpTimeout                         types.Int64                                              `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust               types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate           types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
+	SpanningTreeLinkType               types.String                                             `tfsdk:"spanning_tree_link_type"`
+	BpduguardEnable                    types.Bool                                               `tfsdk:"bpduguard_enable"`
+	BpduguardDisable                   types.Bool                                               `tfsdk:"bpduguard_disable"`
+	SpanningTreePortfast               types.Bool                                               `tfsdk:"spanning_tree_portfast"`
+	SpanningTreePortfastDisable        types.Bool                                               `tfsdk:"spanning_tree_portfast_disable"`
+	SpanningTreePortfastTrunk          types.Bool                                               `tfsdk:"spanning_tree_portfast_trunk"`
+	SpanningTreePortfastEdge           types.Bool                                               `tfsdk:"spanning_tree_portfast_edge"`
+	IpDhcpSnoopingTrust                types.Bool                                               `tfsdk:"ip_dhcp_snooping_trust"`
+	LoadInterval                       types.Int64                                              `tfsdk:"load_interval"`
+	SnmpTrapLinkStatus                 types.Bool                                               `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable       types.Bool                                               `tfsdk:"logging_event_link_status_enable"`
+	DeviceTracking                     types.Bool                                               `tfsdk:"device_tracking"`
+	DeviceTrackingAttachedPolicies     []InterfacePortChannelDeviceTrackingAttachedPoliciesData `tfsdk:"device_tracking_attached_policies"`
+	NegotiationAuto                    types.Bool                                               `tfsdk:"negotiation_auto"`
+	EvpnEthernetSegments               []InterfacePortChannelEvpnEthernetSegmentsData           `tfsdk:"evpn_ethernet_segments"`
+	EvpnEthernetSegmentsLegacy         []InterfacePortChannelEvpnEthernetSegmentsLegacyData     `tfsdk:"evpn_ethernet_segments_legacy"`
+	IpIgmpVersion                      types.Int64                                              `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                       types.String                                             `tfsdk:"ip_router_isis"`
+	IpNatInside                        types.Bool                                               `tfsdk:"ip_nat_inside"`
+	IpNatOutside                       types.Bool                                               `tfsdk:"ip_nat_outside"`
+	IpVerifyUnicastSourceReachableVia  types.String                                             `tfsdk:"ip_verify_unicast_source_reachable_via"`
+	IpVerifyUnicastSourceAllowSelfPing types.Bool                                               `tfsdk:"ip_verify_unicast_source_allow_self_ping"`
+	IpVerifyUnicastSourceAllowDefault  types.Bool                                               `tfsdk:"ip_verify_unicast_source_allow_default"`
+	IpFlowMonitors                     []InterfacePortChannelIpFlowMonitorsData                 `tfsdk:"ip_flow_monitors"`
+	ZoneMemberSecurity                 types.String                                             `tfsdk:"zone_member_security"`
 }
 type InterfacePortChannelHelperAddressesData struct {
 	Address types.String `tfsdk:"address"`
@@ -540,6 +546,19 @@ func (data InterfacePortChannel) toBody(ctx context.Context, config InterfacePor
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
 		if data.IpNatOutside.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
+		}
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() && !data.IpVerifyUnicastSourceReachableVia.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.verify.unicast.source.reachable-via", data.IpVerifyUnicastSourceReachableVia.ValueString())
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.verify.unicast.source.allow-self-ping", map[string]string{})
+		}
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.verify.unicast.source.allow-default", map[string]string{})
 		}
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
@@ -1036,6 +1055,23 @@ func (data InterfacePortChannel) toBodyXML(ctx context.Context, config Interface
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+		}
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() && !data.IpVerifyUnicastSourceReachableVia.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/reachable-via", data.IpVerifyUnicastSourceReachableVia.ValueString())
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+		}
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default")
 		}
 	}
 	if len(data.IpFlowMonitors) > 0 {
@@ -1756,6 +1792,29 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 		}
 	} else {
 		data.IpNatOutside = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.reachable-via"); value.Exists() && !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	} else {
+		data.IpVerifyUnicastSourceReachableVia = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-self-ping"); !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-default"); !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolNull()
 	}
 	for i := range data.IpFlowMonitors {
 		keys := [...]string{"name", "direction"}
@@ -2491,6 +2550,29 @@ func (data *InterfacePortChannel) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() && !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	} else {
+		data.IpVerifyUnicastSourceReachableVia = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolNull()
+	}
 	for i := range data.IpFlowMonitors {
 		keys := [...]string{"name", "direction"}
 		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
@@ -2900,6 +2982,19 @@ func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
 		data.IpFlowMonitors = make([]InterfacePortChannelIpFlowMonitors, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -3287,6 +3382,19 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
 		data.IpFlowMonitors = make([]InterfacePortChannelIpFlowMonitorsData, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -3669,6 +3777,19 @@ func (data *InterfacePortChannel) fromBodyXML(ctx context.Context, res xmldot.Re
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new"); value.Exists() {
 		data.IpFlowMonitors = make([]InterfacePortChannelIpFlowMonitors, 0)
@@ -4053,6 +4174,19 @@ func (data *InterfacePortChannelData) fromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new"); value.Exists() {
 		data.IpFlowMonitors = make([]InterfacePortChannelIpFlowMonitorsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -4111,6 +4245,15 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.IpVerifyUnicastSourceAllowDefault.IsNull() && data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/verify/unicast/source/allow-default", state.getPath()))
+	}
+	if !state.IpVerifyUnicastSourceAllowSelfPing.IsNull() && data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/verify/unicast/source/allow-self-ping", state.getPath()))
+	}
+	if !state.IpVerifyUnicastSourceReachableVia.IsNull() && data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/verify/unicast/source/reachable-via", state.getPath()))
 	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
@@ -4534,6 +4677,15 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new%v", predicates))
 		}
 	}
+	if !state.IpVerifyUnicastSourceAllowDefault.IsNull() && data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/allow-default")
+	}
+	if !state.IpVerifyUnicastSourceAllowSelfPing.IsNull() && data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+	}
+	if !state.IpVerifyUnicastSourceReachableVia.IsNull() && data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/reachable-via")
+	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
 	}
@@ -4954,6 +5106,12 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/verify/unicast/source/allow-default", data.getPath()))
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/verify/unicast/source/allow-self-ping", data.getPath()))
+	}
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
 	}
@@ -5083,6 +5241,15 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/verify/unicast/source/allow-default", data.getPath()))
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/verify/unicast/source/allow-self-ping", data.getPath()))
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/verify/unicast/source/reachable-via", data.getPath()))
 	}
 	if !data.IpNatOutside.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
@@ -5321,6 +5488,15 @@ func (data *InterfacePortChannel) addDeletePathsXML(ctx context.Context, body st
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/Cisco-IOS-XE-flow:flow/monitor-new%v", predicates))
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/allow-default")
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/reachable-via")
 	}
 	if !data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")

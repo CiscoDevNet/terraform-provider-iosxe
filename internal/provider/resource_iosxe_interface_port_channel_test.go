@@ -77,6 +77,9 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "evpn_ethernet_segments_legacy.0.es_value", "1"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_igmp_version", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_verify_unicast_source_reachable_via", "rx"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_verify_unicast_source_allow_self_ping", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_verify_unicast_source_allow_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_flow_monitors.0.name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_flow_monitors.0.direction", "input"))
 	resource.Test(t, resource.TestCase{
@@ -269,6 +272,9 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 		config += `	}]` + "\n"
 	}
 	config += `	ip_igmp_version = 3` + "\n"
+	config += `	ip_verify_unicast_source_reachable_via = "rx"` + "\n"
+	config += `	ip_verify_unicast_source_allow_self_ping = true` + "\n"
+	config += `	ip_verify_unicast_source_allow_default = true` + "\n"
 	config += `	ip_flow_monitors = [{` + "\n"
 	config += `		name = "MON1"` + "\n"
 	config += `		direction = "input"` + "\n"

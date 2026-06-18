@@ -42,37 +42,40 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceLoopback struct {
-	Device                       types.String                              `tfsdk:"device"`
-	Id                           types.String                              `tfsdk:"id"`
-	DeleteMode                   types.String                              `tfsdk:"delete_mode"`
-	Name                         types.Int64                               `tfsdk:"name"`
-	Description                  types.String                              `tfsdk:"description"`
-	Shutdown                     types.Bool                                `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                                `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                                `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                                `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                              `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                              `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                              `tfsdk:"ipv4_address_mask"`
-	Ipv4AddressDhcp              types.Bool                                `tfsdk:"ipv4_address_dhcp"`
-	IpMtu                        types.Int64                               `tfsdk:"ip_mtu"`
-	IpAccessGroupInEnable        types.Bool                                `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn              types.String                              `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable       types.Bool                                `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut             types.String                              `tfsdk:"ip_access_group_out"`
-	Ipv6Enable                   types.Bool                                `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                               `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                                `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                                `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                                `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfaceLoopbackIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfaceLoopbackIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
-	IpIgmpVersion                types.Int64                               `tfsdk:"ip_igmp_version"`
-	IpRouterIsis                 types.String                              `tfsdk:"ip_router_isis"`
-	IpNatInside                  types.Bool                                `tfsdk:"ip_nat_inside"`
-	IpNatOutside                 types.Bool                                `tfsdk:"ip_nat_outside"`
-	ZoneMemberSecurity           types.String                              `tfsdk:"zone_member_security"`
+	Device                             types.String                              `tfsdk:"device"`
+	Id                                 types.String                              `tfsdk:"id"`
+	DeleteMode                         types.String                              `tfsdk:"delete_mode"`
+	Name                               types.Int64                               `tfsdk:"name"`
+	Description                        types.String                              `tfsdk:"description"`
+	Shutdown                           types.Bool                                `tfsdk:"shutdown"`
+	IpProxyArp                         types.Bool                                `tfsdk:"ip_proxy_arp"`
+	IpRedirects                        types.Bool                                `tfsdk:"ip_redirects"`
+	IpUnreachables                     types.Bool                                `tfsdk:"ip_unreachables"`
+	VrfForwarding                      types.String                              `tfsdk:"vrf_forwarding"`
+	Ipv4Address                        types.String                              `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                    types.String                              `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp                    types.Bool                                `tfsdk:"ipv4_address_dhcp"`
+	IpMtu                              types.Int64                               `tfsdk:"ip_mtu"`
+	IpAccessGroupInEnable              types.Bool                                `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                    types.String                              `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable             types.Bool                                `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                   types.String                              `tfsdk:"ip_access_group_out"`
+	Ipv6Enable                         types.Bool                                `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                            types.Int64                               `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll                types.Bool                                `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault       types.Bool                                `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                    types.Bool                                `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses             []InterfaceLoopbackIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                      []InterfaceLoopbackIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                         types.Int64                               `tfsdk:"arp_timeout"`
+	IpIgmpVersion                      types.Int64                               `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                       types.String                              `tfsdk:"ip_router_isis"`
+	IpNatInside                        types.Bool                                `tfsdk:"ip_nat_inside"`
+	IpNatOutside                       types.Bool                                `tfsdk:"ip_nat_outside"`
+	IpVerifyUnicastSourceReachableVia  types.String                              `tfsdk:"ip_verify_unicast_source_reachable_via"`
+	IpVerifyUnicastSourceAllowSelfPing types.Bool                                `tfsdk:"ip_verify_unicast_source_allow_self_ping"`
+	IpVerifyUnicastSourceAllowDefault  types.Bool                                `tfsdk:"ip_verify_unicast_source_allow_default"`
+	ZoneMemberSecurity                 types.String                              `tfsdk:"zone_member_security"`
 }
 type InterfaceLoopbackIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -84,36 +87,39 @@ type InterfaceLoopbackIpv6Addresses struct {
 }
 
 type InterfaceLoopbackData struct {
-	Device                       types.String                                  `tfsdk:"device"`
-	Id                           types.String                                  `tfsdk:"id"`
-	Name                         types.Int64                                   `tfsdk:"name"`
-	Description                  types.String                                  `tfsdk:"description"`
-	Shutdown                     types.Bool                                    `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                                    `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                                    `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                                    `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                                  `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                                  `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                                  `tfsdk:"ipv4_address_mask"`
-	Ipv4AddressDhcp              types.Bool                                    `tfsdk:"ipv4_address_dhcp"`
-	IpMtu                        types.Int64                                   `tfsdk:"ip_mtu"`
-	IpAccessGroupInEnable        types.Bool                                    `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn              types.String                                  `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable       types.Bool                                    `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut             types.String                                  `tfsdk:"ip_access_group_out"`
-	Ipv6Enable                   types.Bool                                    `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                                   `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                                    `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                                    `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                                    `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfaceLoopbackIpv6LinkLocalAddressesData `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfaceLoopbackIpv6AddressesData          `tfsdk:"ipv6_addresses"`
-	ArpTimeout                   types.Int64                                   `tfsdk:"arp_timeout"`
-	IpIgmpVersion                types.Int64                                   `tfsdk:"ip_igmp_version"`
-	IpRouterIsis                 types.String                                  `tfsdk:"ip_router_isis"`
-	IpNatInside                  types.Bool                                    `tfsdk:"ip_nat_inside"`
-	IpNatOutside                 types.Bool                                    `tfsdk:"ip_nat_outside"`
-	ZoneMemberSecurity           types.String                                  `tfsdk:"zone_member_security"`
+	Device                             types.String                                  `tfsdk:"device"`
+	Id                                 types.String                                  `tfsdk:"id"`
+	Name                               types.Int64                                   `tfsdk:"name"`
+	Description                        types.String                                  `tfsdk:"description"`
+	Shutdown                           types.Bool                                    `tfsdk:"shutdown"`
+	IpProxyArp                         types.Bool                                    `tfsdk:"ip_proxy_arp"`
+	IpRedirects                        types.Bool                                    `tfsdk:"ip_redirects"`
+	IpUnreachables                     types.Bool                                    `tfsdk:"ip_unreachables"`
+	VrfForwarding                      types.String                                  `tfsdk:"vrf_forwarding"`
+	Ipv4Address                        types.String                                  `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                    types.String                                  `tfsdk:"ipv4_address_mask"`
+	Ipv4AddressDhcp                    types.Bool                                    `tfsdk:"ipv4_address_dhcp"`
+	IpMtu                              types.Int64                                   `tfsdk:"ip_mtu"`
+	IpAccessGroupInEnable              types.Bool                                    `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                    types.String                                  `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable             types.Bool                                    `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                   types.String                                  `tfsdk:"ip_access_group_out"`
+	Ipv6Enable                         types.Bool                                    `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                            types.Int64                                   `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll                types.Bool                                    `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault       types.Bool                                    `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                    types.Bool                                    `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses             []InterfaceLoopbackIpv6LinkLocalAddressesData `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                      []InterfaceLoopbackIpv6AddressesData          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                         types.Int64                                   `tfsdk:"arp_timeout"`
+	IpIgmpVersion                      types.Int64                                   `tfsdk:"ip_igmp_version"`
+	IpRouterIsis                       types.String                                  `tfsdk:"ip_router_isis"`
+	IpNatInside                        types.Bool                                    `tfsdk:"ip_nat_inside"`
+	IpNatOutside                       types.Bool                                    `tfsdk:"ip_nat_outside"`
+	IpVerifyUnicastSourceReachableVia  types.String                                  `tfsdk:"ip_verify_unicast_source_reachable_via"`
+	IpVerifyUnicastSourceAllowSelfPing types.Bool                                    `tfsdk:"ip_verify_unicast_source_allow_self_ping"`
+	IpVerifyUnicastSourceAllowDefault  types.Bool                                    `tfsdk:"ip_verify_unicast_source_allow_default"`
+	ZoneMemberSecurity                 types.String                                  `tfsdk:"zone_member_security"`
 }
 type InterfaceLoopbackIpv6LinkLocalAddressesData struct {
 	Address   types.String `tfsdk:"address"`
@@ -259,6 +265,19 @@ func (data InterfaceLoopback) toBody(ctx context.Context, config InterfaceLoopba
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
 		if data.IpNatOutside.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
+		}
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() && !data.IpVerifyUnicastSourceReachableVia.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.verify.unicast.source.reachable-via", data.IpVerifyUnicastSourceReachableVia.ValueString())
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.verify.unicast.source.allow-self-ping", map[string]string{})
+		}
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.verify.unicast.source.allow-default", map[string]string{})
 		}
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
@@ -444,6 +463,23 @@ func (data InterfaceLoopback) toBodyXML(ctx context.Context, config InterfaceLoo
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+		}
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() && !data.IpVerifyUnicastSourceReachableVia.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/reachable-via", data.IpVerifyUnicastSourceReachableVia.ValueString())
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+		}
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default")
 		}
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
@@ -712,6 +748,29 @@ func (data *InterfaceLoopback) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.reachable-via"); value.Exists() && !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	} else {
+		data.IpVerifyUnicastSourceReachableVia = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-self-ping"); !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-default"); !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	} else {
@@ -971,6 +1030,29 @@ func (data *InterfaceLoopback) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() && !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	} else {
+		data.IpVerifyUnicastSourceReachableVia = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() && !data.ZoneMemberSecurity.IsNull() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	} else {
@@ -1117,6 +1199,19 @@ func (data *InterfaceLoopback) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -1261,6 +1356,19 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.verify.unicast.source.allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-zone:zone-member.security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -1400,6 +1508,19 @@ func (data *InterfaceLoopback) fromBodyXML(ctx context.Context, res xmldot.Resul
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
@@ -1541,6 +1662,19 @@ func (data *InterfaceLoopbackData) fromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
@@ -1554,6 +1688,15 @@ func (data *InterfaceLoopback) getDeletedItems(ctx context.Context, state Interf
 	deletedItems := make([]string, 0)
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", state.getPath()))
+	}
+	if !state.IpVerifyUnicastSourceAllowDefault.IsNull() && data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/verify/unicast/source/allow-default", state.getPath()))
+	}
+	if !state.IpVerifyUnicastSourceAllowSelfPing.IsNull() && data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/verify/unicast/source/allow-self-ping", state.getPath()))
+	}
+	if !state.IpVerifyUnicastSourceReachableVia.IsNull() && data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/verify/unicast/source/reachable-via", state.getPath()))
 	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
@@ -1695,6 +1838,15 @@ func (data *InterfaceLoopback) addDeletedItemsXML(ctx context.Context, state Int
 	b := netconf.NewBody(body)
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
+	if !state.IpVerifyUnicastSourceAllowDefault.IsNull() && data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/allow-default")
+	}
+	if !state.IpVerifyUnicastSourceAllowSelfPing.IsNull() && data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+	}
+	if !state.IpVerifyUnicastSourceReachableVia.IsNull() && data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/reachable-via")
 	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
@@ -1845,6 +1997,12 @@ func (data *InterfaceLoopback) addDeletedItemsXML(ctx context.Context, state Int
 
 func (data *InterfaceLoopback) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/verify/unicast/source/allow-default", data.getPath()))
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/verify/unicast/source/allow-self-ping", data.getPath()))
+	}
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
 	}
@@ -1901,6 +2059,15 @@ func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.ZoneMemberSecurity.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-zone:zone-member/security", data.getPath()))
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/verify/unicast/source/allow-default", data.getPath()))
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/verify/unicast/source/allow-self-ping", data.getPath()))
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/verify/unicast/source/reachable-via", data.getPath()))
 	}
 	if !data.IpNatOutside.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
@@ -1996,6 +2163,15 @@ func (data *InterfaceLoopback) addDeletePathsXML(ctx context.Context, body strin
 	b := netconf.NewBody(body)
 	if !data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/allow-default")
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/reachable-via")
 	}
 	if !data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")

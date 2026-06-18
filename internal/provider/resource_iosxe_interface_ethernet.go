@@ -856,6 +856,21 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
 				Optional:            true,
 			},
+			"ip_verify_unicast_source_reachable_via": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify reachability check to apply to the source address").AddStringEnumDescription("any", "rx").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("any", "rx"),
+				},
+			},
+			"ip_verify_unicast_source_allow_self_ping": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow router to ping itself (opens vulnerability in verification)").String,
+				Optional:            true,
+			},
+			"ip_verify_unicast_source_allow_default": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow default route to match when checking source address").String,
+				Optional:            true,
+			},
 			"evpn_ethernet_segments": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Ethernet segment local discriminator value").String,
 				Optional:            true,

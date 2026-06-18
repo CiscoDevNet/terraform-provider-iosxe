@@ -200,6 +200,18 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Outside interface for address translation",
 				Computed:            true,
 			},
+			"ip_verify_unicast_source_reachable_via": schema.StringAttribute{
+				MarkdownDescription: "Specify reachability check to apply to the source address",
+				Computed:            true,
+			},
+			"ip_verify_unicast_source_allow_self_ping": schema.BoolAttribute{
+				MarkdownDescription: "Allow router to ping itself (opens vulnerability in verification)",
+				Computed:            true,
+			},
+			"ip_verify_unicast_source_allow_default": schema.BoolAttribute{
+				MarkdownDescription: "Allow default route to match when checking source address",
+				Computed:            true,
+			},
 			"zone_member_security": schema.StringAttribute{
 				MarkdownDescription: "Security zone",
 				Computed:            true,
