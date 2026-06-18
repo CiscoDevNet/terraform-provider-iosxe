@@ -100,6 +100,18 @@ func (d *BGPPeerSessionTemplateDataSource) Schema(ctx context.Context, req datas
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},
+			"ao_keychain": schema.StringAttribute{
+				MarkdownDescription: "Key Chain Name",
+				Computed:            true,
+			},
+			"ao_include_tcp_options": schema.BoolAttribute{
+				MarkdownDescription: "Include TCP options",
+				Computed:            true,
+			},
+			"ao_accept_mismatch_connections": schema.BoolAttribute{
+				MarkdownDescription: "accept ao mismatch connections",
+				Computed:            true,
+			},
 			"inherit_peer_session": schema.StringAttribute{
 				MarkdownDescription: "Inherit a peer-session template",
 				Computed:            true,
