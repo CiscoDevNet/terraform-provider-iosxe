@@ -91,6 +91,12 @@ type InterfacePortChannel struct {
 	IpArpInspectionTrust           types.Bool                                           `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate       types.Int64                                          `tfsdk:"ip_arp_inspection_limit_rate"`
 	SpanningTreeLinkType           types.String                                         `tfsdk:"spanning_tree_link_type"`
+	BpduguardEnable                types.Bool                                           `tfsdk:"bpduguard_enable"`
+	BpduguardDisable               types.Bool                                           `tfsdk:"bpduguard_disable"`
+	SpanningTreePortfast           types.Bool                                           `tfsdk:"spanning_tree_portfast"`
+	SpanningTreePortfastDisable    types.Bool                                           `tfsdk:"spanning_tree_portfast_disable"`
+	SpanningTreePortfastTrunk      types.Bool                                           `tfsdk:"spanning_tree_portfast_trunk"`
+	SpanningTreePortfastEdge       types.Bool                                           `tfsdk:"spanning_tree_portfast_edge"`
 	IpDhcpSnoopingTrust            types.Bool                                           `tfsdk:"ip_dhcp_snooping_trust"`
 	LoadInterval                   types.Int64                                          `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus             types.Bool                                           `tfsdk:"snmp_trap_link_status"`
@@ -191,6 +197,12 @@ type InterfacePortChannelData struct {
 	IpArpInspectionTrust           types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate       types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
 	SpanningTreeLinkType           types.String                                             `tfsdk:"spanning_tree_link_type"`
+	BpduguardEnable                types.Bool                                               `tfsdk:"bpduguard_enable"`
+	BpduguardDisable               types.Bool                                               `tfsdk:"bpduguard_disable"`
+	SpanningTreePortfast           types.Bool                                               `tfsdk:"spanning_tree_portfast"`
+	SpanningTreePortfastDisable    types.Bool                                               `tfsdk:"spanning_tree_portfast_disable"`
+	SpanningTreePortfastTrunk      types.Bool                                               `tfsdk:"spanning_tree_portfast_trunk"`
+	SpanningTreePortfastEdge       types.Bool                                               `tfsdk:"spanning_tree_portfast_edge"`
 	IpDhcpSnoopingTrust            types.Bool                                               `tfsdk:"ip_dhcp_snooping_trust"`
 	LoadInterval                   types.Int64                                              `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus             types.Bool                                               `tfsdk:"snmp_trap_link_status"`
@@ -549,6 +561,48 @@ func (data InterfacePortChannel) toBodyXML(ctx context.Context, config Interface
 	}
 	if !data.SpanningTreeLinkType.IsNull() && !data.SpanningTreeLinkType.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", data.SpanningTreeLinkType.ValueString())
+	}
+	if !data.BpduguardEnable.IsNull() && !data.BpduguardEnable.IsUnknown() {
+		if data.BpduguardEnable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable")
+		}
+	}
+	if !data.BpduguardDisable.IsNull() && !data.BpduguardDisable.IsUnknown() {
+		if data.BpduguardDisable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable")
+		}
+	}
+	if !data.SpanningTreePortfast.IsNull() && !data.SpanningTreePortfast.IsUnknown() {
+		if data.SpanningTreePortfast.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast")
+		}
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() && !data.SpanningTreePortfastDisable.IsUnknown() {
+		if data.SpanningTreePortfastDisable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable")
+		}
+	}
+	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.IsUnknown() {
+		if data.SpanningTreePortfastTrunk.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk")
+		}
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() && !data.SpanningTreePortfastEdge.IsUnknown() {
+		if data.SpanningTreePortfastEdge.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge")
+		}
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
 		if data.IpDhcpSnoopingTrust.ValueBool() {
@@ -1125,6 +1179,60 @@ func (data *InterfacePortChannel) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.SpanningTreeLinkType = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable"); !data.BpduguardEnable.IsNull() {
+		if value.Exists() {
+			data.BpduguardEnable = types.BoolValue(true)
+		} else {
+			data.BpduguardEnable = types.BoolValue(false)
+		}
+	} else {
+		data.BpduguardEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable"); !data.BpduguardDisable.IsNull() {
+		if value.Exists() {
+			data.BpduguardDisable = types.BoolValue(true)
+		} else {
+			data.BpduguardDisable = types.BoolValue(false)
+		}
+	} else {
+		data.BpduguardDisable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast"); !data.SpanningTreePortfast.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfast = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfast = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfast = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable"); !data.SpanningTreePortfastDisable.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastDisable = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastDisable = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk"); !data.SpanningTreePortfastTrunk.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastTrunk = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastTrunk = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastTrunk = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge"); !data.SpanningTreePortfastEdge.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastEdge = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastEdge = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust"); !data.IpDhcpSnoopingTrust.IsNull() {
 		if value.Exists() {
 			data.IpDhcpSnoopingTrust = types.BoolValue(true)
@@ -1582,6 +1690,36 @@ func (data *InterfacePortChannel) fromBodyXML(ctx context.Context, res xmldot.Re
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type"); value.Exists() {
 		data.SpanningTreeLinkType = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable"); value.Exists() {
+		data.BpduguardEnable = types.BoolValue(true)
+	} else {
+		data.BpduguardEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable"); value.Exists() {
+		data.BpduguardDisable = types.BoolValue(true)
+	} else {
+		data.BpduguardDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast"); value.Exists() {
+		data.SpanningTreePortfast = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable"); value.Exists() {
+		data.SpanningTreePortfastDisable = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk"); value.Exists() {
+		data.SpanningTreePortfastTrunk = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastTrunk = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge"); value.Exists() {
+		data.SpanningTreePortfastEdge = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust"); value.Exists() {
 		data.IpDhcpSnoopingTrust = types.BoolValue(true)
 	} else {
@@ -1935,6 +2073,36 @@ func (data *InterfacePortChannelData) fromBodyXML(ctx context.Context, res xmldo
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type"); value.Exists() {
 		data.SpanningTreeLinkType = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable"); value.Exists() {
+		data.BpduguardEnable = types.BoolValue(true)
+	} else {
+		data.BpduguardEnable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable"); value.Exists() {
+		data.BpduguardDisable = types.BoolValue(true)
+	} else {
+		data.BpduguardDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast"); value.Exists() {
+		data.SpanningTreePortfast = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfast = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable"); value.Exists() {
+		data.SpanningTreePortfastDisable = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk"); value.Exists() {
+		data.SpanningTreePortfastTrunk = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastTrunk = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge"); value.Exists() {
+		data.SpanningTreePortfastEdge = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust"); value.Exists() {
 		data.IpDhcpSnoopingTrust = types.BoolValue(true)
 	} else {
@@ -2195,6 +2363,24 @@ func (data *InterfacePortChannel) addDeletedItemsXML(ctx context.Context, state 
 	}
 	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust")
+	}
+	if !state.SpanningTreePortfastEdge.IsNull() && data.SpanningTreePortfastEdge.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge")
+	}
+	if !state.SpanningTreePortfastTrunk.IsNull() && data.SpanningTreePortfastTrunk.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk")
+	}
+	if !state.SpanningTreePortfastDisable.IsNull() && data.SpanningTreePortfastDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable")
+	}
+	if !state.SpanningTreePortfast.IsNull() && data.SpanningTreePortfast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast")
+	}
+	if !state.BpduguardDisable.IsNull() && data.BpduguardDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable")
+	}
+	if !state.BpduguardEnable.IsNull() && data.BpduguardEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable")
 	}
 	if !state.SpanningTreeLinkType.IsNull() && data.SpanningTreeLinkType.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type")
@@ -2549,6 +2735,24 @@ func (data *InterfacePortChannel) addDeletePathsXML(ctx context.Context, body st
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust")
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge")
+	}
+	if !data.SpanningTreePortfastTrunk.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk")
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable")
+	}
+	if !data.SpanningTreePortfast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast")
+	}
+	if !data.BpduguardDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable")
+	}
+	if !data.BpduguardEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable")
 	}
 	if !data.SpanningTreeLinkType.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type")
