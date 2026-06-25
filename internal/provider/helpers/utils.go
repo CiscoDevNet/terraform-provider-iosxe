@@ -107,16 +107,6 @@ func NormalizeCommunityValue(val string) string {
 	return fmt.Sprintf("%d:%d", n/65536, n%65536)
 }
 
-// GetNormalizedCommunityList converts a slice of gjson.Result to a Terraform types.List,
-// normalizing decimal BGP community values to AA:NN notation.
-func GetNormalizedCommunityList(result []gjson.Result) types.List {
-	v := make([]attr.Value, len(result))
-	for r := range result {
-		v[r] = types.StringValue(NormalizeCommunityValue(result[r].String()))
-	}
-	return types.ListValueMust(types.StringType, v)
-}
-
 // GetNormalizedCommunityListXML converts a slice of xmldot.Result to a Terraform types.List,
 // normalizing decimal BGP community values to AA:NN notation.
 func GetNormalizedCommunityListXML(result []xmldot.Result) types.List {

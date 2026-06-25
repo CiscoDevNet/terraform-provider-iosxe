@@ -139,13 +139,6 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					int64validator.Between(1, 65535),
 				},
 			},
-			"detector_rpc_max_sessions": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Maximum number of RPC sessions").AddIntegerRangeDescription(4, 16).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(4, 16),
-				},
-			},
 			"detector_routing_bootup_delay": schema.Float64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("bootup delay in seconds").String,
 				Optional:            true,

@@ -47,7 +47,6 @@ type EEM struct {
 	DirectoryUserPolicy               types.String              `tfsdk:"directory_user_policy"`
 	SchedulerAppletThreadClassDefault types.Bool                `tfsdk:"scheduler_applet_thread_class_default"`
 	SchedulerAppletThreadClassNumber  types.Int64               `tfsdk:"scheduler_applet_thread_class_number"`
-	DetectorRpcMaxSessions            types.Int64               `tfsdk:"detector_rpc_max_sessions"`
 	DetectorRoutingBootupDelay        types.Float64             `tfsdk:"detector_routing_bootup_delay"`
 	Applets                           []EEMApplets              `tfsdk:"applets"`
 }
@@ -161,7 +160,6 @@ type EEMData struct {
 	DirectoryUserPolicy               types.String                  `tfsdk:"directory_user_policy"`
 	SchedulerAppletThreadClassDefault types.Bool                    `tfsdk:"scheduler_applet_thread_class_default"`
 	SchedulerAppletThreadClassNumber  types.Int64                   `tfsdk:"scheduler_applet_thread_class_number"`
-	DetectorRpcMaxSessions            types.Int64                   `tfsdk:"detector_rpc_max_sessions"`
 	DetectorRoutingBootupDelay        types.Float64                 `tfsdk:"detector_routing_bootup_delay"`
 	Applets                           []EEMAppletsData              `tfsdk:"applets"`
 }
@@ -329,9 +327,6 @@ func (data EEM) toBodyXML(ctx context.Context, config EEM) string {
 	}
 	if !data.SchedulerAppletThreadClassNumber.IsNull() && !data.SchedulerAppletThreadClassNumber.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/scheduler/applet/thread/class/number", strconv.FormatInt(data.SchedulerAppletThreadClassNumber.ValueInt64(), 10))
-	}
-	if !data.DetectorRpcMaxSessions.IsNull() && !data.DetectorRpcMaxSessions.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/detector/rpc/max-sessions", strconv.FormatInt(data.DetectorRpcMaxSessions.ValueInt64(), 10))
 	}
 	if !data.DetectorRoutingBootupDelay.IsNull() && !data.DetectorRoutingBootupDelay.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/detector/routing/bootup-delay", strconv.FormatFloat(data.DetectorRoutingBootupDelay.ValueFloat64(), 'f', 1, 64))
@@ -739,11 +734,6 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SchedulerAppletThreadClassNumber = types.Int64Value(value.Int())
 	} else {
 		data.SchedulerAppletThreadClassNumber = types.Int64Null()
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() && !data.DetectorRpcMaxSessions.IsNull() {
-		data.DetectorRpcMaxSessions = types.Int64Value(value.Int())
-	} else {
-		data.DetectorRpcMaxSessions = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() && !data.DetectorRoutingBootupDelay.IsNull() {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
@@ -1327,9 +1317,6 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() {
 		data.SchedulerAppletThreadClassNumber = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() {
-		data.DetectorRpcMaxSessions = types.Int64Value(value.Int())
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
 	}
@@ -1679,9 +1666,6 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() {
 		data.SchedulerAppletThreadClassNumber = types.Int64Value(value.Int())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() {
-		data.DetectorRpcMaxSessions = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
@@ -2321,9 +2305,6 @@ func (data *EEM) addDeletedItemsXML(ctx context.Context, state EEM, body string)
 	if !state.DetectorRoutingBootupDelay.IsNull() && data.DetectorRoutingBootupDelay.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detector/routing/bootup-delay")
 	}
-	if !state.DetectorRpcMaxSessions.IsNull() && data.DetectorRpcMaxSessions.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detector/rpc/max-sessions")
-	}
 	if !state.SchedulerAppletThreadClassNumber.IsNull() && data.SchedulerAppletThreadClassNumber.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/scheduler/applet/thread/class/number")
 	}
@@ -2401,9 +2382,6 @@ func (data *EEM) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.DetectorRoutingBootupDelay.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/detector/routing/bootup-delay")
-	}
-	if !data.DetectorRpcMaxSessions.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/detector/rpc/max-sessions")
 	}
 	if !data.SchedulerAppletThreadClassNumber.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/scheduler/applet/thread/class/number")

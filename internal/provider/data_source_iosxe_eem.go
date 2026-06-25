@@ -112,10 +112,6 @@ func (d *EEMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Number of concurrent execution threads",
 				Computed:            true,
 			},
-			"detector_rpc_max_sessions": schema.Int64Attribute{
-				MarkdownDescription: "Maximum number of RPC sessions",
-				Computed:            true,
-			},
 			"detector_routing_bootup_delay": schema.Float64Attribute{
 				MarkdownDescription: "bootup delay in seconds",
 				Computed:            true,
