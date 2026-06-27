@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -76,17 +73,6 @@ func (data OSPFv3Data) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3=%v", url.QueryEscape(fmt.Sprintf("%v", data.ProcessId.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data OSPFv3) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data OSPFv3) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3[id=%v]"
@@ -101,42 +87,6 @@ func (data OSPFv3Data) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data OSPFv3) toBody(ctx context.Context, config OSPFv3) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.ProcessId.IsNull() && !data.ProcessId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", strconv.FormatInt(data.ProcessId.ValueInt64(), 10))
-	}
-	if !data.RouterId.IsNull() && !data.RouterId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"router-id", data.RouterId.ValueString())
-	}
-	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
-		if data.BfdAllInterfaces.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.all-interfaces", map[string]string{})
-		}
-	}
-	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"auto-cost.reference-bandwidth", strconv.FormatInt(data.AutoCostReferenceBandwidth.ValueInt64(), 10))
-	}
-	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", data.Shutdown.ValueBool())
-	}
-	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
-		if data.LogAdjacencyChanges.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes", map[string]string{})
-		}
-	}
-	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
-		if data.LogAdjacencyChangesDetail.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes.detail", map[string]string{})
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -183,66 +133,6 @@ func (data OSPFv3) toBodyXML(ctx context.Context, config OSPFv3) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *OSPFv3) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.ProcessId.IsNull() {
-		data.ProcessId = types.Int64Value(value.Int())
-	} else {
-		data.ProcessId = types.Int64Null()
-	}
-	if value := res.Get(prefix + "router-id"); value.Exists() && !data.RouterId.IsNull() {
-		data.RouterId = types.StringValue(value.String())
-	} else {
-		data.RouterId = types.StringNull()
-	}
-	if value := res.Get(prefix + "bfd.all-interfaces"); !data.BfdAllInterfaces.IsNull() {
-		if value.Exists() {
-			data.BfdAllInterfaces = types.BoolValue(true)
-		} else {
-			data.BfdAllInterfaces = types.BoolValue(false)
-		}
-	} else {
-		data.BfdAllInterfaces = types.BoolNull()
-	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	} else {
-		data.AutoCostReferenceBandwidth = types.Int64Null()
-	}
-	if value := res.Get(prefix + "shutdown"); !data.Shutdown.IsNull() {
-		if value.Exists() {
-			data.Shutdown = types.BoolValue(value.Bool())
-		}
-	} else {
-		data.Shutdown = types.BoolNull()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes"); !data.LogAdjacencyChanges.IsNull() {
-		if value.Exists() {
-			data.LogAdjacencyChanges = types.BoolValue(true)
-		} else {
-			data.LogAdjacencyChanges = types.BoolValue(false)
-		}
-	} else {
-		data.LogAdjacencyChanges = types.BoolNull()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes.detail"); !data.LogAdjacencyChangesDetail.IsNull() {
-		if value.Exists() {
-			data.LogAdjacencyChangesDetail = types.BoolValue(true)
-		} else {
-			data.LogAdjacencyChangesDetail = types.BoolValue(false)
-		}
-	} else {
-		data.LogAdjacencyChangesDetail = types.BoolNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -299,80 +189,6 @@ func (data *OSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *OSPFv3) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "router-id"); value.Exists() {
-		data.RouterId = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "bfd.all-interfaces"); value.Exists() {
-		data.BfdAllInterfaces = types.BoolValue(true)
-	} else {
-		data.BfdAllInterfaces = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "shutdown"); value.Exists() {
-		data.Shutdown = types.BoolValue(value.Bool())
-	} else {
-		data.Shutdown = types.BoolNull()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
-		data.LogAdjacencyChanges = types.BoolValue(true)
-	} else {
-		data.LogAdjacencyChanges = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "log-adjacency-changes.detail"); value.Exists() {
-		data.LogAdjacencyChangesDetail = types.BoolValue(true)
-	} else {
-		data.LogAdjacencyChangesDetail = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *OSPFv3Data) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "router-id"); value.Exists() {
-		data.RouterId = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "bfd.all-interfaces"); value.Exists() {
-		data.BfdAllInterfaces = types.BoolValue(true)
-	} else {
-		data.BfdAllInterfaces = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "shutdown"); value.Exists() {
-		data.Shutdown = types.BoolValue(value.Bool())
-	} else {
-		data.Shutdown = types.BoolNull()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
-		data.LogAdjacencyChanges = types.BoolValue(true)
-	} else {
-		data.LogAdjacencyChanges = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "log-adjacency-changes.detail"); value.Exists() {
-		data.LogAdjacencyChangesDetail = types.BoolValue(true)
-	} else {
-		data.LogAdjacencyChangesDetail = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -440,34 +256,6 @@ func (data *OSPFv3Data) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *OSPFv3) getDeletedItems(ctx context.Context, state OSPFv3) []string {
-	deletedItems := make([]string, 0)
-	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes/detail", state.getPath()))
-	}
-	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes", state.getPath()))
-	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
-	}
-	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/auto-cost/reference-bandwidth", state.getPath()))
-	}
-	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/all-interfaces", state.getPath()))
-	}
-	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *OSPFv3) addDeletedItemsXML(ctx context.Context, state OSPFv3, body string) string {
@@ -496,53 +284,6 @@ func (data *OSPFv3) addDeletedItemsXML(ctx context.Context, state OSPFv3, body s
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *OSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/log-adjacency-changes/detail", data.getPath()))
-	}
-	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/log-adjacency-changes", data.getPath()))
-	}
-	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *OSPFv3) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.LogAdjacencyChangesDetail.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes/detail", data.getPath()))
-	}
-	if !data.LogAdjacencyChanges.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes", data.getPath()))
-	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.AutoCostReferenceBandwidth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
-	}
-	if !data.BfdAllInterfaces.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
-	}
-	if !data.RouterId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/router-id", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
