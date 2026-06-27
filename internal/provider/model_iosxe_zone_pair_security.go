@@ -24,15 +24,12 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -70,17 +67,6 @@ func (data ZonePairSecurityData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/zone-pair/Cisco-IOS-XE-zone:security=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data ZonePairSecurity) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data ZonePairSecurity) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/zone-pair/Cisco-IOS-XE-zone:security[id=%v]"
@@ -95,30 +81,6 @@ func (data ZonePairSecurityData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data ZonePairSecurity) toBody(ctx context.Context, config ZonePairSecurity) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Name.ValueString())
-	}
-	if !data.Source.IsNull() && !data.Source.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source", data.Source.ValueString())
-	}
-	if !data.Destination.IsNull() && !data.Destination.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"destination", data.Destination.ValueString())
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
-	}
-	if !data.ServicePolicyTypeInspect.IsNull() && !data.ServicePolicyTypeInspect.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"service-policy.type.inspect", data.ServicePolicyTypeInspect.ValueString())
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -147,42 +109,6 @@ func (data ZonePairSecurity) toBodyXML(ctx context.Context, config ZonePairSecur
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *ZonePairSecurity) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "source"); value.Exists() && !data.Source.IsNull() {
-		data.Source = types.StringValue(value.String())
-	} else {
-		data.Source = types.StringNull()
-	}
-	if value := res.Get(prefix + "destination"); value.Exists() && !data.Destination.IsNull() {
-		data.Destination = types.StringValue(value.String())
-	} else {
-		data.Destination = types.StringNull()
-	}
-	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
-		data.Description = types.StringValue(value.String())
-	} else {
-		data.Description = types.StringNull()
-	}
-	if value := res.Get(prefix + "service-policy.type.inspect"); value.Exists() && !data.ServicePolicyTypeInspect.IsNull() {
-		data.ServicePolicyTypeInspect = types.StringValue(value.String())
-	} else {
-		data.ServicePolicyTypeInspect = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -215,52 +141,6 @@ func (data *ZonePairSecurity) updateFromBodyXML(ctx context.Context, res xmldot.
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *ZonePairSecurity) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "source"); value.Exists() {
-		data.Source = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "destination"); value.Exists() {
-		data.Destination = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "service-policy.type.inspect"); value.Exists() {
-		data.ServicePolicyTypeInspect = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *ZonePairSecurityData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "source"); value.Exists() {
-		data.Source = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "destination"); value.Exists() {
-		data.Destination = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "service-policy.type.inspect"); value.Exists() {
-		data.ServicePolicyTypeInspect = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -300,28 +180,6 @@ func (data *ZonePairSecurityData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *ZonePairSecurity) getDeletedItems(ctx context.Context, state ZonePairSecurity) []string {
-	deletedItems := make([]string, 0)
-	if !state.ServicePolicyTypeInspect.IsNull() && data.ServicePolicyTypeInspect.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/type/inspect", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.Destination.IsNull() && data.Destination.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/destination", state.getPath()))
-	}
-	if !state.Source.IsNull() && data.Source.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/source", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *ZonePairSecurity) addDeletedItemsXML(ctx context.Context, state ZonePairSecurity, body string) string {
@@ -344,38 +202,6 @@ func (data *ZonePairSecurity) addDeletedItemsXML(ctx context.Context, state Zone
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *ZonePairSecurity) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *ZonePairSecurity) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.ServicePolicyTypeInspect.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/type/inspect", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.Destination.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/destination", data.getPath()))
-	}
-	if !data.Source.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/source", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

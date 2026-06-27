@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -84,17 +80,6 @@ func (data BridgeDomainData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/bridge-domain/Cisco-IOS-XE-bridge-domain:brd-id=%s", url.QueryEscape(fmt.Sprintf("%v", data.BridgeDomainId.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data BridgeDomain) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data BridgeDomain) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/bridge-domain/Cisco-IOS-XE-bridge-domain:brd-id[bridge-domain-id=%s]"
@@ -109,37 +94,6 @@ func (data BridgeDomainData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data BridgeDomain) toBody(ctx context.Context, config BridgeDomain) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.BridgeDomainId.IsNull() && !data.BridgeDomainId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bridge-domain-id", strconv.FormatInt(data.BridgeDomainId.ValueInt64(), 10))
-	}
-	if !data.MemberVni.IsNull() && !data.MemberVni.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni", strconv.FormatInt(data.MemberVni.ValueInt64(), 10))
-	}
-	if len(data.MemberInterfaces) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.member-interface", []interface{}{})
-		for index, item := range data.MemberInterfaces {
-			if !item.Interface.IsNull() && !item.Interface.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.member-interface"+"."+strconv.Itoa(index)+"."+"interface", item.Interface.ValueString())
-			}
-			if len(item.ServiceInstances) > 0 {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.member-interface"+"."+strconv.Itoa(index)+"."+"service-instance-list", []interface{}{})
-				for cindex, citem := range item.ServiceInstances {
-					if !citem.InstanceId.IsNull() && !citem.InstanceId.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.member-interface"+"."+strconv.Itoa(index)+"."+"service-instance-list"+"."+strconv.Itoa(cindex)+"."+"instance-id", strconv.FormatInt(citem.InstanceId.ValueInt64(), 10))
-					}
-				}
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -177,85 +131,6 @@ func (data BridgeDomain) toBodyXML(ctx context.Context, config BridgeDomain) str
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *BridgeDomain) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "bridge-domain-id"); value.Exists() && !data.BridgeDomainId.IsNull() {
-		data.BridgeDomainId = types.Int64Value(value.Int())
-	} else {
-		data.BridgeDomainId = types.Int64Null()
-	}
-	if value := res.Get(prefix + "member.vni"); value.Exists() && !data.MemberVni.IsNull() {
-		data.MemberVni = types.Int64Value(value.Int())
-	} else {
-		data.MemberVni = types.Int64Null()
-	}
-	for i := range data.MemberInterfaces {
-		keys := [...]string{"interface"}
-		keyValues := [...]string{data.MemberInterfaces[i].Interface.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "member.member-interface").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("interface"); value.Exists() && !data.MemberInterfaces[i].Interface.IsNull() {
-			data.MemberInterfaces[i].Interface = types.StringValue(value.String())
-		} else {
-			data.MemberInterfaces[i].Interface = types.StringNull()
-		}
-		for ci := range data.MemberInterfaces[i].ServiceInstances {
-			keys := [...]string{"instance-id"}
-			keyValues := [...]string{strconv.FormatInt(data.MemberInterfaces[i].ServiceInstances[ci].InstanceId.ValueInt64(), 10)}
-
-			var cr gjson.Result
-			r.Get("service-instance-list").ForEach(
-				func(_, v gjson.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
-			if value := cr.Get("instance-id"); value.Exists() && !data.MemberInterfaces[i].ServiceInstances[ci].InstanceId.IsNull() {
-				data.MemberInterfaces[i].ServiceInstances[ci].InstanceId = types.Int64Value(value.Int())
-			} else {
-				data.MemberInterfaces[i].ServiceInstances[ci].InstanceId = types.Int64Null()
-			}
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -332,78 +207,6 @@ func (data *BridgeDomain) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *BridgeDomain) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "member.vni"); value.Exists() {
-		data.MemberVni = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "member.member-interface"); value.Exists() {
-		data.MemberInterfaces = make([]BridgeDomainMemberInterfaces, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := BridgeDomainMemberInterfaces{}
-			if cValue := v.Get("interface"); cValue.Exists() {
-				item.Interface = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("service-instance-list"); cValue.Exists() {
-				item.ServiceInstances = make([]BridgeDomainMemberInterfacesServiceInstances, 0)
-				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := BridgeDomainMemberInterfacesServiceInstances{}
-					if ccValue := cv.Get("instance-id"); ccValue.Exists() {
-						cItem.InstanceId = types.Int64Value(ccValue.Int())
-					}
-					item.ServiceInstances = append(item.ServiceInstances, cItem)
-					return true
-				})
-			}
-			data.MemberInterfaces = append(data.MemberInterfaces, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *BridgeDomainData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "member.vni"); value.Exists() {
-		data.MemberVni = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "member.member-interface"); value.Exists() {
-		data.MemberInterfaces = make([]BridgeDomainMemberInterfacesData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := BridgeDomainMemberInterfacesData{}
-			if cValue := v.Get("interface"); cValue.Exists() {
-				item.Interface = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("service-instance-list"); cValue.Exists() {
-				item.ServiceInstances = make([]BridgeDomainMemberInterfacesServiceInstancesData, 0)
-				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := BridgeDomainMemberInterfacesServiceInstancesData{}
-					if ccValue := cv.Get("instance-id"); ccValue.Exists() {
-						cItem.InstanceId = types.Int64Value(ccValue.Int())
-					}
-					item.ServiceInstances = append(item.ServiceInstances, cItem)
-					return true
-				})
-			}
-			data.MemberInterfaces = append(data.MemberInterfaces, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *BridgeDomain) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -467,69 +270,6 @@ func (data *BridgeDomainData) fromBodyXML(ctx context.Context, res xmldot.Result
 }
 
 // End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *BridgeDomain) getDeletedItems(ctx context.Context, state BridgeDomain) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.MemberInterfaces {
-		stateKeyValues := [...]string{state.MemberInterfaces[i].Interface.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.MemberInterfaces[i].Interface.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.MemberInterfaces {
-			found = true
-			if state.MemberInterfaces[i].Interface.ValueString() != data.MemberInterfaces[j].Interface.ValueString() {
-				found = false
-			}
-			if found {
-				for ci := range state.MemberInterfaces[i].ServiceInstances {
-					cstateKeyValues := [...]string{strconv.FormatInt(state.MemberInterfaces[i].ServiceInstances[ci].InstanceId.ValueInt64(), 10)}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.MemberInterfaces[i].ServiceInstances[ci].InstanceId.ValueInt64()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.MemberInterfaces[j].ServiceInstances {
-						found = true
-						if state.MemberInterfaces[i].ServiceInstances[ci].InstanceId.ValueInt64() != data.MemberInterfaces[j].ServiceInstances[cj].InstanceId.ValueInt64() {
-							found = false
-						}
-						if found {
-							break
-						}
-					}
-					if !found {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/member/member-interface=%v/service-instance-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-					}
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/member/member-interface=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.MemberVni.IsNull() && data.MemberVni.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
@@ -604,34 +344,6 @@ func (data *BridgeDomain) addDeletedItemsXML(ctx context.Context, state BridgeDo
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *BridgeDomain) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *BridgeDomain) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.MemberInterfaces {
-		keyValues := [...]string{data.MemberInterfaces[i].Interface.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/member/member-interface=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.MemberVni.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/member/vni", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

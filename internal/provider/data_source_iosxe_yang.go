@@ -101,60 +101,31 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	if device.Protocol == "restconf" {
-		res, err := device.RestconfClient.GetData(config.getPath())
-		if res.StatusCode == 404 {
-			state.Attributes = types.MapValueMust(types.StringType, map[string]attr.Value{})
-		} else {
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
-				return
-			}
-
-			state.Path = config.Path
-			state.Id = config.Path
-
-			attributes := make(map[string]attr.Value)
-
-			for attr, value := range res.Res.Get(helpers.LastElement(config.getPath())).Map() {
-				// handle empty maps
-				if value.IsObject() && len(value.Map()) == 0 {
-					attributes[attr] = types.StringValue("")
-				} else if value.Raw == "[null]" {
-					attributes[attr] = types.StringValue("")
-				} else {
-					attributes[attr] = types.StringValue(value.String())
-				}
-			}
-			state.Attributes = types.MapValueMust(types.StringType, attributes)
-		}
-	} else {
-		// Serialize NETCONF operations (all ops when reuse disabled, reads concurrent when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-		if locked {
-			defer device.NetconfOpMutex.Unlock()
-		}
-		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(config.Path.ValueString()))
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
-			return
-		}
-
-		state.Path = config.Path
-		state.Id = config.Path
-
-		attributes := make(map[string]attr.Value)
-
-		for attr, value := range helpers.GetFromXPath(res.Res, "/data"+config.Path.ValueString()).Map() {
-			if value.IsArray() {
-				continue
-			}
-			attributes[attr] = types.StringValue(value.String())
-		}
-		state.Attributes = types.MapValueMust(types.StringType, attributes)
+	// Serialize NETCONF operations (all ops when reuse disabled, reads concurrent when reuse enabled)
+	locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+	if locked {
+		defer device.NetconfOpMutex.Unlock()
 	}
+	defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+	res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(config.Path.ValueString()))
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+		return
+	}
+
+	state.Path = config.Path
+	state.Id = config.Path
+
+	attributes := make(map[string]attr.Value)
+
+	for attr, value := range helpers.GetFromXPath(res.Res, "/data"+config.Path.ValueString()).Map() {
+		if value.IsArray() {
+			continue
+		}
+		attributes[attr] = types.StringValue(value.String())
+	}
+	state.Attributes = types.MapValueMust(types.StringType, attributes)
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", config.Path.ValueString()))
 

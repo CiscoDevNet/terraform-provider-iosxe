@@ -23,15 +23,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -61,17 +58,6 @@ func (data CryptoData) getPath() string {
 	return "Cisco-IOS-XE-native:native/crypto"
 }
 
-// if last path element has a key -> remove it
-func (data Crypto) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data Crypto) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/crypto"
@@ -84,20 +70,6 @@ func (data CryptoData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data Crypto) toBody(ctx context.Context, config Crypto) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.EngineComplianceShieldDisable.IsNull() && !data.EngineComplianceShieldDisable.IsUnknown() {
-		if data.EngineComplianceShieldDisable.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-crypto:engine.compliance.shield.disable", map[string]string{})
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -119,26 +91,6 @@ func (data Crypto) toBodyXML(ctx context.Context, config Crypto) string {
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *Crypto) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-crypto:engine.compliance.shield.disable"); !data.EngineComplianceShieldDisable.IsNull() {
-		if value.Exists() {
-			data.EngineComplianceShieldDisable = types.BoolValue(true)
-		} else {
-			data.EngineComplianceShieldDisable = types.BoolValue(false)
-		}
-	} else {
-		data.EngineComplianceShieldDisable = types.BoolNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *Crypto) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -154,38 +106,6 @@ func (data *Crypto) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *Crypto) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-crypto:engine.compliance.shield.disable"); value.Exists() {
-		data.EngineComplianceShieldDisable = types.BoolValue(true)
-	} else {
-		data.EngineComplianceShieldDisable = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *CryptoData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-crypto:engine.compliance.shield.disable"); value.Exists() {
-		data.EngineComplianceShieldDisable = types.BoolValue(true)
-	} else {
-		data.EngineComplianceShieldDisable = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -211,19 +131,6 @@ func (data *CryptoData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *Crypto) getDeletedItems(ctx context.Context, state Crypto) []string {
-	deletedItems := make([]string, 0)
-	if !state.EngineComplianceShieldDisable.IsNull() && data.EngineComplianceShieldDisable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-crypto:engine/compliance/shield/disable", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *Crypto) addDeletedItemsXML(ctx context.Context, state Crypto, body string) string {
@@ -237,32 +144,6 @@ func (data *Crypto) addDeletedItemsXML(ctx context.Context, state Crypto, body s
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *Crypto) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.EngineComplianceShieldDisable.IsNull() && !data.EngineComplianceShieldDisable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-crypto:engine/compliance/shield/disable", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *Crypto) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.EngineComplianceShieldDisable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-crypto:engine/compliance/shield/disable", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
