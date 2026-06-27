@@ -99,6 +99,8 @@ resource "iosxe_interface_port_channel" "example" {
   - Range: `3`-`50`
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
+- `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
+- `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
@@ -150,6 +152,10 @@ resource "iosxe_interface_port_channel" "example" {
   - Choices: `loop`, `none`, `root`
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
   - Choices: `point-to-point`, `shared`
+- `spanning_tree_portfast` (Boolean) (DEPRECATED) Spanning tree portfast options
+- `spanning_tree_portfast_disable` (Boolean) (DEPRECATED) Disable portfast for this interface
+- `spanning_tree_portfast_edge` (Boolean) (DEPRECATED) Enable portfast edge on the interface
+- `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`

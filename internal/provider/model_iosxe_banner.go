@@ -23,15 +23,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -68,17 +65,6 @@ func (data BannerData) getPath() string {
 	return "Cisco-IOS-XE-native:native/banner"
 }
 
-// if last path element has a key -> remove it
-func (data Banner) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data Banner) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/banner"
@@ -91,27 +77,6 @@ func (data BannerData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data Banner) toBody(ctx context.Context, config Banner) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.ExecBanner.IsNull() && !data.ExecBanner.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec.banner", data.ExecBanner.ValueString())
-	}
-	if !data.LoginBanner.IsNull() && !data.LoginBanner.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login.banner", data.LoginBanner.ValueString())
-	}
-	if !data.PromptTimeoutBanner.IsNull() && !data.PromptTimeoutBanner.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prompt-timeout.banner", data.PromptTimeoutBanner.ValueString())
-	}
-	if !data.MotdBanner.IsNull() && !data.MotdBanner.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"motd.banner", data.MotdBanner.ValueString())
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -139,39 +104,6 @@ func (data Banner) toBodyXML(ctx context.Context, config Banner) string {
 // End of section. //template:end toBodyXML
 
 // Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
-// This prevents Terraform drift caused by trailing whitespace in RESTCONF responses.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
-
-func (data *Banner) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "exec.banner"); value.Exists() && !data.ExecBanner.IsNull() {
-		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	} else {
-		data.ExecBanner = types.StringNull()
-	}
-	if value := res.Get(prefix + "login.banner"); value.Exists() && !data.LoginBanner.IsNull() {
-		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	} else {
-		data.LoginBanner = types.StringNull()
-	}
-	if value := res.Get(prefix + "prompt-timeout.banner"); value.Exists() && !data.PromptTimeoutBanner.IsNull() {
-		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	} else {
-		data.PromptTimeoutBanner = types.StringNull()
-	}
-	if value := res.Get(prefix + "motd.banner"); value.Exists() && !data.MotdBanner.IsNull() {
-		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	} else {
-		data.MotdBanner = types.StringNull()
-	}
-}
-
-// End of manually maintained section.
-
-// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
 // This prevents Terraform drift caused by trailing whitespace in NETCONF responses.
 // See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
 
@@ -195,56 +127,6 @@ func (data *Banner) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	} else {
 		data.MotdBanner = types.StringNull()
-	}
-}
-
-// End of manually maintained section.
-
-// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
-// This prevents Terraform drift caused by trailing whitespace in RESTCONF responses.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
-
-func (data *Banner) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "exec.banner"); value.Exists() {
-		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	}
-	if value := res.Get(prefix + "login.banner"); value.Exists() {
-		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	}
-	if value := res.Get(prefix + "prompt-timeout.banner"); value.Exists() {
-		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	}
-	if value := res.Get(prefix + "motd.banner"); value.Exists() {
-		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	}
-}
-
-// End of manually maintained section.
-
-// Section below is manually maintained to apply TrimNetconfTrailingWhitespace for banner attributes.
-// This prevents Terraform drift caused by trailing whitespace in RESTCONF responses.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/686
-
-func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "exec.banner"); value.Exists() {
-		data.ExecBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	}
-	if value := res.Get(prefix + "login.banner"); value.Exists() {
-		data.LoginBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	}
-	if value := res.Get(prefix + "prompt-timeout.banner"); value.Exists() {
-		data.PromptTimeoutBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
-	}
-	if value := res.Get(prefix + "motd.banner"); value.Exists() {
-		data.MotdBanner = types.StringValue(helpers.TrimNetconfTrailingWhitespace(value.String()))
 	}
 }
 
@@ -292,28 +174,6 @@ func (data *BannerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of manually maintained section.
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *Banner) getDeletedItems(ctx context.Context, state Banner) []string {
-	deletedItems := make([]string, 0)
-	if !state.MotdBanner.IsNull() && data.MotdBanner.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/motd/banner", state.getPath()))
-	}
-	if !state.PromptTimeoutBanner.IsNull() && data.PromptTimeoutBanner.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/prompt-timeout/banner", state.getPath()))
-	}
-	if !state.LoginBanner.IsNull() && data.LoginBanner.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/banner", state.getPath()))
-	}
-	if !state.ExecBanner.IsNull() && data.ExecBanner.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/exec/banner", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *Banner) addDeletedItemsXML(ctx context.Context, state Banner, body string) string {
@@ -336,38 +196,6 @@ func (data *Banner) addDeletedItemsXML(ctx context.Context, state Banner, body s
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *Banner) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *Banner) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.MotdBanner.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/motd/banner", data.getPath()))
-	}
-	if !data.PromptTimeoutBanner.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/prompt-timeout/banner", data.getPath()))
-	}
-	if !data.LoginBanner.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/banner", data.getPath()))
-	}
-	if !data.ExecBanner.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec/banner", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

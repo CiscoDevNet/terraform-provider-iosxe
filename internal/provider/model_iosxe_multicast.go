@@ -24,17 +24,12 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -79,17 +74,6 @@ func (data MulticastData) getPath() string {
 	return "Cisco-IOS-XE-native:native/ip/multicast"
 }
 
-// if last path element has a key -> remove it
-func (data Multicast) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data Multicast) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/ip/multicast"
@@ -102,39 +86,6 @@ func (data MulticastData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data Multicast) toBody(ctx context.Context, config Multicast) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Multipath.IsNull() && !data.Multipath.IsUnknown() {
-		if data.Multipath.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:multipath", map[string]string{})
-		}
-	}
-	if !data.MultipathSGHash.IsNull() && !data.MultipathSGHash.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:multipath.s-g-hash", data.MultipathSGHash.ValueString())
-	}
-	if len(data.Vrfs) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf", []interface{}{})
-		for index, item := range data.Vrfs {
-			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"name", item.Vrf.ValueString())
-			}
-			if !item.Multipath.IsNull() && !item.Multipath.IsUnknown() {
-				if item.Multipath.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"multipath", map[string]string{})
-				}
-			}
-			if !item.MultipathSGHash.IsNull() && !item.MultipathSGHash.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"multipath.s-g-hash", item.MultipathSGHash.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -177,74 +128,6 @@ func (data Multicast) toBodyXML(ctx context.Context, config Multicast) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *Multicast) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:multipath"); !data.Multipath.IsNull() {
-		if value.Exists() {
-			data.Multipath = types.BoolValue(true)
-		} else {
-			data.Multipath = types.BoolValue(false)
-		}
-	} else {
-		data.Multipath = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:multipath.s-g-hash"); value.Exists() && !data.MultipathSGHash.IsNull() {
-		data.MultipathSGHash = types.StringValue(value.String())
-	} else {
-		data.MultipathSGHash = types.StringNull()
-	}
-	for i := range data.Vrfs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "Cisco-IOS-XE-multicast:vrf").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
-			data.Vrfs[i].Vrf = types.StringValue(value.String())
-		} else {
-			data.Vrfs[i].Vrf = types.StringNull()
-		}
-		if value := r.Get("multipath"); !data.Vrfs[i].Multipath.IsNull() {
-			if value.Exists() {
-				data.Vrfs[i].Multipath = types.BoolValue(true)
-			} else {
-				data.Vrfs[i].Multipath = types.BoolValue(false)
-			}
-		} else {
-			data.Vrfs[i].Multipath = types.BoolNull()
-		}
-		if value := r.Get("multipath.s-g-hash"); value.Exists() && !data.Vrfs[i].MultipathSGHash.IsNull() {
-			data.Vrfs[i].MultipathSGHash = types.StringValue(value.String())
-		} else {
-			data.Vrfs[i].MultipathSGHash = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -309,82 +192,6 @@ func (data *Multicast) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *Multicast) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:multipath"); value.Exists() {
-		data.Multipath = types.BoolValue(true)
-	} else {
-		data.Multipath = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:multipath.s-g-hash"); value.Exists() {
-		data.MultipathSGHash = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]MulticastVrfs, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MulticastVrfs{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Vrf = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("multipath"); cValue.Exists() {
-				item.Multipath = types.BoolValue(true)
-			} else {
-				item.Multipath = types.BoolValue(false)
-			}
-			if cValue := v.Get("multipath.s-g-hash"); cValue.Exists() {
-				item.MultipathSGHash = types.StringValue(cValue.String())
-			}
-			data.Vrfs = append(data.Vrfs, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *MulticastData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:multipath"); value.Exists() {
-		data.Multipath = types.BoolValue(true)
-	} else {
-		data.Multipath = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:multipath.s-g-hash"); value.Exists() {
-		data.MultipathSGHash = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]MulticastVrfsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MulticastVrfsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Vrf = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("multipath"); cValue.Exists() {
-				item.Multipath = types.BoolValue(true)
-			} else {
-				item.Multipath = types.BoolValue(false)
-			}
-			if cValue := v.Get("multipath.s-g-hash"); cValue.Exists() {
-				item.MultipathSGHash = types.StringValue(cValue.String())
-			}
-			data.Vrfs = append(data.Vrfs, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -454,53 +261,6 @@ func (data *MulticastData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *Multicast) getDeletedItems(ctx context.Context, state Multicast) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Vrfs {
-		stateKeyValues := [...]string{state.Vrfs[i].Vrf.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Vrfs[i].Vrf.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Vrfs {
-			found = true
-			if state.Vrfs[i].Vrf.ValueString() != data.Vrfs[j].Vrf.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Vrfs[i].MultipathSGHash.IsNull() && data.Vrfs[j].MultipathSGHash.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/multipath/s-g-hash", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vrfs[i].Multipath.IsNull() && data.Vrfs[j].Multipath.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/multipath", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.MultipathSGHash.IsNull() && data.MultipathSGHash.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:multipath/s-g-hash", state.getPath()))
-	}
-	if !state.Multipath.IsNull() && data.Multipath.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:multipath", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *Multicast) addDeletedItemsXML(ctx context.Context, state Multicast, body string) string {
@@ -553,47 +313,6 @@ func (data *Multicast) addDeletedItemsXML(ctx context.Context, state Multicast, 
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *Multicast) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Vrfs {
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-		if !data.Vrfs[i].Multipath.IsNull() && !data.Vrfs[i].Multipath.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/multipath", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-	if !data.Multipath.IsNull() && !data.Multipath.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:multipath", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *Multicast) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Vrfs {
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.MultipathSGHash.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:multipath/s-g-hash", data.getPath()))
-	}
-	if !data.Multipath.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:multipath", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

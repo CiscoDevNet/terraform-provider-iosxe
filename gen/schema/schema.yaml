@@ -45,6 +45,7 @@ attribute:
   no_augment_config: bool(required=False)  # Set to true if the attribute should not be augmented by the YANG models
   delete_parent: bool(required=False)  # Set to true if the attribute should delete the parent YANG element when the attribute is deleted
   no_delete: bool(required=False)  # Set to true if the attribute should not be deleted
+  read_filter: str(required=False)  # Name of a Go helper function used to normalize values on read (e.g., community AA:NN normalization)
   test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured
   attributes: list(include('attribute'), required=False)  # List of attributes in case of a list
 
