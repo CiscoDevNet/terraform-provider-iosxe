@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -85,17 +81,6 @@ func (data MonitorSessionData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/monitor/session=%v", url.QueryEscape(fmt.Sprintf("%v", data.SessionId.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data MonitorSession) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data MonitorSession) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/monitor/session[id=%v]"
@@ -110,40 +95,6 @@ func (data MonitorSessionData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data MonitorSession) toBody(ctx context.Context, config MonitorSession) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.SessionId.IsNull() && !data.SessionId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", strconv.FormatInt(data.SessionId.ValueInt64(), 10))
-	}
-	if len(data.DestinationInterface) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"destination.interface", []interface{}{})
-		for index, item := range data.DestinationInterface {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"destination.interface"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-			if !item.Encapsulation.IsNull() && !item.Encapsulation.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"destination.interface"+"."+strconv.Itoa(index)+"."+"encapsulation", item.Encapsulation.ValueString())
-			}
-		}
-	}
-	if len(data.SourceInterface) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.interface", []interface{}{})
-		for index, item := range data.SourceInterface {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.interface"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.interface"+"."+strconv.Itoa(index)+"."+"direction", item.Direction.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -184,90 +135,6 @@ func (data MonitorSession) toBodyXML(ctx context.Context, config MonitorSession)
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *MonitorSession) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.SessionId.IsNull() {
-		data.SessionId = types.Int64Value(value.Int())
-	} else {
-		data.SessionId = types.Int64Null()
-	}
-	for i := range data.DestinationInterface {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.DestinationInterface[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "destination.interface").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.DestinationInterface[i].Name.IsNull() {
-			data.DestinationInterface[i].Name = types.StringValue(value.String())
-		} else {
-			data.DestinationInterface[i].Name = types.StringNull()
-		}
-		if value := r.Get("encapsulation"); value.Exists() && !data.DestinationInterface[i].Encapsulation.IsNull() {
-			data.DestinationInterface[i].Encapsulation = types.StringValue(value.String())
-		} else {
-			data.DestinationInterface[i].Encapsulation = types.StringNull()
-		}
-	}
-	for i := range data.SourceInterface {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.SourceInterface[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "source.interface").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.SourceInterface[i].Name.IsNull() {
-			data.SourceInterface[i].Name = types.StringValue(value.String())
-		} else {
-			data.SourceInterface[i].Name = types.StringNull()
-		}
-		if value := r.Get("direction"); value.Exists() && !data.SourceInterface[i].Direction.IsNull() {
-			data.SourceInterface[i].Direction = types.StringValue(value.String())
-		} else {
-			data.SourceInterface[i].Direction = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -349,84 +216,6 @@ func (data *MonitorSession) updateFromBodyXML(ctx context.Context, res xmldot.Re
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *MonitorSession) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "destination.interface"); value.Exists() {
-		data.DestinationInterface = make([]MonitorSessionDestinationInterface, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MonitorSessionDestinationInterface{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("encapsulation"); cValue.Exists() {
-				item.Encapsulation = types.StringValue(cValue.String())
-			}
-			data.DestinationInterface = append(data.DestinationInterface, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "source.interface"); value.Exists() {
-		data.SourceInterface = make([]MonitorSessionSourceInterface, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MonitorSessionSourceInterface{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("direction"); cValue.Exists() {
-				item.Direction = types.StringValue(cValue.String())
-			}
-			data.SourceInterface = append(data.SourceInterface, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *MonitorSessionData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "destination.interface"); value.Exists() {
-		data.DestinationInterface = make([]MonitorSessionDestinationInterfaceData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MonitorSessionDestinationInterfaceData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("encapsulation"); cValue.Exists() {
-				item.Encapsulation = types.StringValue(cValue.String())
-			}
-			data.DestinationInterface = append(data.DestinationInterface, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "source.interface"); value.Exists() {
-		data.SourceInterface = make([]MonitorSessionSourceInterfaceData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MonitorSessionSourceInterfaceData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("direction"); cValue.Exists() {
-				item.Direction = types.StringValue(cValue.String())
-			}
-			data.SourceInterface = append(data.SourceInterface, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *MonitorSession) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -496,72 +285,6 @@ func (data *MonitorSessionData) fromBodyXML(ctx context.Context, res xmldot.Resu
 }
 
 // End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *MonitorSession) getDeletedItems(ctx context.Context, state MonitorSession) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.SourceInterface {
-		stateKeyValues := [...]string{state.SourceInterface[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.SourceInterface[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.SourceInterface {
-			found = true
-			if state.SourceInterface[i].Name.ValueString() != data.SourceInterface[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.SourceInterface[i].Direction.IsNull() && data.SourceInterface[j].Direction.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/source/interface=%v/direction", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/source/interface=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.DestinationInterface {
-		stateKeyValues := [...]string{state.DestinationInterface[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.DestinationInterface[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.DestinationInterface {
-			found = true
-			if state.DestinationInterface[i].Name.ValueString() != data.DestinationInterface[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.DestinationInterface[i].Encapsulation.IsNull() && data.DestinationInterface[j].Encapsulation.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/destination/interface=%v/encapsulation", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/destination/interface=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
@@ -639,36 +362,6 @@ func (data *MonitorSession) addDeletedItemsXML(ctx context.Context, state Monito
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *MonitorSession) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *MonitorSession) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.SourceInterface {
-		keyValues := [...]string{data.SourceInterface[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/interface=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.DestinationInterface {
-		keyValues := [...]string{data.DestinationInterface[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/destination/interface=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
