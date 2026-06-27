@@ -457,7 +457,7 @@ Required:
 
 Optional:
 
-- `community_or_user_wo` (String) The write-only value of the attribute.
+- `community_or_user_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `community_or_user_wo_version` (Number) The write-only version of the attribute.
 - `encryption` (String) Specifies an encryption type for community string
   - Choices: `0`, `6`, `7`
@@ -477,7 +477,7 @@ Optional:
 
 - `access_list_name` (String) Access-list name
 - `ipv6` (String) Specify IPv6 Named Access-List
-- `name_wo` (String) The write-only value of the attribute.
+- `name_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `name_wo_version` (Number) The write-only version of the attribute.
 - `permission` (String) - Choices: `ro`, `rw`
 - `view` (String) Restrict this community to a named MIB view
@@ -500,7 +500,7 @@ Optional:
   - Range: `1`-`99`
 - `v3_auth_algorithm` (String) Use HMAC SHA/MD5 algorithm for authentication
   - Choices: `md5`, `sha`
-- `v3_auth_password_wo` (String) The write-only value of the attribute.
+- `v3_auth_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `v3_auth_password_wo_version` (Number) The write-only version of the attribute.
 - `v3_auth_priv_aes_access_acl_name` (String) Access-list name
 - `v3_auth_priv_aes_access_ipv6_acl` (String) Specify IPv6 Named Access-List
@@ -508,21 +508,21 @@ Optional:
   - Range: `1`-`99`
 - `v3_auth_priv_aes_algorithm` (String) - Choices: `128`, `192`, `256`
 - `v3_auth_priv_aes_password` (String, Sensitive) Authentication password for user
-- `v3_auth_priv_aes_password_wo` (String) The write-only value of the attribute.
+- `v3_auth_priv_aes_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `v3_auth_priv_aes_password_wo_version` (Number) The write-only version of the attribute.
 - `v3_auth_priv_des3_access_acl_name` (String) Access-list name
 - `v3_auth_priv_des3_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_des3_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
   - Range: `1`-`99`
 - `v3_auth_priv_des3_password` (String, Sensitive) Authentication password for user
-- `v3_auth_priv_des3_password_wo` (String) The write-only value of the attribute.
+- `v3_auth_priv_des3_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `v3_auth_priv_des3_password_wo_version` (Number) The write-only version of the attribute.
 - `v3_auth_priv_des_access_acl_name` (String) Access-list name
 - `v3_auth_priv_des_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_des_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
   - Range: `1`-`99`
 - `v3_auth_priv_des_password` (String, Sensitive) Authentication password for user
-- `v3_auth_priv_des_password_wo` (String) The write-only value of the attribute.
+- `v3_auth_priv_des_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `v3_auth_priv_des_password_wo_version` (Number) The write-only version of the attribute.
 - `v3_auth_sha2` (String) Use HMAC SHA-2 algorithm for authentication
   - Choices: `256`, `384`, `512`
@@ -552,7 +552,7 @@ Required:
 
 Optional:
 
-- `community_or_user_wo` (String) The write-only value of the attribute.
+- `community_or_user_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
 - `community_or_user_wo_version` (Number) The write-only version of the attribute.
 - `encryption` (String) Specifies an encryption type for community string
   - Choices: `0`, `6`, `7`
