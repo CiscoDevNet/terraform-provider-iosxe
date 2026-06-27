@@ -136,6 +136,20 @@ func (r *OSPFv3AddressFamilyIPv4VRFResource) Schema(ctx context.Context, req res
 					int64validator.Between(1, 16777214),
 				},
 			},
+			"default_information_originate_metric_type": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF metric type for default routes").AddIntegerRangeDescription(1, 2).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2),
+				},
+			},
+			"default_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set metric of redistributed routes").AddIntegerRangeDescription(1, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 16777214),
+				},
+			},
 			"distance": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
 				Optional:            true,

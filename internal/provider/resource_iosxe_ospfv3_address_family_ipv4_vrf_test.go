@@ -41,6 +41,8 @@ func TestAccIosxeOSPFv3AddressFamilyIPv4VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "default_information_originate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "default_information_originate_always", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "default_information_originate_metric", "1000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "default_information_originate_metric_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "default_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "distance", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "log_adjacency_changes", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospfv3_address_family_ipv4_vrf.test", "log_adjacency_changes_detail", "true"))
@@ -150,6 +152,8 @@ func testAccIosxeOSPFv3AddressFamilyIPv4VRFConfig_all() string {
 	config += `	default_information_originate = true` + "\n"
 	config += `	default_information_originate_always = true` + "\n"
 	config += `	default_information_originate_metric = 1000` + "\n"
+	config += `	default_information_originate_metric_type = 1` + "\n"
+	config += `	default_metric = 100` + "\n"
 	config += `	distance = 120` + "\n"
 	config += `	log_adjacency_changes = true` + "\n"
 	config += `	log_adjacency_changes_detail = true` + "\n"

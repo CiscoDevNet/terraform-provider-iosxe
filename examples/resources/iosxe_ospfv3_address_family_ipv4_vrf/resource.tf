@@ -7,6 +7,8 @@ resource "iosxe_ospfv3_address_family_ipv4_vrf" "example" {
   default_information_originate                        = true
   default_information_originate_always                 = true
   default_information_originate_metric                 = 1000
+  default_information_originate_metric_type            = 1
+  default_metric                                       = 100
   distance                                             = 120
   log_adjacency_changes                                = true
   log_adjacency_changes_detail                         = true

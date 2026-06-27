@@ -53,6 +53,8 @@ type OSPFv3AddressFamilyIPv6VRF struct {
 	DefaultInformationOriginate                 types.Bool                                `tfsdk:"default_information_originate"`
 	DefaultInformationOriginateAlways           types.Bool                                `tfsdk:"default_information_originate_always"`
 	DefaultInformationOriginateMetric           types.Int64                               `tfsdk:"default_information_originate_metric"`
+	DefaultInformationOriginateMetricType       types.Int64                               `tfsdk:"default_information_originate_metric_type"`
+	DefaultMetric                               types.Int64                               `tfsdk:"default_metric"`
 	Distance                                    types.Int64                               `tfsdk:"distance"`
 	LogAdjacencyChanges                         types.Bool                                `tfsdk:"log_adjacency_changes"`
 	LogAdjacencyChangesDetail                   types.Bool                                `tfsdk:"log_adjacency_changes_detail"`
@@ -104,6 +106,8 @@ type OSPFv3AddressFamilyIPv6VRFData struct {
 	DefaultInformationOriginate                 types.Bool                                    `tfsdk:"default_information_originate"`
 	DefaultInformationOriginateAlways           types.Bool                                    `tfsdk:"default_information_originate_always"`
 	DefaultInformationOriginateMetric           types.Int64                                   `tfsdk:"default_information_originate_metric"`
+	DefaultInformationOriginateMetricType       types.Int64                                   `tfsdk:"default_information_originate_metric_type"`
+	DefaultMetric                               types.Int64                                   `tfsdk:"default_metric"`
 	Distance                                    types.Int64                                   `tfsdk:"distance"`
 	LogAdjacencyChanges                         types.Bool                                    `tfsdk:"log_adjacency_changes"`
 	LogAdjacencyChangesDetail                   types.Bool                                    `tfsdk:"log_adjacency_changes_detail"`
@@ -214,6 +218,12 @@ func (data OSPFv3AddressFamilyIPv6VRF) toBody(ctx context.Context, config OSPFv3
 	}
 	if !data.DefaultInformationOriginateMetric.IsNull() && !data.DefaultInformationOriginateMetric.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-information.originate.metric", strconv.FormatInt(data.DefaultInformationOriginateMetric.ValueInt64(), 10))
+	}
+	if !data.DefaultInformationOriginateMetricType.IsNull() && !data.DefaultInformationOriginateMetricType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-information.originate.metric-type", strconv.FormatInt(data.DefaultInformationOriginateMetricType.ValueInt64(), 10))
+	}
+	if !data.DefaultMetric.IsNull() && !data.DefaultMetric.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-metric", strconv.FormatInt(data.DefaultMetric.ValueInt64(), 10))
 	}
 	if !data.Distance.IsNull() && !data.Distance.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"distance-ipv6.distance", strconv.FormatInt(data.Distance.ValueInt64(), 10))
@@ -394,6 +404,12 @@ func (data OSPFv3AddressFamilyIPv6VRF) toBodyXML(ctx context.Context, config OSP
 	}
 	if !data.DefaultInformationOriginateMetric.IsNull() && !data.DefaultInformationOriginateMetric.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/metric", strconv.FormatInt(data.DefaultInformationOriginateMetric.ValueInt64(), 10))
+	}
+	if !data.DefaultInformationOriginateMetricType.IsNull() && !data.DefaultInformationOriginateMetricType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/metric-type", strconv.FormatInt(data.DefaultInformationOriginateMetricType.ValueInt64(), 10))
+	}
+	if !data.DefaultMetric.IsNull() && !data.DefaultMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/default-metric", strconv.FormatInt(data.DefaultMetric.ValueInt64(), 10))
 	}
 	if !data.Distance.IsNull() && !data.Distance.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/distance-ipv6/distance", strconv.FormatInt(data.Distance.ValueInt64(), 10))
@@ -625,6 +641,16 @@ func (data *OSPFv3AddressFamilyIPv6VRF) updateFromBody(ctx context.Context, res 
 		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
 	} else {
 		data.DefaultInformationOriginateMetric = types.Int64Null()
+	}
+	if value := res.Get(prefix + "default-information.originate.metric-type"); value.Exists() && !data.DefaultInformationOriginateMetricType.IsNull() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	} else {
+		data.DefaultInformationOriginateMetricType = types.Int64Null()
+	}
+	if value := res.Get(prefix + "default-metric"); value.Exists() && !data.DefaultMetric.IsNull() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	} else {
+		data.DefaultMetric = types.Int64Null()
 	}
 	if value := res.Get(prefix + "distance-ipv6.distance"); value.Exists() && !data.Distance.IsNull() {
 		data.Distance = types.Int64Value(value.Int())
@@ -944,6 +970,16 @@ func (data *OSPFv3AddressFamilyIPv6VRF) updateFromBodyXML(ctx context.Context, r
 	} else {
 		data.DefaultInformationOriginateMetric = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric-type"); value.Exists() && !data.DefaultInformationOriginateMetricType.IsNull() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	} else {
+		data.DefaultInformationOriginateMetricType = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() && !data.DefaultMetric.IsNull() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	} else {
+		data.DefaultMetric = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance-ipv6/distance"); value.Exists() && !data.Distance.IsNull() {
 		data.Distance = types.Int64Value(value.Int())
 	} else {
@@ -1241,6 +1277,12 @@ func (data *OSPFv3AddressFamilyIPv6VRF) fromBody(ctx context.Context, res gjson.
 	if value := res.Get(prefix + "default-information.originate.metric"); value.Exists() {
 		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "default-information.originate.metric-type"); value.Exists() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "distance-ipv6.distance"); value.Exists() {
 		data.Distance = types.Int64Value(value.Int())
 	}
@@ -1418,6 +1460,12 @@ func (data *OSPFv3AddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gj
 	if value := res.Get(prefix + "default-information.originate.metric"); value.Exists() {
 		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "default-information.originate.metric-type"); value.Exists() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "distance-ipv6.distance"); value.Exists() {
 		data.Distance = types.Int64Value(value.Int())
 	}
@@ -1591,6 +1639,12 @@ func (data *OSPFv3AddressFamilyIPv6VRF) fromBodyXML(ctx context.Context, res xml
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric"); value.Exists() {
 		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric-type"); value.Exists() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance-ipv6/distance"); value.Exists() {
 		data.Distance = types.Int64Value(value.Int())
 	}
@@ -1763,6 +1817,12 @@ func (data *OSPFv3AddressFamilyIPv6VRFData) fromBodyXML(ctx context.Context, res
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric"); value.Exists() {
 		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric-type"); value.Exists() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distance-ipv6/distance"); value.Exists() {
 		data.Distance = types.Int64Value(value.Int())
@@ -2070,6 +2130,12 @@ func (data *OSPFv3AddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, sta
 	if !state.Distance.IsNull() && data.Distance.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/distance-ipv6/distance", state.getPath()))
 	}
+	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-metric", state.getPath()))
+	}
+	if !state.DefaultInformationOriginateMetricType.IsNull() && data.DefaultInformationOriginateMetricType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate/metric-type", state.getPath()))
+	}
 	if !state.DefaultInformationOriginateMetric.IsNull() && data.DefaultInformationOriginateMetric.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate/metric", state.getPath()))
 	}
@@ -2270,6 +2336,12 @@ func (data *OSPFv3AddressFamilyIPv6VRF) addDeletedItemsXML(ctx context.Context, 
 	if !state.Distance.IsNull() && data.Distance.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/distance-ipv6/distance")
 	}
+	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-metric")
+	}
+	if !state.DefaultInformationOriginateMetricType.IsNull() && data.DefaultInformationOriginateMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/metric-type")
+	}
 	if !state.DefaultInformationOriginateMetric.IsNull() && data.DefaultInformationOriginateMetric.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/metric")
 	}
@@ -2447,6 +2519,12 @@ func (data *OSPFv3AddressFamilyIPv6VRF) getDeletePaths(ctx context.Context) []st
 	if !data.Distance.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/distance-ipv6/distance", data.getPath()))
 	}
+	if !data.DefaultMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-metric", data.getPath()))
+	}
+	if !data.DefaultInformationOriginateMetricType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/metric-type", data.getPath()))
+	}
 	if !data.DefaultInformationOriginateMetric.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/metric", data.getPath()))
 	}
@@ -2570,6 +2648,12 @@ func (data *OSPFv3AddressFamilyIPv6VRF) addDeletePathsXML(ctx context.Context, b
 	}
 	if !data.Distance.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/distance-ipv6/distance")
+	}
+	if !data.DefaultMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-metric")
+	}
+	if !data.DefaultInformationOriginateMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/metric-type")
 	}
 	if !data.DefaultInformationOriginateMetric.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/metric")

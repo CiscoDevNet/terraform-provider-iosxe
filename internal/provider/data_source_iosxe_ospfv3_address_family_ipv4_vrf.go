@@ -100,6 +100,14 @@ func (d *OSPFv3AddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req d
 				MarkdownDescription: "OSPF default metric",
 				Computed:            true,
 			},
+			"default_information_originate_metric_type": schema.Int64Attribute{
+				MarkdownDescription: "OSPF metric type for default routes",
+				Computed:            true,
+			},
+			"default_metric": schema.Int64Attribute{
+				MarkdownDescription: "Set metric of redistributed routes",
+				Computed:            true,
+			},
 			"distance": schema.Int64Attribute{
 				MarkdownDescription: "",
 				Computed:            true,

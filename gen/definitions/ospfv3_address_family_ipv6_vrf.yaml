@@ -20,6 +20,10 @@ attributes:
     example: true
   - yang_name: default-information/originate/metric
     example: 1000
+  - yang_name: default-information/originate/metric-type
+    example: 1
+  - yang_name: default-metric
+    example: 100
   - yang_name: distance-ipv6/distance
     tf_name: distance
     example: 120
