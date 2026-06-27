@@ -8,13 +8,11 @@ description: |-
 
 # IOSXE Provider
 
-The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. The provider supports both **NETCONF** (SSH-based, default) and **RESTCONF** (HTTPS-based) protocols for device communication.
+The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. It communicates with devices using the **NETCONF** protocol over SSH.
 
 ## Device Configuration
 
-### NETCONF (Default)
-
-NETCONF is the default protocol. Enable it on your IOS-XE device:
+Enable NETCONF on your IOS-XE device:
 
 ```
 netconf-yang
@@ -27,17 +25,6 @@ netconf-yang feature candidate-datastore
 ```
 
 See the **[NETCONF Guide](guides/netconf)** for detailed information on using NETCONF protocol, including configuration commit modes and transactional workflows.
-
-### RESTCONF
-
-RESTCONF requires the following device configuration:
-
-```
-ip http secure-server
-restconf
-```
-
-To use RESTCONF instead of the default NETCONF, explicitly set `protocol = "restconf"` in your provider configuration.
 
 All resources and data sources have been tested with the following releases.
 
@@ -75,15 +62,13 @@ provider "iosxe" {
 
 - `auto_commit` (Boolean) Automatically commit configuration changes after each resource operation. When `true` (default), each resource commits its changes immediately. When `false`, changes are left in the candidate datastore and must be explicitly committed using the `iosxe_commit` resource. **Requires reuse_connection=true when disabled**. Only applies to NETCONF protocol with candidate datastore support. This can also be set as the IOSXE_AUTO_COMMIT environment variable. Defaults to `true`.
 - `devices` (Attributes List) This can be used to manage a list of devices from a single provider. All devices must use the same credentials. Each resource and data source has an optional attribute named `device`, which can then select a device by its name from this list. (see [below for nested schema](#nestedatt--devices))
-- `host` (String) Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`. Default port is `443` for RESTCONF and `830` for NETCONF. This can also be set as the IOSXE_HOST environment variable.
-- `insecure` (Boolean) Allow insecure HTTPS client. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.
+- `host` (String) Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`. Default port is `830`. This can also be set as the IOSXE_HOST environment variable.
+- `insecure` (Boolean) Skip SSH host key verification. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.
 - `lock_release_timeout` (Number) Number of seconds to wait for the device database lock to be released. This can also be set as the IOSXE_LOCK_RELEASE_TIMEOUT environment variable. Defaults to `120`.
 - `password` (String, Sensitive) Password for the IOS-XE device. This can also be set as the IOSXE_PASSWORD environment variable.
-- `protocol` (String) Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `netconf`.
-- `retries` (Number) Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10` for RESTCONF and `3` for NETCONF.
+- `retries` (Number) Number of retries for NETCONF API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `3`.
 - `reuse_connection` (Boolean) Keep NETCONF connections open between operations for better performance. **Required when auto_commit=false** - Manual commit mode requires persistent connections to maintain staged candidate configuration changes. When disabled, connections are closed and reopened for each operation. Only applies to NETCONF protocol. This can also be set as the IOSXE_REUSE_CONNECTION environment variable. Defaults to `true`.
 - `selected_devices` (List of String) This can be used to select a list of devices to manage from the `devices` list. Selected devices will be managed while other devices will be skipped and their state will be frozen. This can be used to deploy changes to a subset of devices. Defaults to all devices.
-- `url` (String, Deprecated) URL of the Cisco IOS-XE device for RESTCONF protocol. Optionally a port can be added with `:12345`. The default port is `443`. This can also be set as the IOSXE_URL environment variable. **Deprecated: Use `host` instead for protocol-agnostic configuration.**
 - `username` (String) Username for the IOS-XE device. This can also be set as the IOSXE_USERNAME environment variable.
 
 <a id="nestedatt--devices"></a>
@@ -97,5 +82,3 @@ Optional:
 
 - `host` (String) Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`.
 - `managed` (Boolean) Enable or disable device management. This can be used to temporarily skip a device due to maintainance for example. Defaults to `true`.
-- `protocol` (String) Protocol to use for this device. Either `restconf` (HTTPS) or `netconf` (SSH). Overrides the global protocol setting if specified.
-- `url` (String, Deprecated) URL of the Cisco IOS-XE device for RESTCONF protocol. **Deprecated: Use `host` instead.**
