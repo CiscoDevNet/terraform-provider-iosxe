@@ -22,6 +22,8 @@ resource "iosxe_ospfv3_address_family_ipv6_vrf" "example" {
   default_information_originate                        = true
   default_information_originate_always                 = true
   default_information_originate_metric                 = 1000
+  default_information_originate_metric_type            = 1
+  default_metric                                       = 100
   distance                                             = 120
   log_adjacency_changes                                = true
   log_adjacency_changes_detail                         = true
@@ -83,6 +85,10 @@ resource "iosxe_ospfv3_address_family_ipv6_vrf" "example" {
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
 - `default_information_originate_metric` (Number) OSPF default metric
+  - Range: `1`-`16777214`
+- `default_information_originate_metric_type` (Number) OSPF metric type for default routes
+  - Range: `1`-`2`
+- `default_metric` (Number) Set metric of redistributed routes
   - Range: `1`-`16777214`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`

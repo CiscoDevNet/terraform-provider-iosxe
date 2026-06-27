@@ -87,7 +87,7 @@ Optional:
 - `key_string_encryption` (String) Key encryption method
   - Choices: `0`, `6`, `7`
 - `key_string_key` (String, Sensitive)
-- `key_string_key_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `key_string_key_wo` (String) The write-only value of the attribute.
 - `key_string_key_wo_version` (Number) The write-only version of the attribute.
 - `macsec_lifetime_duration` (Number) Key lifetime duration (in seconds)
   - Range: `1`-`2147483646`

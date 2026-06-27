@@ -56,8 +56,6 @@ resource "iosxe_cts" "example" {
 
 ### Optional
 
-> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
-
 - `authorization_list` (String) Local authorization list to use for CTS
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -73,7 +71,7 @@ resource "iosxe_cts" "example" {
 - `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
 - `sxp_default_password` (String, Sensitive)
 - `sxp_default_password_type` (String) - Choices: `0`, `6`, `7`
-- `sxp_default_password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `sxp_default_password_wo` (String) The write-only value of the attribute.
 - `sxp_default_password_wo_version` (Number) The write-only version of the attribute.
 - `sxp_enable` (Boolean) Enable CTS SXP support
 - `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds
@@ -108,7 +106,7 @@ Optional:
   - Choices: `both`, `listener`, `speaker`
 - `password` (String, Sensitive) Password type
   - Choices: `default`, `key-chain`, `none`
-- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo` (String) The write-only value of the attribute.
 - `password_wo_version` (Number) The write-only version of the attribute.
 - `source_ip` (String) Enter SXP Source IP address (IPv4)
 
@@ -133,7 +131,7 @@ Optional:
   - Choices: `both`, `listener`, `speaker`
 - `password` (String, Sensitive) Password type
   - Choices: `default`, `key-chain`, `none`
-- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo` (String) The write-only value of the attribute.
 - `password_wo_version` (Number) The write-only version of the attribute.
 - `source_ip` (String) Enter SXP Source IP address (IPv4)
 

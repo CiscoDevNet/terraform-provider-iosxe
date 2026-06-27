@@ -40,6 +40,8 @@ data "iosxe_ospfv3_address_family_ipv4_vrf" "example" {
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
 - `default_information_originate_metric` (Number) OSPF default metric
+- `default_information_originate_metric_type` (Number) OSPF metric type for default routes
+- `default_metric` (Number) Set metric of redistributed routes
 - `distance` (Number)
 - `id` (String) The path of the retrieved object.
 - `log_adjacency_changes` (Boolean) Log changes in adjacency state

@@ -110,7 +110,7 @@ Optional:
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
 - `password_type` (String) - Choices: `0`, `6`, `7`
-- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo` (String) The write-only value of the attribute.
 - `password_wo_version` (Number) The write-only version of the attribute.
 - `privilege_level` (Number) - Range: `0`-`15`
 - `stopbits` (String) Set async line stop bits
@@ -147,7 +147,7 @@ Optional:
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
 - `password_type` (String) - Choices: `0`, `6`, `7`
-- `password_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `password_wo` (String) The write-only value of the attribute.
 - `password_wo_version` (Number) The write-only version of the attribute.
 - `session_timeout` (Number) - Range: `0`-`35791`
 - `stopbits` (String) Set async line stop bits
