@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -91,17 +87,6 @@ func (data MDTSubscriptionData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=%s", url.QueryEscape(fmt.Sprintf("%v", data.SubscriptionId.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data MDTSubscription) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data MDTSubscription) getXPath() string {
 	path := "/Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription[subscription-id=%s]"
@@ -116,53 +101,6 @@ func (data MDTSubscriptionData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data MDTSubscription) toBody(ctx context.Context, config MDTSubscription) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.SubscriptionId.IsNull() && !data.SubscriptionId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"subscription-id", strconv.FormatInt(data.SubscriptionId.ValueInt64(), 10))
-	}
-	if !data.Stream.IsNull() && !data.Stream.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"base.stream", data.Stream.ValueString())
-	}
-	if !data.Encoding.IsNull() && !data.Encoding.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"base.encoding", data.Encoding.ValueString())
-	}
-	if !data.SourceVrf.IsNull() && !data.SourceVrf.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"base.source-vrf", data.SourceVrf.ValueString())
-	}
-	if !data.SourceAddress.IsNull() && !data.SourceAddress.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"base.source-address", data.SourceAddress.ValueString())
-	}
-	if !data.UpdatePolicyPeriodic.IsNull() && !data.UpdatePolicyPeriodic.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"base.period", strconv.FormatInt(data.UpdatePolicyPeriodic.ValueInt64(), 10))
-	}
-	if !data.UpdatePolicyOnChange.IsNull() && !data.UpdatePolicyOnChange.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"base.no-synch-on-start", data.UpdatePolicyOnChange.ValueBool())
-	}
-	if !data.FilterXpath.IsNull() && !data.FilterXpath.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"base.xpath", data.FilterXpath.ValueString())
-	}
-	if len(data.Receivers) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mdt-receivers", []interface{}{})
-		for index, item := range data.Receivers {
-			if !item.Address.IsNull() && !item.Address.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mdt-receivers"+"."+strconv.Itoa(index)+"."+"address", item.Address.ValueString())
-			}
-			if !item.Port.IsNull() && !item.Port.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mdt-receivers"+"."+strconv.Itoa(index)+"."+"port", strconv.FormatInt(item.Port.ValueInt64(), 10))
-			}
-			if !item.Protocol.IsNull() && !item.Protocol.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mdt-receivers"+"."+strconv.Itoa(index)+"."+"protocol", item.Protocol.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -215,98 +153,6 @@ func (data MDTSubscription) toBodyXML(ctx context.Context, config MDTSubscriptio
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *MDTSubscription) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "subscription-id"); value.Exists() && !data.SubscriptionId.IsNull() {
-		data.SubscriptionId = types.Int64Value(value.Int())
-	} else {
-		data.SubscriptionId = types.Int64Null()
-	}
-	if value := res.Get(prefix + "base.stream"); value.Exists() && !data.Stream.IsNull() {
-		data.Stream = types.StringValue(value.String())
-	} else {
-		data.Stream = types.StringNull()
-	}
-	if value := res.Get(prefix + "base.encoding"); value.Exists() && !data.Encoding.IsNull() {
-		data.Encoding = types.StringValue(value.String())
-	} else {
-		data.Encoding = types.StringNull()
-	}
-	if value := res.Get(prefix + "base.source-vrf"); value.Exists() && !data.SourceVrf.IsNull() {
-		data.SourceVrf = types.StringValue(value.String())
-	} else {
-		data.SourceVrf = types.StringNull()
-	}
-	if value := res.Get(prefix + "base.source-address"); value.Exists() && !data.SourceAddress.IsNull() {
-		data.SourceAddress = types.StringValue(value.String())
-	} else {
-		data.SourceAddress = types.StringNull()
-	}
-	if value := res.Get(prefix + "base.period"); value.Exists() && !data.UpdatePolicyPeriodic.IsNull() {
-		data.UpdatePolicyPeriodic = types.Int64Value(value.Int())
-	} else {
-		data.UpdatePolicyPeriodic = types.Int64Null()
-	}
-	if value := res.Get(prefix + "base.no-synch-on-start"); !data.UpdatePolicyOnChange.IsNull() {
-		if value.Exists() {
-			data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
-		}
-	} else {
-		data.UpdatePolicyOnChange = types.BoolNull()
-	}
-	if value := res.Get(prefix + "base.xpath"); value.Exists() && !data.FilterXpath.IsNull() {
-		data.FilterXpath = types.StringValue(value.String())
-	} else {
-		data.FilterXpath = types.StringNull()
-	}
-	for i := range data.Receivers {
-		keys := [...]string{"address", "port"}
-		keyValues := [...]string{data.Receivers[i].Address.ValueString(), strconv.FormatInt(data.Receivers[i].Port.ValueInt64(), 10)}
-
-		var r gjson.Result
-		res.Get(prefix + "mdt-receivers").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("address"); value.Exists() && !data.Receivers[i].Address.IsNull() {
-			data.Receivers[i].Address = types.StringValue(value.String())
-		} else {
-			data.Receivers[i].Address = types.StringNull()
-		}
-		if value := r.Get("port"); value.Exists() && !data.Receivers[i].Port.IsNull() {
-			data.Receivers[i].Port = types.Int64Value(value.Int())
-		} else {
-			data.Receivers[i].Port = types.Int64Null()
-		}
-		if value := r.Get("protocol"); value.Exists() && !data.Receivers[i].Protocol.IsNull() {
-			data.Receivers[i].Protocol = types.StringValue(value.String())
-		} else {
-			data.Receivers[i].Protocol = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -395,108 +241,6 @@ func (data *MDTSubscription) updateFromBodyXML(ctx context.Context, res xmldot.R
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *MDTSubscription) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "base.stream"); value.Exists() {
-		data.Stream = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.encoding"); value.Exists() {
-		data.Encoding = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.source-vrf"); value.Exists() {
-		data.SourceVrf = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.source-address"); value.Exists() {
-		data.SourceAddress = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.period"); value.Exists() {
-		data.UpdatePolicyPeriodic = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "base.no-synch-on-start"); value.Exists() {
-		data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
-	} else {
-		data.UpdatePolicyOnChange = types.BoolNull()
-	}
-	if value := res.Get(prefix + "base.xpath"); value.Exists() {
-		data.FilterXpath = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "mdt-receivers"); value.Exists() {
-		data.Receivers = make([]MDTSubscriptionReceivers, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MDTSubscriptionReceivers{}
-			if cValue := v.Get("address"); cValue.Exists() {
-				item.Address = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("port"); cValue.Exists() {
-				item.Port = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("protocol"); cValue.Exists() {
-				item.Protocol = types.StringValue(cValue.String())
-			}
-			data.Receivers = append(data.Receivers, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *MDTSubscriptionData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "base.stream"); value.Exists() {
-		data.Stream = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.encoding"); value.Exists() {
-		data.Encoding = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.source-vrf"); value.Exists() {
-		data.SourceVrf = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.source-address"); value.Exists() {
-		data.SourceAddress = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "base.period"); value.Exists() {
-		data.UpdatePolicyPeriodic = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "base.no-synch-on-start"); value.Exists() {
-		data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
-	} else {
-		data.UpdatePolicyOnChange = types.BoolNull()
-	}
-	if value := res.Get(prefix + "base.xpath"); value.Exists() {
-		data.FilterXpath = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "mdt-receivers"); value.Exists() {
-		data.Receivers = make([]MDTSubscriptionReceiversData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MDTSubscriptionReceiversData{}
-			if cValue := v.Get("address"); cValue.Exists() {
-				item.Address = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("port"); cValue.Exists() {
-				item.Port = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("protocol"); cValue.Exists() {
-				item.Protocol = types.StringValue(cValue.String())
-			}
-			data.Receivers = append(data.Receivers, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -592,71 +336,6 @@ func (data *MDTSubscriptionData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *MDTSubscription) getDeletedItems(ctx context.Context, state MDTSubscription) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Receivers {
-		stateKeyValues := [...]string{state.Receivers[i].Address.ValueString(), strconv.FormatInt(state.Receivers[i].Port.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Receivers[i].Address.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Receivers[i].Port.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Receivers {
-			found = true
-			if state.Receivers[i].Address.ValueString() != data.Receivers[j].Address.ValueString() {
-				found = false
-			}
-			if state.Receivers[i].Port.ValueInt64() != data.Receivers[j].Port.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.Receivers[i].Protocol.IsNull() && data.Receivers[j].Protocol.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/mdt-receivers=%v/protocol", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/mdt-receivers=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.FilterXpath.IsNull() && data.FilterXpath.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/xpath", state.getPath()))
-	}
-	if !state.UpdatePolicyOnChange.IsNull() && data.UpdatePolicyOnChange.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/no-synch-on-start", state.getPath()))
-	}
-	if !state.UpdatePolicyPeriodic.IsNull() && data.UpdatePolicyPeriodic.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/period", state.getPath()))
-	}
-	if !state.SourceAddress.IsNull() && data.SourceAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/source-address", state.getPath()))
-	}
-	if !state.SourceVrf.IsNull() && data.SourceVrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/source-vrf", state.getPath()))
-	}
-	if !state.Encoding.IsNull() && data.Encoding.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/encoding", state.getPath()))
-	}
-	if !state.Stream.IsNull() && data.Stream.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/stream", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *MDTSubscription) addDeletedItemsXML(ctx context.Context, state MDTSubscription, body string) string {
@@ -727,52 +406,6 @@ func (data *MDTSubscription) addDeletedItemsXML(ctx context.Context, state MDTSu
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *MDTSubscription) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *MDTSubscription) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Receivers {
-		keyValues := [...]string{data.Receivers[i].Address.ValueString(), strconv.FormatInt(data.Receivers[i].Port.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mdt-receivers=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.FilterXpath.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/base/xpath", data.getPath()))
-	}
-	if !data.UpdatePolicyOnChange.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/base/no-synch-on-start", data.getPath()))
-	}
-	if !data.UpdatePolicyPeriodic.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/base/period", data.getPath()))
-	}
-	if !data.SourceAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/base/source-address", data.getPath()))
-	}
-	if !data.SourceVrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/base/source-vrf", data.getPath()))
-	}
-	if !data.Encoding.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/base/encoding", data.getPath()))
-	}
-	if !data.Stream.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/base/stream", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

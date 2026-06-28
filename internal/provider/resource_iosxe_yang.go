@@ -167,29 +167,17 @@ func (r *YangResource) Create(ctx context.Context, req resource.CreateRequest, r
 	}
 
 	if device.Managed {
-		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
-			res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
-			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-				_, err = device.RestconfClient.PutData(plan.getPath(), body)
-			}
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-				return
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		// Serialize NETCONF operations when reuse disabled
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := plan.toBodyXML(ctx)
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		body := plan.toBodyXML(ctx)
+		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 
@@ -224,36 +212,21 @@ func (r *YangResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 
 	if device.Managed {
-		if device.Protocol == "restconf" {
-			res, err := device.RestconfClient.GetData(state.getPath())
-			if res.StatusCode == 404 {
-				state.Attributes = types.MapNull(types.StringType)
-				state.Lists = make([]YangList, 0)
-			} else {
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
-					return
-				}
-
-				state.fromBody(ctx, res.Res)
-			}
-		} else {
-			// Serialize NETCONF operations (all ops when reuse disabled, reads concurrent when reuse enabled)
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			filter := helpers.GetXpathFilter(state.Path.ValueString())
-			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
-				return
-			}
-
-			state.fromBodyXML(ctx, res.Res)
+		// Serialize NETCONF operations (all ops when reuse disabled, reads concurrent when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
 		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+		filter := helpers.GetXpathFilter(state.Path.ValueString())
+		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
+			return
+		}
+
+		state.fromBodyXML(ctx, res.Res)
 	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Path.ValueString()))
@@ -288,40 +261,17 @@ func (r *YangResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	}
 
 	if device.Managed {
-		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx)
-			res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
-			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-				_, err = device.RestconfClient.PutData(plan.getPath(), body)
-			}
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-				return
-			}
+		// Serialize NETCONF operations when reuse disabled
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			deletedItems := plan.getDeletedItems(ctx, state)
-			tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
-
-			for _, i := range deletedItems {
-				res, err := device.RestconfClient.DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-					return
-				}
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			body := plan.toBodyXML(ctx)
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		body := plan.toBodyXML(ctx)
+		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 
@@ -354,26 +304,18 @@ func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	}
 
 	if device.Managed && state.Delete.ValueBool() {
-		if device.Protocol == "restconf" {
-			res, err := device.RestconfClient.DeleteData(state.getPath())
-			if err != nil && res.StatusCode != 404 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-				return
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		// Serialize NETCONF operations when reuse disabled
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			body := netconf.Body{}
-			body = helpers.RemoveFromXPath(body, state.Path.ValueString())
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		body := netconf.Body{}
+		body = helpers.RemoveFromXPath(body, state.Path.ValueString())
+		if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 

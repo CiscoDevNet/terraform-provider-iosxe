@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -70,17 +67,6 @@ func (data BGPAddressFamilyL2VPNData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.AfName.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data BGPAddressFamilyL2VPN) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data BGPAddressFamilyL2VPN) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/l2vpn[af-name=%s]"
@@ -95,26 +81,6 @@ func (data BGPAddressFamilyL2VPNData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data BGPAddressFamilyL2VPN) toBody(ctx context.Context, config BGPAddressFamilyL2VPN) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
-	}
-	if !data.RewriteEvpnRtAsn.IsNull() && !data.RewriteEvpnRtAsn.IsUnknown() {
-		if data.RewriteEvpnRtAsn.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"l2vpn-evpn.rewrite-evpn-rt-asn", map[string]string{})
-		}
-	}
-	if !data.BgpNexthopTriggerDelay.IsNull() && !data.BgpNexthopTriggerDelay.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"l2vpn-evpn.bgp.nexthop.trigger.delay", strconv.FormatInt(data.BgpNexthopTriggerDelay.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -142,36 +108,6 @@ func (data BGPAddressFamilyL2VPN) toBodyXML(ctx context.Context, config BGPAddre
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *BGPAddressFamilyL2VPN) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "af-name"); value.Exists() && !data.AfName.IsNull() {
-		data.AfName = types.StringValue(value.String())
-	} else {
-		data.AfName = types.StringNull()
-	}
-	if value := res.Get(prefix + "l2vpn-evpn.rewrite-evpn-rt-asn"); !data.RewriteEvpnRtAsn.IsNull() {
-		if value.Exists() {
-			data.RewriteEvpnRtAsn = types.BoolValue(true)
-		} else {
-			data.RewriteEvpnRtAsn = types.BoolValue(false)
-		}
-	} else {
-		data.RewriteEvpnRtAsn = types.BoolNull()
-	}
-	if value := res.Get(prefix + "l2vpn-evpn.bgp.nexthop.trigger.delay"); value.Exists() && !data.BgpNexthopTriggerDelay.IsNull() {
-		data.BgpNexthopTriggerDelay = types.Int64Value(value.Int())
-	} else {
-		data.BgpNexthopTriggerDelay = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *BGPAddressFamilyL2VPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -197,44 +133,6 @@ func (data *BGPAddressFamilyL2VPN) updateFromBodyXML(ctx context.Context, res xm
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *BGPAddressFamilyL2VPN) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "l2vpn-evpn.rewrite-evpn-rt-asn"); value.Exists() {
-		data.RewriteEvpnRtAsn = types.BoolValue(true)
-	} else {
-		data.RewriteEvpnRtAsn = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "l2vpn-evpn.bgp.nexthop.trigger.delay"); value.Exists() {
-		data.BgpNexthopTriggerDelay = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *BGPAddressFamilyL2VPNData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "l2vpn-evpn.rewrite-evpn-rt-asn"); value.Exists() {
-		data.RewriteEvpnRtAsn = types.BoolValue(true)
-	} else {
-		data.RewriteEvpnRtAsn = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "l2vpn-evpn.bgp.nexthop.trigger.delay"); value.Exists() {
-		data.BgpNexthopTriggerDelay = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -266,22 +164,6 @@ func (data *BGPAddressFamilyL2VPNData) fromBodyXML(ctx context.Context, res xmld
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *BGPAddressFamilyL2VPN) getDeletedItems(ctx context.Context, state BGPAddressFamilyL2VPN) []string {
-	deletedItems := make([]string, 0)
-	if !state.BgpNexthopTriggerDelay.IsNull() && data.BgpNexthopTriggerDelay.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/l2vpn-evpn/bgp/nexthop/trigger/delay", state.getPath()))
-	}
-	if !state.RewriteEvpnRtAsn.IsNull() && data.RewriteEvpnRtAsn.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/l2vpn-evpn/rewrite-evpn-rt-asn", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *BGPAddressFamilyL2VPN) addDeletedItemsXML(ctx context.Context, state BGPAddressFamilyL2VPN, body string) string {
@@ -298,35 +180,6 @@ func (data *BGPAddressFamilyL2VPN) addDeletedItemsXML(ctx context.Context, state
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *BGPAddressFamilyL2VPN) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.RewriteEvpnRtAsn.IsNull() && !data.RewriteEvpnRtAsn.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/l2vpn-evpn/rewrite-evpn-rt-asn", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *BGPAddressFamilyL2VPN) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.BgpNexthopTriggerDelay.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/l2vpn-evpn/bgp/nexthop/trigger/delay", data.getPath()))
-	}
-	if !data.RewriteEvpnRtAsn.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/l2vpn-evpn/rewrite-evpn-rt-asn", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

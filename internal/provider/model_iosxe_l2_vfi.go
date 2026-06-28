@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -79,17 +75,6 @@ func (data L2VFIData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data L2VFI) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data L2VFI) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/l2/Cisco-IOS-XE-l2vpn:vfi[name=%v]"
@@ -104,35 +89,6 @@ func (data L2VFIData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data L2VFI) toBody(ctx context.Context, config L2VFI) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if !data.Mode.IsNull() && !data.Mode.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mode", data.Mode.ValueString())
-	}
-	if !data.VpnId.IsNull() && !data.VpnId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vpn.id", strconv.FormatInt(data.VpnId.ValueInt64(), 10))
-	}
-	if len(data.Neighbors) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
-		for index, item := range data.Neighbors {
-			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor"+"."+strconv.Itoa(index)+"."+"router-id", item.IpAddress.ValueString())
-			}
-			if !item.Encapsulation.IsNull() && !item.Encapsulation.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor"+"."+strconv.Itoa(index)+"."+"encapsulation", item.Encapsulation.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -167,66 +123,6 @@ func (data L2VFI) toBodyXML(ctx context.Context, config L2VFI) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *L2VFI) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "mode"); value.Exists() && !data.Mode.IsNull() {
-		data.Mode = types.StringValue(value.String())
-	} else {
-		data.Mode = types.StringNull()
-	}
-	if value := res.Get(prefix + "vpn.id"); value.Exists() && !data.VpnId.IsNull() {
-		data.VpnId = types.Int64Value(value.Int())
-	} else {
-		data.VpnId = types.Int64Null()
-	}
-	for i := range data.Neighbors {
-		keys := [...]string{"router-id"}
-		keyValues := [...]string{data.Neighbors[i].IpAddress.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "neighbor").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("router-id"); value.Exists() && !data.Neighbors[i].IpAddress.IsNull() {
-			data.Neighbors[i].IpAddress = types.StringValue(value.String())
-		} else {
-			data.Neighbors[i].IpAddress = types.StringNull()
-		}
-		if value := r.Get("encapsulation"); value.Exists() && !data.Neighbors[i].Encapsulation.IsNull() {
-			data.Neighbors[i].Encapsulation = types.StringValue(value.String())
-		} else {
-			data.Neighbors[i].Encapsulation = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -284,68 +180,6 @@ func (data *L2VFI) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *L2VFI) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "mode"); value.Exists() {
-		data.Mode = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "vpn.id"); value.Exists() {
-		data.VpnId = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "neighbor"); value.Exists() {
-		data.Neighbors = make([]L2VFINeighbors, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := L2VFINeighbors{}
-			if cValue := v.Get("router-id"); cValue.Exists() {
-				item.IpAddress = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("encapsulation"); cValue.Exists() {
-				item.Encapsulation = types.StringValue(cValue.String())
-			}
-			data.Neighbors = append(data.Neighbors, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *L2VFIData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "mode"); value.Exists() {
-		data.Mode = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "vpn.id"); value.Exists() {
-		data.VpnId = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "neighbor"); value.Exists() {
-		data.Neighbors = make([]L2VFINeighborsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := L2VFINeighborsData{}
-			if cValue := v.Get("router-id"); cValue.Exists() {
-				item.IpAddress = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("encapsulation"); cValue.Exists() {
-				item.Encapsulation = types.StringValue(cValue.String())
-			}
-			data.Neighbors = append(data.Neighbors, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *L2VFI) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -400,50 +234,6 @@ func (data *L2VFIData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *L2VFI) getDeletedItems(ctx context.Context, state L2VFI) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Neighbors {
-		stateKeyValues := [...]string{state.Neighbors[i].IpAddress.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Neighbors[i].IpAddress.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Neighbors {
-			found = true
-			if state.Neighbors[i].IpAddress.ValueString() != data.Neighbors[j].IpAddress.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Neighbors[i].Encapsulation.IsNull() && data.Neighbors[j].Encapsulation.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/encapsulation", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.VpnId.IsNull() && data.VpnId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/vpn/id", state.getPath()))
-	}
-	if !state.Mode.IsNull() && data.Mode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mode", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *L2VFI) addDeletedItemsXML(ctx context.Context, state L2VFI, body string) string {
@@ -493,37 +283,6 @@ func (data *L2VFI) addDeletedItemsXML(ctx context.Context, state L2VFI, body str
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *L2VFI) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *L2VFI) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Neighbors {
-		keyValues := [...]string{data.Neighbors[i].IpAddress.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/neighbor=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.VpnId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/vpn/id", data.getPath()))
-	}
-	if !data.Mode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mode", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
