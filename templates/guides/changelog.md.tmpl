@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_access_list_ipv6` resource and data source for named IPv6 access-list configuration (`ipv6 access-list`), including sequence entries, remarks, prefix/host/FQDN/object-group matching, single/range/multi-port matching, TCP flags, and ICMPv6 message types
 - BREAKING CHANGE: Remove RESTCONF protocol support. The provider now exclusively uses NETCONF over SSH. Remove `protocol`, `url` provider attributes and `IOSXE_URL`, `IOSXE_PROTOCOL` environment variables from your configuration.
 - BREAKING CHANGE: Remove `detector_rpc_max_sessions` attribute from `iosxe_eem` resource and data source
 - Fix `iosxe_aaa` resource attempting to delete the `new_model` attribute on update or destroy. IOS-XE does not permit removal of `aaa new-model` once configured (`no aaa new-model` is rejected by the device with active AAA dependents); the leaf is now marked `no_delete: true`
