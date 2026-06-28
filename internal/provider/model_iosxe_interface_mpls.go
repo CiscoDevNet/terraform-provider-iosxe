@@ -24,15 +24,12 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -69,17 +66,6 @@ func (data InterfaceMPLSData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/mpls", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data InterfaceMPLS) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceMPLS) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/mpls"
@@ -94,23 +80,6 @@ func (data InterfaceMPLSData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data InterfaceMPLS) toBody(ctx context.Context, config InterfaceMPLS) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
-		if data.Ip.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-mpls:ip", map[string]string{})
-		}
-	}
-	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-mpls:mtu", data.Mtu.ValueString())
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -135,31 +104,6 @@ func (data InterfaceMPLS) toBodyXML(ctx context.Context, config InterfaceMPLS) s
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *InterfaceMPLS) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:ip"); !data.Ip.IsNull() {
-		if value.Exists() {
-			data.Ip = types.BoolValue(true)
-		} else {
-			data.Ip = types.BoolValue(false)
-		}
-	} else {
-		data.Ip = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:mtu"); value.Exists() && !data.Mtu.IsNull() {
-		data.Mtu = types.StringValue(value.String())
-	} else {
-		data.Mtu = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *InterfaceMPLS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -180,44 +124,6 @@ func (data *InterfaceMPLS) updateFromBodyXML(ctx context.Context, res xmldot.Res
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *InterfaceMPLS) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:ip"); value.Exists() {
-		data.Ip = types.BoolValue(true)
-	} else {
-		data.Ip = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:mtu"); value.Exists() {
-		data.Mtu = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *InterfaceMPLSData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:ip"); value.Exists() {
-		data.Ip = types.BoolValue(true)
-	} else {
-		data.Ip = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:mtu"); value.Exists() {
-		data.Mtu = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -249,22 +155,6 @@ func (data *InterfaceMPLSData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *InterfaceMPLS) getDeletedItems(ctx context.Context, state InterfaceMPLS) []string {
-	deletedItems := make([]string, 0)
-	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:mtu", state.getPath()))
-	}
-	if !state.Ip.IsNull() && data.Ip.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *InterfaceMPLS) addDeletedItemsXML(ctx context.Context, state InterfaceMPLS, body string) string {
@@ -281,35 +171,6 @@ func (data *InterfaceMPLS) addDeletedItemsXML(ctx context.Context, state Interfa
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *InterfaceMPLS) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.Ip.IsNull() && !data.Ip.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *InterfaceMPLS) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.Mtu.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:mtu", data.getPath()))
-	}
-	if !data.Ip.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

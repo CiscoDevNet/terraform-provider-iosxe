@@ -30,9 +30,6 @@ attributes:
     example: true
   - yang_name: scheduler/applet/thread/class/number
     example: 1
-  - yang_name: detector/rpc/max-sessions
-    example: 8
-    exclude_test: true
   - yang_name: detector/routing/bootup-delay
     example: 2
   - yang_name: applet

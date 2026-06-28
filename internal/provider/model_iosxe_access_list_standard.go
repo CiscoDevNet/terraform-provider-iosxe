@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -95,17 +91,6 @@ func (data AccessListStandardData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data AccessListStandard) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data AccessListStandard) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard[name=%v]"
@@ -120,67 +105,6 @@ func (data AccessListStandardData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data AccessListStandard) toBody(ctx context.Context, config AccessListStandard) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if len(data.Entries) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule", []interface{}{})
-		for index, item := range data.Entries {
-			if !item.Sequence.IsNull() && !item.Sequence.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"sequence", strconv.FormatInt(item.Sequence.ValueInt64(), 10))
-			}
-			if !item.Remark.IsNull() && !item.Remark.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"remark", item.Remark.ValueString())
-			}
-			if !item.DenyPrefix.IsNull() && !item.DenyPrefix.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"deny.std-ace.ipv4-address-prefix", item.DenyPrefix.ValueString())
-			}
-			if !item.DenyPrefixMask.IsNull() && !item.DenyPrefixMask.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"deny.std-ace.mask", item.DenyPrefixMask.ValueString())
-			}
-			if !item.DenyAny.IsNull() && !item.DenyAny.IsUnknown() {
-				if item.DenyAny.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"deny.std-ace.any", map[string]string{})
-				}
-			}
-			if !item.DenyHost.IsNull() && !item.DenyHost.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"deny.std-ace.host-address", item.DenyHost.ValueString())
-			}
-			if !item.DenyLog.IsNull() && !item.DenyLog.IsUnknown() {
-				if item.DenyLog.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"deny.std-ace.log", map[string]string{})
-				}
-			}
-			if !item.PermitPrefix.IsNull() && !item.PermitPrefix.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.ipv4-address-prefix", item.PermitPrefix.ValueString())
-			}
-			if !item.PermitPrefixMask.IsNull() && !item.PermitPrefixMask.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.mask", item.PermitPrefixMask.ValueString())
-			}
-			if !item.PermitAny.IsNull() && !item.PermitAny.IsUnknown() {
-				if item.PermitAny.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.any", map[string]string{})
-				}
-			}
-			if !item.PermitHost.IsNull() && !item.PermitHost.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.host-address", item.PermitHost.ValueString())
-			}
-			if !item.PermitLog.IsNull() && !item.PermitLog.IsUnknown() {
-				if item.PermitLog.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.log", map[string]string{})
-				}
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -255,122 +179,6 @@ func (data AccessListStandard) toBodyXML(ctx context.Context, config AccessListS
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *AccessListStandard) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	for i := range data.Entries {
-		keys := [...]string{"sequence"}
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
-
-		var r gjson.Result
-		res.Get(prefix + "access-list-seq-rule").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("sequence"); value.Exists() && !data.Entries[i].Sequence.IsNull() {
-			data.Entries[i].Sequence = types.Int64Value(value.Int())
-		} else {
-			data.Entries[i].Sequence = types.Int64Null()
-		}
-		if value := r.Get("remark"); value.Exists() && !data.Entries[i].Remark.IsNull() {
-			data.Entries[i].Remark = types.StringValue(value.String())
-		} else {
-			data.Entries[i].Remark = types.StringNull()
-		}
-		if value := r.Get("deny.std-ace.ipv4-address-prefix"); value.Exists() && !data.Entries[i].DenyPrefix.IsNull() {
-			data.Entries[i].DenyPrefix = types.StringValue(value.String())
-		} else {
-			data.Entries[i].DenyPrefix = types.StringNull()
-		}
-		if value := r.Get("deny.std-ace.mask"); value.Exists() && !data.Entries[i].DenyPrefixMask.IsNull() {
-			data.Entries[i].DenyPrefixMask = types.StringValue(value.String())
-		} else {
-			data.Entries[i].DenyPrefixMask = types.StringNull()
-		}
-		if value := r.Get("deny.std-ace.any"); !data.Entries[i].DenyAny.IsNull() {
-			if value.Exists() {
-				data.Entries[i].DenyAny = types.BoolValue(true)
-			} else {
-				data.Entries[i].DenyAny = types.BoolValue(false)
-			}
-		} else {
-			data.Entries[i].DenyAny = types.BoolNull()
-		}
-		if value := r.Get("deny.std-ace.host-address"); value.Exists() && !data.Entries[i].DenyHost.IsNull() {
-			data.Entries[i].DenyHost = types.StringValue(value.String())
-		} else {
-			data.Entries[i].DenyHost = types.StringNull()
-		}
-		if value := r.Get("deny.std-ace.log"); !data.Entries[i].DenyLog.IsNull() {
-			if value.Exists() {
-				data.Entries[i].DenyLog = types.BoolValue(true)
-			} else {
-				data.Entries[i].DenyLog = types.BoolValue(false)
-			}
-		} else {
-			data.Entries[i].DenyLog = types.BoolNull()
-		}
-		if value := r.Get("permit.std-ace.ipv4-address-prefix"); value.Exists() && !data.Entries[i].PermitPrefix.IsNull() {
-			data.Entries[i].PermitPrefix = types.StringValue(value.String())
-		} else {
-			data.Entries[i].PermitPrefix = types.StringNull()
-		}
-		if value := r.Get("permit.std-ace.mask"); value.Exists() && !data.Entries[i].PermitPrefixMask.IsNull() {
-			data.Entries[i].PermitPrefixMask = types.StringValue(value.String())
-		} else {
-			data.Entries[i].PermitPrefixMask = types.StringNull()
-		}
-		if value := r.Get("permit.std-ace.any"); !data.Entries[i].PermitAny.IsNull() {
-			if value.Exists() {
-				data.Entries[i].PermitAny = types.BoolValue(true)
-			} else {
-				data.Entries[i].PermitAny = types.BoolValue(false)
-			}
-		} else {
-			data.Entries[i].PermitAny = types.BoolNull()
-		}
-		if value := r.Get("permit.std-ace.host-address"); value.Exists() && !data.Entries[i].PermitHost.IsNull() {
-			data.Entries[i].PermitHost = types.StringValue(value.String())
-		} else {
-			data.Entries[i].PermitHost = types.StringNull()
-		}
-		if value := r.Get("permit.std-ace.log"); !data.Entries[i].PermitLog.IsNull() {
-			if value.Exists() {
-				data.Entries[i].PermitLog = types.BoolValue(true)
-			} else {
-				data.Entries[i].PermitLog = types.BoolValue(false)
-			}
-		} else {
-			data.Entries[i].PermitLog = types.BoolNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -483,132 +291,6 @@ func (data *AccessListStandard) updateFromBodyXML(ctx context.Context, res xmldo
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *AccessListStandard) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListStandardEntries, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := AccessListStandardEntries{}
-			if cValue := v.Get("sequence"); cValue.Exists() {
-				item.Sequence = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("remark"); cValue.Exists() {
-				item.Remark = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.ipv4-address-prefix"); cValue.Exists() {
-				item.DenyPrefix = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.mask"); cValue.Exists() {
-				item.DenyPrefixMask = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.any"); cValue.Exists() {
-				item.DenyAny = types.BoolValue(true)
-			} else {
-				item.DenyAny = types.BoolValue(false)
-			}
-			if cValue := v.Get("deny.std-ace.host-address"); cValue.Exists() {
-				item.DenyHost = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.log"); cValue.Exists() {
-				item.DenyLog = types.BoolValue(true)
-			} else {
-				item.DenyLog = types.BoolValue(false)
-			}
-			if cValue := v.Get("permit.std-ace.ipv4-address-prefix"); cValue.Exists() {
-				item.PermitPrefix = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("permit.std-ace.mask"); cValue.Exists() {
-				item.PermitPrefixMask = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("permit.std-ace.any"); cValue.Exists() {
-				item.PermitAny = types.BoolValue(true)
-			} else {
-				item.PermitAny = types.BoolValue(false)
-			}
-			if cValue := v.Get("permit.std-ace.host-address"); cValue.Exists() {
-				item.PermitHost = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("permit.std-ace.log"); cValue.Exists() {
-				item.PermitLog = types.BoolValue(true)
-			} else {
-				item.PermitLog = types.BoolValue(false)
-			}
-			data.Entries = append(data.Entries, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *AccessListStandardData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "access-list-seq-rule"); value.Exists() {
-		data.Entries = make([]AccessListStandardEntriesData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := AccessListStandardEntriesData{}
-			if cValue := v.Get("sequence"); cValue.Exists() {
-				item.Sequence = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("remark"); cValue.Exists() {
-				item.Remark = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.ipv4-address-prefix"); cValue.Exists() {
-				item.DenyPrefix = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.mask"); cValue.Exists() {
-				item.DenyPrefixMask = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.any"); cValue.Exists() {
-				item.DenyAny = types.BoolValue(true)
-			} else {
-				item.DenyAny = types.BoolValue(false)
-			}
-			if cValue := v.Get("deny.std-ace.host-address"); cValue.Exists() {
-				item.DenyHost = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("deny.std-ace.log"); cValue.Exists() {
-				item.DenyLog = types.BoolValue(true)
-			} else {
-				item.DenyLog = types.BoolValue(false)
-			}
-			if cValue := v.Get("permit.std-ace.ipv4-address-prefix"); cValue.Exists() {
-				item.PermitPrefix = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("permit.std-ace.mask"); cValue.Exists() {
-				item.PermitPrefixMask = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("permit.std-ace.any"); cValue.Exists() {
-				item.PermitAny = types.BoolValue(true)
-			} else {
-				item.PermitAny = types.BoolValue(false)
-			}
-			if cValue := v.Get("permit.std-ace.host-address"); cValue.Exists() {
-				item.PermitHost = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("permit.std-ace.log"); cValue.Exists() {
-				item.PermitLog = types.BoolValue(true)
-			} else {
-				item.PermitLog = types.BoolValue(false)
-			}
-			data.Entries = append(data.Entries, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -728,74 +410,6 @@ func (data *AccessListStandardData) fromBodyXML(ctx context.Context, res xmldot.
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *AccessListStandard) getDeletedItems(ctx context.Context, state AccessListStandard) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Entries {
-		stateKeyValues := [...]string{strconv.FormatInt(state.Entries[i].Sequence.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Entries[i].Sequence.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Entries {
-			found = true
-			if state.Entries[i].Sequence.ValueInt64() != data.Entries[j].Sequence.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.Entries[i].PermitLog.IsNull() && data.Entries[j].PermitLog.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/log", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].PermitHost.IsNull() && data.Entries[j].PermitHost.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/host-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].PermitAny.IsNull() && data.Entries[j].PermitAny.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/any", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].PermitPrefixMask.IsNull() && data.Entries[j].PermitPrefixMask.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].PermitPrefix.IsNull() && data.Entries[j].PermitPrefix.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/ipv4-address-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyLog.IsNull() && data.Entries[j].DenyLog.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/log", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyHost.IsNull() && data.Entries[j].DenyHost.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/host-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyAny.IsNull() && data.Entries[j].DenyAny.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/any", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyPrefixMask.IsNull() && data.Entries[j].DenyPrefixMask.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyPrefix.IsNull() && data.Entries[j].DenyPrefix.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/ipv4-address-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/remark", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *AccessListStandard) addDeletedItemsXML(ctx context.Context, state AccessListStandard, body string) string {
@@ -869,47 +483,6 @@ func (data *AccessListStandard) addDeletedItemsXML(ctx context.Context, state Ac
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *AccessListStandard) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Entries {
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
-		if !data.Entries[i].PermitLog.IsNull() && !data.Entries[i].PermitLog.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Entries[i].PermitAny.IsNull() && !data.Entries[i].PermitAny.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/any", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Entries[i].DenyLog.IsNull() && !data.Entries[i].DenyLog.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Entries[i].DenyAny.IsNull() && !data.Entries[i].DenyAny.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/any", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *AccessListStandard) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Entries {
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-list-seq-rule=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
