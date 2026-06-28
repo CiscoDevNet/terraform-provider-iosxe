@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -98,17 +94,6 @@ func (data InterfaceNVEData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/nve=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data InterfaceNVE) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceNVE) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/interface/nve[name=%v]"
@@ -123,66 +108,6 @@ func (data InterfaceNVEData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data InterfaceNVE) toBody(ctx context.Context, config InterfaceNVE) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", strconv.FormatInt(data.Name.ValueInt64(), 10))
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
-	}
-	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
-		if data.Shutdown.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", map[string]string{})
-		}
-	}
-	if !data.HostReachabilityProtocolBgp.IsNull() && !data.HostReachabilityProtocolBgp.IsUnknown() {
-		if data.HostReachabilityProtocolBgp.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host-reachability.protocol.bgp", map[string]string{})
-		}
-	}
-	if !data.SourceInterfaceLoopback.IsNull() && !data.SourceInterfaceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source-interface.Loopback", strconv.FormatInt(data.SourceInterfaceLoopback.ValueInt64(), 10))
-	}
-	if len(data.VniVrfs) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member-in-one-line.member.vni", []interface{}{})
-		for index, item := range data.VniVrfs {
-			if !item.VniRange.IsNull() && !item.VniRange.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member-in-one-line.member.vni"+"."+strconv.Itoa(index)+"."+"vni-range", item.VniRange.ValueString())
-			}
-			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member-in-one-line.member.vni"+"."+strconv.Itoa(index)+"."+"vrf", item.Vrf.ValueString())
-			}
-		}
-	}
-	if len(data.Vnis) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni", []interface{}{})
-		for index, item := range data.Vnis {
-			if !item.VniRange.IsNull() && !item.VniRange.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni"+"."+strconv.Itoa(index)+"."+"vni-range", item.VniRange.ValueString())
-			}
-			if !item.Ipv4MulticastGroup.IsNull() && !item.Ipv4MulticastGroup.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni"+"."+strconv.Itoa(index)+"."+"mcast-group.multicast-group-min", item.Ipv4MulticastGroup.ValueString())
-			}
-			if !item.IngressReplication.IsNull() && !item.IngressReplication.IsUnknown() {
-				if item.IngressReplication.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni"+"."+strconv.Itoa(index)+"."+"ir-cp-config.ingress-replication", map[string]string{})
-				}
-			}
-			if !item.LocalRouting.IsNull() && !item.LocalRouting.IsUnknown() {
-				if item.LocalRouting.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni"+"."+strconv.Itoa(index)+"."+"ir-cp-config.local-routing", map[string]string{})
-				}
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -257,136 +182,6 @@ func (data InterfaceNVE) toBodyXML(ctx context.Context, config InterfaceNVE) str
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *InterfaceNVE) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.Int64Value(value.Int())
-	} else {
-		data.Name = types.Int64Null()
-	}
-	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
-		data.Description = types.StringValue(value.String())
-	} else {
-		data.Description = types.StringNull()
-	}
-	if value := res.Get(prefix + "shutdown"); !data.Shutdown.IsNull() {
-		if value.Exists() {
-			data.Shutdown = types.BoolValue(true)
-		} else {
-			data.Shutdown = types.BoolValue(false)
-		}
-	} else {
-		data.Shutdown = types.BoolNull()
-	}
-	if value := res.Get(prefix + "host-reachability.protocol.bgp"); !data.HostReachabilityProtocolBgp.IsNull() {
-		if value.Exists() {
-			data.HostReachabilityProtocolBgp = types.BoolValue(true)
-		} else {
-			data.HostReachabilityProtocolBgp = types.BoolValue(false)
-		}
-	} else {
-		data.HostReachabilityProtocolBgp = types.BoolNull()
-	}
-	if value := res.Get(prefix + "source-interface.Loopback"); value.Exists() && !data.SourceInterfaceLoopback.IsNull() {
-		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
-	} else {
-		data.SourceInterfaceLoopback = types.Int64Null()
-	}
-	for i := range data.VniVrfs {
-		keys := [...]string{"vni-range"}
-		keyValues := [...]string{data.VniVrfs[i].VniRange.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "member-in-one-line.member.vni").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("vni-range"); value.Exists() && !data.VniVrfs[i].VniRange.IsNull() {
-			data.VniVrfs[i].VniRange = types.StringValue(value.String())
-		} else {
-			data.VniVrfs[i].VniRange = types.StringNull()
-		}
-		if value := r.Get("vrf"); value.Exists() && !data.VniVrfs[i].Vrf.IsNull() {
-			data.VniVrfs[i].Vrf = types.StringValue(value.String())
-		} else {
-			data.VniVrfs[i].Vrf = types.StringNull()
-		}
-	}
-	for i := range data.Vnis {
-		keys := [...]string{"vni-range"}
-		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "member.vni").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("vni-range"); value.Exists() && !data.Vnis[i].VniRange.IsNull() {
-			data.Vnis[i].VniRange = types.StringValue(value.String())
-		} else {
-			data.Vnis[i].VniRange = types.StringNull()
-		}
-		if value := r.Get("mcast-group.multicast-group-min"); value.Exists() && !data.Vnis[i].Ipv4MulticastGroup.IsNull() {
-			data.Vnis[i].Ipv4MulticastGroup = types.StringValue(value.String())
-		} else {
-			data.Vnis[i].Ipv4MulticastGroup = types.StringNull()
-		}
-		if value := r.Get("ir-cp-config.ingress-replication"); !data.Vnis[i].IngressReplication.IsNull() {
-			if value.Exists() {
-				data.Vnis[i].IngressReplication = types.BoolValue(true)
-			} else {
-				data.Vnis[i].IngressReplication = types.BoolValue(false)
-			}
-		} else {
-			data.Vnis[i].IngressReplication = types.BoolNull()
-		}
-		if value := r.Get("ir-cp-config.local-routing"); !data.Vnis[i].LocalRouting.IsNull() {
-			if value.Exists() {
-				data.Vnis[i].LocalRouting = types.BoolValue(true)
-			} else {
-				data.Vnis[i].LocalRouting = types.BoolValue(false)
-			}
-		} else {
-			data.Vnis[i].LocalRouting = types.BoolNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -514,136 +309,6 @@ func (data *InterfaceNVE) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *InterfaceNVE) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "shutdown"); value.Exists() {
-		data.Shutdown = types.BoolValue(true)
-	} else {
-		data.Shutdown = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "host-reachability.protocol.bgp"); value.Exists() {
-		data.HostReachabilityProtocolBgp = types.BoolValue(true)
-	} else {
-		data.HostReachabilityProtocolBgp = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "source-interface.Loopback"); value.Exists() {
-		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "member-in-one-line.member.vni"); value.Exists() {
-		data.VniVrfs = make([]InterfaceNVEVniVrfs, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceNVEVniVrfs{}
-			if cValue := v.Get("vni-range"); cValue.Exists() {
-				item.VniRange = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("vrf"); cValue.Exists() {
-				item.Vrf = types.StringValue(cValue.String())
-			}
-			data.VniVrfs = append(data.VniVrfs, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "member.vni"); value.Exists() {
-		data.Vnis = make([]InterfaceNVEVnis, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceNVEVnis{}
-			if cValue := v.Get("vni-range"); cValue.Exists() {
-				item.VniRange = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("mcast-group.multicast-group-min"); cValue.Exists() {
-				item.Ipv4MulticastGroup = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("ir-cp-config.ingress-replication"); cValue.Exists() {
-				item.IngressReplication = types.BoolValue(true)
-			} else {
-				item.IngressReplication = types.BoolValue(false)
-			}
-			if cValue := v.Get("ir-cp-config.local-routing"); cValue.Exists() {
-				item.LocalRouting = types.BoolValue(true)
-			} else {
-				item.LocalRouting = types.BoolValue(false)
-			}
-			data.Vnis = append(data.Vnis, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "shutdown"); value.Exists() {
-		data.Shutdown = types.BoolValue(true)
-	} else {
-		data.Shutdown = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "host-reachability.protocol.bgp"); value.Exists() {
-		data.HostReachabilityProtocolBgp = types.BoolValue(true)
-	} else {
-		data.HostReachabilityProtocolBgp = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "source-interface.Loopback"); value.Exists() {
-		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "member-in-one-line.member.vni"); value.Exists() {
-		data.VniVrfs = make([]InterfaceNVEVniVrfsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceNVEVniVrfsData{}
-			if cValue := v.Get("vni-range"); cValue.Exists() {
-				item.VniRange = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("vrf"); cValue.Exists() {
-				item.Vrf = types.StringValue(cValue.String())
-			}
-			data.VniVrfs = append(data.VniVrfs, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "member.vni"); value.Exists() {
-		data.Vnis = make([]InterfaceNVEVnisData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceNVEVnisData{}
-			if cValue := v.Get("vni-range"); cValue.Exists() {
-				item.VniRange = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("mcast-group.multicast-group-min"); cValue.Exists() {
-				item.Ipv4MulticastGroup = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("ir-cp-config.ingress-replication"); cValue.Exists() {
-				item.IngressReplication = types.BoolValue(true)
-			} else {
-				item.IngressReplication = types.BoolValue(false)
-			}
-			if cValue := v.Get("ir-cp-config.local-routing"); cValue.Exists() {
-				item.LocalRouting = types.BoolValue(true)
-			} else {
-				item.LocalRouting = types.BoolValue(false)
-			}
-			data.Vnis = append(data.Vnis, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *InterfaceNVE) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -766,87 +431,6 @@ func (data *InterfaceNVEData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNVE) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Vnis {
-		stateKeyValues := [...]string{state.Vnis[i].VniRange.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Vnis[i].VniRange.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Vnis {
-			found = true
-			if state.Vnis[i].VniRange.ValueString() != data.Vnis[j].VniRange.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Vnis[i].LocalRouting.IsNull() && data.Vnis[j].LocalRouting.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/local-routing", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vnis[i].Ipv4MulticastGroup.IsNull() && data.Vnis[j].Ipv4MulticastGroup.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/mcast-group/multicast-group-min", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.VniVrfs {
-		stateKeyValues := [...]string{state.VniVrfs[i].VniRange.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.VniVrfs[i].VniRange.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.VniVrfs {
-			found = true
-			if state.VniVrfs[i].VniRange.ValueString() != data.VniVrfs[j].VniRange.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.VniVrfs[i].Vrf.IsNull() && data.VniVrfs[j].Vrf.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/member-in-one-line/member/vni=%v/vrf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/member-in-one-line/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.SourceInterfaceLoopback.IsNull() && data.SourceInterfaceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface/Loopback", state.getPath()))
-	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *InterfaceNVE) addDeletedItemsXML(ctx context.Context, state InterfaceNVE, body string) string {
@@ -938,62 +522,6 @@ func (data *InterfaceNVE) addDeletedItemsXML(ctx context.Context, state Interfac
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *InterfaceNVE) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Vnis {
-		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
-		if !data.Vnis[i].LocalRouting.IsNull() && !data.Vnis[i].LocalRouting.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/local-routing", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Vnis[i].IngressReplication.IsNull() && !data.Vnis[i].IngressReplication.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-
-	if !data.HostReachabilityProtocolBgp.IsNull() && !data.HostReachabilityProtocolBgp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/host-reachability/protocol/bgp", data.getPath()))
-	}
-	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *InterfaceNVE) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Vnis {
-		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/member/vni=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.VniVrfs {
-		keyValues := [...]string{data.VniVrfs[i].VniRange.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/member-in-one-line/member/vni=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.SourceInterfaceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/source-interface/Loopback", data.getPath()))
-	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

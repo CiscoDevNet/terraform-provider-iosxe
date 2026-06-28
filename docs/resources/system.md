@@ -241,6 +241,9 @@ resource "iosxe_system" "example" {
   - Choices: `authenticated`, `both`, `endpoint`, `rfc`
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
 - `port_channel_load_balance` (String) - Choices: `dst-ip`, `dst-mac`, `dst-mixed-ip-port`, `dst-port`, `mpls`, `src-dst-ip`, `src-dst-mac`, `src-dst-mixed-ip-port`, `src-dst-port`, `src-ip`, `src-mac`, `src-mixed-ip-port`, `src-port`, `vlan-dst-ip`, `vlan-dst-mixed-ip-port`, `vlan-src-dst-ip`, `vlan-src-dst-mixed-ip-port`, `vlan-src-ip`, `vlan-src-mixed-ip-port`
+- `power_redundancy_mode_combined` (Boolean) Enable combined power redundancy mode
+- `power_supply_autolc_priority` (List of Number) Priority (highest to lowest) of auto linecard shutdown
+- `power_supply_autolc_shutdown` (Boolean) Linecard auto shutdown control
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
   - Choices: `none`, `rpr`, `rpr-plus`, `sso`

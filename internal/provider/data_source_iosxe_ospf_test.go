@@ -35,6 +35,8 @@ func TestAccDataSourceIosxeOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "bfd_all_interfaces", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "default_information_originate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "default_information_originate_always", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "default_information_originate_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "default_information_originate_metric_type", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "default_metric", "21"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "distance", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "domain_tag", "10"))
@@ -69,7 +71,13 @@ func TestAccDataSourceIosxeOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "max_metric_router_lsa_on_startup_time", "60"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "fast_reroute_per_prefix_enable_prefix_priority", "high"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_static_subnets", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_static_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_static_metric_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_static_tag", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_connected_subnets", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_connected_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_connected_metric_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "redistribute_connected_tag", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -96,6 +104,8 @@ func testAccDataSourceIosxeOSPFConfig() string {
 	config += `	bfd_all_interfaces = true` + "\n"
 	config += `	default_information_originate = true` + "\n"
 	config += `	default_information_originate_always = true` + "\n"
+	config += `	default_information_originate_metric = 100` + "\n"
+	config += `	default_information_originate_metric_type = 1` + "\n"
 	config += `	default_metric = 21` + "\n"
 	config += `	distance = 120` + "\n"
 	config += `	domain_tag = 10` + "\n"
@@ -138,7 +148,13 @@ func testAccDataSourceIosxeOSPFConfig() string {
 	config += `	max_metric_router_lsa_on_startup_time = 60` + "\n"
 	config += `	fast_reroute_per_prefix_enable_prefix_priority = "high"` + "\n"
 	config += `	redistribute_static_subnets = true` + "\n"
+	config += `	redistribute_static_metric = 100` + "\n"
+	config += `	redistribute_static_metric_type = "1"` + "\n"
+	config += `	redistribute_static_tag = 100` + "\n"
 	config += `	redistribute_connected_subnets = true` + "\n"
+	config += `	redistribute_connected_metric = 100` + "\n"
+	config += `	redistribute_connected_metric_type = "1"` + "\n"
+	config += `	redistribute_connected_tag = 100` + "\n"
 	config += `}` + "\n"
 
 	config += `
