@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -31,8 +30,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -73,17 +70,6 @@ func (data DeviceTrackingData) getPath() string {
 	return "Cisco-IOS-XE-native:native/device-tracking"
 }
 
-// if last path element has a key -> remove it
-func (data DeviceTracking) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data DeviceTracking) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/device-tracking"
@@ -96,37 +82,6 @@ func (data DeviceTrackingData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data DeviceTracking) toBody(ctx context.Context, config DeviceTracking) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.LoggingTheft.IsNull() && !data.LoggingTheft.IsUnknown() {
-		if data.LoggingTheft.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:logging.theft", map[string]string{})
-		}
-	}
-	if !data.TrackingAutoSourceFallbackIpv4.IsNull() && !data.TrackingAutoSourceFallbackIpv4.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.ipv4", data.TrackingAutoSourceFallbackIpv4.ValueString())
-	}
-	if !data.TrackingAutoSourceFallbackMask.IsNull() && !data.TrackingAutoSourceFallbackMask.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.mask", data.TrackingAutoSourceFallbackMask.ValueString())
-	}
-	if !data.TrackingAutoSourceFallbackOverride.IsNull() && !data.TrackingAutoSourceFallbackOverride.IsUnknown() {
-		if data.TrackingAutoSourceFallbackOverride.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.override", map[string]string{})
-		}
-	}
-	if !data.TrackingRetryInterval.IsNull() && !data.TrackingRetryInterval.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:tracking.retry-interval", strconv.FormatInt(data.TrackingRetryInterval.ValueInt64(), 10))
-	}
-	if !data.BindingReachableLifetime.IsNull() && !data.BindingReachableLifetime.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds", strconv.FormatInt(data.BindingReachableLifetime.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -166,55 +121,6 @@ func (data DeviceTracking) toBodyXML(ctx context.Context, config DeviceTracking)
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *DeviceTracking) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:logging.theft"); !data.LoggingTheft.IsNull() {
-		if value.Exists() {
-			data.LoggingTheft = types.BoolValue(true)
-		} else {
-			data.LoggingTheft = types.BoolValue(false)
-		}
-	} else {
-		data.LoggingTheft = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.ipv4"); value.Exists() && !data.TrackingAutoSourceFallbackIpv4.IsNull() {
-		data.TrackingAutoSourceFallbackIpv4 = types.StringValue(value.String())
-	} else {
-		data.TrackingAutoSourceFallbackIpv4 = types.StringNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.mask"); value.Exists() && !data.TrackingAutoSourceFallbackMask.IsNull() {
-		data.TrackingAutoSourceFallbackMask = types.StringValue(value.String())
-	} else {
-		data.TrackingAutoSourceFallbackMask = types.StringNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.override"); !data.TrackingAutoSourceFallbackOverride.IsNull() {
-		if value.Exists() {
-			data.TrackingAutoSourceFallbackOverride = types.BoolValue(true)
-		} else {
-			data.TrackingAutoSourceFallbackOverride = types.BoolValue(false)
-		}
-	} else {
-		data.TrackingAutoSourceFallbackOverride = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.retry-interval"); value.Exists() && !data.TrackingRetryInterval.IsNull() {
-		data.TrackingRetryInterval = types.Int64Value(value.Int())
-	} else {
-		data.TrackingRetryInterval = types.Int64Null()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds"); value.Exists() && !data.BindingReachableLifetime.IsNull() {
-		data.BindingReachableLifetime = types.Int64Value(value.Int())
-	} else {
-		data.BindingReachableLifetime = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -260,72 +166,6 @@ func (data *DeviceTracking) updateFromBodyXML(ctx context.Context, res xmldot.Re
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *DeviceTracking) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:logging.theft"); value.Exists() {
-		data.LoggingTheft = types.BoolValue(true)
-	} else {
-		data.LoggingTheft = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.ipv4"); value.Exists() {
-		data.TrackingAutoSourceFallbackIpv4 = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.mask"); value.Exists() {
-		data.TrackingAutoSourceFallbackMask = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.override"); value.Exists() {
-		data.TrackingAutoSourceFallbackOverride = types.BoolValue(true)
-	} else {
-		data.TrackingAutoSourceFallbackOverride = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.retry-interval"); value.Exists() {
-		data.TrackingRetryInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds"); value.Exists() {
-		data.BindingReachableLifetime = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *DeviceTrackingData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:logging.theft"); value.Exists() {
-		data.LoggingTheft = types.BoolValue(true)
-	} else {
-		data.LoggingTheft = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.ipv4"); value.Exists() {
-		data.TrackingAutoSourceFallbackIpv4 = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.mask"); value.Exists() {
-		data.TrackingAutoSourceFallbackMask = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.auto-source.fallback.ipv4-subnet-type1.override"); value.Exists() {
-		data.TrackingAutoSourceFallbackOverride = types.BoolValue(true)
-	} else {
-		data.TrackingAutoSourceFallbackOverride = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:tracking.retry-interval"); value.Exists() {
-		data.TrackingRetryInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-device-tracking:binding.reachable-lifetime.seconds"); value.Exists() {
-		data.BindingReachableLifetime = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -385,34 +225,6 @@ func (data *DeviceTrackingData) fromBodyXML(ctx context.Context, res xmldot.Resu
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *DeviceTracking) getDeletedItems(ctx context.Context, state DeviceTracking) []string {
-	deletedItems := make([]string, 0)
-	if !state.BindingReachableLifetime.IsNull() && data.BindingReachableLifetime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds", state.getPath()))
-	}
-	if !state.TrackingRetryInterval.IsNull() && data.TrackingRetryInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/retry-interval", state.getPath()))
-	}
-	if !state.TrackingAutoSourceFallbackOverride.IsNull() && data.TrackingAutoSourceFallbackOverride.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/override", state.getPath()))
-	}
-	if !state.TrackingAutoSourceFallbackMask.IsNull() && data.TrackingAutoSourceFallbackMask.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/mask", state.getPath()))
-	}
-	if !state.TrackingAutoSourceFallbackIpv4.IsNull() && data.TrackingAutoSourceFallbackIpv4.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/ipv4", state.getPath()))
-	}
-	if !state.LoggingTheft.IsNull() && data.LoggingTheft.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:logging/theft", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *DeviceTracking) addDeletedItemsXML(ctx context.Context, state DeviceTracking, body string) string {
@@ -441,50 +253,6 @@ func (data *DeviceTracking) addDeletedItemsXML(ctx context.Context, state Device
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *DeviceTracking) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.TrackingAutoSourceFallbackOverride.IsNull() && !data.TrackingAutoSourceFallbackOverride.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/override", data.getPath()))
-	}
-	if !data.LoggingTheft.IsNull() && !data.LoggingTheft.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:logging/theft", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *DeviceTracking) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.BindingReachableLifetime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds", data.getPath()))
-	}
-	if !data.TrackingRetryInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/retry-interval", data.getPath()))
-	}
-	if !data.TrackingAutoSourceFallbackOverride.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/override", data.getPath()))
-	}
-	if !data.TrackingAutoSourceFallbackMask.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/mask", data.getPath()))
-	}
-	if !data.TrackingAutoSourceFallbackIpv4.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:tracking/auto-source/fallback/ipv4-subnet-type1/ipv4", data.getPath()))
-	}
-	if !data.LoggingTheft.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-device-tracking:logging/theft", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
