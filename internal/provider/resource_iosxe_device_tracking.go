@@ -115,6 +115,13 @@ func (r *DeviceTrackingResource) Schema(ctx context.Context, req resource.Schema
 					int64validator.Between(1, 3600),
 				},
 			},
+			"binding_reachable_lifetime": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Seconds..").AddIntegerRangeDescription(1, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 86400),
+				},
+			},
 		},
 	}
 }

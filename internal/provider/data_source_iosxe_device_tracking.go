@@ -88,6 +88,10 @@ func (d *DeviceTrackingDataSource) Schema(ctx context.Context, req datasource.Sc
 				MarkdownDescription: "Interval time  between two probing",
 				Computed:            true,
 			},
+			"binding_reachable_lifetime": schema.Int64Attribute{
+				MarkdownDescription: "Seconds..",
+				Computed:            true,
+			},
 		},
 	}
 }

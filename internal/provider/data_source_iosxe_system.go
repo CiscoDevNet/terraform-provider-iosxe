@@ -899,6 +899,19 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "MLD querier disable/enable",
 				Computed:            true,
 			},
+			"power_redundancy_mode_combined": schema.BoolAttribute{
+				MarkdownDescription: "Enable combined power redundancy mode",
+				Computed:            true,
+			},
+			"power_supply_autolc_shutdown": schema.BoolAttribute{
+				MarkdownDescription: "Linecard auto shutdown control",
+				Computed:            true,
+			},
+			"power_supply_autolc_priority": schema.ListAttribute{
+				MarkdownDescription: "Priority (highest to lowest) of auto linecard shutdown",
+				ElementType:         types.Int64Type,
+				Computed:            true,
+			},
 		},
 	}
 }

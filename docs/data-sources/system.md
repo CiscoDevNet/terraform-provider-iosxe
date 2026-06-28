@@ -166,6 +166,9 @@ data "iosxe_system" "example" {
 - `multilink_ppp_bundle_name` (String) Select method for naming multilink bundles
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
 - `port_channel_load_balance` (String)
+- `power_redundancy_mode_combined` (Boolean) Enable combined power redundancy mode
+- `power_supply_autolc_priority` (List of Number) Priority (highest to lowest) of auto linecard shutdown
+- `power_supply_autolc_shutdown` (Boolean) Linecard auto shutdown control
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
 - `security_passwords_min_length` (Number) Minimum length of passwords
