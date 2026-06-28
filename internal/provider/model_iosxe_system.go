@@ -519,7 +519,6 @@ func (data SystemData) getXPath() string {
 
 // End of section. //template:end getPath
 
-
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data System) toBodyXML(ctx context.Context, config System) string {
@@ -1347,7 +1346,6 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 }
 
 // End of section. //template:end toBodyXML
-
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -2740,7 +2738,6 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end updateFromBodyXML
-
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -4286,7 +4283,6 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *System) addDeletedItemsXML(ctx context.Context, state System, body string) string {
@@ -5329,7 +5325,6 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 }
 
 // End of section. //template:end addDeletedItemsXML
-
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
