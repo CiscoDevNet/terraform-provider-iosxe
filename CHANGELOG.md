@@ -5,6 +5,7 @@
 - Fix `iosxe_aaa` resource attempting to delete the `new_model` attribute on update or destroy. IOS-XE does not permit removal of `aaa new-model` once configured (`no aaa new-model` is rejected by the device with active AAA dependents); the leaf is now marked `no_delete: true`
 - Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable`, `spanning_tree_portfast_trunk`, and `spanning_tree_portfast_edge` attributes to `iosxe_interface_port_channel` resource and data source
 - Fix perpetual `terraform plan` drift on `iosxe_route_map` `set_communities` where IOS-XE returns decimal integers instead of the configured `AA:NN` notation by normalizing community values on read
+- Add `monitor_session` resource and data source with support for configuration of local SPAN sessions
 - Fix `iosxe_banner` "Provider produced invalid plan" error when recovering from device drift (out-of-band configuration changes)
 - Add `iosxe_ospfv3`, `iosxe_ospfv3_address_family_ipv4_vrf` and `iosxe_ospfv3_address_family_ipv6_vrf` resources and data sources
 - Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
