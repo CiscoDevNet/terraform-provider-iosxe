@@ -4,6 +4,8 @@ resource "iosxe_ospf_vrf" "example" {
   bfd_all_interfaces                        = true
   default_information_originate             = true
   default_information_originate_always      = true
+  default_information_originate_metric      = 100
+  default_information_originate_metric_type = 1
   default_metric                            = 21
   distance                                  = 120
   domain_tag                                = 10
@@ -16,7 +18,13 @@ resource "iosxe_ospf_vrf" "example" {
   max_metric_router_lsa_include_stub        = true
   max_metric_router_lsa_on_startup_time     = 60
   redistribute_static_subnets               = true
+  redistribute_static_metric                = 100
+  redistribute_static_metric_type           = "1"
+  redistribute_static_tag                   = 100
   redistribute_connected_subnets            = true
+  redistribute_connected_metric             = 100
+  redistribute_connected_metric_type        = "1"
+  redistribute_connected_tag                = 100
   neighbor = [
     {
       ip       = "2.2.2.2"

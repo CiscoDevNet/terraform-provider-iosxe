@@ -9,7 +9,7 @@ description: |-
 
 ## Overview
 
-The IOSXE provider uses **NETCONF** (SSH-based) as the default protocol for device communication. NETCONF support was introduced in version 0.10.0 and became the default in version 0.15.0.
+The IOSXE provider uses **NETCONF** (SSH-based) for device communication.
 
 ### Key NETCONF Features
 
@@ -52,14 +52,13 @@ show netconf-yang sessions
 
 ### Basic NETCONF Configuration
 
-NETCONF is the default protocol, so you can use the provider without explicitly specifying `protocol`:
+NETCONF is configured by default, so no protocol selection is needed:
 
 ```terraform
 provider "iosxe" {
   username = "admin"
   password = "password"
   host     = "10.1.1.1"
-  # protocol = "netconf"  # Optional - this is the default
 }
 ```
 
@@ -121,14 +120,12 @@ When using manual commit mode (`auto_commit = false`), you **must** also enable 
 ```terraform
 # ✅ Valid Configuration
 provider "iosxe" {
-  protocol         = "netconf"
   auto_commit      = false
   reuse_connection = true  # Required (or omit for default true)
 }
 
 # ❌ Invalid Configuration - Provider will return an error
 provider "iosxe" {
-  protocol         = "netconf"
   auto_commit      = false
   reuse_connection = false  # Error: manual commit requires reuse
 }
@@ -145,7 +142,6 @@ With `auto_commit = true` (default), each resource commits its changes immediate
 ```terraform
 provider "iosxe" {
   host        = "10.1.1.1"
-  protocol    = "netconf"
   auto_commit = true  # Default behavior
 }
 
@@ -168,7 +164,6 @@ With `auto_commit = false`, changes are staged in the candidate datastore and mu
 ```terraform
 provider "iosxe" {
   host        = "10.1.1.1"
-  protocol    = "netconf"
   auto_commit = false  # Disable automatic commits
 }
 
@@ -203,7 +198,6 @@ resource "iosxe_commit" "commit_changes" {
 ### Purpose
 
 The `iosxe_commit` resource explicitly commits the candidate configuration to the running configuration. It is only meaningful when:
-- Using the NETCONF protocol (`protocol = "netconf"`)
 - Auto-commit is disabled (`auto_commit = false`)
 - The device supports the candidate datastore capability
 
@@ -264,48 +258,6 @@ This combines commit and save operations in a single transaction, ensuring your 
 3. **Use depends_on**: Always use `depends_on` to ensure resources are created/updated before committing
 4. **Destroy Behavior**: When the `iosxe_commit` resource is destroyed (e.g., during `terraform destroy`), it automatically enables auto-commit mode for subsequent resource deletions. This ensures that deletion operations commit their changes and prevents uncommitted configuration from remaining in the candidate datastore
 5. **Saving Configuration**: Set `save_config = true` to persist changes to startup-config in the same transaction, eliminating the need for a separate `iosxe_save_config` resource
-
-## Migration to NETCONF (from versions < 0.15.0)
-
-If you're upgrading from a version before 0.15.0 where RESTCONF was the default:
-
-### Option 1: Adopt NETCONF (Recommended)
-
-1. **Enable NETCONF on your devices**:
-   ```
-   configure terminal
-   netconf-yang
-   ```
-
-   Optionally, enable the candidate datastore for transactional commits:
-   ```
-   netconf-yang feature candidate-datastore
-   ```
-
-2. **Remove explicit `protocol = "restconf"` from your configuration** (if present)
-
-3. **Test the migration**:
-   ```bash
-   terraform plan
-   ```
-
-4. **Verify no resources need replacement** - the provider protocol change should not require recreating resources
-
-### Option 2: Continue Using RESTCONF
-
-If you need to continue using RESTCONF:
-
-1. **Explicitly set `protocol = "restconf"` in your provider configuration**:
-   ```terraform
-   provider "iosxe" {
-     username = "admin"
-     password = "password"
-     host     = "10.1.1.1"
-     protocol = "restconf"  # Maintain RESTCONF behavior
-   }
-   ```
-
-2. **No other changes required** - your existing configurations will continue to work
 
 ## Additional Resources
 

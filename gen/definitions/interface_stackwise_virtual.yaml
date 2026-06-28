@@ -1,0 +1,32 @@
+---
+name: Interface Stackwise Virtual
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/stackwise-virtual
+augment_path: /Cisco-IOS-XE-native:native/interface/HundredGigE[name=%v]/stackwise-virtual
+test_tags: [C9500]
+doc_category: Interface
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - FiftyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+    example: TenGigabitEthernet
+  - yang_name: name
+    example: 1/0/1
+  - yang_name: link
+    example: 1
+  - yang_name: dual-active-detection
+    tf_name: dual_active_detection
+    type_yang_bool: empty
+    example: true
