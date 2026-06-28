@@ -28,7 +28,6 @@ data "iosxe_eem" "example" {
 
 - `applets` (Attributes List) Register an Event Manager applet (see [below for nested schema](#nestedatt--applets))
 - `detector_routing_bootup_delay` (Number) bootup delay in seconds
-- `detector_rpc_max_sessions` (Number) Maximum number of RPC sessions
 - `directory_user_policy` (String) Embedded Event Manager user policy directory
 - `environment_variables` (Attributes List) Set an Embedded Event Manager global environment variable (see [below for nested schema](#nestedatt--environment_variables))
 - `history_size_events` (Number) Embedded Event Manager event history table size

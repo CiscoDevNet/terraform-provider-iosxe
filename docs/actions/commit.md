@@ -3,12 +3,12 @@
 page_title: "iosxe_commit Action - terraform-provider-iosxe"
 subcategory: "General"
 description: |-
-  This action is used to commit the candidate config to the running config (NETCONF only) and optionally save the running config to startup config (both NETCONF and RESTCONF).
+  This action is used to commit the candidate config to the running config and optionally save the running config to startup config.
 ---
 
 # iosxe_commit (Action)
 
-This action is used to commit the candidate config to the running config (NETCONF only) and optionally save the running config to startup config (both NETCONF and RESTCONF).
+This action is used to commit the candidate config to the running config and optionally save the running config to startup config.
 
 ## Example Usage
 
@@ -27,4 +27,4 @@ action "iosxe_commit" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `save_config` (Boolean) Save running configuration to startup configuration. Equivalent to 'copy running-config startup-config'. For NETCONF devices, this saves after commit. For RESTCONF devices, this saves the current running configuration (RESTCONF is stateless, no commit needed). Defaults to `false`.
+- `save_config` (Boolean) Save running configuration to startup configuration. Equivalent to 'copy running-config startup-config'. This saves after commit. Defaults to `false`.

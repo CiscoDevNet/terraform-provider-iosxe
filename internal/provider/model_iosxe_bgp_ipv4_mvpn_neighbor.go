@@ -24,15 +24,12 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -69,17 +66,6 @@ func (data BGPIPv4MVPNNeighborData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=mvpn/ipv4-mvpn/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data BGPIPv4MVPNNeighbor) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data BGPIPv4MVPNNeighbor) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv4[af-name=mvpn]/ipv4-mvpn/neighbor[id=%s]"
@@ -94,26 +80,6 @@ func (data BGPIPv4MVPNNeighborData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data BGPIPv4MVPNNeighbor) toBody(ctx context.Context, config BGPIPv4MVPNNeighbor) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
-	}
-	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
-		if data.Activate.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"activate", map[string]string{})
-		}
-	}
-	if !data.SendCommunity.IsNull() && !data.SendCommunity.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"send-community.send-community-where", data.SendCommunity.ValueString())
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -141,36 +107,6 @@ func (data BGPIPv4MVPNNeighbor) toBodyXML(ctx context.Context, config BGPIPv4MVP
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *BGPIPv4MVPNNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.Ip.IsNull() {
-		data.Ip = types.StringValue(value.String())
-	} else {
-		data.Ip = types.StringNull()
-	}
-	if value := res.Get(prefix + "activate"); !data.Activate.IsNull() {
-		if value.Exists() {
-			data.Activate = types.BoolValue(true)
-		} else {
-			data.Activate = types.BoolValue(false)
-		}
-	} else {
-		data.Activate = types.BoolNull()
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() && !data.SendCommunity.IsNull() {
-		data.SendCommunity = types.StringValue(value.String())
-	} else {
-		data.SendCommunity = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *BGPIPv4MVPNNeighbor) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -196,44 +132,6 @@ func (data *BGPIPv4MVPNNeighbor) updateFromBodyXML(ctx context.Context, res xmld
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *BGPIPv4MVPNNeighbor) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
-		data.SendCommunity = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *BGPIPv4MVPNNeighborData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
-		data.SendCommunity = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -265,19 +163,6 @@ func (data *BGPIPv4MVPNNeighborData) fromBodyXML(ctx context.Context, res xmldot
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *BGPIPv4MVPNNeighbor) getDeletedItems(ctx context.Context, state BGPIPv4MVPNNeighbor) []string {
-	deletedItems := make([]string, 0)
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *BGPIPv4MVPNNeighbor) addDeletedItemsXML(ctx context.Context, state BGPIPv4MVPNNeighbor, body string) string {
@@ -291,32 +176,6 @@ func (data *BGPIPv4MVPNNeighbor) addDeletedItemsXML(ctx context.Context, state B
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *BGPIPv4MVPNNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *BGPIPv4MVPNNeighbor) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.SendCommunity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
