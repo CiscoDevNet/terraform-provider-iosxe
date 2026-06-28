@@ -7,7 +7,7 @@ description: |-
   The resource uses different Cisco IOS-XE RPC methods depending on the raw parameter:
   
   Transactional mode (raw = false, default): Uses config-ios-cli-trans RPC which provides transactional semantics with automatic rollback on failure. However, it only supports native IOS configuration CLIs that have corresponding IOS-XE YANG model support. This mode does not support non-native IOS config CLIs for features such as wireless, app-hosting, telemetry, etc.
-  Raw mode (raw = true): Uses config-ios-cli-rpc RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF/RESTCONF is used as a transport mechanism only.
+  Raw mode (raw = true): Uses config-ios-cli-rpc RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF is used as a transport mechanism only.
 ---
 
 # iosxe_cli (Resource)
@@ -18,7 +18,7 @@ The resource uses different Cisco IOS-XE RPC methods depending on the `raw` para
 
 - **Transactional mode (`raw = false`, default)**: Uses `config-ios-cli-trans` RPC which provides transactional semantics with automatic rollback on failure. However, it only supports native IOS configuration CLIs that have corresponding IOS-XE YANG model support. This mode does not support non-native IOS config CLIs for features such as wireless, app-hosting, telemetry, etc.
 
-- **Raw mode (`raw = true`)**: Uses `config-ios-cli-rpc` RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF/RESTCONF is used as a transport mechanism only.
+- **Raw mode (`raw = true`)**: Uses `config-ios-cli-rpc` RPC which supports all IOS native and non-native configuration CLIs regardless of whether they are modeled in YANG. However, configuration changes are non-transactional and no automatic rollback on failure is performed. NETCONF is used as a transport mechanism only.
 
 ## Example Usage
 

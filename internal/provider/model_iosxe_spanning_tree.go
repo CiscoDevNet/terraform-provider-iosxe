@@ -24,17 +24,13 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -102,17 +98,6 @@ func (data SpanningTreeData) getPath() string {
 	return "Cisco-IOS-XE-native:native/spanning-tree"
 }
 
-// if last path element has a key -> remove it
-func (data SpanningTree) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data SpanningTree) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/spanning-tree"
@@ -125,67 +110,6 @@ func (data SpanningTreeData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data SpanningTree) toBody(ctx context.Context, config SpanningTree) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Mode.IsNull() && !data.Mode.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:mode", data.Mode.ValueString())
-	}
-	if !data.Logging.IsNull() && !data.Logging.IsUnknown() {
-		if data.Logging.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:logging", map[string]string{})
-		}
-	}
-	if !data.LoopguardDefault.IsNull() && !data.LoopguardDefault.IsUnknown() {
-		if data.LoopguardDefault.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:loopguard.default", map[string]string{})
-		}
-	}
-	if !data.PortfastDefault.IsNull() && !data.PortfastDefault.IsUnknown() {
-		if data.PortfastDefault.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:portfast.default", map[string]string{})
-		}
-	}
-	if !data.PortfastBpduguardDefault.IsNull() && !data.PortfastBpduguardDefault.IsUnknown() {
-		if data.PortfastBpduguardDefault.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:portfast.bpduguard.default", map[string]string{})
-		}
-	}
-	if !data.ExtendSystemId.IsNull() && !data.ExtendSystemId.IsUnknown() {
-		if data.ExtendSystemId.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:extend.system-id", map[string]string{})
-		}
-	}
-	if len(data.MstInstances) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:mst.configuration.instance", []interface{}{})
-		for index, item := range data.MstInstances {
-			if !item.Id.IsNull() && !item.Id.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:mst.configuration.instance"+"."+strconv.Itoa(index)+"."+"id", strconv.FormatInt(item.Id.ValueInt64(), 10))
-			}
-			if !item.VlanIds.IsNull() && !item.VlanIds.IsUnknown() {
-				var values []int
-				item.VlanIds.ElementsAs(ctx, &values, false)
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:mst.configuration.instance"+"."+strconv.Itoa(index)+"."+"vlan-ids", values)
-			}
-		}
-	}
-	if len(data.Vlans) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan", []interface{}{})
-		for index, item := range data.Vlans {
-			if !item.Id.IsNull() && !item.Id.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
-			}
-			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -265,135 +189,6 @@ func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) str
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *SpanningTree) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mode"); value.Exists() && !data.Mode.IsNull() {
-		data.Mode = types.StringValue(value.String())
-	} else {
-		data.Mode = types.StringNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:logging"); !data.Logging.IsNull() {
-		if value.Exists() {
-			data.Logging = types.BoolValue(true)
-		} else {
-			data.Logging = types.BoolValue(false)
-		}
-	} else {
-		data.Logging = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:loopguard.default"); !data.LoopguardDefault.IsNull() {
-		if value.Exists() {
-			data.LoopguardDefault = types.BoolValue(true)
-		} else {
-			data.LoopguardDefault = types.BoolValue(false)
-		}
-	} else {
-		data.LoopguardDefault = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:portfast.default"); !data.PortfastDefault.IsNull() {
-		if value.Exists() {
-			data.PortfastDefault = types.BoolValue(true)
-		} else {
-			data.PortfastDefault = types.BoolValue(false)
-		}
-	} else {
-		data.PortfastDefault = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:portfast.bpduguard.default"); !data.PortfastBpduguardDefault.IsNull() {
-		if value.Exists() {
-			data.PortfastBpduguardDefault = types.BoolValue(true)
-		} else {
-			data.PortfastBpduguardDefault = types.BoolValue(false)
-		}
-	} else {
-		data.PortfastBpduguardDefault = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:extend.system-id"); !data.ExtendSystemId.IsNull() {
-		if value.Exists() {
-			data.ExtendSystemId = types.BoolValue(true)
-		} else {
-			data.ExtendSystemId = types.BoolValue(false)
-		}
-	} else {
-		data.ExtendSystemId = types.BoolNull()
-	}
-	for i := range data.MstInstances {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
-
-		var r gjson.Result
-		res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mst.configuration.instance").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("id"); value.Exists() && !data.MstInstances[i].Id.IsNull() {
-			data.MstInstances[i].Id = types.Int64Value(value.Int())
-		} else {
-			data.MstInstances[i].Id = types.Int64Null()
-		}
-		if value := r.Get("vlan-ids"); value.Exists() && !data.MstInstances[i].VlanIds.IsNull() {
-			data.MstInstances[i].VlanIds = helpers.GetInt64List(value.Array())
-		} else {
-			data.MstInstances[i].VlanIds = types.ListNull(types.Int64Type)
-		}
-	}
-	for i := range data.Vlans {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "Cisco-IOS-XE-spanning-tree:vlan").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("id"); value.Exists() && !data.Vlans[i].Id.IsNull() {
-			data.Vlans[i].Id = types.StringValue(value.String())
-		} else {
-			data.Vlans[i].Id = types.StringNull()
-		}
-		if value := r.Get("priority"); value.Exists() && !data.Vlans[i].Priority.IsNull() {
-			data.Vlans[i].Priority = types.Int64Value(value.Int())
-		} else {
-			data.Vlans[i].Priority = types.Int64Null()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -519,144 +314,6 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *SpanningTree) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
-		data.Mode = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
-		data.Logging = types.BoolValue(true)
-	} else {
-		data.Logging = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:loopguard.default"); value.Exists() {
-		data.LoopguardDefault = types.BoolValue(true)
-	} else {
-		data.LoopguardDefault = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:portfast.default"); value.Exists() {
-		data.PortfastDefault = types.BoolValue(true)
-	} else {
-		data.PortfastDefault = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:portfast.bpduguard.default"); value.Exists() {
-		data.PortfastBpduguardDefault = types.BoolValue(true)
-	} else {
-		data.PortfastBpduguardDefault = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:extend.system-id"); value.Exists() {
-		data.ExtendSystemId = types.BoolValue(true)
-	} else {
-		data.ExtendSystemId = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mst.configuration.instance"); value.Exists() {
-		data.MstInstances = make([]SpanningTreeMstInstances, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SpanningTreeMstInstances{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Id = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("vlan-ids"); cValue.Exists() {
-				item.VlanIds = helpers.GetInt64List(cValue.Array())
-			} else {
-				item.VlanIds = types.ListNull(types.Int64Type)
-			}
-			data.MstInstances = append(data.MstInstances, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
-		data.Vlans = make([]SpanningTreeVlans, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SpanningTreeVlans{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Id = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("priority"); cValue.Exists() {
-				item.Priority = types.Int64Value(cValue.Int())
-			}
-			data.Vlans = append(data.Vlans, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
-		data.Mode = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
-		data.Logging = types.BoolValue(true)
-	} else {
-		data.Logging = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:loopguard.default"); value.Exists() {
-		data.LoopguardDefault = types.BoolValue(true)
-	} else {
-		data.LoopguardDefault = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:portfast.default"); value.Exists() {
-		data.PortfastDefault = types.BoolValue(true)
-	} else {
-		data.PortfastDefault = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:portfast.bpduguard.default"); value.Exists() {
-		data.PortfastBpduguardDefault = types.BoolValue(true)
-	} else {
-		data.PortfastBpduguardDefault = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:extend.system-id"); value.Exists() {
-		data.ExtendSystemId = types.BoolValue(true)
-	} else {
-		data.ExtendSystemId = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mst.configuration.instance"); value.Exists() {
-		data.MstInstances = make([]SpanningTreeMstInstancesData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SpanningTreeMstInstancesData{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Id = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("vlan-ids"); cValue.Exists() {
-				item.VlanIds = helpers.GetInt64List(cValue.Array())
-			} else {
-				item.VlanIds = types.ListNull(types.Int64Type)
-			}
-			data.MstInstances = append(data.MstInstances, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
-		data.Vlans = make([]SpanningTreeVlansData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SpanningTreeVlansData{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Id = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("priority"); cValue.Exists() {
-				item.Priority = types.Int64Value(cValue.Int())
-			}
-			data.Vlans = append(data.Vlans, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -788,115 +445,6 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 // End of section. //template:end fromBodyDataXML
 
-// Custom implementation - template markers removed to preserve changes
-// When a VLAN is removed from config, only delete priority attribute, not entire VLAN
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
-
-func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTree) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Vlans {
-		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Vlans[i].Id.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Vlans {
-			found = true
-			if state.Vlans[i].Id.ValueString() != data.Vlans[j].Id.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Vlans[i].Priority.IsNull() && data.Vlans[j].Priority.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
-			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
-			if !state.Vlans[i].Priority.IsNull() {
-				deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-			}
-		}
-	}
-	for i := range state.MstInstances {
-		stateKeyValues := [...]string{strconv.FormatInt(state.MstInstances[i].Id.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.MstInstances[i].Id.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.MstInstances {
-			found = true
-			if state.MstInstances[i].Id.ValueInt64() != data.MstInstances[j].Id.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.MstInstances[i].VlanIds.IsNull() {
-					if data.MstInstances[j].VlanIds.IsNull() {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mst/configuration/instance=%v/vlan-ids", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-					} else {
-						var dataValues, stateValues []int
-						data.MstInstances[j].VlanIds.ElementsAs(ctx, &dataValues, false)
-						state.MstInstances[i].VlanIds.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mst/configuration/instance=%v/vlan-ids=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
-							}
-						}
-					}
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mst/configuration/instance=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.PortfastBpduguardDefault.IsNull() && data.PortfastBpduguardDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", state.getPath()))
-	}
-	if !state.PortfastDefault.IsNull() && data.PortfastDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", state.getPath()))
-	}
-	if !state.LoopguardDefault.IsNull() && data.LoopguardDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", state.getPath()))
-	}
-	if !state.Logging.IsNull() && data.Logging.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:logging", state.getPath()))
-	}
-	if !state.Mode.IsNull() && data.Mode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// Custom implementation - template markers removed to preserve changes
-// When a VLAN is removed from config, only delete priority attribute, not entire VLAN
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
-
 func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state SpanningTree, body string) string {
 	b := netconf.NewBody(body)
 	for i := range state.Vlans {
@@ -1011,71 +559,6 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 	return b.Res()
 }
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	if !data.ExtendSystemId.IsNull() && !data.ExtendSystemId.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:extend/system-id", data.getPath()))
-	}
-	if !data.PortfastBpduguardDefault.IsNull() && !data.PortfastBpduguardDefault.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", data.getPath()))
-	}
-	if !data.PortfastDefault.IsNull() && !data.PortfastDefault.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", data.getPath()))
-	}
-	if !data.LoopguardDefault.IsNull() && !data.LoopguardDefault.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
-	}
-	if !data.Logging.IsNull() && !data.Logging.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:logging", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// getDeletePaths returns the RESTCONF paths to delete when destroying the resource.
-// CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
-func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Vlans {
-		// Only delete priority if it was set - don't delete entire VLAN from STP
-		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
-		if !data.Vlans[i].Priority.IsNull() {
-			keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-			deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		// VLANs without priority have no config to delete - they're already at default
-	}
-	for i := range data.MstInstances {
-		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mst/configuration/instance=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.PortfastBpduguardDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", data.getPath()))
-	}
-	if !data.PortfastDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", data.getPath()))
-	}
-	if !data.LoopguardDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
-	}
-	if !data.Logging.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:logging", data.getPath()))
-	}
-	if !data.Mode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", data.getPath()))
-	}
-
-	return deletePaths
-}
-
 // addDeletePathsXML builds the NETCONF XML for deleting the resource.
 // CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
 // This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
@@ -1136,34 +619,6 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 // See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/432
 // ============================================================================
 
-// getDisabledVlansDeletePaths returns RESTCONF paths to DELETE for disabled VLANs.
-// IOS-XE requires a two-step process: CREATE the VLAN entry, then DELETE it.
-func (data *SpanningTree) getDisabledVlansDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for _, item := range data.DisabledVlans {
-		if !item.Id.IsNull() && !item.Id.IsUnknown() {
-			deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", data.getPath(), item.Id.ValueString()))
-		}
-	}
-	return deletePaths
-}
-
-// getDisabledVlansCreateBody returns RESTCONF body to CREATE VLANs before deleting them.
-// This is needed because DELETE on a non-existent VLAN silently succeeds.
-func (data *SpanningTree) getDisabledVlansCreateBody(ctx context.Context) string {
-	if len(data.DisabledVlans) == 0 {
-		return ""
-	}
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan", []interface{}{})
-	for index, item := range data.DisabledVlans {
-		if !item.Id.IsNull() && !item.Id.IsUnknown() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
-		}
-	}
-	return body
-}
-
 // DisabledVlansXMLBodies contains NETCONF bodies for the two-step disable process.
 type DisabledVlansXMLBodies struct {
 	CreateBody string
@@ -1201,36 +656,6 @@ func (data *SpanningTree) getDisabledVlansXMLBodies(ctx context.Context) Disable
 	result.DeleteBody = deleteBody.Res()
 
 	return result
-}
-
-// getRemovedDisabledVlansCreateBody returns RESTCONF body to re-add VLANs that were
-// removed from disabled_vlans (to restore default STP behavior).
-func (data *SpanningTree) getRemovedDisabledVlansCreateBody(ctx context.Context, state SpanningTree) string {
-	// Find VLANs that were in state.DisabledVlans but are not in data.DisabledVlans
-	var removedVlans []string
-	for _, stateItem := range state.DisabledVlans {
-		found := false
-		for _, dataItem := range data.DisabledVlans {
-			if stateItem.Id.ValueString() == dataItem.Id.ValueString() {
-				found = true
-				break
-			}
-		}
-		if !found && !stateItem.Id.IsNull() {
-			removedVlans = append(removedVlans, stateItem.Id.ValueString())
-		}
-	}
-
-	if len(removedVlans) == 0 {
-		return ""
-	}
-
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan", []interface{}{})
-	for index, vlanId := range removedVlans {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", vlanId)
-	}
-	return body
 }
 
 // getRemovedDisabledVlansXMLBody returns NETCONF body to re-add VLANs that were
