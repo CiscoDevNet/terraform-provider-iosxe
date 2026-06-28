@@ -279,3 +279,5 @@ attributes:
       - yang_name: group1/auth_configuration/tacacs/tacacs
         xpath: group1/tacacs
         example: true
+  - yang_name: console
+    example: true

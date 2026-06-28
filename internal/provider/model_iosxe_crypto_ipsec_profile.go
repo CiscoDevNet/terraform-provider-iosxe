@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -75,17 +72,6 @@ func (data CryptoIPSecProfileData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data CryptoIPSecProfile) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data CryptoIPSecProfile) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile[name=%v]"
@@ -100,38 +86,6 @@ func (data CryptoIPSecProfileData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data CryptoIPSecProfile) toBody(ctx context.Context, config CryptoIPSecProfile) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if !data.SetTransformSet.IsNull() && !data.SetTransformSet.IsUnknown() {
-		var values []string
-		data.SetTransformSet.ElementsAs(ctx, &values, false)
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.transform-set", values)
-	}
-	if !data.SetIkev2Profile.IsNull() && !data.SetIkev2Profile.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.ikev2-profile", data.SetIkev2Profile.ValueString())
-	}
-	if !data.SetIsakmpProfile.IsNull() && !data.SetIsakmpProfile.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.isakmp-profile", data.SetIsakmpProfile.ValueString())
-	}
-	if !data.SetPfsGroup.IsNull() && !data.SetPfsGroup.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.pfs.group", data.SetPfsGroup.ValueString())
-	}
-	if !data.SetSecurityAssociationLifetimeSeconds.IsNull() && !data.SetSecurityAssociationLifetimeSeconds.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.security-association.lifetime.seconds-case", strconv.FormatInt(data.SetSecurityAssociationLifetimeSeconds.ValueInt64(), 10))
-	}
-	if !data.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() && !data.SetSecurityAssociationLifetimeSecondsLegacy.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.security-association.lifetime.seconds", strconv.FormatInt(data.SetSecurityAssociationLifetimeSecondsLegacy.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -170,52 +124,6 @@ func (data CryptoIPSecProfile) toBodyXML(ctx context.Context, config CryptoIPSec
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *CryptoIPSecProfile) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "set.transform-set"); value.Exists() && !data.SetTransformSet.IsNull() {
-		data.SetTransformSet = helpers.GetStringList(value.Array())
-	} else {
-		data.SetTransformSet = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() && !data.SetIkev2Profile.IsNull() {
-		data.SetIkev2Profile = types.StringValue(value.String())
-	} else {
-		data.SetIkev2Profile = types.StringNull()
-	}
-	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() && !data.SetIsakmpProfile.IsNull() {
-		data.SetIsakmpProfile = types.StringValue(value.String())
-	} else {
-		data.SetIsakmpProfile = types.StringNull()
-	}
-	if value := res.Get(prefix + "set.pfs.group"); value.Exists() && !data.SetPfsGroup.IsNull() {
-		data.SetPfsGroup = types.StringValue(value.String())
-	} else {
-		data.SetPfsGroup = types.StringNull()
-	}
-	if value := res.Get(prefix + "set.security-association.lifetime.seconds-case"); value.Exists() && !data.SetSecurityAssociationLifetimeSeconds.IsNull() {
-		data.SetSecurityAssociationLifetimeSeconds = types.Int64Value(value.Int())
-	} else {
-		data.SetSecurityAssociationLifetimeSeconds = types.Int64Null()
-	}
-	if value := res.Get(prefix + "set.security-association.lifetime.seconds"); value.Exists() && !data.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() {
-		data.SetSecurityAssociationLifetimeSecondsLegacy = types.Int64Value(value.Int())
-	} else {
-		data.SetSecurityAssociationLifetimeSecondsLegacy = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -258,68 +166,6 @@ func (data *CryptoIPSecProfile) updateFromBodyXML(ctx context.Context, res xmldo
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *CryptoIPSecProfile) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "set.transform-set"); value.Exists() {
-		data.SetTransformSet = helpers.GetStringList(value.Array())
-	} else {
-		data.SetTransformSet = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() {
-		data.SetIkev2Profile = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() {
-		data.SetIsakmpProfile = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "set.pfs.group"); value.Exists() {
-		data.SetPfsGroup = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "set.security-association.lifetime.seconds-case"); value.Exists() {
-		data.SetSecurityAssociationLifetimeSeconds = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "set.security-association.lifetime.seconds"); value.Exists() {
-		data.SetSecurityAssociationLifetimeSecondsLegacy = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "set.transform-set"); value.Exists() {
-		data.SetTransformSet = helpers.GetStringList(value.Array())
-	} else {
-		data.SetTransformSet = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() {
-		data.SetIkev2Profile = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() {
-		data.SetIsakmpProfile = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "set.pfs.group"); value.Exists() {
-		data.SetPfsGroup = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "set.security-association.lifetime.seconds-case"); value.Exists() {
-		data.SetSecurityAssociationLifetimeSeconds = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "set.security-association.lifetime.seconds"); value.Exists() {
-		data.SetSecurityAssociationLifetimeSecondsLegacy = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -375,52 +221,6 @@ func (data *CryptoIPSecProfileData) fromBodyXML(ctx context.Context, res xmldot.
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state CryptoIPSecProfile) []string {
-	deletedItems := make([]string, 0)
-	if !state.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() && data.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/security-association/lifetime/seconds", state.getPath()))
-	}
-	if !state.SetSecurityAssociationLifetimeSeconds.IsNull() && data.SetSecurityAssociationLifetimeSeconds.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/security-association/lifetime/seconds-case", state.getPath()))
-	}
-	if !state.SetPfsGroup.IsNull() && data.SetPfsGroup.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/pfs/group", state.getPath()))
-	}
-	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/isakmp-profile", state.getPath()))
-	}
-	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/ikev2-profile", state.getPath()))
-	}
-	if !state.SetTransformSet.IsNull() {
-		if data.SetTransformSet.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/set/transform-set", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.SetTransformSet.ElementsAs(ctx, &dataValues, false)
-			state.SetTransformSet.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/set/transform-set=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state CryptoIPSecProfile, body string) string {
@@ -471,44 +271,6 @@ func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state Cr
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *CryptoIPSecProfile) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *CryptoIPSecProfile) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.SetSecurityAssociationLifetimeSecondsLegacy.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/security-association/lifetime/seconds", data.getPath()))
-	}
-	if !data.SetSecurityAssociationLifetimeSeconds.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/security-association/lifetime/seconds-case", data.getPath()))
-	}
-	if !data.SetPfsGroup.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/pfs/group", data.getPath()))
-	}
-	if !data.SetIsakmpProfile.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/isakmp-profile", data.getPath()))
-	}
-	if !data.SetIkev2Profile.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/ikev2-profile", data.getPath()))
-	}
-	if !data.SetTransformSet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/transform-set", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

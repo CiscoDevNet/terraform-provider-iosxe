@@ -1,10 +1,19 @@
 ## Unreleased
 
 - Add `password_level`, `password_type`, and `password` attributes to `iosxe_line` aux entries for line aux password configuration
+- Add `default_information_originate_metric`, `default_information_originate_metric_type`, `default_information_originate_route_map`, `redistribute_static_metric`, `redistribute_static_metric_type`, `redistribute_static_route_map`, `redistribute_static_tag`, `redistribute_static_nssa_only`, `redistribute_connected_metric`, `redistribute_connected_metric_type`, `redistribute_connected_route_map`, `redistribute_connected_tag`, `redistribute_connected_nssa_only`, `redistribute_ospf`, `distribute_list_in_access_lists`, and `distribute_list_out_access_lists` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
+- BREAKING CHANGE: Remove RESTCONF protocol support. The provider now exclusively uses NETCONF over SSH. Remove `protocol`, `url` provider attributes and `IOSXE_URL`, `IOSXE_PROTOCOL` environment variables from your configuration.
+- BREAKING CHANGE: Remove `detector_rpc_max_sessions` attribute from `iosxe_eem` resource and data source
+- Add `voice_vlan` attribute to `iosxe_interface_switchport` resource and data source
+- Add `console` attribute to `iosxe_aaa_authorization` resource and data source
+- Add `iosxe_stackwise_virtual` resource and data source for global StackWise Virtual configuration (`stackwise-virtual`), including domain ID and dual-active detection PAgP trust channel-group
+- Add `iosxe_interface_stackwise_virtual` resource and data source for interface-level StackWise Virtual configuration, including SVL link assignment and dual-active detection interface marking
 - Fix `iosxe_aaa` resource attempting to delete the `new_model` attribute on update or destroy. IOS-XE does not permit removal of `aaa new-model` once configured (`no aaa new-model` is rejected by the device with active AAA dependents); the leaf is now marked `no_delete: true`
 - Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable`, `spanning_tree_portfast_trunk`, and `spanning_tree_portfast_edge` attributes to `iosxe_interface_port_channel` resource and data source
 - Fix perpetual `terraform plan` drift on `iosxe_route_map` `set_communities` where IOS-XE returns decimal integers instead of the configured `AA:NN` notation by normalizing community values on read
+- Add `monitor_session` resource and data source with support for configuration of local SPAN sessions
 - Fix `iosxe_banner` "Provider produced invalid plan" error when recovering from device drift (out-of-band configuration changes)
+- Add `iosxe_ospfv3`, `iosxe_ospfv3_address_family_ipv4_vrf` and `iosxe_ospfv3_address_family_ipv6_vrf` resources and data sources
 - Add `match_flow_cts_destination_group_tag` and `match_flow_cts_source_group_tag` to `iosxe_flow_record` resource and data source
 - Add `process_ids` attribute to `iosxe_interface_ospfv3` resource and data source
 - Add `ipv6_unicast_aggregate_addresses`, `ipv6_unicast_admin_distances`, `ipv6_unicast_distance_bgp_external`, `ipv6_unicast_distance_bgp_internal`, `ipv6_unicast_distance_bgp_local`, `ipv6_unicast_maximum_paths_ebgp`, `ipv6_unicast_maximum_paths_ibgp`, `ipv6_unicast_router_id_ip`, `ipv6_unicast_router_id_loopback` attributes to `iosxe_bgp_address_family_ipv6_vrf` resource and data source
