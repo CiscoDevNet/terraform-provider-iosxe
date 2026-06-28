@@ -32,6 +32,7 @@ resource "iosxe_aaa_authorization" "example" {
       a4_local = true
     }
   ]
+  console = true
 }
 ```
 
@@ -43,6 +44,7 @@ resource "iosxe_aaa_authorization" "example" {
 - `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
 - `config_commands` (Boolean) For configuration mode commands.
 - `config_lists` (Attributes List) (see [below for nested schema](#nestedatt--config_lists))
+- `console` (Boolean) For enabling console authorization
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
