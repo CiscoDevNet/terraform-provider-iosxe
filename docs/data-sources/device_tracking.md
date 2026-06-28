@@ -26,6 +26,7 @@ data "iosxe_device_tracking" "example" {
 
 ### Read-Only
 
+- `binding_reachable_lifetime` (Number) Seconds..
 - `id` (String) The path of the retrieved object.
 - `logging_theft` (Boolean) IP or MAC theft events
 - `tracking_auto_source_fallback_ipv4` (String) IPv4 address
