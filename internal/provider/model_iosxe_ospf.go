@@ -25,9 +25,7 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -368,17 +366,6 @@ func (data OSPFData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=%v", url.QueryEscape(fmt.Sprintf("%v", data.ProcessId.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data OSPF) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data OSPF) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id[id=%v]"
@@ -393,7 +380,6 @@ func (data OSPFData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -903,7 +889,6 @@ func (data OSPF) toBodyXML(ctx context.Context, config OSPF) string {
 }
 
 // End of section. //template:end toBodyXML
-
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -1968,8 +1953,6 @@ func (data *OSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end updateFromBodyXML
 
-
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *OSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -2966,7 +2949,6 @@ func (data *OSPFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body string) string {
@@ -3839,248 +3821,6 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *OSPF) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
-		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisablePortChannels {
-		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTunnels {
-		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Tunnel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableVlans {
-		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableLoopbacks {
-		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Loopback=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FourHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/HundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FortyGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwentyFiveGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TenGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FiveGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.DistributeListOutAccessLists {
-		keyValues := [...]string{data.DistributeListOutAccessLists[i].Out.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/distribute-list/access-list/access-list-out=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.DistributeListInAccessLists {
-		keyValues := [...]string{data.DistributeListInAccessLists[i].In.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/distribute-list/access-list/access-list-in=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.RedistributeOspf {
-		keyValues := [...]string{strconv.FormatInt(data.RedistributeOspf[i].ProcessId.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/ospf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.RedistributeConnectedNssaOnly.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/nssa-only", data.getPath()))
-	}
-	if !data.RedistributeConnectedTag.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/tag", data.getPath()))
-	}
-	if !data.RedistributeConnectedRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/route-map", data.getPath()))
-	}
-	if !data.RedistributeConnectedMetricType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/metric-type", data.getPath()))
-	}
-	if !data.RedistributeConnectedMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/metric", data.getPath()))
-	}
-	if !data.RedistributeConnectedSubnets.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/subnets", data.getPath()))
-	}
-	if !data.RedistributeStaticNssaOnly.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/nssa-only", data.getPath()))
-	}
-	if !data.RedistributeStaticTag.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/tag", data.getPath()))
-	}
-	if !data.RedistributeStaticRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/route-map", data.getPath()))
-	}
-	if !data.RedistributeStaticMetricType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/metric-type", data.getPath()))
-	}
-	if !data.RedistributeStaticMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/metric", data.getPath()))
-	}
-	if !data.RedistributeStaticSubnets.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/subnets", data.getPath()))
-	}
-	if !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fast-reroute/per-prefix/enable/prefix-priority", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/time", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaIncludeStub.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/external-lsa/metric", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/summary-lsa/metric", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsa.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa", data.getPath()))
-	}
-	if !data.NsfIetfRestartInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf/restart-interval", data.getPath()))
-	}
-	if !data.NsfIetf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf", data.getPath()))
-	}
-	if !data.NsfCiscoEnforceGlobal.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", data.getPath()))
-	}
-	if !data.NsfCisco.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco", data.getPath()))
-	}
-	if !data.LogAdjacencyChangesDetail.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", data.getPath()))
-	}
-	if !data.LogAdjacencyChanges.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes", data.getPath()))
-	}
-	if !data.PassiveInterface.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
-	}
-	if !data.PassiveInterfaceDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
-	}
-	if !data.AutoCostReferenceBandwidth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
-	}
-	for i := range data.Areas {
-		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/area=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.SummaryAddresses {
-		keyValues := [...]string{data.SummaryAddresses[i].Ip.ValueString(), data.SummaryAddresses[i].Mask.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.RouterId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/router-id", data.getPath()))
-	}
-	if !data.Priority.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
-	}
-	for i := range data.Networks {
-		keyValues := [...]string{data.Networks[i].Ip.ValueString(), data.Networks[i].Wildcard.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Neighbors {
-		keyValues := [...]string{data.Neighbors[i].Ip.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/neighbor=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.MplsLdpSync.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
-	}
-	if !data.MplsLdpAutoconfig.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
-	}
-	if !data.DomainTag.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/domain-tag", data.getPath()))
-	}
-	if !data.Distance.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/distance/distance", data.getPath()))
-	}
-	if !data.DefaultMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-metric", data.getPath()))
-	}
-	if !data.DefaultInformationOriginateRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/route-map", data.getPath()))
-	}
-	if !data.DefaultInformationOriginateMetricType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/metric-type", data.getPath()))
-	}
-	if !data.DefaultInformationOriginateMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/metric", data.getPath()))
-	}
-	if !data.DefaultInformationOriginateAlways.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
-	}
-	if !data.DefaultInformationOriginate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate", data.getPath()))
-	}
-	if !data.BfdAllInterfaces.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
