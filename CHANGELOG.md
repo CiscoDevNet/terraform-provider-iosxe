@@ -3,6 +3,7 @@
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute
 - BREAKING CHANGE: Consolidate `iosxe_dhcp_pool` and `iosxe_ipv6_dhcp_pool` into `iosxe_dhcp` as `pools` and `ipv6_pools` list attributes
 - BREAKING CHANGE: Consolidate `iosxe_evpn_profile` into `iosxe_evpn` as a `profiles` list attribute
+- Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
 - BREAKING CHANGE: Remove RESTCONF protocol support. The provider now exclusively uses NETCONF over SSH. Remove `protocol`, `url` provider attributes and `IOSXE_URL`, `IOSXE_PROTOCOL` environment variables from your configuration.
 - BREAKING CHANGE: Remove `detector_rpc_max_sessions` attribute from `iosxe_eem` resource and data source
 - BREAKING CHANGE: Drop support for IOS-XE 17.12

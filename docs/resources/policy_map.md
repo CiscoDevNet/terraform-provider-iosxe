@@ -91,6 +91,7 @@ Optional:
   - Range: `8000`-`100000000000`
 - `police_cir_conform_transmit` (Boolean) transmit packet
 - `police_cir_exceed_drop` (Boolean) drop packet
+- `police_cir_exceed_transmit` (Boolean) transmit packet
 - `police_pir` (Number) Peak Information Rate
   - Range: `8000`-`64000000000`
 - `police_pir_be` (Number) Excess burst
