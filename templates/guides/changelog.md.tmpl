@@ -12,6 +12,9 @@ description: |-
 - BREAKING CHANGE: Remove RESTCONF protocol support. The provider now exclusively uses NETCONF over SSH. Remove `protocol`, `url` provider attributes and `IOSXE_URL`, `IOSXE_PROTOCOL` environment variables from your configuration.
 - BREAKING CHANGE: Remove `detector_rpc_max_sessions` attribute from `iosxe_eem` resource and data source
 - Add `voice_vlan` attribute to `iosxe_interface_switchport` resource and data source
+- Add `console` attribute to `iosxe_aaa_authorization` resource and data source
+- Add `iosxe_stackwise_virtual` resource and data source for global StackWise Virtual configuration (`stackwise-virtual`), including domain ID and dual-active detection PAgP trust channel-group
+- Add `iosxe_interface_stackwise_virtual` resource and data source for interface-level StackWise Virtual configuration, including SVL link assignment and dual-active detection interface marking
 - Fix `iosxe_aaa` resource attempting to delete the `new_model` attribute on update or destroy. IOS-XE does not permit removal of `aaa new-model` once configured (`no aaa new-model` is rejected by the device with active AAA dependents); the leaf is now marked `no_delete: true`
 - Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable`, `spanning_tree_portfast_trunk`, and `spanning_tree_portfast_edge` attributes to `iosxe_interface_port_channel` resource and data source
 - Fix perpetual `terraform plan` drift on `iosxe_route_map` `set_communities` where IOS-XE returns decimal integers instead of the configured `AA:NN` notation by normalizing community values on read

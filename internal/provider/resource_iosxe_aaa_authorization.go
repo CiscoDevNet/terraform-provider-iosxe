@@ -368,6 +368,10 @@ func (r *AAAAuthorizationResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 			},
+			"console": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("For enabling console authorization").String,
+				Optional:            true,
+			},
 		},
 	}
 }
