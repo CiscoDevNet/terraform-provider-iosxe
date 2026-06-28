@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -70,17 +67,6 @@ func (data InterfaceStackwiseVirtualData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/stackwise-virtual", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data InterfaceStackwiseVirtual) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceStackwiseVirtual) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/stackwise-virtual"
@@ -95,23 +81,6 @@ func (data InterfaceStackwiseVirtualData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data InterfaceStackwiseVirtual) toBody(ctx context.Context, config InterfaceStackwiseVirtual) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Link.IsNull() && !data.Link.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"link", strconv.FormatInt(data.Link.ValueInt64(), 10))
-	}
-	if !data.DualActiveDetection.IsNull() && !data.DualActiveDetection.IsUnknown() {
-		if data.DualActiveDetection.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dual-active-detection", map[string]string{})
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -136,31 +105,6 @@ func (data InterfaceStackwiseVirtual) toBodyXML(ctx context.Context, config Inte
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *InterfaceStackwiseVirtual) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "link"); value.Exists() && !data.Link.IsNull() {
-		data.Link = types.Int64Value(value.Int())
-	} else {
-		data.Link = types.Int64Null()
-	}
-	if value := res.Get(prefix + "dual-active-detection"); !data.DualActiveDetection.IsNull() {
-		if value.Exists() {
-			data.DualActiveDetection = types.BoolValue(true)
-		} else {
-			data.DualActiveDetection = types.BoolValue(false)
-		}
-	} else {
-		data.DualActiveDetection = types.BoolNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *InterfaceStackwiseVirtual) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -181,44 +125,6 @@ func (data *InterfaceStackwiseVirtual) updateFromBodyXML(ctx context.Context, re
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *InterfaceStackwiseVirtual) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "link"); value.Exists() {
-		data.Link = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "dual-active-detection"); value.Exists() {
-		data.DualActiveDetection = types.BoolValue(true)
-	} else {
-		data.DualActiveDetection = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *InterfaceStackwiseVirtualData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "link"); value.Exists() {
-		data.Link = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "dual-active-detection"); value.Exists() {
-		data.DualActiveDetection = types.BoolValue(true)
-	} else {
-		data.DualActiveDetection = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -250,22 +156,6 @@ func (data *InterfaceStackwiseVirtualData) fromBodyXML(ctx context.Context, res 
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *InterfaceStackwiseVirtual) getDeletedItems(ctx context.Context, state InterfaceStackwiseVirtual) []string {
-	deletedItems := make([]string, 0)
-	if !state.DualActiveDetection.IsNull() && data.DualActiveDetection.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dual-active-detection", state.getPath()))
-	}
-	if !state.Link.IsNull() && data.Link.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/link", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *InterfaceStackwiseVirtual) addDeletedItemsXML(ctx context.Context, state InterfaceStackwiseVirtual, body string) string {
@@ -282,35 +172,6 @@ func (data *InterfaceStackwiseVirtual) addDeletedItemsXML(ctx context.Context, s
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *InterfaceStackwiseVirtual) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.DualActiveDetection.IsNull() && !data.DualActiveDetection.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dual-active-detection", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *InterfaceStackwiseVirtual) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.DualActiveDetection.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dual-active-detection", data.getPath()))
-	}
-	if !data.Link.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/link", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

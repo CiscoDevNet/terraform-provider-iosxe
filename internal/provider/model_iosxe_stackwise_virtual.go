@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -31,8 +30,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -67,17 +64,6 @@ func (data StackwiseVirtualData) getPath() string {
 	return "Cisco-IOS-XE-native:native/stackwise-virtual"
 }
 
-// if last path element has a key -> remove it
-func (data StackwiseVirtual) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data StackwiseVirtual) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/stackwise-virtual"
@@ -90,26 +76,6 @@ func (data StackwiseVirtualData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data StackwiseVirtual) toBody(ctx context.Context, config StackwiseVirtual) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Domain.IsNull() && !data.Domain.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-stackwise-virtual:domain.domain", strconv.FormatInt(data.Domain.ValueInt64(), 10))
-	}
-	if !data.DualActiveDetectionPagp.IsNull() && !data.DualActiveDetectionPagp.IsUnknown() {
-		if data.DualActiveDetectionPagp.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp", map[string]string{})
-		}
-	}
-	if !data.DualActiveDetectionPagpTrustChannelGroup.IsNull() && !data.DualActiveDetectionPagpTrustChannelGroup.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp.trust.channel-group.channel-group-number", strconv.FormatInt(data.DualActiveDetectionPagpTrustChannelGroup.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -137,36 +103,6 @@ func (data StackwiseVirtual) toBodyXML(ctx context.Context, config StackwiseVirt
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *StackwiseVirtual) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:domain.domain"); value.Exists() && !data.Domain.IsNull() {
-		data.Domain = types.Int64Value(value.Int())
-	} else {
-		data.Domain = types.Int64Null()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp"); !data.DualActiveDetectionPagp.IsNull() {
-		if value.Exists() {
-			data.DualActiveDetectionPagp = types.BoolValue(true)
-		} else {
-			data.DualActiveDetectionPagp = types.BoolValue(false)
-		}
-	} else {
-		data.DualActiveDetectionPagp = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp.trust.channel-group.channel-group-number"); value.Exists() && !data.DualActiveDetectionPagpTrustChannelGroup.IsNull() {
-		data.DualActiveDetectionPagpTrustChannelGroup = types.Int64Value(value.Int())
-	} else {
-		data.DualActiveDetectionPagpTrustChannelGroup = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *StackwiseVirtual) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -192,50 +128,6 @@ func (data *StackwiseVirtual) updateFromBodyXML(ctx context.Context, res xmldot.
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *StackwiseVirtual) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:domain.domain"); value.Exists() {
-		data.Domain = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp"); value.Exists() {
-		data.DualActiveDetectionPagp = types.BoolValue(true)
-	} else {
-		data.DualActiveDetectionPagp = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp.trust.channel-group.channel-group-number"); value.Exists() {
-		data.DualActiveDetectionPagpTrustChannelGroup = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *StackwiseVirtualData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:domain.domain"); value.Exists() {
-		data.Domain = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp"); value.Exists() {
-		data.DualActiveDetectionPagp = types.BoolValue(true)
-	} else {
-		data.DualActiveDetectionPagp = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-stackwise-virtual:dual-active.detection.pagp.trust.channel-group.channel-group-number"); value.Exists() {
-		data.DualActiveDetectionPagpTrustChannelGroup = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -273,25 +165,6 @@ func (data *StackwiseVirtualData) fromBodyXML(ctx context.Context, res xmldot.Re
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *StackwiseVirtual) getDeletedItems(ctx context.Context, state StackwiseVirtual) []string {
-	deletedItems := make([]string, 0)
-	if !state.DualActiveDetectionPagpTrustChannelGroup.IsNull() && data.DualActiveDetectionPagpTrustChannelGroup.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp/trust/channel-group/channel-group-number", state.getPath()))
-	}
-	if !state.DualActiveDetectionPagp.IsNull() && data.DualActiveDetectionPagp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp", state.getPath()))
-	}
-	if !state.Domain.IsNull() && data.Domain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-stackwise-virtual:domain/domain", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *StackwiseVirtual) addDeletedItemsXML(ctx context.Context, state StackwiseVirtual, body string) string {
@@ -311,38 +184,6 @@ func (data *StackwiseVirtual) addDeletedItemsXML(ctx context.Context, state Stac
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *StackwiseVirtual) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.DualActiveDetectionPagp.IsNull() && !data.DualActiveDetectionPagp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *StackwiseVirtual) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.DualActiveDetectionPagpTrustChannelGroup.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp/trust/channel-group/channel-group-number", data.getPath()))
-	}
-	if !data.DualActiveDetectionPagp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp", data.getPath()))
-	}
-	if !data.Domain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-stackwise-virtual:domain/domain", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
