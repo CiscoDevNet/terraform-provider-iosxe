@@ -138,6 +138,10 @@ func (r *InterfaceSwitchportResource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"voice_vlan": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 			"trunk_allowed_vlans": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,

@@ -53,6 +53,7 @@ data "iosxe_interface_switchport" "example" {
 - `trunk_allowed_vlans_remove` (String) VLAN IDs of disallowed VLANs when this port is in trunking mode
 - `trunk_native_vlan` (Number)
 - `trunk_native_vlan_tag` (Boolean)
+- `voice_vlan` (String)
 
 <a id="nestedatt--trunk_allowed_vlans_add"></a>
 ### Nested Schema for `trunk_allowed_vlans_add`
