@@ -107,6 +107,7 @@ attributes:
       - yang_name: protocal-number
         tf_name: protocol_numbers
         type: Int64Set
+        example: 47
         attributes:
           - yang_name: protocal-number
             tf_name: number

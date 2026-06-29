@@ -27,6 +27,7 @@ attributes:
       - yang_name: description
         tf_name: description_legacy
         test_tags: [IOSXE1712]
+        allow_import_changes: true
         example: Entry 10
       - yang_name: continue
         example: false

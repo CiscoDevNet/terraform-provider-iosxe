@@ -37,7 +37,7 @@ resource "iosxe_object_group" "example" {
     {
       name                      = "SERVICE_GROUP_1"
       description               = "My service object group"
-      protocol_numbers          = []
+      protocol_numbers          = [47]
       ahp                       = true
       eigrp                     = false
       esp                       = false

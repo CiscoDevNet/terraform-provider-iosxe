@@ -59,13 +59,13 @@ func TestAccDataSourceIosxeSwitch(t *testing.T) {
 func testAccDataSourceIosxeSwitchConfig() string {
 	config := `resource "iosxe_switch" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	number = 1` + "\n"
+	config += `	number = 2` + "\n"
 	config += `	provision = "c9300-24p"` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_switch" "test" {
-			number = 1
+			number = 2
 			depends_on = [iosxe_switch.test]
 		}
 	`

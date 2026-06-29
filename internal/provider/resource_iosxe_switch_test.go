@@ -38,7 +38,7 @@ func TestAccIosxeSwitch(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_switch.test", "number", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_switch.test", "number", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_switch.test", "provision", "c9300-24p"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -85,7 +85,7 @@ func iosxeSwitchImportStateIdFunc(resourceName string) resource.ImportStateIdFun
 
 func testAccIosxeSwitchConfig_minimum() string {
 	config := `resource "iosxe_switch" "test" {` + "\n"
-	config += `	number = 1` + "\n"
+	config += `	number = 2` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -96,7 +96,7 @@ func testAccIosxeSwitchConfig_minimum() string {
 
 func testAccIosxeSwitchConfig_all() string {
 	config := `resource "iosxe_switch" "test" {` + "\n"
-	config += `	number = 1` + "\n"
+	config += `	number = 2` + "\n"
 	config += `	provision = "c9300-24p"` + "\n"
 	config += `}` + "\n"
 	return config

@@ -14,7 +14,7 @@ This resource can manage the Switch configuration.
 
 ```terraform
 resource "iosxe_switch" "example" {
-  number    = 1
+  number    = 2
   provision = "c9300-24p"
 }
 ```

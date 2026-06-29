@@ -278,7 +278,7 @@ func testAccIosxeObjectGroupConfig_all() string {
 	config += `	service = [{` + "\n"
 	config += `		name = "SERVICE_GROUP_1"` + "\n"
 	config += `		description = "My service object group"` + "\n"
-	config += `		protocol_numbers = []` + "\n"
+	config += `		protocol_numbers = [47]` + "\n"
 	config += `		ahp = true` + "\n"
 	config += `		eigrp = false` + "\n"
 	config += `		esp = false` + "\n"

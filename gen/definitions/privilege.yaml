@@ -19,5 +19,5 @@ attributes:
         type: List
         attributes:
           - yang_name: command
-            example: show running-config
+            example: configure
             id: true

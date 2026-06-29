@@ -14,7 +14,7 @@ This data source can read the Switch configuration.
 
 ```terraform
 data "iosxe_switch" "example" {
-  number = 1
+  number = 2
 }
 ```
 
