@@ -311,7 +311,7 @@ func (r *LargeCommunityListStandardResource) Delete(ctx context.Context, req res
 	}
 
 	if device.Managed {
-		deleteMode := "attributes"
+		deleteMode := "all"
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
