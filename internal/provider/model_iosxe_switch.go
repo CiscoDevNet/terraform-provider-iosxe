@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -66,17 +63,6 @@ func (data SwitchData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:switch=%v", url.QueryEscape(fmt.Sprintf("%v", data.Number.ValueInt64())))
 }
 
-// if last path element has a key -> remove it
-func (data Switch) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data Switch) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:switch[number=%v]"
@@ -91,21 +77,6 @@ func (data SwitchData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data Switch) toBody(ctx context.Context, config Switch) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Number.IsNull() && !data.Number.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"number", strconv.FormatInt(data.Number.ValueInt64(), 10))
-	}
-	if !data.Provision.IsNull() && !data.Provision.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"provision", data.Provision.ValueString())
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -126,27 +97,6 @@ func (data Switch) toBodyXML(ctx context.Context, config Switch) string {
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *Switch) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "number"); value.Exists() && !data.Number.IsNull() {
-		data.Number = types.Int64Value(value.Int())
-	} else {
-		data.Number = types.Int64Null()
-	}
-	if value := res.Get(prefix + "provision"); value.Exists() && !data.Provision.IsNull() {
-		data.Provision = types.StringValue(value.String())
-	} else {
-		data.Provision = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *Switch) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -163,34 +113,6 @@ func (data *Switch) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *Switch) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "provision"); value.Exists() {
-		data.Provision = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *SwitchData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "provision"); value.Exists() {
-		data.Provision = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -212,19 +134,6 @@ func (data *SwitchData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *Switch) getDeletedItems(ctx context.Context, state Switch) []string {
-	deletedItems := make([]string, 0)
-	if !state.Provision.IsNull() && data.Provision.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/provision", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *Switch) addDeletedItemsXML(ctx context.Context, state Switch, body string) string {
@@ -238,29 +147,6 @@ func (data *Switch) addDeletedItemsXML(ctx context.Context, state Switch, body s
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *Switch) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *Switch) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.Provision.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/provision", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
