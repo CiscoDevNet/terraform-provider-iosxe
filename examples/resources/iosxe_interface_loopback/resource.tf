@@ -28,6 +28,9 @@ resource "iosxe_interface_loopback" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout     = 2147
-  ip_igmp_version = 3
+  arp_timeout                              = 2147
+  ip_igmp_version                          = 3
+  ip_verify_unicast_source_reachable_via   = "rx"
+  ip_verify_unicast_source_allow_self_ping = true
+  ip_verify_unicast_source_allow_default   = true
 }

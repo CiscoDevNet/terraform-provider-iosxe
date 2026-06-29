@@ -420,6 +420,18 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Outside interface for address translation",
 				Computed:            true,
 			},
+			"ip_verify_unicast_source_reachable_via": schema.StringAttribute{
+				MarkdownDescription: "Specify reachability check to apply to the source address",
+				Computed:            true,
+			},
+			"ip_verify_unicast_source_allow_self_ping": schema.BoolAttribute{
+				MarkdownDescription: "Allow router to ping itself (opens vulnerability in verification)",
+				Computed:            true,
+			},
+			"ip_verify_unicast_source_allow_default": schema.BoolAttribute{
+				MarkdownDescription: "Allow default route to match when checking source address",
+				Computed:            true,
+			},
 			"ip_flow_monitors": schema.ListNestedAttribute{
 				MarkdownDescription: "Apply a Flow Monitor",
 				Computed:            true,
