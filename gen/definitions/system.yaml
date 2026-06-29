@@ -792,6 +792,7 @@ attributes:
     test_tags: [C9000V]
   - yang_name: mac/address-table/aging-time/val
     tf_name: mac_address_table_aging_time
+    description: Set MAC address table entry maximum age in seconds
     example: 14400
   - yang_name: Cisco-IOS-XE-power:power/redundancy-mode-config/combined
     tf_name: power_redundancy_mode_combined
