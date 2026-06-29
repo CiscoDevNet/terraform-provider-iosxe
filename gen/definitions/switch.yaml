@@ -2,7 +2,7 @@
 name: Switch
 path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:switch[number=%v]
 doc_category: System
-test_tags: [C9000V]
+test_tags: [C9500]
 attributes:
   - yang_name: number
     example: 2
