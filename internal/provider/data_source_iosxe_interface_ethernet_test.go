@@ -93,6 +93,9 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_server_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_nat_inside", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_verify_unicast_source_reachable_via", "rx"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_verify_unicast_source_allow_self_ping", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_verify_unicast_source_allow_default", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
 	}
@@ -241,6 +244,9 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	cdp_tlv_location = false` + "\n"
 	config += `	cdp_tlv_server_location = false` + "\n"
 	config += `	ip_nat_inside = true` + "\n"
+	config += `	ip_verify_unicast_source_reachable_via = "rx"` + "\n"
+	config += `	ip_verify_unicast_source_allow_self_ping = true` + "\n"
+	config += `	ip_verify_unicast_source_allow_default = true` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	evpn_ethernet_segments = [{` + "\n"
 		config += `		es_value = 1` + "\n"

@@ -24,17 +24,13 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -85,17 +81,6 @@ func (data LLDPData) getPath() string {
 	return "Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp"
 }
 
-// if last path element has a key -> remove it
-func (data LLDP) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data LLDP) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp"
@@ -108,50 +93,6 @@ func (data LLDPData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data LLDP) toBody(ctx context.Context, config LLDP) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Run.IsNull() && !data.Run.IsUnknown() {
-		if data.Run.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"run", map[string]string{})
-		}
-	}
-	if !data.Holdtime.IsNull() && !data.Holdtime.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"holdtime", strconv.FormatInt(data.Holdtime.ValueInt64(), 10))
-	}
-	if !data.ManagementVlan.IsNull() && !data.ManagementVlan.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"management-vlan", strconv.FormatInt(data.ManagementVlan.ValueInt64(), 10))
-	}
-	if !data.Timer.IsNull() && !data.Timer.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timer", strconv.FormatInt(data.Timer.ValueInt64(), 10))
-	}
-	if !data.Ipv4ManagementAddresses.IsNull() && !data.Ipv4ManagementAddresses.IsUnknown() {
-		var values []string
-		data.Ipv4ManagementAddresses.ElementsAs(ctx, &values, false)
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"management-address.ipv4", values)
-	}
-	if !data.Ipv6ManagementAddresses.IsNull() && !data.Ipv6ManagementAddresses.IsUnknown() {
-		var values []string
-		data.Ipv6ManagementAddresses.ElementsAs(ctx, &values, false)
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"management-address.ipv6", values)
-	}
-	if len(data.SystemNames) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"system-name", []interface{}{})
-		for index, item := range data.SystemNames {
-			if !item.SwitchId.IsNull() && !item.SwitchId.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"system-name"+"."+strconv.Itoa(index)+"."+"switch-id", strconv.FormatInt(item.SwitchId.ValueInt64(), 10))
-			}
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"system-name"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -207,85 +148,6 @@ func (data LLDP) toBodyXML(ctx context.Context, config LLDP) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *LLDP) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "run"); !data.Run.IsNull() {
-		if value.Exists() {
-			data.Run = types.BoolValue(true)
-		} else {
-			data.Run = types.BoolValue(false)
-		}
-	} else {
-		data.Run = types.BoolNull()
-	}
-	if value := res.Get(prefix + "holdtime"); value.Exists() && !data.Holdtime.IsNull() {
-		data.Holdtime = types.Int64Value(value.Int())
-	} else {
-		data.Holdtime = types.Int64Null()
-	}
-	if value := res.Get(prefix + "management-vlan"); value.Exists() && !data.ManagementVlan.IsNull() {
-		data.ManagementVlan = types.Int64Value(value.Int())
-	} else {
-		data.ManagementVlan = types.Int64Null()
-	}
-	if value := res.Get(prefix + "timer"); value.Exists() && !data.Timer.IsNull() {
-		data.Timer = types.Int64Value(value.Int())
-	} else {
-		data.Timer = types.Int64Null()
-	}
-	if value := res.Get(prefix + "management-address.ipv4"); value.Exists() && !data.Ipv4ManagementAddresses.IsNull() {
-		data.Ipv4ManagementAddresses = helpers.GetStringList(value.Array())
-	} else {
-		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "management-address.ipv6"); value.Exists() && !data.Ipv6ManagementAddresses.IsNull() {
-		data.Ipv6ManagementAddresses = helpers.GetStringList(value.Array())
-	} else {
-		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
-	}
-	for i := range data.SystemNames {
-		keys := [...]string{"switch-id"}
-		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
-
-		var r gjson.Result
-		res.Get(prefix + "system-name").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("switch-id"); value.Exists() && !data.SystemNames[i].SwitchId.IsNull() {
-			data.SystemNames[i].SwitchId = types.Int64Value(value.Int())
-		} else {
-			data.SystemNames[i].SwitchId = types.Int64Null()
-		}
-		if value := r.Get("name"); value.Exists() && !data.SystemNames[i].Name.IsNull() {
-			data.SystemNames[i].Name = types.StringValue(value.String())
-		} else {
-			data.SystemNames[i].Name = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -361,104 +223,6 @@ func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *LLDP) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "run"); value.Exists() {
-		data.Run = types.BoolValue(true)
-	} else {
-		data.Run = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "holdtime"); value.Exists() {
-		data.Holdtime = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "management-vlan"); value.Exists() {
-		data.ManagementVlan = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "timer"); value.Exists() {
-		data.Timer = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "management-address.ipv4"); value.Exists() {
-		data.Ipv4ManagementAddresses = helpers.GetStringList(value.Array())
-	} else {
-		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "management-address.ipv6"); value.Exists() {
-		data.Ipv6ManagementAddresses = helpers.GetStringList(value.Array())
-	} else {
-		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "system-name"); value.Exists() {
-		data.SystemNames = make([]LLDPSystemNames, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := LLDPSystemNames{}
-			if cValue := v.Get("switch-id"); cValue.Exists() {
-				item.SwitchId = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.SystemNames = append(data.SystemNames, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *LLDPData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "run"); value.Exists() {
-		data.Run = types.BoolValue(true)
-	} else {
-		data.Run = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "holdtime"); value.Exists() {
-		data.Holdtime = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "management-vlan"); value.Exists() {
-		data.ManagementVlan = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "timer"); value.Exists() {
-		data.Timer = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "management-address.ipv4"); value.Exists() {
-		data.Ipv4ManagementAddresses = helpers.GetStringList(value.Array())
-	} else {
-		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "management-address.ipv6"); value.Exists() {
-		data.Ipv6ManagementAddresses = helpers.GetStringList(value.Array())
-	} else {
-		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "system-name"); value.Exists() {
-		data.SystemNames = make([]LLDPSystemNamesData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := LLDPSystemNamesData{}
-			if cValue := v.Get("switch-id"); cValue.Exists() {
-				item.SwitchId = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.SystemNames = append(data.SystemNames, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -549,98 +313,6 @@ func (data *LLDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.SystemNames {
-		stateKeyValues := [...]string{strconv.FormatInt(state.SystemNames[i].SwitchId.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.SystemNames[i].SwitchId.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.SystemNames {
-			found = true
-			if state.SystemNames[i].SwitchId.ValueInt64() != data.SystemNames[j].SwitchId.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.SystemNames[i].Name.IsNull() && data.SystemNames[j].Name.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/system-name=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/system-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.Ipv6ManagementAddresses.IsNull() {
-		if data.Ipv6ManagementAddresses.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv6", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.Ipv6ManagementAddresses.ElementsAs(ctx, &dataValues, false)
-			state.Ipv6ManagementAddresses.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv6=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.Ipv4ManagementAddresses.IsNull() {
-		if data.Ipv4ManagementAddresses.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv4", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.Ipv4ManagementAddresses.ElementsAs(ctx, &dataValues, false)
-			state.Ipv4ManagementAddresses.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv4=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.Timer.IsNull() && data.Timer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/timer", state.getPath()))
-	}
-	if !state.ManagementVlan.IsNull() && data.ManagementVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/management-vlan", state.getPath()))
-	}
-	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/holdtime", state.getPath()))
-	}
-	if !state.Run.IsNull() && data.Run.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/run", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
@@ -747,53 +419,6 @@ func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body strin
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *LLDP) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	if !data.Run.IsNull() && !data.Run.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/run", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *LLDP) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.SystemNames {
-		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/system-name=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.Ipv6ManagementAddresses.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-address/ipv6", data.getPath()))
-	}
-	if !data.Ipv4ManagementAddresses.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-address/ipv4", data.getPath()))
-	}
-	if !data.Timer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timer", data.getPath()))
-	}
-	if !data.ManagementVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-vlan", data.getPath()))
-	}
-	if !data.Holdtime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/holdtime", data.getPath()))
-	}
-	if !data.Run.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/run", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

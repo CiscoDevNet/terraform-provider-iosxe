@@ -1,0 +1,11 @@
+---
+name: QoS
+path: /Cisco-IOS-XE-native:native/qos
+no_delete: true
+doc_category: QoS
+attributes:
+  - yang_name: Cisco-IOS-XE-qos:queue-softmax-multiplier/value
+    tf_name: queue_softmax_multiplier
+    description: Queue soft buffer maximum multiplier percentage (100-1200)
+    example: 1200
+    test_tags: [C9000V]

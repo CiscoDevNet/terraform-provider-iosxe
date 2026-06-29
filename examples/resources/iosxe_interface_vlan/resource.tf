@@ -42,8 +42,11 @@ resource "iosxe_interface_vlan" "example" {
       eui_64 = true
     }
   ]
-  load_interval                           = 30
-  mac_address                             = "0000.dead.beef"
-  ip_dhcp_relay_information_option_vpn_id = true
-  ip_igmp_version                         = 3
+  load_interval                            = 30
+  mac_address                              = "0000.dead.beef"
+  ip_dhcp_relay_information_option_vpn_id  = true
+  ip_igmp_version                          = 3
+  ip_verify_unicast_source_reachable_via   = "rx"
+  ip_verify_unicast_source_allow_self_ping = true
+  ip_verify_unicast_source_allow_default   = true
 }

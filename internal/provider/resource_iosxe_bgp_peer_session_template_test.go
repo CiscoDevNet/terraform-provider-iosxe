@@ -54,7 +54,7 @@ func TestAccIosxeBGPPeerSessionTemplate(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeBGPPeerSessionTemplateImportStateIdFunc("iosxe_bgp_peer_session_template.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"ao_include_tcp_options", "ao_accept_mismatch_connections"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

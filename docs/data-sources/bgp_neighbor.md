@@ -33,6 +33,9 @@ data "iosxe_bgp_neighbor" "example" {
 
 ### Read-Only
 
+- `ao_accept_mismatch_connections` (Boolean) accept ao mismatch connections
+- `ao_include_tcp_options` (Boolean) Include TCP options
+- `ao_keychain` (String) Key Chain Name
 - `cluster_id` (String)
 - `description` (String) Neighbor specific description
 - `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address

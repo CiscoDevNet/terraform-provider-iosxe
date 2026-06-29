@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -79,17 +76,6 @@ func (data UsernameData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/username=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data Username) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data Username) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/username[name=%s]"
@@ -104,44 +90,6 @@ func (data UsernameData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data Username) toBody(ctx context.Context, config Username) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if !data.Privilege.IsNull() && !data.Privilege.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"privilege", strconv.FormatInt(data.Privilege.ValueInt64(), 10))
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
-	}
-	if !data.PasswordEncryption.IsNull() && !data.PasswordEncryption.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.encryption", data.PasswordEncryption.ValueString())
-	}
-	if !data.Password.IsNull() && !data.Password.IsUnknown() {
-		if !config.PasswordWO.IsNull() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.password", config.PasswordWO.ValueString())
-		} else {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.password", data.Password.ValueString())
-		}
-	}
-	if !data.SecretEncryption.IsNull() && !data.SecretEncryption.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"secret.encryption", data.SecretEncryption.ValueString())
-	}
-	if !data.Secret.IsNull() && !data.Secret.IsUnknown() {
-		if !config.SecretWO.IsNull() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"secret.secret", config.SecretWO.ValueString())
-		} else {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"secret.secret", data.Secret.ValueString())
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -185,32 +133,6 @@ func (data Username) toBodyXML(ctx context.Context, config Username) string {
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *Username) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "privilege"); value.Exists() && !data.Privilege.IsNull() {
-		data.Privilege = types.Int64Value(value.Int())
-	} else {
-		data.Privilege = types.Int64Null()
-	}
-	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
-		data.Description = types.StringValue(value.String())
-	} else {
-		data.Description = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *Username) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -232,64 +154,6 @@ func (data *Username) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *Username) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "privilege"); value.Exists() {
-		data.Privilege = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "password.encryption"); value.Exists() {
-		data.PasswordEncryption = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "password.password"); value.Exists() {
-		data.Password = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "secret.encryption"); value.Exists() {
-		data.SecretEncryption = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "secret.secret"); value.Exists() {
-		data.Secret = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "privilege"); value.Exists() {
-		data.Privilege = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "password.encryption"); value.Exists() {
-		data.PasswordEncryption = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "password.password"); value.Exists() {
-		data.Password = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "secret.encryption"); value.Exists() {
-		data.SecretEncryption = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "secret.secret"); value.Exists() {
-		data.Secret = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -341,34 +205,6 @@ func (data *UsernameData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *Username) getDeletedItems(ctx context.Context, state Username) []string {
-	deletedItems := make([]string, 0)
-	if !state.Secret.IsNull() && data.Secret.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/secret/secret", state.getPath()))
-	}
-	if !state.SecretEncryption.IsNull() && data.SecretEncryption.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/secret/encryption", state.getPath()))
-	}
-	if !state.Password.IsNull() && data.Password.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/password", state.getPath()))
-	}
-	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/encryption", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.Privilege.IsNull() && data.Privilege.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/privilege", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *Username) addDeletedItemsXML(ctx context.Context, state Username, body string) string {
@@ -397,44 +233,6 @@ func (data *Username) addDeletedItemsXML(ctx context.Context, state Username, bo
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *Username) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *Username) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.Secret.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/secret/secret", data.getPath()))
-	}
-	if !data.SecretEncryption.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/secret/encryption", data.getPath()))
-	}
-	if !data.Password.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/password", data.getPath()))
-	}
-	if !data.PasswordEncryption.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/encryption", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.Privilege.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/privilege", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

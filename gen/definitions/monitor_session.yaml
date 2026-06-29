@@ -1,0 +1,27 @@
+---
+name: Monitor Session
+path: /Cisco-IOS-XE-native:native/monitor/session[id=%v]
+doc_category: System
+test_tags: [C9000V]
+skip_minimum_test: true
+no_delete_attributes: true
+attributes:
+  - yang_name: id
+    tf_name: session_id
+    example: 1
+  - yang_name: destination/interface
+    type: List
+    attributes:
+      - yang_name: name
+        example: GigabitEthernet1/0/1
+        id: true
+      - yang_name: encapsulation
+        example: replicate
+  - yang_name: source/interface
+    type: List
+    attributes:
+      - yang_name: name
+        example: GigabitEthernet1/0/2
+        id: true
+      - yang_name: direction
+        example: both
