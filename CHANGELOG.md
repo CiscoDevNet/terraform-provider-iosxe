@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `iosxe_switch` resource and data source for StackWise member provisioning (`switch <number> provision <model>`)
 - Add `iosxe_privilege` resource and data source for privilege level command mapping configuration (`privilege <mode> level <level> <command>`), including mode selection (exec, configure, interface, router, crypto-map, ipenacl) with nested level and command-list attributes
 - Add `mac_address_table_aging_time` attribute to `iosxe_system` resource and data source
 - Add `password_level`, `password_type`, and `password` attributes to `iosxe_line` aux entries for line aux password configuration
