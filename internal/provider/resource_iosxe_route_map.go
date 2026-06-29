@@ -23,24 +23,21 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"strings"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/netascode/go-netconf"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 )
 
 // End of section. //template:end imports
@@ -102,10 +99,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"operation": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Route map permit/deny set operations").AddStringEnumDescription("deny", "permit", ).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Route map permit/deny set operations").AddStringEnumDescription("deny", "permit").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("deny", "permit", ),
+								stringvalidator.OneOf("deny", "permit"),
 							},
 						},
 						"descriptions": schema.ListNestedAttribute{
@@ -441,10 +438,10 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_metric_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Type of metric for destination routing protocol").AddStringEnumDescription("external", "internal", "type-1", "type-2", ).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Type of metric for destination routing protocol").AddStringEnumDescription("external", "internal", "type-1", "type-2").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("external", "internal", "type-1", "type-2", ),
+								stringvalidator.OneOf("external", "internal", "type-1", "type-2"),
 							},
 						},
 						"set_tag": schema.Int64Attribute{
@@ -706,7 +703,7 @@ func (r *RouteMapResource) Create(ctx context.Context, req resource.CreateReques
 			return
 		}
 	}
-	
+
 	plan.Id = types.StringValue(plan.getPath())
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Create finished successfully", plan.getPath()))

@@ -21,6 +21,8 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -158,19 +160,19 @@ func TestAccIosxeRouteMap(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeRouteMapPrerequisitesConfig+testAccIosxeRouteMapConfig_minimum(),
+				Config: testAccIosxeRouteMapPrerequisitesConfig + testAccIosxeRouteMapConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeRouteMapPrerequisitesConfig+testAccIosxeRouteMapConfig_all(),
-				Check: resource.ComposeTestCheckFunc(checks...),
+				Config: testAccIosxeRouteMapPrerequisitesConfig + testAccIosxeRouteMapConfig_all(),
+				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_route_map.test",
-				ImportState:   true,
-				ImportStateVerify: true,
-				ImportStateIdFunc: iosxeRouteMapImportStateIdFunc("iosxe_route_map.test"),
-				ImportStateVerifyIgnore: []string{ "entries.0.match_route_type_local_legacy","entries.0.match_route_type_local","entries.0.match_community_list_exact_match","entries.0.set_ip_next_hop_self","entries.0.set_ip_next_hop_unchanged","entries.0.set_level_1_2","entries.0.set_level_2","entries.0.set_as_path_tag_legacy","entries.0.set_community_none_legacy","entries.0.set_communities_additive_legacy","entries.0.set_community_list_delete_legacy","entries.0.set_as_path_tag","entries.0.set_as_path_replace_any","entries.0.set_community_none","entries.0.set_communities_additive","entries.0.set_community_list_delete","entries.0.set_extcomunity_vpn_distinguisher_additive", },
-				Check: resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_route_map.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateIdFunc:       iosxeRouteMapImportStateIdFunc("iosxe_route_map.test"),
+				ImportStateVerifyIgnore: []string{"entries.0.match_route_type_local_legacy", "entries.0.match_route_type_local", "entries.0.match_community_list_exact_match", "entries.0.set_ip_next_hop_self", "entries.0.set_ip_next_hop_unchanged", "entries.0.set_level_1_2", "entries.0.set_level_2", "entries.0.set_as_path_tag_legacy", "entries.0.set_community_none_legacy", "entries.0.set_communities_additive_legacy", "entries.0.set_community_list_delete_legacy", "entries.0.set_as_path_tag", "entries.0.set_as_path_replace_any", "entries.0.set_community_none", "entries.0.set_communities_additive", "entries.0.set_community_list_delete", "entries.0.set_extcomunity_vpn_distinguisher_additive"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
@@ -201,6 +203,7 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 `
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
