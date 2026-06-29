@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -81,17 +77,6 @@ func (data PrivilegeData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/privilege/mode=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data Privilege) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data Privilege) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/privilege/mode[name=%v]"
@@ -106,34 +91,6 @@ func (data PrivilegeData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data Privilege) toBody(ctx context.Context, config Privilege) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if len(data.Levels) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"level", []interface{}{})
-		for index, item := range data.Levels {
-			if !item.Level.IsNull() && !item.Level.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"level"+"."+strconv.Itoa(index)+"."+"privilege", strconv.FormatInt(item.Level.ValueInt64(), 10))
-			}
-			if len(item.Commands) > 0 {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"level"+"."+strconv.Itoa(index)+"."+"command-list", []interface{}{})
-				for cindex, citem := range item.Commands {
-					if !citem.Command.IsNull() && !citem.Command.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"level"+"."+strconv.Itoa(index)+"."+"command-list"+"."+strconv.Itoa(cindex)+"."+"command", citem.Command.ValueString())
-					}
-				}
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -168,80 +125,6 @@ func (data Privilege) toBodyXML(ctx context.Context, config Privilege) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *Privilege) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	for i := range data.Levels {
-		keys := [...]string{"privilege"}
-		keyValues := [...]string{strconv.FormatInt(data.Levels[i].Level.ValueInt64(), 10)}
-
-		var r gjson.Result
-		res.Get(prefix + "level").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("privilege"); value.Exists() && !data.Levels[i].Level.IsNull() {
-			data.Levels[i].Level = types.Int64Value(value.Int())
-		} else {
-			data.Levels[i].Level = types.Int64Null()
-		}
-		for ci := range data.Levels[i].Commands {
-			keys := [...]string{"command"}
-			keyValues := [...]string{data.Levels[i].Commands[ci].Command.ValueString()}
-
-			var cr gjson.Result
-			r.Get("command-list").ForEach(
-				func(_, v gjson.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
-			if value := cr.Get("command"); value.Exists() && !data.Levels[i].Commands[ci].Command.IsNull() {
-				data.Levels[i].Commands[ci].Command = types.StringValue(value.String())
-			} else {
-				data.Levels[i].Commands[ci].Command = types.StringNull()
-			}
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -313,72 +196,6 @@ func (data *Privilege) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *Privilege) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "level"); value.Exists() {
-		data.Levels = make([]PrivilegeLevels, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := PrivilegeLevels{}
-			if cValue := v.Get("privilege"); cValue.Exists() {
-				item.Level = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("command-list"); cValue.Exists() {
-				item.Commands = make([]PrivilegeLevelsCommands, 0)
-				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := PrivilegeLevelsCommands{}
-					if ccValue := cv.Get("command"); ccValue.Exists() {
-						cItem.Command = types.StringValue(ccValue.String())
-					}
-					item.Commands = append(item.Commands, cItem)
-					return true
-				})
-			}
-			data.Levels = append(data.Levels, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *PrivilegeData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "level"); value.Exists() {
-		data.Levels = make([]PrivilegeLevelsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := PrivilegeLevelsData{}
-			if cValue := v.Get("privilege"); cValue.Exists() {
-				item.Level = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("command-list"); cValue.Exists() {
-				item.Commands = make([]PrivilegeLevelsCommandsData, 0)
-				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := PrivilegeLevelsCommandsData{}
-					if ccValue := cv.Get("command"); ccValue.Exists() {
-						cItem.Command = types.StringValue(ccValue.String())
-					}
-					item.Commands = append(item.Commands, cItem)
-					return true
-				})
-			}
-			data.Levels = append(data.Levels, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *Privilege) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -436,66 +253,6 @@ func (data *PrivilegeData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *Privilege) getDeletedItems(ctx context.Context, state Privilege) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Levels {
-		stateKeyValues := [...]string{strconv.FormatInt(state.Levels[i].Level.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Levels[i].Level.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Levels {
-			found = true
-			if state.Levels[i].Level.ValueInt64() != data.Levels[j].Level.ValueInt64() {
-				found = false
-			}
-			if found {
-				for ci := range state.Levels[i].Commands {
-					cstateKeyValues := [...]string{state.Levels[i].Commands[ci].Command.ValueString()}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Levels[i].Commands[ci].Command.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Levels[j].Commands {
-						found = true
-						if state.Levels[i].Commands[ci].Command.ValueString() != data.Levels[j].Commands[cj].Command.ValueString() {
-							found = false
-						}
-						if found {
-							break
-						}
-					}
-					if !found {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/level=%v/command-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-					}
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/level=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
@@ -567,31 +324,6 @@ func (data *Privilege) addDeletedItemsXML(ctx context.Context, state Privilege, 
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *Privilege) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *Privilege) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Levels {
-		keyValues := [...]string{strconv.FormatInt(data.Levels[i].Level.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/level=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
