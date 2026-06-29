@@ -42,6 +42,9 @@ Read-Only:
 - `first` (String) Auxiliary line number
 - `logging_synchronous` (Boolean) Synchronized message output
 - `monitor` (Boolean) Copy debug output to the current terminal line
+- `password` (String, Sensitive)
+- `password_level` (Number) Set exec level password
+- `password_type` (String)
 - `stopbits` (String) Set async line stop bits
 - `transport_output_none` (Boolean) Define no transport protocols for line
 

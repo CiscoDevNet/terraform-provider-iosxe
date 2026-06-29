@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Add `iosxe_privilege` resource and data source for privilege level command mapping configuration (`privilege <mode> level <level> <command>`), including mode selection (exec, configure, interface, router, crypto-map, ipenacl) with nested level and command-list attributes
+- Add `password_level`, `password_type`, and `password` attributes to `iosxe_line` aux entries for line aux password configuration
 - Add `power_redundancy_mode_combined`, `power_supply_autolc_shutdown`, and `power_supply_autolc_priority` attributes to `iosxe_system` resource and data source for chassis power redundancy mode and automatic linecard power management
 - Add `binding_reachable_lifetime` attribute to `iosxe_device_tracking` resource and data source for configuring the default maximum time a binding entry remains in REACHABLE state (`device-tracking binding reachable-lifetime`)
 - Add `default_information_originate_metric`, `default_information_originate_metric_type`, `default_information_originate_route_map`, `redistribute_static_metric`, `redistribute_static_metric_type`, `redistribute_static_route_map`, `redistribute_static_tag`, `redistribute_static_nssa_only`, `redistribute_connected_metric`, `redistribute_connected_metric_type`, `redistribute_connected_route_map`, `redistribute_connected_tag`, `redistribute_connected_nssa_only`, `redistribute_ospf`, `distribute_list_in_access_lists`, and `distribute_list_out_access_lists` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
