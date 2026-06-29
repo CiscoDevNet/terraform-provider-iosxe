@@ -38,30 +38,24 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type Privilege struct {
-	Device types.String      `tfsdk:"device"`
-	Id     types.String      `tfsdk:"id"`
-	Name   types.String      `tfsdk:"name"`
-	Levels []PrivilegeLevels `tfsdk:"levels"`
+	Device   types.String        `tfsdk:"device"`
+	Id       types.String        `tfsdk:"id"`
+	Name     types.String        `tfsdk:"name"`
+	Level    types.Int64         `tfsdk:"level"`
+	Commands []PrivilegeCommands `tfsdk:"commands"`
 }
-type PrivilegeLevels struct {
-	Level    types.Int64               `tfsdk:"level"`
-	Commands []PrivilegeLevelsCommands `tfsdk:"commands"`
-}
-type PrivilegeLevelsCommands struct {
+type PrivilegeCommands struct {
 	Command types.String `tfsdk:"command"`
 }
 
 type PrivilegeData struct {
-	Device types.String          `tfsdk:"device"`
-	Id     types.String          `tfsdk:"id"`
-	Name   types.String          `tfsdk:"name"`
-	Levels []PrivilegeLevelsData `tfsdk:"levels"`
+	Device   types.String            `tfsdk:"device"`
+	Id       types.String            `tfsdk:"id"`
+	Name     types.String            `tfsdk:"name"`
+	Level    types.Int64             `tfsdk:"level"`
+	Commands []PrivilegeCommandsData `tfsdk:"commands"`
 }
-type PrivilegeLevelsData struct {
-	Level    types.Int64                   `tfsdk:"level"`
-	Commands []PrivilegeLevelsCommandsData `tfsdk:"commands"`
-}
-type PrivilegeLevelsCommandsData struct {
+type PrivilegeCommandsData struct {
 	Command types.String `tfsdk:"command"`
 }
 
@@ -70,23 +64,23 @@ type PrivilegeLevelsCommandsData struct {
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data Privilege) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/privilege/mode=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/privilege/mode=%v/level=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Level.ValueInt64())))
 }
 
 func (data PrivilegeData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/privilege/mode=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/privilege/mode=%v/level=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Level.ValueInt64())))
 }
 
 // getXPath returns the XPath for NETCONF operations
 func (data Privilege) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/privilege/mode[name=%v]"
-	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	path := "/Cisco-IOS-XE-native:native/privilege/mode[name=%v]/level[privilege=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.Level.ValueInt64()))
 	return path
 }
 
 func (data PrivilegeData) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/privilege/mode[name=%v]"
-	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
+	path := "/Cisco-IOS-XE-native:native/privilege/mode[name=%v]/level[privilege=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.Level.ValueInt64()))
 	return path
 }
 
@@ -96,25 +90,16 @@ func (data PrivilegeData) getXPath() string {
 
 func (data Privilege) toBodyXML(ctx context.Context, config Privilege) string {
 	body := netconf.Body{}
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	if !data.Level.IsNull() && !data.Level.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/privilege", strconv.FormatInt(data.Level.ValueInt64(), 10))
 	}
-	if len(data.Levels) > 0 {
-		for _, item := range data.Levels {
+	if len(data.Commands) > 0 {
+		for _, item := range data.Commands {
 			cBody := netconf.Body{}
-			if !item.Level.IsNull() && !item.Level.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "privilege", strconv.FormatInt(item.Level.ValueInt64(), 10))
+			if !item.Command.IsNull() && !item.Command.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "command", item.Command.ValueString())
 			}
-			if len(item.Commands) > 0 {
-				for _, citem := range item.Commands {
-					ccBody := netconf.Body{}
-					if !citem.Command.IsNull() && !citem.Command.IsUnknown() {
-						ccBody = helpers.SetFromXPath(ccBody, "command", citem.Command.ValueString())
-					}
-					cBody = helpers.SetRawFromXPath(cBody, "command-list", ccBody.Res())
-				}
-			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/level", cBody.Res())
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/command-list", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -129,17 +114,17 @@ func (data Privilege) toBodyXML(ctx context.Context, config Privilege) string {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *Privilege) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/privilege"); value.Exists() && !data.Level.IsNull() {
+		data.Level = types.Int64Value(value.Int())
 	} else {
-		data.Name = types.StringNull()
+		data.Level = types.Int64Null()
 	}
-	for i := range data.Levels {
-		keys := [...]string{"privilege"}
-		keyValues := [...]string{strconv.FormatInt(data.Levels[i].Level.ValueInt64(), 10)}
+	for i := range data.Commands {
+		keys := [...]string{"command"}
+		keyValues := [...]string{data.Commands[i].Command.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/level").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/command-list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -157,39 +142,10 @@ func (data *Privilege) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 				return true
 			},
 		)
-		if value := helpers.GetFromXPath(r, "privilege"); value.Exists() && !data.Levels[i].Level.IsNull() {
-			data.Levels[i].Level = types.Int64Value(value.Int())
+		if value := helpers.GetFromXPath(r, "command"); value.Exists() && !data.Commands[i].Command.IsNull() {
+			data.Commands[i].Command = types.StringValue(value.String())
 		} else {
-			data.Levels[i].Level = types.Int64Null()
-		}
-		for ci := range data.Levels[i].Commands {
-			keys := [...]string{"command"}
-			keyValues := [...]string{data.Levels[i].Commands[ci].Command.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "command-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
-			if value := helpers.GetFromXPath(cr, "command"); value.Exists() && !data.Levels[i].Commands[ci].Command.IsNull() {
-				data.Levels[i].Commands[ci].Command = types.StringValue(value.String())
-			} else {
-				data.Levels[i].Commands[ci].Command = types.StringNull()
-			}
+			data.Commands[i].Command = types.StringNull()
 		}
 	}
 }
@@ -199,25 +155,14 @@ func (data *Privilege) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *Privilege) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/level"); value.Exists() {
-		data.Levels = make([]PrivilegeLevels, 0)
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/command-list"); value.Exists() {
+		data.Commands = make([]PrivilegeCommands, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PrivilegeLevels{}
-			if cValue := helpers.GetFromXPath(v, "privilege"); cValue.Exists() {
-				item.Level = types.Int64Value(cValue.Int())
+			item := PrivilegeCommands{}
+			if cValue := helpers.GetFromXPath(v, "command"); cValue.Exists() {
+				item.Command = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "command-list"); cValue.Exists() {
-				item.Commands = make([]PrivilegeLevelsCommands, 0)
-				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := PrivilegeLevelsCommands{}
-					if ccValue := helpers.GetFromXPath(cv, "command"); ccValue.Exists() {
-						cItem.Command = types.StringValue(ccValue.String())
-					}
-					item.Commands = append(item.Commands, cItem)
-					return true
-				})
-			}
-			data.Levels = append(data.Levels, item)
+			data.Commands = append(data.Commands, item)
 			return true
 		})
 	}
@@ -228,25 +173,14 @@ func (data *Privilege) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *PrivilegeData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/level"); value.Exists() {
-		data.Levels = make([]PrivilegeLevelsData, 0)
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/command-list"); value.Exists() {
+		data.Commands = make([]PrivilegeCommandsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
-			item := PrivilegeLevelsData{}
-			if cValue := helpers.GetFromXPath(v, "privilege"); cValue.Exists() {
-				item.Level = types.Int64Value(cValue.Int())
+			item := PrivilegeCommandsData{}
+			if cValue := helpers.GetFromXPath(v, "command"); cValue.Exists() {
+				item.Command = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "command-list"); cValue.Exists() {
-				item.Commands = make([]PrivilegeLevelsCommandsData, 0)
-				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
-					cItem := PrivilegeLevelsCommandsData{}
-					if ccValue := helpers.GetFromXPath(cv, "command"); ccValue.Exists() {
-						cItem.Command = types.StringValue(ccValue.String())
-					}
-					item.Commands = append(item.Commands, cItem)
-					return true
-				})
-			}
-			data.Levels = append(data.Levels, item)
+			data.Commands = append(data.Commands, item)
 			return true
 		})
 	}
@@ -258,16 +192,16 @@ func (data *PrivilegeData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *Privilege) addDeletedItemsXML(ctx context.Context, state Privilege, body string) string {
 	b := netconf.NewBody(body)
-	for i := range state.Levels {
-		stateKeys := [...]string{"privilege"}
-		stateKeyValues := [...]string{strconv.FormatInt(state.Levels[i].Level.ValueInt64(), 10)}
+	for i := range state.Commands {
+		stateKeys := [...]string{"command"}
+		stateKeyValues := [...]string{state.Commands[i].Command.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Levels[i].Level.ValueInt64()).IsZero() {
+		if !reflect.ValueOf(state.Commands[i].Command.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -275,47 +209,17 @@ func (data *Privilege) addDeletedItemsXML(ctx context.Context, state Privilege, 
 		}
 
 		found := false
-		for j := range data.Levels {
+		for j := range data.Commands {
 			found = true
-			if state.Levels[i].Level.ValueInt64() != data.Levels[j].Level.ValueInt64() {
+			if state.Commands[i].Command.ValueString() != data.Commands[j].Command.ValueString() {
 				found = false
 			}
 			if found {
-				for ci := range state.Levels[i].Commands {
-					cstateKeys := [...]string{"command"}
-					cstateKeyValues := [...]string{state.Levels[i].Commands[ci].Command.ValueString()}
-					cpredicates := ""
-					for i := range cstateKeys {
-						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
-					}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Levels[i].Commands[ci].Command.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Levels[j].Commands {
-						found = true
-						if state.Levels[i].Commands[ci].Command.ValueString() != data.Levels[j].Commands[cj].Command.ValueString() {
-							found = false
-						}
-						if found {
-							break
-						}
-					}
-					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/level%v/command-list%v", predicates, cpredicates))
-					}
-				}
 				break
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/level%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/command-list%v", predicates))
 		}
 	}
 
@@ -329,15 +233,15 @@ func (data *Privilege) addDeletedItemsXML(ctx context.Context, state Privilege, 
 
 func (data *Privilege) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	for i := range data.Levels {
-		keys := [...]string{"privilege"}
-		keyValues := [...]string{strconv.FormatInt(data.Levels[i].Level.ValueInt64(), 10)}
+	for i := range data.Commands {
+		keys := [...]string{"command"}
+		keyValues := [...]string{data.Commands[i].Command.ValueString()}
 		predicates := ""
 		for i := range keys {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/level%v", predicates))
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/command-list%v", predicates))
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)

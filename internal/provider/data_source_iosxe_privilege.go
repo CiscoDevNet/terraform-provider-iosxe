@@ -72,26 +72,18 @@ func (d *PrivilegeDataSource) Schema(ctx context.Context, req datasource.SchemaR
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"levels": schema.ListNestedAttribute{
-				MarkdownDescription: "Set privilege level of command",
+			"level": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Required:            true,
+			},
+			"commands": schema.ListNestedAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"level": schema.Int64Attribute{
-							MarkdownDescription: "",
+						"command": schema.StringAttribute{
+							MarkdownDescription: "There are side effects",
 							Computed:            true,
-						},
-						"commands": schema.ListNestedAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"command": schema.StringAttribute{
-										MarkdownDescription: "There are side effects",
-										Computed:            true,
-									},
-								},
-							},
 						},
 					},
 				},
