@@ -111,7 +111,7 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 				ImportState:   true,
 				ImportStateVerify: true,
 				ImportStateIdFunc: iosxe{{camelCase .Name}}ImportStateIdFunc("iosxe_{{snakeCase $name}}.test"),
-				ImportStateVerifyIgnore: []string{ {{range getImportExcludes .Attributes}}"{{.}}",{{end}} },
+				ImportStateVerifyIgnore: []string{ {{range getImportExcludes .Attributes}}"{{.}}",{{end}}{{if and (not .NoDelete) (not .NoDeleteAttributes) .DefaultDeleteAttributes}}"delete_mode",{{end}} },
 				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},

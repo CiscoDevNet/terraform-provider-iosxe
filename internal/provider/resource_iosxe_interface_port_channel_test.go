@@ -77,6 +77,9 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "evpn_ethernet_segments_legacy.0.es_value", "1"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_igmp_version", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_verify_unicast_source_reachable_via", "rx"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_verify_unicast_source_allow_self_ping", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_verify_unicast_source_allow_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_flow_monitors.0.name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_flow_monitors.0.direction", "input"))
 	resource.Test(t, resource.TestCase{
@@ -95,7 +98,7 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfacePortChannelImportStateIdFunc("iosxe_interface_port_channel.test"),
-				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "bpduguard_enable", "bpduguard_disable", "spanning_tree_portfast", "spanning_tree_portfast_disable", "spanning_tree_portfast_trunk", "spanning_tree_portfast_edge", "ip_dhcp_snooping_trust", "device_tracking", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "bpduguard_enable", "bpduguard_disable", "spanning_tree_portfast", "spanning_tree_portfast_disable", "spanning_tree_portfast_trunk", "spanning_tree_portfast_edge", "ip_dhcp_snooping_trust", "device_tracking", "ip_nat_inside", "ip_nat_outside", "delete_mode"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -269,6 +272,9 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 		config += `	}]` + "\n"
 	}
 	config += `	ip_igmp_version = 3` + "\n"
+	config += `	ip_verify_unicast_source_reachable_via = "rx"` + "\n"
+	config += `	ip_verify_unicast_source_allow_self_ping = true` + "\n"
+	config += `	ip_verify_unicast_source_allow_default = true` + "\n"
 	config += `	ip_flow_monitors = [{` + "\n"
 	config += `		name = "MON1"` + "\n"
 	config += `		direction = "input"` + "\n"

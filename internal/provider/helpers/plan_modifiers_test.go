@@ -142,3 +142,98 @@ func TestNetconfTrailingWhitespaceTrimModifier_ConfigUnknown(t *testing.T) {
 		t.Errorf("Config unknown: expected plan to remain unknown, got %q", resp.PlanValue.ValueString())
 	}
 }
+
+func TestIPv6NormalizationModifier_SameAddressDifferentCase(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseIPv6Normalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("2001:DB8::/32"),
+		StateValue:  types.StringValue("2001:db8::/32"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "2001:db8::/32" {
+		t.Errorf("expected state value %q, got %q", "2001:db8::/32", resp.PlanValue.ValueString())
+	}
+}
+
+func TestIPv6NormalizationModifier_GenuineChange(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseIPv6Normalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("2001:db8:cafe::/48"),
+		StateValue:  types.StringValue("2001:db8::/32"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "2001:db8:cafe::/48" {
+		t.Errorf("expected config value %q, got %q", "2001:db8:cafe::/48", resp.PlanValue.ValueString())
+	}
+}
+
+func TestIPv6NormalizationModifier_NullConfig(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseIPv6Normalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringNull(),
+		StateValue:  types.StringValue("2001:db8::/32"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if !resp.PlanValue.IsNull() {
+		t.Errorf("expected null plan value, got %q", resp.PlanValue.ValueString())
+	}
+}
+
+func TestIPv6NormalizationModifier_Create(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseIPv6Normalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("2001:DB8::/32"),
+		StateValue:  types.StringNull(),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "2001:DB8::/32" {
+		t.Errorf("expected config value %q on create, got %q", "2001:DB8::/32", resp.PlanValue.ValueString())
+	}
+}
+
+func TestIPv6NormalizationModifier_ExpandedVsCompressed(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseIPv6Normalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("2001:0db8:0000:0000:0000:0000:0000:0001"),
+		StateValue:  types.StringValue("2001:db8::1"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "2001:db8::1" {
+		t.Errorf("expected state value %q, got %q", "2001:db8::1", resp.PlanValue.ValueString())
+	}
+}

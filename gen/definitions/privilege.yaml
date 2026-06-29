@@ -1,0 +1,18 @@
+---
+name: Privilege
+path: /Cisco-IOS-XE-native:native/privilege/mode[name=%v]/level[privilege=%v]
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: name
+    example: exec
+  - yang_name: privilege
+    tf_name: level
+    example: 7
+  - yang_name: command-list
+    tf_name: commands
+    type: List
+    attributes:
+      - yang_name: command
+        example: configure
+        id: true

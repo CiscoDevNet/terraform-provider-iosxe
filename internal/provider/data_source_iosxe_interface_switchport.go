@@ -108,6 +108,10 @@ func (d *InterfaceSwitchportDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"voice_vlan": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"trunk_allowed_vlans": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,

@@ -1094,6 +1094,23 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("MLD querier disable/enable").String,
 				Optional:            true,
 			},
+			"mac_address_table_aging_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set MAC address table entry maximum age in seconds").String,
+				Optional:            true,
+			},
+			"power_redundancy_mode_combined": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable combined power redundancy mode").String,
+				Optional:            true,
+			},
+			"power_supply_autolc_shutdown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Linecard auto shutdown control").String,
+				Optional:            true,
+			},
+			"power_supply_autolc_priority": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Priority (highest to lowest) of auto linecard shutdown").String,
+				ElementType:         types.Int64Type,
+				Optional:            true,
+			},
 		},
 	}
 }

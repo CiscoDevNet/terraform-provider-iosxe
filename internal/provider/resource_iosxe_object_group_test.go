@@ -44,6 +44,162 @@ func TestAccIosxeObjectGroup(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.network_addresses.0.ipv4_mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.address_ranges.0.start", "10.1.3.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "network.0.address_ranges.0.end", "10.1.3.10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.name", "SERVICE_GROUP_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.description", "My service object group"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.ahp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.eigrp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.esp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.gre", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.igmp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.ip", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.ipinip", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.nos", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.ospf", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.pcp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.pim", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_port_number", "8"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_alternate_address", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_conversion_error", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_echo", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_echo_reply", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_information_reply", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_information_request", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_mask_reply", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_mask_request", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_mobile_redirect", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_parameter_problem", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_redirect", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_router_advertisement", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_router_solicitation", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_source_quench", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_time_exceeded", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_timestamp_reply", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_timestamp_request", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_traceroute", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.icmp_unreachable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_dst_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_dst_port_list_op.0.port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_dst_port_list.0.port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_dst_port_ranges.0.min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_dst_port_ranges.0.max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_port_list_op.0.port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_port_list.0.port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_port_ranges.0.min_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_port_ranges.0.max_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_op.0.src_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_op.0.src_port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_op.0.dst_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_op.0.dst_port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list.0.src_port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list.0.dst_port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_src_op.0.src_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_src_op.0.src_port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_src_op.0.dst_port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_dst_op.0.src_port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_dst_op.0.dst_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_port_list_dst_op.0.dst_port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_port_list_op.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_port_list_op.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_port_list_op.0.dst_port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_port_list.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_port_list.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_port_list.0.dst_port", "www"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_range_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_range_port_list_op.0.src_port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_range_port_list_op.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_range_port_list_op.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_range_port_list.0.src_port", "8080"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_range_port_list.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_dst_range_port_list.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_range_port_list.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_range_port_list.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_range_port_list.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_src_range_dst_range_port_list.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_dst_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_dst_port_list_op.0.port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_dst_port_list.0.port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_dst_port_ranges.0.min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_dst_port_ranges.0.max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_port_list_op.0.port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_port_list.0.port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_port_ranges.0.min_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_port_ranges.0.max_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_op.0.src_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_op.0.dst_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_op.0.dst_port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list.0.dst_port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_src_op.0.src_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_src_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_src_op.0.dst_port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_dst_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_dst_op.0.dst_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_port_list_dst_op.0.dst_port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_port_list_op.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_port_list_op.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_port_list_op.0.dst_port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_port_list.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_port_list.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_port_list.0.dst_port", "syslog"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_range_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_range_port_list_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_range_port_list_op.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_range_port_list_op.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_range_port_list.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_range_port_list.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_dst_range_port_list.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_range_port_list.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_range_port_list.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_range_port_list.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.udp_src_range_dst_range_port_list.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_dst_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_dst_port_list_op.0.port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_dst_port_list.0.port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_dst_port_ranges.0.min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_dst_port_ranges.0.max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_port_list_op.0.port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_port_list.0.port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_port_ranges.0.min_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_port_ranges.0.max_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_op.0.src_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_op.0.dst_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_op.0.dst_port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list.0.dst_port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_src_op.0.src_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_src_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_src_op.0.dst_port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_dst_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_dst_op.0.dst_operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_port_list_dst_op.0.dst_port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_port_list_op.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_port_list_op.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_port_list_op.0.dst_port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_port_list.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_port_list.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_port_list.0.dst_port", "3389"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_range_port_list_op.0.operator", "eq"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_range_port_list_op.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_range_port_list_op.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_range_port_list_op.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_range_port_list.0.src_port", "5000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_range_port_list.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_dst_range_port_list.0.dst_max_port", "4000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_range_port_list.0.src_min_port", "1024"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_range_port_list.0.src_max_port", "2048"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_range_port_list.0.dst_min_port", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_object_group.test", "service.0.tcp_udp_src_range_dst_range_port_list.0.dst_max_port", "4000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -117,6 +273,255 @@ func testAccIosxeObjectGroupConfig_all() string {
 	config += `		address_ranges = [{` + "\n"
 	config += `			start = "10.1.3.1"` + "\n"
 	config += `			end = "10.1.3.10"` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	service = [{` + "\n"
+	config += `		name = "SERVICE_GROUP_1"` + "\n"
+	config += `		description = "My service object group"` + "\n"
+	config += `		protocol_numbers = [47]` + "\n"
+	config += `		ahp = true` + "\n"
+	config += `		eigrp = false` + "\n"
+	config += `		esp = false` + "\n"
+	config += `		gre = false` + "\n"
+	config += `		icmp = false` + "\n"
+	config += `		igmp = false` + "\n"
+	config += `		ip = false` + "\n"
+	config += `		ipinip = false` + "\n"
+	config += `		nos = false` + "\n"
+	config += `		ospf = false` + "\n"
+	config += `		pcp = false` + "\n"
+	config += `		pim = false` + "\n"
+	config += `		tcp = false` + "\n"
+	config += `		udp = false` + "\n"
+	config += `		icmp_port_number = 8` + "\n"
+	config += `		icmp_alternate_address = false` + "\n"
+	config += `		icmp_conversion_error = false` + "\n"
+	config += `		icmp_echo = false` + "\n"
+	config += `		icmp_echo_reply = false` + "\n"
+	config += `		icmp_information_reply = false` + "\n"
+	config += `		icmp_information_request = false` + "\n"
+	config += `		icmp_mask_reply = false` + "\n"
+	config += `		icmp_mask_request = false` + "\n"
+	config += `		icmp_mobile_redirect = false` + "\n"
+	config += `		icmp_parameter_problem = false` + "\n"
+	config += `		icmp_redirect = false` + "\n"
+	config += `		icmp_router_advertisement = false` + "\n"
+	config += `		icmp_router_solicitation = false` + "\n"
+	config += `		icmp_source_quench = false` + "\n"
+	config += `		icmp_time_exceeded = false` + "\n"
+	config += `		icmp_timestamp_reply = false` + "\n"
+	config += `		icmp_timestamp_request = false` + "\n"
+	config += `		icmp_traceroute = false` + "\n"
+	config += `		icmp_unreachable = false` + "\n"
+	config += `		tcp_dst_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_dst_port_list = [{` + "\n"
+	config += `			port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_dst_port_ranges = [{` + "\n"
+	config += `			min_port = "1024"` + "\n"
+	config += `			max_port = "2048"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			port = "8080"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_port_list = [{` + "\n"
+	config += `			port = "8080"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_port_ranges = [{` + "\n"
+	config += `			min_port = "4000"` + "\n"
+	config += `			max_port = "5000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_dst_port_list_op = [{` + "\n"
+	config += `			src_operator = "eq"` + "\n"
+	config += `			src_port = "8080"` + "\n"
+	config += `			dst_operator = "eq"` + "\n"
+	config += `			dst_port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_dst_port_list = [{` + "\n"
+	config += `			src_port = "8080"` + "\n"
+	config += `			dst_port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_dst_port_list_src_op = [{` + "\n"
+	config += `			src_operator = "eq"` + "\n"
+	config += `			src_port = "8080"` + "\n"
+	config += `			dst_port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_dst_port_list_dst_op = [{` + "\n"
+	config += `			src_port = "8080"` + "\n"
+	config += `			dst_operator = "eq"` + "\n"
+	config += `			dst_port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_range_dst_port_list_op = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			dst_port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_range_dst_port_list = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			dst_port = "www"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_dst_range_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			src_port = "8080"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_dst_range_port_list = [{` + "\n"
+	config += `			src_port = "8080"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_src_range_dst_range_port_list = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_dst_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_dst_port_list = [{` + "\n"
+	config += `			port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_dst_port_ranges = [{` + "\n"
+	config += `			min_port = "1024"` + "\n"
+	config += `			max_port = "2048"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			port = "5000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_port_list = [{` + "\n"
+	config += `			port = "5000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_port_ranges = [{` + "\n"
+	config += `			min_port = "4000"` + "\n"
+	config += `			max_port = "5000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_dst_port_list_op = [{` + "\n"
+	config += `			src_operator = "eq"` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_operator = "eq"` + "\n"
+	config += `			dst_port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_dst_port_list = [{` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_dst_port_list_src_op = [{` + "\n"
+	config += `			src_operator = "eq"` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_dst_port_list_dst_op = [{` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_operator = "eq"` + "\n"
+	config += `			dst_port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_range_dst_port_list_op = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			dst_port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_range_dst_port_list = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			dst_port = "syslog"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_dst_range_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_dst_range_port_list = [{` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		udp_src_range_dst_range_port_list = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_dst_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_dst_port_list = [{` + "\n"
+	config += `			port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_dst_port_ranges = [{` + "\n"
+	config += `			min_port = "1024"` + "\n"
+	config += `			max_port = "2048"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			port = "5000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_port_list = [{` + "\n"
+	config += `			port = "5000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_port_ranges = [{` + "\n"
+	config += `			min_port = "4000"` + "\n"
+	config += `			max_port = "5000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_dst_port_list_op = [{` + "\n"
+	config += `			src_operator = "eq"` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_operator = "eq"` + "\n"
+	config += `			dst_port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_dst_port_list = [{` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_dst_port_list_src_op = [{` + "\n"
+	config += `			src_operator = "eq"` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_dst_port_list_dst_op = [{` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_operator = "eq"` + "\n"
+	config += `			dst_port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_range_dst_port_list_op = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			dst_port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_range_dst_port_list = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			dst_port = "3389"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_dst_range_port_list_op = [{` + "\n"
+	config += `			operator = "eq"` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_dst_range_port_list = [{` + "\n"
+	config += `			src_port = "5000"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
+	config += `		}]` + "\n"
+	config += `		tcp_udp_src_range_dst_range_port_list = [{` + "\n"
+	config += `			src_min_port = "1024"` + "\n"
+	config += `			src_max_port = "2048"` + "\n"
+	config += `			dst_min_port = "3000"` + "\n"
+	config += `			dst_max_port = "4000"` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

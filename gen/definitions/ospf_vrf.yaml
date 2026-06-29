@@ -14,6 +14,13 @@ attributes:
     example: true
   - yang_name: default-information/originate/always
     example: true
+  - yang_name: default-information/originate/metric
+    example: 100
+  - yang_name: default-information/originate/metric-type
+    example: 1
+  - yang_name: default-information/originate/route-map
+    exclude_test: true
+    example: RM_DEFAULT
   - yang_name: default-metric
     example: 21
   - yang_name: distance/distance
@@ -66,9 +73,109 @@ attributes:
     example: true
     exclude_test: true
   - yang_name: redistribute/static/subnets
+    exclude_test: true
+    example: true
+  - yang_name: redistribute/static/metric
+    example: 100
+  - yang_name: redistribute/static/metric-type
+    example: 1
+  - yang_name: redistribute/static/route-map
+    exclude_test: true
+    example: RM_STATIC
+  - yang_name: redistribute/static/tag
+    example: 100
+  - yang_name: redistribute/static/nssa-only
+    exclude_test: true
     example: true
   - yang_name: redistribute/connected/subnets
+    exclude_test: true
     example: true
+  - yang_name: redistribute/connected/metric
+    example: 100
+  - yang_name: redistribute/connected/metric-type
+    example: 1
+  - yang_name: redistribute/connected/route-map
+    exclude_test: true
+    example: RM_CONNECTED
+  - yang_name: redistribute/connected/tag
+    example: 100
+  - yang_name: redistribute/connected/nssa-only
+    exclude_test: true
+    example: true
+  - yang_name: redistribute/ospf
+    tf_name: redistribute_ospf
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: process-id
+        id: true
+        example: 2
+      - yang_name: match/internal
+        example: true
+      - yang_name: match/external-1
+        tf_name: match_external_1
+        example: 1
+      - yang_name: match/external-2
+        tf_name: match_external_2
+        example: 2
+      - yang_name: match/nssa-external-1
+        tf_name: match_nssa_external_1
+        example: 1
+      - yang_name: match/nssa-external-2
+        tf_name: match_nssa_external_2
+        example: 2
+      - yang_name: metric
+        example: 100
+      - yang_name: metric-type
+        example: 1
+      - yang_name: subnets
+        example: true
+      - yang_name: route-map
+        example: RM_OSPF
+      - yang_name: tag
+        example: 100
+      - yang_name: nssa-only
+        example: true
+  - yang_name: distribute-list/access-list/access-list-in
+    xpath: distribute-list/access-list/access-list-in
+    tf_name: distribute_list_in_access_lists
+    type: Set
+    no_augment_config: true
+    exclude_test: true
+    attributes:
+      - yang_name: in
+        xpath: in
+        tf_name: in
+        id: true
+        type: String
+        no_augment_config: true
+        example: "in"
+      - yang_name: ex-access-list
+        xpath: ex-access-list
+        tf_name: access_list
+        type: String
+        no_augment_config: true
+        example: "1"
+  - yang_name: distribute-list/access-list/access-list-out
+    xpath: distribute-list/access-list/access-list-out
+    tf_name: distribute_list_out_access_lists
+    type: Set
+    no_augment_config: true
+    exclude_test: true
+    attributes:
+      - yang_name: out
+        xpath: out
+        tf_name: out
+        id: true
+        type: String
+        no_augment_config: true
+        example: "out"
+      - yang_name: ex-access-list
+        xpath: ex-access-list
+        tf_name: access_list
+        type: String
+        no_augment_config: true
+        example: "2"
   - yang_name: mpls/ldp/autoconfig
     exclude_test: true
     example: true

@@ -86,3 +86,960 @@ attributes:
             tf_name: group_name
             id: true
             example: NETWORK_GROUP_2
+  - yang_name: Cisco-IOS-XE-object-group:service
+    tf_name: service
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: SERVICE_GROUP_1
+      - yang_name: description
+        example: My service object group
+      - yang_name: group-objects
+        tf_name: group_objects
+        type: Set
+        exclude_test: true
+        attributes:
+          - yang_name: service-group
+            tf_name: group_name
+            id: true
+            example: SERVICE_GROUP_2
+      - yang_name: protocal-number
+        tf_name: protocol_numbers
+        type: Int64Set
+        example: 47
+        attributes:
+          - yang_name: protocal-number
+            tf_name: number
+            id: true
+            example: 47
+      - yang_name: ahp
+        tf_name: ahp
+        type_yang_bool: empty
+        example: true
+      - yang_name: eigrp
+        tf_name: eigrp
+        type_yang_bool: empty
+        example: false
+      - yang_name: esp
+        tf_name: esp
+        type_yang_bool: empty
+        example: false
+      - yang_name: gre
+        tf_name: gre
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp
+        tf_name: icmp
+        type_yang_bool: empty
+        example: false
+      - yang_name: igmp
+        tf_name: igmp
+        type_yang_bool: empty
+        example: false
+      - yang_name: ip
+        tf_name: ip
+        type_yang_bool: empty
+        example: false
+      - yang_name: ipinip
+        tf_name: ipinip
+        type_yang_bool: empty
+        example: false
+      - yang_name: nos
+        tf_name: nos
+        type_yang_bool: empty
+        example: false
+      - yang_name: ospf
+        tf_name: ospf
+        type_yang_bool: empty
+        example: false
+      - yang_name: pcp
+        tf_name: pcp
+        type_yang_bool: empty
+        example: false
+      - yang_name: pim
+        tf_name: pim
+        type_yang_bool: empty
+        example: false
+      - yang_name: tcp
+        tf_name: tcp
+        type_yang_bool: empty
+        example: false
+      - yang_name: udp
+        tf_name: udp
+        type_yang_bool: empty
+        example: false
+      # ICMP sub-types
+      - yang_name: icmp-conf/icmp/port-number
+        xpath: icmp-conf/icmp/port-number
+        tf_name: icmp_port_number
+        example: 8
+      - yang_name: icmp-conf/icmp/alternate-address
+        xpath: icmp-conf/icmp/alternate-address
+        tf_name: icmp_alternate_address
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/conversion-error
+        xpath: icmp-conf/icmp/conversion-error
+        tf_name: icmp_conversion_error
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/echo
+        xpath: icmp-conf/icmp/echo
+        tf_name: icmp_echo
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/echo-reply
+        xpath: icmp-conf/icmp/echo-reply
+        tf_name: icmp_echo_reply
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/information-reply
+        xpath: icmp-conf/icmp/information-reply
+        tf_name: icmp_information_reply
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/information-request
+        xpath: icmp-conf/icmp/information-request
+        tf_name: icmp_information_request
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/mask-reply
+        xpath: icmp-conf/icmp/mask-reply
+        tf_name: icmp_mask_reply
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/mask-request
+        xpath: icmp-conf/icmp/mask-request
+        tf_name: icmp_mask_request
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/mobile-redirect
+        xpath: icmp-conf/icmp/mobile-redirect
+        tf_name: icmp_mobile_redirect
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/parameter-problem
+        xpath: icmp-conf/icmp/parameter-problem
+        tf_name: icmp_parameter_problem
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/redirect
+        xpath: icmp-conf/icmp/redirect
+        tf_name: icmp_redirect
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/router-advertisement
+        xpath: icmp-conf/icmp/router-advertisement
+        tf_name: icmp_router_advertisement
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/router-solicitation
+        xpath: icmp-conf/icmp/router-solicitation
+        tf_name: icmp_router_solicitation
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/source-quench
+        xpath: icmp-conf/icmp/source-quench
+        tf_name: icmp_source_quench
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/time-exceeded
+        xpath: icmp-conf/icmp/time-exceeded
+        tf_name: icmp_time_exceeded
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/timestamp-reply
+        xpath: icmp-conf/icmp/timestamp-reply
+        tf_name: icmp_timestamp_reply
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/timestamp-request
+        xpath: icmp-conf/icmp/timestamp-request
+        tf_name: icmp_timestamp_request
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/traceroute
+        xpath: icmp-conf/icmp/traceroute
+        tf_name: icmp_traceroute
+        type_yang_bool: empty
+        example: false
+      - yang_name: icmp-conf/icmp/unreachable
+        xpath: icmp-conf/icmp/unreachable
+        tf_name: icmp_unreachable
+        type_yang_bool: empty
+        example: false
+      # TCP destination ports with operator
+      - yang_name: tcp-conf/tcp/tcp-port-list-op
+        xpath: tcp-conf/tcp/tcp-port-list-op
+        tf_name: tcp_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-port
+            tf_name: port
+            id: true
+            example: www
+      # TCP destination ports without operator
+      - yang_name: tcp-conf/tcp/tcp-port-list-no-op
+        xpath: tcp-conf/tcp/tcp-port-list-no-op
+        tf_name: tcp_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-port
+            tf_name: port
+            id: true
+            example: www
+      # TCP destination port ranges
+      - yang_name: tcp-conf/tcp/tcp-range-port-list/range
+        xpath: tcp-conf/tcp/tcp-range-port-list/range
+        tf_name: tcp_dst_port_ranges
+        type: Set
+        attributes:
+          - yang_name: tcp-min-port
+            tf_name: min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-max-port
+            tf_name: max_port
+            id: true
+            example: 2048
+      # TCP source ports with operator
+      - yang_name: tcp-conf/tcp/tcp-src-port-list-op/source
+        xpath: tcp-conf/tcp/tcp-src-port-list-op/source
+        tf_name: tcp_src_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-port
+            tf_name: port
+            id: true
+            example: 8080
+      # TCP source ports without operator
+      - yang_name: tcp-conf/tcp/tcp-src-port-list-no-op/source
+        xpath: tcp-conf/tcp/tcp-src-port-list-no-op/source
+        tf_name: tcp_src_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-port
+            tf_name: port
+            id: true
+            example: 8080
+      # TCP source port ranges
+      - yang_name: tcp-conf/tcp/tcp-src-range-port-list/source/range
+        xpath: tcp-conf/tcp/tcp-src-range-port-list/source/range
+        tf_name: tcp_src_port_ranges
+        type: Set
+        attributes:
+          - yang_name: tcp-min-port
+            tf_name: min_port
+            id: true
+            example: 4000
+          - yang_name: tcp-max-port
+            tf_name: max_port
+            id: true
+            example: 5000
+      # TCP source+destination ports with both operators
+      - yang_name: tcp-conf/tcp/tcp-src-dst-port-list-op/source
+        xpath: tcp-conf/tcp/tcp-src-dst-port-list-op/source
+        tf_name: tcp_src_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: src-operator
+            tf_name: src_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-src-port
+            tf_name: src_port
+            id: true
+            example: 8080
+          - yang_name: dst-operator
+            tf_name: dst_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-dst-port
+            tf_name: dst_port
+            id: true
+            example: www
+      # TCP source+destination ports without operators
+      - yang_name: tcp-conf/tcp/tcp-src-dst-port-list-no-op/source
+        xpath: tcp-conf/tcp/tcp-src-dst-port-list-no-op/source
+        tf_name: tcp_src_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-src-port
+            tf_name: src_port
+            id: true
+            example: 8080
+          - yang_name: tcp-dst-port
+            tf_name: dst_port
+            id: true
+            example: www
+      # TCP source+destination ports with source operator only
+      - yang_name: tcp-conf/tcp/tcp-src-dst-port-list-src-op/source
+        xpath: tcp-conf/tcp/tcp-src-dst-port-list-src-op/source
+        tf_name: tcp_src_dst_port_list_src_op
+        type: Set
+        attributes:
+          - yang_name: src-operator
+            tf_name: src_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-src-port
+            tf_name: src_port
+            id: true
+            example: 8080
+          - yang_name: tcp-dst-port
+            tf_name: dst_port
+            id: true
+            example: www
+      # TCP source+destination ports with destination operator only
+      - yang_name: tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source
+        xpath: tcp-conf/tcp/tcp-src-dst-port-list-dst-op/source
+        tf_name: tcp_src_dst_port_list_dst_op
+        type: Set
+        attributes:
+          - yang_name: tcp-src-port
+            tf_name: src_port
+            id: true
+            example: 8080
+          - yang_name: dst-operator
+            tf_name: dst_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-dst-port
+            tf_name: dst_port
+            id: true
+            example: www
+      # TCP source range + destination port with operator
+      - yang_name: tcp-conf/tcp/tcp-src-range-dst-port-list-op/source
+        xpath: tcp-conf/tcp/tcp-src-range-dst-port-list-op/source
+        tf_name: tcp_src_range_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: tcp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-dst-port
+            tf_name: dst_port
+            id: true
+            example: www
+      # TCP source range + destination port without operator
+      - yang_name: tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source
+        xpath: tcp-conf/tcp/tcp-src-range-dst-port-list-no-op/source
+        tf_name: tcp_src_range_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: tcp-dst-port
+            tf_name: dst_port
+            id: true
+            example: www
+      # TCP source port with operator + destination range
+      - yang_name: tcp-conf/tcp/tcp-src-dst-range-port-list-op/source
+        xpath: tcp-conf/tcp/tcp-src-dst-range-port-list-op/source
+        tf_name: tcp_src_dst_range_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-src-port
+            tf_name: src_port
+            id: true
+            example: 8080
+          - yang_name: tcp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: tcp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # TCP source port without operator + destination range
+      - yang_name: tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source
+        xpath: tcp-conf/tcp/tcp-src-dst-range-port-list-no-op/source
+        tf_name: tcp_src_dst_range_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-src-port
+            tf_name: src_port
+            id: true
+            example: 8080
+          - yang_name: tcp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: tcp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # TCP source range + destination range
+      - yang_name: tcp-conf/tcp/tcp-src-range-dst-range-port-list/source
+        xpath: tcp-conf/tcp/tcp-src-range-dst-range-port-list/source
+        tf_name: tcp_src_range_dst_range_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: tcp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: tcp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # UDP destination ports with operator
+      - yang_name: udp-conf/udp/udp-port-list-op
+        xpath: udp-conf/udp/udp-port-list-op
+        tf_name: udp_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-port
+            tf_name: port
+            id: true
+            example: syslog
+      # UDP destination ports without operator
+      - yang_name: udp-conf/udp/udp-port-list-no-op
+        xpath: udp-conf/udp/udp-port-list-no-op
+        tf_name: udp_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: udp-port
+            tf_name: port
+            id: true
+            example: syslog
+      # UDP destination port ranges
+      - yang_name: udp-conf/udp/udp-range-port-list/range
+        xpath: udp-conf/udp/udp-range-port-list/range
+        tf_name: udp_dst_port_ranges
+        type: Set
+        attributes:
+          - yang_name: udp-min-port
+            tf_name: min_port
+            id: true
+            example: 1024
+          - yang_name: udp-max-port
+            tf_name: max_port
+            id: true
+            example: 2048
+      # UDP source ports with operator
+      - yang_name: udp-conf/udp/udp-src-port-list-op/source
+        xpath: udp-conf/udp/udp-src-port-list-op/source
+        tf_name: udp_src_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-port
+            tf_name: port
+            id: true
+            example: 5000
+      # UDP source ports without operator
+      - yang_name: udp-conf/udp/udp-src-port-list-no-op/source
+        xpath: udp-conf/udp/udp-src-port-list-no-op/source
+        tf_name: udp_src_port_list
+        type: Set
+        attributes:
+          - yang_name: udp-port
+            tf_name: port
+            id: true
+            example: 5000
+      # UDP source port ranges
+      - yang_name: udp-conf/udp/udp-src-range-port-list/source/range
+        xpath: udp-conf/udp/udp-src-range-port-list/source/range
+        tf_name: udp_src_port_ranges
+        type: Set
+        attributes:
+          - yang_name: udp-min-port
+            tf_name: min_port
+            id: true
+            example: 4000
+          - yang_name: udp-max-port
+            tf_name: max_port
+            id: true
+            example: 5000
+      # UDP source+destination ports with both operators
+      - yang_name: udp-conf/udp/udp-src-dst-port-list-op/source
+        xpath: udp-conf/udp/udp-src-dst-port-list-op/source
+        tf_name: udp_src_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: src-operator
+            tf_name: src_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: dst-operator
+            tf_name: dst_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: syslog
+      # UDP source+destination ports without operators
+      - yang_name: udp-conf/udp/udp-src-dst-port-list-no-op/source
+        xpath: udp-conf/udp/udp-src-dst-port-list-no-op/source
+        tf_name: udp_src_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: syslog
+      # UDP source+destination ports with source operator only
+      - yang_name: udp-conf/udp/udp-src-dst-port-list-src-op/source
+        xpath: udp-conf/udp/udp-src-dst-port-list-src-op/source
+        tf_name: udp_src_dst_port_list_src_op
+        type: Set
+        attributes:
+          - yang_name: src-operator
+            tf_name: src_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: syslog
+      # UDP source+destination ports with destination operator only
+      - yang_name: udp-conf/udp/udp-src-dst-port-list-dst-op/source
+        xpath: udp-conf/udp/udp-src-dst-port-list-dst-op/source
+        tf_name: udp_src_dst_port_list_dst_op
+        type: Set
+        attributes:
+          - yang_name: udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: dst-operator
+            tf_name: dst_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: syslog
+      # UDP source range + destination port with operator
+      - yang_name: udp-conf/udp/udp-src-range-dst-port-list-op/source
+        xpath: udp-conf/udp/udp-src-range-dst-port-list-op/source
+        tf_name: udp_src_range_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: udp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: udp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: syslog
+      # UDP source range + destination port without operator
+      - yang_name: udp-conf/udp/udp-src-range-dst-port-list-no-op/source
+        xpath: udp-conf/udp/udp-src-range-dst-port-list-no-op/source
+        tf_name: udp_src_range_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: udp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: udp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: syslog
+      # UDP source port with operator + destination range
+      - yang_name: udp-conf/udp/udp-src-dst-range-port-list-op/source
+        xpath: udp-conf/udp/udp-src-dst-range-port-list-op/source
+        tf_name: udp_src_dst_range_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: udp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: udp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # UDP source port without operator + destination range
+      - yang_name: udp-conf/udp/udp-src-dst-range-port-list-no-op/source
+        xpath: udp-conf/udp/udp-src-dst-range-port-list-no-op/source
+        tf_name: udp_src_dst_range_port_list
+        type: Set
+        attributes:
+          - yang_name: udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: udp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: udp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # UDP source range + destination range
+      - yang_name: udp-conf/udp/udp-src-range-dst-range-port-list/source
+        xpath: udp-conf/udp/udp-src-range-dst-range-port-list/source
+        tf_name: udp_src_range_dst_range_port_list
+        type: Set
+        attributes:
+          - yang_name: udp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: udp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: udp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: udp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # TCP-UDP destination ports with operator
+      - yang_name: tcp-udp/tcp-udp-port-list-op
+        xpath: tcp-udp/tcp-udp-port-list-op
+        tf_name: tcp_udp_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-port
+            tf_name: port
+            id: true
+            example: 3389
+      # TCP-UDP destination ports without operator
+      - yang_name: tcp-udp/tcp-udp-port-list-no-op
+        xpath: tcp-udp/tcp-udp-port-list-no-op
+        tf_name: tcp_udp_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-port
+            tf_name: port
+            id: true
+            example: 3389
+      # TCP-UDP destination port ranges
+      - yang_name: tcp-udp/tcp-udp-range-port-list/range
+        xpath: tcp-udp/tcp-udp-range-port-list/range
+        tf_name: tcp_udp_dst_port_ranges
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-min-port
+            tf_name: min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-udp-max-port
+            tf_name: max_port
+            id: true
+            example: 2048
+      # TCP-UDP source ports with operator
+      - yang_name: tcp-udp/tcp-udp-src-port-list-op/source
+        xpath: tcp-udp/tcp-udp-src-port-list-op/source
+        tf_name: tcp_udp_src_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-port
+            tf_name: port
+            id: true
+            example: 5000
+      # TCP-UDP source ports without operator
+      - yang_name: tcp-udp/tcp-udp-src-port-list-no-op/source
+        xpath: tcp-udp/tcp-udp-src-port-list-no-op/source
+        tf_name: tcp_udp_src_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-port
+            tf_name: port
+            id: true
+            example: 5000
+      # TCP-UDP source port ranges
+      - yang_name: tcp-udp/tcp-udp-src-range-port-list/source/range
+        xpath: tcp-udp/tcp-udp-src-range-port-list/source/range
+        tf_name: tcp_udp_src_port_ranges
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-min-port
+            tf_name: min_port
+            id: true
+            example: 4000
+          - yang_name: tcp-udp-max-port
+            tf_name: max_port
+            id: true
+            example: 5000
+      # TCP-UDP source+destination ports with both operators
+      - yang_name: tcp-udp/tcp-udp-src-dst-port-list-op/source
+        xpath: tcp-udp/tcp-udp-src-dst-port-list-op/source
+        tf_name: tcp_udp_src_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: src-operator
+            tf_name: src_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: dst-operator
+            tf_name: dst_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: 3389
+      # TCP-UDP source+destination ports without operators
+      - yang_name: tcp-udp/tcp-udp-src-dst-port-list-no-op/source
+        xpath: tcp-udp/tcp-udp-src-dst-port-list-no-op/source
+        tf_name: tcp_udp_src_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: tcp-udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: 3389
+      # TCP-UDP source+destination ports with source operator only
+      - yang_name: tcp-udp/tcp-udp-src-dst-port-list-src-op/source
+        xpath: tcp-udp/tcp-udp-src-dst-port-list-src-op/source
+        tf_name: tcp_udp_src_dst_port_list_src_op
+        type: Set
+        attributes:
+          - yang_name: src-operator
+            tf_name: src_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: tcp-udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: 3389
+      # TCP-UDP source+destination ports with destination operator only
+      - yang_name: tcp-udp/tcp-udp-src-dst-port-list-dst-op/source
+        xpath: tcp-udp/tcp-udp-src-dst-port-list-dst-op/source
+        tf_name: tcp_udp_src_dst_port_list_dst_op
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: dst-operator
+            tf_name: dst_operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: 3389
+      # TCP-UDP source range + destination port with operator
+      - yang_name: tcp-udp/tcp-udp-src-range-dst-port-list-op/source
+        xpath: tcp-udp/tcp-udp-src-range-dst-port-list-op/source
+        tf_name: tcp_udp_src_range_dst_port_list_op
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-udp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: 3389
+      # TCP-UDP source range + destination port without operator
+      - yang_name: tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source
+        xpath: tcp-udp/tcp-udp-src-range-dst-port-list-no-op/source
+        tf_name: tcp_udp_src_range_dst_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-udp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: tcp-udp-dst-port
+            tf_name: dst_port
+            id: true
+            example: 3389
+      # TCP-UDP source port with operator + destination range
+      - yang_name: tcp-udp/tcp-udp-src-dst-range-port-list-op/source
+        xpath: tcp-udp/tcp-udp-src-dst-range-port-list-op/source
+        tf_name: tcp_udp_src_dst_range_port_list_op
+        type: Set
+        attributes:
+          - yang_name: operator
+            tf_name: operator
+            id: true
+            enum_values: [eq, gt, lt]
+            example: eq
+          - yang_name: tcp-udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: tcp-udp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: tcp-udp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # TCP-UDP source port without operator + destination range
+      - yang_name: tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source
+        xpath: tcp-udp/tcp-udp-src-dst-range-port-list-no-op/source
+        tf_name: tcp_udp_src_dst_range_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-src-port
+            tf_name: src_port
+            id: true
+            example: 5000
+          - yang_name: tcp-udp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: tcp-udp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000
+      # TCP-UDP source range + destination range
+      - yang_name: tcp-udp/tcp-udp-src-range-dst-range-port-list/source
+        xpath: tcp-udp/tcp-udp-src-range-dst-range-port-list/source
+        tf_name: tcp_udp_src_range_dst_range_port_list
+        type: Set
+        attributes:
+          - yang_name: tcp-udp-src-min-port
+            tf_name: src_min_port
+            id: true
+            example: 1024
+          - yang_name: tcp-udp-src-max-port
+            tf_name: src_max_port
+            id: true
+            example: 2048
+          - yang_name: tcp-udp-dst-min-port
+            tf_name: dst_min_port
+            id: true
+            example: 3000
+          - yang_name: tcp-udp-dst-max-port
+            tf_name: dst_max_port
+            id: true
+            example: 4000

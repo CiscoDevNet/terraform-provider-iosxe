@@ -146,6 +146,13 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 				{{- if or .Id .Reference .RequiresReplace}}
 				PlanModifiers: []planmodifier.{{.Type}}{
 					{{snakeCase .Type}}planmodifier.RequiresReplace(),
+					{{- if .NormalizeIPv6}}
+					helpers.UseIPv6Normalization(),
+					{{- end}}
+				},
+				{{- else if .NormalizeIPv6}}
+				PlanModifiers: []planmodifier.String{
+					helpers.UseIPv6Normalization(),
 				},
 				{{- end}}
 				{{- if and (len .DefaultValue) (eq .Type "Int64")}}
@@ -208,6 +215,11 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 								int64validator.Between({{.MinInt}}, {{.MaxInt}}),
 							},
 							{{- end}}
+							{{- if .NormalizeIPv6}}
+							PlanModifiers: []planmodifier.String{
+								helpers.UseIPv6Normalization(),
+							},
+							{{- end}}
 							{{- if and (len .DefaultValue) (eq .Type "Int64")}}
 							Default:             int64default.StaticInt64({{.DefaultValue}}),
 							{{- else if and (len .DefaultValue) (eq .Type "Bool")}}
@@ -266,6 +278,11 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 										{{- else if or (ne .MinInt 0) (ne .MaxInt 0)}}
 										Validators: []validator.Int64{
 											int64validator.Between({{.MinInt}}, {{.MaxInt}}),
+										},
+										{{- end}}
+										{{- if .NormalizeIPv6}}
+										PlanModifiers: []planmodifier.String{
+											helpers.UseIPv6Normalization(),
 										},
 										{{- end}}
 										{{- if and (len .DefaultValue) (eq .Type "Int64")}}

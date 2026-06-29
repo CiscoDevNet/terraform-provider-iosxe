@@ -35,6 +35,8 @@ func TestAccDataSourceIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "bfd_all_interfaces", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "default_information_originate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "default_information_originate_always", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "default_information_originate_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "default_information_originate_metric_type", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "default_metric", "21"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "distance", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "domain_tag", "10"))
@@ -46,8 +48,12 @@ func TestAccDataSourceIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_external_lsa_metric", "16711680"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_include_stub", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_on_startup_time", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_subnets", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_subnets", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_metric_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_tag", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_metric_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_tag", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "neighbor.0.ip", "2.2.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "neighbor.0.priority", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "neighbor.0.cost", "100"))
@@ -108,6 +114,8 @@ func testAccDataSourceIosxeOSPFVRFConfig() string {
 	config += `	bfd_all_interfaces = true` + "\n"
 	config += `	default_information_originate = true` + "\n"
 	config += `	default_information_originate_always = true` + "\n"
+	config += `	default_information_originate_metric = 100` + "\n"
+	config += `	default_information_originate_metric_type = 1` + "\n"
 	config += `	default_metric = 21` + "\n"
 	config += `	distance = 120` + "\n"
 	config += `	domain_tag = 10` + "\n"
@@ -119,8 +127,12 @@ func testAccDataSourceIosxeOSPFVRFConfig() string {
 	config += `	max_metric_router_lsa_external_lsa_metric = 16711680` + "\n"
 	config += `	max_metric_router_lsa_include_stub = true` + "\n"
 	config += `	max_metric_router_lsa_on_startup_time = 60` + "\n"
-	config += `	redistribute_static_subnets = true` + "\n"
-	config += `	redistribute_connected_subnets = true` + "\n"
+	config += `	redistribute_static_metric = 100` + "\n"
+	config += `	redistribute_static_metric_type = "1"` + "\n"
+	config += `	redistribute_static_tag = 100` + "\n"
+	config += `	redistribute_connected_metric = 100` + "\n"
+	config += `	redistribute_connected_metric_type = "1"` + "\n"
+	config += `	redistribute_connected_tag = 100` + "\n"
 	config += `	neighbor = [{` + "\n"
 	config += `		ip = "2.2.2.2"` + "\n"
 	config += `		priority = 10` + "\n"

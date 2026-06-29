@@ -53,12 +53,15 @@ resource "iosxe_interface_port_channel" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout                      = 2147
-  ip_arp_inspection_trust          = true
-  ip_arp_inspection_limit_rate     = 1000
-  load_interval                    = 30
-  logging_event_link_status_enable = false
-  ip_igmp_version                  = 3
+  arp_timeout                              = 2147
+  ip_arp_inspection_trust                  = true
+  ip_arp_inspection_limit_rate             = 1000
+  load_interval                            = 30
+  logging_event_link_status_enable         = false
+  ip_igmp_version                          = 3
+  ip_verify_unicast_source_reachable_via   = "rx"
+  ip_verify_unicast_source_allow_self_ping = true
+  ip_verify_unicast_source_allow_default   = true
   ip_flow_monitors = [
     {
       name      = "MON1"
@@ -128,6 +131,10 @@ resource "iosxe_interface_port_channel" "example" {
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
+- `ip_verify_unicast_source_allow_default` (Boolean) Allow default route to match when checking source address
+- `ip_verify_unicast_source_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)
+- `ip_verify_unicast_source_reachable_via` (String) Specify reachability check to apply to the source address
+  - Choices: `any`, `rx`
 - `ipv4_address` (String) Ip address
 - `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
 - `ipv4_address_mask` (String) Ip subnet mask

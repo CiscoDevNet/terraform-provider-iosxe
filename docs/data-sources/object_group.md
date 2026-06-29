@@ -29,6 +29,7 @@ data "iosxe_object_group" "example" {
 - `fqdn` (Attributes List) FQDN object-group type (see [below for nested schema](#nestedatt--fqdn))
 - `id` (String) The path of the retrieved object.
 - `network` (Attributes List) network group (see [below for nested schema](#nestedatt--network))
+- `service` (Attributes List) service group (see [below for nested schema](#nestedatt--service))
 
 <a id="nestedatt--fqdn"></a>
 ### Nested Schema for `fqdn`
@@ -101,3 +102,536 @@ Read-Only:
 
 - `ipv4_address` (String) A.B.C.D;;Network address of the group members
 - `ipv4_mask` (String) A.B.C.D;;Network mask
+
+
+
+<a id="nestedatt--service"></a>
+### Nested Schema for `service`
+
+Read-Only:
+
+- `ahp` (Boolean) Authentication Header Protocol
+- `description` (String) Service object group description
+- `eigrp` (Boolean) Cisco's EIGRP routing protocol
+- `esp` (Boolean) Encapsulation Security Payload
+- `gre` (Boolean) Cisco's GRE tunneling
+- `group_objects` (Attributes Set) List of nested IPv4 service object groups (see [below for nested schema](#nestedatt--service--group_objects))
+- `icmp` (Boolean) Internet Control Message Protocol
+- `icmp_alternate_address` (Boolean) Alternate address
+- `icmp_conversion_error` (Boolean) Datagram conversion
+- `icmp_echo` (Boolean) Echo (ping)
+- `icmp_echo_reply` (Boolean) Echo reply
+- `icmp_information_reply` (Boolean) Information replies
+- `icmp_information_request` (Boolean) Information requests
+- `icmp_mask_reply` (Boolean) Mask replies
+- `icmp_mask_request` (Boolean) Mask requests
+- `icmp_mobile_redirect` (Boolean) Mobile host redirect
+- `icmp_parameter_problem` (Boolean) All parameter problems
+- `icmp_port_number` (Number)
+- `icmp_redirect` (Boolean) All redirects
+- `icmp_router_advertisement` (Boolean) Router discovery advertisements
+- `icmp_router_solicitation` (Boolean) Router discovery solicitations
+- `icmp_source_quench` (Boolean) Source quenches
+- `icmp_time_exceeded` (Boolean) All time exceeded
+- `icmp_timestamp_reply` (Boolean) Timestamp replies
+- `icmp_timestamp_request` (Boolean) Timestamp requests
+- `icmp_traceroute` (Boolean) Traceroute
+- `icmp_unreachable` (Boolean) All unreachables
+- `igmp` (Boolean) Internet Gateway Message Protocol
+- `ip` (Boolean) Any Internet Protocol
+- `ipinip` (Boolean) IP in IP tunneling
+- `name` (String)
+- `nos` (Boolean) KA9Q NOS compatible IP over IP tunneling
+- `ospf` (Boolean) OSPF routing protocol
+- `pcp` (Boolean) Payload Compression Protocol
+- `pim` (Boolean) Protocol Independent Multicast
+- `protocol_numbers` (Set of Number) An IP protocol number
+- `tcp` (Boolean) Transmission Control Protocol
+- `tcp_dst_port_list` (Attributes Set) List of Destination TCP ports without port operator (see [below for nested schema](#nestedatt--service--tcp_dst_port_list))
+- `tcp_dst_port_list_op` (Attributes Set) List of Destination TCP ports with port operator (see [below for nested schema](#nestedatt--service--tcp_dst_port_list_op))
+- `tcp_dst_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--tcp_dst_port_ranges))
+- `tcp_src_dst_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_dst_port_list))
+- `tcp_src_dst_port_list_dst_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_dst_port_list_dst_op))
+- `tcp_src_dst_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_dst_port_list_op))
+- `tcp_src_dst_port_list_src_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_dst_port_list_src_op))
+- `tcp_src_dst_range_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_dst_range_port_list))
+- `tcp_src_dst_range_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_dst_range_port_list_op))
+- `tcp_src_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_port_list))
+- `tcp_src_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_port_list_op))
+- `tcp_src_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--tcp_src_port_ranges))
+- `tcp_src_range_dst_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_range_dst_port_list))
+- `tcp_src_range_dst_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_range_dst_port_list_op))
+- `tcp_src_range_dst_range_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_src_range_dst_range_port_list))
+- `tcp_udp_dst_port_list` (Attributes Set) List of Destination tcp-udp ports without port operator (see [below for nested schema](#nestedatt--service--tcp_udp_dst_port_list))
+- `tcp_udp_dst_port_list_op` (Attributes Set) List of Destination tcp-udp ports with port operator (see [below for nested schema](#nestedatt--service--tcp_udp_dst_port_list_op))
+- `tcp_udp_dst_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--tcp_udp_dst_port_ranges))
+- `tcp_udp_src_dst_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_dst_port_list))
+- `tcp_udp_src_dst_port_list_dst_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_dst_port_list_dst_op))
+- `tcp_udp_src_dst_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_dst_port_list_op))
+- `tcp_udp_src_dst_port_list_src_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_dst_port_list_src_op))
+- `tcp_udp_src_dst_range_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_dst_range_port_list))
+- `tcp_udp_src_dst_range_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_dst_range_port_list_op))
+- `tcp_udp_src_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_port_list))
+- `tcp_udp_src_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_port_list_op))
+- `tcp_udp_src_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--tcp_udp_src_port_ranges))
+- `tcp_udp_src_range_dst_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_range_dst_port_list))
+- `tcp_udp_src_range_dst_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_range_dst_port_list_op))
+- `tcp_udp_src_range_dst_range_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--tcp_udp_src_range_dst_range_port_list))
+- `udp` (Boolean) User Datagram Protocol
+- `udp_dst_port_list` (Attributes Set) List of Destination udp ports without port operator (see [below for nested schema](#nestedatt--service--udp_dst_port_list))
+- `udp_dst_port_list_op` (Attributes Set) List of Destination udp ports with port operator (see [below for nested schema](#nestedatt--service--udp_dst_port_list_op))
+- `udp_dst_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--udp_dst_port_ranges))
+- `udp_src_dst_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_dst_port_list))
+- `udp_src_dst_port_list_dst_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_dst_port_list_dst_op))
+- `udp_src_dst_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_dst_port_list_op))
+- `udp_src_dst_port_list_src_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_dst_port_list_src_op))
+- `udp_src_dst_range_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_dst_range_port_list))
+- `udp_src_dst_range_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_dst_range_port_list_op))
+- `udp_src_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_port_list))
+- `udp_src_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_port_list_op))
+- `udp_src_port_ranges` (Attributes Set) Match only packets in the range of port numbers (see [below for nested schema](#nestedatt--service--udp_src_port_ranges))
+- `udp_src_range_dst_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_range_dst_port_list))
+- `udp_src_range_dst_port_list_op` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_range_dst_port_list_op))
+- `udp_src_range_dst_range_port_list` (Attributes Set) Source port number (see [below for nested schema](#nestedatt--service--udp_src_range_dst_range_port_list))
+
+<a id="nestedatt--service--group_objects"></a>
+### Nested Schema for `service.group_objects`
+
+Read-Only:
+
+- `group_name` (String) Nested service object group name
+
+
+<a id="nestedatt--service--tcp_dst_port_list"></a>
+### Nested Schema for `service.tcp_dst_port_list`
+
+Read-Only:
+
+- `port` (String) Destination TCP port number
+
+
+<a id="nestedatt--service--tcp_dst_port_list_op"></a>
+### Nested Schema for `service.tcp_dst_port_list_op`
+
+Read-Only:
+
+- `operator` (String) Port operator - equal to/lesser than/greater than
+- `port` (String) Destination TCP port number
+
+
+<a id="nestedatt--service--tcp_dst_port_ranges"></a>
+### Nested Schema for `service.tcp_dst_port_ranges`
+
+Read-Only:
+
+- `max_port` (String)
+- `min_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_dst_port_list"></a>
+### Nested Schema for `service.tcp_src_dst_port_list`
+
+Read-Only:
+
+- `dst_port` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_dst_port_list_dst_op"></a>
+### Nested Schema for `service.tcp_src_dst_port_list_dst_op`
+
+Read-Only:
+
+- `dst_operator` (String)
+- `dst_port` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_dst_port_list_op"></a>
+### Nested Schema for `service.tcp_src_dst_port_list_op`
+
+Read-Only:
+
+- `dst_operator` (String)
+- `dst_port` (String)
+- `src_operator` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_dst_port_list_src_op"></a>
+### Nested Schema for `service.tcp_src_dst_port_list_src_op`
+
+Read-Only:
+
+- `dst_port` (String)
+- `src_operator` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_dst_range_port_list"></a>
+### Nested Schema for `service.tcp_src_dst_range_port_list`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_dst_range_port_list_op"></a>
+### Nested Schema for `service.tcp_src_dst_range_port_list_op`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `operator` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_port_list"></a>
+### Nested Schema for `service.tcp_src_port_list`
+
+Read-Only:
+
+- `port` (String)
+
+
+<a id="nestedatt--service--tcp_src_port_list_op"></a>
+### Nested Schema for `service.tcp_src_port_list_op`
+
+Read-Only:
+
+- `operator` (String)
+- `port` (String)
+
+
+<a id="nestedatt--service--tcp_src_port_ranges"></a>
+### Nested Schema for `service.tcp_src_port_ranges`
+
+Read-Only:
+
+- `max_port` (String)
+- `min_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_range_dst_port_list"></a>
+### Nested Schema for `service.tcp_src_range_dst_port_list`
+
+Read-Only:
+
+- `dst_port` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_range_dst_port_list_op"></a>
+### Nested Schema for `service.tcp_src_range_dst_port_list_op`
+
+Read-Only:
+
+- `dst_port` (String)
+- `operator` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--tcp_src_range_dst_range_port_list"></a>
+### Nested Schema for `service.tcp_src_range_dst_range_port_list`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_dst_port_list"></a>
+### Nested Schema for `service.tcp_udp_dst_port_list`
+
+Read-Only:
+
+- `port` (String) Destination tcp-udp port number
+
+
+<a id="nestedatt--service--tcp_udp_dst_port_list_op"></a>
+### Nested Schema for `service.tcp_udp_dst_port_list_op`
+
+Read-Only:
+
+- `operator` (String) Port operator - equal to/lesser than/greater than
+- `port` (String) Destination tcp-udp port number
+
+
+<a id="nestedatt--service--tcp_udp_dst_port_ranges"></a>
+### Nested Schema for `service.tcp_udp_dst_port_ranges`
+
+Read-Only:
+
+- `max_port` (String)
+- `min_port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_dst_port_list"></a>
+### Nested Schema for `service.tcp_udp_src_dst_port_list`
+
+Read-Only:
+
+- `dst_port` (String) Destination port value
+- `src_port` (String) Source port value
+
+
+<a id="nestedatt--service--tcp_udp_src_dst_port_list_dst_op"></a>
+### Nested Schema for `service.tcp_udp_src_dst_port_list_dst_op`
+
+Read-Only:
+
+- `dst_operator` (String) Destination port operator
+- `dst_port` (String) Destination port value
+- `src_port` (String) Source port operator
+
+
+<a id="nestedatt--service--tcp_udp_src_dst_port_list_op"></a>
+### Nested Schema for `service.tcp_udp_src_dst_port_list_op`
+
+Read-Only:
+
+- `dst_operator` (String) Destination port operator
+- `dst_port` (String) Destination port value
+- `src_operator` (String) Source port operator
+- `src_port` (String) Source port value
+
+
+<a id="nestedatt--service--tcp_udp_src_dst_port_list_src_op"></a>
+### Nested Schema for `service.tcp_udp_src_dst_port_list_src_op`
+
+Read-Only:
+
+- `dst_port` (String) Destination port value
+- `src_operator` (String) Source port operator
+- `src_port` (String) Source port value
+
+
+<a id="nestedatt--service--tcp_udp_src_dst_range_port_list"></a>
+### Nested Schema for `service.tcp_udp_src_dst_range_port_list`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_dst_range_port_list_op"></a>
+### Nested Schema for `service.tcp_udp_src_dst_range_port_list_op`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `operator` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_port_list"></a>
+### Nested Schema for `service.tcp_udp_src_port_list`
+
+Read-Only:
+
+- `port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_port_list_op"></a>
+### Nested Schema for `service.tcp_udp_src_port_list_op`
+
+Read-Only:
+
+- `operator` (String)
+- `port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_port_ranges"></a>
+### Nested Schema for `service.tcp_udp_src_port_ranges`
+
+Read-Only:
+
+- `max_port` (String)
+- `min_port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_range_dst_port_list"></a>
+### Nested Schema for `service.tcp_udp_src_range_dst_port_list`
+
+Read-Only:
+
+- `dst_port` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_range_dst_port_list_op"></a>
+### Nested Schema for `service.tcp_udp_src_range_dst_port_list_op`
+
+Read-Only:
+
+- `dst_port` (String)
+- `operator` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--tcp_udp_src_range_dst_range_port_list"></a>
+### Nested Schema for `service.tcp_udp_src_range_dst_range_port_list`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--udp_dst_port_list"></a>
+### Nested Schema for `service.udp_dst_port_list`
+
+Read-Only:
+
+- `port` (String) Destination udp port number
+
+
+<a id="nestedatt--service--udp_dst_port_list_op"></a>
+### Nested Schema for `service.udp_dst_port_list_op`
+
+Read-Only:
+
+- `operator` (String) Port operator - equal to/lesser than/greater than
+- `port` (String) Destination udp port number
+
+
+<a id="nestedatt--service--udp_dst_port_ranges"></a>
+### Nested Schema for `service.udp_dst_port_ranges`
+
+Read-Only:
+
+- `max_port` (String)
+- `min_port` (String)
+
+
+<a id="nestedatt--service--udp_src_dst_port_list"></a>
+### Nested Schema for `service.udp_src_dst_port_list`
+
+Read-Only:
+
+- `dst_port` (String) Destination port value
+- `src_port` (String) Source port value
+
+
+<a id="nestedatt--service--udp_src_dst_port_list_dst_op"></a>
+### Nested Schema for `service.udp_src_dst_port_list_dst_op`
+
+Read-Only:
+
+- `dst_operator` (String) Destination port operator
+- `dst_port` (String) Destination port value
+- `src_port` (String) Source port value
+
+
+<a id="nestedatt--service--udp_src_dst_port_list_op"></a>
+### Nested Schema for `service.udp_src_dst_port_list_op`
+
+Read-Only:
+
+- `dst_operator` (String) Destination port operator
+- `dst_port` (String) Destination port value
+- `src_operator` (String) Source port operator
+- `src_port` (String) Source port value
+
+
+<a id="nestedatt--service--udp_src_dst_port_list_src_op"></a>
+### Nested Schema for `service.udp_src_dst_port_list_src_op`
+
+Read-Only:
+
+- `dst_port` (String) Destination port value
+- `src_operator` (String) Source port operator
+- `src_port` (String) Source port value
+
+
+<a id="nestedatt--service--udp_src_dst_range_port_list"></a>
+### Nested Schema for `service.udp_src_dst_range_port_list`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--udp_src_dst_range_port_list_op"></a>
+### Nested Schema for `service.udp_src_dst_range_port_list_op`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `operator` (String)
+- `src_port` (String)
+
+
+<a id="nestedatt--service--udp_src_port_list"></a>
+### Nested Schema for `service.udp_src_port_list`
+
+Read-Only:
+
+- `port` (String)
+
+
+<a id="nestedatt--service--udp_src_port_list_op"></a>
+### Nested Schema for `service.udp_src_port_list_op`
+
+Read-Only:
+
+- `operator` (String)
+- `port` (String)
+
+
+<a id="nestedatt--service--udp_src_port_ranges"></a>
+### Nested Schema for `service.udp_src_port_ranges`
+
+Read-Only:
+
+- `max_port` (String)
+- `min_port` (String)
+
+
+<a id="nestedatt--service--udp_src_range_dst_port_list"></a>
+### Nested Schema for `service.udp_src_range_dst_port_list`
+
+Read-Only:
+
+- `dst_port` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--udp_src_range_dst_port_list_op"></a>
+### Nested Schema for `service.udp_src_range_dst_port_list_op`
+
+Read-Only:
+
+- `dst_port` (String)
+- `operator` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)
+
+
+<a id="nestedatt--service--udp_src_range_dst_range_port_list"></a>
+### Nested Schema for `service.udp_src_range_dst_range_port_list`
+
+Read-Only:
+
+- `dst_max_port` (String)
+- `dst_min_port` (String)
+- `src_max_port` (String)
+- `src_min_port` (String)

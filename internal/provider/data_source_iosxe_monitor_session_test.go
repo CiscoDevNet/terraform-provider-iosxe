@@ -36,9 +36,9 @@ func TestAccDataSourceIosxeMonitorSession(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_monitor_session.test", "destination_interface.0.name", "HundredGigE1/0/1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_monitor_session.test", "destination_interface.0.name", "GigabitEthernet1/0/1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_monitor_session.test", "destination_interface.0.encapsulation", "replicate"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_monitor_session.test", "source_interface.0.name", "HundredGigE1/0/2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_monitor_session.test", "source_interface.0.name", "GigabitEthernet1/0/2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_monitor_session.test", "source_interface.0.direction", "both"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -63,11 +63,11 @@ func testAccDataSourceIosxeMonitorSessionConfig() string {
 	config := `resource "iosxe_monitor_session" "test" {` + "\n"
 	config += `	session_id = 1` + "\n"
 	config += `	destination_interface = [{` + "\n"
-	config += `		name = "HundredGigE1/0/1"` + "\n"
+	config += `		name = "GigabitEthernet1/0/1"` + "\n"
 	config += `		encapsulation = "replicate"` + "\n"
 	config += `	}]` + "\n"
 	config += `	source_interface = [{` + "\n"
-	config += `		name = "HundredGigE1/0/2"` + "\n"
+	config += `		name = "GigabitEthernet1/0/2"` + "\n"
 	config += `		direction = "both"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

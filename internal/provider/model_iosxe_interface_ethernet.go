@@ -173,6 +173,9 @@ type InterfaceEthernet struct {
 	CdpTlvServerLocation                                types.Bool                                        `tfsdk:"cdp_tlv_server_location"`
 	IpNatInside                                         types.Bool                                        `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                        `tfsdk:"ip_nat_outside"`
+	IpVerifyUnicastSourceReachableVia                   types.String                                      `tfsdk:"ip_verify_unicast_source_reachable_via"`
+	IpVerifyUnicastSourceAllowSelfPing                  types.Bool                                        `tfsdk:"ip_verify_unicast_source_allow_self_ping"`
+	IpVerifyUnicastSourceAllowDefault                   types.Bool                                        `tfsdk:"ip_verify_unicast_source_allow_default"`
 	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
 	CarrierDelayMsec                                    types.Int64                                       `tfsdk:"carrier_delay_msec"`
 	HoldQueues                                          []InterfaceEthernetHoldQueues                     `tfsdk:"hold_queues"`
@@ -357,6 +360,9 @@ type InterfaceEthernetData struct {
 	CdpTlvServerLocation                                types.Bool                                            `tfsdk:"cdp_tlv_server_location"`
 	IpNatInside                                         types.Bool                                            `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                            `tfsdk:"ip_nat_outside"`
+	IpVerifyUnicastSourceReachableVia                   types.String                                          `tfsdk:"ip_verify_unicast_source_reachable_via"`
+	IpVerifyUnicastSourceAllowSelfPing                  types.Bool                                            `tfsdk:"ip_verify_unicast_source_allow_self_ping"`
+	IpVerifyUnicastSourceAllowDefault                   types.Bool                                            `tfsdk:"ip_verify_unicast_source_allow_default"`
 	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegmentsData           `tfsdk:"evpn_ethernet_segments"`
 	CarrierDelayMsec                                    types.Int64                                           `tfsdk:"carrier_delay_msec"`
 	HoldQueues                                          []InterfaceEthernetHoldQueuesData                     `tfsdk:"hold_queues"`
@@ -1185,6 +1191,23 @@ func (data InterfaceEthernet) toBodyXML(ctx context.Context, config InterfaceEth
 			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
+		}
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() && !data.IpVerifyUnicastSourceReachableVia.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/reachable-via", data.IpVerifyUnicastSourceReachableVia.ValueString())
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() && !data.IpVerifyUnicastSourceAllowSelfPing.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowSelfPing.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+		}
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() && !data.IpVerifyUnicastSourceAllowDefault.IsUnknown() {
+		if data.IpVerifyUnicastSourceAllowDefault.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/verify/unicast/source/allow-default")
 		}
 	}
 	if len(data.EvpnEthernetSegments) > 0 {
@@ -2435,6 +2458,29 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() && !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	} else {
+		data.IpVerifyUnicastSourceReachableVia = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		if value.Exists() {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+		} else {
+			data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+		}
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolNull()
+	}
 	for i := range data.EvpnEthernetSegments {
 		keys := [...]string{"es-value"}
 		keyValues := [...]string{strconv.FormatInt(data.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
@@ -3175,6 +3221,19 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment"); value.Exists() {
 		data.EvpnEthernetSegments = make([]InterfaceEthernetEvpnEthernetSegments, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -3869,6 +3928,19 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/reachable-via"); value.Exists() {
+		data.IpVerifyUnicastSourceReachableVia = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-self-ping"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowSelfPing = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/verify/unicast/source/allow-default"); value.Exists() {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(true)
+	} else {
+		data.IpVerifyUnicastSourceAllowDefault = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment"); value.Exists() {
 		data.EvpnEthernetSegments = make([]InterfaceEthernetEvpnEthernetSegmentsData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -3988,6 +4060,15 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 		if !found {
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment%v", predicates))
 		}
+	}
+	if !state.IpVerifyUnicastSourceAllowDefault.IsNull() && data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/allow-default")
+	}
+	if !state.IpVerifyUnicastSourceAllowSelfPing.IsNull() && data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+	}
+	if !state.IpVerifyUnicastSourceReachableVia.IsNull() && data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/verify/unicast/source/reachable-via")
 	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")
@@ -4673,6 +4754,15 @@ func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body strin
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment%v", predicates))
+	}
+	if !data.IpVerifyUnicastSourceAllowDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/allow-default")
+	}
+	if !data.IpVerifyUnicastSourceAllowSelfPing.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/allow-self-ping")
+	}
+	if !data.IpVerifyUnicastSourceReachableVia.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/verify/unicast/source/reachable-via")
 	}
 	if !data.IpNatOutside.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nat:nat/outside")

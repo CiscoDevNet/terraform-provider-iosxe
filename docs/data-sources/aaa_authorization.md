@@ -29,6 +29,7 @@ data "iosxe_aaa_authorization" "example" {
 - `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
 - `config_commands` (Boolean) For configuration mode commands.
 - `config_lists` (Attributes List) (see [below for nested schema](#nestedatt--config_lists))
+- `console` (Boolean) For enabling console authorization
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
 - `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
