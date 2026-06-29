@@ -85,7 +85,19 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							MarkdownDescription: "Route map permit/deny set operations",
 							Computed:            true,
 						},
-						"description": schema.StringAttribute{
+						"descriptions": schema.ListNestedAttribute{
+							MarkdownDescription: "list of Route-map comments",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"description": schema.StringAttribute{
+										MarkdownDescription: "Route-map comment",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"description_legacy": schema.StringAttribute{
 							MarkdownDescription: "Route-map comment",
 							Computed:            true,
 						},

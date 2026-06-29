@@ -17,9 +17,13 @@ resource "iosxe_route_map" "example" {
   name = "RM1"
   entries = [
     {
-      seq                                    = 10
-      operation                              = "permit"
-      description                            = "Entry 10"
+      seq       = 10
+      operation = "permit"
+      descriptions = [
+        {
+          description = "Entry 10"
+        }
+      ]
       continue                               = false
       match_interfaces                       = ["Loopback1"]
       match_ip_address_access_lists          = ["ACL1"]
@@ -109,7 +113,8 @@ Optional:
 - `continue` (Boolean) Continue on a different entry within the route-map
 - `continue_sequence_number` (Number) Route-map entry sequence number
   - Range: `0`-`65535`
-- `description` (String) Route-map comment
+- `description_legacy` (String) Route-map comment
+- `descriptions` (Attributes List) list of Route-map comments (see [below for nested schema](#nestedatt--entries--descriptions))
 - `match_as_paths` (List of Number) AS path access-list
 - `match_as_paths_legacy` (List of Number) AS path access-list (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `match_community_list_exact_match` (Boolean) Do exact matching of communities
@@ -220,6 +225,14 @@ Optional:
   - Range: `0`-`65535`
 - `set_weight_legacy` (Number) BGP weight for routing table (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
   - Range: `0`-`65535`
+
+<a id="nestedatt--entries--descriptions"></a>
+### Nested Schema for `entries.descriptions`
+
+Required:
+
+- `description` (String) Route-map comment
+
 
 <a id="nestedatt--entries--set_as_path_replace_as"></a>
 ### Nested Schema for `entries.set_as_path_replace_as`

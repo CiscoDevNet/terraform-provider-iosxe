@@ -16,7 +16,17 @@ attributes:
         id: true
       - yang_name: operation
         example: permit
+      - yang_name: descriptions
+        tf_name: descriptions
+        type: List
+        attributes:
+          - yang_name: description-leaf
+            tf_name: description
+            id: true
+            example: Entry 10
       - yang_name: description
+        tf_name: description_legacy
+        test_tags: [IOSXE1712]
         example: Entry 10
       - yang_name: continue
         example: false
