@@ -76,7 +76,7 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceLoopbackImportStateIdFunc("iosxe_interface_loopback.test"),
-				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ip_nat_inside", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"ipv4_address_dhcp", "ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default", "ipv6_dhcp_client_pd_rapid_commit", "ipv6_dhcp_relay_trust", "ipv6_dhcp_relay_option_vpn", "ip_nat_inside", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

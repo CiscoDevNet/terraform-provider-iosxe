@@ -372,6 +372,73 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
 				Optional:            true,
 			},
+			"ipv6_dhcp_servers": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Act as an IPv6 DHCP server").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"pool_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("DHCP pool name").String,
+							Required:            true,
+						},
+						"allow_hint": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Allow hint from client").String,
+							Optional:            true,
+						},
+						"rapid_commit": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit").String,
+							Optional:            true,
+						},
+						"preference": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Server preference value").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+					},
+				},
+			},
+			"ipv6_dhcp_client_pd": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 DHCP client prefix-delegation name").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 200),
+				},
+			},
+			"ipv6_dhcp_client_pd_rapid_commit": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Rapid-Commit for prefix-delegation").String,
+				Optional:            true,
+			},
+			"ipv6_dhcp_relay_destinations": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Relay destination IPv6 address").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
+							},
+						},
+						"interface": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Interface for relay address").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"ipv6_dhcp_relay_trust": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Interface is trusted to process relay-replies").String,
+				Optional:            true,
+			},
+			"ipv6_dhcp_relay_option_vpn": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Insert VSS option in Relay-Forward Messages").String,
+				Optional:            true,
+			},
 			"ipv6_link_local_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,

@@ -116,6 +116,63 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Obtain IPv6 address from DHCP server",
 				Computed:            true,
 			},
+			"ipv6_dhcp_servers": schema.ListNestedAttribute{
+				MarkdownDescription: "Act as an IPv6 DHCP server",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"pool_name": schema.StringAttribute{
+							MarkdownDescription: "DHCP pool name",
+							Computed:            true,
+						},
+						"allow_hint": schema.BoolAttribute{
+							MarkdownDescription: "Allow hint from client",
+							Computed:            true,
+						},
+						"rapid_commit": schema.BoolAttribute{
+							MarkdownDescription: "Enable Rapid-Commit",
+							Computed:            true,
+						},
+						"preference": schema.Int64Attribute{
+							MarkdownDescription: "Server preference value",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_dhcp_client_pd": schema.StringAttribute{
+				MarkdownDescription: "IPv6 DHCP client prefix-delegation name",
+				Computed:            true,
+			},
+			"ipv6_dhcp_client_pd_rapid_commit": schema.BoolAttribute{
+				MarkdownDescription: "Enable Rapid-Commit for prefix-delegation",
+				Computed:            true,
+			},
+			"ipv6_dhcp_relay_destinations": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: "Relay destination IPv6 address",
+							Computed:            true,
+						},
+						"interface": schema.ListAttribute{
+							MarkdownDescription: "Interface for relay address",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_dhcp_relay_trust": schema.BoolAttribute{
+				MarkdownDescription: "Interface is trusted to process relay-replies",
+				Computed:            true,
+			},
+			"ipv6_dhcp_relay_option_vpn": schema.BoolAttribute{
+				MarkdownDescription: "Insert VSS option in Relay-Forward Messages",
+				Computed:            true,
+			},
 			"ipv6_link_local_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
