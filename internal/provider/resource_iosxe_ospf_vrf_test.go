@@ -52,11 +52,9 @@ func TestAccIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "max_metric_router_lsa_external_lsa_metric", "16711680"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "max_metric_router_lsa_include_stub", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "max_metric_router_lsa_on_startup_time", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_static_subnets", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_static_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_static_metric_type", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_static_tag", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_connected_subnets", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_connected_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_connected_metric_type", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "redistribute_connected_tag", "100"))
@@ -97,7 +95,7 @@ func TestAccIosxeOSPFVRF(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeOSPFVRFImportStateIdFunc("iosxe_ospf_vrf.test"),
-				ImportStateVerifyIgnore: []string{"log_adjacency_changes_detail", "nsf_cisco", "nsf_cisco_enforce_global", "max_metric_router_lsa_on_startup_wait_for_bgp", "redistribute_static_nssa_only", "redistribute_connected_nssa_only", "mpls_ldp_autoconfig", "mpls_ldp_sync"},
+				ImportStateVerifyIgnore: []string{"log_adjacency_changes_detail", "nsf_cisco", "nsf_cisco_enforce_global", "max_metric_router_lsa_on_startup_wait_for_bgp", "redistribute_static_subnets", "redistribute_static_nssa_only", "redistribute_connected_subnets", "redistribute_connected_nssa_only", "mpls_ldp_autoconfig", "mpls_ldp_sync"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -170,11 +168,9 @@ func testAccIosxeOSPFVRFConfig_all() string {
 	config += `	max_metric_router_lsa_external_lsa_metric = 16711680` + "\n"
 	config += `	max_metric_router_lsa_include_stub = true` + "\n"
 	config += `	max_metric_router_lsa_on_startup_time = 60` + "\n"
-	config += `	redistribute_static_subnets = true` + "\n"
 	config += `	redistribute_static_metric = 100` + "\n"
 	config += `	redistribute_static_metric_type = "1"` + "\n"
 	config += `	redistribute_static_tag = 100` + "\n"
-	config += `	redistribute_connected_subnets = true` + "\n"
 	config += `	redistribute_connected_metric = 100` + "\n"
 	config += `	redistribute_connected_metric_type = "1"` + "\n"
 	config += `	redistribute_connected_tag = 100` + "\n"

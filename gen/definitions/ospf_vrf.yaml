@@ -73,6 +73,7 @@ attributes:
     example: true
     exclude_test: true
   - yang_name: redistribute/static/subnets
+    exclude_test: true
     example: true
   - yang_name: redistribute/static/metric
     example: 100
@@ -87,6 +88,7 @@ attributes:
     exclude_test: true
     example: true
   - yang_name: redistribute/connected/subnets
+    exclude_test: true
     example: true
   - yang_name: redistribute/connected/metric
     example: 100
