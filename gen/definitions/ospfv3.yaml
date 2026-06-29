@@ -1,0 +1,23 @@
+---
+name: OSPFv3
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospfv3:ospfv3[id=%v]
+doc_category: OSPF
+attributes:
+  - yang_name: id
+    tf_name: process_id
+    example: 1
+  - yang_name: router-id
+    example: 1.2.3.4
+  - yang_name: bfd/all-interfaces
+    example: true
+  - yang_name: auto-cost/reference-bandwidth
+    example: 40000
+  - yang_name: shutdown
+    example: false
+  - yang_name: log-adjacency-changes
+    xpath: log-adjacency-changes
+    tf_name: log_adjacency_changes
+    example: true
+  - yang_name: log-adjacency-changes/detail
+    tf_name: log_adjacency_changes_detail
+    example: true

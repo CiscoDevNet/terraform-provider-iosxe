@@ -180,6 +180,1015 @@ func (d *ObjectGroupDataSource) Schema(ctx context.Context, req datasource.Schem
 					},
 				},
 			},
+			"service": schema.ListNestedAttribute{
+				MarkdownDescription: "service group",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: "Service object group description",
+							Computed:            true,
+						},
+						"group_objects": schema.SetNestedAttribute{
+							MarkdownDescription: "List of nested IPv4 service object groups",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"group_name": schema.StringAttribute{
+										MarkdownDescription: "Nested service object group name",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"protocol_numbers": schema.SetAttribute{
+							MarkdownDescription: "An IP protocol number",
+							ElementType:         types.Int64Type,
+							Computed:            true,
+						},
+						"ahp": schema.BoolAttribute{
+							MarkdownDescription: "Authentication Header Protocol",
+							Computed:            true,
+						},
+						"eigrp": schema.BoolAttribute{
+							MarkdownDescription: "Cisco's EIGRP routing protocol",
+							Computed:            true,
+						},
+						"esp": schema.BoolAttribute{
+							MarkdownDescription: "Encapsulation Security Payload",
+							Computed:            true,
+						},
+						"gre": schema.BoolAttribute{
+							MarkdownDescription: "Cisco's GRE tunneling",
+							Computed:            true,
+						},
+						"icmp": schema.BoolAttribute{
+							MarkdownDescription: "Internet Control Message Protocol",
+							Computed:            true,
+						},
+						"igmp": schema.BoolAttribute{
+							MarkdownDescription: "Internet Gateway Message Protocol",
+							Computed:            true,
+						},
+						"ip": schema.BoolAttribute{
+							MarkdownDescription: "Any Internet Protocol",
+							Computed:            true,
+						},
+						"ipinip": schema.BoolAttribute{
+							MarkdownDescription: "IP in IP tunneling",
+							Computed:            true,
+						},
+						"nos": schema.BoolAttribute{
+							MarkdownDescription: "KA9Q NOS compatible IP over IP tunneling",
+							Computed:            true,
+						},
+						"ospf": schema.BoolAttribute{
+							MarkdownDescription: "OSPF routing protocol",
+							Computed:            true,
+						},
+						"pcp": schema.BoolAttribute{
+							MarkdownDescription: "Payload Compression Protocol",
+							Computed:            true,
+						},
+						"pim": schema.BoolAttribute{
+							MarkdownDescription: "Protocol Independent Multicast",
+							Computed:            true,
+						},
+						"tcp": schema.BoolAttribute{
+							MarkdownDescription: "Transmission Control Protocol",
+							Computed:            true,
+						},
+						"udp": schema.BoolAttribute{
+							MarkdownDescription: "User Datagram Protocol",
+							Computed:            true,
+						},
+						"icmp_port_number": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"icmp_alternate_address": schema.BoolAttribute{
+							MarkdownDescription: "Alternate address",
+							Computed:            true,
+						},
+						"icmp_conversion_error": schema.BoolAttribute{
+							MarkdownDescription: "Datagram conversion",
+							Computed:            true,
+						},
+						"icmp_echo": schema.BoolAttribute{
+							MarkdownDescription: "Echo (ping)",
+							Computed:            true,
+						},
+						"icmp_echo_reply": schema.BoolAttribute{
+							MarkdownDescription: "Echo reply",
+							Computed:            true,
+						},
+						"icmp_information_reply": schema.BoolAttribute{
+							MarkdownDescription: "Information replies",
+							Computed:            true,
+						},
+						"icmp_information_request": schema.BoolAttribute{
+							MarkdownDescription: "Information requests",
+							Computed:            true,
+						},
+						"icmp_mask_reply": schema.BoolAttribute{
+							MarkdownDescription: "Mask replies",
+							Computed:            true,
+						},
+						"icmp_mask_request": schema.BoolAttribute{
+							MarkdownDescription: "Mask requests",
+							Computed:            true,
+						},
+						"icmp_mobile_redirect": schema.BoolAttribute{
+							MarkdownDescription: "Mobile host redirect",
+							Computed:            true,
+						},
+						"icmp_parameter_problem": schema.BoolAttribute{
+							MarkdownDescription: "All parameter problems",
+							Computed:            true,
+						},
+						"icmp_redirect": schema.BoolAttribute{
+							MarkdownDescription: "All redirects",
+							Computed:            true,
+						},
+						"icmp_router_advertisement": schema.BoolAttribute{
+							MarkdownDescription: "Router discovery advertisements",
+							Computed:            true,
+						},
+						"icmp_router_solicitation": schema.BoolAttribute{
+							MarkdownDescription: "Router discovery solicitations",
+							Computed:            true,
+						},
+						"icmp_source_quench": schema.BoolAttribute{
+							MarkdownDescription: "Source quenches",
+							Computed:            true,
+						},
+						"icmp_time_exceeded": schema.BoolAttribute{
+							MarkdownDescription: "All time exceeded",
+							Computed:            true,
+						},
+						"icmp_timestamp_reply": schema.BoolAttribute{
+							MarkdownDescription: "Timestamp replies",
+							Computed:            true,
+						},
+						"icmp_timestamp_request": schema.BoolAttribute{
+							MarkdownDescription: "Timestamp requests",
+							Computed:            true,
+						},
+						"icmp_traceroute": schema.BoolAttribute{
+							MarkdownDescription: "Traceroute",
+							Computed:            true,
+						},
+						"icmp_unreachable": schema.BoolAttribute{
+							MarkdownDescription: "All unreachables",
+							Computed:            true,
+						},
+						"tcp_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "List of Destination TCP ports with port operator",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "Port operator - equal to/lesser than/greater than",
+										Computed:            true,
+									},
+									"port": schema.StringAttribute{
+										MarkdownDescription: "Destination TCP port number",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "List of Destination TCP ports without port operator",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port": schema.StringAttribute{
+										MarkdownDescription: "Destination TCP port number",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_dst_port_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: "Match only packets in the range of port numbers",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_port_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: "Match only packets in the range of port numbers",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_dst_port_list_src_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_dst_port_list_dst_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_range_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_range_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_dst_range_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_dst_range_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_src_range_dst_range_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "List of Destination udp ports with port operator",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "Port operator - equal to/lesser than/greater than",
+										Computed:            true,
+									},
+									"port": schema.StringAttribute{
+										MarkdownDescription: "Destination udp port number",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "List of Destination udp ports without port operator",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port": schema.StringAttribute{
+										MarkdownDescription: "Destination udp port number",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_dst_port_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: "Match only packets in the range of port numbers",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_port_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: "Match only packets in the range of port numbers",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_operator": schema.StringAttribute{
+										MarkdownDescription: "Source port operator",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port value",
+										Computed:            true,
+									},
+									"dst_operator": schema.StringAttribute{
+										MarkdownDescription: "Destination port operator",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port value",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_dst_port_list_src_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_operator": schema.StringAttribute{
+										MarkdownDescription: "Source port operator",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port value",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_dst_port_list_dst_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port value",
+										Computed:            true,
+									},
+									"dst_operator": schema.StringAttribute{
+										MarkdownDescription: "Destination port operator",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_range_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_range_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_dst_range_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_dst_range_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"udp_src_range_dst_range_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "List of Destination tcp-udp ports with port operator",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "Port operator - equal to/lesser than/greater than",
+										Computed:            true,
+									},
+									"port": schema.StringAttribute{
+										MarkdownDescription: "Destination tcp-udp port number",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "List of Destination tcp-udp ports without port operator",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port": schema.StringAttribute{
+										MarkdownDescription: "Destination tcp-udp port number",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_dst_port_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: "Match only packets in the range of port numbers",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_port_ranges": schema.SetNestedAttribute{
+							MarkdownDescription: "Match only packets in the range of port numbers",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_operator": schema.StringAttribute{
+										MarkdownDescription: "Source port operator",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port value",
+										Computed:            true,
+									},
+									"dst_operator": schema.StringAttribute{
+										MarkdownDescription: "Destination port operator",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port value",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_dst_port_list_src_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_operator": schema.StringAttribute{
+										MarkdownDescription: "Source port operator",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port value",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_dst_port_list_dst_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "Source port operator",
+										Computed:            true,
+									},
+									"dst_operator": schema.StringAttribute{
+										MarkdownDescription: "Destination port operator",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "Destination port value",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_range_dst_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_range_dst_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_dst_range_port_list_op": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"operator": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_dst_range_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"tcp_udp_src_range_dst_range_port_list": schema.SetNestedAttribute{
+							MarkdownDescription: "Source port number",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"src_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"src_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_min_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"dst_max_port": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -214,35 +1223,21 @@ func (d *ObjectGroupDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	if device.Protocol == "restconf" {
-		res, err := device.RestconfClient.GetData(config.getPath())
-		if res.StatusCode == 404 {
-			config = ObjectGroupData{Device: config.Device}
-		} else {
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-				return
-			}
-
-			config.fromBody(ctx, res.Res)
-		}
-	} else {
-		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-		if locked {
-			defer device.NetconfOpMutex.Unlock()
-		}
-		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		filter := helpers.GetXpathFilter(config.getXPath())
-		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-			return
-		}
-
-		config.fromBodyXML(ctx, res.Res)
+	// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+	locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+	if locked {
+		defer device.NetconfOpMutex.Unlock()
 	}
+	defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+	filter := helpers.GetXpathFilter(config.getXPath())
+	res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+		return
+	}
+
+	config.fromBodyXML(ctx, res.Res)
 
 	config.Id = types.StringValue(config.getPath())
 

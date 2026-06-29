@@ -4,4 +4,5 @@ resource "iosxe_device_tracking" "example" {
   tracking_auto_source_fallback_mask     = "255.255.255.0"
   tracking_auto_source_fallback_override = true
   tracking_retry_interval                = 10
+  binding_reachable_lifetime             = 7200
 }

@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -84,17 +81,6 @@ func (data BGPPeerSessionTemplate) getPath() string {
 
 func (data BGPPeerSessionTemplateData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/template/peer-session=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.TemplateName.ValueString())))
-}
-
-// if last path element has a key -> remove it
-func (data BGPPeerSessionTemplate) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
 }
 
 // getXPath returns the XPath for NETCONF operations
@@ -161,150 +147,6 @@ func (data BGPPeerSessionTemplate) toBody(ctx context.Context, config BGPPeerSes
 }
 
 // End of section. //template:end toBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
-
-func (data BGPPeerSessionTemplate) toBodyXML(ctx context.Context, config BGPPeerSessionTemplate) string {
-	body := netconf.Body{}
-	if !data.TemplateName.IsNull() && !data.TemplateName.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.TemplateName.ValueString())
-	}
-	if !data.RemoteAs.IsNull() && !data.RemoteAs.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/remote-as", data.RemoteAs.ValueString())
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
-	}
-	if !data.DisableConnectedCheck.IsNull() && !data.DisableConnectedCheck.IsUnknown() {
-		if data.DisableConnectedCheck.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/disable-connected-check", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/disable-connected-check")
-		}
-	}
-	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
-		if data.EbgpMultihop.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/ebgp-multihop", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ebgp-multihop")
-		}
-	}
-	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/ebgp-multihop/max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
-	}
-	if !data.UpdateSourceInterfaceLoopback.IsNull() && !data.UpdateSourceInterfaceLoopback.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/update-source/interface/Loopback", strconv.FormatInt(data.UpdateSourceInterfaceLoopback.ValueInt64(), 10))
-	}
-	if !data.AoKeychain.IsNull() && !data.AoKeychain.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/ao/keychain-name", data.AoKeychain.ValueString())
-	}
-	if !data.AoIncludeTcpOptions.IsNull() && !data.AoIncludeTcpOptions.IsUnknown() {
-		if data.AoIncludeTcpOptions.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/include-tcp-options", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/include-tcp-options")
-		}
-	}
-	if !data.AoAcceptMismatchConnections.IsNull() && !data.AoAcceptMismatchConnections.IsUnknown() {
-		if data.AoAcceptMismatchConnections.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections", "")
-		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections")
-		}
-	}
-	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/inherit/peer-session", data.InheritPeerSession.ValueString())
-	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
-}
-
-// End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *BGPPeerSessionTemplate) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.TemplateName.IsNull() {
-		data.TemplateName = types.StringValue(value.String())
-	} else {
-		data.TemplateName = types.StringNull()
-	}
-	if value := res.Get(prefix + "remote-as"); value.Exists() && !data.RemoteAs.IsNull() {
-		data.RemoteAs = types.StringValue(value.String())
-	} else {
-		data.RemoteAs = types.StringNull()
-	}
-	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
-		data.Description = types.StringValue(value.String())
-	} else {
-		data.Description = types.StringNull()
-	}
-	if value := res.Get(prefix + "disable-connected-check"); !data.DisableConnectedCheck.IsNull() {
-		if value.Exists() {
-			data.DisableConnectedCheck = types.BoolValue(true)
-		} else {
-			data.DisableConnectedCheck = types.BoolValue(false)
-		}
-	} else {
-		data.DisableConnectedCheck = types.BoolNull()
-	}
-	if value := res.Get(prefix + "ebgp-multihop"); !data.EbgpMultihop.IsNull() {
-		if value.Exists() {
-			data.EbgpMultihop = types.BoolValue(true)
-		} else {
-			data.EbgpMultihop = types.BoolValue(false)
-		}
-	} else {
-		data.EbgpMultihop = types.BoolNull()
-	}
-	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() && !data.EbgpMultihopMaxHop.IsNull() {
-		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
-	} else {
-		data.EbgpMultihopMaxHop = types.Int64Null()
-	}
-	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceInterfaceLoopback.IsNull() {
-		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
-	} else {
-		data.UpdateSourceInterfaceLoopback = types.Int64Null()
-	}
-	if value := res.Get(prefix + "ao.keychain-name"); value.Exists() && !data.AoKeychain.IsNull() {
-		data.AoKeychain = types.StringValue(value.String())
-	} else {
-		data.AoKeychain = types.StringNull()
-	}
-	if value := res.Get(prefix + "ao.include-tcp-options"); !data.AoIncludeTcpOptions.IsNull() {
-		if value.Exists() {
-			data.AoIncludeTcpOptions = types.BoolValue(true)
-		} else {
-			data.AoIncludeTcpOptions = types.BoolValue(false)
-		}
-	} else {
-		data.AoIncludeTcpOptions = types.BoolNull()
-	}
-	if value := res.Get(prefix + "ao.accept-ao-mismatch-connections"); !data.AoAcceptMismatchConnections.IsNull() {
-		if value.Exists() {
-			data.AoAcceptMismatchConnections = types.BoolValue(true)
-		} else {
-			data.AoAcceptMismatchConnections = types.BoolValue(false)
-		}
-	} else {
-		data.AoAcceptMismatchConnections = types.BoolNull()
-	}
-	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() && !data.InheritPeerSession.IsNull() {
-		data.InheritPeerSession = types.StringValue(value.String())
-	} else {
-		data.InheritPeerSession = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -481,136 +323,6 @@ func (data *BGPPeerSessionTemplateData) fromBody(ctx context.Context, res gjson.
 }
 
 // End of section. //template:end fromBodyData
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
-
-func (data *BGPPeerSessionTemplate) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/remote-as"); value.Exists() {
-		data.RemoteAs = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/disable-connected-check"); value.Exists() {
-		data.DisableConnectedCheck = types.BoolValue(true)
-	} else {
-		data.DisableConnectedCheck = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop"); value.Exists() {
-		data.EbgpMultihop = types.BoolValue(true)
-	} else {
-		data.EbgpMultihop = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop/max-hop"); value.Exists() {
-		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() {
-		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/keychain-name"); value.Exists() {
-		data.AoKeychain = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/include-tcp-options"); value.Exists() {
-		data.AoIncludeTcpOptions = types.BoolValue(true)
-	} else {
-		data.AoIncludeTcpOptions = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/accept-ao-mismatch-connections"); value.Exists() {
-		data.AoAcceptMismatchConnections = types.BoolValue(true)
-	} else {
-		data.AoAcceptMismatchConnections = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() {
-		data.InheritPeerSession = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
-
-func (data *BGPPeerSessionTemplateData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/remote-as"); value.Exists() {
-		data.RemoteAs = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/disable-connected-check"); value.Exists() {
-		data.DisableConnectedCheck = types.BoolValue(true)
-	} else {
-		data.DisableConnectedCheck = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop"); value.Exists() {
-		data.EbgpMultihop = types.BoolValue(true)
-	} else {
-		data.EbgpMultihop = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop/max-hop"); value.Exists() {
-		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/update-source/interface/Loopback"); value.Exists() {
-		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/keychain-name"); value.Exists() {
-		data.AoKeychain = types.StringValue(value.String())
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/include-tcp-options"); value.Exists() {
-		data.AoIncludeTcpOptions = types.BoolValue(true)
-	} else {
-		data.AoIncludeTcpOptions = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/accept-ao-mismatch-connections"); value.Exists() {
-		data.AoAcceptMismatchConnections = types.BoolValue(true)
-	} else {
-		data.AoAcceptMismatchConnections = types.BoolValue(false)
-	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() {
-		data.InheritPeerSession = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *BGPPeerSessionTemplate) getDeletedItems(ctx context.Context, state BGPPeerSessionTemplate) []string {
-	deletedItems := make([]string, 0)
-	if !state.InheritPeerSession.IsNull() && data.InheritPeerSession.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inherit/peer-session", state.getPath()))
-	}
-	if !state.AoAcceptMismatchConnections.IsNull() && data.AoAcceptMismatchConnections.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ao", state.getPath()))
-	}
-	if !state.AoIncludeTcpOptions.IsNull() && data.AoIncludeTcpOptions.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ao", state.getPath()))
-	}
-	if !state.AoKeychain.IsNull() && data.AoKeychain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ao", state.getPath()))
-	}
-	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/interface/Loopback", state.getPath()))
-	}
-	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop/max-hop", state.getPath()))
-	}
-	if !state.EbgpMultihop.IsNull() && data.EbgpMultihop.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop", state.getPath()))
-	}
-	if !state.DisableConnectedCheck.IsNull() && data.DisableConnectedCheck.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/disable-connected-check", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.RemoteAs.IsNull() && data.RemoteAs.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/remote-as", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 

@@ -97,23 +97,16 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	if d.Managed {
-		if d.Protocol == "restconf" {
-			if err := helpers.SaveConfigRestconf(d.RestconfClient); err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
-				return
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
-			if locked {
-				defer d.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+		if locked {
+			defer d.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
-			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 
@@ -153,23 +146,16 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 
 	if d.Managed {
-		if d.Protocol == "restconf" {
-			if err := helpers.SaveConfigRestconf(d.RestconfClient); err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
-				return
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
-			if locked {
-				defer d.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+		if locked {
+			defer d.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
-			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 

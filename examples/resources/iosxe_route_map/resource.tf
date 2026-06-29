@@ -2,9 +2,13 @@ resource "iosxe_route_map" "example" {
   name = "RM1"
   entries = [
     {
-      seq                                    = 10
-      operation                              = "permit"
-      description                            = "Entry 10"
+      seq       = 10
+      operation = "permit"
+      descriptions = [
+        {
+          description = "Entry 10"
+        }
+      ]
       continue                               = false
       match_interfaces                       = ["Loopback1"]
       match_ip_address_access_lists          = ["ACL1"]

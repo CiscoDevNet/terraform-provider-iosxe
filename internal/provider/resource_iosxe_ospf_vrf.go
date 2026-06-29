@@ -40,7 +40,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
-	"github.com/netascode/go-restconf"
 )
 
 // End of section. //template:end imports
@@ -116,6 +115,24 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 			},
 			"default_information_originate_always": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Always advertise default route").String,
+				Optional:            true,
+			},
+			"default_information_originate_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF default metric").AddIntegerRangeDescription(1, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 16777214),
+				},
+			},
+			"default_information_originate_metric_type": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF metric type for default routes").AddIntegerRangeDescription(1, 2).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2),
+				},
+			},
+			"default_information_originate_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
 				Optional:            true,
 			},
 			"default_metric": schema.Int64Attribute{
@@ -203,9 +220,179 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
 				Optional:            true,
 			},
+			"redistribute_static_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 16777214),
+				},
+			},
+			"redistribute_static_metric_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF/IS-IS exterior metric type for redistributed routes").AddStringEnumDescription("1", "2").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("1", "2"),
+				},
+			},
+			"redistribute_static_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"redistribute_static_tag": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set tag for routes redistributed into OSPF").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
+			"redistribute_static_nssa_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+				Optional:            true,
+			},
 			"redistribute_connected_subnets": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
 				Optional:            true,
+			},
+			"redistribute_connected_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 16777214),
+				},
+			},
+			"redistribute_connected_metric_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF/IS-IS exterior metric type for redistributed routes").AddStringEnumDescription("1", "2").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("1", "2"),
+				},
+			},
+			"redistribute_connected_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+				Optional:            true,
+			},
+			"redistribute_connected_tag": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set tag for routes redistributed into OSPF").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
+			"redistribute_connected_nssa_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+				Optional:            true,
+			},
+			"redistribute_ospf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Open Shortest Path First (OSPF)").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"process_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Process ID").AddIntegerRangeDescription(1, 65535).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 65535),
+							},
+						},
+						"match_internal": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF internal routes").String,
+							Optional:            true,
+						},
+						"match_external_1": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"match_external_2": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"match_nssa_external_1": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF NSSA external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"match_nssa_external_2": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Redistribute OSPF NSSA external routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"metric": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Metric for redistributed routes").AddIntegerRangeDescription(0, 16777214).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 16777214),
+							},
+						},
+						"metric_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF/IS-IS exterior metric type for redistributed routes").AddStringEnumDescription("1", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2"),
+							},
+						},
+						"subnets": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
+							Optional:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+							Optional:            true,
+						},
+						"tag": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set tag for routes redistributed into OSPF").AddIntegerRangeDescription(0, 4294967295).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 4294967295),
+							},
+						},
+						"nssa_only": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Limit redistributed routes to NSSA areas").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"distribute_list_in_access_lists": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"in": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"access_list": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"distribute_list_out_access_lists": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"out": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"access_list": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+					},
+				},
 			},
 			"mpls_ldp_autoconfig": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP automatic configuration").String,
@@ -582,54 +769,18 @@ func (r *OSPFVRFResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	if device.Managed {
-		if device.Protocol == "restconf" {
-			// Create object
-			body := plan.toBody(ctx, config)
+		// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
+		body := plan.toBodyXML(ctx, config)
 
-			if YangPatch {
-				edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
-				for _, i := range emptyLeafsDelete {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				_, err := device.RestconfClient.YangPatchData("", "1", "", edits)
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object, got error: %s", err))
-					return
-				}
-			} else {
-				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
-				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-					_, err = device.RestconfClient.PutData(plan.getPath(), body)
-				}
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
-					return
-				}
-				for _, i := range emptyLeafsDelete {
-					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
-					}
-				}
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			body := plan.toBodyXML(ctx, config)
-
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 
@@ -671,50 +822,31 @@ func (r *OSPFVRFResource) Read(ctx context.Context, req resource.ReadRequest, re
 			return
 		}
 
-		if device.Protocol == "restconf" {
-			res, err := device.RestconfClient.GetData(state.Id.ValueString())
-			if res.StatusCode == 404 {
-				state = OSPFVRF{Device: state.Device, Id: state.Id}
-			} else {
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
-					return
-				}
+		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-				// After `terraform import` we switch to a full read.
-				if imp {
-					state.fromBody(ctx, res.Res)
-				} else {
-					state.updateFromBody(ctx, res.Res)
-				}
-			}
+		filter := helpers.GetXpathFilter(state.getXPath())
+		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
+			return
+		}
+
+		if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		// After `terraform import` we switch to a full read.
+		if imp {
+			state.fromBodyXML(ctx, res.Res)
 		} else {
-			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			filter := helpers.GetXpathFilter(state.getXPath())
-			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
-				return
-			}
-
-			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
-				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
-				resp.State.RemoveResource(ctx)
-				return
-			}
-
-			// After `terraform import` we switch to a full read.
-			if imp {
-				state.fromBodyXML(ctx, res.Res)
-			} else {
-				state.updateFromBodyXML(ctx, res.Res)
-			}
+			state.updateFromBodyXML(ctx, res.Res)
 		}
 	}
 
@@ -763,68 +895,19 @@ func (r *OSPFVRFResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	if device.Managed {
-		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx, config)
+		// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			deletedItems := plan.getDeletedItems(ctx, state)
-			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
+		body := plan.toBodyXML(ctx, config)
+		body = plan.addDeletedItemsXML(ctx, state, body)
 
-			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
-
-			if YangPatch {
-				var edits []restconf.YangPatchEdit
-				for _, i := range deletedItems {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
-				for _, i := range emptyLeafsDelete {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				_, err := device.RestconfClient.YangPatchData("", "1", "", edits)
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update object, got error: %s", err))
-					return
-				}
-			} else {
-				for _, i := range deletedItems {
-					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
-					}
-				}
-				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
-				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-					_, err = device.RestconfClient.PutData(plan.getPath(), body)
-				}
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
-					return
-				}
-				for _, i := range emptyLeafsDelete {
-					res, err := device.RestconfClient.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
-					}
-				}
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			body := plan.toBodyXML(ctx, config)
-			body = plan.addDeletedItemsXML(ctx, state, body)
-
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 
@@ -864,66 +947,27 @@ func (r *OSPFVRFResource) Delete(ctx context.Context, req resource.DeleteRequest
 			deleteMode = "attributes"
 		}
 
+		// NETCONF - Serialize write operations
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
 		if deleteMode == "all" {
-			if device.Protocol == "restconf" {
-				res, err := device.RestconfClient.DeleteData(state.Id.ValueString())
-				if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
-					return
-				}
-			} else {
-				// NETCONF - Serialize write operations
-				locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-				if locked {
-					defer device.NetconfOpMutex.Unlock()
-				}
-				defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			body := netconf.Body{}
+			body = helpers.RemoveFromXPath(body, state.getXPath())
 
-				body := netconf.Body{}
-				body = helpers.RemoveFromXPath(body, state.getXPath())
-
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
-					resp.Diagnostics.AddError("Client Error", err.Error())
-					return
-				}
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
 			}
 		} else {
-			if device.Protocol == "restconf" {
-				deletePaths := state.getDeletePaths(ctx)
-				tflog.Debug(ctx, fmt.Sprintf("Paths to delete: %+v", deletePaths))
+			body := state.addDeletePathsXML(ctx, "")
 
-				if YangPatch {
-					edits := []restconf.YangPatchEdit{}
-					for _, i := range deletePaths {
-						edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-					}
-					_, err := device.RestconfClient.YangPatchData("", "1", "", edits)
-					if err != nil {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-						return
-					}
-				} else {
-					for _, i := range deletePaths {
-						res, err := device.RestconfClient.DeleteData(i)
-						if err != nil && res.StatusCode != 404 {
-							resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						}
-					}
-				}
-			} else {
-				// NETCONF - Serialize write operations
-				locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-				if locked {
-					defer device.NetconfOpMutex.Unlock()
-				}
-				defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-				body := state.addDeletePathsXML(ctx, "")
-
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-					resp.Diagnostics.AddError("Client Error", err.Error())
-					return
-				}
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
 			}
 		}
 	}
