@@ -25,17 +25,12 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -113,17 +108,6 @@ func (data CryptoIKEv2KeyringData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data CryptoIKEv2Keyring) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data CryptoIKEv2Keyring) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring[name=%v]"
@@ -138,97 +122,6 @@ func (data CryptoIKEv2KeyringData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data CryptoIKEv2Keyring) toBody(ctx context.Context, config CryptoIKEv2Keyring) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if len(data.Peers) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer", []interface{}{})
-		for index, item := range data.Peers {
-			var configItem CryptoIKEv2KeyringPeers
-			for _, ci := range config.Peers {
-				if ci.Name.ValueString() != item.Name.ValueString() {
-					continue
-				}
-				configItem = ci
-				break
-			}
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-			if !item.Description.IsNull() && !item.Description.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"description", item.Description.ValueString())
-			}
-			if !item.Hostname.IsNull() && !item.Hostname.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"hostname", item.Hostname.ValueString())
-			}
-			if !item.Ipv4Address.IsNull() && !item.Ipv4Address.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"address.ipv4.ipv4-address", item.Ipv4Address.ValueString())
-			}
-			if !item.Ipv4Mask.IsNull() && !item.Ipv4Mask.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"address.ipv4.ipv4-mask", item.Ipv4Mask.ValueString())
-			}
-			if !item.Ipv6Prefix.IsNull() && !item.Ipv6Prefix.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"address.ipv6-prefix", item.Ipv6Prefix.ValueString())
-			}
-			if !item.IdentityKeyId.IsNull() && !item.IdentityKeyId.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.key-id-number", item.IdentityKeyId.ValueString())
-			}
-			if !item.IdentityAddress.IsNull() && !item.IdentityAddress.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.address-type", item.IdentityAddress.ValueString())
-			}
-			if !item.IdentityEmailName.IsNull() && !item.IdentityEmailName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.email-option.name", item.IdentityEmailName.ValueString())
-			}
-			if !item.IdentityEmailDomain.IsNull() && !item.IdentityEmailDomain.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.email-option.domain", item.IdentityEmailDomain.ValueString())
-			}
-			if !item.IdentityFqdnName.IsNull() && !item.IdentityFqdnName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.fqdn-option.name", item.IdentityFqdnName.ValueString())
-			}
-			if !item.IdentityFqdnDomain.IsNull() && !item.IdentityFqdnDomain.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.fqdn-option.domain", item.IdentityFqdnDomain.ValueString())
-			}
-			if !item.PreSharedKeyLocalEncryption.IsNull() && !item.PreSharedKeyLocalEncryption.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.encryption", item.PreSharedKeyLocalEncryption.ValueString())
-			}
-			if !item.PreSharedKeyLocal.IsNull() && !item.PreSharedKeyLocal.IsUnknown() {
-				if !configItem.PreSharedKeyLocalWO.IsNull() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.key", configItem.PreSharedKeyLocalWO.ValueString())
-				} else {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.key", item.PreSharedKeyLocal.ValueString())
-				}
-			}
-			if !item.PreSharedKeyRemoteEncryption.IsNull() && !item.PreSharedKeyRemoteEncryption.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.remote-option.encryption", item.PreSharedKeyRemoteEncryption.ValueString())
-			}
-			if !item.PreSharedKeyRemote.IsNull() && !item.PreSharedKeyRemote.IsUnknown() {
-				if !configItem.PreSharedKeyRemoteWO.IsNull() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.remote-option.key", configItem.PreSharedKeyRemoteWO.ValueString())
-				} else {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.remote-option.key", item.PreSharedKeyRemote.ValueString())
-				}
-			}
-			if !item.PreSharedKeyEncryption.IsNull() && !item.PreSharedKeyEncryption.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.encryption", item.PreSharedKeyEncryption.ValueString())
-			}
-			if !item.PreSharedKey.IsNull() && !item.PreSharedKey.IsUnknown() {
-				if !configItem.PreSharedKeyWO.IsNull() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.key", configItem.PreSharedKeyWO.ValueString())
-				} else {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.key", item.PreSharedKey.ValueString())
-				}
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -326,106 +219,6 @@ func (data CryptoIKEv2Keyring) toBodyXML(ctx context.Context, config CryptoIKEv2
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *CryptoIKEv2Keyring) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	for i := range data.Peers {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Peers[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "peer").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.Peers[i].Name.IsNull() {
-			data.Peers[i].Name = types.StringValue(value.String())
-		} else {
-			data.Peers[i].Name = types.StringNull()
-		}
-		if value := r.Get("description"); value.Exists() && !data.Peers[i].Description.IsNull() {
-			data.Peers[i].Description = types.StringValue(value.String())
-		} else {
-			data.Peers[i].Description = types.StringNull()
-		}
-		if value := r.Get("hostname"); value.Exists() && !data.Peers[i].Hostname.IsNull() {
-			data.Peers[i].Hostname = types.StringValue(value.String())
-		} else {
-			data.Peers[i].Hostname = types.StringNull()
-		}
-		if value := r.Get("address.ipv4.ipv4-address"); value.Exists() && !data.Peers[i].Ipv4Address.IsNull() {
-			data.Peers[i].Ipv4Address = types.StringValue(value.String())
-		} else {
-			data.Peers[i].Ipv4Address = types.StringNull()
-		}
-		if value := r.Get("address.ipv4.ipv4-mask"); value.Exists() && !data.Peers[i].Ipv4Mask.IsNull() {
-			data.Peers[i].Ipv4Mask = types.StringValue(value.String())
-		} else {
-			data.Peers[i].Ipv4Mask = types.StringNull()
-		}
-		if value := r.Get("address.ipv6-prefix"); value.Exists() && !data.Peers[i].Ipv6Prefix.IsNull() {
-			data.Peers[i].Ipv6Prefix = types.StringValue(value.String())
-		} else {
-			data.Peers[i].Ipv6Prefix = types.StringNull()
-		}
-		if value := r.Get("identity.key-id-number"); value.Exists() && !data.Peers[i].IdentityKeyId.IsNull() {
-			data.Peers[i].IdentityKeyId = types.StringValue(value.String())
-		} else {
-			data.Peers[i].IdentityKeyId = types.StringNull()
-		}
-		if value := r.Get("identity.address-type"); value.Exists() && !data.Peers[i].IdentityAddress.IsNull() {
-			data.Peers[i].IdentityAddress = types.StringValue(value.String())
-		} else {
-			data.Peers[i].IdentityAddress = types.StringNull()
-		}
-		if value := r.Get("identity.email-option.name"); value.Exists() && !data.Peers[i].IdentityEmailName.IsNull() {
-			data.Peers[i].IdentityEmailName = types.StringValue(value.String())
-		} else {
-			data.Peers[i].IdentityEmailName = types.StringNull()
-		}
-		if value := r.Get("identity.email-option.domain"); value.Exists() && !data.Peers[i].IdentityEmailDomain.IsNull() {
-			data.Peers[i].IdentityEmailDomain = types.StringValue(value.String())
-		} else {
-			data.Peers[i].IdentityEmailDomain = types.StringNull()
-		}
-		if value := r.Get("identity.fqdn-option.name"); value.Exists() && !data.Peers[i].IdentityFqdnName.IsNull() {
-			data.Peers[i].IdentityFqdnName = types.StringValue(value.String())
-		} else {
-			data.Peers[i].IdentityFqdnName = types.StringNull()
-		}
-		if value := r.Get("identity.fqdn-option.domain"); value.Exists() && !data.Peers[i].IdentityFqdnDomain.IsNull() {
-			data.Peers[i].IdentityFqdnDomain = types.StringValue(value.String())
-		} else {
-			data.Peers[i].IdentityFqdnDomain = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CryptoIKEv2Keyring) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -521,152 +314,6 @@ func (data *CryptoIKEv2Keyring) updateFromBodyXML(ctx context.Context, res xmldo
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *CryptoIKEv2Keyring) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "peer"); value.Exists() {
-		data.Peers = make([]CryptoIKEv2KeyringPeers, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2KeyringPeers{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("description"); cValue.Exists() {
-				item.Description = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("hostname"); cValue.Exists() {
-				item.Hostname = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("address.ipv4.ipv4-address"); cValue.Exists() {
-				item.Ipv4Address = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("address.ipv4.ipv4-mask"); cValue.Exists() {
-				item.Ipv4Mask = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("address.ipv6-prefix"); cValue.Exists() {
-				item.Ipv6Prefix = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.key-id-number"); cValue.Exists() {
-				item.IdentityKeyId = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.address-type"); cValue.Exists() {
-				item.IdentityAddress = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.email-option.name"); cValue.Exists() {
-				item.IdentityEmailName = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.email-option.domain"); cValue.Exists() {
-				item.IdentityEmailDomain = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.fqdn-option.name"); cValue.Exists() {
-				item.IdentityFqdnName = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.fqdn-option.domain"); cValue.Exists() {
-				item.IdentityFqdnDomain = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.local-option.encryption"); cValue.Exists() {
-				item.PreSharedKeyLocalEncryption = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.local-option.key"); cValue.Exists() {
-				item.PreSharedKeyLocal = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.remote-option.encryption"); cValue.Exists() {
-				item.PreSharedKeyRemoteEncryption = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.remote-option.key"); cValue.Exists() {
-				item.PreSharedKeyRemote = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.encryption"); cValue.Exists() {
-				item.PreSharedKeyEncryption = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.key"); cValue.Exists() {
-				item.PreSharedKey = types.StringValue(cValue.String())
-			}
-			data.Peers = append(data.Peers, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *CryptoIKEv2KeyringData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "peer"); value.Exists() {
-		data.Peers = make([]CryptoIKEv2KeyringPeersData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2KeyringPeersData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("description"); cValue.Exists() {
-				item.Description = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("hostname"); cValue.Exists() {
-				item.Hostname = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("address.ipv4.ipv4-address"); cValue.Exists() {
-				item.Ipv4Address = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("address.ipv4.ipv4-mask"); cValue.Exists() {
-				item.Ipv4Mask = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("address.ipv6-prefix"); cValue.Exists() {
-				item.Ipv6Prefix = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.key-id-number"); cValue.Exists() {
-				item.IdentityKeyId = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.address-type"); cValue.Exists() {
-				item.IdentityAddress = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.email-option.name"); cValue.Exists() {
-				item.IdentityEmailName = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.email-option.domain"); cValue.Exists() {
-				item.IdentityEmailDomain = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.fqdn-option.name"); cValue.Exists() {
-				item.IdentityFqdnName = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("identity.fqdn-option.domain"); cValue.Exists() {
-				item.IdentityFqdnDomain = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.local-option.encryption"); cValue.Exists() {
-				item.PreSharedKeyLocalEncryption = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.local-option.key"); cValue.Exists() {
-				item.PreSharedKeyLocal = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.remote-option.encryption"); cValue.Exists() {
-				item.PreSharedKeyRemoteEncryption = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.remote-option.key"); cValue.Exists() {
-				item.PreSharedKeyRemote = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.encryption"); cValue.Exists() {
-				item.PreSharedKeyEncryption = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("pre-shared-key.key"); cValue.Exists() {
-				item.PreSharedKey = types.StringValue(cValue.String())
-			}
-			data.Peers = append(data.Peers, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -806,92 +453,6 @@ func (data *CryptoIKEv2KeyringData) fromBodyXML(ctx context.Context, res xmldot.
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *CryptoIKEv2Keyring) getDeletedItems(ctx context.Context, state CryptoIKEv2Keyring) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Peers {
-		stateKeyValues := [...]string{state.Peers[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Peers[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Peers {
-			found = true
-			if state.Peers[i].Name.ValueString() != data.Peers[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Peers[i].PreSharedKey.IsNull() && data.Peers[j].PreSharedKey.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].PreSharedKeyEncryption.IsNull() && data.Peers[j].PreSharedKeyEncryption.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].PreSharedKeyRemote.IsNull() && data.Peers[j].PreSharedKeyRemote.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/remote-option/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].PreSharedKeyRemoteEncryption.IsNull() && data.Peers[j].PreSharedKeyRemoteEncryption.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/remote-option/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].PreSharedKeyLocal.IsNull() && data.Peers[j].PreSharedKeyLocal.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/local-option/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].PreSharedKeyLocalEncryption.IsNull() && data.Peers[j].PreSharedKeyLocalEncryption.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/local-option/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].IdentityFqdnDomain.IsNull() && data.Peers[j].IdentityFqdnDomain.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/fqdn-option/domain", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].IdentityFqdnName.IsNull() && data.Peers[j].IdentityFqdnName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/fqdn-option/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].IdentityEmailDomain.IsNull() && data.Peers[j].IdentityEmailDomain.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/email-option/domain", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].IdentityEmailName.IsNull() && data.Peers[j].IdentityEmailName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/email-option/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].IdentityAddress.IsNull() && data.Peers[j].IdentityAddress.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/address-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].IdentityKeyId.IsNull() && data.Peers[j].IdentityKeyId.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/key-id-number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].Ipv6Prefix.IsNull() && data.Peers[j].Ipv6Prefix.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/address/ipv6-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].Ipv4Mask.IsNull() && data.Peers[j].Ipv4Mask.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/address/ipv4/ipv4-mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].Ipv4Address.IsNull() && data.Peers[j].Ipv4Address.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/address/ipv4/ipv4-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].Hostname.IsNull() && data.Peers[j].Hostname.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/hostname", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].Description.IsNull() && data.Peers[j].Description.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *CryptoIKEv2Keyring) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2Keyring, body string) string {
@@ -983,31 +544,6 @@ func (data *CryptoIKEv2Keyring) addDeletedItemsXML(ctx context.Context, state Cr
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *CryptoIKEv2Keyring) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *CryptoIKEv2Keyring) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Peers {
-		keyValues := [...]string{data.Peers[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/peer=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

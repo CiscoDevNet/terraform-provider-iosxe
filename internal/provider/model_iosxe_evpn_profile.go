@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -68,17 +65,6 @@ func (data EVPNProfileData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data EVPNProfile) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data EVPNProfile) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/l2-profile/evpn/profile/profile-name-list[name=%v]"
@@ -93,24 +79,6 @@ func (data EVPNProfileData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data EVPNProfile) toBody(ctx context.Context, config EVPNProfile) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if !data.EviBase.IsNull() && !data.EviBase.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"evi-base", strconv.FormatInt(data.EviBase.ValueInt64(), 10))
-	}
-	if !data.L2vniBase.IsNull() && !data.L2vniBase.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"l2vni-base", strconv.FormatInt(data.L2vniBase.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -134,32 +102,6 @@ func (data EVPNProfile) toBodyXML(ctx context.Context, config EVPNProfile) strin
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *EVPNProfile) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "evi-base"); value.Exists() && !data.EviBase.IsNull() {
-		data.EviBase = types.Int64Value(value.Int())
-	} else {
-		data.EviBase = types.Int64Null()
-	}
-	if value := res.Get(prefix + "l2vni-base"); value.Exists() && !data.L2vniBase.IsNull() {
-		data.L2vniBase = types.Int64Value(value.Int())
-	} else {
-		data.L2vniBase = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *EVPNProfile) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -181,40 +123,6 @@ func (data *EVPNProfile) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *EVPNProfile) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "evi-base"); value.Exists() {
-		data.EviBase = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "l2vni-base"); value.Exists() {
-		data.L2vniBase = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *EVPNProfileData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "evi-base"); value.Exists() {
-		data.EviBase = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "l2vni-base"); value.Exists() {
-		data.L2vniBase = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -242,22 +150,6 @@ func (data *EVPNProfileData) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *EVPNProfile) getDeletedItems(ctx context.Context, state EVPNProfile) []string {
-	deletedItems := make([]string, 0)
-	if !state.L2vniBase.IsNull() && data.L2vniBase.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/l2vni-base", state.getPath()))
-	}
-	if !state.EviBase.IsNull() && data.EviBase.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/evi-base", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *EVPNProfile) addDeletedItemsXML(ctx context.Context, state EVPNProfile, body string) string {
@@ -274,32 +166,6 @@ func (data *EVPNProfile) addDeletedItemsXML(ctx context.Context, state EVPNProfi
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *EVPNProfile) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *EVPNProfile) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.L2vniBase.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/l2vni-base", data.getPath()))
-	}
-	if !data.EviBase.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/evi-base", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

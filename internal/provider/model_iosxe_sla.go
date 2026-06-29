@@ -24,17 +24,13 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -88,17 +84,6 @@ func (data SLAData) getPath() string {
 	return "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-sla:sla"
 }
 
-// if last path element has a key -> remove it
-func (data SLA) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data SLA) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-sla:sla"
@@ -111,48 +96,6 @@ func (data SLAData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data SLA) toBody(ctx context.Context, config SLA) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if len(data.Entries) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry", []interface{}{})
-		for index, item := range data.Entries {
-			if !item.Number.IsNull() && !item.Number.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"number", strconv.FormatInt(item.Number.ValueInt64(), 10))
-			}
-			if !item.IcmpEchoDestination.IsNull() && !item.IcmpEchoDestination.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"icmp-echo.destination", item.IcmpEchoDestination.ValueString())
-			}
-			if !item.IcmpEchoSourceIp.IsNull() && !item.IcmpEchoSourceIp.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"icmp-echo.source-ip", item.IcmpEchoSourceIp.ValueString())
-			}
-			if !item.IcmpEchoFrequency.IsNull() && !item.IcmpEchoFrequency.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"icmp-echo.frequency", strconv.FormatInt(item.IcmpEchoFrequency.ValueInt64(), 10))
-			}
-		}
-	}
-	if len(data.Schedules) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule", []interface{}{})
-		for index, item := range data.Schedules {
-			if !item.EntryNumber.IsNull() && !item.EntryNumber.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule"+"."+strconv.Itoa(index)+"."+"entry-number", strconv.FormatInt(item.EntryNumber.ValueInt64(), 10))
-			}
-			if !item.Life.IsNull() && !item.Life.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule"+"."+strconv.Itoa(index)+"."+"life", strconv.FormatInt(item.Life.ValueInt64(), 10))
-			}
-			if !item.StartTimeNow.IsNull() && !item.StartTimeNow.IsUnknown() {
-				if item.StartTimeNow.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule"+"."+strconv.Itoa(index)+"."+"start-time.now-config", map[string]string{})
-				}
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -203,104 +146,6 @@ func (data SLA) toBodyXML(ctx context.Context, config SLA) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *SLA) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	for i := range data.Entries {
-		keys := [...]string{"number"}
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
-
-		var r gjson.Result
-		res.Get(prefix + "entry").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("number"); value.Exists() && !data.Entries[i].Number.IsNull() {
-			data.Entries[i].Number = types.Int64Value(value.Int())
-		} else {
-			data.Entries[i].Number = types.Int64Null()
-		}
-		if value := r.Get("icmp-echo.destination"); value.Exists() && !data.Entries[i].IcmpEchoDestination.IsNull() {
-			data.Entries[i].IcmpEchoDestination = types.StringValue(value.String())
-		} else {
-			data.Entries[i].IcmpEchoDestination = types.StringNull()
-		}
-		if value := r.Get("icmp-echo.source-ip"); value.Exists() && !data.Entries[i].IcmpEchoSourceIp.IsNull() {
-			data.Entries[i].IcmpEchoSourceIp = types.StringValue(value.String())
-		} else {
-			data.Entries[i].IcmpEchoSourceIp = types.StringNull()
-		}
-		if value := r.Get("icmp-echo.frequency"); value.Exists() && !data.Entries[i].IcmpEchoFrequency.IsNull() {
-			data.Entries[i].IcmpEchoFrequency = types.Int64Value(value.Int())
-		} else {
-			data.Entries[i].IcmpEchoFrequency = types.Int64Null()
-		}
-	}
-	for i := range data.Schedules {
-		keys := [...]string{"entry-number"}
-		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
-
-		var r gjson.Result
-		res.Get(prefix + "schedule").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("entry-number"); value.Exists() && !data.Schedules[i].EntryNumber.IsNull() {
-			data.Schedules[i].EntryNumber = types.Int64Value(value.Int())
-		} else {
-			data.Schedules[i].EntryNumber = types.Int64Null()
-		}
-		if value := r.Get("life"); value.Exists() && !data.Schedules[i].Life.IsNull() {
-			data.Schedules[i].Life = types.Int64Value(value.Int())
-		} else {
-			data.Schedules[i].Life = types.Int64Null()
-		}
-		if value := r.Get("start-time.now-config"); !data.Schedules[i].StartTimeNow.IsNull() {
-			if value.Exists() {
-				data.Schedules[i].StartTimeNow = types.BoolValue(true)
-			} else {
-				data.Schedules[i].StartTimeNow = types.BoolValue(false)
-			}
-		} else {
-			data.Schedules[i].StartTimeNow = types.BoolNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -396,106 +241,6 @@ func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *SLA) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "entry"); value.Exists() {
-		data.Entries = make([]SLAEntries, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SLAEntries{}
-			if cValue := v.Get("number"); cValue.Exists() {
-				item.Number = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("icmp-echo.destination"); cValue.Exists() {
-				item.IcmpEchoDestination = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("icmp-echo.source-ip"); cValue.Exists() {
-				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("icmp-echo.frequency"); cValue.Exists() {
-				item.IcmpEchoFrequency = types.Int64Value(cValue.Int())
-			}
-			data.Entries = append(data.Entries, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "schedule"); value.Exists() {
-		data.Schedules = make([]SLASchedules, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SLASchedules{}
-			if cValue := v.Get("entry-number"); cValue.Exists() {
-				item.EntryNumber = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("life"); cValue.Exists() {
-				item.Life = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("start-time.now-config"); cValue.Exists() {
-				item.StartTimeNow = types.BoolValue(true)
-			} else {
-				item.StartTimeNow = types.BoolValue(false)
-			}
-			data.Schedules = append(data.Schedules, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "entry"); value.Exists() {
-		data.Entries = make([]SLAEntriesData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SLAEntriesData{}
-			if cValue := v.Get("number"); cValue.Exists() {
-				item.Number = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("icmp-echo.destination"); cValue.Exists() {
-				item.IcmpEchoDestination = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("icmp-echo.source-ip"); cValue.Exists() {
-				item.IcmpEchoSourceIp = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("icmp-echo.frequency"); cValue.Exists() {
-				item.IcmpEchoFrequency = types.Int64Value(cValue.Int())
-			}
-			data.Entries = append(data.Entries, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "schedule"); value.Exists() {
-		data.Schedules = make([]SLASchedulesData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SLASchedulesData{}
-			if cValue := v.Get("entry-number"); cValue.Exists() {
-				item.EntryNumber = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("life"); cValue.Exists() {
-				item.Life = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("start-time.now-config"); cValue.Exists() {
-				item.StartTimeNow = types.BoolValue(true)
-			} else {
-				item.StartTimeNow = types.BoolValue(false)
-			}
-			data.Schedules = append(data.Schedules, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *SLA) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -588,81 +333,6 @@ func (data *SLAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *SLA) getDeletedItems(ctx context.Context, state SLA) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Schedules {
-		stateKeyValues := [...]string{strconv.FormatInt(state.Schedules[i].EntryNumber.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Schedules[i].EntryNumber.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Schedules {
-			found = true
-			if state.Schedules[i].EntryNumber.ValueInt64() != data.Schedules[j].EntryNumber.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.Schedules[i].StartTimeNow.IsNull() && data.Schedules[j].StartTimeNow.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/schedule=%v/start-time/now-config", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Schedules[i].Life.IsNull() && data.Schedules[j].Life.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/schedule=%v/life", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/schedule=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.Entries {
-		stateKeyValues := [...]string{strconv.FormatInt(state.Entries[i].Number.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Entries[i].Number.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Entries {
-			found = true
-			if state.Entries[i].Number.ValueInt64() != data.Entries[j].Number.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.Entries[i].IcmpEchoFrequency.IsNull() && data.Entries[j].IcmpEchoFrequency.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/entry=%v/icmp-echo/frequency", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].IcmpEchoSourceIp.IsNull() && data.Entries[j].IcmpEchoSourceIp.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/entry=%v/icmp-echo/source-ip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].IcmpEchoDestination.IsNull() && data.Entries[j].IcmpEchoDestination.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/entry=%v/icmp-echo/destination", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/entry=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string) string {
@@ -748,43 +418,6 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *SLA) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Schedules {
-		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
-		if !data.Schedules[i].StartTimeNow.IsNull() && !data.Schedules[i].StartTimeNow.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/schedule=%v/start-time/now-config", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *SLA) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Schedules {
-		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/schedule=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Entries {
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/entry=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
