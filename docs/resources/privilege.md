@@ -20,7 +20,7 @@ resource "iosxe_privilege" "example" {
       level = 7
       commands = [
         {
-          command = "show running-config"
+          command = "configure"
         }
       ]
     }

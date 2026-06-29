@@ -33,7 +33,7 @@ import (
 func TestAccDataSourceIosxePrivilege(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_privilege.test", "levels.0.level", "7"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_privilege.test", "levels.0.commands.0.command", "show running-config"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_privilege.test", "levels.0.commands.0.command", "configure"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -59,7 +59,7 @@ func testAccDataSourceIosxePrivilegeConfig() string {
 	config += `	levels = [{` + "\n"
 	config += `		level = 7` + "\n"
 	config += `		commands = [{` + "\n"
-	config += `			command = "show running-config"` + "\n"
+	config += `			command = "configure"` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
