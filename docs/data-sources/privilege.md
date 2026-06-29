@@ -14,7 +14,8 @@ This data source can read the Privilege configuration.
 
 ```terraform
 data "iosxe_privilege" "example" {
-  name = "exec"
+  name  = "exec"
+  level = 7
 }
 ```
 
@@ -23,6 +24,7 @@ data "iosxe_privilege" "example" {
 
 ### Required
 
+- `level` (Number)
 - `name` (String)
 
 ### Optional
@@ -31,19 +33,11 @@ data "iosxe_privilege" "example" {
 
 ### Read-Only
 
+- `commands` (Attributes List) (see [below for nested schema](#nestedatt--commands))
 - `id` (String) The path of the retrieved object.
-- `levels` (Attributes List) Set privilege level of command (see [below for nested schema](#nestedatt--levels))
 
-<a id="nestedatt--levels"></a>
-### Nested Schema for `levels`
-
-Read-Only:
-
-- `commands` (Attributes List) (see [below for nested schema](#nestedatt--levels--commands))
-- `level` (Number)
-
-<a id="nestedatt--levels--commands"></a>
-### Nested Schema for `levels.commands`
+<a id="nestedatt--commands"></a>
+### Nested Schema for `commands`
 
 Read-Only:
 

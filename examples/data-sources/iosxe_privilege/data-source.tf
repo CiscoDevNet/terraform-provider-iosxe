@@ -1,3 +1,4 @@
 data "iosxe_privilege" "example" {
-  name = "exec"
+  name  = "exec"
+  level = 7
 }

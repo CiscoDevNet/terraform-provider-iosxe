@@ -1,1 +1,1 @@
-terraform import iosxe_privilege.example "<name>"
+terraform import iosxe_privilege.example "<name>,<level>"

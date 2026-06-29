@@ -1,13 +1,9 @@
 resource "iosxe_privilege" "example" {
-  name = "exec"
-  levels = [
+  name  = "exec"
+  level = 7
+  commands = [
     {
-      level = 7
-      commands = [
-        {
-          command = "configure"
-        }
-      ]
+      command = "configure"
     }
   ]
 }

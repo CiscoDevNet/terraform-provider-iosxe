@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -31,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -88,29 +90,24 @@ func (r *PrivilegeResource) Schema(ctx context.Context, req resource.SchemaReque
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"levels": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set privilege level of command").String,
+			"level": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 255).String,
+				Required:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 255),
+				},
+				PlanModifiers: []planmodifier.Int64{
+					int64planmodifier.RequiresReplace(),
+				},
+			},
+			"commands": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"level": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 255).String,
+						"command": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("There are side effects").String,
 							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(0, 255),
-							},
-						},
-						"commands": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"command": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("There are side effects").String,
-										Required:            true,
-									},
-								},
-							},
 						},
 					},
 				},
@@ -368,9 +365,9 @@ func (r *PrivilegeResource) ImportState(ctx context.Context, req resource.Import
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 1 && len(idParts) != 2 {
-		expectedIdentifier := "Expected import identifier with format: '<name>'"
-		expectedIdentifier += " or '<name>,<device>'"
+	if len(idParts) != 2 && len(idParts) != 3 {
+		expectedIdentifier := "Expected import identifier with format: '<name>,<level>'"
+		expectedIdentifier += " or '<name>,<level>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
@@ -378,7 +375,8 @@ func (r *PrivilegeResource) ImportState(ctx context.Context, req resource.Import
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
-	if len(idParts) == 2 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("level"), helpers.Must(strconv.ParseInt(idParts[1], 10, 64)))...)
+	if len(idParts) == 3 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 

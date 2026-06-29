@@ -14,15 +14,11 @@ This resource can manage the Privilege configuration.
 
 ```terraform
 resource "iosxe_privilege" "example" {
-  name = "exec"
-  levels = [
+  name  = "exec"
+  level = 7
+  commands = [
     {
-      level = 7
-      commands = [
-        {
-          command = "configure"
-        }
-      ]
+      command = "configure"
     }
   ]
 }
@@ -33,30 +29,20 @@ resource "iosxe_privilege" "example" {
 
 ### Required
 
+- `level` (Number) - Range: `0`-`255`
 - `name` (String) - Choices: `configure`, `crypto-map`, `exec`, `interface`, `ipenacl`, `router`
 
 ### Optional
 
+- `commands` (Attributes List) (see [below for nested schema](#nestedatt--commands))
 - `device` (String) A device name from the provider configuration.
-- `levels` (Attributes List) Set privilege level of command (see [below for nested schema](#nestedatt--levels))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--levels"></a>
-### Nested Schema for `levels`
-
-Required:
-
-- `level` (Number) - Range: `0`-`255`
-
-Optional:
-
-- `commands` (Attributes List) (see [below for nested schema](#nestedatt--levels--commands))
-
-<a id="nestedatt--levels--commands"></a>
-### Nested Schema for `levels.commands`
+<a id="nestedatt--commands"></a>
+### Nested Schema for `commands`
 
 Required:
 
@@ -69,5 +55,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_privilege.example "<name>"
+terraform import iosxe_privilege.example "<name>,<level>"
 ```
