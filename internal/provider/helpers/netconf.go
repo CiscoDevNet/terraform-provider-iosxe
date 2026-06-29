@@ -539,10 +539,16 @@ func buildXPathStructure(body netconf.Body, xPath string, ensureStructure bool) 
 
 				// Set all key values using normal Set
 				for _, kv := range keys {
-					keyPath := fullPath + "." + kv.Key
-					originalKeyPath := originalFullPath + "." + kv.Key
-					body = body.Set(dotPath(keyPath), kv.Value)
-					body = augmentNamespaces(body, originalKeyPath)
+					if kv.Key == "." {
+						// Leaf-list: set the text content of the element directly
+						body = body.Set(dotPath(fullPath), kv.Value)
+						body = augmentNamespaces(body, originalFullPath)
+					} else {
+						keyPath := fullPath + "." + kv.Key
+						originalKeyPath := originalFullPath + "." + kv.Key
+						body = body.Set(dotPath(keyPath), kv.Value)
+						body = augmentNamespaces(body, originalKeyPath)
+					}
 				}
 
 			case SiblingActionUpdate:
@@ -594,16 +600,31 @@ func findSiblingInfo(body netconf.Body, parentPath, elementName string, keys []K
 	countPath := basePath + ".#"
 	count := xmldot.Get(body.Res(), countPath).Int()
 
+	// For leaf-list predicates ([.=value]), the "." key refers to the text content
+	// of the element itself. xmldot accesses text content via the element path directly
+	// (not with a ".key" suffix).
+	isLeafList := len(keys) == 1 && keys[0].Key == "."
+
 	// If count is 0 but element might exist as single (non-array), check directly
 	if count == 0 {
 		// Check if a single element exists by looking for any key
 		if len(keys) > 0 {
-			keyPath := basePath + "." + keys[0].Key
-			if xmldot.Get(body.Res(), keyPath).Exists() {
+			var checkExists string
+			if isLeafList {
+				checkExists = basePath
+			} else {
+				checkExists = basePath + "." + keys[0].Key
+			}
+			if xmldot.Get(body.Res(), checkExists).Exists() {
 				// Single element exists - check if keys match
 				allMatch := true
 				for _, kv := range keys {
-					checkPath := basePath + "." + kv.Key
+					var checkPath string
+					if kv.Key == "." {
+						checkPath = basePath
+					} else {
+						checkPath = basePath + "." + kv.Key
+					}
 					if xmldot.Get(body.Res(), checkPath).String() != kv.Value {
 						allMatch = false
 						break
@@ -625,7 +646,12 @@ func findSiblingInfo(body netconf.Body, parentPath, elementName string, keys []K
 	for i := 0; i < int(count); i++ {
 		allKeysMatch := true
 		for _, kv := range keys {
-			keyPath := fmt.Sprintf("%s.%d.%s", basePath, i, kv.Key)
+			var keyPath string
+			if kv.Key == "." {
+				keyPath = fmt.Sprintf("%s.%d", basePath, i)
+			} else {
+				keyPath = fmt.Sprintf("%s.%d.%s", basePath, i, kv.Key)
+			}
 			existingValue := xmldot.Get(body.Res(), keyPath).String()
 			if existingValue != kv.Value {
 				allKeysMatch = false
@@ -663,7 +689,13 @@ func appendSiblingElement(body netconf.Body, parentPathSegments []string, remain
 
 	// Add keys to the inner XML
 	for _, kv := range keys {
-		innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, html.EscapeString(kv.Value), kv.Key))
+		if kv.Key == "." {
+			// Leaf-list: the "." key means "self" in XPath — the value is the
+			// text content of the element itself, not a child element.
+			innerXML.WriteString(html.EscapeString(kv.Value))
+		} else {
+			innerXML.WriteString(fmt.Sprintf("<%s>%s</%s>", kv.Key, html.EscapeString(kv.Value), kv.Key))
+		}
 	}
 
 	// Process any nested segments after the first one
