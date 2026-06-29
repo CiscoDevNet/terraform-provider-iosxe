@@ -24,15 +24,12 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -66,17 +63,6 @@ func (data CommunityListStandardData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data CommunityListStandard) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data CommunityListStandard) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard[name=%v]"
@@ -91,28 +77,6 @@ func (data CommunityListStandardData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data CommunityListStandard) toBody(ctx context.Context, config CommunityListStandard) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if !data.DenyEntries.IsNull() && !data.DenyEntries.IsUnknown() {
-		var values []string
-		data.DenyEntries.ElementsAs(ctx, &values, false)
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"deny.deny-list", values)
-	}
-	if !data.PermitEntries.IsNull() && !data.PermitEntries.IsUnknown() {
-		var values []string
-		data.PermitEntries.ElementsAs(ctx, &values, false)
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"permit.permit-list", values)
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -144,32 +108,6 @@ func (data CommunityListStandard) toBodyXML(ctx context.Context, config Communit
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *CommunityListStandard) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "deny.deny-list"); value.Exists() && !data.DenyEntries.IsNull() {
-		data.DenyEntries = helpers.GetStringSet(value.Array())
-	} else {
-		data.DenyEntries = types.SetNull(types.StringType)
-	}
-	if value := res.Get(prefix + "permit.permit-list"); value.Exists() && !data.PermitEntries.IsNull() {
-		data.PermitEntries = helpers.GetStringSet(value.Array())
-	} else {
-		data.PermitEntries = types.SetNull(types.StringType)
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CommunityListStandard) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -191,48 +129,6 @@ func (data *CommunityListStandard) updateFromBodyXML(ctx context.Context, res xm
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *CommunityListStandard) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "deny.deny-list"); value.Exists() {
-		data.DenyEntries = helpers.GetStringSet(value.Array())
-	} else {
-		data.DenyEntries = types.SetNull(types.StringType)
-	}
-	if value := res.Get(prefix + "permit.permit-list"); value.Exists() {
-		data.PermitEntries = helpers.GetStringSet(value.Array())
-	} else {
-		data.PermitEntries = types.SetNull(types.StringType)
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *CommunityListStandardData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "deny.deny-list"); value.Exists() {
-		data.DenyEntries = helpers.GetStringSet(value.Array())
-	} else {
-		data.DenyEntries = types.SetNull(types.StringType)
-	}
-	if value := res.Get(prefix + "permit.permit-list"); value.Exists() {
-		data.PermitEntries = helpers.GetStringSet(value.Array())
-	} else {
-		data.PermitEntries = types.SetNull(types.StringType)
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -267,58 +163,6 @@ func (data *CommunityListStandardData) fromBodyXML(ctx context.Context, res xmld
 }
 
 // End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *CommunityListStandard) getDeletedItems(ctx context.Context, state CommunityListStandard) []string {
-	deletedItems := make([]string, 0)
-	if !state.PermitEntries.IsNull() {
-		if data.PermitEntries.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/permit/permit-list", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.PermitEntries.ElementsAs(ctx, &dataValues, false)
-			state.PermitEntries.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/permit/permit-list=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.DenyEntries.IsNull() {
-		if data.DenyEntries.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/deny/deny-list", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.DenyEntries.ElementsAs(ctx, &dataValues, false)
-			state.DenyEntries.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/deny/deny-list=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
@@ -380,32 +224,6 @@ func (data *CommunityListStandard) addDeletedItemsXML(ctx context.Context, state
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *CommunityListStandard) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *CommunityListStandard) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.PermitEntries.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/permit/permit-list", data.getPath()))
-	}
-	if !data.DenyEntries.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/deny/deny-list", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

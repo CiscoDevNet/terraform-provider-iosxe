@@ -21,3 +21,9 @@ attributes:
   - yang_name: Cisco-IOS-XE-device-tracking:tracking/retry-interval
     tf_name: tracking_retry_interval
     example: 10
+  - yang_name: Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/time-choice/seconds/seconds
+    xpath: Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds
+    tf_name: binding_reachable_lifetime
+    example: 7200
+    min_int: 1
+    max_int: 86400

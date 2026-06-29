@@ -24,17 +24,12 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -83,17 +78,6 @@ func (data PIMIPv6Data) getPath() string {
 	return "Cisco-IOS-XE-native:native/ipv6/pim"
 }
 
-// if last path element has a key -> remove it
-func (data PIMIPv6) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data PIMIPv6) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/ipv6/pim"
@@ -106,45 +90,6 @@ func (data PIMIPv6Data) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data PIMIPv6) toBody(ctx context.Context, config PIMIPv6) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.RpAddress.IsNull() && !data.RpAddress.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:rp-address.address", data.RpAddress.ValueString())
-	}
-	if !data.RpAddressAccessList.IsNull() && !data.RpAddressAccessList.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:rp-address.access-list", data.RpAddressAccessList.ValueString())
-	}
-	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.IsUnknown() {
-		if data.RpAddressBidir.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:rp-address.bidir", map[string]string{})
-		}
-	}
-	if len(data.Vrfs) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf", []interface{}{})
-		for index, item := range data.Vrfs {
-			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"id", item.Vrf.ValueString())
-			}
-			if !item.RpAddress.IsNull() && !item.RpAddress.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address.address", item.RpAddress.ValueString())
-			}
-			if !item.RpAddressAccessList.IsNull() && !item.RpAddressAccessList.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address.access-list", item.RpAddressAccessList.ValueString())
-			}
-			if !item.RpAddressBidir.IsNull() && !item.RpAddressBidir.IsUnknown() {
-				if item.RpAddressBidir.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address.bidir", map[string]string{})
-				}
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -193,84 +138,6 @@ func (data PIMIPv6) toBodyXML(ctx context.Context, config PIMIPv6) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *PIMIPv6) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.address"); value.Exists() && !data.RpAddress.IsNull() {
-		data.RpAddress = types.StringValue(value.String())
-	} else {
-		data.RpAddress = types.StringNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.access-list"); value.Exists() && !data.RpAddressAccessList.IsNull() {
-		data.RpAddressAccessList = types.StringValue(value.String())
-	} else {
-		data.RpAddressAccessList = types.StringNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.bidir"); !data.RpAddressBidir.IsNull() {
-		if value.Exists() {
-			data.RpAddressBidir = types.BoolValue(true)
-		} else {
-			data.RpAddressBidir = types.BoolValue(false)
-		}
-	} else {
-		data.RpAddressBidir = types.BoolNull()
-	}
-	for i := range data.Vrfs {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "Cisco-IOS-XE-multicast:vrf").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("id"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
-			data.Vrfs[i].Vrf = types.StringValue(value.String())
-		} else {
-			data.Vrfs[i].Vrf = types.StringNull()
-		}
-		if value := r.Get("rp-address.address"); value.Exists() && !data.Vrfs[i].RpAddress.IsNull() {
-			data.Vrfs[i].RpAddress = types.StringValue(value.String())
-		} else {
-			data.Vrfs[i].RpAddress = types.StringNull()
-		}
-		if value := r.Get("rp-address.access-list"); value.Exists() && !data.Vrfs[i].RpAddressAccessList.IsNull() {
-			data.Vrfs[i].RpAddressAccessList = types.StringValue(value.String())
-		} else {
-			data.Vrfs[i].RpAddressAccessList = types.StringNull()
-		}
-		if value := r.Get("rp-address.bidir"); !data.Vrfs[i].RpAddressBidir.IsNull() {
-			if value.Exists() {
-				data.Vrfs[i].RpAddressBidir = types.BoolValue(true)
-			} else {
-				data.Vrfs[i].RpAddressBidir = types.BoolValue(false)
-			}
-		} else {
-			data.Vrfs[i].RpAddressBidir = types.BoolNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -345,94 +212,6 @@ func (data *PIMIPv6) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *PIMIPv6) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.address"); value.Exists() {
-		data.RpAddress = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.access-list"); value.Exists() {
-		data.RpAddressAccessList = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.bidir"); value.Exists() {
-		data.RpAddressBidir = types.BoolValue(true)
-	} else {
-		data.RpAddressBidir = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]PIMIPv6Vrfs, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := PIMIPv6Vrfs{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Vrf = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rp-address.address"); cValue.Exists() {
-				item.RpAddress = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rp-address.access-list"); cValue.Exists() {
-				item.RpAddressAccessList = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rp-address.bidir"); cValue.Exists() {
-				item.RpAddressBidir = types.BoolValue(true)
-			} else {
-				item.RpAddressBidir = types.BoolValue(false)
-			}
-			data.Vrfs = append(data.Vrfs, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *PIMIPv6Data) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.address"); value.Exists() {
-		data.RpAddress = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.access-list"); value.Exists() {
-		data.RpAddressAccessList = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address.bidir"); value.Exists() {
-		data.RpAddressBidir = types.BoolValue(true)
-	} else {
-		data.RpAddressBidir = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
-		data.Vrfs = make([]PIMIPv6VrfsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := PIMIPv6VrfsData{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Vrf = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rp-address.address"); cValue.Exists() {
-				item.RpAddress = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rp-address.access-list"); cValue.Exists() {
-				item.RpAddressAccessList = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rp-address.bidir"); cValue.Exists() {
-				item.RpAddressBidir = types.BoolValue(true)
-			} else {
-				item.RpAddressBidir = types.BoolValue(false)
-			}
-			data.Vrfs = append(data.Vrfs, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -514,59 +293,6 @@ func (data *PIMIPv6Data) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *PIMIPv6) getDeletedItems(ctx context.Context, state PIMIPv6) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Vrfs {
-		stateKeyValues := [...]string{state.Vrfs[i].Vrf.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Vrfs[i].Vrf.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Vrfs {
-			found = true
-			if state.Vrfs[i].Vrf.ValueString() != data.Vrfs[j].Vrf.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Vrfs[i].RpAddressBidir.IsNull() && data.Vrfs[j].RpAddressBidir.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vrfs[i].RpAddressAccessList.IsNull() && data.Vrfs[j].RpAddressAccessList.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vrfs[i].RpAddress.IsNull() && data.Vrfs[j].RpAddress.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.RpAddressBidir.IsNull() && data.RpAddressBidir.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address/bidir", state.getPath()))
-	}
-	if !state.RpAddressAccessList.IsNull() && data.RpAddressAccessList.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address/access-list", state.getPath()))
-	}
-	if !state.RpAddress.IsNull() && data.RpAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address/address", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *PIMIPv6) addDeletedItemsXML(ctx context.Context, state PIMIPv6, body string) string {
@@ -625,50 +351,6 @@ func (data *PIMIPv6) addDeletedItemsXML(ctx context.Context, state PIMIPv6, body
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *PIMIPv6) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Vrfs {
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-		if !data.Vrfs[i].RpAddressBidir.IsNull() && !data.Vrfs[i].RpAddressBidir.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address/bidir", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address/bidir", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *PIMIPv6) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Vrfs {
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.RpAddressBidir.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address/bidir", data.getPath()))
-	}
-	if !data.RpAddressAccessList.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address/access-list", data.getPath()))
-	}
-	if !data.RpAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address/address", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

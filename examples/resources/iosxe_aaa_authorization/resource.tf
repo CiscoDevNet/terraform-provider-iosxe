@@ -17,4 +17,5 @@ resource "iosxe_aaa_authorization" "example" {
       a4_local = true
     }
   ]
+  console = true
 }

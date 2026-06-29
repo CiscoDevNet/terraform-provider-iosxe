@@ -48,7 +48,7 @@ func (r *CommitResource) Metadata(ctx context.Context, req resource.MetadataRequ
 func (r *CommitResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource is used to commit the candidate config to the running config (NETCONF only) and optionally save the running config to startup config (both NETCONF and RESTCONF).",
+		MarkdownDescription: "This resource is used to commit the candidate config to the running config and optionally save the running config to startup config.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -62,7 +62,7 @@ func (r *CommitResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Default:             booldefault.StaticBool(true),
 			},
 			"save_config": schema.BoolAttribute{
-				MarkdownDescription: "Save running configuration to startup configuration. Equivalent to 'copy running-config startup-config'. For NETCONF devices, this saves after commit. For RESTCONF devices, this saves the current running configuration (RESTCONF is stateless, no commit needed).",
+				MarkdownDescription: "Save running configuration to startup configuration. Equivalent to 'copy running-config startup-config'. This saves after commit.",
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
@@ -108,7 +108,7 @@ func (r *CommitResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	if d.Managed && d.Protocol == "netconf" {
+	if d.Managed {
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
 		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, true)
 		if locked {
@@ -126,14 +126,6 @@ func (r *CommitResource) Create(ctx context.Context, req resource.CreateRequest,
 		if saveConfig.ValueBool() {
 			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Commit succeeded but save failed: %s", err.Error()))
-				return
-			}
-		}
-	} else if d.Managed && d.Protocol == "restconf" {
-		// RESTCONF is stateless (no commit needed), but save if requested
-		if saveConfig.ValueBool() {
-			if err := helpers.SaveConfigRestconf(d.RestconfClient); err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config: %s", err))
 				return
 			}
 		}
@@ -183,7 +175,7 @@ func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	if d.Managed && d.Protocol == "netconf" {
+	if d.Managed {
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
 		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, true)
 		if locked {
@@ -201,14 +193,6 @@ func (r *CommitResource) Update(ctx context.Context, req resource.UpdateRequest,
 		if saveConfig.ValueBool() {
 			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Commit succeeded but save failed: %s", err.Error()))
-				return
-			}
-		}
-	} else if d.Managed && d.Protocol == "restconf" {
-		// RESTCONF is stateless (no commit needed), but save if requested
-		if saveConfig.ValueBool() {
-			if err := helpers.SaveConfigRestconf(d.RestconfClient); err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config: %s", err))
 				return
 			}
 		}
@@ -241,7 +225,7 @@ func (r *CommitResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	if d.Managed && d.Protocol == "netconf" {
+	if d.Managed {
 		tflog.Debug(ctx, "Enabling auto-commit for deletion operations (iosxe_commit resource destroyed)")
 		d.AutoCommit = true
 	}
