@@ -793,6 +793,21 @@ attributes:
   - yang_name: mac/address-table/aging-time/val
     tf_name: mac_address_table_aging_time
     example: 14400
+  - yang_name: Cisco-IOS-XE-power:power/redundancy-mode-config/combined
+    tf_name: power_redundancy_mode_combined
+    description: Enable combined power redundancy mode
+    exclude_test: true
+    example: true
+  - yang_name: Cisco-IOS-XE-power:power/supply/autoLC/shutdown
+    tf_name: power_supply_autolc_shutdown
+    description: Linecard auto shutdown control
+    exclude_test: true
+    example: true
+  - yang_name: Cisco-IOS-XE-power:power/supply/autoLC/priority
+    tf_name: power_supply_autolc_priority
+    description: Priority (highest to lowest) of auto linecard shutdown
+    exclude_test: true
+    example: 1
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

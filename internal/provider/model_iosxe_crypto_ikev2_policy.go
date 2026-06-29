@@ -25,17 +25,12 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -81,17 +76,6 @@ func (data CryptoIKEv2PolicyData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data CryptoIKEv2Policy) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data CryptoIKEv2Policy) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy[name=%v]"
@@ -106,44 +90,6 @@ func (data CryptoIKEv2PolicyData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data CryptoIKEv2Policy) toBody(ctx context.Context, config CryptoIKEv2Policy) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.IsUnknown() {
-		if data.MatchInboundOnly.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.inbound-only", map[string]string{})
-		}
-	}
-	if !data.MatchAddressLocalIp.IsNull() && !data.MatchAddressLocalIp.IsUnknown() {
-		var values []string
-		data.MatchAddressLocalIp.ElementsAs(ctx, &values, false)
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.address.local-ip", values)
-	}
-	if !data.MatchFvrf.IsNull() && !data.MatchFvrf.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.fvrf.name", data.MatchFvrf.ValueString())
-	}
-	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.IsUnknown() {
-		if data.MatchFvrfAny.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.fvrf.any", map[string]string{})
-		}
-	}
-	if len(data.Proposals) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal", []interface{}{})
-		for index, item := range data.Proposals {
-			if !item.Proposals.IsNull() && !item.Proposals.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal"+"."+strconv.Itoa(index)+"."+"proposals", item.Proposals.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -193,79 +139,6 @@ func (data CryptoIKEv2Policy) toBodyXML(ctx context.Context, config CryptoIKEv2P
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *CryptoIKEv2Policy) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "match.inbound-only"); !data.MatchInboundOnly.IsNull() {
-		if value.Exists() {
-			data.MatchInboundOnly = types.BoolValue(true)
-		} else {
-			data.MatchInboundOnly = types.BoolValue(false)
-		}
-	} else {
-		data.MatchInboundOnly = types.BoolNull()
-	}
-	if value := res.Get(prefix + "match.address.local-ip"); value.Exists() && !data.MatchAddressLocalIp.IsNull() {
-		data.MatchAddressLocalIp = helpers.GetStringList(value.Array())
-	} else {
-		data.MatchAddressLocalIp = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() && !data.MatchFvrf.IsNull() {
-		data.MatchFvrf = types.StringValue(value.String())
-	} else {
-		data.MatchFvrf = types.StringNull()
-	}
-	if value := res.Get(prefix + "match.fvrf.any"); !data.MatchFvrfAny.IsNull() {
-		if value.Exists() {
-			data.MatchFvrfAny = types.BoolValue(true)
-		} else {
-			data.MatchFvrfAny = types.BoolValue(false)
-		}
-	} else {
-		data.MatchFvrfAny = types.BoolNull()
-	}
-	for i := range data.Proposals {
-		keys := [...]string{"proposals"}
-		keyValues := [...]string{data.Proposals[i].Proposals.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "proposal").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("proposals"); value.Exists() && !data.Proposals[i].Proposals.IsNull() {
-			data.Proposals[i].Proposals = types.StringValue(value.String())
-		} else {
-			data.Proposals[i].Proposals = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -335,86 +208,6 @@ func (data *CryptoIKEv2Policy) updateFromBodyXML(ctx context.Context, res xmldot
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *CryptoIKEv2Policy) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "match.inbound-only"); value.Exists() {
-		data.MatchInboundOnly = types.BoolValue(true)
-	} else {
-		data.MatchInboundOnly = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.address.local-ip"); value.Exists() {
-		data.MatchAddressLocalIp = helpers.GetStringList(value.Array())
-	} else {
-		data.MatchAddressLocalIp = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() {
-		data.MatchFvrf = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "match.fvrf.any"); value.Exists() {
-		data.MatchFvrfAny = types.BoolValue(true)
-	} else {
-		data.MatchFvrfAny = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "proposal"); value.Exists() {
-		data.Proposals = make([]CryptoIKEv2PolicyProposals, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2PolicyProposals{}
-			if cValue := v.Get("proposals"); cValue.Exists() {
-				item.Proposals = types.StringValue(cValue.String())
-			}
-			data.Proposals = append(data.Proposals, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "match.inbound-only"); value.Exists() {
-		data.MatchInboundOnly = types.BoolValue(true)
-	} else {
-		data.MatchInboundOnly = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "match.address.local-ip"); value.Exists() {
-		data.MatchAddressLocalIp = helpers.GetStringList(value.Array())
-	} else {
-		data.MatchAddressLocalIp = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() {
-		data.MatchFvrf = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "match.fvrf.any"); value.Exists() {
-		data.MatchFvrfAny = types.BoolValue(true)
-	} else {
-		data.MatchFvrfAny = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "proposal"); value.Exists() {
-		data.Proposals = make([]CryptoIKEv2PolicyProposalsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2PolicyProposalsData{}
-			if cValue := v.Get("proposals"); cValue.Exists() {
-				item.Proposals = types.StringValue(cValue.String())
-			}
-			data.Proposals = append(data.Proposals, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -487,71 +280,6 @@ func (data *CryptoIKEv2PolicyData) fromBodyXML(ctx context.Context, res xmldot.R
 }
 
 // End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state CryptoIKEv2Policy) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Proposals {
-		stateKeyValues := [...]string{state.Proposals[i].Proposals.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Proposals[i].Proposals.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Proposals {
-			found = true
-			if state.Proposals[i].Proposals.ValueString() != data.Proposals[j].Proposals.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/proposal=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/any", state.getPath()))
-	}
-	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))
-	}
-	if !state.MatchAddressLocalIp.IsNull() {
-		if data.MatchAddressLocalIp.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.MatchAddressLocalIp.ElementsAs(ctx, &dataValues, false)
-			state.MatchAddressLocalIp.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
@@ -627,50 +355,6 @@ func (data *CryptoIKEv2Policy) addDeletedItemsXML(ctx context.Context, state Cry
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *CryptoIKEv2Policy) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
-	}
-	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *CryptoIKEv2Policy) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Proposals {
-		keyValues := [...]string{data.Proposals[i].Proposals.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/proposal=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.MatchFvrfAny.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
-	}
-	if !data.MatchFvrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/name", data.getPath()))
-	}
-	if !data.MatchAddressLocalIp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local-ip", data.getPath()))
-	}
-	if !data.MatchInboundOnly.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

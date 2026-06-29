@@ -84,6 +84,18 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Always advertise default route",
 				Computed:            true,
 			},
+			"default_information_originate_metric": schema.Int64Attribute{
+				MarkdownDescription: "OSPF default metric",
+				Computed:            true,
+			},
+			"default_information_originate_metric_type": schema.Int64Attribute{
+				MarkdownDescription: "OSPF metric type for default routes",
+				Computed:            true,
+			},
+			"default_information_originate_route_map": schema.StringAttribute{
+				MarkdownDescription: "Route map reference",
+				Computed:            true,
+			},
 			"default_metric": schema.Int64Attribute{
 				MarkdownDescription: "Set metric of redistributed routes",
 				Computed:            true,
@@ -281,9 +293,141 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Consider subnets for redistribution into OSPF (Will be removed in the future)",
 				Computed:            true,
 			},
+			"redistribute_static_metric": schema.Int64Attribute{
+				MarkdownDescription: "Metric for redistributed routes",
+				Computed:            true,
+			},
+			"redistribute_static_metric_type": schema.StringAttribute{
+				MarkdownDescription: "OSPF/IS-IS exterior metric type for redistributed routes",
+				Computed:            true,
+			},
+			"redistribute_static_route_map": schema.StringAttribute{
+				MarkdownDescription: "Route map reference",
+				Computed:            true,
+			},
+			"redistribute_static_tag": schema.Int64Attribute{
+				MarkdownDescription: "Set tag for routes redistributed into OSPF",
+				Computed:            true,
+			},
+			"redistribute_static_nssa_only": schema.BoolAttribute{
+				MarkdownDescription: "Limit redistributed routes to NSSA areas",
+				Computed:            true,
+			},
 			"redistribute_connected_subnets": schema.BoolAttribute{
 				MarkdownDescription: "Consider subnets for redistribution into OSPF (Will be removed in the future)",
 				Computed:            true,
+			},
+			"redistribute_connected_metric": schema.Int64Attribute{
+				MarkdownDescription: "Metric for redistributed routes",
+				Computed:            true,
+			},
+			"redistribute_connected_metric_type": schema.StringAttribute{
+				MarkdownDescription: "OSPF/IS-IS exterior metric type for redistributed routes",
+				Computed:            true,
+			},
+			"redistribute_connected_route_map": schema.StringAttribute{
+				MarkdownDescription: "Route map reference",
+				Computed:            true,
+			},
+			"redistribute_connected_tag": schema.Int64Attribute{
+				MarkdownDescription: "Set tag for routes redistributed into OSPF",
+				Computed:            true,
+			},
+			"redistribute_connected_nssa_only": schema.BoolAttribute{
+				MarkdownDescription: "Limit redistributed routes to NSSA areas",
+				Computed:            true,
+			},
+			"redistribute_ospf": schema.ListNestedAttribute{
+				MarkdownDescription: "Open Shortest Path First (OSPF)",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"process_id": schema.Int64Attribute{
+							MarkdownDescription: "Process ID",
+							Computed:            true,
+						},
+						"match_internal": schema.BoolAttribute{
+							MarkdownDescription: "Redistribute OSPF internal routes",
+							Computed:            true,
+						},
+						"match_external_1": schema.StringAttribute{
+							MarkdownDescription: "Redistribute OSPF external routes",
+							Computed:            true,
+						},
+						"match_external_2": schema.StringAttribute{
+							MarkdownDescription: "Redistribute OSPF external routes",
+							Computed:            true,
+						},
+						"match_nssa_external_1": schema.StringAttribute{
+							MarkdownDescription: "Redistribute OSPF NSSA external routes",
+							Computed:            true,
+						},
+						"match_nssa_external_2": schema.StringAttribute{
+							MarkdownDescription: "Redistribute OSPF NSSA external routes",
+							Computed:            true,
+						},
+						"metric": schema.Int64Attribute{
+							MarkdownDescription: "Metric for redistributed routes",
+							Computed:            true,
+						},
+						"metric_type": schema.StringAttribute{
+							MarkdownDescription: "OSPF/IS-IS exterior metric type for redistributed routes",
+							Computed:            true,
+						},
+						"subnets": schema.BoolAttribute{
+							MarkdownDescription: "Consider subnets for redistribution into OSPF (Will be removed in the future)",
+							Computed:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: "Route map reference",
+							Computed:            true,
+						},
+						"tag": schema.Int64Attribute{
+							MarkdownDescription: "Set tag for routes redistributed into OSPF",
+							Computed:            true,
+						},
+						"nssa_only": schema.BoolAttribute{
+							MarkdownDescription: "Limit redistributed routes to NSSA areas",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VPN Routing/Forwarding Instance",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"distribute_list_in_access_lists": schema.SetNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"in": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"access_list": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"distribute_list_out_access_lists": schema.SetNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"out": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"access_list": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
 			},
 			"passive_interface_disable_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "GigabitEthernet interfaces to exclude from passive-interface default. Requires IOS-XE >= 17.16.1.",
@@ -487,35 +631,21 @@ func (d *OSPFDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	if device.Protocol == "restconf" {
-		res, err := device.RestconfClient.GetData(config.getPath())
-		if res.StatusCode == 404 {
-			config = OSPFData{Device: config.Device}
-		} else {
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-				return
-			}
-
-			config.fromBody(ctx, res.Res)
-		}
-	} else {
-		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-		if locked {
-			defer device.NetconfOpMutex.Unlock()
-		}
-		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		filter := helpers.GetXpathFilter(config.getXPath())
-		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-			return
-		}
-
-		config.fromBodyXML(ctx, res.Res)
+	// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+	locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+	if locked {
+		defer device.NetconfOpMutex.Unlock()
 	}
+	defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+	filter := helpers.GetXpathFilter(config.getXPath())
+	res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+		return
+	}
+
+	config.fromBodyXML(ctx, res.Res)
 
 	config.Id = types.StringValue(config.getPath())
 
