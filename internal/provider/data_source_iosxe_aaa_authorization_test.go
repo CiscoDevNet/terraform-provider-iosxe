@@ -46,6 +46,7 @@ func TestAccDataSourceIosxeAAAAuthorization(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "networks.0.a2_group", "RGROUP2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "networks.0.a3_group", "RGROUP3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "networks.0.a4_local", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "console", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -82,6 +83,7 @@ func testAccDataSourceIosxeAAAAuthorizationConfig() string {
 	config += `		a3_group = "RGROUP3"` + "\n"
 	config += `		a4_local = true` + "\n"
 	config += `	}]` + "\n"
+	config += `	console = true` + "\n"
 	config += `}` + "\n"
 
 	config += `

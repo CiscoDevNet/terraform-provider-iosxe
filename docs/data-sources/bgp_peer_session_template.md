@@ -33,6 +33,9 @@ data "iosxe_bgp_peer_session_template" "example" {
 
 ### Read-Only
 
+- `ao_accept_mismatch_connections` (Boolean) accept ao mismatch connections
+- `ao_include_tcp_options` (Boolean) Include TCP options
+- `ao_keychain` (String) Key Chain Name
 - `description` (String) Neighbor specific description
 - `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.

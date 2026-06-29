@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -31,8 +30,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -68,17 +65,6 @@ func (data PlatformData) getPath() string {
 	return "Cisco-IOS-XE-native:native/platform"
 }
 
-// if last path element has a key -> remove it
-func (data Platform) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data Platform) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/platform"
@@ -91,27 +77,6 @@ func (data PlatformData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data Platform) toBody(ctx context.Context, config Platform) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.PuntKeepaliveDisableKernelCore.IsNull() && !data.PuntKeepaliveDisableKernelCore.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-platform:punt-keepalive.disable-kernel-core", data.PuntKeepaliveDisableKernelCore.ValueBool())
-	}
-	if !data.PuntKeepaliveSettingsFatalCount.IsNull() && !data.PuntKeepaliveSettingsFatalCount.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-platform:punt-keepalive.settings.fatal-count", strconv.FormatInt(data.PuntKeepaliveSettingsFatalCount.ValueInt64(), 10))
-	}
-	if !data.PuntKeepaliveSettingsTransmitInterval.IsNull() && !data.PuntKeepaliveSettingsTransmitInterval.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-platform:punt-keepalive.settings.transmit-interval", strconv.FormatInt(data.PuntKeepaliveSettingsTransmitInterval.ValueInt64(), 10))
-	}
-	if !data.PuntKeepaliveSettingsWarningCount.IsNull() && !data.PuntKeepaliveSettingsWarningCount.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-platform:punt-keepalive.settings.warning-count", strconv.FormatInt(data.PuntKeepaliveSettingsWarningCount.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -137,39 +102,6 @@ func (data Platform) toBodyXML(ctx context.Context, config Platform) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *Platform) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.disable-kernel-core"); !data.PuntKeepaliveDisableKernelCore.IsNull() {
-		if value.Exists() {
-			data.PuntKeepaliveDisableKernelCore = types.BoolValue(value.Bool())
-		}
-	} else {
-		data.PuntKeepaliveDisableKernelCore = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.fatal-count"); value.Exists() && !data.PuntKeepaliveSettingsFatalCount.IsNull() {
-		data.PuntKeepaliveSettingsFatalCount = types.Int64Value(value.Int())
-	} else {
-		data.PuntKeepaliveSettingsFatalCount = types.Int64Null()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.transmit-interval"); value.Exists() && !data.PuntKeepaliveSettingsTransmitInterval.IsNull() {
-		data.PuntKeepaliveSettingsTransmitInterval = types.Int64Value(value.Int())
-	} else {
-		data.PuntKeepaliveSettingsTransmitInterval = types.Int64Null()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.warning-count"); value.Exists() && !data.PuntKeepaliveSettingsWarningCount.IsNull() {
-		data.PuntKeepaliveSettingsWarningCount = types.Int64Value(value.Int())
-	} else {
-		data.PuntKeepaliveSettingsWarningCount = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -199,56 +131,6 @@ func (data *Platform) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *Platform) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.disable-kernel-core"); value.Exists() {
-		data.PuntKeepaliveDisableKernelCore = types.BoolValue(value.Bool())
-	} else {
-		data.PuntKeepaliveDisableKernelCore = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.fatal-count"); value.Exists() {
-		data.PuntKeepaliveSettingsFatalCount = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.transmit-interval"); value.Exists() {
-		data.PuntKeepaliveSettingsTransmitInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.warning-count"); value.Exists() {
-		data.PuntKeepaliveSettingsWarningCount = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *PlatformData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.disable-kernel-core"); value.Exists() {
-		data.PuntKeepaliveDisableKernelCore = types.BoolValue(value.Bool())
-	} else {
-		data.PuntKeepaliveDisableKernelCore = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.fatal-count"); value.Exists() {
-		data.PuntKeepaliveSettingsFatalCount = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.transmit-interval"); value.Exists() {
-		data.PuntKeepaliveSettingsTransmitInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-platform:punt-keepalive.settings.warning-count"); value.Exists() {
-		data.PuntKeepaliveSettingsWarningCount = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -292,28 +174,6 @@ func (data *PlatformData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *Platform) getDeletedItems(ctx context.Context, state Platform) []string {
-	deletedItems := make([]string, 0)
-	if !state.PuntKeepaliveSettingsWarningCount.IsNull() && data.PuntKeepaliveSettingsWarningCount.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/settings/warning-count", state.getPath()))
-	}
-	if !state.PuntKeepaliveSettingsTransmitInterval.IsNull() && data.PuntKeepaliveSettingsTransmitInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/settings/transmit-interval", state.getPath()))
-	}
-	if !state.PuntKeepaliveSettingsFatalCount.IsNull() && data.PuntKeepaliveSettingsFatalCount.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/settings/fatal-count", state.getPath()))
-	}
-	if !state.PuntKeepaliveDisableKernelCore.IsNull() && data.PuntKeepaliveDisableKernelCore.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/disable-kernel-core", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *Platform) addDeletedItemsXML(ctx context.Context, state Platform, body string) string {
@@ -336,38 +196,6 @@ func (data *Platform) addDeletedItemsXML(ctx context.Context, state Platform, bo
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *Platform) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *Platform) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.PuntKeepaliveSettingsWarningCount.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/settings/warning-count", data.getPath()))
-	}
-	if !data.PuntKeepaliveSettingsTransmitInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/settings/transmit-interval", data.getPath()))
-	}
-	if !data.PuntKeepaliveSettingsFatalCount.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/settings/fatal-count", data.getPath()))
-	}
-	if !data.PuntKeepaliveDisableKernelCore.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-platform:punt-keepalive/disable-kernel-core", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

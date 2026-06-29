@@ -99,6 +99,22 @@ attributes:
   - yang_name: ebgp-multihop/max-hop
     example: 10
     exclude_test: true
+  - yang_name: ao/keychain-name
+    tf_name: ao_keychain
+    delete_parent: true
+    example: EBGP-PEER-65000
+    exclude_test: true
+  - yang_name: ao/include-tcp-options
+    type_yang_bool: empty
+    delete_parent: true
+    example: true
+    exclude_test: true
+  - yang_name: ao/accept-ao-mismatch-connections
+    tf_name: ao_accept_mismatch_connections
+    type_yang_bool: empty
+    delete_parent: true
+    example: true
+    exclude_test: true
   - yang_name: inherit/peer-session
     example: PEER_SESSION_TEMPLATE_1
     exclude_test: true

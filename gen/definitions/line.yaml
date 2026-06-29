@@ -181,6 +181,17 @@ attributes:
         example: true
       - yang_name: stopbits
         example: 1
+      - yang_name: password/level
+        example: 7
+        exclude_test: true
+      - yang_name: password/type
+        write_only: true
+        example: 0
+      - yang_name: password/secret
+        tf_name: password
+        write_only: true
+        sensitive: true
+        example: testpasswd
       - yang_name: transport/output/output-protocol/no-protocol/none
         xpath: transport/output/none
         example: true

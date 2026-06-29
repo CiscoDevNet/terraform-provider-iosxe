@@ -41,7 +41,8 @@ Read-Only:
 
 - `continue` (Boolean) Continue on a different entry within the route-map
 - `continue_sequence_number` (Number) Route-map entry sequence number
-- `description` (String) Route-map comment
+- `description_legacy` (String) Route-map comment
+- `descriptions` (Attributes List) list of Route-map comments (see [below for nested schema](#nestedatt--entries--descriptions))
 - `match_as_paths` (List of Number) AS path access-list
 - `match_as_paths_legacy` (List of Number) AS path access-list (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `match_community_list_exact_match` (Boolean) Do exact matching of communities
@@ -141,6 +142,14 @@ Read-Only:
 - `set_vrf` (String) VPN Routing/Forwarding instance name
 - `set_weight` (Number) BGP weight for routing table
 - `set_weight_legacy` (Number) BGP weight for routing table (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
+
+<a id="nestedatt--entries--descriptions"></a>
+### Nested Schema for `entries.descriptions`
+
+Read-Only:
+
+- `description` (String) Route-map comment
+
 
 <a id="nestedatt--entries--set_as_path_replace_as"></a>
 ### Nested Schema for `entries.set_as_path_replace_as`

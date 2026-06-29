@@ -38,7 +38,10 @@ func TestAccIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "name", "RM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.seq", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.operation", "permit"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.description", "Entry 10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.descriptions.0.description", "Entry 10"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.description_legacy", "Entry 10"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.continue", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_interfaces.0", "Loopback1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_ip_address_access_lists.0", "ACL1"))
@@ -223,7 +226,12 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `	entries = [{` + "\n"
 	config += `		seq = 10` + "\n"
 	config += `		operation = "permit"` + "\n"
-	config += `		description = "Entry 10"` + "\n"
+	config += `		descriptions = [{` + "\n"
+	config += `			description = "Entry 10"` + "\n"
+	config += `		}]` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		description_legacy = "Entry 10"` + "\n"
+	}
 	config += `		continue = false` + "\n"
 	config += `		match_interfaces = ["Loopback1"]` + "\n"
 	config += `		match_ip_address_access_lists = ["ACL1"]` + "\n"

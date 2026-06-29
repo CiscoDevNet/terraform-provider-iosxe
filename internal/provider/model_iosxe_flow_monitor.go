@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -82,17 +78,6 @@ func (data FlowMonitorData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data FlowMonitor) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data FlowMonitor) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=%v]"
@@ -107,38 +92,6 @@ func (data FlowMonitorData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data FlowMonitor) toBody(ctx context.Context, config FlowMonitor) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
-	}
-	if !data.CacheTimeoutActive.IsNull() && !data.CacheTimeoutActive.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cache.timeout.active", strconv.FormatInt(data.CacheTimeoutActive.ValueInt64(), 10))
-	}
-	if !data.CacheTimeoutInactive.IsNull() && !data.CacheTimeoutInactive.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cache.timeout.inactive", strconv.FormatInt(data.CacheTimeoutInactive.ValueInt64(), 10))
-	}
-	if !data.Record.IsNull() && !data.Record.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"record.type", data.Record.ValueString())
-	}
-	if len(data.Exporters) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exporter", []interface{}{})
-		for index, item := range data.Exporters {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exporter"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -176,71 +129,6 @@ func (data FlowMonitor) toBodyXML(ctx context.Context, config FlowMonitor) strin
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *FlowMonitor) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
-		data.Description = types.StringValue(value.String())
-	} else {
-		data.Description = types.StringNull()
-	}
-	for i := range data.Exporters {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "exporter").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.Exporters[i].Name.IsNull() {
-			data.Exporters[i].Name = types.StringValue(value.String())
-		} else {
-			data.Exporters[i].Name = types.StringNull()
-		}
-	}
-	if value := res.Get(prefix + "cache.timeout.active"); value.Exists() && !data.CacheTimeoutActive.IsNull() {
-		data.CacheTimeoutActive = types.Int64Value(value.Int())
-	} else {
-		data.CacheTimeoutActive = types.Int64Null()
-	}
-	if value := res.Get(prefix + "cache.timeout.inactive"); value.Exists() && !data.CacheTimeoutInactive.IsNull() {
-		data.CacheTimeoutInactive = types.Int64Value(value.Int())
-	} else {
-		data.CacheTimeoutInactive = types.Int64Null()
-	}
-	if value := res.Get(prefix + "record.type"); value.Exists() && !data.Record.IsNull() {
-		data.Record = types.StringValue(value.String())
-	} else {
-		data.Record = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -303,74 +191,6 @@ func (data *FlowMonitor) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *FlowMonitor) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "exporter"); value.Exists() {
-		data.Exporters = make([]FlowMonitorExporters, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := FlowMonitorExporters{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.Exporters = append(data.Exporters, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "cache.timeout.active"); value.Exists() {
-		data.CacheTimeoutActive = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "cache.timeout.inactive"); value.Exists() {
-		data.CacheTimeoutInactive = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "record.type"); value.Exists() {
-		data.Record = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *FlowMonitorData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "description"); value.Exists() {
-		data.Description = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "exporter"); value.Exists() {
-		data.Exporters = make([]FlowMonitorExportersData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := FlowMonitorExportersData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.Exporters = append(data.Exporters, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "cache.timeout.active"); value.Exists() {
-		data.CacheTimeoutActive = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "cache.timeout.inactive"); value.Exists() {
-		data.CacheTimeoutInactive = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "record.type"); value.Exists() {
-		data.Record = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *FlowMonitor) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -431,53 +251,6 @@ func (data *FlowMonitorData) fromBodyXML(ctx context.Context, res xmldot.Result)
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor) []string {
-	deletedItems := make([]string, 0)
-	if !state.Record.IsNull() && data.Record.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/record/type", state.getPath()))
-	}
-	if !state.CacheTimeoutInactive.IsNull() && data.CacheTimeoutInactive.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/inactive", state.getPath()))
-	}
-	if !state.CacheTimeoutActive.IsNull() && data.CacheTimeoutActive.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/active", state.getPath()))
-	}
-	for i := range state.Exporters {
-		stateKeyValues := [...]string{state.Exporters[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Exporters[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Exporters {
-			found = true
-			if state.Exporters[i].Name.ValueString() != data.Exporters[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/exporter=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *FlowMonitor) addDeletedItemsXML(ctx context.Context, state FlowMonitor, body string) string {
@@ -530,43 +303,6 @@ func (data *FlowMonitor) addDeletedItemsXML(ctx context.Context, state FlowMonit
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *FlowMonitor) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *FlowMonitor) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.Record.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/record/type", data.getPath()))
-	}
-	if !data.CacheTimeoutInactive.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/inactive", data.getPath()))
-	}
-	if !data.CacheTimeoutActive.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/active", data.getPath()))
-	}
-	for i := range data.Exporters {
-		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/exporter=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
