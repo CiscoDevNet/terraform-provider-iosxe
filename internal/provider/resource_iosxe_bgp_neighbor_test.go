@@ -66,7 +66,7 @@ func TestAccIosxeBGPNeighbor(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeBGPNeighborImportStateIdFunc("iosxe_bgp_neighbor.test"),
-				ImportStateVerifyIgnore: []string{"fall_over_bfd_multi_hop", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop"},
+				ImportStateVerifyIgnore: []string{"fall_over_bfd_multi_hop", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop", "ao_include_tcp_options", "ao_accept_mismatch_connections"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

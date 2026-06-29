@@ -251,6 +251,18 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 					int64validator.Between(2, 255),
 				},
 			},
+			"ao_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Key Chain Name").String,
+				Optional:            true,
+			},
+			"ao_include_tcp_options": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Include TCP options").String,
+				Optional:            true,
+			},
+			"ao_accept_mismatch_connections": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("accept ao mismatch connections").String,
+				Optional:            true,
+			},
 			"inherit_peer_session": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Inherit a peer-session template").String,
 				Optional:            true,

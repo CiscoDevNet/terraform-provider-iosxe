@@ -73,6 +73,9 @@ type BGPNeighbor struct {
 	UpdateSourceInterfaceLoopback       types.Int64  `tfsdk:"update_source_interface_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	AoKeychain                          types.String `tfsdk:"ao_keychain"`
+	AoIncludeTcpOptions                 types.Bool   `tfsdk:"ao_include_tcp_options"`
+	AoAcceptMismatchConnections         types.Bool   `tfsdk:"ao_accept_mismatch_connections"`
 	InheritPeerSession                  types.String `tfsdk:"inherit_peer_session"`
 }
 
@@ -110,6 +113,9 @@ type BGPNeighborData struct {
 	UpdateSourceInterfaceLoopback       types.Int64  `tfsdk:"update_source_interface_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	AoKeychain                          types.String `tfsdk:"ao_keychain"`
+	AoIncludeTcpOptions                 types.Bool   `tfsdk:"ao_include_tcp_options"`
+	AoAcceptMismatchConnections         types.Bool   `tfsdk:"ao_accept_mismatch_connections"`
 	InheritPeerSession                  types.String `tfsdk:"inherit_peer_session"`
 }
 
@@ -289,6 +295,23 @@ func (data BGPNeighbor) toBodyXML(ctx context.Context, config BGPNeighbor) strin
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ebgp-multihop/max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
+	}
+	if !data.AoKeychain.IsNull() && !data.AoKeychain.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ao/keychain-name", data.AoKeychain.ValueString())
+	}
+	if !data.AoIncludeTcpOptions.IsNull() && !data.AoIncludeTcpOptions.IsUnknown() {
+		if data.AoIncludeTcpOptions.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/include-tcp-options", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/include-tcp-options")
+		}
+	}
+	if !data.AoAcceptMismatchConnections.IsNull() && !data.AoAcceptMismatchConnections.IsUnknown() {
+		if data.AoAcceptMismatchConnections.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ao/accept-ao-mismatch-connections")
+		}
 	}
 	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/inherit/peer-session", data.InheritPeerSession.ValueString())
@@ -497,6 +520,29 @@ func (data *BGPNeighbor) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.EbgpMultihopMaxHop = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/keychain-name"); value.Exists() && !data.AoKeychain.IsNull() {
+		data.AoKeychain = types.StringValue(value.String())
+	} else {
+		data.AoKeychain = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/include-tcp-options"); !data.AoIncludeTcpOptions.IsNull() {
+		if value.Exists() {
+			data.AoIncludeTcpOptions = types.BoolValue(true)
+		} else {
+			data.AoIncludeTcpOptions = types.BoolValue(false)
+		}
+	} else {
+		data.AoIncludeTcpOptions = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/accept-ao-mismatch-connections"); !data.AoAcceptMismatchConnections.IsNull() {
+		if value.Exists() {
+			data.AoAcceptMismatchConnections = types.BoolValue(true)
+		} else {
+			data.AoAcceptMismatchConnections = types.BoolValue(false)
+		}
+	} else {
+		data.AoAcceptMismatchConnections = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() && !data.InheritPeerSession.IsNull() {
 		data.InheritPeerSession = types.StringValue(value.String())
 	} else {
@@ -622,6 +668,19 @@ func (data *BGPNeighbor) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop/max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/keychain-name"); value.Exists() {
+		data.AoKeychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/include-tcp-options"); value.Exists() {
+		data.AoIncludeTcpOptions = types.BoolValue(true)
+	} else {
+		data.AoIncludeTcpOptions = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/accept-ao-mismatch-connections"); value.Exists() {
+		data.AoAcceptMismatchConnections = types.BoolValue(true)
+	} else {
+		data.AoAcceptMismatchConnections = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() {
 		data.InheritPeerSession = types.StringValue(value.String())
 	}
@@ -745,6 +804,19 @@ func (data *BGPNeighborData) fromBodyXML(ctx context.Context, res xmldot.Result)
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ebgp-multihop/max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/keychain-name"); value.Exists() {
+		data.AoKeychain = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/include-tcp-options"); value.Exists() {
+		data.AoIncludeTcpOptions = types.BoolValue(true)
+	} else {
+		data.AoIncludeTcpOptions = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ao/accept-ao-mismatch-connections"); value.Exists() {
+		data.AoAcceptMismatchConnections = types.BoolValue(true)
+	} else {
+		data.AoAcceptMismatchConnections = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inherit/peer-session"); value.Exists() {
 		data.InheritPeerSession = types.StringValue(value.String())
 	}
@@ -758,6 +830,15 @@ func (data *BGPNeighbor) addDeletedItemsXML(ctx context.Context, state BGPNeighb
 	b := netconf.NewBody(body)
 	if !state.InheritPeerSession.IsNull() && data.InheritPeerSession.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inherit/peer-session")
+	}
+	if !state.AoAcceptMismatchConnections.IsNull() && data.AoAcceptMismatchConnections.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ao")
+	}
+	if !state.AoIncludeTcpOptions.IsNull() && data.AoIncludeTcpOptions.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ao")
+	}
+	if !state.AoKeychain.IsNull() && data.AoKeychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ao")
 	}
 	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ebgp-multihop/max-hop")
@@ -856,6 +937,15 @@ func (data *BGPNeighbor) addDeletePathsXML(ctx context.Context, body string) str
 	b := netconf.NewBody(body)
 	if !data.InheritPeerSession.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inherit/peer-session")
+	}
+	if !data.AoAcceptMismatchConnections.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ao")
+	}
+	if !data.AoIncludeTcpOptions.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ao")
+	}
+	if !data.AoKeychain.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ao")
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ebgp-multihop/max-hop")

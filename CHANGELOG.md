@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `ao_keychain`, `ao_include_tcp_options`, and `ao_accept_mismatch_connections` attributes to `iosxe_bgp_neighbor` and `iosxe_bgp_peer_session_template` resources and data sources for TCP Authentication Option (TCP-AO) support
 - Fix `iosxe_route_map` RESTCONF 400 error (`unknown element: description`) on IOS-XE 17.18+ by replacing the obsolete `description` leaf with the `descriptions` list structure. The old attribute is preserved as `description_legacy` for backward compatibility with IOS-XE 17.12 and earlier
 - Add `service` support to `iosxe_object_group` resource and data source for service object groups including TCP, UDP, TCP-UDP port configurations with operators, ranges, source/destination combinations, protocol flags, ICMP types, and group nesting
 - Add `iosxe_qos` resource and data source for global QoS configuration, including the `queue_softmax_multiplier` attribute for queue soft buffer maximum tuning on Catalyst 9000 series
