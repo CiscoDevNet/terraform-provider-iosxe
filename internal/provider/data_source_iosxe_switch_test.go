@@ -32,8 +32,8 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeSwitch(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
+	if os.Getenv("C9500") == "" {
+		t.Skip("skipping test, set environment variable C9500")
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_switch.test", "provision", "c9300-24p"))
