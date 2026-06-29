@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -31,8 +30,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -77,17 +74,6 @@ func (data TACACSServerData) getPath() string {
 	return "Cisco-IOS-XE-native:native/tacacs-server"
 }
 
-// if last path element has a key -> remove it
-func (data TACACSServer) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data TACACSServer) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/tacacs-server"
@@ -100,48 +86,6 @@ func (data TACACSServerData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data TACACSServer) toBody(ctx context.Context, config TACACSServer) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
-	}
-	if !data.DirectedRequest.IsNull() && !data.DirectedRequest.IsUnknown() {
-		if data.DirectedRequest.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:directed-request", map[string]string{})
-		}
-	}
-	if !data.DirectedRequestRestricted.IsNull() && !data.DirectedRequestRestricted.IsUnknown() {
-		if data.DirectedRequestRestricted.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:directed-request.restricted", map[string]string{})
-		}
-	}
-	if !data.DirectedRequestNoTruncate.IsNull() && !data.DirectedRequestNoTruncate.IsUnknown() {
-		if data.DirectedRequestNoTruncate.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:directed-request.no-truncate", map[string]string{})
-		}
-	}
-	if !data.Encryption.IsNull() && !data.Encryption.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:key.encryption", data.Encryption.ValueString())
-	}
-	if !data.Key.IsNull() && !data.Key.IsUnknown() {
-		if !config.KeyWO.IsNull() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:key.key", config.KeyWO.ValueString())
-		} else {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:key.key", data.Key.ValueString())
-		}
-	}
-	if !data.AttributeAllowUnknown.IsNull() && !data.AttributeAllowUnknown.IsUnknown() {
-		if data.AttributeAllowUnknown.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute.allow.unknown", map[string]string{})
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -197,58 +141,6 @@ func (data TACACSServer) toBodyXML(ctx context.Context, config TACACSServer) str
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *TACACSServer) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:timeout"); value.Exists() && !data.Timeout.IsNull() {
-		data.Timeout = types.Int64Value(value.Int())
-	} else {
-		data.Timeout = types.Int64Null()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request"); !data.DirectedRequest.IsNull() {
-		if value.Exists() {
-			data.DirectedRequest = types.BoolValue(true)
-		} else {
-			data.DirectedRequest = types.BoolValue(false)
-		}
-	} else {
-		data.DirectedRequest = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request.restricted"); !data.DirectedRequestRestricted.IsNull() {
-		if value.Exists() {
-			data.DirectedRequestRestricted = types.BoolValue(true)
-		} else {
-			data.DirectedRequestRestricted = types.BoolValue(false)
-		}
-	} else {
-		data.DirectedRequestRestricted = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request.no-truncate"); !data.DirectedRequestNoTruncate.IsNull() {
-		if value.Exists() {
-			data.DirectedRequestNoTruncate = types.BoolValue(true)
-		} else {
-			data.DirectedRequestNoTruncate = types.BoolValue(false)
-		}
-	} else {
-		data.DirectedRequestNoTruncate = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:attribute.allow.unknown"); !data.AttributeAllowUnknown.IsNull() {
-		if value.Exists() {
-			data.AttributeAllowUnknown = types.BoolValue(true)
-		} else {
-			data.AttributeAllowUnknown = types.BoolValue(false)
-		}
-	} else {
-		data.AttributeAllowUnknown = types.BoolNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *TACACSServer) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -296,86 +188,6 @@ func (data *TACACSServer) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *TACACSServer) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:timeout"); value.Exists() {
-		data.Timeout = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request"); value.Exists() {
-		data.DirectedRequest = types.BoolValue(true)
-	} else {
-		data.DirectedRequest = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request.restricted"); value.Exists() {
-		data.DirectedRequestRestricted = types.BoolValue(true)
-	} else {
-		data.DirectedRequestRestricted = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request.no-truncate"); value.Exists() {
-		data.DirectedRequestNoTruncate = types.BoolValue(true)
-	} else {
-		data.DirectedRequestNoTruncate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:key.encryption"); value.Exists() {
-		data.Encryption = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:key.key"); value.Exists() {
-		data.Key = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:attribute.allow.unknown"); value.Exists() {
-		data.AttributeAllowUnknown = types.BoolValue(true)
-	} else {
-		data.AttributeAllowUnknown = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:timeout"); value.Exists() {
-		data.Timeout = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request"); value.Exists() {
-		data.DirectedRequest = types.BoolValue(true)
-	} else {
-		data.DirectedRequest = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request.restricted"); value.Exists() {
-		data.DirectedRequestRestricted = types.BoolValue(true)
-	} else {
-		data.DirectedRequestRestricted = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:directed-request.no-truncate"); value.Exists() {
-		data.DirectedRequestNoTruncate = types.BoolValue(true)
-	} else {
-		data.DirectedRequestNoTruncate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:key.encryption"); value.Exists() {
-		data.Encryption = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:key.key"); value.Exists() {
-		data.Key = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:attribute.allow.unknown"); value.Exists() {
-		data.AttributeAllowUnknown = types.BoolValue(true)
-	} else {
-		data.AttributeAllowUnknown = types.BoolValue(false)
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -449,37 +261,6 @@ func (data *TACACSServerData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServer) []string {
-	deletedItems := make([]string, 0)
-	if !state.AttributeAllowUnknown.IsNull() && data.AttributeAllowUnknown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute/allow/unknown", state.getPath()))
-	}
-	if !state.Key.IsNull() && data.Key.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:key", state.getPath()))
-	}
-	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:key", state.getPath()))
-	}
-	if !state.DirectedRequestNoTruncate.IsNull() && data.DirectedRequestNoTruncate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request/no-truncate", state.getPath()))
-	}
-	if !state.DirectedRequestRestricted.IsNull() && data.DirectedRequestRestricted.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request/restricted", state.getPath()))
-	}
-	if !state.DirectedRequest.IsNull() && data.DirectedRequest.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request", state.getPath()))
-	}
-	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:timeout", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *TACACSServer) addDeletedItemsXML(ctx context.Context, state TACACSServer, body string) string {
@@ -511,59 +292,6 @@ func (data *TACACSServer) addDeletedItemsXML(ctx context.Context, state TACACSSe
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *TACACSServer) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-	if !data.AttributeAllowUnknown.IsNull() && !data.AttributeAllowUnknown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute/allow/unknown", data.getPath()))
-	}
-	if !data.DirectedRequestNoTruncate.IsNull() && !data.DirectedRequestNoTruncate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request/no-truncate", data.getPath()))
-	}
-	if !data.DirectedRequestRestricted.IsNull() && !data.DirectedRequestRestricted.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request/restricted", data.getPath()))
-	}
-	if !data.DirectedRequest.IsNull() && !data.DirectedRequest.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *TACACSServer) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.AttributeAllowUnknown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute/allow/unknown", data.getPath()))
-	}
-	if !data.Key.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:key", data.getPath()))
-	}
-	if !data.Encryption.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:key", data.getPath()))
-	}
-	if !data.DirectedRequestNoTruncate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request/no-truncate", data.getPath()))
-	}
-	if !data.DirectedRequestRestricted.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request/restricted", data.getPath()))
-	}
-	if !data.DirectedRequest.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:directed-request", data.getPath()))
-	}
-	if !data.Timeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:timeout", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
