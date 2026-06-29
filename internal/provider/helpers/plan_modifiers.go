@@ -95,3 +95,59 @@ func (m netconfTrailingWhitespaceTrimModifier) PlanModifyString(ctx context.Cont
 	// it requires planned value == config value when changing.
 	resp.PlanValue = req.ConfigValue
 }
+
+// ipv6NormalizationModifier implements a plan modifier that normalizes IPv6 addresses
+// to prevent false drift caused by case or representation differences.
+type ipv6NormalizationModifier struct{}
+
+// UseIPv6Normalization returns a plan modifier that prevents drift caused by
+// IPv6 address representation differences.
+//
+// IOS-XE may return IPv6 addresses in a different case or compression format
+// than what was configured (e.g., "2001:DB8::/32" vs "2001:db8::/32").
+// This plan modifier normalizes both the config value and state value to their
+// canonical form before comparison, preventing unnecessary drift.
+//
+// Usage in schema:
+//
+//	"ip": schema.StringAttribute{
+//	    PlanModifiers: []planmodifier.String{
+//	        helpers.UseIPv6Normalization(),
+//	    },
+//	},
+func UseIPv6Normalization() planmodifier.String {
+	return ipv6NormalizationModifier{}
+}
+
+func (m ipv6NormalizationModifier) Description(_ context.Context) string {
+	return "Normalizes IPv6 address representations to prevent drift from case or compression differences."
+}
+
+func (m ipv6NormalizationModifier) MarkdownDescription(_ context.Context) string {
+	return "Normalizes IPv6 address representations to prevent drift from case or compression differences."
+}
+
+func (m ipv6NormalizationModifier) PlanModifyString(ctx context.Context, req planmodifier.StringRequest, resp *planmodifier.StringResponse) {
+	if req.ConfigValue.IsNull() {
+		resp.PlanValue = types.StringNull()
+		return
+	}
+	if req.ConfigValue.IsUnknown() {
+		return
+	}
+
+	// On CREATE (no prior state), pass through unchanged.
+	if req.StateValue.IsNull() || req.StateValue.IsUnknown() {
+		return
+	}
+
+	configNormalized := NormalizeIPv6Address(req.ConfigValue.ValueString())
+	stateNormalized := NormalizeIPv6Address(req.StateValue.ValueString())
+
+	if configNormalized == stateNormalized {
+		resp.PlanValue = req.StateValue
+		return
+	}
+
+	resp.PlanValue = req.ConfigValue
+}

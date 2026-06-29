@@ -328,6 +328,9 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
 							},
+							PlanModifiers: []planmodifier.String{
+								helpers.UseIPv6Normalization(),
+							},
 						},
 						"link_local": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
@@ -347,6 +350,9 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+							},
+							PlanModifiers: []planmodifier.String{
+								helpers.UseIPv6Normalization(),
 							},
 						},
 						"eui_64": schema.BoolAttribute{
