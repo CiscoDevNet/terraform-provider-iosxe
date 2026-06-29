@@ -201,6 +201,7 @@ type System struct {
 	TableMaps                                              []SystemTableMaps                                   `tfsdk:"table_maps"`
 	MldSnooping                                            types.Bool                                          `tfsdk:"mld_snooping"`
 	MldSnoopingQuerier                                     types.Bool                                          `tfsdk:"mld_snooping_querier"`
+	MacAddressTableAgingTime                               types.Int64                                         `tfsdk:"mac_address_table_aging_time"`
 	PowerRedundancyModeCombined                            types.Bool                                          `tfsdk:"power_redundancy_mode_combined"`
 	PowerSupplyAutolcShutdown                              types.Bool                                          `tfsdk:"power_supply_autolc_shutdown"`
 	PowerSupplyAutolcPriority                              types.List                                          `tfsdk:"power_supply_autolc_priority"`
@@ -428,6 +429,7 @@ type SystemData struct {
 	TableMaps                                              []SystemTableMapsData                                   `tfsdk:"table_maps"`
 	MldSnooping                                            types.Bool                                              `tfsdk:"mld_snooping"`
 	MldSnoopingQuerier                                     types.Bool                                              `tfsdk:"mld_snooping_querier"`
+	MacAddressTableAgingTime                               types.Int64                                             `tfsdk:"mac_address_table_aging_time"`
 	PowerRedundancyModeCombined                            types.Bool                                              `tfsdk:"power_redundancy_mode_combined"`
 	PowerSupplyAutolcShutdown                              types.Bool                                              `tfsdk:"power_supply_autolc_shutdown"`
 	PowerSupplyAutolcPriority                              types.List                                              `tfsdk:"power_supply_autolc_priority"`
@@ -1316,6 +1318,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
 		}
+	}
+	if !data.MacAddressTableAgingTime.IsNull() && !data.MacAddressTableAgingTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mac/address-table/aging-time/val", strconv.FormatInt(data.MacAddressTableAgingTime.ValueInt64(), 10))
 	}
 	if !data.PowerRedundancyModeCombined.IsNull() && !data.PowerRedundancyModeCombined.IsUnknown() {
 		if data.PowerRedundancyModeCombined.ValueBool() {
@@ -2712,6 +2717,11 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac/address-table/aging-time/val"); value.Exists() && !data.MacAddressTableAgingTime.IsNull() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
+	} else {
+		data.MacAddressTableAgingTime = types.Int64Null()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined"); !data.PowerRedundancyModeCombined.IsNull() {
 		if value.Exists() {
 			data.PowerRedundancyModeCombined = types.BoolValue(true)
@@ -3492,6 +3502,9 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac/address-table/aging-time/val"); value.Exists() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined"); value.Exists() {
 		data.PowerRedundancyModeCombined = types.BoolValue(true)
 	} else {
@@ -4264,6 +4277,9 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MldSnoopingQuerier = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac/address-table/aging-time/val"); value.Exists() {
+		data.MacAddressTableAgingTime = types.Int64Value(value.Int())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined"); value.Exists() {
 		data.PowerRedundancyModeCombined = types.BoolValue(true)
 	} else {
@@ -4317,6 +4333,9 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	}
 	if !state.PowerRedundancyModeCombined.IsNull() && data.PowerRedundancyModeCombined.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined")
+	}
+	if !state.MacAddressTableAgingTime.IsNull() && data.MacAddressTableAgingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/address-table/aging-time/val")
 	}
 	if !state.MldSnoopingQuerier.IsNull() && data.MldSnoopingQuerier.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")
@@ -5342,6 +5361,9 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.PowerRedundancyModeCombined.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-power:power/redundancy-mode-config/combined")
+	}
+	if !data.MacAddressTableAgingTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/address-table/aging-time/val")
 	}
 	if !data.MldSnoopingQuerier.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/Cisco-IOS-XE-mld:mld/snooping-container/snooping/querier-conf/querier")

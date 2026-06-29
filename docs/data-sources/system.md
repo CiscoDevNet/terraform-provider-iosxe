@@ -157,6 +157,7 @@ data "iosxe_system" "example" {
 - `login_on_failure_log` (Boolean) Generate syslogs on failure logins
 - `login_on_success` (Boolean) Set options for successful login attempt
 - `login_on_success_log` (Boolean) Generate syslogs on successful logins
+- `mac_address_table_aging_time` (Number) Set MAC address table entry maximum age in seconds
 - `memory_free_low_watermark_processor` (Number) low water mark of memory in KB
 - `mld_snooping` (Boolean) Global MLD Snooping enable for Catalyst Vlans
 - `mld_snooping_querier` (Boolean) MLD querier disable/enable

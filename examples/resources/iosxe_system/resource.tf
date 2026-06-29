@@ -38,4 +38,5 @@ resource "iosxe_system" "example" {
   igmp_snooping_querier_timer_expiry                 = 120
   ip_domain_list_vrf_domain                          = "example.com"
   ip_domain_list_vrf                                 = "VRF1"
+  mac_address_table_aging_time                       = 14400
 }

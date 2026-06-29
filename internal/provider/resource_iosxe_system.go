@@ -1094,6 +1094,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("MLD querier disable/enable").String,
 				Optional:            true,
 			},
+			"mac_address_table_aging_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set MAC address table entry maximum age in seconds").String,
+				Optional:            true,
+			},
 			"power_redundancy_mode_combined": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable combined power redundancy mode").String,
 				Optional:            true,
