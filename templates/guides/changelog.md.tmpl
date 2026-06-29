@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_access_list_ipv6` resource and data source for named IPv6 access-list configuration (`ipv6 access-list`), including sequence entries, remarks, prefix/host/FQDN/object-group matching, single/range/multi-port matching, TCP flags, and ICMPv6 message types
 - Add `iosxe_large_community_list_standard` and `iosxe_large_community_list_expanded` resources and data sources
 - Add `ip_verify_unicast_source_reachable_via`, `ip_verify_unicast_source_allow_self_ping`, and `ip_verify_unicast_source_allow_default` attributes to `iosxe_interface_ethernet`, `iosxe_interface_vlan`, `iosxe_interface_loopback`, and `iosxe_interface_port_channel` resources and data sources for uRPF (`ip verify unicast source reachable-via`) configuration
 - Add `ao_keychain`, `ao_include_tcp_options`, and `ao_accept_mismatch_connections` attributes to `iosxe_bgp_neighbor` and `iosxe_bgp_peer_session_template` resources and data sources for TCP Authentication Option (TCP-AO) support
