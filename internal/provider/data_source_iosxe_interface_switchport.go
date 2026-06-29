@@ -108,6 +108,10 @@ func (d *InterfaceSwitchportDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"voice_vlan": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"trunk_allowed_vlans": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
@@ -194,35 +198,21 @@ func (d *InterfaceSwitchportDataSource) Read(ctx context.Context, req datasource
 		return
 	}
 
-	if device.Protocol == "restconf" {
-		res, err := device.RestconfClient.GetData(config.getPath())
-		if res.StatusCode == 404 {
-			config = InterfaceSwitchportData{Device: config.Device}
-		} else {
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-				return
-			}
-
-			config.fromBody(ctx, res.Res)
-		}
-	} else {
-		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-		if locked {
-			defer device.NetconfOpMutex.Unlock()
-		}
-		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		filter := helpers.GetXpathFilter(config.getXPath())
-		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-			return
-		}
-
-		config.fromBodyXML(ctx, res.Res)
+	// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+	locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+	if locked {
+		defer device.NetconfOpMutex.Unlock()
 	}
+	defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+	filter := helpers.GetXpathFilter(config.getXPath())
+	res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+		return
+	}
+
+	config.fromBodyXML(ctx, res.Res)
 
 	config.Id = types.StringValue(config.getPath())
 

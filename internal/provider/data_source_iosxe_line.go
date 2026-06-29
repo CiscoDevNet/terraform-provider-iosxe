@@ -290,6 +290,19 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "Set async line stop bits",
 							Computed:            true,
 						},
+						"password_level": schema.Int64Attribute{
+							MarkdownDescription: "Set exec level password",
+							Computed:            true,
+						},
+						"password_type": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							Sensitive:           true,
+						},
 						"transport_output_none": schema.BoolAttribute{
 							MarkdownDescription: "Define no transport protocols for line",
 							Computed:            true,
@@ -331,35 +344,21 @@ func (d *LineDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	if device.Protocol == "restconf" {
-		res, err := device.RestconfClient.GetData(config.getPath())
-		if res.StatusCode == 404 {
-			config = LineData{Device: config.Device}
-		} else {
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-				return
-			}
-
-			config.fromBody(ctx, res.Res)
-		}
-	} else {
-		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-		if locked {
-			defer device.NetconfOpMutex.Unlock()
-		}
-		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-		filter := helpers.GetXpathFilter(config.getXPath())
-		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
-			return
-		}
-
-		config.fromBodyXML(ctx, res.Res)
+	// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+	locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+	if locked {
+		defer device.NetconfOpMutex.Unlock()
 	}
+	defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+	filter := helpers.GetXpathFilter(config.getXPath())
+	res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+		return
+	}
+
+	config.fromBodyXML(ctx, res.Res)
 
 	config.Id = types.StringValue(config.getPath())
 

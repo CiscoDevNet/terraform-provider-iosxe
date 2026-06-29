@@ -24,7 +24,6 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,8 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -70,17 +67,6 @@ func (data IPv6LocalPoolData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/ipv6/local/pool=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data IPv6LocalPool) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data IPv6LocalPool) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/ipv6/local/pool[id=%s]"
@@ -95,27 +81,6 @@ func (data IPv6LocalPoolData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data IPv6LocalPool) toBody(ctx context.Context, config IPv6LocalPool) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Name.ValueString())
-	}
-	if !data.StartAddress.IsNull() && !data.StartAddress.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"start-address", data.StartAddress.ValueString())
-	}
-	if !data.PrefixLength.IsNull() && !data.PrefixLength.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prefix-length", strconv.FormatInt(data.PrefixLength.ValueInt64(), 10))
-	}
-	if !data.Group.IsNull() && !data.Group.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group", data.Group.ValueString())
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -141,37 +106,6 @@ func (data IPv6LocalPool) toBodyXML(ctx context.Context, config IPv6LocalPool) s
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *IPv6LocalPool) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.Name.IsNull() {
-		data.Name = types.StringValue(value.String())
-	} else {
-		data.Name = types.StringNull()
-	}
-	if value := res.Get(prefix + "start-address"); value.Exists() && !data.StartAddress.IsNull() {
-		data.StartAddress = types.StringValue(value.String())
-	} else {
-		data.StartAddress = types.StringNull()
-	}
-	if value := res.Get(prefix + "prefix-length"); value.Exists() && !data.PrefixLength.IsNull() {
-		data.PrefixLength = types.Int64Value(value.Int())
-	} else {
-		data.PrefixLength = types.Int64Null()
-	}
-	if value := res.Get(prefix + "group"); value.Exists() && !data.Group.IsNull() {
-		data.Group = types.StringValue(value.String())
-	} else {
-		data.Group = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -199,46 +133,6 @@ func (data *IPv6LocalPool) updateFromBodyXML(ctx context.Context, res xmldot.Res
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *IPv6LocalPool) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "start-address"); value.Exists() {
-		data.StartAddress = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "prefix-length"); value.Exists() {
-		data.PrefixLength = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "group"); value.Exists() {
-		data.Group = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *IPv6LocalPoolData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "start-address"); value.Exists() {
-		data.StartAddress = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "prefix-length"); value.Exists() {
-		data.PrefixLength = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "group"); value.Exists() {
-		data.Group = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -272,25 +166,6 @@ func (data *IPv6LocalPoolData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *IPv6LocalPool) getDeletedItems(ctx context.Context, state IPv6LocalPool) []string {
-	deletedItems := make([]string, 0)
-	if !state.Group.IsNull() && data.Group.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/group", state.getPath()))
-	}
-	if !state.PrefixLength.IsNull() && data.PrefixLength.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/prefix-length", state.getPath()))
-	}
-	if !state.StartAddress.IsNull() && data.StartAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/start-address", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *IPv6LocalPool) addDeletedItemsXML(ctx context.Context, state IPv6LocalPool, body string) string {
@@ -310,35 +185,6 @@ func (data *IPv6LocalPool) addDeletedItemsXML(ctx context.Context, state IPv6Loc
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *IPv6LocalPool) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *IPv6LocalPool) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.Group.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/group", data.getPath()))
-	}
-	if !data.PrefixLength.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/prefix-length", data.getPath()))
-	}
-	if !data.StartAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/start-address", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
