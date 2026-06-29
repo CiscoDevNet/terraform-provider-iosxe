@@ -1,3 +1,3 @@
 data "iosxe_switch" "example" {
-  number = 1
+  number = 2
 }
