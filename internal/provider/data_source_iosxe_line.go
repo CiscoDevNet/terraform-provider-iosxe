@@ -290,6 +290,19 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "Set async line stop bits",
 							Computed:            true,
 						},
+						"password_level": schema.Int64Attribute{
+							MarkdownDescription: "Set exec level password",
+							Computed:            true,
+						},
+						"password_type": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							Sensitive:           true,
+						},
 						"transport_output_none": schema.BoolAttribute{
 							MarkdownDescription: "Define no transport protocols for line",
 							Computed:            true,

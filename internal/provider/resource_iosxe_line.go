@@ -388,6 +388,37 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								stringvalidator.OneOf("1", "1.5", "2"),
 							},
 						},
+						"password_level": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set exec level password").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+						"password_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0", "6", "7"),
+							},
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							Sensitive:           true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+							},
+						},
+						"password_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"password_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
+						},
 						"transport_output_none": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
 							Optional:            true,
