@@ -32,11 +32,9 @@ resource "iosxe_ospf_vrf" "example" {
   max_metric_router_lsa_external_lsa_metric = 16711680
   max_metric_router_lsa_include_stub        = true
   max_metric_router_lsa_on_startup_time     = 60
-  redistribute_static_subnets               = true
   redistribute_static_metric                = 100
   redistribute_static_metric_type           = "1"
   redistribute_static_tag                   = 100
-  redistribute_connected_subnets            = true
   redistribute_connected_metric             = 100
   redistribute_connected_metric_type        = "1"
   redistribute_connected_tag                = 100

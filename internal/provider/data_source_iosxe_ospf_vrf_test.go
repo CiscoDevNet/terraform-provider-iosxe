@@ -48,11 +48,9 @@ func TestAccDataSourceIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_external_lsa_metric", "16711680"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_include_stub", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "max_metric_router_lsa_on_startup_time", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_subnets", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_metric_type", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_static_tag", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_subnets", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_metric", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_metric_type", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "redistribute_connected_tag", "100"))
@@ -129,11 +127,9 @@ func testAccDataSourceIosxeOSPFVRFConfig() string {
 	config += `	max_metric_router_lsa_external_lsa_metric = 16711680` + "\n"
 	config += `	max_metric_router_lsa_include_stub = true` + "\n"
 	config += `	max_metric_router_lsa_on_startup_time = 60` + "\n"
-	config += `	redistribute_static_subnets = true` + "\n"
 	config += `	redistribute_static_metric = 100` + "\n"
 	config += `	redistribute_static_metric_type = "1"` + "\n"
 	config += `	redistribute_static_tag = 100` + "\n"
-	config += `	redistribute_connected_subnets = true` + "\n"
 	config += `	redistribute_connected_metric = 100` + "\n"
 	config += `	redistribute_connected_metric_type = "1"` + "\n"
 	config += `	redistribute_connected_tag = 100` + "\n"
