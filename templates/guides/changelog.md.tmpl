@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_large_community_list_standard` and `iosxe_large_community_list_expanded` resources and data sources
 - Add `ip_verify_unicast_source_reachable_via`, `ip_verify_unicast_source_allow_self_ping`, and `ip_verify_unicast_source_allow_default` attributes to `iosxe_interface_ethernet`, `iosxe_interface_vlan`, `iosxe_interface_loopback`, and `iosxe_interface_port_channel` resources and data sources for uRPF (`ip verify unicast source reachable-via`) configuration
 - Add `ao_keychain`, `ao_include_tcp_options`, and `ao_accept_mismatch_connections` attributes to `iosxe_bgp_neighbor` and `iosxe_bgp_peer_session_template` resources and data sources for TCP Authentication Option (TCP-AO) support
 - Fix `iosxe_route_map` RESTCONF 400 error (`unknown element: description`) on IOS-XE 17.18+ by replacing the obsolete `description` leaf with the `descriptions` list structure. The old attribute is preserved as `description_legacy` for backward compatibility with IOS-XE 17.12 and earlier
