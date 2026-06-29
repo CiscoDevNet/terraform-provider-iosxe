@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `mac_address_table_aging_time` attribute to `iosxe_system` resource and data source
 - Add `password_level`, `password_type`, and `password` attributes to `iosxe_line` aux entries for line aux password configuration
 - Add `power_redundancy_mode_combined`, `power_supply_autolc_shutdown`, and `power_supply_autolc_priority` attributes to `iosxe_system` resource and data source for chassis power redundancy mode and automatic linecard power management
 - Add `binding_reachable_lifetime` attribute to `iosxe_device_tracking` resource and data source for configuring the default maximum time a binding entry remains in REACHABLE state (`device-tracking binding reachable-lifetime`)
