@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -31,8 +30,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -62,17 +59,6 @@ func (data QoSData) getPath() string {
 	return "Cisco-IOS-XE-native:native/qos"
 }
 
-// if last path element has a key -> remove it
-func (data QoS) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data QoS) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/qos"
@@ -85,18 +71,6 @@ func (data QoSData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data QoS) toBody(ctx context.Context, config QoS) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.QueueSoftmaxMultiplier.IsNull() && !data.QueueSoftmaxMultiplier.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-qos:queue-softmax-multiplier.value", strconv.FormatInt(data.QueueSoftmaxMultiplier.ValueInt64(), 10))
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -114,22 +88,6 @@ func (data QoS) toBodyXML(ctx context.Context, config QoS) string {
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *QoS) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-qos:queue-softmax-multiplier.value"); value.Exists() && !data.QueueSoftmaxMultiplier.IsNull() {
-		data.QueueSoftmaxMultiplier = types.Int64Value(value.Int())
-	} else {
-		data.QueueSoftmaxMultiplier = types.Int64Null()
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *QoS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -141,34 +99,6 @@ func (data *QoS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *QoS) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-qos:queue-softmax-multiplier.value"); value.Exists() {
-		data.QueueSoftmaxMultiplier = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *QoSData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-qos:queue-softmax-multiplier.value"); value.Exists() {
-		data.QueueSoftmaxMultiplier = types.Int64Value(value.Int())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -190,19 +120,6 @@ func (data *QoSData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *QoS) getDeletedItems(ctx context.Context, state QoS) []string {
-	deletedItems := make([]string, 0)
-	if !state.QueueSoftmaxMultiplier.IsNull() && data.QueueSoftmaxMultiplier.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-qos:queue-softmax-multiplier/value", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *QoS) addDeletedItemsXML(ctx context.Context, state QoS, body string) string {
@@ -216,29 +133,6 @@ func (data *QoS) addDeletedItemsXML(ctx context.Context, state QoS, body string)
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *QoS) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *QoS) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.QueueSoftmaxMultiplier.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-qos:queue-softmax-multiplier/value", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
