@@ -2,6 +2,7 @@
 name: Privilege
 path: /Cisco-IOS-XE-native:native/privilege/mode[name=%v]/level[privilege=%v]
 no_delete_attributes: true
+skip_minimum_test: true
 doc_category: System
 attributes:
   - yang_name: name
