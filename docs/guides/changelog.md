@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_qos` resource and data source for global QoS configuration, including the `queue_softmax_multiplier` attribute for queue soft buffer maximum tuning on Catalyst 9000 series
 - Add `iosxe_switch` resource and data source for StackWise member provisioning (`switch <number> provision <model>`)
 - Add `iosxe_privilege` resource and data source for privilege level command mapping configuration (`privilege <mode> level <level> <command>`), including mode selection (exec, configure, interface, router, crypto-map, ipenacl) with nested level and command-list attributes
 - Add `mac_address_table_aging_time` attribute to `iosxe_system` resource and data source
