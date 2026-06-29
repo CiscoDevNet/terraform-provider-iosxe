@@ -25,17 +25,12 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -88,17 +83,6 @@ func (data BGPL2VPNEVPNNeighborData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=evpn/l2vpn-evpn/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data BGPL2VPNEVPNNeighbor) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data BGPL2VPNEVPNNeighbor) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/l2vpn[af-name=evpn]/l2vpn-evpn/neighbor[id=%s]"
@@ -113,48 +97,6 @@ func (data BGPL2VPNEVPNNeighborData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data BGPL2VPNEVPNNeighbor) toBody(ctx context.Context, config BGPL2VPNEVPNNeighbor) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Ip.IsNull() && !data.Ip.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Ip.ValueString())
-	}
-	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
-		if data.Activate.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"activate", map[string]string{})
-		}
-	}
-	if !data.SendCommunity.IsNull() && !data.SendCommunity.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"send-community.send-community-where", data.SendCommunity.ValueString())
-	}
-	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.IsUnknown() {
-		if data.RouteReflectorClient.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-reflector-client", map[string]string{})
-		}
-	}
-	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"soft-reconfiguration", data.SoftReconfiguration.ValueString())
-	}
-	if !data.InheritPeerPolicy.IsNull() && !data.InheritPeerPolicy.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inherit.peer-policy", data.InheritPeerPolicy.ValueString())
-	}
-	if len(data.RouteMaps) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
-		for index, item := range data.RouteMaps {
-			if !item.InOut.IsNull() && !item.InOut.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map"+"."+strconv.Itoa(index)+"."+"inout", item.InOut.ValueString())
-			}
-			if !item.RouteMapName.IsNull() && !item.RouteMapName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map"+"."+strconv.Itoa(index)+"."+"route-map-name", item.RouteMapName.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -206,89 +148,6 @@ func (data BGPL2VPNEVPNNeighbor) toBodyXML(ctx context.Context, config BGPL2VPNE
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *BGPL2VPNEVPNNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.Ip.IsNull() {
-		data.Ip = types.StringValue(value.String())
-	} else {
-		data.Ip = types.StringNull()
-	}
-	if value := res.Get(prefix + "activate"); !data.Activate.IsNull() {
-		if value.Exists() {
-			data.Activate = types.BoolValue(true)
-		} else {
-			data.Activate = types.BoolValue(false)
-		}
-	} else {
-		data.Activate = types.BoolNull()
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() && !data.SendCommunity.IsNull() {
-		data.SendCommunity = types.StringValue(value.String())
-	} else {
-		data.SendCommunity = types.StringNull()
-	}
-	if value := res.Get(prefix + "route-reflector-client"); !data.RouteReflectorClient.IsNull() {
-		if value.Exists() {
-			data.RouteReflectorClient = types.BoolValue(true)
-		} else {
-			data.RouteReflectorClient = types.BoolValue(false)
-		}
-	} else {
-		data.RouteReflectorClient = types.BoolNull()
-	}
-	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() && !data.SoftReconfiguration.IsNull() {
-		data.SoftReconfiguration = types.StringValue(value.String())
-	} else {
-		data.SoftReconfiguration = types.StringNull()
-	}
-	for i := range data.RouteMaps {
-		keys := [...]string{"inout"}
-		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "route-map").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("inout"); value.Exists() && !data.RouteMaps[i].InOut.IsNull() {
-			data.RouteMaps[i].InOut = types.StringValue(value.String())
-		} else {
-			data.RouteMaps[i].InOut = types.StringNull()
-		}
-		if value := r.Get("route-map-name"); value.Exists() && !data.RouteMaps[i].RouteMapName.IsNull() {
-			data.RouteMaps[i].RouteMapName = types.StringValue(value.String())
-		} else {
-			data.RouteMaps[i].RouteMapName = types.StringNull()
-		}
-	}
-	if value := res.Get(prefix + "inherit.peer-policy"); value.Exists() && !data.InheritPeerPolicy.IsNull() {
-		data.InheritPeerPolicy = types.StringValue(value.String())
-	} else {
-		data.InheritPeerPolicy = types.StringNull()
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -368,94 +227,6 @@ func (data *BGPL2VPNEVPNNeighbor) updateFromBodyXML(ctx context.Context, res xml
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *BGPL2VPNEVPNNeighbor) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
-		data.SendCommunity = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-reflector-client"); value.Exists() {
-		data.RouteReflectorClient = types.BoolValue(true)
-	} else {
-		data.RouteReflectorClient = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
-		data.SoftReconfiguration = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMaps, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPL2VPNEVPNNeighborRouteMaps{}
-			if cValue := v.Get("inout"); cValue.Exists() {
-				item.InOut = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("route-map-name"); cValue.Exists() {
-				item.RouteMapName = types.StringValue(cValue.String())
-			}
-			data.RouteMaps = append(data.RouteMaps, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "inherit.peer-policy"); value.Exists() {
-		data.InheritPeerPolicy = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "activate"); value.Exists() {
-		data.Activate = types.BoolValue(true)
-	} else {
-		data.Activate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
-		data.SendCommunity = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-reflector-client"); value.Exists() {
-		data.RouteReflectorClient = types.BoolValue(true)
-	} else {
-		data.RouteReflectorClient = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
-		data.SoftReconfiguration = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "route-map"); value.Exists() {
-		data.RouteMaps = make([]BGPL2VPNEVPNNeighborRouteMapsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPL2VPNEVPNNeighborRouteMapsData{}
-			if cValue := v.Get("inout"); cValue.Exists() {
-				item.InOut = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("route-map-name"); cValue.Exists() {
-				item.RouteMapName = types.StringValue(cValue.String())
-			}
-			data.RouteMaps = append(data.RouteMaps, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "inherit.peer-policy"); value.Exists() {
-		data.InheritPeerPolicy = types.StringValue(value.String())
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -537,56 +308,6 @@ func (data *BGPL2VPNEVPNNeighborData) fromBodyXML(ctx context.Context, res xmldo
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGPL2VPNEVPNNeighbor) []string {
-	deletedItems := make([]string, 0)
-	if !state.InheritPeerPolicy.IsNull() && data.InheritPeerPolicy.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inherit/peer-policy", state.getPath()))
-	}
-	for i := range state.RouteMaps {
-		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.RouteMaps[i].InOut.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.RouteMaps {
-			found = true
-			if state.RouteMaps[i].InOut.ValueString() != data.RouteMaps[j].InOut.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v/route-map-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
-	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
-	}
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *BGPL2VPNEVPNNeighbor) addDeletedItemsXML(ctx context.Context, state BGPL2VPNEVPNNeighbor, body string) string {
@@ -642,50 +363,6 @@ func (data *BGPL2VPNEVPNNeighbor) addDeletedItemsXML(ctx context.Context, state 
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *BGPL2VPNEVPNNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
-	}
-	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *BGPL2VPNEVPNNeighbor) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	if !data.InheritPeerPolicy.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inherit/peer-policy", data.getPath()))
-	}
-	for i := range data.RouteMaps {
-		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-map=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.SoftReconfiguration.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
-	}
-	if !data.RouteReflectorClient.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
-	}
-	if !data.SendCommunity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

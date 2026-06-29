@@ -57,10 +57,13 @@ resource "iosxe_interface_vlan" "example" {
       eui_64 = true
     }
   ]
-  load_interval                           = 30
-  mac_address                             = "0000.dead.beef"
-  ip_dhcp_relay_information_option_vpn_id = true
-  ip_igmp_version                         = 3
+  load_interval                            = 30
+  mac_address                              = "0000.dead.beef"
+  ip_dhcp_relay_information_option_vpn_id  = true
+  ip_igmp_version                          = 3
+  ip_verify_unicast_source_reachable_via   = "rx"
+  ip_verify_unicast_source_allow_self_ping = true
+  ip_verify_unicast_source_allow_default   = true
 }
 ```
 
@@ -105,6 +108,10 @@ resource "iosxe_interface_vlan" "example" {
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
+- `ip_verify_unicast_source_allow_default` (Boolean) Allow default route to match when checking source address
+- `ip_verify_unicast_source_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)
+- `ip_verify_unicast_source_reachable_via` (String) Specify reachability check to apply to the source address
+  - Choices: `any`, `rx`
 - `ipv4_address` (String) Ip address
 - `ipv4_address_dhcp` (Boolean) IP Address negotiated via DHCP
 - `ipv4_address_mask` (String) Ip subnet mask

@@ -47,7 +47,7 @@ func (r *CommitAction) Metadata(ctx context.Context, req action.MetadataRequest,
 func (r *CommitAction) Schema(ctx context.Context, req action.SchemaRequest, resp *action.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This action is used to commit the candidate config to the running config (NETCONF only) and optionally save the running config to startup config (both NETCONF and RESTCONF).",
+		MarkdownDescription: "This action is used to commit the candidate config to the running config and optionally save the running config to startup config.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -55,7 +55,7 @@ func (r *CommitAction) Schema(ctx context.Context, req action.SchemaRequest, res
 				Optional:            true,
 			},
 			"save_config": schema.BoolAttribute{
-				MarkdownDescription: "Save running configuration to startup configuration. Equivalent to 'copy running-config startup-config'. For NETCONF devices, this saves after commit. For RESTCONF devices, this saves the current running configuration (RESTCONF is stateless, no commit needed). Defaults to `false`.",
+				MarkdownDescription: "Save running configuration to startup configuration. Equivalent to 'copy running-config startup-config'. This saves after commit. Defaults to `false`.",
 				Optional:            true,
 			},
 		},
@@ -93,7 +93,7 @@ func (r *CommitAction) Invoke(ctx context.Context, req action.InvokeRequest, res
 		return
 	}
 
-	if d.Managed && d.Protocol == "netconf" {
+	if d.Managed {
 		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
 		locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, true)
 		if locked {
@@ -111,14 +111,6 @@ func (r *CommitAction) Invoke(ctx context.Context, req action.InvokeRequest, res
 		if saveConfig.ValueBool() {
 			if err := helpers.SaveConfig(ctx, d.NetconfClient); err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Commit succeeded but save failed: %s", err.Error()))
-				return
-			}
-		}
-	} else if d.Managed && d.Protocol == "restconf" {
-		// RESTCONF is stateless (no commit needed), but save if requested
-		if saveConfig.ValueBool() {
-			if err := helpers.SaveConfigRestconf(d.RestconfClient); err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config: %s", err))
 				return
 			}
 		}

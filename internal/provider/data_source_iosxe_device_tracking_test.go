@@ -37,6 +37,7 @@ func TestAccDataSourceIosxeDeviceTracking(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "tracking_auto_source_fallback_mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "tracking_auto_source_fallback_override", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "tracking_retry_interval", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "binding_reachable_lifetime", "7200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -64,6 +65,7 @@ func testAccDataSourceIosxeDeviceTrackingConfig() string {
 	config += `	tracking_auto_source_fallback_mask = "255.255.255.0"` + "\n"
 	config += `	tracking_auto_source_fallback_override = true` + "\n"
 	config += `	tracking_retry_interval = 10` + "\n"
+	config += `	binding_reachable_lifetime = 7200` + "\n"
 	config += `}` + "\n"
 
 	config += `

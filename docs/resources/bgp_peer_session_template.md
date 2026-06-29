@@ -35,6 +35,9 @@ resource "iosxe_bgp_peer_session_template" "example" {
 
 ### Optional
 
+- `ao_accept_mismatch_connections` (Boolean) accept ao mismatch connections
+- `ao_include_tcp_options` (Boolean) Include TCP options
+- `ao_keychain` (String) Key Chain Name
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Neighbor specific description

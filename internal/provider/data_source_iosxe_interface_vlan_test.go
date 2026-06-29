@@ -70,6 +70,9 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "mac_address", "0000.dead.beef"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_dhcp_relay_information_option_vpn_id", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_igmp_version", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_verify_unicast_source_reachable_via", "rx"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_verify_unicast_source_allow_self_ping", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "ip_verify_unicast_source_allow_default", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -146,6 +149,9 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `	mac_address = "0000.dead.beef"` + "\n"
 	config += `	ip_dhcp_relay_information_option_vpn_id = true` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
+	config += `	ip_verify_unicast_source_reachable_via = "rx"` + "\n"
+	config += `	ip_verify_unicast_source_allow_self_ping = true` + "\n"
+	config += `	ip_verify_unicast_source_allow_default = true` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

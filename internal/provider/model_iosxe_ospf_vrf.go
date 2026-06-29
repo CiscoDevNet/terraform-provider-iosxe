@@ -25,17 +25,13 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -50,6 +46,9 @@ type OSPFVRF struct {
 	BfdAllInterfaces                                   types.Bool                                                  `tfsdk:"bfd_all_interfaces"`
 	DefaultInformationOriginate                        types.Bool                                                  `tfsdk:"default_information_originate"`
 	DefaultInformationOriginateAlways                  types.Bool                                                  `tfsdk:"default_information_originate_always"`
+	DefaultInformationOriginateMetric                  types.Int64                                                 `tfsdk:"default_information_originate_metric"`
+	DefaultInformationOriginateMetricType              types.Int64                                                 `tfsdk:"default_information_originate_metric_type"`
+	DefaultInformationOriginateRouteMap                types.String                                                `tfsdk:"default_information_originate_route_map"`
 	DefaultMetric                                      types.Int64                                                 `tfsdk:"default_metric"`
 	Distance                                           types.Int64                                                 `tfsdk:"distance"`
 	DomainTag                                          types.Int64                                                 `tfsdk:"domain_tag"`
@@ -66,7 +65,20 @@ type OSPFVRF struct {
 	MaxMetricRouterLsaOnStartupTime                    types.Int64                                                 `tfsdk:"max_metric_router_lsa_on_startup_time"`
 	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                                  `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
 	RedistributeStaticSubnets                          types.Bool                                                  `tfsdk:"redistribute_static_subnets"`
+	RedistributeStaticMetric                           types.Int64                                                 `tfsdk:"redistribute_static_metric"`
+	RedistributeStaticMetricType                       types.String                                                `tfsdk:"redistribute_static_metric_type"`
+	RedistributeStaticRouteMap                         types.String                                                `tfsdk:"redistribute_static_route_map"`
+	RedistributeStaticTag                              types.Int64                                                 `tfsdk:"redistribute_static_tag"`
+	RedistributeStaticNssaOnly                         types.Bool                                                  `tfsdk:"redistribute_static_nssa_only"`
 	RedistributeConnectedSubnets                       types.Bool                                                  `tfsdk:"redistribute_connected_subnets"`
+	RedistributeConnectedMetric                        types.Int64                                                 `tfsdk:"redistribute_connected_metric"`
+	RedistributeConnectedMetricType                    types.String                                                `tfsdk:"redistribute_connected_metric_type"`
+	RedistributeConnectedRouteMap                      types.String                                                `tfsdk:"redistribute_connected_route_map"`
+	RedistributeConnectedTag                           types.Int64                                                 `tfsdk:"redistribute_connected_tag"`
+	RedistributeConnectedNssaOnly                      types.Bool                                                  `tfsdk:"redistribute_connected_nssa_only"`
+	RedistributeOspf                                   []OSPFVRFRedistributeOspf                                   `tfsdk:"redistribute_ospf"`
+	DistributeListInAccessLists                        []OSPFVRFDistributeListInAccessLists                        `tfsdk:"distribute_list_in_access_lists"`
+	DistributeListOutAccessLists                       []OSPFVRFDistributeListOutAccessLists                       `tfsdk:"distribute_list_out_access_lists"`
 	MplsLdpAutoconfig                                  types.Bool                                                  `tfsdk:"mpls_ldp_autoconfig"`
 	MplsLdpSync                                        types.Bool                                                  `tfsdk:"mpls_ldp_sync"`
 	Neighbor                                           []OSPFVRFNeighbor                                           `tfsdk:"neighbor"`
@@ -93,6 +105,28 @@ type OSPFVRF struct {
 	PassiveInterfaceDisableTunnels                     []OSPFVRFPassiveInterfaceDisableTunnels                     `tfsdk:"passive_interface_disable_tunnels"`
 	PassiveInterfaceDisablePortChannels                []OSPFVRFPassiveInterfaceDisablePortChannels                `tfsdk:"passive_interface_disable_port_channels"`
 	PassiveInterfaceDisablePortChannelSubinterfaces    []OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces    `tfsdk:"passive_interface_disable_port_channel_subinterfaces"`
+}
+type OSPFVRFRedistributeOspf struct {
+	ProcessId          types.Int64  `tfsdk:"process_id"`
+	MatchInternal      types.Bool   `tfsdk:"match_internal"`
+	MatchExternal1     types.String `tfsdk:"match_external_1"`
+	MatchExternal2     types.String `tfsdk:"match_external_2"`
+	MatchNssaExternal1 types.String `tfsdk:"match_nssa_external_1"`
+	MatchNssaExternal2 types.String `tfsdk:"match_nssa_external_2"`
+	Metric             types.Int64  `tfsdk:"metric"`
+	MetricType         types.String `tfsdk:"metric_type"`
+	Subnets            types.Bool   `tfsdk:"subnets"`
+	RouteMap           types.String `tfsdk:"route_map"`
+	Tag                types.Int64  `tfsdk:"tag"`
+	NssaOnly           types.Bool   `tfsdk:"nssa_only"`
+}
+type OSPFVRFDistributeListInAccessLists struct {
+	In         types.String `tfsdk:"in"`
+	AccessList types.String `tfsdk:"access_list"`
+}
+type OSPFVRFDistributeListOutAccessLists struct {
+	Out        types.String `tfsdk:"out"`
+	AccessList types.String `tfsdk:"access_list"`
 }
 type OSPFVRFNeighbor struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -169,6 +203,9 @@ type OSPFVRFData struct {
 	BfdAllInterfaces                                   types.Bool                                                      `tfsdk:"bfd_all_interfaces"`
 	DefaultInformationOriginate                        types.Bool                                                      `tfsdk:"default_information_originate"`
 	DefaultInformationOriginateAlways                  types.Bool                                                      `tfsdk:"default_information_originate_always"`
+	DefaultInformationOriginateMetric                  types.Int64                                                     `tfsdk:"default_information_originate_metric"`
+	DefaultInformationOriginateMetricType              types.Int64                                                     `tfsdk:"default_information_originate_metric_type"`
+	DefaultInformationOriginateRouteMap                types.String                                                    `tfsdk:"default_information_originate_route_map"`
 	DefaultMetric                                      types.Int64                                                     `tfsdk:"default_metric"`
 	Distance                                           types.Int64                                                     `tfsdk:"distance"`
 	DomainTag                                          types.Int64                                                     `tfsdk:"domain_tag"`
@@ -185,7 +222,20 @@ type OSPFVRFData struct {
 	MaxMetricRouterLsaOnStartupTime                    types.Int64                                                     `tfsdk:"max_metric_router_lsa_on_startup_time"`
 	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                                      `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
 	RedistributeStaticSubnets                          types.Bool                                                      `tfsdk:"redistribute_static_subnets"`
+	RedistributeStaticMetric                           types.Int64                                                     `tfsdk:"redistribute_static_metric"`
+	RedistributeStaticMetricType                       types.String                                                    `tfsdk:"redistribute_static_metric_type"`
+	RedistributeStaticRouteMap                         types.String                                                    `tfsdk:"redistribute_static_route_map"`
+	RedistributeStaticTag                              types.Int64                                                     `tfsdk:"redistribute_static_tag"`
+	RedistributeStaticNssaOnly                         types.Bool                                                      `tfsdk:"redistribute_static_nssa_only"`
 	RedistributeConnectedSubnets                       types.Bool                                                      `tfsdk:"redistribute_connected_subnets"`
+	RedistributeConnectedMetric                        types.Int64                                                     `tfsdk:"redistribute_connected_metric"`
+	RedistributeConnectedMetricType                    types.String                                                    `tfsdk:"redistribute_connected_metric_type"`
+	RedistributeConnectedRouteMap                      types.String                                                    `tfsdk:"redistribute_connected_route_map"`
+	RedistributeConnectedTag                           types.Int64                                                     `tfsdk:"redistribute_connected_tag"`
+	RedistributeConnectedNssaOnly                      types.Bool                                                      `tfsdk:"redistribute_connected_nssa_only"`
+	RedistributeOspf                                   []OSPFVRFRedistributeOspfData                                   `tfsdk:"redistribute_ospf"`
+	DistributeListInAccessLists                        []OSPFVRFDistributeListInAccessListsData                        `tfsdk:"distribute_list_in_access_lists"`
+	DistributeListOutAccessLists                       []OSPFVRFDistributeListOutAccessListsData                       `tfsdk:"distribute_list_out_access_lists"`
 	MplsLdpAutoconfig                                  types.Bool                                                      `tfsdk:"mpls_ldp_autoconfig"`
 	MplsLdpSync                                        types.Bool                                                      `tfsdk:"mpls_ldp_sync"`
 	Neighbor                                           []OSPFVRFNeighborData                                           `tfsdk:"neighbor"`
@@ -212,6 +262,28 @@ type OSPFVRFData struct {
 	PassiveInterfaceDisableTunnels                     []OSPFVRFPassiveInterfaceDisableTunnelsData                     `tfsdk:"passive_interface_disable_tunnels"`
 	PassiveInterfaceDisablePortChannels                []OSPFVRFPassiveInterfaceDisablePortChannelsData                `tfsdk:"passive_interface_disable_port_channels"`
 	PassiveInterfaceDisablePortChannelSubinterfaces    []OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData    `tfsdk:"passive_interface_disable_port_channel_subinterfaces"`
+}
+type OSPFVRFRedistributeOspfData struct {
+	ProcessId          types.Int64  `tfsdk:"process_id"`
+	MatchInternal      types.Bool   `tfsdk:"match_internal"`
+	MatchExternal1     types.String `tfsdk:"match_external_1"`
+	MatchExternal2     types.String `tfsdk:"match_external_2"`
+	MatchNssaExternal1 types.String `tfsdk:"match_nssa_external_1"`
+	MatchNssaExternal2 types.String `tfsdk:"match_nssa_external_2"`
+	Metric             types.Int64  `tfsdk:"metric"`
+	MetricType         types.String `tfsdk:"metric_type"`
+	Subnets            types.Bool   `tfsdk:"subnets"`
+	RouteMap           types.String `tfsdk:"route_map"`
+	Tag                types.Int64  `tfsdk:"tag"`
+	NssaOnly           types.Bool   `tfsdk:"nssa_only"`
+}
+type OSPFVRFDistributeListInAccessListsData struct {
+	In         types.String `tfsdk:"in"`
+	AccessList types.String `tfsdk:"access_list"`
+}
+type OSPFVRFDistributeListOutAccessListsData struct {
+	Out        types.String `tfsdk:"out"`
+	AccessList types.String `tfsdk:"access_list"`
 }
 type OSPFVRFNeighborData struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -292,17 +364,6 @@ func (data OSPFVRFData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf=%v,%s", url.QueryEscape(fmt.Sprintf("%v", data.ProcessId.ValueInt64())), url.QueryEscape(fmt.Sprintf("%v", data.Vrf.ValueString())))
 }
 
-// if last path element has a key -> remove it
-func (data OSPFVRF) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data OSPFVRF) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf[id=%v][vrf=%s]"
@@ -317,325 +378,6 @@ func (data OSPFVRFData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data OSPFVRF) toBody(ctx context.Context, config OSPFVRF) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.ProcessId.IsNull() && !data.ProcessId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", strconv.FormatInt(data.ProcessId.ValueInt64(), 10))
-	}
-	if !data.Vrf.IsNull() && !data.Vrf.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf", data.Vrf.ValueString())
-	}
-	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
-		if data.BfdAllInterfaces.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.all-interfaces", map[string]string{})
-		}
-	}
-	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.IsUnknown() {
-		if data.DefaultInformationOriginate.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-information.originate", map[string]string{})
-		}
-	}
-	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.IsUnknown() {
-		if data.DefaultInformationOriginateAlways.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-information.originate.always", map[string]string{})
-		}
-	}
-	if !data.DefaultMetric.IsNull() && !data.DefaultMetric.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-metric", strconv.FormatInt(data.DefaultMetric.ValueInt64(), 10))
-	}
-	if !data.Distance.IsNull() && !data.Distance.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"distance.distance", strconv.FormatInt(data.Distance.ValueInt64(), 10))
-	}
-	if !data.DomainTag.IsNull() && !data.DomainTag.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"domain-tag", strconv.FormatInt(data.DomainTag.ValueInt64(), 10))
-	}
-	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes", data.LogAdjacencyChanges.ValueBool())
-	}
-	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
-		if data.LogAdjacencyChangesDetail.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes-detail.log-adjacency-changes.detail", map[string]string{})
-		}
-	}
-	if !data.NsfCisco.IsNull() && !data.NsfCisco.IsUnknown() {
-		if data.NsfCisco.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-cisco", map[string]string{})
-		}
-	}
-	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.IsUnknown() {
-		if data.NsfCiscoEnforceGlobal.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-cisco.enforce.global", map[string]string{})
-		}
-	}
-	if !data.NsfIetf.IsNull() && !data.NsfIetf.IsUnknown() {
-		if data.NsfIetf.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-ietf", map[string]string{})
-		}
-	}
-	if !data.NsfIetfRestartInterval.IsNull() && !data.NsfIetfRestartInterval.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-ietf.restart-interval", strconv.FormatInt(data.NsfIetfRestartInterval.ValueInt64(), 10))
-	}
-	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.IsUnknown() {
-		if data.MaxMetricRouterLsa.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa", map[string]string{})
-		}
-	}
-	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.summary-lsa.metric", strconv.FormatInt(data.MaxMetricRouterLsaSummaryLsaMetric.ValueInt64(), 10))
-	}
-	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() && !data.MaxMetricRouterLsaExternalLsaMetric.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.external-lsa.metric", strconv.FormatInt(data.MaxMetricRouterLsaExternalLsaMetric.ValueInt64(), 10))
-	}
-	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.IsUnknown() {
-		if data.MaxMetricRouterLsaIncludeStub.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.include-stub", map[string]string{})
-		}
-	}
-	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() && !data.MaxMetricRouterLsaOnStartupTime.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.on-startup.time", strconv.FormatInt(data.MaxMetricRouterLsaOnStartupTime.ValueInt64(), 10))
-	}
-	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsUnknown() {
-		if data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.on-startup.wait-for-bgp", map[string]string{})
-		}
-	}
-	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.IsUnknown() {
-		if data.RedistributeStaticSubnets.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redistribute.static.subnets", map[string]string{})
-		}
-	}
-	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.IsUnknown() {
-		if data.RedistributeConnectedSubnets.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redistribute.connected.subnets", map[string]string{})
-		}
-	}
-	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.IsUnknown() {
-		if data.MplsLdpAutoconfig.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mpls.ldp.autoconfig", map[string]string{})
-		}
-	}
-	if !data.MplsLdpSync.IsNull() && !data.MplsLdpSync.IsUnknown() {
-		if data.MplsLdpSync.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mpls.ldp.sync", map[string]string{})
-		}
-	}
-	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
-	}
-	if !data.RouterId.IsNull() && !data.RouterId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"router-id", data.RouterId.ValueString())
-	}
-	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", data.Shutdown.ValueBool())
-	}
-	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"auto-cost.reference-bandwidth", strconv.FormatInt(data.AutoCostReferenceBandwidth.ValueInt64(), 10))
-	}
-	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.default", data.PassiveInterfaceDefault.ValueBool())
-	}
-	if !data.PassiveInterface.IsNull() && !data.PassiveInterface.IsUnknown() {
-		var values []string
-		data.PassiveInterface.ElementsAs(ctx, &values, false)
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.interface", values)
-	}
-	if len(data.Neighbor) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
-		for index, item := range data.Neighbor {
-			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor"+"."+strconv.Itoa(index)+"."+"ip", item.Ip.ValueString())
-			}
-			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor"+"."+strconv.Itoa(index)+"."+"priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
-			}
-			if !item.Cost.IsNull() && !item.Cost.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor"+"."+strconv.Itoa(index)+"."+"cost", strconv.FormatInt(item.Cost.ValueInt64(), 10))
-			}
-		}
-	}
-	if len(data.Network) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network", []interface{}{})
-		for index, item := range data.Network {
-			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"ip", item.Ip.ValueString())
-			}
-			if !item.Wildcard.IsNull() && !item.Wildcard.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"wildcard", item.Wildcard.ValueString())
-			}
-			if !item.Area.IsNull() && !item.Area.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"area", item.Area.ValueString())
-			}
-		}
-	}
-	if len(data.SummaryAddress) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address", []interface{}{})
-		for index, item := range data.SummaryAddress {
-			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address"+"."+strconv.Itoa(index)+"."+"ip", item.Ip.ValueString())
-			}
-			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address"+"."+strconv.Itoa(index)+"."+"mask", item.Mask.ValueString())
-			}
-		}
-	}
-	if len(data.Areas) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area", []interface{}{})
-		for index, item := range data.Areas {
-			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"area-id", item.AreaId.ValueString())
-			}
-			if !item.AuthenticationMessageDigest.IsNull() && !item.AuthenticationMessageDigest.IsUnknown() {
-				if item.AuthenticationMessageDigest.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"authentication.message-digest", map[string]string{})
-				}
-			}
-			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
-				if item.Nssa.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa", map[string]string{})
-				}
-			}
-			if !item.NssaDefaultInformationOriginate.IsNull() && !item.NssaDefaultInformationOriginate.IsUnknown() {
-				if item.NssaDefaultInformationOriginate.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate", map[string]string{})
-				}
-			}
-			if !item.NssaDefaultInformationOriginateMetric.IsNull() && !item.NssaDefaultInformationOriginateMetric.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate.metric", strconv.FormatInt(item.NssaDefaultInformationOriginateMetric.ValueInt64(), 10))
-			}
-			if !item.NssaDefaultInformationOriginateMetricType.IsNull() && !item.NssaDefaultInformationOriginateMetricType.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate.metric-type", strconv.FormatInt(item.NssaDefaultInformationOriginateMetricType.ValueInt64(), 10))
-			}
-			if !item.NssaNoSummary.IsNull() && !item.NssaNoSummary.IsUnknown() {
-				if item.NssaNoSummary.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-summary", map[string]string{})
-				}
-			}
-			if !item.NssaNoRedistribution.IsNull() && !item.NssaNoRedistribution.IsUnknown() {
-				if item.NssaNoRedistribution.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-redistribution", map[string]string{})
-				}
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.GigabitEthernet", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.GigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableTwoGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoGigabitEthernet", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableTwoGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableFiveGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FiveGigabitEthernet", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableFiveGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FiveGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableTenGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TenGigabitEthernet", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableTenGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TenGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwentyFiveGigabitE", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwentyFiveGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableFortyGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FortyGigabitEthernet", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableFortyGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FortyGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableHundredGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.HundredGigabitE", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableHundredGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.HundredGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableTwoHundredGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoHundredGigabitE", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoHundredGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableFourHundredGigabitEthernets) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FourHundredGigabitE", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FourHundredGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableLoopbacks) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Loopback", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableLoopbacks {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Loopback"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableVlans) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Vlan", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableVlans {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Vlan"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisableTunnels) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Tunnel", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisableTunnels {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Tunnel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisablePortChannels) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisablePortChannels {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	if len(data.PassiveInterfaceDisablePortChannelSubinterfaces) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel", []interface{}{})
-		for index, item := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -667,6 +409,15 @@ func (data OSPFVRF) toBodyXML(ctx context.Context, config OSPFVRF) string {
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate/always")
 		}
+	}
+	if !data.DefaultInformationOriginateMetric.IsNull() && !data.DefaultInformationOriginateMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/metric", strconv.FormatInt(data.DefaultInformationOriginateMetric.ValueInt64(), 10))
+	}
+	if !data.DefaultInformationOriginateMetricType.IsNull() && !data.DefaultInformationOriginateMetricType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/metric-type", strconv.FormatInt(data.DefaultInformationOriginateMetricType.ValueInt64(), 10))
+	}
+	if !data.DefaultInformationOriginateRouteMap.IsNull() && !data.DefaultInformationOriginateRouteMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/route-map", data.DefaultInformationOriginateRouteMap.ValueString())
 	}
 	if !data.DefaultMetric.IsNull() && !data.DefaultMetric.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/default-metric", strconv.FormatInt(data.DefaultMetric.ValueInt64(), 10))
@@ -748,11 +499,127 @@ func (data OSPFVRF) toBodyXML(ctx context.Context, config OSPFVRF) string {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/static/subnets")
 		}
 	}
+	if !data.RedistributeStaticMetric.IsNull() && !data.RedistributeStaticMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/metric", strconv.FormatInt(data.RedistributeStaticMetric.ValueInt64(), 10))
+	}
+	if !data.RedistributeStaticMetricType.IsNull() && !data.RedistributeStaticMetricType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/metric-type", data.RedistributeStaticMetricType.ValueString())
+	}
+	if !data.RedistributeStaticRouteMap.IsNull() && !data.RedistributeStaticRouteMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/route-map", data.RedistributeStaticRouteMap.ValueString())
+	}
+	if !data.RedistributeStaticTag.IsNull() && !data.RedistributeStaticTag.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/tag", strconv.FormatInt(data.RedistributeStaticTag.ValueInt64(), 10))
+	}
+	if !data.RedistributeStaticNssaOnly.IsNull() && !data.RedistributeStaticNssaOnly.IsUnknown() {
+		if data.RedistributeStaticNssaOnly.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/nssa-only", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/static/nssa-only")
+		}
+	}
 	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.IsUnknown() {
 		if data.RedistributeConnectedSubnets.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/subnets", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/connected/subnets")
+		}
+	}
+	if !data.RedistributeConnectedMetric.IsNull() && !data.RedistributeConnectedMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/metric", strconv.FormatInt(data.RedistributeConnectedMetric.ValueInt64(), 10))
+	}
+	if !data.RedistributeConnectedMetricType.IsNull() && !data.RedistributeConnectedMetricType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/metric-type", data.RedistributeConnectedMetricType.ValueString())
+	}
+	if !data.RedistributeConnectedRouteMap.IsNull() && !data.RedistributeConnectedRouteMap.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/route-map", data.RedistributeConnectedRouteMap.ValueString())
+	}
+	if !data.RedistributeConnectedTag.IsNull() && !data.RedistributeConnectedTag.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/tag", strconv.FormatInt(data.RedistributeConnectedTag.ValueInt64(), 10))
+	}
+	if !data.RedistributeConnectedNssaOnly.IsNull() && !data.RedistributeConnectedNssaOnly.IsUnknown() {
+		if data.RedistributeConnectedNssaOnly.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/nssa-only", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/connected/nssa-only")
+		}
+	}
+	if len(data.RedistributeOspf) > 0 {
+		for _, item := range data.RedistributeOspf {
+			cBody := netconf.Body{}
+			if !item.ProcessId.IsNull() && !item.ProcessId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "process-id", strconv.FormatInt(item.ProcessId.ValueInt64(), 10))
+			}
+			if !item.MatchInternal.IsNull() && !item.MatchInternal.IsUnknown() {
+				if item.MatchInternal.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "match/internal", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "match/internal")
+				}
+			}
+			if !item.MatchExternal1.IsNull() && !item.MatchExternal1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "match/external-1", item.MatchExternal1.ValueString())
+			}
+			if !item.MatchExternal2.IsNull() && !item.MatchExternal2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "match/external-2", item.MatchExternal2.ValueString())
+			}
+			if !item.MatchNssaExternal1.IsNull() && !item.MatchNssaExternal1.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "match/nssa-external-1", item.MatchNssaExternal1.ValueString())
+			}
+			if !item.MatchNssaExternal2.IsNull() && !item.MatchNssaExternal2.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "match/nssa-external-2", item.MatchNssaExternal2.ValueString())
+			}
+			if !item.Metric.IsNull() && !item.Metric.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "metric", strconv.FormatInt(item.Metric.ValueInt64(), 10))
+			}
+			if !item.MetricType.IsNull() && !item.MetricType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "metric-type", item.MetricType.ValueString())
+			}
+			if !item.Subnets.IsNull() && !item.Subnets.IsUnknown() {
+				if item.Subnets.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "subnets", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "subnets")
+				}
+			}
+			if !item.RouteMap.IsNull() && !item.RouteMap.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "route-map", item.RouteMap.ValueString())
+			}
+			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "tag", strconv.FormatInt(item.Tag.ValueInt64(), 10))
+			}
+			if !item.NssaOnly.IsNull() && !item.NssaOnly.IsUnknown() {
+				if item.NssaOnly.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa-only", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa-only")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/redistribute/ospf", cBody.Res())
+		}
+	}
+	if len(data.DistributeListInAccessLists) > 0 {
+		for _, item := range data.DistributeListInAccessLists {
+			cBody := netconf.Body{}
+			if !item.In.IsNull() && !item.In.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "in", item.In.ValueString())
+			}
+			if !item.AccessList.IsNull() && !item.AccessList.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ex-access-list", item.AccessList.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/distribute-list/access-list/access-list-in", cBody.Res())
+		}
+	}
+	if len(data.DistributeListOutAccessLists) > 0 {
+		for _, item := range data.DistributeListOutAccessLists {
+			cBody := netconf.Body{}
+			if !item.Out.IsNull() && !item.Out.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "out", item.Out.ValueString())
+			}
+			if !item.AccessList.IsNull() && !item.AccessList.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ex-access-list", item.AccessList.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/distribute-list/access-list/access-list-out", cBody.Res())
 		}
 	}
 	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.IsUnknown() {
@@ -1018,831 +885,6 @@ func (data OSPFVRF) toBodyXML(ctx context.Context, config OSPFVRF) string {
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "id"); value.Exists() && !data.ProcessId.IsNull() {
-		data.ProcessId = types.Int64Value(value.Int())
-	} else {
-		data.ProcessId = types.Int64Null()
-	}
-	if value := res.Get(prefix + "vrf"); value.Exists() && !data.Vrf.IsNull() {
-		data.Vrf = types.StringValue(value.String())
-	} else {
-		data.Vrf = types.StringNull()
-	}
-	if value := res.Get(prefix + "bfd.all-interfaces"); !data.BfdAllInterfaces.IsNull() {
-		if value.Exists() {
-			data.BfdAllInterfaces = types.BoolValue(true)
-		} else {
-			data.BfdAllInterfaces = types.BoolValue(false)
-		}
-	} else {
-		data.BfdAllInterfaces = types.BoolNull()
-	}
-	if value := res.Get(prefix + "default-information.originate"); !data.DefaultInformationOriginate.IsNull() {
-		if value.Exists() {
-			data.DefaultInformationOriginate = types.BoolValue(true)
-		} else {
-			data.DefaultInformationOriginate = types.BoolValue(false)
-		}
-	} else {
-		data.DefaultInformationOriginate = types.BoolNull()
-	}
-	if value := res.Get(prefix + "default-information.originate.always"); !data.DefaultInformationOriginateAlways.IsNull() {
-		if value.Exists() {
-			data.DefaultInformationOriginateAlways = types.BoolValue(true)
-		} else {
-			data.DefaultInformationOriginateAlways = types.BoolValue(false)
-		}
-	} else {
-		data.DefaultInformationOriginateAlways = types.BoolNull()
-	}
-	if value := res.Get(prefix + "default-metric"); value.Exists() && !data.DefaultMetric.IsNull() {
-		data.DefaultMetric = types.Int64Value(value.Int())
-	} else {
-		data.DefaultMetric = types.Int64Null()
-	}
-	if value := res.Get(prefix + "distance.distance"); value.Exists() && !data.Distance.IsNull() {
-		data.Distance = types.Int64Value(value.Int())
-	} else {
-		data.Distance = types.Int64Null()
-	}
-	if value := res.Get(prefix + "domain-tag"); value.Exists() && !data.DomainTag.IsNull() {
-		data.DomainTag = types.Int64Value(value.Int())
-	} else {
-		data.DomainTag = types.Int64Null()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes"); !data.LogAdjacencyChanges.IsNull() {
-		if value.Exists() {
-			data.LogAdjacencyChanges = types.BoolValue(value.Bool())
-		}
-	} else {
-		data.LogAdjacencyChanges = types.BoolNull()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); !data.LogAdjacencyChangesDetail.IsNull() {
-		if value.Exists() {
-			data.LogAdjacencyChangesDetail = types.BoolValue(true)
-		} else {
-			data.LogAdjacencyChangesDetail = types.BoolValue(false)
-		}
-	} else {
-		data.LogAdjacencyChangesDetail = types.BoolNull()
-	}
-	if value := res.Get(prefix + "nsf.nsf-cisco"); !data.NsfCisco.IsNull() {
-		if value.Exists() {
-			data.NsfCisco = types.BoolValue(true)
-		} else {
-			data.NsfCisco = types.BoolValue(false)
-		}
-	} else {
-		data.NsfCisco = types.BoolNull()
-	}
-	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); !data.NsfCiscoEnforceGlobal.IsNull() {
-		if value.Exists() {
-			data.NsfCiscoEnforceGlobal = types.BoolValue(true)
-		} else {
-			data.NsfCiscoEnforceGlobal = types.BoolValue(false)
-		}
-	} else {
-		data.NsfCiscoEnforceGlobal = types.BoolNull()
-	}
-	if value := res.Get(prefix + "nsf.nsf-ietf"); !data.NsfIetf.IsNull() {
-		if value.Exists() {
-			data.NsfIetf = types.BoolValue(true)
-		} else {
-			data.NsfIetf = types.BoolValue(false)
-		}
-	} else {
-		data.NsfIetf = types.BoolNull()
-	}
-	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() && !data.NsfIetfRestartInterval.IsNull() {
-		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
-	} else {
-		data.NsfIetfRestartInterval = types.Int64Null()
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa"); !data.MaxMetricRouterLsa.IsNull() {
-		if value.Exists() {
-			data.MaxMetricRouterLsa = types.BoolValue(true)
-		} else {
-			data.MaxMetricRouterLsa = types.BoolValue(false)
-		}
-	} else {
-		data.MaxMetricRouterLsa = types.BoolNull()
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
-		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
-	} else {
-		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Null()
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() && !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
-		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
-	} else {
-		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Null()
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); !data.MaxMetricRouterLsaIncludeStub.IsNull() {
-		if value.Exists() {
-			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
-		} else {
-			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
-		}
-	} else {
-		data.MaxMetricRouterLsaIncludeStub = types.BoolNull()
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() && !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
-		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
-	} else {
-		data.MaxMetricRouterLsaOnStartupTime = types.Int64Null()
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
-		if value.Exists() {
-			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
-		} else {
-			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
-		}
-	} else {
-		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolNull()
-	}
-	if value := res.Get(prefix + "redistribute.static.subnets"); !data.RedistributeStaticSubnets.IsNull() {
-		if value.Exists() {
-			data.RedistributeStaticSubnets = types.BoolValue(true)
-		} else {
-			data.RedistributeStaticSubnets = types.BoolValue(false)
-		}
-	} else {
-		data.RedistributeStaticSubnets = types.BoolNull()
-	}
-	if value := res.Get(prefix + "redistribute.connected.subnets"); !data.RedistributeConnectedSubnets.IsNull() {
-		if value.Exists() {
-			data.RedistributeConnectedSubnets = types.BoolValue(true)
-		} else {
-			data.RedistributeConnectedSubnets = types.BoolValue(false)
-		}
-	} else {
-		data.RedistributeConnectedSubnets = types.BoolNull()
-	}
-	if value := res.Get(prefix + "mpls.ldp.autoconfig"); !data.MplsLdpAutoconfig.IsNull() {
-		if value.Exists() {
-			data.MplsLdpAutoconfig = types.BoolValue(true)
-		} else {
-			data.MplsLdpAutoconfig = types.BoolValue(false)
-		}
-	} else {
-		data.MplsLdpAutoconfig = types.BoolNull()
-	}
-	if value := res.Get(prefix + "mpls.ldp.sync"); !data.MplsLdpSync.IsNull() {
-		if value.Exists() {
-			data.MplsLdpSync = types.BoolValue(true)
-		} else {
-			data.MplsLdpSync = types.BoolValue(false)
-		}
-	} else {
-		data.MplsLdpSync = types.BoolNull()
-	}
-	for i := range data.Neighbor {
-		keys := [...]string{"ip"}
-		keyValues := [...]string{data.Neighbor[i].Ip.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "neighbor").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("ip"); value.Exists() && !data.Neighbor[i].Ip.IsNull() {
-			data.Neighbor[i].Ip = types.StringValue(value.String())
-		} else {
-			data.Neighbor[i].Ip = types.StringNull()
-		}
-		if value := r.Get("priority"); value.Exists() && !data.Neighbor[i].Priority.IsNull() {
-			data.Neighbor[i].Priority = types.Int64Value(value.Int())
-		} else {
-			data.Neighbor[i].Priority = types.Int64Null()
-		}
-		if value := r.Get("cost"); value.Exists() && !data.Neighbor[i].Cost.IsNull() {
-			data.Neighbor[i].Cost = types.Int64Value(value.Int())
-		} else {
-			data.Neighbor[i].Cost = types.Int64Null()
-		}
-	}
-	for i := range data.Network {
-		keys := [...]string{"ip", "wildcard"}
-		keyValues := [...]string{data.Network[i].Ip.ValueString(), data.Network[i].Wildcard.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "network").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("ip"); value.Exists() && !data.Network[i].Ip.IsNull() {
-			data.Network[i].Ip = types.StringValue(value.String())
-		} else {
-			data.Network[i].Ip = types.StringNull()
-		}
-		if value := r.Get("wildcard"); value.Exists() && !data.Network[i].Wildcard.IsNull() {
-			data.Network[i].Wildcard = types.StringValue(value.String())
-		} else {
-			data.Network[i].Wildcard = types.StringNull()
-		}
-		if value := r.Get("area"); value.Exists() && !data.Network[i].Area.IsNull() {
-			data.Network[i].Area = types.StringValue(value.String())
-		} else {
-			data.Network[i].Area = types.StringNull()
-		}
-	}
-	if value := res.Get(prefix + "priority"); value.Exists() && !data.Priority.IsNull() {
-		data.Priority = types.Int64Value(value.Int())
-	} else {
-		data.Priority = types.Int64Null()
-	}
-	if value := res.Get(prefix + "router-id"); value.Exists() && !data.RouterId.IsNull() {
-		data.RouterId = types.StringValue(value.String())
-	} else {
-		data.RouterId = types.StringNull()
-	}
-	if value := res.Get(prefix + "shutdown"); !data.Shutdown.IsNull() {
-		if value.Exists() {
-			data.Shutdown = types.BoolValue(value.Bool())
-		}
-	} else {
-		data.Shutdown = types.BoolNull()
-	}
-	for i := range data.SummaryAddress {
-		keys := [...]string{"ip", "mask"}
-		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString(), data.SummaryAddress[i].Mask.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "summary-address").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("ip"); value.Exists() && !data.SummaryAddress[i].Ip.IsNull() {
-			data.SummaryAddress[i].Ip = types.StringValue(value.String())
-		} else {
-			data.SummaryAddress[i].Ip = types.StringNull()
-		}
-		if value := r.Get("mask"); value.Exists() && !data.SummaryAddress[i].Mask.IsNull() {
-			data.SummaryAddress[i].Mask = types.StringValue(value.String())
-		} else {
-			data.SummaryAddress[i].Mask = types.StringNull()
-		}
-	}
-	for i := range data.Areas {
-		keys := [...]string{"area-id"}
-		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "area").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("area-id"); value.Exists() && !data.Areas[i].AreaId.IsNull() {
-			data.Areas[i].AreaId = types.StringValue(value.String())
-		} else {
-			data.Areas[i].AreaId = types.StringNull()
-		}
-		if value := r.Get("authentication.message-digest"); !data.Areas[i].AuthenticationMessageDigest.IsNull() {
-			if value.Exists() {
-				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(true)
-			} else {
-				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(false)
-			}
-		} else {
-			data.Areas[i].AuthenticationMessageDigest = types.BoolNull()
-		}
-		if value := r.Get("nssa"); !data.Areas[i].Nssa.IsNull() {
-			if value.Exists() {
-				data.Areas[i].Nssa = types.BoolValue(true)
-			} else {
-				data.Areas[i].Nssa = types.BoolValue(false)
-			}
-		} else {
-			data.Areas[i].Nssa = types.BoolNull()
-		}
-		if value := r.Get("nssa.nssa-options.default-information-originate"); !data.Areas[i].NssaDefaultInformationOriginate.IsNull() {
-			if value.Exists() {
-				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(true)
-			} else {
-				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(false)
-			}
-		} else {
-			data.Areas[i].NssaDefaultInformationOriginate = types.BoolNull()
-		}
-		if value := r.Get("nssa.nssa-options.default-information-originate.metric"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() {
-			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Value(value.Int())
-		} else {
-			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Null()
-		}
-		if value := r.Get("nssa.nssa-options.default-information-originate.metric-type"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() {
-			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Value(value.Int())
-		} else {
-			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Null()
-		}
-		if value := r.Get("nssa.nssa-options.no-summary"); !data.Areas[i].NssaNoSummary.IsNull() {
-			if value.Exists() {
-				data.Areas[i].NssaNoSummary = types.BoolValue(true)
-			} else {
-				data.Areas[i].NssaNoSummary = types.BoolValue(false)
-			}
-		} else {
-			data.Areas[i].NssaNoSummary = types.BoolNull()
-		}
-		if value := r.Get("nssa.nssa-options.no-redistribution"); !data.Areas[i].NssaNoRedistribution.IsNull() {
-			if value.Exists() {
-				data.Areas[i].NssaNoRedistribution = types.BoolValue(true)
-			} else {
-				data.Areas[i].NssaNoRedistribution = types.BoolValue(false)
-			}
-		} else {
-			data.Areas[i].NssaNoRedistribution = types.BoolNull()
-		}
-	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	} else {
-		data.AutoCostReferenceBandwidth = types.Int64Null()
-	}
-	if value := res.Get(prefix + "passive-interface.default"); !data.PassiveInterfaceDefault.IsNull() {
-		if value.Exists() {
-			data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
-		}
-	} else {
-		data.PassiveInterfaceDefault = types.BoolNull()
-	}
-	if value := res.Get(prefix + "passive-interface.interface"); value.Exists() && !data.PassiveInterface.IsNull() {
-		data.PassiveInterface = helpers.GetStringList(value.Array())
-	} else {
-		data.PassiveInterface = types.ListNull(types.StringType)
-	}
-	for i := range data.PassiveInterfaceDisableGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.TwoGigabitEthernet").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.FiveGigabitEthernet").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.TenGigabitEthernet").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.TwentyFiveGigabitE").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.FortyGigabitEthernet").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.HundredGigabitE").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.TwoHundredGigabitE").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.FourHundredGigabitE").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.IsNull() {
-			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableLoopbacks {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.Loopback").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableLoopbacks[i].Name.IsNull() {
-			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableVlans {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.Vlan").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableVlans[i].Name.IsNull() {
-			data.PassiveInterfaceDisableVlans[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableVlans[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisableTunnels {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.Tunnel").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTunnels[i].Name.IsNull() {
-			data.PassiveInterfaceDisableTunnels[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisableTunnels[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisablePortChannels {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.Port-channel").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
-			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringNull()
-		}
-	}
-	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.IsNull() {
-			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringValue(value.String())
-		} else {
-			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
-
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -1882,6 +924,21 @@ func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 	} else {
 		data.DefaultInformationOriginateAlways = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric"); value.Exists() && !data.DefaultInformationOriginateMetric.IsNull() {
+		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
+	} else {
+		data.DefaultInformationOriginateMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric-type"); value.Exists() && !data.DefaultInformationOriginateMetricType.IsNull() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	} else {
+		data.DefaultInformationOriginateMetricType = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/route-map"); value.Exists() && !data.DefaultInformationOriginateRouteMap.IsNull() {
+		data.DefaultInformationOriginateRouteMap = types.StringValue(value.String())
+	} else {
+		data.DefaultInformationOriginateRouteMap = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() && !data.DefaultMetric.IsNull() {
 		data.DefaultMetric = types.Int64Value(value.Int())
@@ -1997,6 +1054,35 @@ func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RedistributeStaticSubnets = types.BoolNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/metric"); value.Exists() && !data.RedistributeStaticMetric.IsNull() {
+		data.RedistributeStaticMetric = types.Int64Value(value.Int())
+	} else {
+		data.RedistributeStaticMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/metric-type"); value.Exists() && !data.RedistributeStaticMetricType.IsNull() {
+		data.RedistributeStaticMetricType = types.StringValue(value.String())
+	} else {
+		data.RedistributeStaticMetricType = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/route-map"); value.Exists() && !data.RedistributeStaticRouteMap.IsNull() {
+		data.RedistributeStaticRouteMap = types.StringValue(value.String())
+	} else {
+		data.RedistributeStaticRouteMap = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/tag"); value.Exists() && !data.RedistributeStaticTag.IsNull() {
+		data.RedistributeStaticTag = types.Int64Value(value.Int())
+	} else {
+		data.RedistributeStaticTag = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/nssa-only"); !data.RedistributeStaticNssaOnly.IsNull() {
+		if value.Exists() {
+			data.RedistributeStaticNssaOnly = types.BoolValue(true)
+		} else {
+			data.RedistributeStaticNssaOnly = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeStaticNssaOnly = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); !data.RedistributeConnectedSubnets.IsNull() {
 		if value.Exists() {
 			data.RedistributeConnectedSubnets = types.BoolValue(true)
@@ -2005,6 +1091,199 @@ func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 	} else {
 		data.RedistributeConnectedSubnets = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/metric"); value.Exists() && !data.RedistributeConnectedMetric.IsNull() {
+		data.RedistributeConnectedMetric = types.Int64Value(value.Int())
+	} else {
+		data.RedistributeConnectedMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/metric-type"); value.Exists() && !data.RedistributeConnectedMetricType.IsNull() {
+		data.RedistributeConnectedMetricType = types.StringValue(value.String())
+	} else {
+		data.RedistributeConnectedMetricType = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/route-map"); value.Exists() && !data.RedistributeConnectedRouteMap.IsNull() {
+		data.RedistributeConnectedRouteMap = types.StringValue(value.String())
+	} else {
+		data.RedistributeConnectedRouteMap = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/tag"); value.Exists() && !data.RedistributeConnectedTag.IsNull() {
+		data.RedistributeConnectedTag = types.Int64Value(value.Int())
+	} else {
+		data.RedistributeConnectedTag = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/nssa-only"); !data.RedistributeConnectedNssaOnly.IsNull() {
+		if value.Exists() {
+			data.RedistributeConnectedNssaOnly = types.BoolValue(true)
+		} else {
+			data.RedistributeConnectedNssaOnly = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeConnectedNssaOnly = types.BoolNull()
+	}
+	for i := range data.RedistributeOspf {
+		keys := [...]string{"process-id"}
+		keyValues := [...]string{strconv.FormatInt(data.RedistributeOspf[i].ProcessId.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/ospf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "process-id"); value.Exists() && !data.RedistributeOspf[i].ProcessId.IsNull() {
+			data.RedistributeOspf[i].ProcessId = types.Int64Value(value.Int())
+		} else {
+			data.RedistributeOspf[i].ProcessId = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "match/internal"); !data.RedistributeOspf[i].MatchInternal.IsNull() {
+			if value.Exists() {
+				data.RedistributeOspf[i].MatchInternal = types.BoolValue(true)
+			} else {
+				data.RedistributeOspf[i].MatchInternal = types.BoolValue(false)
+			}
+		} else {
+			data.RedistributeOspf[i].MatchInternal = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "match/external-1"); value.Exists() && !data.RedistributeOspf[i].MatchExternal1.IsNull() {
+			data.RedistributeOspf[i].MatchExternal1 = types.StringValue(value.String())
+		} else {
+			data.RedistributeOspf[i].MatchExternal1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "match/external-2"); value.Exists() && !data.RedistributeOspf[i].MatchExternal2.IsNull() {
+			data.RedistributeOspf[i].MatchExternal2 = types.StringValue(value.String())
+		} else {
+			data.RedistributeOspf[i].MatchExternal2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "match/nssa-external-1"); value.Exists() && !data.RedistributeOspf[i].MatchNssaExternal1.IsNull() {
+			data.RedistributeOspf[i].MatchNssaExternal1 = types.StringValue(value.String())
+		} else {
+			data.RedistributeOspf[i].MatchNssaExternal1 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "match/nssa-external-2"); value.Exists() && !data.RedistributeOspf[i].MatchNssaExternal2.IsNull() {
+			data.RedistributeOspf[i].MatchNssaExternal2 = types.StringValue(value.String())
+		} else {
+			data.RedistributeOspf[i].MatchNssaExternal2 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "metric"); value.Exists() && !data.RedistributeOspf[i].Metric.IsNull() {
+			data.RedistributeOspf[i].Metric = types.Int64Value(value.Int())
+		} else {
+			data.RedistributeOspf[i].Metric = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "metric-type"); value.Exists() && !data.RedistributeOspf[i].MetricType.IsNull() {
+			data.RedistributeOspf[i].MetricType = types.StringValue(value.String())
+		} else {
+			data.RedistributeOspf[i].MetricType = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "subnets"); !data.RedistributeOspf[i].Subnets.IsNull() {
+			if value.Exists() {
+				data.RedistributeOspf[i].Subnets = types.BoolValue(true)
+			} else {
+				data.RedistributeOspf[i].Subnets = types.BoolValue(false)
+			}
+		} else {
+			data.RedistributeOspf[i].Subnets = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "route-map"); value.Exists() && !data.RedistributeOspf[i].RouteMap.IsNull() {
+			data.RedistributeOspf[i].RouteMap = types.StringValue(value.String())
+		} else {
+			data.RedistributeOspf[i].RouteMap = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "tag"); value.Exists() && !data.RedistributeOspf[i].Tag.IsNull() {
+			data.RedistributeOspf[i].Tag = types.Int64Value(value.Int())
+		} else {
+			data.RedistributeOspf[i].Tag = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "nssa-only"); !data.RedistributeOspf[i].NssaOnly.IsNull() {
+			if value.Exists() {
+				data.RedistributeOspf[i].NssaOnly = types.BoolValue(true)
+			} else {
+				data.RedistributeOspf[i].NssaOnly = types.BoolValue(false)
+			}
+		} else {
+			data.RedistributeOspf[i].NssaOnly = types.BoolNull()
+		}
+	}
+	for i := range data.DistributeListInAccessLists {
+		keys := [...]string{"in"}
+		keyValues := [...]string{data.DistributeListInAccessLists[i].In.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/distribute-list/access-list/access-list-in").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "in"); value.Exists() && !data.DistributeListInAccessLists[i].In.IsNull() {
+			data.DistributeListInAccessLists[i].In = types.StringValue(value.String())
+		} else {
+			data.DistributeListInAccessLists[i].In = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ex-access-list"); value.Exists() && !data.DistributeListInAccessLists[i].AccessList.IsNull() {
+			data.DistributeListInAccessLists[i].AccessList = types.StringValue(value.String())
+		} else {
+			data.DistributeListInAccessLists[i].AccessList = types.StringNull()
+		}
+	}
+	for i := range data.DistributeListOutAccessLists {
+		keys := [...]string{"out"}
+		keyValues := [...]string{data.DistributeListOutAccessLists[i].Out.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/distribute-list/access-list/access-list-out").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "out"); value.Exists() && !data.DistributeListOutAccessLists[i].Out.IsNull() {
+			data.DistributeListOutAccessLists[i].Out = types.StringValue(value.String())
+		} else {
+			data.DistributeListOutAccessLists[i].Out = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ex-access-list"); value.Exists() && !data.DistributeListOutAccessLists[i].AccessList.IsNull() {
+			data.DistributeListOutAccessLists[i].AccessList = types.StringValue(value.String())
+		} else {
+			data.DistributeListOutAccessLists[i].AccessList = types.StringNull()
+		}
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/autoconfig"); !data.MplsLdpAutoconfig.IsNull() {
 		if value.Exists() {
@@ -2664,756 +1943,6 @@ func (data *OSPFVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *OSPFVRF) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "bfd.all-interfaces"); value.Exists() {
-		data.BfdAllInterfaces = types.BoolValue(true)
-	} else {
-		data.BfdAllInterfaces = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-information.originate"); value.Exists() {
-		data.DefaultInformationOriginate = types.BoolValue(true)
-	} else {
-		data.DefaultInformationOriginate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-information.originate.always"); value.Exists() {
-		data.DefaultInformationOriginateAlways = types.BoolValue(true)
-	} else {
-		data.DefaultInformationOriginateAlways = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-metric"); value.Exists() {
-		data.DefaultMetric = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "distance.distance"); value.Exists() {
-		data.Distance = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "domain-tag"); value.Exists() {
-		data.DomainTag = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
-		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
-	} else {
-		data.LogAdjacencyChanges = types.BoolNull()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); value.Exists() {
-		data.LogAdjacencyChangesDetail = types.BoolValue(true)
-	} else {
-		data.LogAdjacencyChangesDetail = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-cisco"); value.Exists() {
-		data.NsfCisco = types.BoolValue(true)
-	} else {
-		data.NsfCisco = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); value.Exists() {
-		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
-	} else {
-		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-ietf"); value.Exists() {
-		data.NsfIetf = types.BoolValue(true)
-	} else {
-		data.NsfIetf = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() {
-		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa"); value.Exists() {
-		data.MaxMetricRouterLsa = types.BoolValue(true)
-	} else {
-		data.MaxMetricRouterLsa = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() {
-		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() {
-		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); value.Exists() {
-		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
-	} else {
-		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() {
-		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); value.Exists() {
-		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
-	} else {
-		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "redistribute.static.subnets"); value.Exists() {
-		data.RedistributeStaticSubnets = types.BoolValue(true)
-	} else {
-		data.RedistributeStaticSubnets = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "redistribute.connected.subnets"); value.Exists() {
-		data.RedistributeConnectedSubnets = types.BoolValue(true)
-	} else {
-		data.RedistributeConnectedSubnets = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "mpls.ldp.autoconfig"); value.Exists() {
-		data.MplsLdpAutoconfig = types.BoolValue(true)
-	} else {
-		data.MplsLdpAutoconfig = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "mpls.ldp.sync"); value.Exists() {
-		data.MplsLdpSync = types.BoolValue(true)
-	} else {
-		data.MplsLdpSync = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "neighbor"); value.Exists() {
-		data.Neighbor = make([]OSPFVRFNeighbor, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFNeighbor{}
-			if cValue := v.Get("ip"); cValue.Exists() {
-				item.Ip = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("priority"); cValue.Exists() {
-				item.Priority = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("cost"); cValue.Exists() {
-				item.Cost = types.Int64Value(cValue.Int())
-			}
-			data.Neighbor = append(data.Neighbor, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Network = make([]OSPFVRFNetwork, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFNetwork{}
-			if cValue := v.Get("ip"); cValue.Exists() {
-				item.Ip = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wildcard"); cValue.Exists() {
-				item.Wildcard = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("area"); cValue.Exists() {
-				item.Area = types.StringValue(cValue.String())
-			}
-			data.Network = append(data.Network, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "priority"); value.Exists() {
-		data.Priority = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "router-id"); value.Exists() {
-		data.RouterId = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "shutdown"); value.Exists() {
-		data.Shutdown = types.BoolValue(value.Bool())
-	} else {
-		data.Shutdown = types.BoolNull()
-	}
-	if value := res.Get(prefix + "summary-address"); value.Exists() {
-		data.SummaryAddress = make([]OSPFVRFSummaryAddress, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFSummaryAddress{}
-			if cValue := v.Get("ip"); cValue.Exists() {
-				item.Ip = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("mask"); cValue.Exists() {
-				item.Mask = types.StringValue(cValue.String())
-			}
-			data.SummaryAddress = append(data.SummaryAddress, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "area"); value.Exists() {
-		data.Areas = make([]OSPFVRFAreas, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFAreas{}
-			if cValue := v.Get("area-id"); cValue.Exists() {
-				item.AreaId = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("authentication.message-digest"); cValue.Exists() {
-				item.AuthenticationMessageDigest = types.BoolValue(true)
-			} else {
-				item.AuthenticationMessageDigest = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa"); cValue.Exists() {
-				item.Nssa = types.BoolValue(true)
-			} else {
-				item.Nssa = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa.nssa-options.default-information-originate"); cValue.Exists() {
-				item.NssaDefaultInformationOriginate = types.BoolValue(true)
-			} else {
-				item.NssaDefaultInformationOriginate = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric"); cValue.Exists() {
-				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric-type"); cValue.Exists() {
-				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("nssa.nssa-options.no-summary"); cValue.Exists() {
-				item.NssaNoSummary = types.BoolValue(true)
-			} else {
-				item.NssaNoSummary = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa.nssa-options.no-redistribution"); cValue.Exists() {
-				item.NssaNoRedistribution = types.BoolValue(true)
-			} else {
-				item.NssaNoRedistribution = types.BoolValue(false)
-			}
-			data.Areas = append(data.Areas, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
-		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
-	} else {
-		data.PassiveInterfaceDefault = types.BoolNull()
-	}
-	if value := res.Get(prefix + "passive-interface.interface"); value.Exists() {
-		data.PassiveInterface = helpers.GetStringList(value.Array())
-	} else {
-		data.PassiveInterface = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.FiveGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TenGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwentyFiveGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.FortyGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.HundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.FourHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernets{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Loopback"); value.Exists() {
-		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacks, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableLoopbacks{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Vlan"); value.Exists() {
-		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlans, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableVlans{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Tunnel"); value.Exists() {
-		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnels, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTunnels{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannels, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannels{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfaces{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "bfd.all-interfaces"); value.Exists() {
-		data.BfdAllInterfaces = types.BoolValue(true)
-	} else {
-		data.BfdAllInterfaces = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-information.originate"); value.Exists() {
-		data.DefaultInformationOriginate = types.BoolValue(true)
-	} else {
-		data.DefaultInformationOriginate = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-information.originate.always"); value.Exists() {
-		data.DefaultInformationOriginateAlways = types.BoolValue(true)
-	} else {
-		data.DefaultInformationOriginateAlways = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "default-metric"); value.Exists() {
-		data.DefaultMetric = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "distance.distance"); value.Exists() {
-		data.Distance = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "domain-tag"); value.Exists() {
-		data.DomainTag = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
-		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
-	} else {
-		data.LogAdjacencyChanges = types.BoolNull()
-	}
-	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); value.Exists() {
-		data.LogAdjacencyChangesDetail = types.BoolValue(true)
-	} else {
-		data.LogAdjacencyChangesDetail = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-cisco"); value.Exists() {
-		data.NsfCisco = types.BoolValue(true)
-	} else {
-		data.NsfCisco = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); value.Exists() {
-		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
-	} else {
-		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-ietf"); value.Exists() {
-		data.NsfIetf = types.BoolValue(true)
-	} else {
-		data.NsfIetf = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() {
-		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa"); value.Exists() {
-		data.MaxMetricRouterLsa = types.BoolValue(true)
-	} else {
-		data.MaxMetricRouterLsa = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() {
-		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() {
-		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); value.Exists() {
-		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
-	} else {
-		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() {
-		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); value.Exists() {
-		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
-	} else {
-		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "redistribute.static.subnets"); value.Exists() {
-		data.RedistributeStaticSubnets = types.BoolValue(true)
-	} else {
-		data.RedistributeStaticSubnets = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "redistribute.connected.subnets"); value.Exists() {
-		data.RedistributeConnectedSubnets = types.BoolValue(true)
-	} else {
-		data.RedistributeConnectedSubnets = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "mpls.ldp.autoconfig"); value.Exists() {
-		data.MplsLdpAutoconfig = types.BoolValue(true)
-	} else {
-		data.MplsLdpAutoconfig = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "mpls.ldp.sync"); value.Exists() {
-		data.MplsLdpSync = types.BoolValue(true)
-	} else {
-		data.MplsLdpSync = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "neighbor"); value.Exists() {
-		data.Neighbor = make([]OSPFVRFNeighborData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFNeighborData{}
-			if cValue := v.Get("ip"); cValue.Exists() {
-				item.Ip = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("priority"); cValue.Exists() {
-				item.Priority = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("cost"); cValue.Exists() {
-				item.Cost = types.Int64Value(cValue.Int())
-			}
-			data.Neighbor = append(data.Neighbor, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Network = make([]OSPFVRFNetworkData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFNetworkData{}
-			if cValue := v.Get("ip"); cValue.Exists() {
-				item.Ip = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("wildcard"); cValue.Exists() {
-				item.Wildcard = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("area"); cValue.Exists() {
-				item.Area = types.StringValue(cValue.String())
-			}
-			data.Network = append(data.Network, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "priority"); value.Exists() {
-		data.Priority = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "router-id"); value.Exists() {
-		data.RouterId = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "shutdown"); value.Exists() {
-		data.Shutdown = types.BoolValue(value.Bool())
-	} else {
-		data.Shutdown = types.BoolNull()
-	}
-	if value := res.Get(prefix + "summary-address"); value.Exists() {
-		data.SummaryAddress = make([]OSPFVRFSummaryAddressData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFSummaryAddressData{}
-			if cValue := v.Get("ip"); cValue.Exists() {
-				item.Ip = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("mask"); cValue.Exists() {
-				item.Mask = types.StringValue(cValue.String())
-			}
-			data.SummaryAddress = append(data.SummaryAddress, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "area"); value.Exists() {
-		data.Areas = make([]OSPFVRFAreasData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFAreasData{}
-			if cValue := v.Get("area-id"); cValue.Exists() {
-				item.AreaId = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("authentication.message-digest"); cValue.Exists() {
-				item.AuthenticationMessageDigest = types.BoolValue(true)
-			} else {
-				item.AuthenticationMessageDigest = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa"); cValue.Exists() {
-				item.Nssa = types.BoolValue(true)
-			} else {
-				item.Nssa = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa.nssa-options.default-information-originate"); cValue.Exists() {
-				item.NssaDefaultInformationOriginate = types.BoolValue(true)
-			} else {
-				item.NssaDefaultInformationOriginate = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric"); cValue.Exists() {
-				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric-type"); cValue.Exists() {
-				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("nssa.nssa-options.no-summary"); cValue.Exists() {
-				item.NssaNoSummary = types.BoolValue(true)
-			} else {
-				item.NssaNoSummary = types.BoolValue(false)
-			}
-			if cValue := v.Get("nssa.nssa-options.no-redistribution"); cValue.Exists() {
-				item.NssaNoRedistribution = types.BoolValue(true)
-			} else {
-				item.NssaNoRedistribution = types.BoolValue(false)
-			}
-			data.Areas = append(data.Areas, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
-		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
-	} else {
-		data.PassiveInterfaceDefault = types.BoolNull()
-	}
-	if value := res.Get(prefix + "passive-interface.interface"); value.Exists() {
-		data.PassiveInterface = helpers.GetStringList(value.Array())
-	} else {
-		data.PassiveInterface = types.ListNull(types.StringType)
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.FiveGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFiveGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TenGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTenGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwentyFiveGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwentyFiveGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.FortyGigabitEthernet"); value.Exists() {
-		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFortyGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.HundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableHundredGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTwoHundredGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.FourHundredGigabitE"); value.Exists() {
-		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableFourHundredGigabitEthernetsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Loopback"); value.Exists() {
-		data.PassiveInterfaceDisableLoopbacks = make([]OSPFVRFPassiveInterfaceDisableLoopbacksData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableLoopbacksData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Vlan"); value.Exists() {
-		data.PassiveInterfaceDisableVlans = make([]OSPFVRFPassiveInterfaceDisableVlansData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableVlansData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Tunnel"); value.Exists() {
-		data.PassiveInterfaceDisableTunnels = make([]OSPFVRFPassiveInterfaceDisableTunnelsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisableTunnelsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannels = make([]OSPFVRFPassiveInterfaceDisablePortChannelsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannelsData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel"); value.Exists() {
-		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFVRFPassiveInterfaceDisablePortChannelSubinterfacesData{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
-
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *OSPFVRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
@@ -3431,6 +1960,15 @@ func (data *OSPFVRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.DefaultInformationOriginateAlways = types.BoolValue(true)
 	} else {
 		data.DefaultInformationOriginateAlways = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric"); value.Exists() {
+		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric-type"); value.Exists() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/route-map"); value.Exists() {
+		data.DefaultInformationOriginateRouteMap = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() {
 		data.DefaultMetric = types.Int64Value(value.Int())
@@ -3498,10 +2036,122 @@ func (data *OSPFVRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RedistributeStaticSubnets = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/metric"); value.Exists() {
+		data.RedistributeStaticMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/metric-type"); value.Exists() {
+		data.RedistributeStaticMetricType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/route-map"); value.Exists() {
+		data.RedistributeStaticRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/tag"); value.Exists() {
+		data.RedistributeStaticTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/nssa-only"); value.Exists() {
+		data.RedistributeStaticNssaOnly = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticNssaOnly = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); value.Exists() {
 		data.RedistributeConnectedSubnets = types.BoolValue(true)
 	} else {
 		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/metric"); value.Exists() {
+		data.RedistributeConnectedMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/metric-type"); value.Exists() {
+		data.RedistributeConnectedMetricType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/route-map"); value.Exists() {
+		data.RedistributeConnectedRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/tag"); value.Exists() {
+		data.RedistributeConnectedTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/nssa-only"); value.Exists() {
+		data.RedistributeConnectedNssaOnly = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedNssaOnly = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/ospf"); value.Exists() {
+		data.RedistributeOspf = make([]OSPFVRFRedistributeOspf, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFRedistributeOspf{}
+			if cValue := helpers.GetFromXPath(v, "process-id"); cValue.Exists() {
+				item.ProcessId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/internal"); cValue.Exists() {
+				item.MatchInternal = types.BoolValue(true)
+			} else {
+				item.MatchInternal = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "match/external-1"); cValue.Exists() {
+				item.MatchExternal1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/external-2"); cValue.Exists() {
+				item.MatchExternal2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/nssa-external-1"); cValue.Exists() {
+				item.MatchNssaExternal1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/nssa-external-2"); cValue.Exists() {
+				item.MatchNssaExternal2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric"); cValue.Exists() {
+				item.Metric = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric-type"); cValue.Exists() {
+				item.MetricType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "subnets"); cValue.Exists() {
+				item.Subnets = types.BoolValue(true)
+			} else {
+				item.Subnets = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa-only"); cValue.Exists() {
+				item.NssaOnly = types.BoolValue(true)
+			} else {
+				item.NssaOnly = types.BoolValue(false)
+			}
+			data.RedistributeOspf = append(data.RedistributeOspf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distribute-list/access-list/access-list-in"); value.Exists() {
+		data.DistributeListInAccessLists = make([]OSPFVRFDistributeListInAccessLists, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFDistributeListInAccessLists{}
+			if cValue := helpers.GetFromXPath(v, "in"); cValue.Exists() {
+				item.In = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ex-access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			data.DistributeListInAccessLists = append(data.DistributeListInAccessLists, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distribute-list/access-list/access-list-out"); value.Exists() {
+		data.DistributeListOutAccessLists = make([]OSPFVRFDistributeListOutAccessLists, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFDistributeListOutAccessLists{}
+			if cValue := helpers.GetFromXPath(v, "out"); cValue.Exists() {
+				item.Out = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ex-access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			data.DistributeListOutAccessLists = append(data.DistributeListOutAccessLists, item)
+			return true
+		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/autoconfig"); value.Exists() {
 		data.MplsLdpAutoconfig = types.BoolValue(true)
@@ -3803,6 +2453,15 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.DefaultInformationOriginateAlways = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric"); value.Exists() {
+		data.DefaultInformationOriginateMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/metric-type"); value.Exists() {
+		data.DefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-information/originate/route-map"); value.Exists() {
+		data.DefaultInformationOriginateRouteMap = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-metric"); value.Exists() {
 		data.DefaultMetric = types.Int64Value(value.Int())
 	}
@@ -3869,10 +2528,122 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RedistributeStaticSubnets = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/metric"); value.Exists() {
+		data.RedistributeStaticMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/metric-type"); value.Exists() {
+		data.RedistributeStaticMetricType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/route-map"); value.Exists() {
+		data.RedistributeStaticRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/tag"); value.Exists() {
+		data.RedistributeStaticTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/nssa-only"); value.Exists() {
+		data.RedistributeStaticNssaOnly = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticNssaOnly = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); value.Exists() {
 		data.RedistributeConnectedSubnets = types.BoolValue(true)
 	} else {
 		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/metric"); value.Exists() {
+		data.RedistributeConnectedMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/metric-type"); value.Exists() {
+		data.RedistributeConnectedMetricType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/route-map"); value.Exists() {
+		data.RedistributeConnectedRouteMap = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/tag"); value.Exists() {
+		data.RedistributeConnectedTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/nssa-only"); value.Exists() {
+		data.RedistributeConnectedNssaOnly = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedNssaOnly = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/ospf"); value.Exists() {
+		data.RedistributeOspf = make([]OSPFVRFRedistributeOspfData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFRedistributeOspfData{}
+			if cValue := helpers.GetFromXPath(v, "process-id"); cValue.Exists() {
+				item.ProcessId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/internal"); cValue.Exists() {
+				item.MatchInternal = types.BoolValue(true)
+			} else {
+				item.MatchInternal = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "match/external-1"); cValue.Exists() {
+				item.MatchExternal1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/external-2"); cValue.Exists() {
+				item.MatchExternal2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/nssa-external-1"); cValue.Exists() {
+				item.MatchNssaExternal1 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "match/nssa-external-2"); cValue.Exists() {
+				item.MatchNssaExternal2 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric"); cValue.Exists() {
+				item.Metric = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "metric-type"); cValue.Exists() {
+				item.MetricType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "subnets"); cValue.Exists() {
+				item.Subnets = types.BoolValue(true)
+			} else {
+				item.Subnets = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa-only"); cValue.Exists() {
+				item.NssaOnly = types.BoolValue(true)
+			} else {
+				item.NssaOnly = types.BoolValue(false)
+			}
+			data.RedistributeOspf = append(data.RedistributeOspf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distribute-list/access-list/access-list-in"); value.Exists() {
+		data.DistributeListInAccessLists = make([]OSPFVRFDistributeListInAccessListsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFDistributeListInAccessListsData{}
+			if cValue := helpers.GetFromXPath(v, "in"); cValue.Exists() {
+				item.In = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ex-access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			data.DistributeListInAccessLists = append(data.DistributeListInAccessLists, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/distribute-list/access-list/access-list-out"); value.Exists() {
+		data.DistributeListOutAccessLists = make([]OSPFVRFDistributeListOutAccessListsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFVRFDistributeListOutAccessListsData{}
+			if cValue := helpers.GetFromXPath(v, "out"); cValue.Exists() {
+				item.Out = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ex-access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			data.DistributeListOutAccessLists = append(data.DistributeListOutAccessLists, item)
+			return true
+		})
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/ldp/autoconfig"); value.Exists() {
 		data.MplsLdpAutoconfig = types.BoolValue(true)
@@ -4155,610 +2926,6 @@ func (data *OSPFVRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 }
 
 // End of section. //template:end fromBodyDataXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.PassiveInterfaceDisablePortChannelSubinterfaces {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
-			found = true
-			if state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannelSubinterfaces[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisablePortChannels {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisablePortChannels {
-			found = true
-			if state.PassiveInterfaceDisablePortChannels[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannels[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableTunnels {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableTunnels[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableTunnels {
-			found = true
-			if state.PassiveInterfaceDisableTunnels[i].Name.ValueString() != data.PassiveInterfaceDisableTunnels[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Tunnel=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableVlans {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableVlans[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableVlans[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableVlans {
-			found = true
-			if state.PassiveInterfaceDisableVlans[i].Name.ValueString() != data.PassiveInterfaceDisableVlans[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableLoopbacks {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableLoopbacks {
-			found = true
-			if state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString() != data.PassiveInterfaceDisableLoopbacks[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Loopback=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableFourHundredGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFourHundredGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/FourHundredGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableTwoHundredGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoHundredGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoHundredGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableHundredGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableHundredGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableHundredGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/HundredGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableFortyGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableFortyGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFortyGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/FortyGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwentyFiveGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableTenGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableTenGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTenGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TenGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableFiveGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableFiveGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFiveGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/FiveGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableTwoGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableTwoGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.PassiveInterfaceDisableGigabitEthernets {
-		stateKeyValues := [...]string{state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.PassiveInterfaceDisableGigabitEthernets {
-			found = true
-			if state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableGigabitEthernets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.PassiveInterface.IsNull() {
-		if data.PassiveInterface.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.PassiveInterface.ElementsAs(ctx, &dataValues, false)
-			state.PassiveInterface.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/default", state.getPath()))
-	}
-	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/auto-cost/reference-bandwidth", state.getPath()))
-	}
-	for i := range state.Areas {
-		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Areas[i].AreaId.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Areas {
-			found = true
-			if state.Areas[i].AreaId.ValueString() != data.Areas[j].AreaId.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Areas[i].NssaNoRedistribution.IsNull() && data.Areas[j].NssaNoRedistribution.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaNoSummary.IsNull() && data.Areas[j].NssaNoSummary.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && data.Areas[j].NssaDefaultInformationOriginate.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].Nssa.IsNull() && data.Areas[j].Nssa.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && data.Areas[j].AuthenticationMessageDigest.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/authentication/message-digest", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.SummaryAddress {
-		stateKeyValues := [...]string{state.SummaryAddress[i].Ip.ValueString(), state.SummaryAddress[i].Mask.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.SummaryAddress[i].Ip.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.SummaryAddress[i].Mask.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.SummaryAddress {
-			found = true
-			if state.SummaryAddress[i].Ip.ValueString() != data.SummaryAddress[j].Ip.ValueString() {
-				found = false
-			}
-			if state.SummaryAddress[i].Mask.ValueString() != data.SummaryAddress[j].Mask.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/summary-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
-	}
-	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id", state.getPath()))
-	}
-	if !state.Priority.IsNull() && data.Priority.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
-	}
-	for i := range state.Network {
-		stateKeyValues := [...]string{state.Network[i].Ip.ValueString(), state.Network[i].Wildcard.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Network[i].Ip.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Network[i].Wildcard.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Network {
-			found = true
-			if state.Network[i].Ip.ValueString() != data.Network[j].Ip.ValueString() {
-				found = false
-			}
-			if state.Network[i].Wildcard.ValueString() != data.Network[j].Wildcard.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Network[i].Area.IsNull() && data.Network[j].Area.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/area", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.Neighbor {
-		stateKeyValues := [...]string{state.Neighbor[i].Ip.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Neighbor[i].Ip.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Neighbor {
-			found = true
-			if state.Neighbor[i].Ip.ValueString() != data.Neighbor[j].Ip.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Neighbor[i].Cost.IsNull() && data.Neighbor[j].Cost.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/cost", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Neighbor[i].Priority.IsNull() && data.Neighbor[j].Priority.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.MplsLdpSync.IsNull() && data.MplsLdpSync.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/sync", state.getPath()))
-	}
-	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/autoconfig", state.getPath()))
-	}
-	if !state.RedistributeConnectedSubnets.IsNull() && data.RedistributeConnectedSubnets.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redistribute/connected/subnets", state.getPath()))
-	}
-	if !state.RedistributeStaticSubnets.IsNull() && data.RedistributeStaticSubnets.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redistribute/static/subnets", state.getPath()))
-	}
-	if !state.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", state.getPath()))
-	}
-	if !state.MaxMetricRouterLsaOnStartupTime.IsNull() && data.MaxMetricRouterLsaOnStartupTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/time", state.getPath()))
-	}
-	if !state.MaxMetricRouterLsaIncludeStub.IsNull() && data.MaxMetricRouterLsaIncludeStub.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", state.getPath()))
-	}
-	if !state.MaxMetricRouterLsaExternalLsaMetric.IsNull() && data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/external-lsa/metric", state.getPath()))
-	}
-	if !state.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/summary-lsa/metric", state.getPath()))
-	}
-	if !state.MaxMetricRouterLsa.IsNull() && data.MaxMetricRouterLsa.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa", state.getPath()))
-	}
-	if !state.NsfIetfRestartInterval.IsNull() && data.NsfIetfRestartInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-ietf/restart-interval", state.getPath()))
-	}
-	if !state.NsfIetf.IsNull() && data.NsfIetf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-ietf", state.getPath()))
-	}
-	if !state.NsfCiscoEnforceGlobal.IsNull() && data.NsfCiscoEnforceGlobal.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", state.getPath()))
-	}
-	if !state.NsfCisco.IsNull() && data.NsfCisco.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-cisco", state.getPath()))
-	}
-	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", state.getPath()))
-	}
-	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes", state.getPath()))
-	}
-	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/domain-tag", state.getPath()))
-	}
-	if !state.Distance.IsNull() && data.Distance.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/distance/distance", state.getPath()))
-	}
-	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-metric", state.getPath()))
-	}
-	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate/always", state.getPath()))
-	}
-	if !state.DefaultInformationOriginate.IsNull() && data.DefaultInformationOriginate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate", state.getPath()))
-	}
-	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/all-interfaces", state.getPath()))
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
@@ -5392,8 +3559,167 @@ func (data *OSPFVRF) addDeletedItemsXML(ctx context.Context, state OSPFVRF, body
 	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/ldp/autoconfig")
 	}
+	for i := range state.DistributeListOutAccessLists {
+		stateKeys := [...]string{"out"}
+		stateKeyValues := [...]string{state.DistributeListOutAccessLists[i].Out.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.DistributeListOutAccessLists[i].Out.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.DistributeListOutAccessLists {
+			found = true
+			if state.DistributeListOutAccessLists[i].Out.ValueString() != data.DistributeListOutAccessLists[j].Out.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.DistributeListOutAccessLists[i].AccessList.IsNull() && data.DistributeListOutAccessLists[j].AccessList.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/distribute-list/access-list/access-list-out%v/ex-access-list", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/distribute-list/access-list/access-list-out%v", predicates))
+		}
+	}
+	for i := range state.DistributeListInAccessLists {
+		stateKeys := [...]string{"in"}
+		stateKeyValues := [...]string{state.DistributeListInAccessLists[i].In.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.DistributeListInAccessLists[i].In.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.DistributeListInAccessLists {
+			found = true
+			if state.DistributeListInAccessLists[i].In.ValueString() != data.DistributeListInAccessLists[j].In.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.DistributeListInAccessLists[i].AccessList.IsNull() && data.DistributeListInAccessLists[j].AccessList.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/distribute-list/access-list/access-list-in%v/ex-access-list", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/distribute-list/access-list/access-list-in%v", predicates))
+		}
+	}
+	for i := range state.RedistributeOspf {
+		stateKeys := [...]string{"process-id"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.RedistributeOspf[i].ProcessId.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RedistributeOspf[i].ProcessId.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RedistributeOspf {
+			found = true
+			if state.RedistributeOspf[i].ProcessId.ValueInt64() != data.RedistributeOspf[j].ProcessId.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.RedistributeOspf[i].NssaOnly.IsNull() && data.RedistributeOspf[j].NssaOnly.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/nssa-only", predicates))
+				}
+				if !state.RedistributeOspf[i].Tag.IsNull() && data.RedistributeOspf[j].Tag.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/tag", predicates))
+				}
+				if !state.RedistributeOspf[i].RouteMap.IsNull() && data.RedistributeOspf[j].RouteMap.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/route-map", predicates))
+				}
+				if !state.RedistributeOspf[i].Subnets.IsNull() && data.RedistributeOspf[j].Subnets.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/subnets", predicates))
+				}
+				if !state.RedistributeOspf[i].MetricType.IsNull() && data.RedistributeOspf[j].MetricType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/metric-type", predicates))
+				}
+				if !state.RedistributeOspf[i].Metric.IsNull() && data.RedistributeOspf[j].Metric.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/metric", predicates))
+				}
+				if !state.RedistributeOspf[i].MatchNssaExternal2.IsNull() && data.RedistributeOspf[j].MatchNssaExternal2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/nssa-external-2", predicates))
+				}
+				if !state.RedistributeOspf[i].MatchNssaExternal1.IsNull() && data.RedistributeOspf[j].MatchNssaExternal1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/nssa-external-1", predicates))
+				}
+				if !state.RedistributeOspf[i].MatchExternal2.IsNull() && data.RedistributeOspf[j].MatchExternal2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/external-2", predicates))
+				}
+				if !state.RedistributeOspf[i].MatchExternal1.IsNull() && data.RedistributeOspf[j].MatchExternal1.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/external-1", predicates))
+				}
+				if !state.RedistributeOspf[i].MatchInternal.IsNull() && data.RedistributeOspf[j].MatchInternal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v/match/internal", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/redistribute/ospf%v", predicates))
+		}
+	}
+	if !state.RedistributeConnectedNssaOnly.IsNull() && data.RedistributeConnectedNssaOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/nssa-only")
+	}
+	if !state.RedistributeConnectedTag.IsNull() && data.RedistributeConnectedTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/tag")
+	}
+	if !state.RedistributeConnectedRouteMap.IsNull() && data.RedistributeConnectedRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/route-map")
+	}
+	if !state.RedistributeConnectedMetricType.IsNull() && data.RedistributeConnectedMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/metric-type")
+	}
+	if !state.RedistributeConnectedMetric.IsNull() && data.RedistributeConnectedMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/metric")
+	}
 	if !state.RedistributeConnectedSubnets.IsNull() && data.RedistributeConnectedSubnets.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/subnets")
+	}
+	if !state.RedistributeStaticNssaOnly.IsNull() && data.RedistributeStaticNssaOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/nssa-only")
+	}
+	if !state.RedistributeStaticTag.IsNull() && data.RedistributeStaticTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/tag")
+	}
+	if !state.RedistributeStaticRouteMap.IsNull() && data.RedistributeStaticRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/route-map")
+	}
+	if !state.RedistributeStaticMetricType.IsNull() && data.RedistributeStaticMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/metric-type")
+	}
+	if !state.RedistributeStaticMetric.IsNull() && data.RedistributeStaticMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/metric")
 	}
 	if !state.RedistributeStaticSubnets.IsNull() && data.RedistributeStaticSubnets.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/subnets")
@@ -5443,6 +3769,15 @@ func (data *OSPFVRF) addDeletedItemsXML(ctx context.Context, state OSPFVRF, body
 	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-metric")
 	}
+	if !state.DefaultInformationOriginateRouteMap.IsNull() && data.DefaultInformationOriginateRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/route-map")
+	}
+	if !state.DefaultInformationOriginateMetricType.IsNull() && data.DefaultInformationOriginateMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/metric-type")
+	}
+	if !state.DefaultInformationOriginateMetric.IsNull() && data.DefaultInformationOriginateMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/metric")
+	}
 	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/always")
 	}
@@ -5458,262 +3793,6 @@ func (data *OSPFVRF) addDeletedItemsXML(ctx context.Context, state OSPFVRF, body
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *OSPFVRF) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Areas {
-		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
-		if !data.Areas[i].NssaNoRedistribution.IsNull() && !data.Areas[i].NssaNoRedistribution.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Areas[i].NssaNoSummary.IsNull() && !data.Areas[i].NssaNoSummary.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Areas[i].NssaDefaultInformationOriginate.IsNull() && !data.Areas[i].NssaDefaultInformationOriginate.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Areas[i].Nssa.IsNull() && !data.Areas[i].Nssa.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Areas[i].AuthenticationMessageDigest.IsNull() && !data.Areas[i].AuthenticationMessageDigest.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/authentication/message-digest", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-
-	if !data.MplsLdpSync.IsNull() && !data.MplsLdpSync.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
-	}
-	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
-	}
-	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redistribute/connected/subnets", data.getPath()))
-	}
-	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redistribute/static/subnets", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa", data.getPath()))
-	}
-	if !data.NsfIetf.IsNull() && !data.NsfIetf.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-ietf", data.getPath()))
-	}
-	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", data.getPath()))
-	}
-	if !data.NsfCisco.IsNull() && !data.NsfCisco.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-cisco", data.getPath()))
-	}
-	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", data.getPath()))
-	}
-	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
-	}
-	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-information/originate", data.getPath()))
-	}
-	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
-		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisablePortChannels {
-		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTunnels {
-		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Tunnel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableVlans {
-		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableLoopbacks {
-		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Loopback=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FourHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/HundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FortyGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwentyFiveGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TenGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FiveGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.PassiveInterfaceDisableGigabitEthernets {
-		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.PassiveInterface.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
-	}
-	if !data.PassiveInterfaceDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
-	}
-	if !data.AutoCostReferenceBandwidth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
-	}
-	for i := range data.Areas {
-		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/area=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.SummaryAddress {
-		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString(), data.SummaryAddress[i].Mask.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.RouterId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/router-id", data.getPath()))
-	}
-	if !data.Priority.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
-	}
-	for i := range data.Network {
-		keyValues := [...]string{data.Network[i].Ip.ValueString(), data.Network[i].Wildcard.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Neighbor {
-		keyValues := [...]string{data.Neighbor[i].Ip.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/neighbor=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.MplsLdpSync.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
-	}
-	if !data.MplsLdpAutoconfig.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
-	}
-	if !data.RedistributeConnectedSubnets.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/subnets", data.getPath()))
-	}
-	if !data.RedistributeStaticSubnets.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/subnets", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/time", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaIncludeStub.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/external-lsa/metric", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/summary-lsa/metric", data.getPath()))
-	}
-	if !data.MaxMetricRouterLsa.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa", data.getPath()))
-	}
-	if !data.NsfIetfRestartInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf/restart-interval", data.getPath()))
-	}
-	if !data.NsfIetf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf", data.getPath()))
-	}
-	if !data.NsfCiscoEnforceGlobal.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", data.getPath()))
-	}
-	if !data.NsfCisco.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco", data.getPath()))
-	}
-	if !data.LogAdjacencyChangesDetail.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", data.getPath()))
-	}
-	if !data.LogAdjacencyChanges.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes", data.getPath()))
-	}
-	if !data.DomainTag.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/domain-tag", data.getPath()))
-	}
-	if !data.Distance.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/distance/distance", data.getPath()))
-	}
-	if !data.DefaultMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-metric", data.getPath()))
-	}
-	if !data.DefaultInformationOriginateAlways.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
-	}
-	if !data.DefaultInformationOriginate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate", data.getPath()))
-	}
-	if !data.BfdAllInterfaces.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 
@@ -5927,8 +4006,68 @@ func (data *OSPFVRF) addDeletePathsXML(ctx context.Context, body string) string 
 	if !data.MplsLdpAutoconfig.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mpls/ldp/autoconfig")
 	}
+	for i := range data.DistributeListOutAccessLists {
+		keys := [...]string{"out"}
+		keyValues := [...]string{data.DistributeListOutAccessLists[i].Out.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/distribute-list/access-list/access-list-out%v", predicates))
+	}
+	for i := range data.DistributeListInAccessLists {
+		keys := [...]string{"in"}
+		keyValues := [...]string{data.DistributeListInAccessLists[i].In.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/distribute-list/access-list/access-list-in%v", predicates))
+	}
+	for i := range data.RedistributeOspf {
+		keys := [...]string{"process-id"}
+		keyValues := [...]string{strconv.FormatInt(data.RedistributeOspf[i].ProcessId.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/redistribute/ospf%v", predicates))
+	}
+	if !data.RedistributeConnectedNssaOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/nssa-only")
+	}
+	if !data.RedistributeConnectedTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/tag")
+	}
+	if !data.RedistributeConnectedRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/route-map")
+	}
+	if !data.RedistributeConnectedMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/metric-type")
+	}
+	if !data.RedistributeConnectedMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/metric")
+	}
 	if !data.RedistributeConnectedSubnets.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/subnets")
+	}
+	if !data.RedistributeStaticNssaOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/nssa-only")
+	}
+	if !data.RedistributeStaticTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/tag")
+	}
+	if !data.RedistributeStaticRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/route-map")
+	}
+	if !data.RedistributeStaticMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/metric-type")
+	}
+	if !data.RedistributeStaticMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/metric")
 	}
 	if !data.RedistributeStaticSubnets.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/subnets")
@@ -5977,6 +4116,15 @@ func (data *OSPFVRF) addDeletePathsXML(ctx context.Context, body string) string 
 	}
 	if !data.DefaultMetric.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-metric")
+	}
+	if !data.DefaultInformationOriginateRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/route-map")
+	}
+	if !data.DefaultInformationOriginateMetricType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/metric-type")
+	}
+	if !data.DefaultInformationOriginateMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/metric")
 	}
 	if !data.DefaultInformationOriginateAlways.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/always")

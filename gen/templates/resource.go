@@ -36,7 +36,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
-	"github.com/netascode/go-restconf"
+	"github.com/netascode/go-netconf"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -146,6 +146,13 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 				{{- if or .Id .Reference .RequiresReplace}}
 				PlanModifiers: []planmodifier.{{.Type}}{
 					{{snakeCase .Type}}planmodifier.RequiresReplace(),
+					{{- if .NormalizeIPv6}}
+					helpers.UseIPv6Normalization(),
+					{{- end}}
+				},
+				{{- else if .NormalizeIPv6}}
+				PlanModifiers: []planmodifier.String{
+					helpers.UseIPv6Normalization(),
 				},
 				{{- end}}
 				{{- if and (len .DefaultValue) (eq .Type "Int64")}}
@@ -208,6 +215,11 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 								int64validator.Between({{.MinInt}}, {{.MaxInt}}),
 							},
 							{{- end}}
+							{{- if .NormalizeIPv6}}
+							PlanModifiers: []planmodifier.String{
+								helpers.UseIPv6Normalization(),
+							},
+							{{- end}}
 							{{- if and (len .DefaultValue) (eq .Type "Int64")}}
 							Default:             int64default.StaticInt64({{.DefaultValue}}),
 							{{- else if and (len .DefaultValue) (eq .Type "Bool")}}
@@ -266,6 +278,11 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 										{{- else if or (ne .MinInt 0) (ne .MaxInt 0)}}
 										Validators: []validator.Int64{
 											int64validator.Between({{.MinInt}}, {{.MaxInt}}),
+										},
+										{{- end}}
+										{{- if .NormalizeIPv6}}
+										PlanModifiers: []planmodifier.String{
+											helpers.UseIPv6Normalization(),
 										},
 										{{- end}}
 										{{- if and (len .DefaultValue) (eq .Type "Int64")}}
@@ -362,54 +379,18 @@ func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.C
 	}
 
 	if device.Managed {
-		if device.Protocol == "restconf" {
-			// Create object
-			body := plan.toBody(ctx, config)
+		// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
+		body := plan.toBodyXML(ctx, config)
 
-			if YangPatch {
-				edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
-				for _, i := range emptyLeafsDelete {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				_, err := device.RestconfClient.YangPatchData("", "1", "", edits{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object, got error: %s", err))
-					return
-				}
-			} else {
-				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-					_, err = device.RestconfClient.PutData(plan.getPath(), body{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-				}
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
-					return
-				}
-				for _, i := range emptyLeafsDelete {
-					res, err := device.RestconfClient.DeleteData(i{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
-					}
-				}
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			body := plan.toBodyXML(ctx, config)
-
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 	
@@ -451,50 +432,31 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 			return
 		}
 
-		if device.Protocol == "restconf" {
-			res, err := device.RestconfClient.GetData(state.Id.ValueString())
-			if res.StatusCode == 404 {
-				state = {{camelCase .Name}}{Device: state.Device, Id: state.Id}
-			} else {
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
-					return
-				}
-			
-				// After `terraform import` we switch to a full read.
-				if imp {
-					state.fromBody(ctx, res.Res)
-				} else {
-					state.updateFromBody(ctx, res.Res)
-				}
-			}
+		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
+		filter := helpers.GetXpathFilter(state.getXPath())
+		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
+			return
+		}
+
+		if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
+			tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		// After `terraform import` we switch to a full read.
+		if imp {
+			state.fromBodyXML(ctx, res.Res)
 		} else {
-			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			filter := helpers.GetXpathFilter(state.getXPath())
-			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
-				return
-			}
-
-			if helpers.IsGetConfigResponseEmpty(&res) && helpers.IsListPath(state.getXPath()) {
-				tflog.Debug(ctx, fmt.Sprintf("%s: Resource does not exist", state.Id.ValueString()))
-				resp.State.RemoveResource(ctx)
-				return
-			}
-
-			// After `terraform import` we switch to a full read.
-			if imp {
-				state.fromBodyXML(ctx, res.Res)
-			} else {
-				state.updateFromBodyXML(ctx, res.Res)
-			}
+			state.updateFromBodyXML(ctx, res.Res)
 		}
 	}
 
@@ -543,68 +505,19 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 	}
 
 	if device.Managed {
-		if device.Protocol == "restconf" {
-			body := plan.toBody(ctx, config)
+		// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
-			deletedItems := plan.getDeletedItems(ctx, state)
-			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
+		body := plan.toBodyXML(ctx, config)
+		body = plan.addDeletedItemsXML(ctx, state, body)
 
-			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
-
-			if YangPatch {
-				var edits []restconf.YangPatchEdit
-				for _, i := range deletedItems {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
-				for _, i := range emptyLeafsDelete {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				_, err := device.RestconfClient.YangPatchData("", "1", "", edits{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update object, got error: %s", err))
-					return
-				}
-			} else {
-				for _, i := range deletedItems {
-					res, err := device.RestconfClient.DeleteData(i{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
-					}
-				}
-				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-					_, err = device.RestconfClient.PutData(plan.getPath(), body{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-				}
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
-					return
-				}
-				for _, i := range emptyLeafsDelete {
-					res, err := device.RestconfClient.DeleteData(i{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
-					}
-				}
-			}
-		} else {
-			// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
-			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-			if locked {
-				defer device.NetconfOpMutex.Unlock()
-			}
-			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-			body := plan.toBodyXML(ctx, config)
-			body = plan.addDeletedItemsXML(ctx, state, body)
-
-			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-				resp.Diagnostics.AddError("Client Error", err.Error())
-				return
-			}
+		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+			resp.Diagnostics.AddError("Client Error", err.Error())
+			return
 		}
 	}
 
@@ -650,66 +563,27 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 		}
 		{{- end}}
 
+		// NETCONF - Serialize write operations
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
+		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
 		if deleteMode == "all" {
-			if device.Protocol == "restconf" {
-				res, err := device.RestconfClient.DeleteData(state.Id.ValueString(){{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-				if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
-					return
-				}
-			} else {
-				// NETCONF - Serialize write operations
-				locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-				if locked {
-					defer device.NetconfOpMutex.Unlock()
-				}
-				defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			body := netconf.Body{}
+			body = helpers.RemoveFromXPath(body, state.getXPath())
 
-				body := netconf.Body{}
-				body = helpers.RemoveFromXPath(body, state.getXPath())
-
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
-					resp.Diagnostics.AddError("Client Error", err.Error())
-					return
-				}
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), device.AutoCommit); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
 			}
 		} else {
-			if device.Protocol == "restconf" {
-				deletePaths := state.getDeletePaths(ctx)
-				tflog.Debug(ctx, fmt.Sprintf("Paths to delete: %+v", deletePaths))
+			body := state.addDeletePathsXML(ctx, "")
 
-				if YangPatch {
-					edits := []restconf.YangPatchEdit{}
-					for _, i := range deletePaths {
-						edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-					}
-					_, err := device.RestconfClient.YangPatchData("", "1", "", edits{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-					if err != nil {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-						return
-					}
-				} else {
-					for _, i := range deletePaths {
-						res, err := device.RestconfClient.DeleteData(i{{if .Wait}}, restconf.Wait{{end}}{{if .RequestTimeout}}, restconf.Timeout({{.RequestTimeout}}){{end}})
-						if err != nil && res.StatusCode != 404 {
-							resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						}
-					}
-				}
-			} else {
-				// NETCONF - Serialize write operations
-				locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
-				if locked {
-					defer device.NetconfOpMutex.Unlock()
-				}
-				defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
-				body := state.addDeletePathsXML(ctx, "")
-
-				if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
-					resp.Diagnostics.AddError("Client Error", err.Error())
-					return
-				}
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
 			}
 		}
 	}

@@ -33,7 +33,6 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -42,7 +41,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/netascode/go-netconf"
-	"github.com/netascode/go-restconf"
 )
 
 // parseHostPort extracts hostname and port from a host string.
@@ -69,10 +67,6 @@ func parseHostPort(host string, defaultPort int) (string, int) {
 var _ provider.Provider = &IosxeProvider{}
 var _ provider.ProviderWithActions = &IosxeProvider{}
 
-const (
-	YangPatch = false
-)
-
 // IosxeProvider defines the provider implementation.
 type IosxeProvider struct {
 	// version is set to the provider version on release, "dev" when the
@@ -85,24 +79,20 @@ type IosxeProvider struct {
 type IosxeProviderModel struct {
 	Username           types.String               `tfsdk:"username"`
 	Password           types.String               `tfsdk:"password"`
-	URL                types.String               `tfsdk:"url"`
 	Host               types.String               `tfsdk:"host"`
-	Insecure           types.Bool                 `tfsdk:"insecure"`
-	Protocol           types.String               `tfsdk:"protocol"`
 	Retries            types.Int64                `tfsdk:"retries"`
 	LockReleaseTimeout types.Int64                `tfsdk:"lock_release_timeout"`
 	ReuseConnection    types.Bool                 `tfsdk:"reuse_connection"`
 	AutoCommit         types.Bool                 `tfsdk:"auto_commit"`
+	Insecure           types.Bool                 `tfsdk:"insecure"`
 	SelectedDevices    types.List                 `tfsdk:"selected_devices"`
 	Devices            []IosxeProviderModelDevice `tfsdk:"devices"`
 }
 
 type IosxeProviderModelDevice struct {
-	Name     types.String `tfsdk:"name"`
-	URL      types.String `tfsdk:"url"`
-	Host     types.String `tfsdk:"host"`
-	Protocol types.String `tfsdk:"protocol"`
-	Managed  types.Bool   `tfsdk:"managed"`
+	Name    types.String `tfsdk:"name"`
+	Host    types.String `tfsdk:"host"`
+	Managed types.Bool   `tfsdk:"managed"`
 }
 
 // IosxeProviderData describes the data maintained by the provider.
@@ -111,9 +101,7 @@ type IosxeProviderData struct {
 }
 
 type IosxeProviderDataDevice struct {
-	RestconfClient  *restconf.Client
 	NetconfClient   *netconf.Client
-	Protocol        string
 	ReuseConnection bool
 	AutoCommit      bool
 	Managed         bool
@@ -137,28 +125,16 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 				Optional:            true,
 				Sensitive:           true,
 			},
-			"url": schema.StringAttribute{
-				MarkdownDescription: "URL of the Cisco IOS-XE device for RESTCONF protocol. Optionally a port can be added with `:12345`. The default port is `443`. This can also be set as the IOSXE_URL environment variable. **Deprecated: Use `host` instead for protocol-agnostic configuration.**",
-				Optional:            true,
-				DeprecationMessage:  "Use 'host' attribute instead for protocol-agnostic configuration",
-			},
 			"host": schema.StringAttribute{
-				MarkdownDescription: "Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`. Default port is `443` for RESTCONF and `830` for NETCONF. This can also be set as the IOSXE_HOST environment variable.",
+				MarkdownDescription: "Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`. Default port is `830`. This can also be set as the IOSXE_HOST environment variable.",
 				Optional:            true,
 			},
 			"insecure": schema.BoolAttribute{
-				MarkdownDescription: "Allow insecure HTTPS client. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.",
+				MarkdownDescription: "Skip SSH host key verification. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.",
 				Optional:            true,
-			},
-			"protocol": schema.StringAttribute{
-				MarkdownDescription: "Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `netconf`.",
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("restconf", "netconf"),
-				},
 			},
 			"retries": schema.Int64Attribute{
-				MarkdownDescription: "Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10` for RESTCONF and `3` for NETCONF.",
+				MarkdownDescription: "Number of retries for NETCONF API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `3`.",
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 99),
@@ -193,21 +169,9 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 							MarkdownDescription: "Device name.",
 							Required:            true,
 						},
-						"url": schema.StringAttribute{
-							MarkdownDescription: "URL of the Cisco IOS-XE device for RESTCONF protocol. **Deprecated: Use `host` instead.**",
-							Optional:            true,
-							DeprecationMessage:  "Use 'host' attribute instead",
-						},
 						"host": schema.StringAttribute{
 							MarkdownDescription: "Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`.",
 							Optional:            true,
-						},
-						"protocol": schema.StringAttribute{
-							MarkdownDescription: "Protocol to use for this device. Either `restconf` (HTTPS) or `netconf` (SSH). Overrides the global protocol setting if specified.",
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("restconf", "netconf"),
-							},
 						},
 						"managed": schema.BoolAttribute{
 							MarkdownDescription: "Enable or disable device management. This can be used to temporarily skip a device due to maintainance for example. Defaults to `true`.",
@@ -281,73 +245,22 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		return
 	}
 
-	// Determine protocol
-	var protocol string
-	if config.Protocol.IsUnknown() {
-		resp.Diagnostics.AddWarning(
-			"Unable to create client",
-			"Cannot use unknown value as protocol",
-		)
-		return
-	}
-
-	if config.Protocol.IsNull() {
-		protocol = os.Getenv("IOSXE_PROTOCOL")
-		if protocol == "" {
-			protocol = "netconf" // default
-		}
-	} else {
-		protocol = config.Protocol.ValueString()
-	}
-
-	// Validate protocol
-	if protocol != "restconf" && protocol != "netconf" {
-		resp.Diagnostics.AddError(
-			"Invalid protocol",
-			fmt.Sprintf("Protocol must be 'restconf' or 'netconf', got: %s", protocol),
-		)
-		return
-	}
-
-	// User must provide a host or url to the provider
+	// User must provide a host to the provider
 	var host string
-	if config.Host.IsUnknown() && config.URL.IsUnknown() {
+	if config.Host.IsUnknown() {
 		resp.Diagnostics.AddWarning(
 			"Unable to create client",
-			"Cannot use unknown value as host or url",
+			"Cannot use unknown value as host",
 		)
 		return
 	}
 
-	// Priority: host > url > IOSXE_HOST env > IOSXE_URL env > first device
 	if !config.Host.IsNull() {
 		host = config.Host.ValueString()
-	} else if !config.URL.IsNull() {
-		host = config.URL.ValueString()
-		// Strip https:// prefix for NETCONF
-		if protocol == "netconf" {
-			host = strings.TrimPrefix(host, "https://")
-			host = strings.TrimPrefix(host, "http://")
-		}
 	} else {
 		host = os.Getenv("IOSXE_HOST")
-		if host == "" {
-			host = os.Getenv("IOSXE_URL")
-			if protocol == "netconf" {
-				host = strings.TrimPrefix(host, "https://")
-				host = strings.TrimPrefix(host, "http://")
-			}
-		}
 		if host == "" && len(config.Devices) > 0 {
-			if !config.Devices[0].Host.IsNull() {
-				host = config.Devices[0].Host.ValueString()
-			} else {
-				host = config.Devices[0].URL.ValueString()
-				if protocol == "netconf" {
-					host = strings.TrimPrefix(host, "https://")
-					host = strings.TrimPrefix(host, "http://")
-				}
-			}
+			host = config.Devices[0].Host.ValueString()
 		}
 	}
 
@@ -474,11 +387,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	if config.Retries.IsNull() {
 		retriesStr := os.Getenv("IOSXE_RETRIES")
 		if retriesStr == "" {
-			if protocol == "restconf" {
-				retries = 10
-			} else {
-				retries = 3
-			}
+			retries = 3
 		} else {
 			retries, _ = strconv.ParseInt(retriesStr, 0, 64)
 		}
@@ -487,7 +396,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	}
 
 	// Validate configuration dependencies
-	if protocol == "netconf" && !autoCommit && !reuseConnection {
+	if !autoCommit && !reuseConnection {
 		resp.Diagnostics.AddError(
 			"Invalid Configuration",
 			"Manual commit mode (auto_commit=false) requires connection reuse (reuse_connection=true). "+
@@ -500,50 +409,32 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	data := IosxeProviderData{}
 	data.Devices = make(map[string]*IosxeProviderDataDevice)
 
-	// Create default device client based on protocol
-	if protocol == "restconf" {
-		// For RESTCONF, add https:// prefix if not present
-		url := host
-		if !strings.HasPrefix(url, "https://") && !strings.HasPrefix(url, "http://") {
-			url = "https://" + url
-		}
-		c, err := restconf.NewClient(url, username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true), restconf.LockReleaseTimeout(int(lockReleaseTimeout)))
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Unable to create RESTCONF client",
-				"Unable to create RESTCONF client:\n\n"+err.Error(),
-			)
-			return
-		}
-		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
-	} else {
-		// NETCONF
-		// Parse host:port - go-netconf requires port to be set separately via Port() option
-		netconfHost, netconfPort := parseHostPort(host, 830)
-		logger := helpers.NewTflogAdapter(host)
-		opts := []func(*netconf.Client){
-			netconf.Username(username),
-			netconf.Password(password),
-			netconf.MaxRetries(int(retries)),
-			netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
-			netconf.WithLogger(logger),
-		}
-		if netconfPort != 830 {
-			opts = append(opts, netconf.Port(netconfPort))
-		}
-		if insecure {
-			opts = append(opts, netconf.InsecureSkipHostKeyVerification())
-		}
-		c, err := netconf.NewClient(netconfHost, opts...)
-		if err != nil {
-			resp.Diagnostics.AddError(
-				"Unable to create NETCONF client",
-				"Unable to create NETCONF client:\n\n"+err.Error(),
-			)
-			return
-		}
-		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
+	// Create default NETCONF client
+	// Parse host:port - go-netconf requires port to be set separately via Port() option
+	netconfHost, netconfPort := parseHostPort(host, 830)
+	logger := helpers.NewTflogAdapter(host)
+	opts := []func(*netconf.Client){
+		netconf.Username(username),
+		netconf.Password(password),
+		netconf.MaxRetries(int(retries)),
+		netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
+		netconf.WithLogger(logger),
 	}
+	if netconfPort != 830 {
+		opts = append(opts, netconf.Port(netconfPort))
+	}
+	if insecure {
+		opts = append(opts, netconf.InsecureSkipHostKeyVerification())
+	}
+	c, err := netconf.NewClient(netconfHost, opts...)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to create NETCONF client",
+			"Unable to create NETCONF client:\n\n"+err.Error(),
+		)
+		return
+	}
+	data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
 
 	for _, device := range config.Devices {
 		var managed bool
@@ -561,71 +452,34 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			}
 		}
 
-		// Determine device protocol (prefer device-specific over global)
-		deviceProtocol := protocol
-		if !device.Protocol.IsNull() && !device.Protocol.IsUnknown() {
-			deviceProtocol = device.Protocol.ValueString()
-		}
+		deviceHost := device.Host.ValueString()
 
-		// Determine device host (prefer host over url)
-		var deviceHost string
-		if !device.Host.IsNull() {
-			deviceHost = device.Host.ValueString()
-		} else {
-			deviceHost = device.URL.ValueString()
-			// Strip https:// prefix for NETCONF
-			if deviceProtocol == "netconf" {
-				deviceHost = strings.TrimPrefix(deviceHost, "https://")
-				deviceHost = strings.TrimPrefix(deviceHost, "http://")
-			}
+		// Parse host:port - go-netconf requires port to be set separately via Port() option
+		devNetconfHost, devNetconfPort := parseHostPort(deviceHost, 830)
+		deviceID := device.Name.ValueString()
+		devLogger := helpers.NewTflogAdapter(deviceID)
+		devOpts := []func(*netconf.Client){
+			netconf.Username(username),
+			netconf.Password(password),
+			netconf.MaxRetries(int(retries)),
+			netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
+			netconf.WithLogger(devLogger),
 		}
-
-		// Create device client based on device-specific protocol
-		if deviceProtocol == "restconf" {
-			// For RESTCONF, add https:// prefix if not present
-			url := deviceHost
-			if !strings.HasPrefix(url, "https://") && !strings.HasPrefix(url, "http://") {
-				url = "https://" + url
-			}
-			c, err := restconf.NewClient(url, username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true), restconf.LockReleaseTimeout(int(lockReleaseTimeout)))
-			if err != nil {
-				resp.Diagnostics.AddError(
-					"Unable to create RESTCONF client",
-					fmt.Sprintf("Unable to create RESTCONF client for device '%s':\n\n%s", device.Name.ValueString(), err.Error()),
-				)
-				return
-			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
-		} else {
-			// NETCONF
-			// Parse host:port - go-netconf requires port to be set separately via Port() option
-			netconfHost, netconfPort := parseHostPort(deviceHost, 830)
-			// Use device name as identifier for better log correlation
-			deviceID := device.Name.ValueString()
-			logger := helpers.NewTflogAdapter(deviceID)
-			opts := []func(*netconf.Client){
-				netconf.Username(username),
-				netconf.Password(password),
-				netconf.MaxRetries(int(retries)),
-				netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
-				netconf.WithLogger(logger),
-			}
-			if netconfPort != 830 {
-				opts = append(opts, netconf.Port(netconfPort))
-			}
-			if insecure {
-				opts = append(opts, netconf.InsecureSkipHostKeyVerification())
-			}
-			c, err := netconf.NewClient(netconfHost, opts...)
-			if err != nil {
-				resp.Diagnostics.AddError(
-					"Unable to create NETCONF client",
-					fmt.Sprintf("Unable to create NETCONF client for device '%s':\n\n%s", device.Name.ValueString(), err.Error()),
-				)
-				return
-			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: deviceProtocol, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
+		if devNetconfPort != 830 {
+			devOpts = append(devOpts, netconf.Port(devNetconfPort))
 		}
+		if insecure {
+			devOpts = append(devOpts, netconf.InsecureSkipHostKeyVerification())
+		}
+		devClient, devErr := netconf.NewClient(devNetconfHost, devOpts...)
+		if devErr != nil {
+			resp.Diagnostics.AddError(
+				"Unable to create NETCONF client",
+				fmt.Sprintf("Unable to create NETCONF client for device '%s':\n\n%s", device.Name.ValueString(), devErr.Error()),
+			)
+			return
+		}
+		data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: devClient, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 	}
 
 	resp.DataSourceData = &data
@@ -712,6 +566,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewInterfacePIMIPv6Resource,
 		NewInterfacePortChannelResource,
 		NewInterfacePortChannelSubinterfaceResource,
+		NewInterfaceStackwiseVirtualResource,
 		NewInterfaceSwitchportResource,
 		NewInterfaceTunnelResource,
 		NewInterfaceVLANResource,
@@ -728,6 +583,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewLLDPResource,
 		NewLoggingResource,
 		NewMDTSubscriptionResource,
+		NewMonitorSessionResource,
 		NewMPLSResource,
 		NewMSDPResource,
 		NewMulticastResource,
@@ -736,6 +592,9 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewObjectGroupResource,
 		NewOSPFResource,
 		NewOSPFVRFResource,
+		NewOSPFv3Resource,
+		NewOSPFv3AddressFamilyIPv4VRFResource,
+		NewOSPFv3AddressFamilyIPv6VRFResource,
 		NewParameterMapResource,
 		NewPIMResource,
 		NewPIMIPv6Resource,
@@ -743,6 +602,8 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewPolicyMapResource,
 		NewPolicyMapEventResource,
 		NewPrefixListResource,
+		NewPrivilegeResource,
+		NewQoSResource,
 		NewRadiusResource,
 		NewRadiusServerResource,
 		NewRouteMapResource,
@@ -751,8 +612,10 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewSLAResource,
 		NewSNMPServerResource,
 		NewSpanningTreeResource,
+		NewStackwiseVirtualResource,
 		NewStaticRouteResource,
 		NewStaticRoutesVRFResource,
+		NewSwitchResource,
 		NewSystemResource,
 		NewTACACSResource,
 		NewTACACSServerResource,
@@ -848,6 +711,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewInterfacePIMIPv6DataSource,
 		NewInterfacePortChannelDataSource,
 		NewInterfacePortChannelSubinterfaceDataSource,
+		NewInterfaceStackwiseVirtualDataSource,
 		NewInterfaceSwitchportDataSource,
 		NewInterfaceTunnelDataSource,
 		NewInterfaceVLANDataSource,
@@ -864,6 +728,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewLLDPDataSource,
 		NewLoggingDataSource,
 		NewMDTSubscriptionDataSource,
+		NewMonitorSessionDataSource,
 		NewMPLSDataSource,
 		NewMSDPDataSource,
 		NewMulticastDataSource,
@@ -872,6 +737,9 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewObjectGroupDataSource,
 		NewOSPFDataSource,
 		NewOSPFVRFDataSource,
+		NewOSPFv3DataSource,
+		NewOSPFv3AddressFamilyIPv4VRFDataSource,
+		NewOSPFv3AddressFamilyIPv6VRFDataSource,
 		NewParameterMapDataSource,
 		NewPIMDataSource,
 		NewPIMIPv6DataSource,
@@ -879,6 +747,8 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewPolicyMapDataSource,
 		NewPolicyMapEventDataSource,
 		NewPrefixListDataSource,
+		NewPrivilegeDataSource,
+		NewQoSDataSource,
 		NewRadiusDataSource,
 		NewRadiusServerDataSource,
 		NewRouteMapDataSource,
@@ -887,8 +757,10 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewSLADataSource,
 		NewSNMPServerDataSource,
 		NewSpanningTreeDataSource,
+		NewStackwiseVirtualDataSource,
 		NewStaticRouteDataSource,
 		NewStaticRoutesVRFDataSource,
+		NewSwitchDataSource,
 		NewSystemDataSource,
 		NewTACACSDataSource,
 		NewTACACSServerDataSource,

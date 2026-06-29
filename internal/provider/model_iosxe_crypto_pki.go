@@ -24,17 +24,12 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/xmldot"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 // End of section. //template:end imports
@@ -91,17 +86,6 @@ func (data CryptoPKIData) getPath() string {
 	return "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki"
 }
 
-// if last path element has a key -> remove it
-func (data CryptoPKI) getPathShort() string {
-	path := data.getPath()
-	re := regexp.MustCompile(`(.*)=[^\/]*$`)
-	matches := re.FindStringSubmatch(path)
-	if len(matches) <= 1 {
-		return path
-	}
-	return matches[1]
-}
-
 // getXPath returns the XPath for NETCONF operations
 func (data CryptoPKI) getXPath() string {
 	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki"
@@ -114,63 +98,6 @@ func (data CryptoPKIData) getXPath() string {
 }
 
 // End of section. //template:end getPath
-
-// Section below is generated&owned by "gen/generator.go". //template:begin toBody
-
-func (data CryptoPKI) toBody(ctx context.Context, config CryptoPKI) string {
-	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if len(data.Trustpoints) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint", []interface{}{})
-		for index, item := range data.Trustpoints {
-			if !item.Id.IsNull() && !item.Id.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
-			}
-			if !item.EnrollmentPkcs12.IsNull() && !item.EnrollmentPkcs12.IsUnknown() {
-				if item.EnrollmentPkcs12.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"enrollment.enrollment-method.pkcs12", map[string]string{})
-				}
-			}
-			if !item.EnrollmentSelfsigned.IsNull() && !item.EnrollmentSelfsigned.IsUnknown() {
-				if item.EnrollmentSelfsigned.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"enrollment.enrollment-method.selfsigned", map[string]string{})
-				}
-			}
-			if !item.EnrollmentModeRa.IsNull() && !item.EnrollmentModeRa.IsUnknown() {
-				if item.EnrollmentModeRa.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"enrollment.mode.ra", map[string]string{})
-				}
-			}
-			if !item.EnrollmentTerminal.IsNull() && !item.EnrollmentTerminal.IsUnknown() {
-				if item.EnrollmentTerminal.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"enrollment.terminal", map[string]string{})
-				}
-			}
-			if !item.RevocationCheck.IsNull() && !item.RevocationCheck.IsUnknown() {
-				var values []string
-				item.RevocationCheck.ElementsAs(ctx, &values, false)
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"revocation-check", values)
-			}
-			if !item.SubjectName.IsNull() && !item.SubjectName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"subject-name", item.SubjectName.ValueString())
-			}
-			if !item.Rsakeypair.IsNull() && !item.Rsakeypair.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"rsakeypair.key-label", item.Rsakeypair.ValueString())
-			}
-			if !item.Usage.IsNull() && !item.Usage.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"usage", item.Usage.ValueString())
-			}
-			if !item.SourceInterface.IsNull() && !item.SourceInterface.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"source.interface", item.SourceInterface.ValueString())
-			}
-			if !item.Hash.IsNull() && !item.Hash.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"hash", item.Hash.ValueString())
-			}
-		}
-	}
-	return body
-}
-
-// End of section. //template:end toBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
@@ -243,112 +170,6 @@ func (data CryptoPKI) toBodyXML(ctx context.Context, config CryptoPKI) string {
 }
 
 // End of section. //template:end toBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
-
-func (data *CryptoPKI) updateFromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	for i := range data.Trustpoints {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "trustpoint").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("id"); value.Exists() && !data.Trustpoints[i].Id.IsNull() {
-			data.Trustpoints[i].Id = types.StringValue(value.String())
-		} else {
-			data.Trustpoints[i].Id = types.StringNull()
-		}
-		if value := r.Get("enrollment.enrollment-method.pkcs12"); !data.Trustpoints[i].EnrollmentPkcs12.IsNull() {
-			if value.Exists() {
-				data.Trustpoints[i].EnrollmentPkcs12 = types.BoolValue(true)
-			} else {
-				data.Trustpoints[i].EnrollmentPkcs12 = types.BoolValue(false)
-			}
-		} else {
-			data.Trustpoints[i].EnrollmentPkcs12 = types.BoolNull()
-		}
-		if value := r.Get("enrollment.enrollment-method.selfsigned"); !data.Trustpoints[i].EnrollmentSelfsigned.IsNull() {
-			if value.Exists() {
-				data.Trustpoints[i].EnrollmentSelfsigned = types.BoolValue(true)
-			} else {
-				data.Trustpoints[i].EnrollmentSelfsigned = types.BoolValue(false)
-			}
-		} else {
-			data.Trustpoints[i].EnrollmentSelfsigned = types.BoolNull()
-		}
-		if value := r.Get("enrollment.mode.ra"); !data.Trustpoints[i].EnrollmentModeRa.IsNull() {
-			if value.Exists() {
-				data.Trustpoints[i].EnrollmentModeRa = types.BoolValue(true)
-			} else {
-				data.Trustpoints[i].EnrollmentModeRa = types.BoolValue(false)
-			}
-		} else {
-			data.Trustpoints[i].EnrollmentModeRa = types.BoolNull()
-		}
-		if value := r.Get("enrollment.terminal"); !data.Trustpoints[i].EnrollmentTerminal.IsNull() {
-			if value.Exists() {
-				data.Trustpoints[i].EnrollmentTerminal = types.BoolValue(true)
-			} else {
-				data.Trustpoints[i].EnrollmentTerminal = types.BoolValue(false)
-			}
-		} else {
-			data.Trustpoints[i].EnrollmentTerminal = types.BoolNull()
-		}
-		if value := r.Get("revocation-check"); value.Exists() && !data.Trustpoints[i].RevocationCheck.IsNull() {
-			data.Trustpoints[i].RevocationCheck = helpers.GetStringList(value.Array())
-		} else {
-			data.Trustpoints[i].RevocationCheck = types.ListNull(types.StringType)
-		}
-		if value := r.Get("subject-name"); value.Exists() && !data.Trustpoints[i].SubjectName.IsNull() {
-			data.Trustpoints[i].SubjectName = types.StringValue(value.String())
-		} else {
-			data.Trustpoints[i].SubjectName = types.StringNull()
-		}
-		if value := r.Get("rsakeypair.key-label"); value.Exists() && !data.Trustpoints[i].Rsakeypair.IsNull() {
-			data.Trustpoints[i].Rsakeypair = types.StringValue(value.String())
-		} else {
-			data.Trustpoints[i].Rsakeypair = types.StringNull()
-		}
-		if value := r.Get("usage"); value.Exists() && !data.Trustpoints[i].Usage.IsNull() {
-			data.Trustpoints[i].Usage = types.StringValue(value.String())
-		} else {
-			data.Trustpoints[i].Usage = types.StringNull()
-		}
-		if value := r.Get("source.interface"); value.Exists() && !data.Trustpoints[i].SourceInterface.IsNull() {
-			data.Trustpoints[i].SourceInterface = types.StringValue(value.String())
-		} else {
-			data.Trustpoints[i].SourceInterface = types.StringNull()
-		}
-		if value := r.Get("hash"); value.Exists() && !data.Trustpoints[i].Hash.IsNull() {
-			data.Trustpoints[i].Hash = types.StringValue(value.String())
-		} else {
-			data.Trustpoints[i].Hash = types.StringNull()
-		}
-	}
-}
-
-// End of section. //template:end updateFromBody
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
@@ -451,130 +272,6 @@ func (data *CryptoPKI) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 }
 
 // End of section. //template:end updateFromBodyXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
-func (data *CryptoPKI) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "trustpoint"); value.Exists() {
-		data.Trustpoints = make([]CryptoPKITrustpoints, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoPKITrustpoints{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Id = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("enrollment.enrollment-method.pkcs12"); cValue.Exists() {
-				item.EnrollmentPkcs12 = types.BoolValue(true)
-			} else {
-				item.EnrollmentPkcs12 = types.BoolValue(false)
-			}
-			if cValue := v.Get("enrollment.enrollment-method.selfsigned"); cValue.Exists() {
-				item.EnrollmentSelfsigned = types.BoolValue(true)
-			} else {
-				item.EnrollmentSelfsigned = types.BoolValue(false)
-			}
-			if cValue := v.Get("enrollment.mode.ra"); cValue.Exists() {
-				item.EnrollmentModeRa = types.BoolValue(true)
-			} else {
-				item.EnrollmentModeRa = types.BoolValue(false)
-			}
-			if cValue := v.Get("enrollment.terminal"); cValue.Exists() {
-				item.EnrollmentTerminal = types.BoolValue(true)
-			} else {
-				item.EnrollmentTerminal = types.BoolValue(false)
-			}
-			if cValue := v.Get("revocation-check"); cValue.Exists() {
-				item.RevocationCheck = helpers.GetStringList(cValue.Array())
-			} else {
-				item.RevocationCheck = types.ListNull(types.StringType)
-			}
-			if cValue := v.Get("subject-name"); cValue.Exists() {
-				item.SubjectName = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rsakeypair.key-label"); cValue.Exists() {
-				item.Rsakeypair = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("usage"); cValue.Exists() {
-				item.Usage = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("source.interface"); cValue.Exists() {
-				item.SourceInterface = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("hash"); cValue.Exists() {
-				item.Hash = types.StringValue(cValue.String())
-			}
-			data.Trustpoints = append(data.Trustpoints, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
-func (data *CryptoPKIData) fromBody(ctx context.Context, res gjson.Result) {
-	prefix := helpers.LastElement(data.getPath()) + "."
-	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
-		prefix += "0."
-	}
-	if value := res.Get(prefix + "trustpoint"); value.Exists() {
-		data.Trustpoints = make([]CryptoPKITrustpointsData, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoPKITrustpointsData{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Id = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("enrollment.enrollment-method.pkcs12"); cValue.Exists() {
-				item.EnrollmentPkcs12 = types.BoolValue(true)
-			} else {
-				item.EnrollmentPkcs12 = types.BoolValue(false)
-			}
-			if cValue := v.Get("enrollment.enrollment-method.selfsigned"); cValue.Exists() {
-				item.EnrollmentSelfsigned = types.BoolValue(true)
-			} else {
-				item.EnrollmentSelfsigned = types.BoolValue(false)
-			}
-			if cValue := v.Get("enrollment.mode.ra"); cValue.Exists() {
-				item.EnrollmentModeRa = types.BoolValue(true)
-			} else {
-				item.EnrollmentModeRa = types.BoolValue(false)
-			}
-			if cValue := v.Get("enrollment.terminal"); cValue.Exists() {
-				item.EnrollmentTerminal = types.BoolValue(true)
-			} else {
-				item.EnrollmentTerminal = types.BoolValue(false)
-			}
-			if cValue := v.Get("revocation-check"); cValue.Exists() {
-				item.RevocationCheck = helpers.GetStringList(cValue.Array())
-			} else {
-				item.RevocationCheck = types.ListNull(types.StringType)
-			}
-			if cValue := v.Get("subject-name"); cValue.Exists() {
-				item.SubjectName = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("rsakeypair.key-label"); cValue.Exists() {
-				item.Rsakeypair = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("usage"); cValue.Exists() {
-				item.Usage = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("source.interface"); cValue.Exists() {
-				item.SourceInterface = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("hash"); cValue.Exists() {
-				item.Hash = types.StringValue(cValue.String())
-			}
-			data.Trustpoints = append(data.Trustpoints, item)
-			return true
-		})
-	}
-}
-
-// End of section. //template:end fromBodyData
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
@@ -692,89 +389,6 @@ func (data *CryptoPKIData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 // End of section. //template:end fromBodyDataXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
-
-func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []string {
-	deletedItems := make([]string, 0)
-	for i := range state.Trustpoints {
-		stateKeyValues := [...]string{state.Trustpoints[i].Id.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Trustpoints[i].Id.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Trustpoints {
-			found = true
-			if state.Trustpoints[i].Id.ValueString() != data.Trustpoints[j].Id.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Trustpoints[i].Hash.IsNull() && data.Trustpoints[j].Hash.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/hash", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/source/interface", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].Usage.IsNull() && data.Trustpoints[j].Usage.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/usage", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].Rsakeypair.IsNull() && data.Trustpoints[j].Rsakeypair.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/rsakeypair/key-label", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].SubjectName.IsNull() && data.Trustpoints[j].SubjectName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/subject-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].RevocationCheck.IsNull() {
-					if data.Trustpoints[j].RevocationCheck.IsNull() {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/revocation-check", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-					} else {
-						var dataValues, stateValues []string
-						data.Trustpoints[j].RevocationCheck.ElementsAs(ctx, &dataValues, false)
-						state.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/revocation-check=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
-							}
-						}
-					}
-				}
-				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && data.Trustpoints[j].EnrollmentTerminal.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/terminal", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/mode/ra", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && data.Trustpoints[j].EnrollmentPkcs12.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/pkcs12", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-
-	return deletedItems
-}
-
-// End of section. //template:end getDeletedItems
-
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
 func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, body string) string {
@@ -867,47 +481,6 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 }
 
 // End of section. //template:end addDeletedItemsXML
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
-
-func (data *CryptoPKI) getEmptyLeafsDelete(ctx context.Context) []string {
-	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Trustpoints {
-		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
-		if !data.Trustpoints[i].EnrollmentTerminal.IsNull() && !data.Trustpoints[i].EnrollmentTerminal.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/terminal", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Trustpoints[i].EnrollmentModeRa.IsNull() && !data.Trustpoints[i].EnrollmentModeRa.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/mode/ra", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Trustpoints[i].EnrollmentSelfsigned.IsNull() && !data.Trustpoints[i].EnrollmentSelfsigned.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Trustpoints[i].EnrollmentPkcs12.IsNull() && !data.Trustpoints[i].EnrollmentPkcs12.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/pkcs12", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-
-	return emptyLeafsDelete
-}
-
-// End of section. //template:end getEmptyLeafsDelete
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
-
-func (data *CryptoPKI) getDeletePaths(ctx context.Context) []string {
-	var deletePaths []string
-	for i := range data.Trustpoints {
-		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/trustpoint=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-
-	return deletePaths
-}
-
-// End of section. //template:end getDeletePaths
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
 

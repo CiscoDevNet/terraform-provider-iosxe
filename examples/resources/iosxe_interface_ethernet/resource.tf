@@ -59,14 +59,17 @@ resource "iosxe_interface_ethernet" "example" {
       direction = "input"
     }
   ]
-  load_interval                    = 30
-  snmp_trap_link_status            = false
-  logging_event_link_status_enable = false
-  cdp_enable                       = true
-  cdp_tlv_location                 = false
-  cdp_tlv_server_location          = false
-  ip_nat_inside                    = true
-  carrier_delay_msec               = 250
+  load_interval                            = 30
+  snmp_trap_link_status                    = false
+  logging_event_link_status_enable         = false
+  cdp_enable                               = true
+  cdp_tlv_location                         = false
+  cdp_tlv_server_location                  = false
+  ip_nat_inside                            = true
+  ip_verify_unicast_source_reachable_via   = "rx"
+  ip_verify_unicast_source_allow_self_ping = true
+  ip_verify_unicast_source_allow_default   = true
+  carrier_delay_msec                       = 250
   hold_queues = [
     {
       direction    = "in"

@@ -127,6 +127,7 @@ attributes:
     attributes:
       - yang_name: address
         id: true
+        normalize_ipv6: true
         example: fe80::9656:d028:8652:66bb
       - yang_name: link-local
         example: true
@@ -136,6 +137,7 @@ attributes:
     attributes:
       - yang_name: prefix
         id: true
+        normalize_ipv6: true
         example: 2006:DB8::/32
       - yang_name: eui-64
         example: true
@@ -161,6 +163,18 @@ attributes:
     tf_name: ip_nat_outside
     example: true
     exclude_test: true
+  - yang_name: ip/verify/unicast/source/reachable-via
+    tf_name: ip_verify_unicast_source_reachable_via
+    example: rx
+    enum_values:
+      - any
+      - rx
+  - yang_name: ip/verify/unicast/source/allow-self-ping
+    tf_name: ip_verify_unicast_source_allow_self_ping
+    example: true
+  - yang_name: ip/verify/unicast/source/allow-default
+    tf_name: ip_verify_unicast_source_allow_default
+    example: true
   - yang_name: Cisco-IOS-XE-zone:zone-member/security
     tf_name: zone_member_security
     example: INSIDE
