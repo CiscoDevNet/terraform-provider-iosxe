@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_interface_vrrp_v2` resource and data source for legacy VRRPv2 (RFC 3768) interface-level configuration, including primary/secondary virtual IPv4 addresses, priority, preempt delay, advertisement timers, plaintext authentication, description, object tracking with priority decrement, and shutdown
 - Add `iosxe_access_list_ipv6` resource and data source for named IPv6 access-list configuration (`ipv6 access-list`), including sequence entries, remarks, prefix/host/FQDN/object-group matching, single/range/multi-port matching, TCP flags, and ICMPv6 message types
 - Add `iosxe_large_community_list_expanded` resource and data source
 - Add `ip_verify_unicast_source_reachable_via`, `ip_verify_unicast_source_allow_self_ping`, and `ip_verify_unicast_source_allow_default` attributes to `iosxe_interface_ethernet`, `iosxe_interface_vlan`, `iosxe_interface_loopback`, and `iosxe_interface_port_channel` resources and data sources for uRPF (`ip verify unicast source reachable-via`) configuration
