@@ -38,6 +38,7 @@ All resources and data sources have been tested with the following releases.
 
 The following guides are available to help you get started with the IOSXE provider:
 
+- **[Getting Started](guides/getting_started)** - Configure your first IOS-XE device end to end: provider setup, hostname, loopback interface, and VRF
 - **[NETCONF](guides/netconf)** - Learn how to use NETCONF protocol for transactional configuration management with candidate datastore support
 - **[Manage Multiple Devices](guides/manage_multiple_devices)** - Learn how to manage multiple IOS-XE devices using provider aliases or the single-provider approach with device-level management control
 - **[Selective Deploy](guides/selective_deploy)** - Deploy configurations to a subset of devices while keeping others in a "frozen" state for staged rollouts and maintenance scenarios

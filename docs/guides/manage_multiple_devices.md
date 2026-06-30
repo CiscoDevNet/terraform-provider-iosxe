@@ -2,7 +2,7 @@
 subcategory: "Guides"
 page_title: "Manage Multiple Devices"
 description: |-
-    Howto manage multiple devices.
+    How to manage multiple IOS-XE devices.
 ---
 
 # Manage Multiple Devices
@@ -31,9 +31,9 @@ resource "iosxe_system" "ROUTER-2" {
 }
 ```
 
-The disadvantages here is that the `provider` attribute of resources cannot be dynamic and therefore cannot be used in combination with `for_each` as an example. The issue is being tracked [here](https://github.com/hashicorp/terraform/issues/24476).
+The disadvantage here is that the `provider` attribute of resources cannot be dynamic and therefore cannot be used in combination with `for_each` as an example. The issue is being tracked [here](https://github.com/hashicorp/terraform/issues/24476).
 
-This provider offers an alternative approach where mutliple devices can be managed by a single provider configuration and the optional `device` attribute, which is available in every resource and data source, can then be used to select the respective device. This assumes that every device uses the same credentials.
+This provider offers an alternative approach where multiple devices can be managed by a single provider configuration and the optional `device` attribute, which is available in every resource and data source, can then be used to select the respective device. This assumes that every device uses the same credentials.
 
 ```terraform
 locals {
@@ -72,7 +72,7 @@ Each device in the `devices` list supports an optional `managed` attribute that 
 
 ### Basic Managed Flag Usage
 
-```hcl
+```terraform
 locals {
   devices = [
     {
@@ -116,7 +116,7 @@ resource "iosxe_banner" "login_banner" {
 - **When `selected_devices` is not specified**: Individual `managed` flags are respected
 
 #### Example: selected_devices Override
-```hcl
+```terraform
 provider "iosxe" {
   selected_devices = ["switch-01", "switch-03"]  # Only these devices managed
   devices = [
@@ -128,3 +128,7 @@ provider "iosxe" {
 ```
 
 **Result**: Only `switch-01` and `switch-03` are managed, regardless of their individual `managed` flags.
+
+## See Also
+
+- [Selective Deploy](selective_deploy) — deploy to only a subset of the `devices` list while keeping the rest frozen.
