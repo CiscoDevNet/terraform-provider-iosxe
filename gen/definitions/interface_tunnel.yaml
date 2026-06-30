@@ -332,7 +332,6 @@ attributes:
         example: 10.0.0.1
       - yang_name: nbma-ipv4/nbma-ipv4
         tf_name: nbma_ipv4
-        id: true
         example: 172.16.1.1
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect
     tf_name: ip_nhrp_redirect

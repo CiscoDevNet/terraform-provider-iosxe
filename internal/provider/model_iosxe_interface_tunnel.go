@@ -1372,8 +1372,8 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 		}
 	}
 	for i := range data.IpNhrpMaps {
-		keys := [...]string{"dest-ipv4", "nbma-ipv4/nbma-ipv4"}
-		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString(), data.IpNhrpMaps[i].NbmaIpv4.ValueString()}
+		keys := [...]string{"dest-ipv4"}
+		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString()}
 
 		var r xmldot.Result
 		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4").ForEach(
@@ -2218,8 +2218,8 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
 	}
 	for i := range state.IpNhrpMaps {
-		stateKeys := [...]string{"dest-ipv4", "nbma-ipv4/nbma-ipv4"}
-		stateKeyValues := [...]string{state.IpNhrpMaps[i].DestIpv4.ValueString(), state.IpNhrpMaps[i].NbmaIpv4.ValueString()}
+		stateKeys := [...]string{"dest-ipv4"}
+		stateKeyValues := [...]string{state.IpNhrpMaps[i].DestIpv4.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
@@ -2227,9 +2227,6 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 
 		emptyKeys := true
 		if !reflect.ValueOf(state.IpNhrpMaps[i].DestIpv4.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.IpNhrpMaps[i].NbmaIpv4.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2242,10 +2239,10 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 			if state.IpNhrpMaps[i].DestIpv4.ValueString() != data.IpNhrpMaps[j].DestIpv4.ValueString() {
 				found = false
 			}
-			if state.IpNhrpMaps[i].NbmaIpv4.ValueString() != data.IpNhrpMaps[j].NbmaIpv4.ValueString() {
-				found = false
-			}
 			if found {
+				if !state.IpNhrpMaps[i].NbmaIpv4.IsNull() && data.IpNhrpMaps[j].NbmaIpv4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4%v/nbma-ipv4/nbma-ipv4", predicates))
+				}
 				break
 			}
 		}
@@ -2743,8 +2740,8 @@ func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string)
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
 	}
 	for i := range data.IpNhrpMaps {
-		keys := [...]string{"dest-ipv4", "nbma-ipv4/nbma-ipv4"}
-		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString(), data.IpNhrpMaps[i].NbmaIpv4.ValueString()}
+		keys := [...]string{"dest-ipv4"}
+		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString()}
 		predicates := ""
 		for i := range keys {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])

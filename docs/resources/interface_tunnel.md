@@ -197,6 +197,9 @@ Required:
 Required:
 
 - `dest_ipv4` (String) IP address of destination
+
+Optional:
+
 - `nbma_ipv4` (String) IP NBMA address
 
 
