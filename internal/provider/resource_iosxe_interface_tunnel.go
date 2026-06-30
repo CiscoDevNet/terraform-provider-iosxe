@@ -67,7 +67,7 @@ func (r *InterfaceTunnelResource) Metadata(_ context.Context, req resource.Metad
 func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface Tunnel configuration.",
+		MarkdownDescription: "This resource can manage the Interface Tunnel configuration. Note: When creating a tunnel with `tunnel_mode_gre_multipoint` together with `tunnel_key` or `mpls_nhrp`, the initial apply may fail because IOS-XE requires GRE multipoint mode to be active before accepting these commands. A second `terraform apply` will succeed. This is a device-side ordering constraint in the NETCONF-to-CLI translation.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{

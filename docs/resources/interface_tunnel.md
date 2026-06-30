@@ -3,12 +3,12 @@
 page_title: "iosxe_interface_tunnel Resource - terraform-provider-iosxe"
 subcategory: "Interface"
 description: |-
-  This resource can manage the Interface Tunnel configuration.
+  This resource can manage the Interface Tunnel configuration. Note: When creating a tunnel with tunnel_mode_gre_multipoint together with tunnel_key or mpls_nhrp, the initial apply may fail because IOS-XE requires GRE multipoint mode to be active before accepting these commands. A second terraform apply will succeed. This is a device-side ordering constraint in the NETCONF-to-CLI translation.
 ---
 
 # iosxe_interface_tunnel (Resource)
 
-This resource can manage the Interface Tunnel configuration.
+This resource can manage the Interface Tunnel configuration. Note: When creating a tunnel with `tunnel_mode_gre_multipoint` together with `tunnel_key` or `mpls_nhrp`, the initial apply may fail because IOS-XE requires GRE multipoint mode to be active before accepting these commands. A second `terraform apply` will succeed. This is a device-side ordering constraint in the NETCONF-to-CLI translation.
 
 ## Example Usage
 
