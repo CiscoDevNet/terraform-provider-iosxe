@@ -1337,11 +1337,6 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.TunnelModeGreMultipoint = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication"); value.Exists() && !data.IpNhrpAuthentication.IsNull() {
-		data.IpNhrpAuthentication = types.StringValue(value.String())
-	} else {
-		data.IpNhrpAuthentication = types.StringNull()
-	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id"); value.Exists() && !data.IpNhrpNetworkId.IsNull() {
 		data.IpNhrpNetworkId = types.Int64Value(value.Int())
 	} else {

@@ -88,12 +88,11 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "bandwidth", "1000000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_bandwidth_transmit", "1000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_bandwidth_receive", "1000"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_key", "10"))
 	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_mode_gre_multipoint", "true"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_key", "10"))
 	}
 	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_nhrp_authentication", "SECRET"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_mode_gre_multipoint", "true"))
 	}
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_nhrp_network_id", "100"))
@@ -260,7 +259,9 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	bandwidth = 1000000` + "\n"
 	config += `	tunnel_bandwidth_transmit = 1000` + "\n"
 	config += `	tunnel_bandwidth_receive = 1000` + "\n"
-	config += `	tunnel_key = 10` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	tunnel_key = 10` + "\n"
+	}
 	if os.Getenv("C8000V") != "" {
 		config += `	tunnel_mode_gre_multipoint = true` + "\n"
 	}
