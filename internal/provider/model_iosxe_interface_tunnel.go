@@ -667,7 +667,7 @@ func (data InterfaceTunnel) toBodyXML(ctx context.Context, config InterfaceTunne
 				cBody = helpers.SetFromXPath(cBody, "dest-ipv4", item.DestIpv4.ValueString())
 			}
 			if !item.NbmaIpv4.IsNull() && !item.NbmaIpv4.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "nbma-ipv4", item.NbmaIpv4.ValueString())
+				cBody = helpers.SetFromXPath(cBody, "nbma-ipv4/nbma-ipv4", item.NbmaIpv4.ValueString())
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4", cBody.Res())
 		}
@@ -1372,7 +1372,7 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 		}
 	}
 	for i := range data.IpNhrpMaps {
-		keys := [...]string{"dest-ipv4", "nbma-ipv4"}
+		keys := [...]string{"dest-ipv4", "nbma-ipv4/nbma-ipv4"}
 		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString(), data.IpNhrpMaps[i].NbmaIpv4.ValueString()}
 
 		var r xmldot.Result
@@ -1399,7 +1399,7 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 		} else {
 			data.IpNhrpMaps[i].DestIpv4 = types.StringNull()
 		}
-		if value := helpers.GetFromXPath(r, "nbma-ipv4"); value.Exists() && !data.IpNhrpMaps[i].NbmaIpv4.IsNull() {
+		if value := helpers.GetFromXPath(r, "nbma-ipv4/nbma-ipv4"); value.Exists() && !data.IpNhrpMaps[i].NbmaIpv4.IsNull() {
 			data.IpNhrpMaps[i].NbmaIpv4 = types.StringValue(value.String())
 		} else {
 			data.IpNhrpMaps[i].NbmaIpv4 = types.StringNull()
@@ -1794,7 +1794,7 @@ func (data *InterfaceTunnel) fromBodyXML(ctx context.Context, res xmldot.Result)
 			if cValue := helpers.GetFromXPath(v, "dest-ipv4"); cValue.Exists() {
 				item.DestIpv4 = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "nbma-ipv4"); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "nbma-ipv4/nbma-ipv4"); cValue.Exists() {
 				item.NbmaIpv4 = types.StringValue(cValue.String())
 			}
 			data.IpNhrpMaps = append(data.IpNhrpMaps, item)
@@ -2178,7 +2178,7 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 			if cValue := helpers.GetFromXPath(v, "dest-ipv4"); cValue.Exists() {
 				item.DestIpv4 = types.StringValue(cValue.String())
 			}
-			if cValue := helpers.GetFromXPath(v, "nbma-ipv4"); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "nbma-ipv4/nbma-ipv4"); cValue.Exists() {
 				item.NbmaIpv4 = types.StringValue(cValue.String())
 			}
 			data.IpNhrpMaps = append(data.IpNhrpMaps, item)
@@ -2218,7 +2218,7 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
 	}
 	for i := range state.IpNhrpMaps {
-		stateKeys := [...]string{"dest-ipv4", "nbma-ipv4"}
+		stateKeys := [...]string{"dest-ipv4", "nbma-ipv4/nbma-ipv4"}
 		stateKeyValues := [...]string{state.IpNhrpMaps[i].DestIpv4.ValueString(), state.IpNhrpMaps[i].NbmaIpv4.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
@@ -2743,7 +2743,7 @@ func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string)
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
 	}
 	for i := range data.IpNhrpMaps {
-		keys := [...]string{"dest-ipv4", "nbma-ipv4"}
+		keys := [...]string{"dest-ipv4", "nbma-ipv4/nbma-ipv4"}
 		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString(), data.IpNhrpMaps[i].NbmaIpv4.ValueString()}
 		predicates := ""
 		for i := range keys {

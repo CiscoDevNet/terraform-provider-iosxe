@@ -331,7 +331,6 @@ attributes:
         id: true
         example: 10.0.0.1
       - yang_name: nbma-ipv4/nbma-ipv4
-        xpath: nbma-ipv4
         tf_name: nbma_ipv4
         id: true
         example: 172.16.1.1
