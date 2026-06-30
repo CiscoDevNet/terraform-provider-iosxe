@@ -104,7 +104,6 @@ func testAccIosxeEIGRPConfig_all() string {
 	config += `		ip = "10.10.0.0"` + "\n"
 	config += `		wildcard = "0.0.255.255"` + "\n"
 	config += `	}]` + "\n"
-	config += `	topology_base = ""` + "\n"
 	config += `	auto_summary = false` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `}` + "\n"

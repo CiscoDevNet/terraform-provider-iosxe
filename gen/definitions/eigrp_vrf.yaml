@@ -2,6 +2,14 @@
 name: EIGRP VRF
 path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=%s]/address-family/ipv4/af-ipv4-vrf[vrf=%s]
 doc_category: EIGRP
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
 attributes:
   - yang_name: name
     xpath: ../../../name
@@ -12,9 +20,10 @@ attributes:
     description: EIGRP virtual-instance name
   - yang_name: vrf
     id: true
-    example: RED
+    example: VRF1
     description: VRF name
   - yang_name: autonomous-system
+    no_delete: true
     example: 100
     description: Autonomous system number
   - yang_name: eigrp/router-id
@@ -38,11 +47,13 @@ attributes:
   - yang_name: topology/topo-base/topology-base
     tf_name: topology_base
     default_value: "base"
-    write_only: true
+    no_delete: true
+    exclude_test: true
     description: Base topology (always base)
   - yang_name: topology/topo-base/auto-summary
     tf_name: auto_summary
     default_value: "false"
+    no_delete: true
     example: false
     description: Enable automatic network number summarization
   - yang_name: shutdown

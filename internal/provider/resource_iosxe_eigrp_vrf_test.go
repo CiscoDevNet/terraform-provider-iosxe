@@ -34,7 +34,7 @@ import (
 
 func TestAccIosxeEIGRPVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "vrf", "RED"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "autonomous_system", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "router_id", "10.255.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eigrp_vrf.test", "networks.0.ip", "10.20.0.0"))
@@ -46,10 +46,10 @@ func TestAccIosxeEIGRPVRF(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeEIGRPVRFConfig_minimum(),
+				Config: testAccIosxeEIGRPVRFPrerequisitesConfig + testAccIosxeEIGRPVRFConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeEIGRPVRFConfig_all(),
+				Config: testAccIosxeEIGRPVRFPrerequisitesConfig + testAccIosxeEIGRPVRFConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -81,6 +81,18 @@ func iosxeEIGRPVRFImportStateIdFunc(resourceName string) resource.ImportStateIdF
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeEIGRPVRFPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
@@ -88,8 +100,9 @@ func iosxeEIGRPVRFImportStateIdFunc(resourceName string) resource.ImportStateIdF
 func testAccIosxeEIGRPVRFConfig_minimum() string {
 	config := `resource "iosxe_eigrp_vrf" "test" {` + "\n"
 	config += `	name = "TOPGEN"` + "\n"
-	config += `	vrf = "RED"` + "\n"
+	config += `	vrf = "VRF1"` + "\n"
 	config += `	autonomous_system = 100` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -101,16 +114,16 @@ func testAccIosxeEIGRPVRFConfig_minimum() string {
 func testAccIosxeEIGRPVRFConfig_all() string {
 	config := `resource "iosxe_eigrp_vrf" "test" {` + "\n"
 	config += `	name = "TOPGEN"` + "\n"
-	config += `	vrf = "RED"` + "\n"
+	config += `	vrf = "VRF1"` + "\n"
 	config += `	autonomous_system = 100` + "\n"
 	config += `	router_id = "10.255.1.1"` + "\n"
 	config += `	networks = [{` + "\n"
 	config += `		ip = "10.20.0.0"` + "\n"
 	config += `		wildcard = "0.0.255.255"` + "\n"
 	config += `	}]` + "\n"
-	config += `	topology_base = ""` + "\n"
 	config += `	auto_summary = false` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

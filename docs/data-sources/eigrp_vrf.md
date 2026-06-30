@@ -15,7 +15,7 @@ This data source can read the EIGRP VRF configuration.
 ```terraform
 data "iosxe_eigrp_vrf" "example" {
   name = "TOPGEN"
-  vrf  = "RED"
+  vrf  = "VRF1"
 }
 ```
 

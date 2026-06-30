@@ -23,9 +23,8 @@ resource "iosxe_eigrp" "example" {
       wildcard = "0.0.255.255"
     }
   ]
-  topology_base = ""
-  auto_summary  = false
-  shutdown      = false
+  auto_summary = false
+  shutdown     = false
 }
 ```
 

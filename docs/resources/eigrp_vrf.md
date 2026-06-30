@@ -15,7 +15,7 @@ This resource can manage the EIGRP VRF configuration.
 ```terraform
 resource "iosxe_eigrp_vrf" "example" {
   name              = "TOPGEN"
-  vrf               = "RED"
+  vrf               = "VRF1"
   autonomous_system = 100
   router_id         = "10.255.1.1"
   networks = [
@@ -24,9 +24,8 @@ resource "iosxe_eigrp_vrf" "example" {
       wildcard = "0.0.255.255"
     }
   ]
-  topology_base = ""
-  auto_summary  = false
-  shutdown      = false
+  auto_summary = false
+  shutdown     = false
 }
 ```
 

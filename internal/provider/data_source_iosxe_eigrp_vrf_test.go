@@ -43,7 +43,7 @@ func TestAccDataSourceIosxeEIGRPVRF(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeEIGRPVRFConfig(),
+				Config: testAccDataSourceIosxeEIGRPVRFPrerequisitesConfig + testAccDataSourceIosxeEIGRPVRFConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -53,6 +53,18 @@ func TestAccDataSourceIosxeEIGRPVRF(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeEIGRPVRFPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -61,22 +73,22 @@ func testAccDataSourceIosxeEIGRPVRFConfig() string {
 	config := `resource "iosxe_eigrp_vrf" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "TOPGEN"` + "\n"
-	config += `	vrf = "RED"` + "\n"
+	config += `	vrf = "VRF1"` + "\n"
 	config += `	autonomous_system = 100` + "\n"
 	config += `	router_id = "10.255.1.1"` + "\n"
 	config += `	networks = [{` + "\n"
 	config += `		ip = "10.20.0.0"` + "\n"
 	config += `		wildcard = "0.0.255.255"` + "\n"
 	config += `	}]` + "\n"
-	config += `	topology_base = ""` + "\n"
 	config += `	auto_summary = false` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_eigrp_vrf" "test" {
 			name = "TOPGEN"
-			vrf = "RED"
+			vrf = "VRF1"
 			depends_on = [iosxe_eigrp_vrf.test]
 		}
 	`

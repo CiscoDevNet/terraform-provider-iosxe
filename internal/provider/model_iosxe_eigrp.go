@@ -184,6 +184,11 @@ func (data *EIGRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Networks[i].Wildcard = types.StringNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/topology/topo-base/topology-base"); value.Exists() && !data.TopologyBase.IsNull() {
+		data.TopologyBase = types.StringValue(value.String())
+	} else {
+		data.TopologyBase = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/topology/topo-base/auto-summary"); !data.AutoSummary.IsNull() {
 		if value.Exists() {
 			data.AutoSummary = types.BoolValue(value.Bool())
@@ -289,12 +294,6 @@ func (data *EIGRP) addDeletedItemsXML(ctx context.Context, state EIGRP, body str
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
 	}
-	if !state.AutoSummary.IsNull() && data.AutoSummary.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/topology/topo-base/auto-summary")
-	}
-	if !state.TopologyBase.IsNull() && data.TopologyBase.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/topology/topo-base/topology-base")
-	}
 	for i := range state.Networks {
 		stateKeys := [...]string{"ipv4-address", "wildcard"}
 		stateKeyValues := [...]string{state.Networks[i].Ip.ValueString(), state.Networks[i].Wildcard.ValueString()}
@@ -334,9 +333,6 @@ func (data *EIGRP) addDeletedItemsXML(ctx context.Context, state EIGRP, body str
 	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/eigrp/router-id")
 	}
-	if !state.AutonomousSystem.IsNull() && data.AutonomousSystem.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/autonomous-system")
-	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -351,12 +347,6 @@ func (data *EIGRP) addDeletePathsXML(ctx context.Context, body string) string {
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
 	}
-	if !data.AutoSummary.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/topology/topo-base/auto-summary")
-	}
-	if !data.TopologyBase.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/topology/topo-base/topology-base")
-	}
 	for i := range data.Networks {
 		keys := [...]string{"ipv4-address", "wildcard"}
 		keyValues := [...]string{data.Networks[i].Ip.ValueString(), data.Networks[i].Wildcard.ValueString()}
@@ -369,9 +359,6 @@ func (data *EIGRP) addDeletePathsXML(ctx context.Context, body string) string {
 	}
 	if !data.RouterId.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/eigrp/router-id")
-	}
-	if !data.AutonomousSystem.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/autonomous-system")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
