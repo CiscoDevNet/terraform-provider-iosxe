@@ -54,6 +54,12 @@ data "iosxe_interface_tunnel" "example" {
 - `ip_mtu` (Number) Set IP Maximum Transmission Unit
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
+- `ip_nhrp_authentication` (String) authentication string
+- `ip_nhrp_maps` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_maps))
+- `ip_nhrp_network_id` (Number) Network identifier
+- `ip_nhrp_nhs` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_nhs))
+- `ip_nhrp_redirect` (Boolean) Enable NHRP redirect traffic indication
+- `ip_nhrp_shortcut` (Boolean) Enable shortcut switching
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)
@@ -78,6 +84,7 @@ data "iosxe_interface_tunnel" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `mpls_nhrp` (Boolean) MPLS NHRP commands
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
@@ -85,6 +92,8 @@ data "iosxe_interface_tunnel" "example" {
 - `tunnel_bandwidth_receive` (Number) Receive bandwidth
 - `tunnel_bandwidth_transmit` (Number) Transmit bandwidth
 - `tunnel_destination_ipv4` (String) ip address or host name
+- `tunnel_key` (Number) security or selector key
+- `tunnel_mode_gre_multipoint` (Boolean) mode Multipoint
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) IPSec policy profile
 - `tunnel_protection_ipsec_profile_legacy` (String) Obsolete, use the other option profile-option to set ipsec policy profile
@@ -111,6 +120,23 @@ Read-Only:
 
 - `direction` (String)
 - `name` (String) User defined
+
+
+<a id="nestedatt--ip_nhrp_maps"></a>
+### Nested Schema for `ip_nhrp_maps`
+
+Read-Only:
+
+- `dest_ipv4` (String) IP address of destination
+- `nbma_ipv4` (String) IP NBMA address
+
+
+<a id="nestedatt--ip_nhrp_nhs"></a>
+### Nested Schema for `ip_nhrp_nhs`
+
+Read-Only:
+
+- `ipv4` (String) Protocol IP address of NHS
 
 
 <a id="nestedatt--ipv6_addresses"></a>

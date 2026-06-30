@@ -51,4 +51,5 @@ resource "iosxe_interface_tunnel" "example" {
   bandwidth                        = 1000000
   tunnel_bandwidth_transmit        = 1000
   tunnel_bandwidth_receive         = 1000
+  tunnel_key                       = 10
 }
