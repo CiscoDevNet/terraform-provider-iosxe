@@ -2,7 +2,7 @@
 subcategory: "Guides"
 page_title: "Manage Multiple Devices"
 description: |-
-    Howto manage multiple devices.
+    How to manage multiple IOS-XE devices.
 ---
 
 # Manage Multiple Devices
@@ -72,7 +72,7 @@ Each device in the `devices` list supports an optional `managed` attribute that 
 
 ### Basic Managed Flag Usage
 
-```hcl
+```terraform
 locals {
   devices = [
     {
@@ -116,7 +116,7 @@ resource "iosxe_banner" "login_banner" {
 - **When `selected_devices` is not specified**: Individual `managed` flags are respected
 
 #### Example: selected_devices Override
-```hcl
+```terraform
 provider "iosxe" {
   selected_devices = ["switch-01", "switch-03"]  # Only these devices managed
   devices = [
@@ -128,3 +128,7 @@ provider "iosxe" {
 ```
 
 **Result**: Only `switch-01` and `switch-03` are managed, regardless of their individual `managed` flags.
+
+## See Also
+
+- [Selective Deploy](selective_deploy) — deploy to only a subset of the `devices` list while keeping the rest frozen.
