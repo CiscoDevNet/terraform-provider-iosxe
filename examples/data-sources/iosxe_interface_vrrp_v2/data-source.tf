@@ -1,5 +1,5 @@
 data "iosxe_interface_vrrp_v2" "example" {
-  type     = "GigabitEthernet"
-  name     = "2"
+  type     = "Vlan"
+  name     = "123"
   group_id = 1
 }

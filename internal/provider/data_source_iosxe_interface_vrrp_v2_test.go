@@ -68,14 +68,14 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "/Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]"
+	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]"
 	attributes = {
-		"name" = "2"
+		"name" = "123"
 	}
 }
 
 resource "iosxe_yang" "PreReq2" {
-	path = "/Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]/ip/address/primary"
+	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ip/address/primary"
 	attributes = {
 		"address" = "192.0.2.1"
 		"mask" = "255.255.255.0"
@@ -91,8 +91,8 @@ resource "iosxe_yang" "PreReq2" {
 func testAccDataSourceIosxeInterfaceVRRPV2Config() string {
 	config := `resource "iosxe_interface_vrrp_v2" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	type = "GigabitEthernet"` + "\n"
-	config += `	name = "2"` + "\n"
+	config += `	type = "Vlan"` + "\n"
+	config += `	name = "123"` + "\n"
 	config += `	group_id = 1` + "\n"
 	config += `	ip_primary_address = "192.0.2.254"` + "\n"
 	config += `	ip_secondary_addresses = [{` + "\n"
@@ -115,8 +115,8 @@ func testAccDataSourceIosxeInterfaceVRRPV2Config() string {
 
 	config += `
 		data "iosxe_interface_vrrp_v2" "test" {
-			type = "GigabitEthernet"
-			name = "2"
+			type = "Vlan"
+			name = "123"
 			group_id = 1
 			depends_on = [iosxe_interface_vrrp_v2.test]
 		}

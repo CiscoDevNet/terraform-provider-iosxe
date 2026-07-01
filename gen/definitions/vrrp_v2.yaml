@@ -21,9 +21,9 @@ attributes:
       - Port-channel
       - Port-channel-subinterface/Port-channel
       - BDI
-    example: GigabitEthernet
+    example: Vlan
   - yang_name: name
-    example: 2
+    example: 123
   - yang_name: group-id
     example: 1
   - yang_name: ip/primary/address
@@ -89,11 +89,11 @@ test_prerequisites:
     attributes:
       - name: vrrp
         value: v2
-  - path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]
     attributes:
       - name: name
-        value: 2
-  - path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]/ip/address/primary
+        value: 123
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ip/address/primary
     attributes:
       - name: address
         value: 192.0.2.1

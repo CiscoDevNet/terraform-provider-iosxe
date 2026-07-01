@@ -1,6 +1,6 @@
 resource "iosxe_interface_vrrp_v2" "example" {
-  type               = "GigabitEthernet"
-  name               = "2"
+  type               = "Vlan"
+  name               = "123"
   group_id           = 1
   ip_primary_address = "192.0.2.254"
   ip_secondary_addresses = [
