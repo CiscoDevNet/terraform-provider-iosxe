@@ -106,34 +106,6 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "mld_snooping_querier", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "mac_address_table_aging_time", "14400"))
-	if os.Getenv("C9500") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "stackwise_virtual_domain", "10"))
-	}
-	if os.Getenv("C9500") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "stackwise_virtual_dual_active_detection_pagp", "true"))
-	}
-	if os.Getenv("C9500") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "stackwise_virtual_dual_active_detection_pagp_trust_channel_group", "1"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "udld_aggressive", "true"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "udld_enable", "true"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "udld_message_time", "77"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "udld_recovery_interval", "8640"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "qos_queue_softmax_multiplier", "1200"))
-	}
-	if os.Getenv("C9500") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "switches.0.number", "2"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "switches.0.provision", "c9300-24p"))
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -254,36 +226,6 @@ func testAccDataSourceIosxeSystemConfig() string {
 		config += `	mld_snooping_querier = true` + "\n"
 	}
 	config += `	mac_address_table_aging_time = 14400` + "\n"
-	if os.Getenv("C9500") != "" {
-		config += `	stackwise_virtual_domain = 10` + "\n"
-	}
-	if os.Getenv("C9500") != "" {
-		config += `	stackwise_virtual_dual_active_detection_pagp = true` + "\n"
-	}
-	if os.Getenv("C9500") != "" {
-		config += `	stackwise_virtual_dual_active_detection_pagp_trust_channel_group = 1` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	udld_aggressive = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	udld_enable = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	udld_message_time = 77` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	udld_recovery_interval = 8640` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	qos_queue_softmax_multiplier = 1200` + "\n"
-	}
-	if os.Getenv("C9500") != "" {
-		config += `	switches = [{` + "\n"
-		config += `		number = 2` + "\n"
-		config += `		provision = "c9300-24p"` + "\n"
-		config += `	}]` + "\n"
-	}
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

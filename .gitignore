@@ -41,3 +41,4 @@ test-epic-*.tf
 
 # SBOM files generated during release
 *_sbom.*.json
+terraform-provider-iosxe

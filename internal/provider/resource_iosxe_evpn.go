@@ -101,28 +101,28 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: helpers.NewAttributeDescription("mp2mp replication").String,
 				Optional:            true,
 			},
-			"evpn_mac_duplication_limit": schema.Int64Attribute{
+			"mac_duplication_limit": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Number of MAC moves within specified time interval").AddIntegerRangeDescription(2, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(2, 1000),
 				},
 			},
-			"evpn_mac_duplication_time": schema.Int64Attribute{
+			"mac_duplication_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("MAC duplication timer").AddIntegerRangeDescription(10, 36000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(10, 36000),
 				},
 			},
-			"evpn_ip_duplication_limit": schema.Int64Attribute{
+			"ip_duplication_limit": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Number of IP moves within specified time interval").AddIntegerRangeDescription(2, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(2, 1000),
 				},
 			},
-			"evpn_ip_duplication_time": schema.Int64Attribute{
+			"ip_duplication_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IP duplication timer").AddIntegerRangeDescription(10, 36000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
@@ -136,27 +136,27 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					int64validator.Between(0, 2147483647),
 				},
 			},
-			"evpn_default_gateway_advertise": schema.BoolAttribute{
+			"default_gateway_advertise": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Advertise Default Gateway MAC/IP routes").String,
 				Optional:            true,
 			},
-			"evpn_logging_peer_state": schema.BoolAttribute{
+			"logging_peer_state": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Peer state transition logging").String,
 				Optional:            true,
 			},
-			"evpn_route_target_auto_vni": schema.BoolAttribute{
+			"route_target_auto_vni": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set vni-based route-target").String,
 				Optional:            true,
 			},
-			"evpn_anycast_gateway_mac_auto": schema.BoolAttribute{
+			"anycast_gateway_mac_auto": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable Auto Anycast Gateway MAC").String,
 				Optional:            true,
 			},
-			"evpn_flooding_suppression_address_resolution_disable": schema.BoolAttribute{
+			"flooding_suppression_address_resolution_disable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Disable flooding suppression").String,
 				Optional:            true,
 			},
-			"evpn_multicast_advertise": schema.BoolAttribute{
+			"multicast_advertise": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable and advertise L2 multicast capability").String,
 				Optional:            true,
 			},

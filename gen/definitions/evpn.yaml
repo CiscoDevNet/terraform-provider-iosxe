@@ -22,18 +22,22 @@ attributes:
     example: false
   - yang_name: evpn/mac/duplication/limit
     xpath: evpn/mac/duplication/limit
+    tf_name: mac_duplication_limit
     delete_parent: true
     example: 10
   - yang_name: evpn/mac/duplication/time
     xpath: evpn/mac/duplication/time
+    tf_name: mac_duplication_time
     delete_parent: true
     example: 100
   - yang_name: evpn/ip/duplication/limit
     xpath: evpn/ip/duplication/limit
+    tf_name: ip_duplication_limit
     delete_parent: true
     example: 10
   - yang_name: evpn/ip/duplication/time
     xpath: evpn/ip/duplication/time
+    tf_name: ip_duplication_time
     delete_parent: true
     example: 100
   - yang_name: evpn/router-id/interface/interface-choice/Loopback/Loopback
@@ -42,22 +46,28 @@ attributes:
     example: 100
   - yang_name: evpn/default-gateway/advertise
     xpath: evpn/default-gateway/advertise
+    tf_name: default_gateway_advertise
     example: true
   - yang_name: evpn/logging/peer/state
     xpath: evpn/logging/peer/state
+    tf_name: logging_peer_state
     example: true
   - yang_name: evpn/route-target/auto/vni
     xpath: evpn/route-target/auto/vni
+    tf_name: route_target_auto_vni
     example: true
   - yang_name: evpn/anycast-gateway/mac/auto
     xpath: evpn/anycast-gateway/mac/auto
+    tf_name: anycast_gateway_mac_auto
     example: true
     exclude_test: true
   - yang_name: evpn/flooding-suppression/address-resolution/disable
     xpath: evpn/flooding-suppression/address-resolution/disable
+    tf_name: flooding_suppression_address_resolution_disable
     example: true
   - yang_name: evpn/multicast/advertise
     xpath: evpn/multicast/advertise
+    tf_name: multicast_advertise
     example: true
   - yang_name: l2-profile/evpn/profile/profile-name-list
     tf_name: profiles

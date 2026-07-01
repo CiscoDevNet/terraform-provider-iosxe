@@ -916,54 +916,6 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				ElementType:         types.Int64Type,
 				Computed:            true,
 			},
-			"stackwise_virtual_domain": schema.Int64Attribute{
-				MarkdownDescription: "",
-				Computed:            true,
-			},
-			"stackwise_virtual_dual_active_detection_pagp": schema.BoolAttribute{
-				MarkdownDescription: "Dual-active detection using PAgP",
-				Computed:            true,
-			},
-			"stackwise_virtual_dual_active_detection_pagp_trust_channel_group": schema.Int64Attribute{
-				MarkdownDescription: "Percent range from 1 to 128.",
-				Computed:            true,
-			},
-			"udld_aggressive": schema.BoolAttribute{
-				MarkdownDescription: "Enable UDLD protocol in aggressive mode on fiber ports exceptwhere locally configured",
-				Computed:            true,
-			},
-			"udld_enable": schema.BoolAttribute{
-				MarkdownDescription: "Enable UDLD protocol on fiber ports except where locally configured",
-				Computed:            true,
-			},
-			"udld_message_time": schema.Int64Attribute{
-				MarkdownDescription: "Set UDLD message time period",
-				Computed:            true,
-			},
-			"udld_recovery_interval": schema.Int64Attribute{
-				MarkdownDescription: "timer-interval(sec)",
-				Computed:            true,
-			},
-			"qos_queue_softmax_multiplier": schema.Int64Attribute{
-				MarkdownDescription: "Queue soft buffer maximum multiplier percentage (100-1200)",
-				Computed:            true,
-			},
-			"switches": schema.ListNestedAttribute{
-				MarkdownDescription: "Config commands for the switches in the stack",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"number": schema.Int64Attribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-						"provision": schema.StringAttribute{
-							MarkdownDescription: "Configure Switch provision / offline config",
-							Computed:            true,
-						},
-					},
-				},
-			},
 		},
 	}
 }
