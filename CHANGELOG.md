@@ -1,13 +1,17 @@
 ## Unreleased
 
+- BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute
+- BREAKING CHANGE: Consolidate `iosxe_dhcp_pool` and `iosxe_ipv6_dhcp_pool` into `iosxe_dhcp` as `pools` and `ipv6_pools` list attributes
+- BREAKING CHANGE: Consolidate `iosxe_evpn_profile` into `iosxe_evpn` as a `profiles` list attribute
+- BREAKING CHANGE: Consolidate `iosxe_stackwise_virtual`, `iosxe_switch`, `iosxe_udld`, and `iosxe_qos` into `iosxe_system` as direct attributes and a `switches` list attribute
 - Add `iosxe_access_list_ipv6` resource and data source for named IPv6 access-list configuration (`ipv6 access-list`), including sequence entries, remarks, prefix/host/FQDN/object-group matching, single/range/multi-port matching, TCP flags, and ICMPv6 message types
 - Add `iosxe_large_community_list_expanded` resource and data source
 - Add `ip_verify_unicast_source_reachable_via`, `ip_verify_unicast_source_allow_self_ping`, and `ip_verify_unicast_source_allow_default` attributes to `iosxe_interface_ethernet`, `iosxe_interface_vlan`, `iosxe_interface_loopback`, and `iosxe_interface_port_channel` resources and data sources for uRPF (`ip verify unicast source reachable-via`) configuration
 - Add `ao_keychain`, `ao_include_tcp_options`, and `ao_accept_mismatch_connections` attributes to `iosxe_bgp_neighbor` and `iosxe_bgp_peer_session_template` resources and data sources for TCP Authentication Option (TCP-AO) support
 - Fix `iosxe_route_map` RESTCONF 400 error (`unknown element: description`) on IOS-XE 17.18+ by replacing the obsolete `description` leaf with the `descriptions` list structure. The old attribute is preserved as `description_legacy` for backward compatibility with IOS-XE 17.12 and earlier
 - Add `service` support to `iosxe_object_group` resource and data source for service object groups including TCP, UDP, TCP-UDP port configurations with operators, ranges, source/destination combinations, protocol flags, ICMP types, and group nesting
-- Add `iosxe_qos` resource and data source for global QoS configuration, including the `queue_softmax_multiplier` attribute for queue soft buffer maximum tuning on Catalyst 9000 series
-- Add `iosxe_switch` resource and data source for StackWise member provisioning (`switch <number> provision <model>`)
+- Add `qos_queue_softmax_multiplier` attribute to `iosxe_system` resource and data source for queue soft buffer maximum multiplier tuning on Catalyst 9000 series
+- Add `switches` list attribute to `iosxe_system` resource and data source for StackWise member provisioning (`switch <number> provision <model>`)
 - Add `iosxe_privilege` resource and data source for privilege level command mapping configuration (`privilege <mode> level <level> <command>`), including mode selection (exec, configure, interface, router, crypto-map, ipenacl) with nested level and command-list attributes
 - Add `mac_address_table_aging_time` attribute to `iosxe_system` resource and data source
 - Add `password_level`, `password_type`, and `password` attributes to `iosxe_line` aux entries for line aux password configuration
@@ -18,7 +22,7 @@
 - BREAKING CHANGE: Remove `detector_rpc_max_sessions` attribute from `iosxe_eem` resource and data source
 - Add `voice_vlan` attribute to `iosxe_interface_switchport` resource and data source
 - Add `console` attribute to `iosxe_aaa_authorization` resource and data source
-- Add `iosxe_stackwise_virtual` resource and data source for global StackWise Virtual configuration (`stackwise-virtual`), including domain ID and dual-active detection PAgP trust channel-group
+- Add `stackwise_virtual_domain`, `stackwise_virtual_dual_active_detection_pagp`, and `stackwise_virtual_dual_active_detection_pagp_trust_channel_group` attributes to `iosxe_system` resource and data source for global StackWise Virtual configuration
 - Add `iosxe_interface_stackwise_virtual` resource and data source for interface-level StackWise Virtual configuration, including SVL link assignment and dual-active detection interface marking
 - Fix `iosxe_aaa` resource attempting to delete the `new_model` attribute on update or destroy. IOS-XE does not permit removal of `aaa new-model` once configured (`no aaa new-model` is rejected by the device with active AAA dependents); the leaf is now marked `no_delete: true`
 - Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable`, `spanning_tree_portfast_trunk`, and `spanning_tree_portfast_edge` attributes to `iosxe_interface_port_channel` resource and data source
