@@ -35,8 +35,9 @@ import (
 func TestAccIosxeInterfaceVRRPV2(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "group_id", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "ip_primary_address", "10.0.0.254"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "ip_secondary_addresses.0.address", "10.0.0.253"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "ip_primary_address", "192.0.2.254"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "ip_secondary_addresses.0.address", "192.0.2.253"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "ip_secondary_addresses.0.secondary", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "priority", "110"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "preempt", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vrrp_v2.test", "preempt_delay_minimum", "30"))
@@ -89,16 +90,23 @@ func iosxeInterfaceVRRPV2ImportStateIdFunc(resourceName string) resource.ImportS
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfaceVRRPV2PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "/Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=1]"
+	path = "/Cisco-IOS-XE-native:native/fhrp/version"
 	attributes = {
-		"name" = "1"
+		"vrrp" = "v2"
 	}
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "/Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=1]/ip/address/primary"
+	path = "/Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]"
 	attributes = {
-		"address" = "10.0.0.1"
+		"name" = "2"
+	}
+}
+
+resource "iosxe_yang" "PreReq2" {
+	path = "/Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]/ip/address/primary"
+	attributes = {
+		"address" = "192.0.2.1"
 		"mask" = "255.255.255.0"
 	}
 }
@@ -112,9 +120,10 @@ resource "iosxe_yang" "PreReq1" {
 func testAccIosxeInterfaceVRRPV2Config_minimum() string {
 	config := `resource "iosxe_interface_vrrp_v2" "test" {` + "\n"
 	config += `	type = "GigabitEthernet"` + "\n"
-	config += `	name = "1"` + "\n"
+	config += `	name = "2"` + "\n"
 	config += `	group_id = 1` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
+	config += `	ip_primary_address = "192.0.2.254"` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -126,11 +135,12 @@ func testAccIosxeInterfaceVRRPV2Config_minimum() string {
 func testAccIosxeInterfaceVRRPV2Config_all() string {
 	config := `resource "iosxe_interface_vrrp_v2" "test" {` + "\n"
 	config += `	type = "GigabitEthernet"` + "\n"
-	config += `	name = "1"` + "\n"
+	config += `	name = "2"` + "\n"
 	config += `	group_id = 1` + "\n"
-	config += `	ip_primary_address = "10.0.0.254"` + "\n"
+	config += `	ip_primary_address = "192.0.2.254"` + "\n"
 	config += `	ip_secondary_addresses = [{` + "\n"
-	config += `		address = "10.0.0.253"` + "\n"
+	config += `		address = "192.0.2.253"` + "\n"
+	config += `		secondary = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	priority = 110` + "\n"
 	config += `	preempt = true` + "\n"
@@ -143,7 +153,7 @@ func testAccIosxeInterfaceVRRPV2Config_all() string {
 	config += `		decrement = 20` + "\n"
 	config += `	}]` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

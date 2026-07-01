@@ -15,7 +15,7 @@ This data source can read the Interface VRRP v2 configuration.
 ```terraform
 data "iosxe_interface_vrrp_v2" "example" {
   type     = "GigabitEthernet"
-  name     = "1"
+  name     = "2"
   group_id = 1
 }
 ```
@@ -53,6 +53,7 @@ data "iosxe_interface_vrrp_v2" "example" {
 Read-Only:
 
 - `address` (String)
+- `secondary` (Boolean) Make this IPv4 address a secondary address
 
 
 <a id="nestedatt--tracks"></a>

@@ -93,6 +93,10 @@ func (d *InterfaceVRRPV2DataSource) Schema(ctx context.Context, req datasource.S
 							MarkdownDescription: "",
 							Computed:            true,
 						},
+						"secondary": schema.BoolAttribute{
+							MarkdownDescription: "Make this IPv4 address a secondary address",
+							Computed:            true,
+						},
 					},
 				},
 			},

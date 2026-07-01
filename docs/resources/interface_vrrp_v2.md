@@ -15,12 +15,13 @@ This resource can manage the Interface VRRP v2 configuration.
 ```terraform
 resource "iosxe_interface_vrrp_v2" "example" {
   type               = "GigabitEthernet"
-  name               = "1"
+  name               = "2"
   group_id           = 1
-  ip_primary_address = "10.0.0.254"
+  ip_primary_address = "192.0.2.254"
   ip_secondary_addresses = [
     {
-      address = "10.0.0.253"
+      address   = "192.0.2.253"
+      secondary = true
     }
   ]
   priority                  = 110
@@ -46,6 +47,7 @@ resource "iosxe_interface_vrrp_v2" "example" {
 
 - `group_id` (Number) VRRP group number
   - Range: `1`-`255`
+- `ip_primary_address` (String) Virtual IP address
 - `name` (String)
 - `type` (String) Interface type
   - Choices: `GigabitEthernet`, `TwoGigabitEthernet`, `FiveGigabitEthernet`, `TenGigabitEthernet`, `TwentyFiveGigE`, `FortyGigabitEthernet`, `HundredGigE`, `Vlan`, `Port-channel`, `Port-channel-subinterface/Port-channel`, `BDI`
@@ -57,7 +59,6 @@ resource "iosxe_interface_vrrp_v2" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Up to 80 characters describing this group
 - `device` (String) A device name from the provider configuration.
-- `ip_primary_address` (String) Virtual IP address
 - `ip_secondary_addresses` (Attributes List) Secondary virtual IPv4 addresses (see [below for nested schema](#nestedatt--ip_secondary_addresses))
 - `preempt` (Boolean) Enable preemption of lower priority Master
 - `preempt_delay_minimum` (Number) Seconds to delay before preempting
@@ -79,6 +80,11 @@ resource "iosxe_interface_vrrp_v2" "example" {
 Required:
 
 - `address` (String)
+
+Optional:
+
+- `secondary` (Boolean) Make this IPv4 address a secondary address
+  - Default value: `true`
 
 
 <a id="nestedatt--tracks"></a>

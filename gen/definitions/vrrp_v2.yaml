@@ -23,14 +23,15 @@ attributes:
       - BDI
     example: GigabitEthernet
   - yang_name: name
-    example: 1
+    example: 2
   - yang_name: group-id
     example: 1
   - yang_name: ip/primary/address
     tf_name: ip_primary_address
     description: Virtual IP address
     type: String
-    example: 10.0.0.254
+    mandatory: true
+    example: 192.0.2.254
   - yang_name: ip/secondary
     tf_name: ip_secondary_addresses
     type: List
@@ -39,7 +40,11 @@ attributes:
       - yang_name: address
         id: true
         type: String
-        example: 10.0.0.253
+        example: 192.0.2.253
+      - yang_name: secondary
+        type_yang_bool: empty
+        default_value: true
+        example: true
   - yang_name: priority
     description: Priority level
     example: 110
@@ -80,13 +85,17 @@ attributes:
     example: false
 
 test_prerequisites:
-  - path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=1]
+  - path: /Cisco-IOS-XE-native:native/fhrp/version
+    attributes:
+      - name: vrrp
+        value: v2
+  - path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]
     attributes:
       - name: name
-        value: 1
-  - path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=1]/ip/address/primary
+        value: 2
+  - path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=2]/ip/address/primary
     attributes:
       - name: address
-        value: 10.0.0.1
+        value: 192.0.2.1
       - name: mask
         value: 255.255.255.0

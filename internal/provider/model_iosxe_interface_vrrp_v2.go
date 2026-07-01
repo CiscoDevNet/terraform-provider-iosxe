@@ -56,7 +56,8 @@ type InterfaceVRRPV2 struct {
 	Shutdown                types.Bool                            `tfsdk:"shutdown"`
 }
 type InterfaceVRRPV2IpSecondaryAddresses struct {
-	Address types.String `tfsdk:"address"`
+	Address   types.String `tfsdk:"address"`
+	Secondary types.Bool   `tfsdk:"secondary"`
 }
 type InterfaceVRRPV2Tracks struct {
 	ObjectId  types.Int64 `tfsdk:"object_id"`
@@ -81,7 +82,8 @@ type InterfaceVRRPV2Data struct {
 	Shutdown                types.Bool                                `tfsdk:"shutdown"`
 }
 type InterfaceVRRPV2IpSecondaryAddressesData struct {
-	Address types.String `tfsdk:"address"`
+	Address   types.String `tfsdk:"address"`
+	Secondary types.Bool   `tfsdk:"secondary"`
 }
 type InterfaceVRRPV2TracksData struct {
 	ObjectId  types.Int64 `tfsdk:"object_id"`
@@ -130,6 +132,13 @@ func (data InterfaceVRRPV2) toBodyXML(ctx context.Context, config InterfaceVRRPV
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "address", item.Address.ValueString())
+			}
+			if !item.Secondary.IsNull() && !item.Secondary.IsUnknown() {
+				if item.Secondary.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "secondary", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "secondary")
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/secondary", cBody.Res())
 		}
@@ -220,6 +229,15 @@ func (data *InterfaceVRRPV2) updateFromBodyXML(ctx context.Context, res xmldot.R
 			data.IpSecondaryAddresses[i].Address = types.StringValue(value.String())
 		} else {
 			data.IpSecondaryAddresses[i].Address = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "secondary"); !data.IpSecondaryAddresses[i].Secondary.IsNull() {
+			if value.Exists() {
+				data.IpSecondaryAddresses[i].Secondary = types.BoolValue(true)
+			} else {
+				data.IpSecondaryAddresses[i].Secondary = types.BoolValue(false)
+			}
+		} else {
+			data.IpSecondaryAddresses[i].Secondary = types.BoolNull()
 		}
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
@@ -314,6 +332,11 @@ func (data *InterfaceVRRPV2) fromBodyXML(ctx context.Context, res xmldot.Result)
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
 			}
+			if cValue := helpers.GetFromXPath(v, "secondary"); cValue.Exists() {
+				item.Secondary = types.BoolValue(true)
+			} else {
+				item.Secondary = types.BoolValue(false)
+			}
 			data.IpSecondaryAddresses = append(data.IpSecondaryAddresses, item)
 			return true
 		})
@@ -373,6 +396,11 @@ func (data *InterfaceVRRPV2Data) fromBodyXML(ctx context.Context, res xmldot.Res
 			item := InterfaceVRRPV2IpSecondaryAddressesData{}
 			if cValue := helpers.GetFromXPath(v, "address"); cValue.Exists() {
 				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "secondary"); cValue.Exists() {
+				item.Secondary = types.BoolValue(true)
+			} else {
+				item.Secondary = types.BoolValue(false)
 			}
 			data.IpSecondaryAddresses = append(data.IpSecondaryAddresses, item)
 			return true
@@ -502,6 +530,9 @@ func (data *InterfaceVRRPV2) addDeletedItemsXML(ctx context.Context, state Inter
 				found = false
 			}
 			if found {
+				if !state.IpSecondaryAddresses[i].Secondary.IsNull() && data.IpSecondaryAddresses[j].Secondary.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/secondary%v/secondary", predicates))
+				}
 				break
 			}
 		}

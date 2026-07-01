@@ -1,11 +1,12 @@
 resource "iosxe_interface_vrrp_v2" "example" {
   type               = "GigabitEthernet"
-  name               = "1"
+  name               = "2"
   group_id           = 1
-  ip_primary_address = "10.0.0.254"
+  ip_primary_address = "192.0.2.254"
   ip_secondary_addresses = [
     {
-      address = "10.0.0.253"
+      address   = "192.0.2.253"
+      secondary = true
     }
   ]
   priority                  = 110
