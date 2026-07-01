@@ -1,51 +1,73 @@
 ---
 name: EVPN
-path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn
+path: /Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont
 test_tags: [C9000V]
 doc_category: EVPN
 attributes:
-  - yang_name: replication-type/replication-type-choice/ingress/ingress
-    xpath: replication-type/ingress
+  - yang_name: evpn/replication-type/replication-type-choice/ingress/ingress
+    xpath: evpn/replication-type/ingress
     tf_name: replication_type_ingress
     example: false
-  - yang_name: replication-type/replication-type-choice/static/static
-    xpath: replication-type/static
+  - yang_name: evpn/replication-type/replication-type-choice/static/static
+    xpath: evpn/replication-type/static
     tf_name: replication_type_static
     example: true
-  - yang_name: replication-type/replication-type-choice/p2mp/p2mp
-    xpath: replication-type/p2mp
+  - yang_name: evpn/replication-type/replication-type-choice/p2mp/p2mp
+    xpath: evpn/replication-type/p2mp
     tf_name: replication_type_p2mp
     example: false
-  - yang_name: replication-type/replication-type-choice/mp2mp/mp2mp
-    xpath: replication-type/mp2mp
+  - yang_name: evpn/replication-type/replication-type-choice/mp2mp/mp2mp
+    xpath: evpn/replication-type/mp2mp
     tf_name: replication_type_mp2mp
     example: false
-  - yang_name: mac/duplication/limit
+  - yang_name: evpn/mac/duplication/limit
+    xpath: evpn/mac/duplication/limit
     delete_parent: true
     example: 10
-  - yang_name: mac/duplication/time
+  - yang_name: evpn/mac/duplication/time
+    xpath: evpn/mac/duplication/time
     delete_parent: true
     example: 100
-  - yang_name: ip/duplication/limit
+  - yang_name: evpn/ip/duplication/limit
+    xpath: evpn/ip/duplication/limit
     delete_parent: true
     example: 10
-  - yang_name: ip/duplication/time
+  - yang_name: evpn/ip/duplication/time
+    xpath: evpn/ip/duplication/time
     delete_parent: true
     example: 100
-  - yang_name: router-id/interface/interface-choice/Loopback/Loopback
-    xpath: router-id/interface/Loopback
+  - yang_name: evpn/router-id/interface/interface-choice/Loopback/Loopback
+    xpath: evpn/router-id/interface/Loopback
     tf_name: router_id_loopback
     example: 100
-  - yang_name: default-gateway/advertise
+  - yang_name: evpn/default-gateway/advertise
+    xpath: evpn/default-gateway/advertise
     example: true
-  - yang_name: logging/peer/state
+  - yang_name: evpn/logging/peer/state
+    xpath: evpn/logging/peer/state
     example: true
-  - yang_name: route-target/auto/vni
+  - yang_name: evpn/route-target/auto/vni
+    xpath: evpn/route-target/auto/vni
     example: true
-  - yang_name: anycast-gateway/mac/auto
+  - yang_name: evpn/anycast-gateway/mac/auto
+    xpath: evpn/anycast-gateway/mac/auto
     example: true
     exclude_test: true
-  - yang_name: flooding-suppression/address-resolution/disable
+  - yang_name: evpn/flooding-suppression/address-resolution/disable
+    xpath: evpn/flooding-suppression/address-resolution/disable
     example: true
-  - yang_name: multicast/advertise
+  - yang_name: evpn/multicast/advertise
+    xpath: evpn/multicast/advertise
     example: true
+  - yang_name: l2-profile/evpn/profile/profile-name-list
+    tf_name: profiles
+    type: List
+    test_tags: [IOSXE1715]
+    attributes:
+      - yang_name: name
+        id: true
+        example: MY_EVPN_PROFILE
+      - yang_name: evi-base
+        example: 1000
+      - yang_name: l2vni-base
+        example: 10000

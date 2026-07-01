@@ -39,7 +39,6 @@ import (
 type DHCP struct {
 	Device                                          types.String              `tfsdk:"device"`
 	Id                                              types.String              `tfsdk:"id"`
-	DeleteMode                                      types.String              `tfsdk:"delete_mode"`
 	CompatibilitySuboptionLinkSelection             types.String              `tfsdk:"compatibility_suboption_link_selection"`
 	CompatibilitySuboptionServerOverride            types.String              `tfsdk:"compatibility_suboption_server_override"`
 	RelayInformationTrustAll                        types.Bool                `tfsdk:"relay_information_trust_all"`
@@ -53,12 +52,98 @@ type DHCP struct {
 	SnoopingInformationOptionFormatRemoteIdHostname types.Bool                `tfsdk:"snooping_information_option_format_remote_id_hostname"`
 	SnoopingVlansLegacy                             []DHCPSnoopingVlansLegacy `tfsdk:"snooping_vlans_legacy"`
 	SnoopingVlans                                   []DHCPSnoopingVlans       `tfsdk:"snooping_vlans"`
+	Pools                                           []DHCPPools               `tfsdk:"pools"`
+	Ipv6Pools                                       []DHCPIpv6Pools           `tfsdk:"ipv6_pools"`
 }
 type DHCPSnoopingVlansLegacy struct {
 	VlanId types.String `tfsdk:"vlan_id"`
 }
 type DHCPSnoopingVlans struct {
 	VlanId types.Int64 `tfsdk:"vlan_id"`
+}
+type DHCPPools struct {
+	Name                   types.String                 `tfsdk:"name"`
+	Vrf                    types.String                 `tfsdk:"vrf"`
+	DomainName             types.String                 `tfsdk:"domain_name"`
+	Bootfile               types.String                 `tfsdk:"bootfile"`
+	ClientName             types.String                 `tfsdk:"client_name"`
+	NetworkNumber          types.String                 `tfsdk:"network_number"`
+	NetworkMask            types.String                 `tfsdk:"network_mask"`
+	SecondaryNetworks      []DHCPPoolsSecondaryNetworks `tfsdk:"secondary_networks"`
+	HostNumber             types.String                 `tfsdk:"host_number"`
+	HostMask               types.String                 `tfsdk:"host_mask"`
+	DefaultRouters         types.List                   `tfsdk:"default_routers"`
+	DnsServers             types.List                   `tfsdk:"dns_servers"`
+	NextServers            types.List                   `tfsdk:"next_servers"`
+	LeaseDays              types.Int64                  `tfsdk:"lease_days"`
+	LeaseHours             types.Int64                  `tfsdk:"lease_hours"`
+	LeaseMinutes           types.Int64                  `tfsdk:"lease_minutes"`
+	LeaseInfinite          types.Bool                   `tfsdk:"lease_infinite"`
+	UtilizationMarkHigh    types.Int64                  `tfsdk:"utilization_mark_high"`
+	UtilizationMarkHighLog types.Bool                   `tfsdk:"utilization_mark_high_log"`
+	UtilizationMarkLow     types.Int64                  `tfsdk:"utilization_mark_low"`
+	UtilizationMarkLowLog  types.Bool                   `tfsdk:"utilization_mark_low_log"`
+	SubnetPrefixLength     types.Int64                  `tfsdk:"subnet_prefix_length"`
+	Options                []DHCPPoolsOptions           `tfsdk:"options"`
+}
+type DHCPIpv6Pools struct {
+	Name                                  types.String                            `tfsdk:"name"`
+	Vrf                                   types.String                            `tfsdk:"vrf"`
+	AddressPrefixes                       []DHCPIpv6PoolsAddressPrefixes          `tfsdk:"address_prefixes"`
+	PrefixDelegationPoolName              types.String                            `tfsdk:"prefix_delegation_pool_name"`
+	PrefixDelegationPoolValidLifetime     types.String                            `tfsdk:"prefix_delegation_pool_valid_lifetime"`
+	PrefixDelegationPoolPreferredLifetime types.String                            `tfsdk:"prefix_delegation_pool_preferred_lifetime"`
+	PrefixDelegationPrefixes              []DHCPIpv6PoolsPrefixDelegationPrefixes `tfsdk:"prefix_delegation_prefixes"`
+	DnsServers                            types.List                              `tfsdk:"dns_servers"`
+	DomainNames                           types.List                              `tfsdk:"domain_names"`
+	LinkAddresses                         []DHCPIpv6PoolsLinkAddresses            `tfsdk:"link_addresses"`
+	BootfileUrl                           types.String                            `tfsdk:"bootfile_url"`
+	OptionIncludeAll                      types.Bool                              `tfsdk:"option_include_all"`
+	VendorSpecifics                       []DHCPIpv6PoolsVendorSpecifics          `tfsdk:"vendor_specifics"`
+	ImportDnsServer                       types.Bool                              `tfsdk:"import_dns_server"`
+	ImportDomainName                      types.Bool                              `tfsdk:"import_domain_name"`
+	SntpAddresses                         types.List                              `tfsdk:"sntp_addresses"`
+	InformationRefreshDays                types.Int64                             `tfsdk:"information_refresh_days"`
+	InformationRefreshHours               types.Int64                             `tfsdk:"information_refresh_hours"`
+	InformationRefreshMinutes             types.Int64                             `tfsdk:"information_refresh_minutes"`
+	InformationRefreshInfinite            types.Bool                              `tfsdk:"information_refresh_infinite"`
+}
+type DHCPPoolsSecondaryNetworks struct {
+	Number    types.String `tfsdk:"number"`
+	Mask      types.String `tfsdk:"mask"`
+	Secondary types.Bool   `tfsdk:"secondary"`
+}
+type DHCPPoolsOptions struct {
+	OptionCode types.Int64  `tfsdk:"option_code"`
+	Ascii      types.String `tfsdk:"ascii"`
+	Hex        types.String `tfsdk:"hex"`
+	Ip         types.List   `tfsdk:"ip"`
+	IpLegacy   types.List   `tfsdk:"ip_legacy"`
+}
+type DHCPIpv6PoolsAddressPrefixes struct {
+	Address           types.String `tfsdk:"address"`
+	ValidLifetime     types.String `tfsdk:"valid_lifetime"`
+	PreferredLifetime types.String `tfsdk:"preferred_lifetime"`
+}
+type DHCPIpv6PoolsPrefixDelegationPrefixes struct {
+	Prefix            types.String `tfsdk:"prefix"`
+	HexString         types.String `tfsdk:"hex_string"`
+	Iaid              types.String `tfsdk:"iaid"`
+	ValidLifetime     types.String `tfsdk:"valid_lifetime"`
+	PreferredLifetime types.String `tfsdk:"preferred_lifetime"`
+}
+type DHCPIpv6PoolsLinkAddresses struct {
+	Address types.String `tfsdk:"address"`
+}
+type DHCPIpv6PoolsVendorSpecifics struct {
+	EnterpriseId types.Int64                              `tfsdk:"enterprise_id"`
+	Suboptions   []DHCPIpv6PoolsVendorSpecificsSuboptions `tfsdk:"suboptions"`
+}
+type DHCPIpv6PoolsVendorSpecificsSuboptions struct {
+	Number  types.Int64  `tfsdk:"number"`
+	Address types.String `tfsdk:"address"`
+	Ascii   types.String `tfsdk:"ascii"`
+	Hex     types.String `tfsdk:"hex"`
 }
 
 type DHCPData struct {
@@ -77,6 +162,8 @@ type DHCPData struct {
 	SnoopingInformationOptionFormatRemoteIdHostname types.Bool                    `tfsdk:"snooping_information_option_format_remote_id_hostname"`
 	SnoopingVlansLegacy                             []DHCPSnoopingVlansLegacyData `tfsdk:"snooping_vlans_legacy"`
 	SnoopingVlans                                   []DHCPSnoopingVlansData       `tfsdk:"snooping_vlans"`
+	Pools                                           []DHCPPoolsData               `tfsdk:"pools"`
+	Ipv6Pools                                       []DHCPIpv6PoolsData           `tfsdk:"ipv6_pools"`
 }
 type DHCPSnoopingVlansLegacyData struct {
 	VlanId types.String `tfsdk:"vlan_id"`
@@ -84,27 +171,111 @@ type DHCPSnoopingVlansLegacyData struct {
 type DHCPSnoopingVlansData struct {
 	VlanId types.Int64 `tfsdk:"vlan_id"`
 }
+type DHCPPoolsData struct {
+	Name                   types.String                     `tfsdk:"name"`
+	Vrf                    types.String                     `tfsdk:"vrf"`
+	DomainName             types.String                     `tfsdk:"domain_name"`
+	Bootfile               types.String                     `tfsdk:"bootfile"`
+	ClientName             types.String                     `tfsdk:"client_name"`
+	NetworkNumber          types.String                     `tfsdk:"network_number"`
+	NetworkMask            types.String                     `tfsdk:"network_mask"`
+	SecondaryNetworks      []DHCPPoolsSecondaryNetworksData `tfsdk:"secondary_networks"`
+	HostNumber             types.String                     `tfsdk:"host_number"`
+	HostMask               types.String                     `tfsdk:"host_mask"`
+	DefaultRouters         types.List                       `tfsdk:"default_routers"`
+	DnsServers             types.List                       `tfsdk:"dns_servers"`
+	NextServers            types.List                       `tfsdk:"next_servers"`
+	LeaseDays              types.Int64                      `tfsdk:"lease_days"`
+	LeaseHours             types.Int64                      `tfsdk:"lease_hours"`
+	LeaseMinutes           types.Int64                      `tfsdk:"lease_minutes"`
+	LeaseInfinite          types.Bool                       `tfsdk:"lease_infinite"`
+	UtilizationMarkHigh    types.Int64                      `tfsdk:"utilization_mark_high"`
+	UtilizationMarkHighLog types.Bool                       `tfsdk:"utilization_mark_high_log"`
+	UtilizationMarkLow     types.Int64                      `tfsdk:"utilization_mark_low"`
+	UtilizationMarkLowLog  types.Bool                       `tfsdk:"utilization_mark_low_log"`
+	SubnetPrefixLength     types.Int64                      `tfsdk:"subnet_prefix_length"`
+	Options                []DHCPPoolsOptionsData           `tfsdk:"options"`
+}
+type DHCPIpv6PoolsData struct {
+	Name                                  types.String                                `tfsdk:"name"`
+	Vrf                                   types.String                                `tfsdk:"vrf"`
+	AddressPrefixes                       []DHCPIpv6PoolsAddressPrefixesData          `tfsdk:"address_prefixes"`
+	PrefixDelegationPoolName              types.String                                `tfsdk:"prefix_delegation_pool_name"`
+	PrefixDelegationPoolValidLifetime     types.String                                `tfsdk:"prefix_delegation_pool_valid_lifetime"`
+	PrefixDelegationPoolPreferredLifetime types.String                                `tfsdk:"prefix_delegation_pool_preferred_lifetime"`
+	PrefixDelegationPrefixes              []DHCPIpv6PoolsPrefixDelegationPrefixesData `tfsdk:"prefix_delegation_prefixes"`
+	DnsServers                            types.List                                  `tfsdk:"dns_servers"`
+	DomainNames                           types.List                                  `tfsdk:"domain_names"`
+	LinkAddresses                         []DHCPIpv6PoolsLinkAddressesData            `tfsdk:"link_addresses"`
+	BootfileUrl                           types.String                                `tfsdk:"bootfile_url"`
+	OptionIncludeAll                      types.Bool                                  `tfsdk:"option_include_all"`
+	VendorSpecifics                       []DHCPIpv6PoolsVendorSpecificsData          `tfsdk:"vendor_specifics"`
+	ImportDnsServer                       types.Bool                                  `tfsdk:"import_dns_server"`
+	ImportDomainName                      types.Bool                                  `tfsdk:"import_domain_name"`
+	SntpAddresses                         types.List                                  `tfsdk:"sntp_addresses"`
+	InformationRefreshDays                types.Int64                                 `tfsdk:"information_refresh_days"`
+	InformationRefreshHours               types.Int64                                 `tfsdk:"information_refresh_hours"`
+	InformationRefreshMinutes             types.Int64                                 `tfsdk:"information_refresh_minutes"`
+	InformationRefreshInfinite            types.Bool                                  `tfsdk:"information_refresh_infinite"`
+}
+type DHCPPoolsSecondaryNetworksData struct {
+	Number    types.String `tfsdk:"number"`
+	Mask      types.String `tfsdk:"mask"`
+	Secondary types.Bool   `tfsdk:"secondary"`
+}
+type DHCPPoolsOptionsData struct {
+	OptionCode types.Int64  `tfsdk:"option_code"`
+	Ascii      types.String `tfsdk:"ascii"`
+	Hex        types.String `tfsdk:"hex"`
+	Ip         types.List   `tfsdk:"ip"`
+	IpLegacy   types.List   `tfsdk:"ip_legacy"`
+}
+type DHCPIpv6PoolsAddressPrefixesData struct {
+	Address           types.String `tfsdk:"address"`
+	ValidLifetime     types.String `tfsdk:"valid_lifetime"`
+	PreferredLifetime types.String `tfsdk:"preferred_lifetime"`
+}
+type DHCPIpv6PoolsPrefixDelegationPrefixesData struct {
+	Prefix            types.String `tfsdk:"prefix"`
+	HexString         types.String `tfsdk:"hex_string"`
+	Iaid              types.String `tfsdk:"iaid"`
+	ValidLifetime     types.String `tfsdk:"valid_lifetime"`
+	PreferredLifetime types.String `tfsdk:"preferred_lifetime"`
+}
+type DHCPIpv6PoolsLinkAddressesData struct {
+	Address types.String `tfsdk:"address"`
+}
+type DHCPIpv6PoolsVendorSpecificsData struct {
+	EnterpriseId types.Int64                                  `tfsdk:"enterprise_id"`
+	Suboptions   []DHCPIpv6PoolsVendorSpecificsSuboptionsData `tfsdk:"suboptions"`
+}
+type DHCPIpv6PoolsVendorSpecificsSuboptionsData struct {
+	Number  types.Int64  `tfsdk:"number"`
+	Address types.String `tfsdk:"address"`
+	Ascii   types.String `tfsdk:"ascii"`
+	Hex     types.String `tfsdk:"hex"`
+}
 
 // End of section. //template:end types
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data DHCP) getPath() string {
-	return "Cisco-IOS-XE-native:native/ip/dhcp"
+	return "Cisco-IOS-XE-native:native"
 }
 
 func (data DHCPData) getPath() string {
-	return "Cisco-IOS-XE-native:native/ip/dhcp"
+	return "Cisco-IOS-XE-native:native"
 }
 
 // getXPath returns the XPath for NETCONF operations
 func (data DHCP) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/ip/dhcp"
+	path := "/Cisco-IOS-XE-native:native"
 	return path
 }
 
 func (data DHCPData) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/ip/dhcp"
+	path := "/Cisco-IOS-XE-native:native"
 	return path
 }
 
@@ -115,64 +286,64 @@ func (data DHCPData) getXPath() string {
 func (data DHCP) toBodyXML(ctx context.Context, config DHCP) string {
 	body := netconf.Body{}
 	if !data.CompatibilitySuboptionLinkSelection.IsNull() && !data.CompatibilitySuboptionLinkSelection.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection", data.CompatibilitySuboptionLinkSelection.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection", data.CompatibilitySuboptionLinkSelection.ValueString())
 	}
 	if !data.CompatibilitySuboptionServerOverride.IsNull() && !data.CompatibilitySuboptionServerOverride.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override", data.CompatibilitySuboptionServerOverride.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override", data.CompatibilitySuboptionServerOverride.ValueString())
 	}
 	if !data.RelayInformationTrustAll.IsNull() && !data.RelayInformationTrustAll.IsUnknown() {
 		if data.RelayInformationTrustAll.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/trust-all", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/trust-all")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all")
 		}
 	}
 	if !data.RelayInformationOptionDefault.IsNull() && !data.RelayInformationOptionDefault.IsUnknown() {
 		if data.RelayInformationOptionDefault.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/option-default", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
 		}
 	}
 	if !data.RelayInformationOptionVpn.IsNull() && !data.RelayInformationOptionVpn.IsUnknown() {
 		if data.RelayInformationOptionVpn.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/vpn", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
 		}
 	}
 	if !data.RelayBootpIgnore.IsNull() && !data.RelayBootpIgnore.IsUnknown() {
 		if data.RelayBootpIgnore.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/bootp/ignore", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
 		}
 	}
 	if !data.Snooping.IsNull() && !data.Snooping.IsUnknown() {
 		if data.Snooping.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping")
 		}
 	}
 	if !data.SnoopingInformationOption.IsNull() && !data.SnoopingInformationOption.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option", data.SnoopingInformationOption.ValueBool())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option", data.SnoopingInformationOption.ValueBool())
 	}
 	if !data.SnoopingInformationOptionAllowUntrusted.IsNull() && !data.SnoopingInformationOptionAllowUntrusted.IsUnknown() {
 		if data.SnoopingInformationOptionAllowUntrusted.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
 		}
 	}
 	if !data.SnoopingInformationOptionFormatRemoteIdString.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdString.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string", data.SnoopingInformationOptionFormatRemoteIdString.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string", data.SnoopingInformationOptionFormatRemoteIdString.ValueString())
 	}
 	if !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdHostname.IsUnknown() {
 		if data.SnoopingInformationOptionFormatRemoteIdHostname.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
 		}
 	}
 	if len(data.SnoopingVlansLegacy) > 0 {
@@ -181,7 +352,7 @@ func (data DHCP) toBodyXML(ctx context.Context, config DHCP) string {
 			if !item.VlanId.IsNull() && !item.VlanId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", item.VlanId.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list", cBody.Res())
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list", cBody.Res())
 		}
 	}
 	if len(data.SnoopingVlans) > 0 {
@@ -190,7 +361,302 @@ func (data DHCP) toBodyXML(ctx context.Context, config DHCP) string {
 			if !item.VlanId.IsNull() && !item.VlanId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.VlanId.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2", cBody.Res())
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2", cBody.Res())
+		}
+	}
+	if len(data.Pools) > 0 {
+		for _, item := range data.Pools {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "id", item.Name.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if !item.DomainName.IsNull() && !item.DomainName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "domain-name", item.DomainName.ValueString())
+			}
+			if !item.Bootfile.IsNull() && !item.Bootfile.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "bootfile", item.Bootfile.ValueString())
+			}
+			if !item.ClientName.IsNull() && !item.ClientName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "client-name", item.ClientName.ValueString())
+			}
+			if !item.NetworkNumber.IsNull() && !item.NetworkNumber.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "network/primary-network/number", item.NetworkNumber.ValueString())
+			}
+			if !item.NetworkMask.IsNull() && !item.NetworkMask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "network/primary-network/mask", item.NetworkMask.ValueString())
+			}
+			if len(item.SecondaryNetworks) > 0 {
+				for _, citem := range item.SecondaryNetworks {
+					ccBody := netconf.Body{}
+					if !citem.Number.IsNull() && !citem.Number.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "number", citem.Number.ValueString())
+					}
+					if !citem.Mask.IsNull() && !citem.Mask.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "mask", citem.Mask.ValueString())
+					}
+					if !citem.Secondary.IsNull() && !citem.Secondary.IsUnknown() {
+						if citem.Secondary.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "secondary", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "secondary")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "network/secondary-network", ccBody.Res())
+				}
+			}
+			if !item.HostNumber.IsNull() && !item.HostNumber.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "host/number", item.HostNumber.ValueString())
+			}
+			if !item.HostMask.IsNull() && !item.HostMask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "host/mask", item.HostMask.ValueString())
+			}
+			if !item.DefaultRouters.IsNull() && !item.DefaultRouters.IsUnknown() {
+				var values []string
+				item.DefaultRouters.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "default-router/default-router-list", v)
+				}
+			}
+			if !item.DnsServers.IsNull() && !item.DnsServers.IsUnknown() {
+				var values []string
+				item.DnsServers.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "dns-server/dns-server-list", v)
+				}
+			}
+			if !item.NextServers.IsNull() && !item.NextServers.IsUnknown() {
+				var values []string
+				item.NextServers.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "next-server", v)
+				}
+			}
+			if !item.LeaseDays.IsNull() && !item.LeaseDays.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "lease/lease-value/days", strconv.FormatInt(item.LeaseDays.ValueInt64(), 10))
+			}
+			if !item.LeaseHours.IsNull() && !item.LeaseHours.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "lease/lease-value/hours", strconv.FormatInt(item.LeaseHours.ValueInt64(), 10))
+			}
+			if !item.LeaseMinutes.IsNull() && !item.LeaseMinutes.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "lease/lease-value/minutes", strconv.FormatInt(item.LeaseMinutes.ValueInt64(), 10))
+			}
+			if !item.LeaseInfinite.IsNull() && !item.LeaseInfinite.IsUnknown() {
+				if item.LeaseInfinite.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "lease/infinite", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "lease/infinite")
+				}
+			}
+			if !item.UtilizationMarkHigh.IsNull() && !item.UtilizationMarkHigh.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "utilization/mark/high/high-value", strconv.FormatInt(item.UtilizationMarkHigh.ValueInt64(), 10))
+			}
+			if !item.UtilizationMarkHighLog.IsNull() && !item.UtilizationMarkHighLog.IsUnknown() {
+				if item.UtilizationMarkHighLog.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "utilization/mark/high/log", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "utilization/mark/high/log")
+				}
+			}
+			if !item.UtilizationMarkLow.IsNull() && !item.UtilizationMarkLow.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "utilization/mark/low/low-value", strconv.FormatInt(item.UtilizationMarkLow.ValueInt64(), 10))
+			}
+			if !item.UtilizationMarkLowLog.IsNull() && !item.UtilizationMarkLowLog.IsUnknown() {
+				if item.UtilizationMarkLowLog.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "utilization/mark/low/log", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "utilization/mark/low/log")
+				}
+			}
+			if !item.SubnetPrefixLength.IsNull() && !item.SubnetPrefixLength.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "subnet/prefix-length", strconv.FormatInt(item.SubnetPrefixLength.ValueInt64(), 10))
+			}
+			if len(item.Options) > 0 {
+				for _, citem := range item.Options {
+					ccBody := netconf.Body{}
+					if !citem.OptionCode.IsNull() && !citem.OptionCode.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "option-range", strconv.FormatInt(citem.OptionCode.ValueInt64(), 10))
+					}
+					if !citem.Ascii.IsNull() && !citem.Ascii.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ascii-new", citem.Ascii.ValueString())
+					}
+					if !citem.Hex.IsNull() && !citem.Hex.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "hex-new/hex-line", citem.Hex.ValueString())
+					}
+					if !citem.Ip.IsNull() && !citem.Ip.IsUnknown() {
+						var values []string
+						citem.Ip.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							ccBody = helpers.AppendFromXPath(ccBody, "ip-ordered", v)
+						}
+					}
+					if !citem.IpLegacy.IsNull() && !citem.IpLegacy.IsUnknown() {
+						var values []string
+						citem.IpLegacy.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							ccBody = helpers.AppendFromXPath(ccBody, "ip-new", v)
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "option/option-range", ccBody.Res())
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool", cBody.Res())
+		}
+	}
+	if len(data.Ipv6Pools) > 0 {
+		for _, item := range data.Ipv6Pools {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if len(item.AddressPrefixes) > 0 {
+				for _, citem := range item.AddressPrefixes {
+					ccBody := netconf.Body{}
+					if !citem.Address.IsNull() && !citem.Address.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv6-address", citem.Address.ValueString())
+					}
+					if !citem.ValidLifetime.IsNull() && !citem.ValidLifetime.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "lifetime/valid-lifetime", citem.ValidLifetime.ValueString())
+					}
+					if !citem.PreferredLifetime.IsNull() && !citem.PreferredLifetime.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "lifetime/preferred-lifetime", citem.PreferredLifetime.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "address/prefix", ccBody.Res())
+				}
+			}
+			if !item.PrefixDelegationPoolName.IsNull() && !item.PrefixDelegationPoolName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "prefix-delegation/pool/pool-name", item.PrefixDelegationPoolName.ValueString())
+			}
+			if !item.PrefixDelegationPoolValidLifetime.IsNull() && !item.PrefixDelegationPoolValidLifetime.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "prefix-delegation/pool/lifetime/valid-lifetime", item.PrefixDelegationPoolValidLifetime.ValueString())
+			}
+			if !item.PrefixDelegationPoolPreferredLifetime.IsNull() && !item.PrefixDelegationPoolPreferredLifetime.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "prefix-delegation/pool/lifetime/preferred-lifetime", item.PrefixDelegationPoolPreferredLifetime.ValueString())
+			}
+			if len(item.PrefixDelegationPrefixes) > 0 {
+				for _, citem := range item.PrefixDelegationPrefixes {
+					ccBody := netconf.Body{}
+					if !citem.Prefix.IsNull() && !citem.Prefix.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "ipv6-prefix", citem.Prefix.ValueString())
+					}
+					if !citem.HexString.IsNull() && !citem.HexString.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "Hex-string", citem.HexString.ValueString())
+					}
+					if !citem.Iaid.IsNull() && !citem.Iaid.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "iaid", citem.Iaid.ValueString())
+					}
+					if !citem.ValidLifetime.IsNull() && !citem.ValidLifetime.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "lifetime/valid-lifetime", citem.ValidLifetime.ValueString())
+					}
+					if !citem.PreferredLifetime.IsNull() && !citem.PreferredLifetime.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "lifetime/preferred-lifetime", citem.PreferredLifetime.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "prefix-delegation/pd-prefix", ccBody.Res())
+				}
+			}
+			if !item.DnsServers.IsNull() && !item.DnsServers.IsUnknown() {
+				var values []string
+				item.DnsServers.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "dns-server", v)
+				}
+			}
+			if !item.DomainNames.IsNull() && !item.DomainNames.IsUnknown() {
+				var values []string
+				item.DomainNames.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "domain-names", v)
+				}
+			}
+			if len(item.LinkAddresses) > 0 {
+				for _, citem := range item.LinkAddresses {
+					ccBody := netconf.Body{}
+					if !citem.Address.IsNull() && !citem.Address.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "address", citem.Address.ValueString())
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "link-address", ccBody.Res())
+				}
+			}
+			if !item.BootfileUrl.IsNull() && !item.BootfileUrl.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "bootfile-url", item.BootfileUrl.ValueString())
+			}
+			if !item.OptionIncludeAll.IsNull() && !item.OptionIncludeAll.IsUnknown() {
+				if item.OptionIncludeAll.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/include-all", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/include-all")
+				}
+			}
+			if len(item.VendorSpecifics) > 0 {
+				for _, citem := range item.VendorSpecifics {
+					ccBody := netconf.Body{}
+					if !citem.EnterpriseId.IsNull() && !citem.EnterpriseId.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "value", strconv.FormatInt(citem.EnterpriseId.ValueInt64(), 10))
+					}
+					if len(citem.Suboptions) > 0 {
+						for _, ccitem := range citem.Suboptions {
+							cccBody := netconf.Body{}
+							if !ccitem.Number.IsNull() && !ccitem.Number.IsUnknown() {
+								cccBody = helpers.SetFromXPath(cccBody, "number", strconv.FormatInt(ccitem.Number.ValueInt64(), 10))
+							}
+							if !ccitem.Address.IsNull() && !ccitem.Address.IsUnknown() {
+								cccBody = helpers.SetFromXPath(cccBody, "address", ccitem.Address.ValueString())
+							}
+							if !ccitem.Ascii.IsNull() && !ccitem.Ascii.IsUnknown() {
+								cccBody = helpers.SetFromXPath(cccBody, "ascii", ccitem.Ascii.ValueString())
+							}
+							if !ccitem.Hex.IsNull() && !ccitem.Hex.IsUnknown() {
+								cccBody = helpers.SetFromXPath(cccBody, "hex", ccitem.Hex.ValueString())
+							}
+							ccBody = helpers.SetRawFromXPath(ccBody, "suboption", cccBody.Res())
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "vendor-specific", ccBody.Res())
+				}
+			}
+			if !item.ImportDnsServer.IsNull() && !item.ImportDnsServer.IsUnknown() {
+				if item.ImportDnsServer.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "import/dns-server", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "import/dns-server")
+				}
+			}
+			if !item.ImportDomainName.IsNull() && !item.ImportDomainName.IsUnknown() {
+				if item.ImportDomainName.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "import/domain-name", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "import/domain-name")
+				}
+			}
+			if !item.SntpAddresses.IsNull() && !item.SntpAddresses.IsUnknown() {
+				var values []string
+				item.SntpAddresses.ElementsAs(ctx, &values, false)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "sntp/address", v)
+				}
+			}
+			if !item.InformationRefreshDays.IsNull() && !item.InformationRefreshDays.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "information/refresh/refresh-value/days", strconv.FormatInt(item.InformationRefreshDays.ValueInt64(), 10))
+			}
+			if !item.InformationRefreshHours.IsNull() && !item.InformationRefreshHours.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "information/refresh/refresh-value/hours", strconv.FormatInt(item.InformationRefreshHours.ValueInt64(), 10))
+			}
+			if !item.InformationRefreshMinutes.IsNull() && !item.InformationRefreshMinutes.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "information/refresh/refresh-value/minutes", strconv.FormatInt(item.InformationRefreshMinutes.ValueInt64(), 10))
+			}
+			if !item.InformationRefreshInfinite.IsNull() && !item.InformationRefreshInfinite.IsUnknown() {
+				if item.InformationRefreshInfinite.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "information/refresh/infinite", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "information/refresh/infinite")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -205,17 +671,17 @@ func (data DHCP) toBodyXML(ctx context.Context, config DHCP) string {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection"); value.Exists() && !data.CompatibilitySuboptionLinkSelection.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection"); value.Exists() && !data.CompatibilitySuboptionLinkSelection.IsNull() {
 		data.CompatibilitySuboptionLinkSelection = types.StringValue(value.String())
 	} else {
 		data.CompatibilitySuboptionLinkSelection = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override"); value.Exists() && !data.CompatibilitySuboptionServerOverride.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override"); value.Exists() && !data.CompatibilitySuboptionServerOverride.IsNull() {
 		data.CompatibilitySuboptionServerOverride = types.StringValue(value.String())
 	} else {
 		data.CompatibilitySuboptionServerOverride = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/trust-all"); !data.RelayInformationTrustAll.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all"); !data.RelayInformationTrustAll.IsNull() {
 		if value.Exists() {
 			data.RelayInformationTrustAll = types.BoolValue(true)
 		} else {
@@ -224,7 +690,7 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RelayInformationTrustAll = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/option-default"); !data.RelayInformationOptionDefault.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default"); !data.RelayInformationOptionDefault.IsNull() {
 		if value.Exists() {
 			data.RelayInformationOptionDefault = types.BoolValue(true)
 		} else {
@@ -233,7 +699,7 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RelayInformationOptionDefault = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/vpn"); !data.RelayInformationOptionVpn.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn"); !data.RelayInformationOptionVpn.IsNull() {
 		if value.Exists() {
 			data.RelayInformationOptionVpn = types.BoolValue(true)
 		} else {
@@ -242,7 +708,7 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RelayInformationOptionVpn = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/bootp/ignore"); !data.RelayBootpIgnore.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore"); !data.RelayBootpIgnore.IsNull() {
 		if value.Exists() {
 			data.RelayBootpIgnore = types.BoolValue(true)
 		} else {
@@ -251,7 +717,7 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RelayBootpIgnore = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping"); !data.Snooping.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping"); !data.Snooping.IsNull() {
 		if value.Exists() {
 			data.Snooping = types.BoolValue(true)
 		} else {
@@ -260,14 +726,14 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Snooping = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option"); !data.SnoopingInformationOption.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option"); !data.SnoopingInformationOption.IsNull() {
 		if value.Exists() {
 			data.SnoopingInformationOption = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.SnoopingInformationOption = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted"); !data.SnoopingInformationOptionAllowUntrusted.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted"); !data.SnoopingInformationOptionAllowUntrusted.IsNull() {
 		if value.Exists() {
 			data.SnoopingInformationOptionAllowUntrusted = types.BoolValue(true)
 		} else {
@@ -276,12 +742,12 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.SnoopingInformationOptionAllowUntrusted = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string"); value.Exists() && !data.SnoopingInformationOptionFormatRemoteIdString.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string"); value.Exists() && !data.SnoopingInformationOptionFormatRemoteIdString.IsNull() {
 		data.SnoopingInformationOptionFormatRemoteIdString = types.StringValue(value.String())
 	} else {
 		data.SnoopingInformationOptionFormatRemoteIdString = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname"); !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname"); !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
 		if value.Exists() {
 			data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(true)
 		} else {
@@ -295,7 +761,7 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.SnoopingVlansLegacy[i].VlanId.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -324,7 +790,7 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{strconv.FormatInt(data.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -348,6 +814,505 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.SnoopingVlans[i].VlanId = types.Int64Null()
 		}
 	}
+	for i := range data.Pools {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Pools[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Pools[i].Name.IsNull() {
+			data.Pools[i].Name = types.StringValue(value.String())
+		} else {
+			data.Pools[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.Pools[i].Vrf.IsNull() {
+			data.Pools[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Pools[i].Vrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "domain-name"); value.Exists() && !data.Pools[i].DomainName.IsNull() {
+			data.Pools[i].DomainName = types.StringValue(value.String())
+		} else {
+			data.Pools[i].DomainName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "bootfile"); value.Exists() && !data.Pools[i].Bootfile.IsNull() {
+			data.Pools[i].Bootfile = types.StringValue(value.String())
+		} else {
+			data.Pools[i].Bootfile = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "client-name"); value.Exists() && !data.Pools[i].ClientName.IsNull() {
+			data.Pools[i].ClientName = types.StringValue(value.String())
+		} else {
+			data.Pools[i].ClientName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "network/primary-network/number"); value.Exists() && !data.Pools[i].NetworkNumber.IsNull() {
+			data.Pools[i].NetworkNumber = types.StringValue(value.String())
+		} else {
+			data.Pools[i].NetworkNumber = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "network/primary-network/mask"); value.Exists() && !data.Pools[i].NetworkMask.IsNull() {
+			data.Pools[i].NetworkMask = types.StringValue(value.String())
+		} else {
+			data.Pools[i].NetworkMask = types.StringNull()
+		}
+		for ci := range data.Pools[i].SecondaryNetworks {
+			keys := [...]string{"number"}
+			keyValues := [...]string{data.Pools[i].SecondaryNetworks[ci].Number.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "network/secondary-network").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "number"); value.Exists() && !data.Pools[i].SecondaryNetworks[ci].Number.IsNull() {
+				data.Pools[i].SecondaryNetworks[ci].Number = types.StringValue(value.String())
+			} else {
+				data.Pools[i].SecondaryNetworks[ci].Number = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "mask"); value.Exists() && !data.Pools[i].SecondaryNetworks[ci].Mask.IsNull() {
+				data.Pools[i].SecondaryNetworks[ci].Mask = types.StringValue(value.String())
+			} else {
+				data.Pools[i].SecondaryNetworks[ci].Mask = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "secondary"); !data.Pools[i].SecondaryNetworks[ci].Secondary.IsNull() {
+				if value.Exists() {
+					data.Pools[i].SecondaryNetworks[ci].Secondary = types.BoolValue(true)
+				} else {
+					data.Pools[i].SecondaryNetworks[ci].Secondary = types.BoolValue(false)
+				}
+			} else {
+				data.Pools[i].SecondaryNetworks[ci].Secondary = types.BoolNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "host/number"); value.Exists() && !data.Pools[i].HostNumber.IsNull() {
+			data.Pools[i].HostNumber = types.StringValue(value.String())
+		} else {
+			data.Pools[i].HostNumber = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "host/mask"); value.Exists() && !data.Pools[i].HostMask.IsNull() {
+			data.Pools[i].HostMask = types.StringValue(value.String())
+		} else {
+			data.Pools[i].HostMask = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "default-router/default-router-list"); value.Exists() && !data.Pools[i].DefaultRouters.IsNull() {
+			data.Pools[i].DefaultRouters = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Pools[i].DefaultRouters = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "dns-server/dns-server-list"); value.Exists() && !data.Pools[i].DnsServers.IsNull() {
+			data.Pools[i].DnsServers = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Pools[i].DnsServers = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "next-server"); value.Exists() && !data.Pools[i].NextServers.IsNull() {
+			data.Pools[i].NextServers = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Pools[i].NextServers = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "lease/lease-value/days"); value.Exists() && !data.Pools[i].LeaseDays.IsNull() {
+			data.Pools[i].LeaseDays = types.Int64Value(value.Int())
+		} else {
+			data.Pools[i].LeaseDays = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "lease/lease-value/hours"); value.Exists() && !data.Pools[i].LeaseHours.IsNull() {
+			data.Pools[i].LeaseHours = types.Int64Value(value.Int())
+		} else {
+			data.Pools[i].LeaseHours = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "lease/lease-value/minutes"); value.Exists() && !data.Pools[i].LeaseMinutes.IsNull() {
+			data.Pools[i].LeaseMinutes = types.Int64Value(value.Int())
+		} else {
+			data.Pools[i].LeaseMinutes = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "lease/infinite"); !data.Pools[i].LeaseInfinite.IsNull() {
+			if value.Exists() {
+				data.Pools[i].LeaseInfinite = types.BoolValue(true)
+			} else {
+				data.Pools[i].LeaseInfinite = types.BoolValue(false)
+			}
+		} else {
+			data.Pools[i].LeaseInfinite = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "utilization/mark/high/high-value"); value.Exists() && !data.Pools[i].UtilizationMarkHigh.IsNull() {
+			data.Pools[i].UtilizationMarkHigh = types.Int64Value(value.Int())
+		} else {
+			data.Pools[i].UtilizationMarkHigh = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "utilization/mark/high/log"); !data.Pools[i].UtilizationMarkHighLog.IsNull() {
+			if value.Exists() {
+				data.Pools[i].UtilizationMarkHighLog = types.BoolValue(true)
+			} else {
+				data.Pools[i].UtilizationMarkHighLog = types.BoolValue(false)
+			}
+		} else {
+			data.Pools[i].UtilizationMarkHighLog = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "utilization/mark/low/low-value"); value.Exists() && !data.Pools[i].UtilizationMarkLow.IsNull() {
+			data.Pools[i].UtilizationMarkLow = types.Int64Value(value.Int())
+		} else {
+			data.Pools[i].UtilizationMarkLow = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "utilization/mark/low/log"); !data.Pools[i].UtilizationMarkLowLog.IsNull() {
+			if value.Exists() {
+				data.Pools[i].UtilizationMarkLowLog = types.BoolValue(true)
+			} else {
+				data.Pools[i].UtilizationMarkLowLog = types.BoolValue(false)
+			}
+		} else {
+			data.Pools[i].UtilizationMarkLowLog = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "subnet/prefix-length"); value.Exists() && !data.Pools[i].SubnetPrefixLength.IsNull() {
+			data.Pools[i].SubnetPrefixLength = types.Int64Value(value.Int())
+		} else {
+			data.Pools[i].SubnetPrefixLength = types.Int64Null()
+		}
+		for ci := range data.Pools[i].Options {
+			keys := [...]string{"option-range"}
+			keyValues := [...]string{strconv.FormatInt(data.Pools[i].Options[ci].OptionCode.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "option/option-range").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "option-range"); value.Exists() && !data.Pools[i].Options[ci].OptionCode.IsNull() {
+				data.Pools[i].Options[ci].OptionCode = types.Int64Value(value.Int())
+			} else {
+				data.Pools[i].Options[ci].OptionCode = types.Int64Null()
+			}
+			if value := helpers.GetFromXPath(cr, "ascii-new"); value.Exists() && !data.Pools[i].Options[ci].Ascii.IsNull() {
+				data.Pools[i].Options[ci].Ascii = types.StringValue(value.String())
+			} else {
+				data.Pools[i].Options[ci].Ascii = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "hex-new/hex-line"); value.Exists() && !data.Pools[i].Options[ci].Hex.IsNull() {
+				data.Pools[i].Options[ci].Hex = types.StringValue(value.String())
+			} else {
+				data.Pools[i].Options[ci].Hex = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "ip-ordered"); value.Exists() && !data.Pools[i].Options[ci].Ip.IsNull() {
+				data.Pools[i].Options[ci].Ip = helpers.GetStringListXML(value.Array())
+			} else {
+				data.Pools[i].Options[ci].Ip = types.ListNull(types.StringType)
+			}
+			if value := helpers.GetFromXPath(cr, "ip-new"); value.Exists() && !data.Pools[i].Options[ci].IpLegacy.IsNull() {
+				data.Pools[i].Options[ci].IpLegacy = helpers.GetStringListXML(value.Array())
+			} else {
+				data.Pools[i].Options[ci].IpLegacy = types.ListNull(types.StringType)
+			}
+		}
+	}
+	for i := range data.Ipv6Pools {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Ipv6Pools[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Ipv6Pools[i].Name.IsNull() {
+			data.Ipv6Pools[i].Name = types.StringValue(value.String())
+		} else {
+			data.Ipv6Pools[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.Ipv6Pools[i].Vrf.IsNull() {
+			data.Ipv6Pools[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6Pools[i].Vrf = types.StringNull()
+		}
+		for ci := range data.Ipv6Pools[i].AddressPrefixes {
+			keys := [...]string{"ipv6-address"}
+			keyValues := [...]string{data.Ipv6Pools[i].AddressPrefixes[ci].Address.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "address/prefix").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "ipv6-address"); value.Exists() && !data.Ipv6Pools[i].AddressPrefixes[ci].Address.IsNull() {
+				data.Ipv6Pools[i].AddressPrefixes[ci].Address = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].AddressPrefixes[ci].Address = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "lifetime/valid-lifetime"); value.Exists() && !data.Ipv6Pools[i].AddressPrefixes[ci].ValidLifetime.IsNull() {
+				data.Ipv6Pools[i].AddressPrefixes[ci].ValidLifetime = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].AddressPrefixes[ci].ValidLifetime = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "lifetime/preferred-lifetime"); value.Exists() && !data.Ipv6Pools[i].AddressPrefixes[ci].PreferredLifetime.IsNull() {
+				data.Ipv6Pools[i].AddressPrefixes[ci].PreferredLifetime = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].AddressPrefixes[ci].PreferredLifetime = types.StringNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "prefix-delegation/pool/pool-name"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPoolName.IsNull() {
+			data.Ipv6Pools[i].PrefixDelegationPoolName = types.StringValue(value.String())
+		} else {
+			data.Ipv6Pools[i].PrefixDelegationPoolName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "prefix-delegation/pool/lifetime/valid-lifetime"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPoolValidLifetime.IsNull() {
+			data.Ipv6Pools[i].PrefixDelegationPoolValidLifetime = types.StringValue(value.String())
+		} else {
+			data.Ipv6Pools[i].PrefixDelegationPoolValidLifetime = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "prefix-delegation/pool/lifetime/preferred-lifetime"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPoolPreferredLifetime.IsNull() {
+			data.Ipv6Pools[i].PrefixDelegationPoolPreferredLifetime = types.StringValue(value.String())
+		} else {
+			data.Ipv6Pools[i].PrefixDelegationPoolPreferredLifetime = types.StringNull()
+		}
+		for ci := range data.Ipv6Pools[i].PrefixDelegationPrefixes {
+			keys := [...]string{"ipv6-prefix"}
+			keyValues := [...]string{data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "prefix-delegation/pd-prefix").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "ipv6-prefix"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.IsNull() {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "Hex-string"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].HexString.IsNull() {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].HexString = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].HexString = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "iaid"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Iaid.IsNull() {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Iaid = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Iaid = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "lifetime/valid-lifetime"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].ValidLifetime.IsNull() {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].ValidLifetime = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].ValidLifetime = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "lifetime/preferred-lifetime"); value.Exists() && !data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].PreferredLifetime.IsNull() {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].PreferredLifetime = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].PrefixDelegationPrefixes[ci].PreferredLifetime = types.StringNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "dns-server"); value.Exists() && !data.Ipv6Pools[i].DnsServers.IsNull() {
+			data.Ipv6Pools[i].DnsServers = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Ipv6Pools[i].DnsServers = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "domain-names"); value.Exists() && !data.Ipv6Pools[i].DomainNames.IsNull() {
+			data.Ipv6Pools[i].DomainNames = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Ipv6Pools[i].DomainNames = types.ListNull(types.StringType)
+		}
+		for ci := range data.Ipv6Pools[i].LinkAddresses {
+			keys := [...]string{"address"}
+			keyValues := [...]string{data.Ipv6Pools[i].LinkAddresses[ci].Address.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "link-address").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "address"); value.Exists() && !data.Ipv6Pools[i].LinkAddresses[ci].Address.IsNull() {
+				data.Ipv6Pools[i].LinkAddresses[ci].Address = types.StringValue(value.String())
+			} else {
+				data.Ipv6Pools[i].LinkAddresses[ci].Address = types.StringNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "bootfile-url"); value.Exists() && !data.Ipv6Pools[i].BootfileUrl.IsNull() {
+			data.Ipv6Pools[i].BootfileUrl = types.StringValue(value.String())
+		} else {
+			data.Ipv6Pools[i].BootfileUrl = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/include-all"); !data.Ipv6Pools[i].OptionIncludeAll.IsNull() {
+			if value.Exists() {
+				data.Ipv6Pools[i].OptionIncludeAll = types.BoolValue(true)
+			} else {
+				data.Ipv6Pools[i].OptionIncludeAll = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6Pools[i].OptionIncludeAll = types.BoolNull()
+		}
+		for ci := range data.Ipv6Pools[i].VendorSpecifics {
+			keys := [...]string{"value"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.ValueInt64(), 10)}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "vendor-specific").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "value"); value.Exists() && !data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.IsNull() {
+				data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId = types.Int64Null()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "import/dns-server"); !data.Ipv6Pools[i].ImportDnsServer.IsNull() {
+			if value.Exists() {
+				data.Ipv6Pools[i].ImportDnsServer = types.BoolValue(true)
+			} else {
+				data.Ipv6Pools[i].ImportDnsServer = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6Pools[i].ImportDnsServer = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "import/domain-name"); !data.Ipv6Pools[i].ImportDomainName.IsNull() {
+			if value.Exists() {
+				data.Ipv6Pools[i].ImportDomainName = types.BoolValue(true)
+			} else {
+				data.Ipv6Pools[i].ImportDomainName = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6Pools[i].ImportDomainName = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "sntp/address"); value.Exists() && !data.Ipv6Pools[i].SntpAddresses.IsNull() {
+			data.Ipv6Pools[i].SntpAddresses = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Ipv6Pools[i].SntpAddresses = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "information/refresh/refresh-value/days"); value.Exists() && !data.Ipv6Pools[i].InformationRefreshDays.IsNull() {
+			data.Ipv6Pools[i].InformationRefreshDays = types.Int64Value(value.Int())
+		} else {
+			data.Ipv6Pools[i].InformationRefreshDays = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "information/refresh/refresh-value/hours"); value.Exists() && !data.Ipv6Pools[i].InformationRefreshHours.IsNull() {
+			data.Ipv6Pools[i].InformationRefreshHours = types.Int64Value(value.Int())
+		} else {
+			data.Ipv6Pools[i].InformationRefreshHours = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "information/refresh/refresh-value/minutes"); value.Exists() && !data.Ipv6Pools[i].InformationRefreshMinutes.IsNull() {
+			data.Ipv6Pools[i].InformationRefreshMinutes = types.Int64Value(value.Int())
+		} else {
+			data.Ipv6Pools[i].InformationRefreshMinutes = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "information/refresh/infinite"); !data.Ipv6Pools[i].InformationRefreshInfinite.IsNull() {
+			if value.Exists() {
+				data.Ipv6Pools[i].InformationRefreshInfinite = types.BoolValue(true)
+			} else {
+				data.Ipv6Pools[i].InformationRefreshInfinite = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6Pools[i].InformationRefreshInfinite = types.BoolNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -355,56 +1320,56 @@ func (data *DHCP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *DHCP) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection"); value.Exists() {
 		data.CompatibilitySuboptionLinkSelection = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override"); value.Exists() {
 		data.CompatibilitySuboptionServerOverride = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/trust-all"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all"); value.Exists() {
 		data.RelayInformationTrustAll = types.BoolValue(true)
 	} else {
 		data.RelayInformationTrustAll = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/option-default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default"); value.Exists() {
 		data.RelayInformationOptionDefault = types.BoolValue(true)
 	} else {
 		data.RelayInformationOptionDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/vpn"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn"); value.Exists() {
 		data.RelayInformationOptionVpn = types.BoolValue(true)
 	} else {
 		data.RelayInformationOptionVpn = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/bootp/ignore"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore"); value.Exists() {
 		data.RelayBootpIgnore = types.BoolValue(true)
 	} else {
 		data.RelayBootpIgnore = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping"); value.Exists() {
 		data.Snooping = types.BoolValue(true)
 	} else {
 		data.Snooping = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option"); value.Exists() {
 		data.SnoopingInformationOption = types.BoolValue(value.Bool())
 	} else {
 		data.SnoopingInformationOption = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted"); value.Exists() {
 		data.SnoopingInformationOptionAllowUntrusted = types.BoolValue(true)
 	} else {
 		data.SnoopingInformationOptionAllowUntrusted = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string"); value.Exists() {
 		data.SnoopingInformationOptionFormatRemoteIdString = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname"); value.Exists() {
 		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(true)
 	} else {
 		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list"); value.Exists() {
 		data.SnoopingVlansLegacy = make([]DHCPSnoopingVlansLegacy, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := DHCPSnoopingVlansLegacy{}
@@ -415,7 +1380,7 @@ func (data *DHCP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2"); value.Exists() {
 		data.SnoopingVlans = make([]DHCPSnoopingVlans, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := DHCPSnoopingVlans{}
@@ -426,6 +1391,267 @@ func (data *DHCP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool"); value.Exists() {
+		data.Pools = make([]DHCPPools, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPPools{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "domain-name"); cValue.Exists() {
+				item.DomainName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "bootfile"); cValue.Exists() {
+				item.Bootfile = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "client-name"); cValue.Exists() {
+				item.ClientName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network/primary-network/number"); cValue.Exists() {
+				item.NetworkNumber = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network/primary-network/mask"); cValue.Exists() {
+				item.NetworkMask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network/secondary-network"); cValue.Exists() {
+				item.SecondaryNetworks = make([]DHCPPoolsSecondaryNetworks, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPPoolsSecondaryNetworks{}
+					if ccValue := helpers.GetFromXPath(cv, "number"); ccValue.Exists() {
+						cItem.Number = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "mask"); ccValue.Exists() {
+						cItem.Mask = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "secondary"); ccValue.Exists() {
+						cItem.Secondary = types.BoolValue(true)
+					} else {
+						cItem.Secondary = types.BoolValue(false)
+					}
+					item.SecondaryNetworks = append(item.SecondaryNetworks, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "host/number"); cValue.Exists() {
+				item.HostNumber = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "host/mask"); cValue.Exists() {
+				item.HostMask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "default-router/default-router-list"); cValue.Exists() {
+				item.DefaultRouters = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DefaultRouters = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "dns-server/dns-server-list"); cValue.Exists() {
+				item.DnsServers = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DnsServers = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "next-server"); cValue.Exists() {
+				item.NextServers = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.NextServers = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/lease-value/days"); cValue.Exists() {
+				item.LeaseDays = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/lease-value/hours"); cValue.Exists() {
+				item.LeaseHours = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/lease-value/minutes"); cValue.Exists() {
+				item.LeaseMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/infinite"); cValue.Exists() {
+				item.LeaseInfinite = types.BoolValue(true)
+			} else {
+				item.LeaseInfinite = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/high/high-value"); cValue.Exists() {
+				item.UtilizationMarkHigh = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/high/log"); cValue.Exists() {
+				item.UtilizationMarkHighLog = types.BoolValue(true)
+			} else {
+				item.UtilizationMarkHighLog = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/low/low-value"); cValue.Exists() {
+				item.UtilizationMarkLow = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/low/log"); cValue.Exists() {
+				item.UtilizationMarkLowLog = types.BoolValue(true)
+			} else {
+				item.UtilizationMarkLowLog = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "subnet/prefix-length"); cValue.Exists() {
+				item.SubnetPrefixLength = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "option/option-range"); cValue.Exists() {
+				item.Options = make([]DHCPPoolsOptions, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPPoolsOptions{}
+					if ccValue := helpers.GetFromXPath(cv, "option-range"); ccValue.Exists() {
+						cItem.OptionCode = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ascii-new"); ccValue.Exists() {
+						cItem.Ascii = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "hex-new/hex-line"); ccValue.Exists() {
+						cItem.Hex = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ip-ordered"); ccValue.Exists() {
+						cItem.Ip = helpers.GetStringListXML(ccValue.Array())
+					} else {
+						cItem.Ip = types.ListNull(types.StringType)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ip-new"); ccValue.Exists() {
+						cItem.IpLegacy = helpers.GetStringListXML(ccValue.Array())
+					} else {
+						cItem.IpLegacy = types.ListNull(types.StringType)
+					}
+					item.Options = append(item.Options, cItem)
+					return true
+				})
+			}
+			data.Pools = append(data.Pools, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool"); value.Exists() {
+		data.Ipv6Pools = make([]DHCPIpv6Pools, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPIpv6Pools{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/prefix"); cValue.Exists() {
+				item.AddressPrefixes = make([]DHCPIpv6PoolsAddressPrefixes, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsAddressPrefixes{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv6-address"); ccValue.Exists() {
+						cItem.Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/valid-lifetime"); ccValue.Exists() {
+						cItem.ValidLifetime = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/preferred-lifetime"); ccValue.Exists() {
+						cItem.PreferredLifetime = types.StringValue(ccValue.String())
+					}
+					item.AddressPrefixes = append(item.AddressPrefixes, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pool/pool-name"); cValue.Exists() {
+				item.PrefixDelegationPoolName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pool/lifetime/valid-lifetime"); cValue.Exists() {
+				item.PrefixDelegationPoolValidLifetime = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pool/lifetime/preferred-lifetime"); cValue.Exists() {
+				item.PrefixDelegationPoolPreferredLifetime = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pd-prefix"); cValue.Exists() {
+				item.PrefixDelegationPrefixes = make([]DHCPIpv6PoolsPrefixDelegationPrefixes, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsPrefixDelegationPrefixes{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv6-prefix"); ccValue.Exists() {
+						cItem.Prefix = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "Hex-string"); ccValue.Exists() {
+						cItem.HexString = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "iaid"); ccValue.Exists() {
+						cItem.Iaid = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/valid-lifetime"); ccValue.Exists() {
+						cItem.ValidLifetime = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/preferred-lifetime"); ccValue.Exists() {
+						cItem.PreferredLifetime = types.StringValue(ccValue.String())
+					}
+					item.PrefixDelegationPrefixes = append(item.PrefixDelegationPrefixes, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "dns-server"); cValue.Exists() {
+				item.DnsServers = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DnsServers = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "domain-names"); cValue.Exists() {
+				item.DomainNames = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DomainNames = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "link-address"); cValue.Exists() {
+				item.LinkAddresses = make([]DHCPIpv6PoolsLinkAddresses, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsLinkAddresses{}
+					if ccValue := helpers.GetFromXPath(cv, "address"); ccValue.Exists() {
+						cItem.Address = types.StringValue(ccValue.String())
+					}
+					item.LinkAddresses = append(item.LinkAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "bootfile-url"); cValue.Exists() {
+				item.BootfileUrl = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option/include-all"); cValue.Exists() {
+				item.OptionIncludeAll = types.BoolValue(true)
+			} else {
+				item.OptionIncludeAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "vendor-specific"); cValue.Exists() {
+				item.VendorSpecifics = make([]DHCPIpv6PoolsVendorSpecifics, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsVendorSpecifics{}
+					if ccValue := helpers.GetFromXPath(cv, "value"); ccValue.Exists() {
+						cItem.EnterpriseId = types.Int64Value(ccValue.Int())
+					}
+					item.VendorSpecifics = append(item.VendorSpecifics, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "import/dns-server"); cValue.Exists() {
+				item.ImportDnsServer = types.BoolValue(true)
+			} else {
+				item.ImportDnsServer = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "import/domain-name"); cValue.Exists() {
+				item.ImportDomainName = types.BoolValue(true)
+			} else {
+				item.ImportDomainName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "sntp/address"); cValue.Exists() {
+				item.SntpAddresses = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.SntpAddresses = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/refresh-value/days"); cValue.Exists() {
+				item.InformationRefreshDays = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/refresh-value/hours"); cValue.Exists() {
+				item.InformationRefreshHours = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/refresh-value/minutes"); cValue.Exists() {
+				item.InformationRefreshMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/infinite"); cValue.Exists() {
+				item.InformationRefreshInfinite = types.BoolValue(true)
+			} else {
+				item.InformationRefreshInfinite = types.BoolValue(false)
+			}
+			data.Ipv6Pools = append(data.Ipv6Pools, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyXML
@@ -433,56 +1659,56 @@ func (data *DHCP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *DHCPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection"); value.Exists() {
 		data.CompatibilitySuboptionLinkSelection = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override"); value.Exists() {
 		data.CompatibilitySuboptionServerOverride = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/trust-all"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all"); value.Exists() {
 		data.RelayInformationTrustAll = types.BoolValue(true)
 	} else {
 		data.RelayInformationTrustAll = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/option-default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default"); value.Exists() {
 		data.RelayInformationOptionDefault = types.BoolValue(true)
 	} else {
 		data.RelayInformationOptionDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/vpn"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn"); value.Exists() {
 		data.RelayInformationOptionVpn = types.BoolValue(true)
 	} else {
 		data.RelayInformationOptionVpn = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/bootp/ignore"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore"); value.Exists() {
 		data.RelayBootpIgnore = types.BoolValue(true)
 	} else {
 		data.RelayBootpIgnore = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping"); value.Exists() {
 		data.Snooping = types.BoolValue(true)
 	} else {
 		data.Snooping = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option"); value.Exists() {
 		data.SnoopingInformationOption = types.BoolValue(value.Bool())
 	} else {
 		data.SnoopingInformationOption = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted"); value.Exists() {
 		data.SnoopingInformationOptionAllowUntrusted = types.BoolValue(true)
 	} else {
 		data.SnoopingInformationOptionAllowUntrusted = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string"); value.Exists() {
 		data.SnoopingInformationOptionFormatRemoteIdString = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname"); value.Exists() {
 		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(true)
 	} else {
 		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list"); value.Exists() {
 		data.SnoopingVlansLegacy = make([]DHCPSnoopingVlansLegacyData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := DHCPSnoopingVlansLegacyData{}
@@ -493,7 +1719,7 @@ func (data *DHCPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2"); value.Exists() {
 		data.SnoopingVlans = make([]DHCPSnoopingVlansData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := DHCPSnoopingVlansData{}
@@ -501,6 +1727,267 @@ func (data *DHCPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.VlanId = types.Int64Value(cValue.Int())
 			}
 			data.SnoopingVlans = append(data.SnoopingVlans, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool"); value.Exists() {
+		data.Pools = make([]DHCPPoolsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPPoolsData{}
+			if cValue := helpers.GetFromXPath(v, "id"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "domain-name"); cValue.Exists() {
+				item.DomainName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "bootfile"); cValue.Exists() {
+				item.Bootfile = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "client-name"); cValue.Exists() {
+				item.ClientName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network/primary-network/number"); cValue.Exists() {
+				item.NetworkNumber = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network/primary-network/mask"); cValue.Exists() {
+				item.NetworkMask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "network/secondary-network"); cValue.Exists() {
+				item.SecondaryNetworks = make([]DHCPPoolsSecondaryNetworksData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPPoolsSecondaryNetworksData{}
+					if ccValue := helpers.GetFromXPath(cv, "number"); ccValue.Exists() {
+						cItem.Number = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "mask"); ccValue.Exists() {
+						cItem.Mask = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "secondary"); ccValue.Exists() {
+						cItem.Secondary = types.BoolValue(true)
+					} else {
+						cItem.Secondary = types.BoolValue(false)
+					}
+					item.SecondaryNetworks = append(item.SecondaryNetworks, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "host/number"); cValue.Exists() {
+				item.HostNumber = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "host/mask"); cValue.Exists() {
+				item.HostMask = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "default-router/default-router-list"); cValue.Exists() {
+				item.DefaultRouters = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DefaultRouters = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "dns-server/dns-server-list"); cValue.Exists() {
+				item.DnsServers = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DnsServers = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "next-server"); cValue.Exists() {
+				item.NextServers = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.NextServers = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/lease-value/days"); cValue.Exists() {
+				item.LeaseDays = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/lease-value/hours"); cValue.Exists() {
+				item.LeaseHours = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/lease-value/minutes"); cValue.Exists() {
+				item.LeaseMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "lease/infinite"); cValue.Exists() {
+				item.LeaseInfinite = types.BoolValue(true)
+			} else {
+				item.LeaseInfinite = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/high/high-value"); cValue.Exists() {
+				item.UtilizationMarkHigh = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/high/log"); cValue.Exists() {
+				item.UtilizationMarkHighLog = types.BoolValue(true)
+			} else {
+				item.UtilizationMarkHighLog = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/low/low-value"); cValue.Exists() {
+				item.UtilizationMarkLow = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "utilization/mark/low/log"); cValue.Exists() {
+				item.UtilizationMarkLowLog = types.BoolValue(true)
+			} else {
+				item.UtilizationMarkLowLog = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "subnet/prefix-length"); cValue.Exists() {
+				item.SubnetPrefixLength = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "option/option-range"); cValue.Exists() {
+				item.Options = make([]DHCPPoolsOptionsData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPPoolsOptionsData{}
+					if ccValue := helpers.GetFromXPath(cv, "option-range"); ccValue.Exists() {
+						cItem.OptionCode = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ascii-new"); ccValue.Exists() {
+						cItem.Ascii = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "hex-new/hex-line"); ccValue.Exists() {
+						cItem.Hex = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ip-ordered"); ccValue.Exists() {
+						cItem.Ip = helpers.GetStringListXML(ccValue.Array())
+					} else {
+						cItem.Ip = types.ListNull(types.StringType)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "ip-new"); ccValue.Exists() {
+						cItem.IpLegacy = helpers.GetStringListXML(ccValue.Array())
+					} else {
+						cItem.IpLegacy = types.ListNull(types.StringType)
+					}
+					item.Options = append(item.Options, cItem)
+					return true
+				})
+			}
+			data.Pools = append(data.Pools, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool"); value.Exists() {
+		data.Ipv6Pools = make([]DHCPIpv6PoolsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DHCPIpv6PoolsData{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "address/prefix"); cValue.Exists() {
+				item.AddressPrefixes = make([]DHCPIpv6PoolsAddressPrefixesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsAddressPrefixesData{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv6-address"); ccValue.Exists() {
+						cItem.Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/valid-lifetime"); ccValue.Exists() {
+						cItem.ValidLifetime = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/preferred-lifetime"); ccValue.Exists() {
+						cItem.PreferredLifetime = types.StringValue(ccValue.String())
+					}
+					item.AddressPrefixes = append(item.AddressPrefixes, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pool/pool-name"); cValue.Exists() {
+				item.PrefixDelegationPoolName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pool/lifetime/valid-lifetime"); cValue.Exists() {
+				item.PrefixDelegationPoolValidLifetime = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pool/lifetime/preferred-lifetime"); cValue.Exists() {
+				item.PrefixDelegationPoolPreferredLifetime = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "prefix-delegation/pd-prefix"); cValue.Exists() {
+				item.PrefixDelegationPrefixes = make([]DHCPIpv6PoolsPrefixDelegationPrefixesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsPrefixDelegationPrefixesData{}
+					if ccValue := helpers.GetFromXPath(cv, "ipv6-prefix"); ccValue.Exists() {
+						cItem.Prefix = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "Hex-string"); ccValue.Exists() {
+						cItem.HexString = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "iaid"); ccValue.Exists() {
+						cItem.Iaid = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/valid-lifetime"); ccValue.Exists() {
+						cItem.ValidLifetime = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "lifetime/preferred-lifetime"); ccValue.Exists() {
+						cItem.PreferredLifetime = types.StringValue(ccValue.String())
+					}
+					item.PrefixDelegationPrefixes = append(item.PrefixDelegationPrefixes, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "dns-server"); cValue.Exists() {
+				item.DnsServers = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DnsServers = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "domain-names"); cValue.Exists() {
+				item.DomainNames = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.DomainNames = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "link-address"); cValue.Exists() {
+				item.LinkAddresses = make([]DHCPIpv6PoolsLinkAddressesData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsLinkAddressesData{}
+					if ccValue := helpers.GetFromXPath(cv, "address"); ccValue.Exists() {
+						cItem.Address = types.StringValue(ccValue.String())
+					}
+					item.LinkAddresses = append(item.LinkAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "bootfile-url"); cValue.Exists() {
+				item.BootfileUrl = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option/include-all"); cValue.Exists() {
+				item.OptionIncludeAll = types.BoolValue(true)
+			} else {
+				item.OptionIncludeAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "vendor-specific"); cValue.Exists() {
+				item.VendorSpecifics = make([]DHCPIpv6PoolsVendorSpecificsData, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := DHCPIpv6PoolsVendorSpecificsData{}
+					if ccValue := helpers.GetFromXPath(cv, "value"); ccValue.Exists() {
+						cItem.EnterpriseId = types.Int64Value(ccValue.Int())
+					}
+					item.VendorSpecifics = append(item.VendorSpecifics, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "import/dns-server"); cValue.Exists() {
+				item.ImportDnsServer = types.BoolValue(true)
+			} else {
+				item.ImportDnsServer = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "import/domain-name"); cValue.Exists() {
+				item.ImportDomainName = types.BoolValue(true)
+			} else {
+				item.ImportDomainName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "sntp/address"); cValue.Exists() {
+				item.SntpAddresses = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.SntpAddresses = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/refresh-value/days"); cValue.Exists() {
+				item.InformationRefreshDays = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/refresh-value/hours"); cValue.Exists() {
+				item.InformationRefreshHours = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/refresh-value/minutes"); cValue.Exists() {
+				item.InformationRefreshMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "information/refresh/infinite"); cValue.Exists() {
+				item.InformationRefreshInfinite = types.BoolValue(true)
+			} else {
+				item.InformationRefreshInfinite = types.BoolValue(false)
+			}
+			data.Ipv6Pools = append(data.Ipv6Pools, item)
 			return true
 		})
 	}
@@ -512,6 +1999,563 @@ func (data *DHCPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 
 func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.Ipv6Pools {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Ipv6Pools[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6Pools[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6Pools {
+			found = true
+			if state.Ipv6Pools[i].Name.ValueString() != data.Ipv6Pools[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6Pools[i].InformationRefreshInfinite.IsNull() && data.Ipv6Pools[j].InformationRefreshInfinite.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/infinite", predicates))
+				}
+				if !state.Ipv6Pools[i].InformationRefreshMinutes.IsNull() && data.Ipv6Pools[j].InformationRefreshMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/refresh-value/minutes", predicates))
+				}
+				if !state.Ipv6Pools[i].InformationRefreshHours.IsNull() && data.Ipv6Pools[j].InformationRefreshHours.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/refresh-value/hours", predicates))
+				}
+				if !state.Ipv6Pools[i].InformationRefreshDays.IsNull() && data.Ipv6Pools[j].InformationRefreshDays.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/information/refresh/refresh-value/days", predicates))
+				}
+				if !state.Ipv6Pools[i].SntpAddresses.IsNull() {
+					if data.Ipv6Pools[j].SntpAddresses.IsNull() {
+						var values []string
+						state.Ipv6Pools[i].SntpAddresses.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/sntp/address[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Ipv6Pools[j].SntpAddresses.ElementsAs(ctx, &dataValues, false)
+						state.Ipv6Pools[i].SntpAddresses.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/sntp/address[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Ipv6Pools[i].ImportDomainName.IsNull() && data.Ipv6Pools[j].ImportDomainName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/import/domain-name", predicates))
+				}
+				if !state.Ipv6Pools[i].ImportDnsServer.IsNull() && data.Ipv6Pools[j].ImportDnsServer.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/import/dns-server", predicates))
+				}
+				for ci := range state.Ipv6Pools[i].VendorSpecifics {
+					cstateKeys := [...]string{"value"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6Pools[j].VendorSpecifics {
+						found = true
+						if state.Ipv6Pools[i].VendorSpecifics[ci].EnterpriseId.ValueInt64() != data.Ipv6Pools[j].VendorSpecifics[cj].EnterpriseId.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/vendor-specific%v", predicates, cpredicates))
+					}
+				}
+				if !state.Ipv6Pools[i].OptionIncludeAll.IsNull() && data.Ipv6Pools[j].OptionIncludeAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/include-all", predicates))
+				}
+				if !state.Ipv6Pools[i].BootfileUrl.IsNull() && data.Ipv6Pools[j].BootfileUrl.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/bootfile-url", predicates))
+				}
+				for ci := range state.Ipv6Pools[i].LinkAddresses {
+					cstateKeys := [...]string{"address"}
+					cstateKeyValues := [...]string{state.Ipv6Pools[i].LinkAddresses[ci].Address.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6Pools[i].LinkAddresses[ci].Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6Pools[j].LinkAddresses {
+						found = true
+						if state.Ipv6Pools[i].LinkAddresses[ci].Address.ValueString() != data.Ipv6Pools[j].LinkAddresses[cj].Address.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/link-address%v", predicates, cpredicates))
+					}
+				}
+				if !state.Ipv6Pools[i].DomainNames.IsNull() {
+					if data.Ipv6Pools[j].DomainNames.IsNull() {
+						var values []string
+						state.Ipv6Pools[i].DomainNames.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/domain-names[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Ipv6Pools[j].DomainNames.ElementsAs(ctx, &dataValues, false)
+						state.Ipv6Pools[i].DomainNames.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/domain-names[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Ipv6Pools[i].DnsServers.IsNull() {
+					if data.Ipv6Pools[j].DnsServers.IsNull() {
+						var values []string
+						state.Ipv6Pools[i].DnsServers.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/dns-server[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Ipv6Pools[j].DnsServers.ElementsAs(ctx, &dataValues, false)
+						state.Ipv6Pools[i].DnsServers.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/dns-server[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				for ci := range state.Ipv6Pools[i].PrefixDelegationPrefixes {
+					cstateKeys := [...]string{"ipv6-prefix"}
+					cstateKeyValues := [...]string{state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6Pools[j].PrefixDelegationPrefixes {
+						found = true
+						if state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Prefix.ValueString() != data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].Prefix.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].PreferredLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].PreferredLifetime.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/lifetime/preferred-lifetime", predicates, cpredicates))
+							}
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].ValidLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].ValidLifetime.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/lifetime/valid-lifetime", predicates, cpredicates))
+							}
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].Iaid.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].Iaid.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/iaid", predicates, cpredicates))
+							}
+							if !state.Ipv6Pools[i].PrefixDelegationPrefixes[ci].HexString.IsNull() && data.Ipv6Pools[j].PrefixDelegationPrefixes[cj].HexString.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v/Hex-string", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pd-prefix%v", predicates, cpredicates))
+					}
+				}
+				if !state.Ipv6Pools[i].PrefixDelegationPoolPreferredLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPoolPreferredLifetime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pool/lifetime/preferred-lifetime", predicates))
+				}
+				if !state.Ipv6Pools[i].PrefixDelegationPoolValidLifetime.IsNull() && data.Ipv6Pools[j].PrefixDelegationPoolValidLifetime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pool/lifetime/valid-lifetime", predicates))
+				}
+				if !state.Ipv6Pools[i].PrefixDelegationPoolName.IsNull() && data.Ipv6Pools[j].PrefixDelegationPoolName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/prefix-delegation/pool/pool-name", predicates))
+				}
+				for ci := range state.Ipv6Pools[i].AddressPrefixes {
+					cstateKeys := [...]string{"ipv6-address"}
+					cstateKeyValues := [...]string{state.Ipv6Pools[i].AddressPrefixes[ci].Address.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6Pools[i].AddressPrefixes[ci].Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6Pools[j].AddressPrefixes {
+						found = true
+						if state.Ipv6Pools[i].AddressPrefixes[ci].Address.ValueString() != data.Ipv6Pools[j].AddressPrefixes[cj].Address.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Ipv6Pools[i].AddressPrefixes[ci].PreferredLifetime.IsNull() && data.Ipv6Pools[j].AddressPrefixes[cj].PreferredLifetime.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/address/prefix%v/lifetime/preferred-lifetime", predicates, cpredicates))
+							}
+							if !state.Ipv6Pools[i].AddressPrefixes[ci].ValidLifetime.IsNull() && data.Ipv6Pools[j].AddressPrefixes[cj].ValidLifetime.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/address/prefix%v/lifetime/valid-lifetime", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/address/prefix%v", predicates, cpredicates))
+					}
+				}
+				if !state.Ipv6Pools[i].Vrf.IsNull() && data.Ipv6Pools[j].Vrf.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v/vrf", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v", predicates))
+		}
+	}
+	for i := range state.Pools {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{state.Pools[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Pools[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Pools {
+			found = true
+			if state.Pools[i].Name.ValueString() != data.Pools[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Pools[i].Options {
+					cstateKeys := [...]string{"option-range"}
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Pools[i].Options[ci].OptionCode.ValueInt64(), 10)}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Pools[i].Options[ci].OptionCode.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Pools[j].Options {
+						found = true
+						if state.Pools[i].Options[ci].OptionCode.ValueInt64() != data.Pools[j].Options[cj].OptionCode.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Pools[i].Options[ci].IpLegacy.IsNull() {
+								if data.Pools[j].Options[cj].IpLegacy.IsNull() {
+									var values []string
+									state.Pools[i].Options[ci].IpLegacy.ElementsAs(ctx, &values, false)
+									for _, v := range values {
+										b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/ip-new[.=%v]", predicates, cpredicates, v))
+									}
+								} else {
+									var dataValues, stateValues []string
+									data.Pools[j].Options[cj].IpLegacy.ElementsAs(ctx, &dataValues, false)
+									state.Pools[i].Options[ci].IpLegacy.ElementsAs(ctx, &stateValues, false)
+									for _, v := range stateValues {
+										found := false
+										for _, vv := range dataValues {
+											if v == vv {
+												found = true
+												break
+											}
+										}
+										if !found {
+											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/ip-new[.=%v]", predicates, cpredicates, v))
+										}
+									}
+								}
+							}
+							if !state.Pools[i].Options[ci].Ip.IsNull() {
+								if data.Pools[j].Options[cj].Ip.IsNull() {
+									var values []string
+									state.Pools[i].Options[ci].Ip.ElementsAs(ctx, &values, false)
+									for _, v := range values {
+										b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/ip-ordered[.=%v]", predicates, cpredicates, v))
+									}
+								} else {
+									var dataValues, stateValues []string
+									data.Pools[j].Options[cj].Ip.ElementsAs(ctx, &dataValues, false)
+									state.Pools[i].Options[ci].Ip.ElementsAs(ctx, &stateValues, false)
+									for _, v := range stateValues {
+										found := false
+										for _, vv := range dataValues {
+											if v == vv {
+												found = true
+												break
+											}
+										}
+										if !found {
+											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/ip-ordered[.=%v]", predicates, cpredicates, v))
+										}
+									}
+								}
+							}
+							if !state.Pools[i].Options[ci].Hex.IsNull() && data.Pools[j].Options[cj].Hex.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/hex-new/hex-line", predicates, cpredicates))
+							}
+							if !state.Pools[i].Options[ci].Ascii.IsNull() && data.Pools[j].Options[cj].Ascii.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v/ascii-new", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/option/option-range%v", predicates, cpredicates))
+					}
+				}
+				if !state.Pools[i].SubnetPrefixLength.IsNull() && data.Pools[j].SubnetPrefixLength.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/subnet/prefix-length", predicates))
+				}
+				if !state.Pools[i].UtilizationMarkLowLog.IsNull() && data.Pools[j].UtilizationMarkLowLog.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/low/log", predicates))
+				}
+				if !state.Pools[i].UtilizationMarkLow.IsNull() && data.Pools[j].UtilizationMarkLow.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/low/low-value", predicates))
+				}
+				if !state.Pools[i].UtilizationMarkHighLog.IsNull() && data.Pools[j].UtilizationMarkHighLog.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/high/log", predicates))
+				}
+				if !state.Pools[i].UtilizationMarkHigh.IsNull() && data.Pools[j].UtilizationMarkHigh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/utilization/mark/high/high-value", predicates))
+				}
+				if !state.Pools[i].LeaseInfinite.IsNull() && data.Pools[j].LeaseInfinite.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/infinite", predicates))
+				}
+				if !state.Pools[i].LeaseMinutes.IsNull() && data.Pools[j].LeaseMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/lease-value/minutes", predicates))
+				}
+				if !state.Pools[i].LeaseHours.IsNull() && data.Pools[j].LeaseHours.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/lease-value/hours", predicates))
+				}
+				if !state.Pools[i].LeaseDays.IsNull() && data.Pools[j].LeaseDays.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/lease/lease-value/days", predicates))
+				}
+				if !state.Pools[i].NextServers.IsNull() {
+					if data.Pools[j].NextServers.IsNull() {
+						var values []string
+						state.Pools[i].NextServers.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/next-server[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Pools[j].NextServers.ElementsAs(ctx, &dataValues, false)
+						state.Pools[i].NextServers.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/next-server[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Pools[i].DnsServers.IsNull() {
+					if data.Pools[j].DnsServers.IsNull() {
+						var values []string
+						state.Pools[i].DnsServers.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/dns-server/dns-server-list[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Pools[j].DnsServers.ElementsAs(ctx, &dataValues, false)
+						state.Pools[i].DnsServers.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/dns-server/dns-server-list[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Pools[i].DefaultRouters.IsNull() {
+					if data.Pools[j].DefaultRouters.IsNull() {
+						var values []string
+						state.Pools[i].DefaultRouters.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/default-router/default-router-list[.=%v]", predicates, v))
+						}
+					} else {
+						var dataValues, stateValues []string
+						data.Pools[j].DefaultRouters.ElementsAs(ctx, &dataValues, false)
+						state.Pools[i].DefaultRouters.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/default-router/default-router-list[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Pools[i].HostMask.IsNull() && data.Pools[j].HostMask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/host/mask", predicates))
+				}
+				if !state.Pools[i].HostNumber.IsNull() && data.Pools[j].HostNumber.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/host/number", predicates))
+				}
+				for ci := range state.Pools[i].SecondaryNetworks {
+					cstateKeys := [...]string{"number"}
+					cstateKeyValues := [...]string{state.Pools[i].SecondaryNetworks[ci].Number.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Pools[i].SecondaryNetworks[ci].Number.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Pools[j].SecondaryNetworks {
+						found = true
+						if state.Pools[i].SecondaryNetworks[ci].Number.ValueString() != data.Pools[j].SecondaryNetworks[cj].Number.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Pools[i].SecondaryNetworks[ci].Secondary.IsNull() && data.Pools[j].SecondaryNetworks[cj].Secondary.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/secondary-network%v/secondary", predicates, cpredicates))
+							}
+							if !state.Pools[i].SecondaryNetworks[ci].Mask.IsNull() && data.Pools[j].SecondaryNetworks[cj].Mask.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/secondary-network%v/mask", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/secondary-network%v", predicates, cpredicates))
+					}
+				}
+				if !state.Pools[i].NetworkMask.IsNull() && data.Pools[j].NetworkMask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/primary-network/mask", predicates))
+				}
+				if !state.Pools[i].NetworkNumber.IsNull() && data.Pools[j].NetworkNumber.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/network/primary-network/number", predicates))
+				}
+				if !state.Pools[i].ClientName.IsNull() && data.Pools[j].ClientName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/client-name", predicates))
+				}
+				if !state.Pools[i].Bootfile.IsNull() && data.Pools[j].Bootfile.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/bootfile", predicates))
+				}
+				if !state.Pools[i].DomainName.IsNull() && data.Pools[j].DomainName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/domain-name", predicates))
+				}
+				if !state.Pools[i].Vrf.IsNull() && data.Pools[j].Vrf.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v/vrf", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v", predicates))
+		}
+	}
 	for i := range state.SnoopingVlans {
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{strconv.FormatInt(state.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
@@ -539,7 +2583,7 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2%v", predicates))
 		}
 	}
 	for i := range state.SnoopingVlansLegacy {
@@ -569,41 +2613,41 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list%v", predicates))
 		}
 	}
 	if !state.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
 	}
 	if !state.SnoopingInformationOptionFormatRemoteIdString.IsNull() && data.SnoopingInformationOptionFormatRemoteIdString.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string")
 	}
 	if !state.SnoopingInformationOptionAllowUntrusted.IsNull() && data.SnoopingInformationOptionAllowUntrusted.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
 	}
 	if !state.SnoopingInformationOption.IsNull() && data.SnoopingInformationOption.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option")
 	}
 	if !state.Snooping.IsNull() && data.Snooping.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:snooping")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping")
 	}
 	if !state.RelayBootpIgnore.IsNull() && data.RelayBootpIgnore.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
 	}
 	if !state.RelayInformationOptionVpn.IsNull() && data.RelayInformationOptionVpn.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
 	}
 	if !state.RelayInformationOptionDefault.IsNull() && data.RelayInformationOptionDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
 	}
 	if !state.RelayInformationTrustAll.IsNull() && data.RelayInformationTrustAll.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/trust-all")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all")
 	}
 	if !state.CompatibilitySuboptionServerOverride.IsNull() && data.CompatibilitySuboptionServerOverride.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override")
 	}
 	if !state.CompatibilitySuboptionLinkSelection.IsNull() && data.CompatibilitySuboptionLinkSelection.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
@@ -616,6 +2660,26 @@ func (data *DHCP) addDeletedItemsXML(ctx context.Context, state DHCP, body strin
 
 func (data *DHCP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.Ipv6Pools {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Ipv6Pools[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ipv6/dhcp/Cisco-IOS-XE-dhcp:pool%v", predicates))
+	}
+	for i := range data.Pools {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Pools[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:pool%v", predicates))
+	}
 	for i := range data.SnoopingVlans {
 		keys := [...]string{"id"}
 		keyValues := [...]string{strconv.FormatInt(data.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
@@ -624,7 +2688,7 @@ func (data *DHCP) addDeletePathsXML(ctx context.Context, body string) string {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2%v", predicates))
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2%v", predicates))
 	}
 	for i := range data.SnoopingVlansLegacy {
 		keys := [...]string{"id"}
@@ -634,40 +2698,40 @@ func (data *DHCP) addDeletePathsXML(ctx context.Context, body string) string {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list%v", predicates))
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list%v", predicates))
 	}
 	if !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname")
 	}
 	if !data.SnoopingInformationOptionFormatRemoteIdString.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string")
 	}
 	if !data.SnoopingInformationOptionAllowUntrusted.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted")
 	}
 	if !data.SnoopingInformationOption.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option")
 	}
 	if !data.Snooping.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:snooping")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping")
 	}
 	if !data.RelayBootpIgnore.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/bootp/ignore")
 	}
 	if !data.RelayInformationOptionVpn.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn")
 	}
 	if !data.RelayInformationOptionDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/option-default")
 	}
 	if !data.RelayInformationTrustAll.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:relay/information/trust-all")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/trust-all")
 	}
 	if !data.CompatibilitySuboptionServerOverride.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override")
 	}
 	if !data.CompatibilitySuboptionLinkSelection.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)

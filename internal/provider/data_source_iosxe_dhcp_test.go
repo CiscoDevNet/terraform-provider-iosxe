@@ -46,12 +46,30 @@ func TestAccDataSourceIosxeDHCP(t *testing.T) {
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "snooping_vlans.0.vlan_id", "3"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.name", "POOL1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.domain_name", "example.com"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.bootfile", "boot.cfg"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.network_number", "10.1.1.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.network_mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.default_routers.0", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.dns_servers.0", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.lease_days", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.lease_hours", "12"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.lease_minutes", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.options.0.option_code", "150"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "pools.0.options.0.ascii", "10.1.1.1"))
+	if os.Getenv("ISR") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "ipv6_pools.0.name", "DHCPv6-PD"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "ipv6_pools.0.prefix_delegation_pool_name", "DHCPv6-PD"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "ipv6_pools.0.dns_servers.0", "2001:4860:4860::8888"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "ipv6_pools.0.domain_names.0", "example.com"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeDHCPConfig(),
+				Config: testAccDataSourceIosxeDHCPPrerequisitesConfig + testAccDataSourceIosxeDHCPConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -61,13 +79,35 @@ func TestAccDataSourceIosxeDHCP(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeDHCPPrerequisitesConfig = `
+resource "iosxe_yang" "PreReq0" {
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+		"address-family/ipv6" = ""
+	}
+}
+
+resource "iosxe_yang" "PreReq1" {
+	path = "/Cisco-IOS-XE-native:native/ipv6/local/pool[id=DHCPv6-PD]"
+	delete = false
+	attributes = {
+		"id" = "DHCPv6-PD"
+		"start-address" = "2001:db8::/48"
+		"prefix-length" = "64"
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeDHCPConfig() string {
 	config := `resource "iosxe_dhcp" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	relay_information_trust_all = false` + "\n"
 	config += `	relay_information_option_default = false` + "\n"
 	config += `	relay_information_option_vpn = true` + "\n"
@@ -85,6 +125,31 @@ func testAccDataSourceIosxeDHCPConfig() string {
 		config += `		vlan_id = 3` + "\n"
 		config += `	}]` + "\n"
 	}
+	config += `	pools = [{` + "\n"
+	config += `		name = "POOL1"` + "\n"
+	config += `		domain_name = "example.com"` + "\n"
+	config += `		bootfile = "boot.cfg"` + "\n"
+	config += `		network_number = "10.1.1.0"` + "\n"
+	config += `		network_mask = "255.255.255.0"` + "\n"
+	config += `		default_routers = ["10.1.1.1"]` + "\n"
+	config += `		dns_servers = ["10.1.1.1"]` + "\n"
+	config += `		lease_days = 1` + "\n"
+	config += `		lease_hours = 12` + "\n"
+	config += `		lease_minutes = 30` + "\n"
+	config += `		options = [{` + "\n"
+	config += `			option_code = 150` + "\n"
+	config += `			ascii = "10.1.1.1"` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	if os.Getenv("ISR") != "" {
+		config += `	ipv6_pools = [{` + "\n"
+		config += `		name = "DHCPv6-PD"` + "\n"
+		config += `		prefix_delegation_pool_name = "DHCPv6-PD"` + "\n"
+		config += `		dns_servers = ["2001:4860:4860::8888"]` + "\n"
+		config += `		domain_names = ["example.com"]` + "\n"
+		config += `	}]` + "\n"
+	}
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

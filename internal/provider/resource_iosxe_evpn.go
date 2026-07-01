@@ -101,28 +101,28 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: helpers.NewAttributeDescription("mp2mp replication").String,
 				Optional:            true,
 			},
-			"mac_duplication_limit": schema.Int64Attribute{
+			"evpn_mac_duplication_limit": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Number of MAC moves within specified time interval").AddIntegerRangeDescription(2, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(2, 1000),
 				},
 			},
-			"mac_duplication_time": schema.Int64Attribute{
+			"evpn_mac_duplication_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("MAC duplication timer").AddIntegerRangeDescription(10, 36000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(10, 36000),
 				},
 			},
-			"ip_duplication_limit": schema.Int64Attribute{
+			"evpn_ip_duplication_limit": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Number of IP moves within specified time interval").AddIntegerRangeDescription(2, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(2, 1000),
 				},
 			},
-			"ip_duplication_time": schema.Int64Attribute{
+			"evpn_ip_duplication_time": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IP duplication timer").AddIntegerRangeDescription(10, 36000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
@@ -136,29 +136,55 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					int64validator.Between(0, 2147483647),
 				},
 			},
-			"default_gateway_advertise": schema.BoolAttribute{
+			"evpn_default_gateway_advertise": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Advertise Default Gateway MAC/IP routes").String,
 				Optional:            true,
 			},
-			"logging_peer_state": schema.BoolAttribute{
+			"evpn_logging_peer_state": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Peer state transition logging").String,
 				Optional:            true,
 			},
-			"route_target_auto_vni": schema.BoolAttribute{
+			"evpn_route_target_auto_vni": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set vni-based route-target").String,
 				Optional:            true,
 			},
-			"anycast_gateway_mac_auto": schema.BoolAttribute{
+			"evpn_anycast_gateway_mac_auto": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable Auto Anycast Gateway MAC").String,
 				Optional:            true,
 			},
-			"flooding_suppression_address_resolution_disable": schema.BoolAttribute{
+			"evpn_flooding_suppression_address_resolution_disable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Disable flooding suppression").String,
 				Optional:            true,
 			},
-			"multicast_advertise": schema.BoolAttribute{
+			"evpn_multicast_advertise": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable and advertise L2 multicast capability").String,
 				Optional:            true,
+			},
+			"profiles": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("EVPN L2 profile name").String,
+							Required:            true,
+						},
+						"evi_base": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Evpn instance identifier base").AddIntegerRangeDescription(0, 65535).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 65535),
+							},
+						},
+						"l2vni_base": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VxLAN Layer 2 VNI base").AddIntegerRangeDescription(4096, 16777215).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(4096, 16777215),
+							},
+						},
+					},
+				},
 			},
 		},
 	}

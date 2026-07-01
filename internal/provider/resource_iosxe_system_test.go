@@ -108,6 +108,34 @@ func TestAccIosxeSystem(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "mld_snooping_querier", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "mac_address_table_aging_time", "14400"))
+	if os.Getenv("C9500") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "stackwise_virtual_domain", "10"))
+	}
+	if os.Getenv("C9500") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "stackwise_virtual_dual_active_detection_pagp", "true"))
+	}
+	if os.Getenv("C9500") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "stackwise_virtual_dual_active_detection_pagp_trust_channel_group", "1"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "udld_aggressive", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "udld_enable", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "udld_message_time", "77"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "udld_recovery_interval", "8640"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "qos_queue_softmax_multiplier", "1200"))
+	}
+	if os.Getenv("C9500") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "switches.0.number", "2"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "switches.0.provision", "c9300-24p"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -124,7 +152,7 @@ func TestAccIosxeSystem(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeSystemImportStateIdFunc("iosxe_system.test"),
-				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_forward_protocol_nd", "ip_scp_server_enable", "ip_ssh_version_legacy", "ip_ssh_bulk_mode", "control_plane_service_policy_input", "subscriber_templating", "ip_tcp_window_size", "multilink_ppp_bundle_name", "version", "ip_cef_load_sharing_algorithm_include_ports_source", "ip_cef_load_sharing_algorithm_include_ports_destination", "ipv6_cef_load_sharing_algorithm_include_ports_source", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "authentication_mac_move_permit", "authentication_mac_move_deny_uncontrolled", "device_classifier", "mld_snooping", "mld_snooping_querier", "power_redundancy_mode_combined", "power_supply_autolc_shutdown"},
+				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_forward_protocol_nd", "ip_scp_server_enable", "ip_ssh_version_legacy", "ip_ssh_bulk_mode", "control_plane_service_policy_input", "subscriber_templating", "ip_tcp_window_size", "multilink_ppp_bundle_name", "version", "ip_cef_load_sharing_algorithm_include_ports_source", "ip_cef_load_sharing_algorithm_include_ports_destination", "ipv6_cef_load_sharing_algorithm_include_ports_source", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "authentication_mac_move_permit", "authentication_mac_move_deny_uncontrolled", "device_classifier", "mld_snooping", "mld_snooping_querier", "power_redundancy_mode_combined", "power_supply_autolc_shutdown", "stackwise_virtual_dual_active_detection_pagp", "udld_aggressive", "udld_enable"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -261,6 +289,36 @@ func testAccIosxeSystemConfig_all() string {
 		config += `	mld_snooping_querier = true` + "\n"
 	}
 	config += `	mac_address_table_aging_time = 14400` + "\n"
+	if os.Getenv("C9500") != "" {
+		config += `	stackwise_virtual_domain = 10` + "\n"
+	}
+	if os.Getenv("C9500") != "" {
+		config += `	stackwise_virtual_dual_active_detection_pagp = true` + "\n"
+	}
+	if os.Getenv("C9500") != "" {
+		config += `	stackwise_virtual_dual_active_detection_pagp_trust_channel_group = 1` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	udld_aggressive = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	udld_enable = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	udld_message_time = 77` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	udld_recovery_interval = 8640` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	qos_queue_softmax_multiplier = 1200` + "\n"
+	}
+	if os.Getenv("C9500") != "" {
+		config += `	switches = [{` + "\n"
+		config += `		number = 2` + "\n"
+		config += `		provision = "c9300-24p"` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

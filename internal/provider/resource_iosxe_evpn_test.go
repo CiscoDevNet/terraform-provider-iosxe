@@ -42,16 +42,21 @@ func TestAccIosxeEVPN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "replication_type_static", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "replication_type_p2mp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "replication_type_mp2mp", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "mac_duplication_limit", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "mac_duplication_time", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "ip_duplication_limit", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "ip_duplication_time", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_mac_duplication_limit", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_mac_duplication_time", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_ip_duplication_limit", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_ip_duplication_time", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "router_id_loopback", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "default_gateway_advertise", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "logging_peer_state", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "route_target_auto_vni", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "flooding_suppression_address_resolution_disable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "multicast_advertise", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_default_gateway_advertise", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_logging_peer_state", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_route_target_auto_vni", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_flooding_suppression_address_resolution_disable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "evpn_multicast_advertise", "true"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.name", "MY_EVPN_PROFILE"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.evi_base", "1000"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.l2vni_base", "10000"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -68,7 +73,7 @@ func TestAccIosxeEVPN(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeEVPNImportStateIdFunc("iosxe_evpn.test"),
-				ImportStateVerifyIgnore: []string{"anycast_gateway_mac_auto"},
+				ImportStateVerifyIgnore: []string{"evpn_anycast_gateway_mac_auto"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -109,16 +114,23 @@ func testAccIosxeEVPNConfig_all() string {
 	config += `	replication_type_static = true` + "\n"
 	config += `	replication_type_p2mp = false` + "\n"
 	config += `	replication_type_mp2mp = false` + "\n"
-	config += `	mac_duplication_limit = 10` + "\n"
-	config += `	mac_duplication_time = 100` + "\n"
-	config += `	ip_duplication_limit = 10` + "\n"
-	config += `	ip_duplication_time = 100` + "\n"
+	config += `	evpn_mac_duplication_limit = 10` + "\n"
+	config += `	evpn_mac_duplication_time = 100` + "\n"
+	config += `	evpn_ip_duplication_limit = 10` + "\n"
+	config += `	evpn_ip_duplication_time = 100` + "\n"
 	config += `	router_id_loopback = 100` + "\n"
-	config += `	default_gateway_advertise = true` + "\n"
-	config += `	logging_peer_state = true` + "\n"
-	config += `	route_target_auto_vni = true` + "\n"
-	config += `	flooding_suppression_address_resolution_disable = true` + "\n"
-	config += `	multicast_advertise = true` + "\n"
+	config += `	evpn_default_gateway_advertise = true` + "\n"
+	config += `	evpn_logging_peer_state = true` + "\n"
+	config += `	evpn_route_target_auto_vni = true` + "\n"
+	config += `	evpn_flooding_suppression_address_resolution_disable = true` + "\n"
+	config += `	evpn_multicast_advertise = true` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	profiles = [{` + "\n"
+		config += `		name = "MY_EVPN_PROFILE"` + "\n"
+		config += `		evi_base = 1000` + "\n"
+		config += `		l2vni_base = 10000` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `}` + "\n"
 	return config
 }

@@ -14,20 +14,20 @@ This resource can manage the EVPN configuration.
 
 ```terraform
 resource "iosxe_evpn" "example" {
-  replication_type_ingress                        = false
-  replication_type_static                         = true
-  replication_type_p2mp                           = false
-  replication_type_mp2mp                          = false
-  mac_duplication_limit                           = 10
-  mac_duplication_time                            = 100
-  ip_duplication_limit                            = 10
-  ip_duplication_time                             = 100
-  router_id_loopback                              = 100
-  default_gateway_advertise                       = true
-  logging_peer_state                              = true
-  route_target_auto_vni                           = true
-  flooding_suppression_address_resolution_disable = true
-  multicast_advertise                             = true
+  replication_type_ingress                             = false
+  replication_type_static                              = true
+  replication_type_p2mp                                = false
+  replication_type_mp2mp                               = false
+  evpn_mac_duplication_limit                           = 10
+  evpn_mac_duplication_time                            = 100
+  evpn_ip_duplication_limit                            = 10
+  evpn_ip_duplication_time                             = 100
+  router_id_loopback                                   = 100
+  evpn_default_gateway_advertise                       = true
+  evpn_logging_peer_state                              = true
+  evpn_route_target_auto_vni                           = true
+  evpn_flooding_suppression_address_resolution_disable = true
+  evpn_multicast_advertise                             = true
 }
 ```
 
@@ -36,33 +36,48 @@ resource "iosxe_evpn" "example" {
 
 ### Optional
 
-- `anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
-- `default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `flooding_suppression_address_resolution_disable` (Boolean) Disable flooding suppression
-- `ip_duplication_limit` (Number) Number of IP moves within specified time interval
+- `evpn_anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
+- `evpn_default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
+- `evpn_flooding_suppression_address_resolution_disable` (Boolean) Disable flooding suppression
+- `evpn_ip_duplication_limit` (Number) Number of IP moves within specified time interval
   - Range: `2`-`1000`
-- `ip_duplication_time` (Number) IP duplication timer
+- `evpn_ip_duplication_time` (Number) IP duplication timer
   - Range: `10`-`36000`
-- `logging_peer_state` (Boolean) Peer state transition logging
-- `mac_duplication_limit` (Number) Number of MAC moves within specified time interval
+- `evpn_logging_peer_state` (Boolean) Peer state transition logging
+- `evpn_mac_duplication_limit` (Number) Number of MAC moves within specified time interval
   - Range: `2`-`1000`
-- `mac_duplication_time` (Number) MAC duplication timer
+- `evpn_mac_duplication_time` (Number) MAC duplication timer
   - Range: `10`-`36000`
-- `multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
+- `evpn_multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
+- `evpn_route_target_auto_vni` (Boolean) Set vni-based route-target
+- `profiles` (Attributes List) (see [below for nested schema](#nestedatt--profiles))
 - `replication_type_ingress` (Boolean) Ingress replication
 - `replication_type_mp2mp` (Boolean) mp2mp replication
 - `replication_type_p2mp` (Boolean) p2mp replication
 - `replication_type_static` (Boolean) Static replication
-- `route_target_auto_vni` (Boolean) Set vni-based route-target
 - `router_id_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--profiles"></a>
+### Nested Schema for `profiles`
+
+Required:
+
+- `name` (String) EVPN L2 profile name
+
+Optional:
+
+- `evi_base` (Number) Evpn instance identifier base
+  - Range: `0`-`65535`
+- `l2vni_base` (Number) VxLAN Layer 2 VNI base
+  - Range: `4096`-`16777215`
 
 ## Import
 

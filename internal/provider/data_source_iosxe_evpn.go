@@ -84,19 +84,19 @@ func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "mp2mp replication",
 				Computed:            true,
 			},
-			"mac_duplication_limit": schema.Int64Attribute{
+			"evpn_mac_duplication_limit": schema.Int64Attribute{
 				MarkdownDescription: "Number of MAC moves within specified time interval",
 				Computed:            true,
 			},
-			"mac_duplication_time": schema.Int64Attribute{
+			"evpn_mac_duplication_time": schema.Int64Attribute{
 				MarkdownDescription: "MAC duplication timer",
 				Computed:            true,
 			},
-			"ip_duplication_limit": schema.Int64Attribute{
+			"evpn_ip_duplication_limit": schema.Int64Attribute{
 				MarkdownDescription: "Number of IP moves within specified time interval",
 				Computed:            true,
 			},
-			"ip_duplication_time": schema.Int64Attribute{
+			"evpn_ip_duplication_time": schema.Int64Attribute{
 				MarkdownDescription: "IP duplication timer",
 				Computed:            true,
 			},
@@ -104,29 +104,49 @@ func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},
-			"default_gateway_advertise": schema.BoolAttribute{
+			"evpn_default_gateway_advertise": schema.BoolAttribute{
 				MarkdownDescription: "Advertise Default Gateway MAC/IP routes",
 				Computed:            true,
 			},
-			"logging_peer_state": schema.BoolAttribute{
+			"evpn_logging_peer_state": schema.BoolAttribute{
 				MarkdownDescription: "Peer state transition logging",
 				Computed:            true,
 			},
-			"route_target_auto_vni": schema.BoolAttribute{
+			"evpn_route_target_auto_vni": schema.BoolAttribute{
 				MarkdownDescription: "Set vni-based route-target",
 				Computed:            true,
 			},
-			"anycast_gateway_mac_auto": schema.BoolAttribute{
+			"evpn_anycast_gateway_mac_auto": schema.BoolAttribute{
 				MarkdownDescription: "Enable Auto Anycast Gateway MAC",
 				Computed:            true,
 			},
-			"flooding_suppression_address_resolution_disable": schema.BoolAttribute{
+			"evpn_flooding_suppression_address_resolution_disable": schema.BoolAttribute{
 				MarkdownDescription: "Disable flooding suppression",
 				Computed:            true,
 			},
-			"multicast_advertise": schema.BoolAttribute{
+			"evpn_multicast_advertise": schema.BoolAttribute{
 				MarkdownDescription: "Enable and advertise L2 multicast capability",
 				Computed:            true,
+			},
+			"profiles": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "EVPN L2 profile name",
+							Computed:            true,
+						},
+						"evi_base": schema.Int64Attribute{
+							MarkdownDescription: "Evpn instance identifier base",
+							Computed:            true,
+						},
+						"l2vni_base": schema.Int64Attribute{
+							MarkdownDescription: "VxLAN Layer 2 VNI base",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}

@@ -231,7 +231,7 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									{{- range  .Attributes}}
-									"{{.TfName}}": schema.{{if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}Set{{else}}{{.Type}}{{end}}Attribute{
+									"{{.TfName}}": schema.{{if eq .Type "List"}}ListNested{{else if eq .Type "Set"}}SetNested{{else if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}Set{{else}}{{.Type}}{{end}}Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("{{.Description}}")
 											{{- if len .EnumValues -}}
 											.AddStringEnumDescription({{range .EnumValues}}"{{.}}", {{end}})
@@ -291,6 +291,40 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 										Default:             booldefault.StaticBool({{.DefaultValue}}),
 										{{- else if and (len .DefaultValue) (eq .Type "String")}}
 										Default:             stringdefault.StaticString("{{.DefaultValue}}"),
+										{{- end}}
+										{{- if or (eq .Type "List") (eq .Type "Set")}}
+										NestedObject: schema.NestedAttributeObject{
+											Attributes: map[string]schema.Attribute{
+												{{- range  .Attributes}}
+												"{{.TfName}}": schema.{{if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}Set{{else}}{{.Type}}{{end}}Attribute{
+													MarkdownDescription: helpers.NewAttributeDescription("{{.Description}}")
+														{{- if len .EnumValues -}}
+														.AddStringEnumDescription({{range .EnumValues}}"{{.}}", {{end}})
+														{{- end -}}
+														{{- if or (ne .MinInt 0) (ne .MaxInt 0) -}}
+														.AddIntegerRangeDescription({{.MinInt}}, {{.MaxInt}})
+														{{- end -}}
+														{{- if len .DefaultValue -}}
+														.AddDefaultValueDescription("{{.DefaultValue}}")
+														{{- end -}}
+														.String,
+													{{- if or (eq .Type "StringList") (eq .Type "StringSet")}}
+													ElementType:         types.StringType,
+													{{- else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}
+													ElementType:         types.Int64Type,
+													{{- end}}
+													{{- if or .Id .Mandatory}}
+													Required:            true,
+													{{- else}}
+													Optional:            true,
+													{{- end}}
+													{{- if len .DefaultValue}}
+													Computed:            true,
+													{{- end}}
+												},
+												{{- end}}
+											},
+										},
 										{{- end}}
 									},
 									{{- if .Sensitive}}

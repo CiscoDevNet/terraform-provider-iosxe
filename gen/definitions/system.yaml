@@ -809,6 +809,51 @@ attributes:
     description: Priority (highest to lowest) of auto linecard shutdown
     exclude_test: true
     example: 1
+  - yang_name: stackwise-virtual/Cisco-IOS-XE-stackwise-virtual:domain/domain
+    tf_name: stackwise_virtual_domain
+    example: 10
+    test_tags: [C9500]
+  - yang_name: stackwise-virtual/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp
+    tf_name: stackwise_virtual_dual_active_detection_pagp
+    type_yang_bool: presence
+    example: true
+    test_tags: [C9500]
+  - yang_name: stackwise-virtual/Cisco-IOS-XE-stackwise-virtual:dual-active/detection/pagp/trust/channel-group/channel-group-number
+    tf_name: stackwise_virtual_dual_active_detection_pagp_trust_channel_group
+    example: 1
+    test_tags: [C9500]
+  - yang_name: udld/Cisco-IOS-XE-udld:aggressive
+    tf_name: udld_aggressive
+    example: true
+    test_tags: [C9000V]
+  - yang_name: udld/Cisco-IOS-XE-udld:enable
+    tf_name: udld_enable
+    example: true
+    test_tags: [C9000V]
+  - yang_name: udld/Cisco-IOS-XE-udld:message/time
+    tf_name: udld_message_time
+    example: 77
+    test_tags: [C9000V]
+  - yang_name: udld/Cisco-IOS-XE-udld:recovery/interval
+    tf_name: udld_recovery_interval
+    example: 8640
+    test_tags: [C9000V]
+  - yang_name: qos/Cisco-IOS-XE-qos:queue-softmax-multiplier/value
+    tf_name: qos_queue_softmax_multiplier
+    description: Queue soft buffer maximum multiplier percentage (100-1200)
+    no_delete: true
+    example: 1200
+    test_tags: [C9000V]
+  - yang_name: Cisco-IOS-XE-switch:switch
+    tf_name: switches
+    type: List
+    test_tags: [C9500]
+    attributes:
+      - yang_name: number
+        id: true
+        example: 2
+      - yang_name: provision
+        example: c9300-24p
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]

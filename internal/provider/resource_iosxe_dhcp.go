@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -77,13 +78,6 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
-				},
-			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
 			"compatibility_suboption_link_selection": schema.StringAttribute{
@@ -162,6 +156,406 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Validators: []validator.Int64{
 								int64validator.Between(1, 4094),
 							},
+						},
+					},
+				},
+			},
+			"pools": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure DHCP address pools").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 236),
+							},
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Associate this pool with a VRF").String,
+							Optional:            true,
+						},
+						"domain_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Domain name").String,
+							Optional:            true,
+						},
+						"bootfile": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Boot file name").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 127),
+							},
+						},
+						"client_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Client name").String,
+							Optional:            true,
+						},
+						"network_number": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Network number").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"network_mask": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
+							Optional:            true,
+						},
+						"secondary_networks": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Secondary number and mask").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"number": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Network number").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"mask": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
+										Optional:            true,
+									},
+									"secondary": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Configure as secondary subnet").AddDefaultValueDescription("true").String,
+										Optional:            true,
+										Computed:            true,
+										Default:             booldefault.StaticBool(true),
+									},
+								},
+							},
+						},
+						"host_number": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Client IP address").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"host_mask": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"default_routers": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Default routers").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"dns_servers": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("DNS servers").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"next_servers": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Next server IP addresses").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"lease_days": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Lease days").AddIntegerRangeDescription(0, 365).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 365),
+							},
+						},
+						"lease_hours": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Lease hours").AddIntegerRangeDescription(0, 23).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 23),
+							},
+						},
+						"lease_minutes": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Lease minutes").AddIntegerRangeDescription(0, 59).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 59),
+							},
+						},
+						"lease_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite lease").String,
+							Optional:            true,
+						},
+						"utilization_mark_high": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("High utilization mark percentage").AddIntegerRangeDescription(1, 100).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 100),
+							},
+						},
+						"utilization_mark_high_log": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log when high utilization is detected").String,
+							Optional:            true,
+						},
+						"utilization_mark_low": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Low utilization mark percentage").AddIntegerRangeDescription(1, 100).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 100),
+							},
+						},
+						"utilization_mark_low_log": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log when low utilization is detected").String,
+							Optional:            true,
+						},
+						"subnet_prefix_length": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Subnet prefix length").AddIntegerRangeDescription(1, 32).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 32),
+							},
+						},
+						"options": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"option_code": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DHCP option code").AddIntegerRangeDescription(0, 254).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 254),
+										},
+									},
+									"ascii": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Data is an NVT ASCII string").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.LengthBetween(1, 225),
+										},
+									},
+									"hex": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Data is a hexadecimal string").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.LengthBetween(1, 180),
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9a-fA-F]{4}\.*)*(([0-9a-fA-F]{2})|([0-9a-fA-F]{4})))`), ""),
+										},
+									},
+									"ip": schema.ListAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Data is one or more IP addresses. Use this for versions `17.15` and later.").String,
+										ElementType:         types.StringType,
+										Optional:            true,
+									},
+									"ip_legacy": schema.ListAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Data is one or more IP addresses. Use this for versions before `17.15`.").String,
+										ElementType:         types.StringType,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"ipv6_pools": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure IPv6 DHCP pool").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("DHCP pool name").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 232),
+							},
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VRF name").String,
+							Optional:            true,
+						},
+						"address_prefixes": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 address allocation prefix").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix address").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+										},
+									},
+									"valid_lifetime": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Valid lifetime in seconds or infinite").String,
+										Optional:            true,
+									},
+									"preferred_lifetime": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Preferred lifetime in seconds or infinite").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+						"prefix_delegation_pool_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix delegation pool name").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 512),
+							},
+						},
+						"prefix_delegation_pool_valid_lifetime": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Valid lifetime in seconds or infinite").String,
+							Optional:            true,
+						},
+						"prefix_delegation_pool_preferred_lifetime": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Preferred lifetime in seconds or infinite").String,
+							Optional:            true,
+						},
+						"prefix_delegation_prefixes": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix delegation prefix").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"prefix": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+										},
+									},
+									"hex_string": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DHCPv6 unique identifier (hex)").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]*`), ""),
+										},
+									},
+									"iaid": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DHCPv6 IAID (hex)").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]*`), ""),
+										},
+									},
+									"valid_lifetime": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Valid lifetime in seconds or infinite").String,
+										Optional:            true,
+									},
+									"preferred_lifetime": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Preferred lifetime in seconds or infinite").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+						"dns_servers": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("DNS server addresses").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"domain_names": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Domain names").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"link_addresses": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Link-address to match").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+										},
+									},
+								},
+							},
+						},
+						"bootfile_url": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Boot file URL").String,
+							Optional:            true,
+						},
+						"option_include_all": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Include all DHCPv6 configured options in REPLY").String,
+							Optional:            true,
+						},
+						"vendor_specifics": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Vendor-specific options").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"enterprise_id": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Enterprise ID").AddIntegerRangeDescription(1, 4294967295).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 4294967295),
+										},
+									},
+									"suboptions": schema.ListNestedAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Vendor-specific suboption").String,
+										Optional:            true,
+										NestedObject: schema.NestedAttributeObject{
+											Attributes: map[string]schema.Attribute{
+												"number": schema.Int64Attribute{
+													MarkdownDescription: helpers.NewAttributeDescription("Suboption number").AddIntegerRangeDescription(1, 65535).String,
+													Required:            true,
+												},
+												"address": schema.StringAttribute{
+													MarkdownDescription: helpers.NewAttributeDescription("IPv6 address value").String,
+													Optional:            true,
+												},
+												"ascii": schema.StringAttribute{
+													MarkdownDescription: helpers.NewAttributeDescription("ASCII string value").String,
+													Optional:            true,
+												},
+												"hex": schema.StringAttribute{
+													MarkdownDescription: helpers.NewAttributeDescription("Hex string value").String,
+													Optional:            true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"import_dns_server": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Import DNS address from interface").String,
+							Optional:            true,
+						},
+						"import_domain_name": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Import domain name from interface").String,
+							Optional:            true,
+						},
+						"sntp_addresses": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("SNTP server addresses").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"information_refresh_days": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Information refresh days").AddIntegerRangeDescription(0, 365).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 365),
+							},
+						},
+						"information_refresh_hours": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Information refresh hours").AddIntegerRangeDescription(0, 23).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 23),
+							},
+						},
+						"information_refresh_minutes": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Information refresh minutes").AddIntegerRangeDescription(0, 59).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 59),
+							},
+						},
+						"information_refresh_infinite": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Infinite information refresh").String,
+							Optional:            true,
 						},
 					},
 				},
@@ -379,12 +773,7 @@ func (r *DHCPResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	}
 
 	if device.Managed {
-		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
+		deleteMode := "attributes"
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)

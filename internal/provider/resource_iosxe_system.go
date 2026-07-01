@@ -1111,6 +1111,75 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				ElementType:         types.Int64Type,
 				Optional:            true,
 			},
+			"stackwise_virtual_domain": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 255),
+				},
+			},
+			"stackwise_virtual_dual_active_detection_pagp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Dual-active detection using PAgP").String,
+				Optional:            true,
+			},
+			"stackwise_virtual_dual_active_detection_pagp_trust_channel_group": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Percent range from 1 to 128.").AddIntegerRangeDescription(1, 128).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 128),
+				},
+			},
+			"udld_aggressive": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable UDLD protocol in aggressive mode on fiber ports exceptwhere locally configured").String,
+				Optional:            true,
+			},
+			"udld_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable UDLD protocol on fiber ports except where locally configured").String,
+				Optional:            true,
+			},
+			"udld_message_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set UDLD message time period").AddIntegerRangeDescription(1, 90).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 90),
+				},
+			},
+			"udld_recovery_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("timer-interval(sec)").AddIntegerRangeDescription(30, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(30, 86400),
+				},
+			},
+			"qos_queue_softmax_multiplier": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Queue soft buffer maximum multiplier percentage (100-1200)").AddIntegerRangeDescription(100, 1200).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(100, 1200),
+				},
+			},
+			"switches": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Config commands for the switches in the stack").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"number": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 16).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 16),
+							},
+						},
+						"provision": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure Switch provision / offline config").AddStringEnumDescription("C9200-24PB", "C9200-48PB", "c9200-24p", "c9200-24pxg", "c9200-24t", "c9200-48p", "c9200-48pl", "c9200-48pxg", "c9200-48t", "c9200l-24p-4g", "c9200l-24p-4x", "c9200l-24pxg-2y", "c9200l-24pxg-4x", "c9200l-24t-4g", "c9200l-24t-4x", "c9200l-48p-4g", "c9200l-48p-4x", "c9200l-48pl-4g", "c9200l-48pl-4x", "c9200l-48pxg-2y", "c9200l-48pxg-4x", "c9200l-48t-4g", "c9200l-48t-4x", "c9300-24p", "c9300-24s", "c9300-24t", "c9300-24u", "c9300-24ux", "c9300-48mt", "c9300-48p", "c9300-48s", "c9300-48t", "c9300-48u", "c9300-48un", "c9300-48uxm", "c9300l-24p-4g", "c9300l-24p-4x", "c9300l-24t-4g", "c9300l-24t-4x", "c9300l-24uxg-2q", "c9300l-24uxg-4x", "c9300l-48p-4g", "c9300l-48p-4x", "c9300l-48t-4g", "c9300l-48t-4x", "c9300l-48uxg-2q", "c9300l-48uxg-4x", "c9300lm-24u-4y", "c9300lm-48t-4y", "c9300lm-48u-4y", "c9300lm-48ux-4y", "c9500-12q", "c9500-16x", "c9500-24q", "c9500-40x", "ws-c2960x-24pd-l", "ws-c3650-12x48fd", "ws-c3650-12x48uq", "ws-c3650-12x48ur", "ws-c3650-12x48uz", "ws-c3650-24pd", "ws-c3650-24pdm", "ws-c3650-24ps", "ws-c3650-24td", "ws-c3650-24ts", "ws-c3650-48fqm", "ws-c3650-48pd", "ws-c3650-48pq", "ws-c3650-48ps", "ws-c3650-48td", "ws-c3650-48tq", "ws-c3650-48ts", "ws-c3650-8x24pd", "ws-c3650-8x24uq", "ws-c3750x-12s", "ws-c3750x-24p", "ws-c3850-12s", "ws-c3850-12x48au", "ws-c3850-12x48u", "ws-c3850-12xs", "ws-c3850-24p", "ws-c3850-24s", "ws-c3850-24t", "ws-c3850-24u", "ws-c3850-24ux", "ws-c3850-24xs", "ws-c3850-24xu", "ws-c3850-48f", "ws-c3850-48p", "ws-c3850-48t", "ws-c3850-48u", "ws-c3850-48xs").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("C9200-24PB", "C9200-48PB", "c9200-24p", "c9200-24pxg", "c9200-24t", "c9200-48p", "c9200-48pl", "c9200-48pxg", "c9200-48t", "c9200l-24p-4g", "c9200l-24p-4x", "c9200l-24pxg-2y", "c9200l-24pxg-4x", "c9200l-24t-4g", "c9200l-24t-4x", "c9200l-48p-4g", "c9200l-48p-4x", "c9200l-48pl-4g", "c9200l-48pl-4x", "c9200l-48pxg-2y", "c9200l-48pxg-4x", "c9200l-48t-4g", "c9200l-48t-4x", "c9300-24p", "c9300-24s", "c9300-24t", "c9300-24u", "c9300-24ux", "c9300-48mt", "c9300-48p", "c9300-48s", "c9300-48t", "c9300-48u", "c9300-48un", "c9300-48uxm", "c9300l-24p-4g", "c9300l-24p-4x", "c9300l-24t-4g", "c9300l-24t-4x", "c9300l-24uxg-2q", "c9300l-24uxg-4x", "c9300l-48p-4g", "c9300l-48p-4x", "c9300l-48t-4g", "c9300l-48t-4x", "c9300l-48uxg-2q", "c9300l-48uxg-4x", "c9300lm-24u-4y", "c9300lm-48t-4y", "c9300lm-48u-4y", "c9300lm-48ux-4y", "c9500-12q", "c9500-16x", "c9500-24q", "c9500-40x", "ws-c2960x-24pd-l", "ws-c3650-12x48fd", "ws-c3650-12x48uq", "ws-c3650-12x48ur", "ws-c3650-12x48uz", "ws-c3650-24pd", "ws-c3650-24pdm", "ws-c3650-24ps", "ws-c3650-24td", "ws-c3650-24ts", "ws-c3650-48fqm", "ws-c3650-48pd", "ws-c3650-48pq", "ws-c3650-48ps", "ws-c3650-48td", "ws-c3650-48tq", "ws-c3650-48ts", "ws-c3650-8x24pd", "ws-c3650-8x24uq", "ws-c3750x-12s", "ws-c3750x-24p", "ws-c3850-12s", "ws-c3850-12x48au", "ws-c3850-12x48u", "ws-c3850-12xs", "ws-c3850-24p", "ws-c3850-24s", "ws-c3850-24t", "ws-c3850-24u", "ws-c3850-24ux", "ws-c3850-24xs", "ws-c3850-24xu", "ws-c3850-48f", "ws-c3850-48p", "ws-c3850-48t", "ws-c3850-48u", "ws-c3850-48xs"),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

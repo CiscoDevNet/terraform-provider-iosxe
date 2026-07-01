@@ -26,19 +26,29 @@ data "iosxe_evpn" "example" {
 
 ### Read-Only
 
-- `anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
-- `default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
-- `flooding_suppression_address_resolution_disable` (Boolean) Disable flooding suppression
+- `evpn_anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
+- `evpn_default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
+- `evpn_flooding_suppression_address_resolution_disable` (Boolean) Disable flooding suppression
+- `evpn_ip_duplication_limit` (Number) Number of IP moves within specified time interval
+- `evpn_ip_duplication_time` (Number) IP duplication timer
+- `evpn_logging_peer_state` (Boolean) Peer state transition logging
+- `evpn_mac_duplication_limit` (Number) Number of MAC moves within specified time interval
+- `evpn_mac_duplication_time` (Number) MAC duplication timer
+- `evpn_multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
+- `evpn_route_target_auto_vni` (Boolean) Set vni-based route-target
 - `id` (String) The path of the retrieved object.
-- `ip_duplication_limit` (Number) Number of IP moves within specified time interval
-- `ip_duplication_time` (Number) IP duplication timer
-- `logging_peer_state` (Boolean) Peer state transition logging
-- `mac_duplication_limit` (Number) Number of MAC moves within specified time interval
-- `mac_duplication_time` (Number) MAC duplication timer
-- `multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
+- `profiles` (Attributes List) (see [below for nested schema](#nestedatt--profiles))
 - `replication_type_ingress` (Boolean) Ingress replication
 - `replication_type_mp2mp` (Boolean) mp2mp replication
 - `replication_type_p2mp` (Boolean) p2mp replication
 - `replication_type_static` (Boolean) Static replication
-- `route_target_auto_vni` (Boolean) Set vni-based route-target
 - `router_id_loopback` (Number) Loopback interface
+
+<a id="nestedatt--profiles"></a>
+### Nested Schema for `profiles`
+
+Read-Only:
+
+- `evi_base` (Number) Evpn instance identifier base
+- `l2vni_base` (Number) VxLAN Layer 2 VNI base
+- `name` (String) EVPN L2 profile name

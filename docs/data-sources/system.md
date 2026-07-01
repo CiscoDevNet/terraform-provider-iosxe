@@ -170,12 +170,17 @@ data "iosxe_system" "example" {
 - `power_redundancy_mode_combined` (Boolean) Enable combined power redundancy mode
 - `power_supply_autolc_priority` (List of Number) Priority (highest to lowest) of auto linecard shutdown
 - `power_supply_autolc_shutdown` (Boolean) Linecard auto shutdown control
+- `qos_queue_softmax_multiplier` (Number) Queue soft buffer maximum multiplier percentage (100-1200)
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
 - `security_passwords_min_length` (Number) Minimum length of passwords
+- `stackwise_virtual_domain` (Number)
+- `stackwise_virtual_dual_active_detection_pagp` (Boolean) Dual-active detection using PAgP
+- `stackwise_virtual_dual_active_detection_pagp_trust_channel_group` (Number) Percent range from 1 to 128.
 - `standby_redirects` (Boolean)
 - `standby_redirects_enable_disable` (String)
 - `subscriber_templating` (Boolean) Configure subscriber templating
+- `switches` (Attributes List) Config commands for the switches in the stack (see [below for nested schema](#nestedatt--switches))
 - `table_maps` (Attributes List) Configure Table Map (see [below for nested schema](#nestedatt--table_maps))
 - `tftp_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `tftp_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
@@ -188,6 +193,10 @@ data "iosxe_system" "example" {
 - `tftp_source_interface_vlan` (Number) Iosxr Vlans
 - `track_objects` (Attributes List) (see [below for nested schema](#nestedatt--track_objects))
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
+- `udld_aggressive` (Boolean) Enable UDLD protocol in aggressive mode on fiber ports exceptwhere locally configured
+- `udld_enable` (Boolean) Enable UDLD protocol on fiber ports except where locally configured
+- `udld_message_time` (Number) Set UDLD message time period
+- `udld_recovery_interval` (Number) timer-interval(sec)
 - `version` (String) Version
 
 <a id="nestedatt--boot_system_bootfiles"></a>
@@ -285,6 +294,15 @@ Read-Only:
 - `name` (String)
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
+
+
+<a id="nestedatt--switches"></a>
+### Nested Schema for `switches`
+
+Read-Only:
+
+- `number` (Number)
+- `provision` (String) Configure Switch provision / offline config
 
 
 <a id="nestedatt--table_maps"></a>
