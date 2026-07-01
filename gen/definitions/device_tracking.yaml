@@ -128,6 +128,7 @@ attributes:
         example: 300
         min_int: 1
         max_int: 86400
+        test_tags: [C9000V]
       - yang_name: tracking/tracking-enable-disable/enable-tracking/enable-tracking/reachable-lifetime/tracking-enable/infinite/infinite
         xpath: tracking/enable-tracking/reachable-lifetime/infinite
         tf_name: tracking_enable_reachable_lifetime_infinite

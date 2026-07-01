@@ -53,7 +53,9 @@ func TestAccDataSourceIosxeDeviceTracking(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "policies.0.protocol_dhcp6", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "policies.0.protocol_ndp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "policies.0.tracking_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "policies.0.tracking_enable_reachable_lifetime_seconds", "300"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "policies.0.tracking_enable_reachable_lifetime_seconds", "300"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "policies.0.limit_address_count", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_tracking.test", "policies.0.security_level_glean", "true"))
 	resource.Test(t, resource.TestCase{
@@ -99,7 +101,9 @@ func testAccDataSourceIosxeDeviceTrackingConfig() string {
 	config += `		protocol_dhcp6 = false` + "\n"
 	config += `		protocol_ndp = false` + "\n"
 	config += `		tracking_enable = true` + "\n"
-	config += `		tracking_enable_reachable_lifetime_seconds = 300` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `		tracking_enable_reachable_lifetime_seconds = 300` + "\n"
+	}
 	config += `		limit_address_count = 100` + "\n"
 	config += `		security_level_glean = true` + "\n"
 	config += `	}]` + "\n"
