@@ -10,7 +10,6 @@ All resources and data sources have been tested with the following releases.
 
 | Platform       | Version |
 | -------------- | ------- |
-| Catalyst 8000v | 17.12.4 |
 | Catalyst 8000v | 17.15.3 |
 | Catalyst 9000v | 17.15.1 |
 
@@ -19,7 +18,7 @@ Documentation: <https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest
 ## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) >= 1.0
-- [Go](https://golang.org/doc/install) >= 1.24
+- [Go](https://golang.org/doc/install) >= 1.25
 
 ## Device Configuration
 

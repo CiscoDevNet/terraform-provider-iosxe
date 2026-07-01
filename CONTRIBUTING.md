@@ -103,10 +103,6 @@ IOSXE_PASSWORD=password
 # 17.15.x Router and Switch
 IOSXE_1715_ROUTER_HOST=192.0.2.10
 IOSXE_1715_SWITCH_HOST=192.0.2.11
-
-# 17.12.x Router and Switch
-IOSXE_1712_ROUTER_HOST=192.0.2.12
-IOSXE_1712_SWITCH_HOST=192.0.2.13
 ```
 
 #### Running Tests
@@ -117,13 +113,12 @@ IOSXE_1712_SWITCH_HOST=192.0.2.13
 make test
 ```
 
-This will run tests against all configured devices (17.15.x and 17.12.x versions).
+This will run tests against all configured devices.
 
 **Run tests for a specific version:**
 
 ```shell
 make test-1715  # Test all 17.15.x devices
-make test-1712  # Test all 17.12.x devices
 ```
 
 **Run tests for a specific device:**
@@ -131,8 +126,6 @@ make test-1712  # Test all 17.12.x devices
 ```shell
 make test-1715-router   # Test 17.15.x router only
 make test-1715-switch   # Test 17.15.x switch only
-make test-1712-router   # Test 17.12.x router only
-make test-1712-switch   # Test 17.12.x switch only
 ```
 
 **Run specific tests by name:**
