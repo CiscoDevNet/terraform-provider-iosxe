@@ -1,0 +1,49 @@
+---
+name: EIGRP
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-eigrp:router-eigrp/eigrp/named-mode[name=%s]/address-family/ipv4/af-ipv4[unicast=unicast]
+doc_category: EIGRP
+attributes:
+  - yang_name: name
+    xpath: ../../../name
+    tf_name: name
+    id: true
+    reference: true
+    example: TOPGEN
+    description: EIGRP virtual-instance name
+  - yang_name: autonomous-system
+    no_delete: true
+    example: 100
+    description: Autonomous system number
+  - yang_name: eigrp/router-id
+    tf_name: router_id
+    example: 10.255.0.1
+    description: Router ID for this EIGRP process
+  - yang_name: network/address-wildcard
+    tf_name: networks
+    type: List
+    description: Enable routing on an IP network
+    attributes:
+      - yang_name: ipv4-address
+        tf_name: ip
+        id: true
+        example: 10.10.0.0
+        description: Network number
+      - yang_name: wildcard
+        id: true
+        example: 0.0.255.255
+        description: EIGRP wild card bits
+  - yang_name: topology/topo-base/topology-base
+    tf_name: topology_base
+    default_value: "base"
+    no_delete: true
+    exclude_test: true
+    description: Base topology (always base)
+  - yang_name: topology/topo-base/auto-summary
+    tf_name: auto_summary
+    default_value: "false"
+    no_delete: true
+    example: false
+    description: Enable automatic network number summarization
+  - yang_name: shutdown
+    example: false
+    description: Shutdown address family
