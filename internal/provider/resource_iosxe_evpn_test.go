@@ -52,6 +52,11 @@ func TestAccIosxeEVPN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "route_target_auto_vni", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "flooding_suppression_address_resolution_disable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "multicast_advertise", "true"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.name", "MY_EVPN_PROFILE"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.evi_base", "1000"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.l2vni_base", "10000"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -119,6 +124,13 @@ func testAccIosxeEVPNConfig_all() string {
 	config += `	route_target_auto_vni = true` + "\n"
 	config += `	flooding_suppression_address_resolution_disable = true` + "\n"
 	config += `	multicast_advertise = true` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	profiles = [{` + "\n"
+		config += `		name = "MY_EVPN_PROFILE"` + "\n"
+		config += `		evi_base = 1000` + "\n"
+		config += `		l2vni_base = 10000` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `}` + "\n"
 	return config
 }

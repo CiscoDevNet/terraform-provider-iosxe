@@ -91,10 +91,13 @@ type {{$name}}{{toGoName .TfName}} struct {
 {{- $cname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 {{- range .Attributes}}
+{{- $ccname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 type {{$name}}{{$cname}}{{toGoName .TfName}} struct {
 {{- range .Attributes}}
-{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
+{{- if or (eq .Type "List") (eq .Type "Set")}}
+	{{toGoName .TfName}} []{{$name}}{{$cname}}{{$ccname}}{{toGoName .TfName}} `tfsdk:"{{.TfName}}"`
+{{- else if or (eq .Type "StringList") (eq .Type "Int64List")}}
 	{{toGoName .TfName}} types.List `tfsdk:"{{.TfName}}"`
 {{- else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}
 	{{toGoName .TfName}} types.Set `tfsdk:"{{.TfName}}"`
@@ -107,6 +110,21 @@ type {{$name}}{{$cname}}{{toGoName .TfName}} struct {
 {{- end}}
 {{- end}}
 }
+{{- range .Attributes}}
+{{- if or (eq .Type "List") (eq .Type "Set")}}
+type {{$name}}{{$cname}}{{$ccname}}{{toGoName .TfName}} struct {
+{{- range .Attributes}}
+{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
+	{{toGoName .TfName}} types.List `tfsdk:"{{.TfName}}"`
+{{- else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}
+	{{toGoName .TfName}} types.Set `tfsdk:"{{.TfName}}"`
+{{- else}}
+	{{toGoName .TfName}} types.{{.Type}} `tfsdk:"{{.TfName}}"`
+{{- end}}
+{{- end}}
+}
+{{- end}}
+{{- end}}
 {{- end}}
 {{- end}}
 {{- end}}
@@ -151,8 +169,24 @@ type {{$name}}{{toGoName .TfName}}Data struct {
 {{- $cname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 {{- range .Attributes}}
+{{- $ccname := toGoName .TfName}}
 {{- if or (eq .Type "List") (eq .Type "Set")}}
 type {{$name}}{{$cname}}{{toGoName .TfName}}Data struct {
+{{- range .Attributes}}
+{{- if or (eq .Type "List") (eq .Type "Set")}}
+	{{toGoName .TfName}} []{{$name}}{{$cname}}{{$ccname}}{{toGoName .TfName}}Data `tfsdk:"{{.TfName}}"`
+{{- else if or (eq .Type "StringList") (eq .Type "Int64List")}}
+	{{toGoName .TfName}} types.List `tfsdk:"{{.TfName}}"`
+{{- else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}
+	{{toGoName .TfName}} types.Set `tfsdk:"{{.TfName}}"`
+{{- else}}
+	{{toGoName .TfName}} types.{{.Type}} `tfsdk:"{{.TfName}}"`
+{{- end}}
+{{- end}}
+}
+{{- range .Attributes}}
+{{- if or (eq .Type "List") (eq .Type "Set")}}
+type {{$name}}{{$cname}}{{$ccname}}{{toGoName .TfName}}Data struct {
 {{- range .Attributes}}
 {{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 	{{toGoName .TfName}} types.List `tfsdk:"{{.TfName}}"`
@@ -163,6 +197,8 @@ type {{$name}}{{$cname}}{{toGoName .TfName}}Data struct {
 {{- end}}
 {{- end}}
 }
+{{- end}}
+{{- end}}
 {{- end}}
 {{- end}}
 {{- end}}
@@ -321,6 +357,37 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 					{{- end}}
 					ccBody := netconf.Body{}
 					{{- range (xpathAttributes .Attributes)}}
+					{{- if or (eq .Type "List") (eq .Type "Set")}}
+					if len(citem.{{toGoName .TfName}}) > 0 {
+						for _, ccitem := range citem.{{toGoName .TfName}} {
+							cccBody := netconf.Body{}
+							{{- range (xpathAttributes .Attributes)}}
+							if !ccitem.{{toGoName .TfName}}.IsNull() && !ccitem.{{toGoName .TfName}}.IsUnknown() {
+								{{- if eq .Type "Int64"}}
+								cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", strconv.FormatInt(ccitem.{{toGoName .TfName}}.ValueInt64(), 10))
+								{{- else if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
+								if ccitem.{{toGoName .TfName}}.ValueBool() {
+									cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", "")
+								} else {
+									cccBody = helpers.RemoveFromXPath(cccBody, "{{.XPath}}")
+								}
+								{{- else if and (eq .Type "Bool") (eq .TypeYangBool "boolean")}}
+								cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", ccitem.{{toGoName .TfName}}.ValueBool())
+								{{- else if eq .Type "String"}}
+								cccBody = helpers.SetFromXPath(cccBody, "{{.XPath}}", ccitem.{{toGoName .TfName}}.ValueString())
+								{{- else if or (eq .Type "StringList") (eq .Type "StringSet")}}
+								var values []string
+								ccitem.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
+								for _, v := range values {
+									cccBody = helpers.AppendFromXPath(cccBody, "{{.XPath}}", v)
+								}
+								{{- end}}
+							}
+							{{- end}}
+							ccBody = helpers.SetRawFromXPath(ccBody, "{{.XPath}}", cccBody.Res())
+						}
+					}
+					{{- else}}
 					if !citem.{{toGoName .TfName}}.IsNull() && !citem.{{toGoName .TfName}}.IsUnknown() {
 						{{- if eq .Type "Int64"}}
 						ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", strconv.FormatInt(citem.{{toGoName .TfName}}.ValueInt64(), 10))
@@ -358,6 +425,7 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 						}
 						{{- end}}
 					}
+					{{- end}}
 					{{- end}}
 					cBody = helpers.SetRawFromXPath(cBody, "{{.XPath}}", ccBody.Res())
 				}

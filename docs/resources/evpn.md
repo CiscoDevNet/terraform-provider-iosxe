@@ -52,6 +52,7 @@ resource "iosxe_evpn" "example" {
 - `mac_duplication_time` (Number) MAC duplication timer
   - Range: `10`-`36000`
 - `multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
+- `profiles` (Attributes List) (see [below for nested schema](#nestedatt--profiles))
 - `replication_type_ingress` (Boolean) Ingress replication
 - `replication_type_mp2mp` (Boolean) mp2mp replication
 - `replication_type_p2mp` (Boolean) p2mp replication
@@ -63,6 +64,20 @@ resource "iosxe_evpn" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--profiles"></a>
+### Nested Schema for `profiles`
+
+Required:
+
+- `name` (String) EVPN L2 profile name
+
+Optional:
+
+- `evi_base` (Number) Evpn instance identifier base
+  - Range: `0`-`65535`
+- `l2vni_base` (Number) VxLAN Layer 2 VNI base
+  - Range: `4096`-`16777215`
 
 ## Import
 

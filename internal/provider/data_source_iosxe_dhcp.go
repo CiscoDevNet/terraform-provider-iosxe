@@ -136,6 +136,322 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					},
 				},
 			},
+			"pools": schema.ListNestedAttribute{
+				MarkdownDescription: "Configure DHCP address pools",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "Associate this pool with a VRF",
+							Computed:            true,
+						},
+						"domain_name": schema.StringAttribute{
+							MarkdownDescription: "Domain name",
+							Computed:            true,
+						},
+						"bootfile": schema.StringAttribute{
+							MarkdownDescription: "Boot file name",
+							Computed:            true,
+						},
+						"client_name": schema.StringAttribute{
+							MarkdownDescription: "Client name",
+							Computed:            true,
+						},
+						"network_number": schema.StringAttribute{
+							MarkdownDescription: "Network number",
+							Computed:            true,
+						},
+						"network_mask": schema.StringAttribute{
+							MarkdownDescription: "Network mask",
+							Computed:            true,
+						},
+						"secondary_networks": schema.ListNestedAttribute{
+							MarkdownDescription: "Secondary number and mask",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"number": schema.StringAttribute{
+										MarkdownDescription: "Network number",
+										Computed:            true,
+									},
+									"mask": schema.StringAttribute{
+										MarkdownDescription: "Network mask",
+										Computed:            true,
+									},
+									"secondary": schema.BoolAttribute{
+										MarkdownDescription: "Configure as secondary subnet",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"host_number": schema.StringAttribute{
+							MarkdownDescription: "Client IP address",
+							Computed:            true,
+						},
+						"host_mask": schema.StringAttribute{
+							MarkdownDescription: "Network mask",
+							Computed:            true,
+						},
+						"default_routers": schema.ListAttribute{
+							MarkdownDescription: "Default routers",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"dns_servers": schema.ListAttribute{
+							MarkdownDescription: "DNS servers",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"next_servers": schema.ListAttribute{
+							MarkdownDescription: "Next server IP addresses",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"lease_days": schema.Int64Attribute{
+							MarkdownDescription: "Lease days",
+							Computed:            true,
+						},
+						"lease_hours": schema.Int64Attribute{
+							MarkdownDescription: "Lease hours",
+							Computed:            true,
+						},
+						"lease_minutes": schema.Int64Attribute{
+							MarkdownDescription: "Lease minutes",
+							Computed:            true,
+						},
+						"lease_infinite": schema.BoolAttribute{
+							MarkdownDescription: "Infinite lease",
+							Computed:            true,
+						},
+						"utilization_mark_high": schema.Int64Attribute{
+							MarkdownDescription: "High utilization mark percentage",
+							Computed:            true,
+						},
+						"utilization_mark_high_log": schema.BoolAttribute{
+							MarkdownDescription: "Log when high utilization is detected",
+							Computed:            true,
+						},
+						"utilization_mark_low": schema.Int64Attribute{
+							MarkdownDescription: "Low utilization mark percentage",
+							Computed:            true,
+						},
+						"utilization_mark_low_log": schema.BoolAttribute{
+							MarkdownDescription: "Log when low utilization is detected",
+							Computed:            true,
+						},
+						"subnet_prefix_length": schema.Int64Attribute{
+							MarkdownDescription: "Subnet prefix length",
+							Computed:            true,
+						},
+						"options": schema.ListNestedAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"option_code": schema.Int64Attribute{
+										MarkdownDescription: "DHCP option code",
+										Computed:            true,
+									},
+									"ascii": schema.StringAttribute{
+										MarkdownDescription: "Data is an NVT ASCII string",
+										Computed:            true,
+									},
+									"hex": schema.StringAttribute{
+										MarkdownDescription: "Data is a hexadecimal string",
+										Computed:            true,
+									},
+									"ip": schema.ListAttribute{
+										MarkdownDescription: "Data is one or more IP addresses. Use this for versions `17.15` and later.",
+										ElementType:         types.StringType,
+										Computed:            true,
+									},
+									"ip_legacy": schema.ListAttribute{
+										MarkdownDescription: "Data is one or more IP addresses. Use this for versions before `17.15`.",
+										ElementType:         types.StringType,
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"ipv6_pools": schema.ListNestedAttribute{
+				MarkdownDescription: "Configure IPv6 DHCP pool",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "DHCP pool name",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VRF name",
+							Computed:            true,
+						},
+						"address_prefixes": schema.ListNestedAttribute{
+							MarkdownDescription: "IPv6 address allocation prefix",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"address": schema.StringAttribute{
+										MarkdownDescription: "IPv6 prefix address",
+										Computed:            true,
+									},
+									"valid_lifetime": schema.StringAttribute{
+										MarkdownDescription: "Valid lifetime in seconds or infinite",
+										Computed:            true,
+									},
+									"preferred_lifetime": schema.StringAttribute{
+										MarkdownDescription: "Preferred lifetime in seconds or infinite",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"prefix_delegation_pool_name": schema.StringAttribute{
+							MarkdownDescription: "IPv6 prefix delegation pool name",
+							Computed:            true,
+						},
+						"prefix_delegation_pool_valid_lifetime": schema.StringAttribute{
+							MarkdownDescription: "Valid lifetime in seconds or infinite",
+							Computed:            true,
+						},
+						"prefix_delegation_pool_preferred_lifetime": schema.StringAttribute{
+							MarkdownDescription: "Preferred lifetime in seconds or infinite",
+							Computed:            true,
+						},
+						"prefix_delegation_prefixes": schema.ListNestedAttribute{
+							MarkdownDescription: "IPv6 prefix delegation prefix",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"prefix": schema.StringAttribute{
+										MarkdownDescription: "IPv6 prefix",
+										Computed:            true,
+									},
+									"hex_string": schema.StringAttribute{
+										MarkdownDescription: "DHCPv6 unique identifier (hex)",
+										Computed:            true,
+									},
+									"iaid": schema.StringAttribute{
+										MarkdownDescription: "DHCPv6 IAID (hex)",
+										Computed:            true,
+									},
+									"valid_lifetime": schema.StringAttribute{
+										MarkdownDescription: "Valid lifetime in seconds or infinite",
+										Computed:            true,
+									},
+									"preferred_lifetime": schema.StringAttribute{
+										MarkdownDescription: "Preferred lifetime in seconds or infinite",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"dns_servers": schema.ListAttribute{
+							MarkdownDescription: "DNS server addresses",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"domain_names": schema.ListAttribute{
+							MarkdownDescription: "Domain names",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"link_addresses": schema.ListNestedAttribute{
+							MarkdownDescription: "Link-address to match",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"address": schema.StringAttribute{
+										MarkdownDescription: "IPv6 prefix",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"bootfile_url": schema.StringAttribute{
+							MarkdownDescription: "Boot file URL",
+							Computed:            true,
+						},
+						"option_include_all": schema.BoolAttribute{
+							MarkdownDescription: "Include all DHCPv6 configured options in REPLY",
+							Computed:            true,
+						},
+						"vendor_specifics": schema.ListNestedAttribute{
+							MarkdownDescription: "Vendor-specific options",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"enterprise_id": schema.Int64Attribute{
+										MarkdownDescription: "Enterprise ID",
+										Computed:            true,
+									},
+									"suboptions": schema.ListNestedAttribute{
+										MarkdownDescription: "Vendor-specific suboption",
+										Computed:            true,
+										NestedObject: schema.NestedAttributeObject{
+											Attributes: map[string]schema.Attribute{
+												"number": schema.Int64Attribute{
+													MarkdownDescription: "Suboption number",
+													Computed:            true,
+												},
+												"address": schema.StringAttribute{
+													MarkdownDescription: "IPv6 address value",
+													Computed:            true,
+												},
+												"ascii": schema.StringAttribute{
+													MarkdownDescription: "ASCII string value",
+													Computed:            true,
+												},
+												"hex": schema.StringAttribute{
+													MarkdownDescription: "Hex string value",
+													Computed:            true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"import_dns_server": schema.BoolAttribute{
+							MarkdownDescription: "Import DNS address from interface",
+							Computed:            true,
+						},
+						"import_domain_name": schema.BoolAttribute{
+							MarkdownDescription: "Import domain name from interface",
+							Computed:            true,
+						},
+						"sntp_addresses": schema.ListAttribute{
+							MarkdownDescription: "SNTP server addresses",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"information_refresh_days": schema.Int64Attribute{
+							MarkdownDescription: "Information refresh days",
+							Computed:            true,
+						},
+						"information_refresh_hours": schema.Int64Attribute{
+							MarkdownDescription: "Information refresh hours",
+							Computed:            true,
+						},
+						"information_refresh_minutes": schema.Int64Attribute{
+							MarkdownDescription: "Information refresh minutes",
+							Computed:            true,
+						},
+						"information_refresh_infinite": schema.BoolAttribute{
+							MarkdownDescription: "Infinite information refresh",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

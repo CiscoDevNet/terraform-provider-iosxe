@@ -36,9 +36,19 @@ data "iosxe_evpn" "example" {
 - `mac_duplication_limit` (Number) Number of MAC moves within specified time interval
 - `mac_duplication_time` (Number) MAC duplication timer
 - `multicast_advertise` (Boolean) Enable and advertise L2 multicast capability
+- `profiles` (Attributes List) (see [below for nested schema](#nestedatt--profiles))
 - `replication_type_ingress` (Boolean) Ingress replication
 - `replication_type_mp2mp` (Boolean) mp2mp replication
 - `replication_type_p2mp` (Boolean) p2mp replication
 - `replication_type_static` (Boolean) Static replication
 - `route_target_auto_vni` (Boolean) Set vni-based route-target
 - `router_id_loopback` (Number) Loopback interface
+
+<a id="nestedatt--profiles"></a>
+### Nested Schema for `profiles`
+
+Read-Only:
+
+- `evi_base` (Number) Evpn instance identifier base
+- `l2vni_base` (Number) VxLAN Layer 2 VNI base
+- `name` (String) EVPN L2 profile name
