@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -40,6 +41,25 @@ func TestAccIosxeDeviceTracking(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "tracking_auto_source_fallback_override", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "tracking_retry_interval", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "binding_reachable_lifetime", "7200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.name", "DT_trunk_policy"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.trusted_port", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.device_role", "switch"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.data_glean_recovery_dhcp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.data_glean_recovery_ndp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.prefix_glean", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.destination_glean_recovery_dhcp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.protocol_arp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.protocol_dhcp4", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.protocol_dhcp6", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.protocol_ndp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.tracking_enable", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.tracking_enable_reachable_lifetime_seconds", "300"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.limit_address_count", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_tracking.test", "policies.0.security_level_glean", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -56,7 +76,7 @@ func TestAccIosxeDeviceTracking(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeDeviceTrackingImportStateIdFunc("iosxe_device_tracking.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"policies.0.device_role_node_legacy", "policies.0.device_role_switch_legacy", "policies.0.device_role_router_legacy", "policies.0.data_glean_log_only", "policies.0.prefix_glean_only", "policies.0.destination_glean_log_only", "policies.0.tracking_enable_reachable_lifetime_infinite", "policies.0.tracking_disable", "policies.0.security_level_guard", "policies.0.security_level_inspect", "policies.0.medium_type_wireless"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -99,6 +119,27 @@ func testAccIosxeDeviceTrackingConfig_all() string {
 	config += `	tracking_auto_source_fallback_override = true` + "\n"
 	config += `	tracking_retry_interval = 10` + "\n"
 	config += `	binding_reachable_lifetime = 7200` + "\n"
+	config += `	policies = [{` + "\n"
+	config += `		name = "DT_trunk_policy"` + "\n"
+	config += `		trusted_port = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `		device_role = "switch"` + "\n"
+	}
+	config += `		data_glean_recovery_dhcp = true` + "\n"
+	config += `		data_glean_recovery_ndp = true` + "\n"
+	config += `		prefix_glean = true` + "\n"
+	config += `		destination_glean_recovery_dhcp = true` + "\n"
+	config += `		protocol_arp = false` + "\n"
+	config += `		protocol_dhcp4 = false` + "\n"
+	config += `		protocol_dhcp6 = false` + "\n"
+	config += `		protocol_ndp = false` + "\n"
+	config += `		tracking_enable = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `		tracking_enable_reachable_lifetime_seconds = 300` + "\n"
+	}
+	config += `		limit_address_count = 100` + "\n"
+	config += `		security_level_glean = true` + "\n"
+	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config
 }

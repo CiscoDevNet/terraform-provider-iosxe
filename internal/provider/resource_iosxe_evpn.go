@@ -160,6 +160,32 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: helpers.NewAttributeDescription("Enable and advertise L2 multicast capability").String,
 				Optional:            true,
 			},
+			"profiles": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("EVPN L2 profile name").String,
+							Required:            true,
+						},
+						"evi_base": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Evpn instance identifier base").AddIntegerRangeDescription(0, 65535).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 65535),
+							},
+						},
+						"l2vni_base": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VxLAN Layer 2 VNI base").AddIntegerRangeDescription(4096, 16777215).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(4096, 16777215),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

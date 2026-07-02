@@ -594,6 +594,18 @@ func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 							continue
 						}
 						parseAttribute(ell, &config.Attributes[ia].Attributes[iaa].Attributes[iaaa])
+						if config.Attributes[ia].Attributes[iaa].Attributes[iaaa].Type == "List" || config.Attributes[ia].Attributes[iaa].Attributes[iaaa].Type == "Set" {
+							elll := resolvePath(ell, config.Attributes[ia].Attributes[iaa].Attributes[iaaa].YangName)
+							for iaaaa := range config.Attributes[ia].Attributes[iaa].Attributes[iaaa].Attributes {
+								if config.Attributes[ia].Attributes[iaa].Attributes[iaaa].Attributes[iaaaa].NoAugmentConfig {
+									continue
+								}
+								if config.Attributes[ia].Attributes[iaa].Attributes[iaaa].Attributes[iaaaa].YangName == "" {
+									continue
+								}
+								parseAttribute(elll, &config.Attributes[ia].Attributes[iaa].Attributes[iaaa].Attributes[iaaaa])
+							}
+						}
 					}
 				}
 			}

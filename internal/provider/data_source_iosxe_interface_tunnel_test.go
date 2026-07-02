@@ -85,6 +85,31 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bandwidth", "1000000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_bandwidth_transmit", "1000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_bandwidth_receive", "1000"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_key", "10"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_mode_gre_multipoint", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_nhrp_network_id", "100"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_nhrp_nhs.0.ipv4", "192.168.10.1"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_nhrp_maps.0.dest_ipv4", "10.0.0.1"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_nhrp_maps.0.nbma_ipv4", "172.16.1.1"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_nhrp_redirect", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_nhrp_shortcut", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "mpls_nhrp", "true"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -196,6 +221,38 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	config += `	bandwidth = 1000000` + "\n"
 	config += `	tunnel_bandwidth_transmit = 1000` + "\n"
 	config += `	tunnel_bandwidth_receive = 1000` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	tunnel_key = 10` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	tunnel_mode_gre_multipoint = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	ip_nhrp_authentication = "SECRET"` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	ip_nhrp_network_id = 100` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	ip_nhrp_nhs = [{` + "\n"
+		config += `		ipv4 = "192.168.10.1"` + "\n"
+		config += `	}]` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	ip_nhrp_maps = [{` + "\n"
+		config += `		dest_ipv4 = "10.0.0.1"` + "\n"
+		config += `		nbma_ipv4 = "172.16.1.1"` + "\n"
+		config += `	}]` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	ip_nhrp_redirect = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	ip_nhrp_shortcut = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	mpls_nhrp = true` + "\n"
+	}
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 

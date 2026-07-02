@@ -45,6 +45,11 @@ provider "iosxe" {
 }
 ```
 
+~> The example above hardcodes credentials for simplicity. In practice, use the
+`IOSXE_USERNAME` and `IOSXE_PASSWORD` environment variables to keep credentials
+out of version control. When these variables are set, the `username` and
+`password` attributes can be omitted from the provider block entirely.
+
 ## System Hostname
 
 Next, configure the device hostname with the `iosxe_system` resource:

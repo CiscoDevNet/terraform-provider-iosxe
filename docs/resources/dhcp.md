@@ -21,6 +21,26 @@ resource "iosxe_dhcp" "example" {
   snooping                                    = true
   snooping_information_option                 = true
   snooping_information_option_allow_untrusted = true
+  pools = [
+    {
+      name            = "POOL1"
+      domain_name     = "example.com"
+      bootfile        = "boot.cfg"
+      network_number  = "10.1.1.0"
+      network_mask    = "255.255.255.0"
+      default_routers = ["10.1.1.1"]
+      dns_servers     = ["10.1.1.1"]
+      lease_days      = 1
+      lease_hours     = 12
+      lease_minutes   = 30
+      options = [
+        {
+          option_code = 150
+          ascii       = "10.1.1.1"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -31,9 +51,9 @@ resource "iosxe_dhcp" "example" {
 
 - `compatibility_suboption_link_selection` (String) - Choices: `cisco`, `standard`
 - `compatibility_suboption_server_override` (String) - Choices: `cisco`, `standard`
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `ipv6_pools` (Attributes List) Configure IPv6 DHCP pool (see [below for nested schema](#nestedatt--ipv6_pools))
+- `pools` (Attributes List) Configure DHCP address pools (see [below for nested schema](#nestedatt--pools))
 - `relay_bootp_ignore` (Boolean) Configure this DHCP relay to ignore to BOOTP requests.
 - `relay_information_option_default` (Boolean) Default option, no vpn
 - `relay_information_option_vpn` (Boolean) Insert VPN sub-options and change the giaddr to the outgoing interface
@@ -49,6 +69,172 @@ resource "iosxe_dhcp" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv6_pools"></a>
+### Nested Schema for `ipv6_pools`
+
+Required:
+
+- `name` (String) DHCP pool name
+
+Optional:
+
+- `address_prefixes` (Attributes List) IPv6 address allocation prefix (see [below for nested schema](#nestedatt--ipv6_pools--address_prefixes))
+- `bootfile_url` (String) Boot file URL
+- `dns_servers` (List of String) DNS server addresses
+- `domain_names` (List of String) Domain names
+- `import_dns_server` (Boolean) Import DNS address from interface
+- `import_domain_name` (Boolean) Import domain name from interface
+- `information_refresh_days` (Number) Information refresh days
+  - Range: `0`-`365`
+- `information_refresh_hours` (Number) Information refresh hours
+  - Range: `0`-`23`
+- `information_refresh_infinite` (Boolean) Infinite information refresh
+- `information_refresh_minutes` (Number) Information refresh minutes
+  - Range: `0`-`59`
+- `link_addresses` (Attributes List) Link-address to match (see [below for nested schema](#nestedatt--ipv6_pools--link_addresses))
+- `option_include_all` (Boolean) Include all DHCPv6 configured options in REPLY
+- `prefix_delegation_pool_name` (String) IPv6 prefix delegation pool name
+- `prefix_delegation_pool_preferred_lifetime` (String) Preferred lifetime in seconds or infinite
+- `prefix_delegation_pool_valid_lifetime` (String) Valid lifetime in seconds or infinite
+- `prefix_delegation_prefixes` (Attributes List) IPv6 prefix delegation prefix (see [below for nested schema](#nestedatt--ipv6_pools--prefix_delegation_prefixes))
+- `sntp_addresses` (List of String) SNTP server addresses
+- `vendor_specifics` (Attributes List) Vendor-specific options (see [below for nested schema](#nestedatt--ipv6_pools--vendor_specifics))
+- `vrf` (String) VRF name
+
+<a id="nestedatt--ipv6_pools--address_prefixes"></a>
+### Nested Schema for `ipv6_pools.address_prefixes`
+
+Required:
+
+- `address` (String) IPv6 prefix address
+
+Optional:
+
+- `preferred_lifetime` (String) Preferred lifetime in seconds or infinite
+- `valid_lifetime` (String) Valid lifetime in seconds or infinite
+
+
+<a id="nestedatt--ipv6_pools--link_addresses"></a>
+### Nested Schema for `ipv6_pools.link_addresses`
+
+Required:
+
+- `address` (String) IPv6 prefix
+
+
+<a id="nestedatt--ipv6_pools--prefix_delegation_prefixes"></a>
+### Nested Schema for `ipv6_pools.prefix_delegation_prefixes`
+
+Required:
+
+- `prefix` (String) IPv6 prefix
+
+Optional:
+
+- `hex_string` (String) DHCPv6 unique identifier (hex)
+- `iaid` (String) DHCPv6 IAID (hex)
+- `preferred_lifetime` (String) Preferred lifetime in seconds or infinite
+- `valid_lifetime` (String) Valid lifetime in seconds or infinite
+
+
+<a id="nestedatt--ipv6_pools--vendor_specifics"></a>
+### Nested Schema for `ipv6_pools.vendor_specifics`
+
+Required:
+
+- `enterprise_id` (Number) Enterprise ID
+  - Range: `1`-`4294967295`
+
+Optional:
+
+- `suboptions` (Attributes List) Vendor-specific suboption (see [below for nested schema](#nestedatt--ipv6_pools--vendor_specifics--suboptions))
+
+<a id="nestedatt--ipv6_pools--vendor_specifics--suboptions"></a>
+### Nested Schema for `ipv6_pools.vendor_specifics.suboptions`
+
+Required:
+
+- `number` (Number) Suboption number
+  - Range: `1`-`65535`
+
+Optional:
+
+- `address` (String) IPv6 address value
+- `ascii` (String) ASCII string value
+- `hex` (String) Hex string value
+
+
+
+
+<a id="nestedatt--pools"></a>
+### Nested Schema for `pools`
+
+Required:
+
+- `name` (String)
+
+Optional:
+
+- `bootfile` (String) Boot file name
+- `client_name` (String) Client name
+- `default_routers` (List of String) Default routers
+- `dns_servers` (List of String) DNS servers
+- `domain_name` (String) Domain name
+- `host_mask` (String) Network mask
+- `host_number` (String) Client IP address
+- `lease_days` (Number) Lease days
+  - Range: `0`-`365`
+- `lease_hours` (Number) Lease hours
+  - Range: `0`-`23`
+- `lease_infinite` (Boolean) Infinite lease
+- `lease_minutes` (Number) Lease minutes
+  - Range: `0`-`59`
+- `network_mask` (String) Network mask
+- `network_number` (String) Network number
+- `next_servers` (List of String) Next server IP addresses
+- `options` (Attributes List) (see [below for nested schema](#nestedatt--pools--options))
+- `secondary_networks` (Attributes List) Secondary number and mask (see [below for nested schema](#nestedatt--pools--secondary_networks))
+- `subnet_prefix_length` (Number) Subnet prefix length
+  - Range: `1`-`32`
+- `utilization_mark_high` (Number) High utilization mark percentage
+  - Range: `1`-`100`
+- `utilization_mark_high_log` (Boolean) Log when high utilization is detected
+- `utilization_mark_low` (Number) Low utilization mark percentage
+  - Range: `1`-`100`
+- `utilization_mark_low_log` (Boolean) Log when low utilization is detected
+- `vrf` (String) Associate this pool with a VRF
+
+<a id="nestedatt--pools--options"></a>
+### Nested Schema for `pools.options`
+
+Required:
+
+- `option_code` (Number) DHCP option code
+  - Range: `0`-`254`
+
+Optional:
+
+- `ascii` (String) Data is an NVT ASCII string
+- `hex` (String) Data is a hexadecimal string
+- `ip` (List of String) Data is one or more IP addresses. Use this for versions `17.15` and later.
+- `ip_legacy` (List of String) Data is one or more IP addresses. Use this for versions before `17.15`.
+
+
+<a id="nestedatt--pools--secondary_networks"></a>
+### Nested Schema for `pools.secondary_networks`
+
+Required:
+
+- `number` (String) Network number
+
+Optional:
+
+- `mask` (String) Network mask
+- `secondary` (Boolean) Configure as secondary subnet
+  - Default value: `true`
+
+
 
 <a id="nestedatt--snooping_vlans"></a>
 ### Nested Schema for `snooping_vlans`

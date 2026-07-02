@@ -128,6 +128,26 @@ func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Enable and advertise L2 multicast capability",
 				Computed:            true,
 			},
+			"profiles": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "EVPN L2 profile name",
+							Computed:            true,
+						},
+						"evi_base": schema.Int64Attribute{
+							MarkdownDescription: "Evpn instance identifier base",
+							Computed:            true,
+						},
+						"l2vni_base": schema.Int64Attribute{
+							MarkdownDescription: "VxLAN Layer 2 VNI base",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }
