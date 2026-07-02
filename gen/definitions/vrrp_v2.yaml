@@ -1,0 +1,102 @@
+---
+name: Interface VRRP v2
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group-v2[group-id=%v]
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group-v2[group-id=%v]
+doc_category: Interface
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - FiftyGigabitEthernet
+      - HundredGigE
+      - Vlan
+      - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - BDI
+    example: Vlan
+  - yang_name: name
+    example: 123
+  - yang_name: group-id
+    example: 1
+  - yang_name: ip/primary/address
+    tf_name: ip_primary_address
+    description: Virtual IP address
+    type: String
+    mandatory: true
+    example: 192.0.2.254
+  - yang_name: ip/secondary
+    tf_name: ip_secondary_addresses
+    type: List
+    description: Secondary virtual IPv4 addresses
+    attributes:
+      - yang_name: address
+        id: true
+        type: String
+        example: 192.0.2.253
+      - yang_name: secondary
+        type_yang_bool: empty
+        default_value: true
+        example: true
+  - yang_name: priority
+    description: Priority level
+    example: 110
+  - yang_name: preempt-config/preempt
+    tf_name: preempt
+    description: Enable preemption of lower priority Master
+    example: true
+  - yang_name: preempt/delay/minimum
+    tf_name: preempt_delay_minimum
+    description: Seconds to delay before preempting
+    example: 30
+  - yang_name: timers/advertise/interval-setting/second/interval
+    xpath: timers/advertise/interval
+    tf_name: timers_advertise_interval
+    description: Advertisement interval in seconds
+    example: 3
+  - yang_name: authentication/text
+    tf_name: authentication_text
+    description: Authentication string
+    type: String
+    example: SECRET
+  - yang_name: description
+    type: String
+    example: VRRP-GROUP-1
+  - yang_name: track/event
+    tf_name: tracks
+    type: List
+    description: Object tracking with priority decrement
+    attributes:
+      - yang_name: object-id
+        id: true
+        example: 1
+      - yang_name: decrement
+        example: 20
+  - yang_name: shutdown
+    type_yang_bool: empty
+    description: Shutdown the VRRP group
+    example: false
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/fhrp/version
+    attributes:
+      - name: vrrp
+        value: v2
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]
+    attributes:
+      - name: name
+        value: 123
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ip/address/primary
+    attributes:
+      - name: address
+        value: 192.0.2.1
+      - name: mask
+        value: 255.255.255.0
