@@ -2,7 +2,7 @@
 subcategory: "Guides"
 page_title: "Selective Deploy"
 description: |-
-    Howto selectively deploy to devices.
+    How to selectively deploy to a subset of devices.
 ---
 
 # Selective Deploy
@@ -35,7 +35,7 @@ When using selective deployment, Terraform maintains state for ALL devices but o
 
 Configure selective deployment using the `selected_devices` attribute in your provider block:
 
-```hcl
+```terraform
 provider "iosxe" {
   selected_devices = ["switch-01", "switch-02"]
   devices = [
@@ -56,7 +56,7 @@ Alternatively, use the `IOSXE_SELECTED_DEVICES` environment variable with comma-
 export IOSXE_SELECTED_DEVICES="switch-01,switch-02"
 ```
 
-```hcl
+```terraform
 provider "iosxe" {
   devices = [
     { name = "switch-01", host = "10.1.1.10" },
@@ -71,3 +71,7 @@ provider "iosxe" {
 ### Default Behavior
 
 When `selected_devices` is not specified, all devices in the `devices` list are managed by default.
+
+## See Also
+
+- [Manage Multiple Devices](manage_multiple_devices) — configure the `devices` list this guide selects from.
