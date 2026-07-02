@@ -3,12 +3,12 @@
 page_title: "iosxe_interface_tunnel Resource - terraform-provider-iosxe"
 subcategory: "Interface"
 description: |-
-  This resource can manage the Interface Tunnel configuration.
+  This resource can manage the Interface Tunnel configuration. Note: When creating a tunnel with tunnel_mode_gre_multipoint together with tunnel_key or mpls_nhrp, the initial apply may fail because IOS-XE requires GRE multipoint mode to be active before accepting these commands. A second terraform apply will succeed. This is a device-side ordering constraint in the NETCONF-to-CLI translation.
 ---
 
 # iosxe_interface_tunnel (Resource)
 
-This resource can manage the Interface Tunnel configuration.
+This resource can manage the Interface Tunnel configuration. Note: When creating a tunnel with `tunnel_mode_gre_multipoint` together with `tunnel_key` or `mpls_nhrp`, the initial apply may fail because IOS-XE requires GRE multipoint mode to be active before accepting these commands. A second `terraform apply` will succeed. This is a device-side ordering constraint in the NETCONF-to-CLI translation.
 
 ## Example Usage
 
@@ -109,6 +109,13 @@ resource "iosxe_interface_tunnel" "example" {
   - Range: `68`-`18000`
 - `ip_nat_inside` (Boolean) Inside interface for address translation
 - `ip_nat_outside` (Boolean) Outside interface for address translation
+- `ip_nhrp_authentication` (String) authentication string
+- `ip_nhrp_maps` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_maps))
+- `ip_nhrp_network_id` (Number) Network identifier
+  - Range: `1`-`4294967295`
+- `ip_nhrp_nhs` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_nhs))
+- `ip_nhrp_redirect` (Boolean) Enable NHRP redirect traffic indication
+- `ip_nhrp_shortcut` (Boolean) Enable shortcut switching
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_router_isis` (String)
@@ -136,6 +143,7 @@ resource "iosxe_interface_tunnel" "example" {
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `mpls_nhrp` (Boolean) MPLS NHRP commands
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
@@ -145,6 +153,9 @@ resource "iosxe_interface_tunnel" "example" {
 - `tunnel_bandwidth_transmit` (Number) Transmit bandwidth
   - Range: `1`-`10000000`
 - `tunnel_destination_ipv4` (String) ip address or host name
+- `tunnel_key` (Number) security or selector key
+  - Range: `0`-`4294967295`
+- `tunnel_mode_gre_multipoint` (Boolean) mode Multipoint
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) IPSec policy profile
 - `tunnel_protection_ipsec_profile_legacy` (String) Obsolete, use the other option profile-option to set ipsec policy profile
@@ -178,6 +189,26 @@ Required:
 
 - `direction` (String) - Choices: `input`, `output`
 - `name` (String) User defined
+
+
+<a id="nestedatt--ip_nhrp_maps"></a>
+### Nested Schema for `ip_nhrp_maps`
+
+Required:
+
+- `dest_ipv4` (String) IP address of destination
+
+Optional:
+
+- `nbma_ipv4` (String) IP NBMA address
+
+
+<a id="nestedatt--ip_nhrp_nhs"></a>
+### Nested Schema for `ip_nhrp_nhs`
+
+Required:
+
+- `ipv4` (String) Protocol IP address of NHS
 
 
 <a id="nestedatt--ipv6_addresses"></a>

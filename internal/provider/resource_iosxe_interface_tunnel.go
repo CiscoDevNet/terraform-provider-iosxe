@@ -67,7 +67,7 @@ func (r *InterfaceTunnelResource) Metadata(_ context.Context, req resource.Metad
 func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface Tunnel configuration.",
+		MarkdownDescription: "This resource can manage the Interface Tunnel configuration. Note: When creating a tunnel with `tunnel_mode_gre_multipoint` together with `tunnel_key` or `mpls_nhrp`, the initial apply may fail because IOS-XE requires GRE multipoint mode to be active before accepting these commands. A second `terraform apply` will succeed. This is a device-side ordering constraint in the NETCONF-to-CLI translation.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -522,6 +522,77 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"zone_member_security": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Security zone").String,
+				Optional:            true,
+			},
+			"tunnel_key": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("security or selector key").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
+			"tunnel_mode_gre_multipoint": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("mode Multipoint").String,
+				Optional:            true,
+			},
+			"ip_nhrp_authentication": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("authentication string").String,
+				Optional:            true,
+			},
+			"ip_nhrp_network_id": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Network identifier").AddIntegerRangeDescription(1, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4294967295),
+				},
+			},
+			"ip_nhrp_nhs": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv4": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Protocol IP address of NHS").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+					},
+				},
+			},
+			"ip_nhrp_maps": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"dest_ipv4": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IP address of destination").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"nbma_ipv4": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IP NBMA address").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+					},
+				},
+			},
+			"ip_nhrp_redirect": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable NHRP redirect traffic indication").String,
+				Optional:            true,
+			},
+			"ip_nhrp_shortcut": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable shortcut switching").String,
+				Optional:            true,
+			},
+			"mpls_nhrp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("MPLS NHRP commands").String,
 				Optional:            true,
 			},
 		},

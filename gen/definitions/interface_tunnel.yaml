@@ -1,5 +1,6 @@
 ---
 name: Interface Tunnel
+res_description: "This resource can manage the Interface Tunnel configuration. Note: When creating a tunnel with `tunnel_mode_gre_multipoint` together with `tunnel_key` or `mpls_nhrp`, the initial apply may fail because IOS-XE requires GRE multipoint mode to be active before accepting these commands. A second `terraform apply` will succeed. This is a device-side ordering constraint in the NETCONF-to-CLI translation."
 path: /Cisco-IOS-XE-native:native/interface/Tunnel[name=%s]
 doc_category: Interface
 test_tags: [C8000V]
@@ -294,6 +295,57 @@ attributes:
     tf_name: zone_member_security
     example: INSIDE
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/key
+    tf_name: tunnel_key
+    example: 10
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/mode/mode-choice/gre-config/gre-config/tunmode-choice/multipoint/multipoint
+    xpath: Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint
+    tf_name: tunnel_mode_gre_multipoint
+    example: true
+    test_tags: [C8000V]
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication
+    tf_name: ip_nhrp_authentication
+    example: SECRET
+    write_only: true
+    test_tags: [C8000V]
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id
+    tf_name: ip_nhrp_network_id
+    example: 100
+    test_tags: [C8000V]
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4
+    tf_name: ip_nhrp_nhs
+    type: List
+    test_tags: [C8000V]
+    attributes:
+      - yang_name: ipv4
+        tf_name: ipv4
+        id: true
+        example: 192.168.10.1
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4
+    tf_name: ip_nhrp_maps
+    type: List
+    test_tags: [C8000V]
+    attributes:
+      - yang_name: dest-ipv4
+        tf_name: dest_ipv4
+        id: true
+        example: 10.0.0.1
+      - yang_name: nbma-ipv4/nbma-ipv4
+        tf_name: nbma_ipv4
+        example: 172.16.1.1
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect
+    tf_name: ip_nhrp_redirect
+    example: true
+    test_tags: [C8000V]
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut
+    tf_name: ip_nhrp_shortcut
+    example: true
+    test_tags: [C8000V]
+  - yang_name: mpls/Cisco-IOS-XE-mpls:nhrp
+    tf_name: mpls_nhrp
+    example: true
+    test_tags: [C8000V]
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
