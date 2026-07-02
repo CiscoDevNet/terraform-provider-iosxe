@@ -27,3 +27,7 @@ This way, only the `log_neighbor_changes` attribute will be removed when the res
 If the `delete_mode` attribute is set to `all`, the entire BGP configuration would have been removed when the resource was destroyed.
 
 For some resources only one mode is supported, for example the `iosxe_access_list_standard` resource only supports the `all` mode and does not expose a `delete_mode` attribute, because it is not possible to manage individual access list entries outside of Terraform.
+
+## See Also
+
+- [NETCONF](netconf) — commit modes (`auto_commit`) and how destroy commits staged changes.

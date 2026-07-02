@@ -2,7 +2,7 @@
 subcategory: "Guides"
 page_title: "NETCONF"
 description: |-
-    Howto use NETCONF with the IOSXE provider.
+    How to use NETCONF with the IOSXE provider.
 ---
 
 # NETCONF
@@ -146,7 +146,7 @@ provider "iosxe" {
 }
 
 resource "iosxe_interface_loopback" "example" {
-  name = "100"
+  name = 100
   description = "Managed by Terraform"
 }
 # Changes are committed automatically after this resource is created/updated
@@ -168,12 +168,12 @@ provider "iosxe" {
 }
 
 resource "iosxe_interface_loopback" "loopback100" {
-  name = "100"
+  name = 100
   description = "Loopback 100"
 }
 
 resource "iosxe_interface_loopback" "loopback101" {
-  name = "101"
+  name = 101
   description = "Loopback 101"
 }
 
@@ -230,12 +230,12 @@ The `iosxe_commit` resource can optionally save the running configuration to sta
 
 ```terraform
 resource "iosxe_interface_loopback" "loopback100" {
-  name        = "100"
+  name        = 100
   description = "Loopback 100"
 }
 
 resource "iosxe_interface_loopback" "loopback101" {
-  name        = "101"
+  name        = 101
   description = "Loopback 101"
 }
 
@@ -264,3 +264,7 @@ This combines commit and save operations in a single transaction, ensuring your 
 - [RFC 6241 - Network Configuration Protocol (NETCONF)](https://tools.ietf.org/html/rfc6241)
 - [go-netconf Library Documentation](https://github.com/netascode/go-netconf)
 - [IOS-XE Programmability Guide](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/prog/configuration/1715/b_1715_programmability_cg.html)
+
+## See Also
+
+- [Destroying Resources](destroying_resources) — how `delete_mode` and commit behavior interact during destroy.
