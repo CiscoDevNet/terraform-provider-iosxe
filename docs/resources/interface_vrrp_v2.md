@@ -50,7 +50,7 @@ resource "iosxe_interface_vrrp_v2" "example" {
 - `ip_primary_address` (String) Virtual IP address
 - `name` (String)
 - `type` (String) Interface type
-  - Choices: `GigabitEthernet`, `TwoGigabitEthernet`, `FiveGigabitEthernet`, `TenGigabitEthernet`, `TwentyFiveGigE`, `FortyGigabitEthernet`, `HundredGigE`, `Vlan`, `Port-channel`, `Port-channel-subinterface/Port-channel`, `BDI`
+  - Choices: `GigabitEthernet`, `TwoGigabitEthernet`, `FiveGigabitEthernet`, `TenGigabitEthernet`, `TwentyFiveGigE`, `FortyGigabitEthernet`, `FiftyGigabitEthernet`, `HundredGigE`, `Vlan`, `Port-channel`, `Port-channel-subinterface/Port-channel`, `BDI`
 
 ### Optional
 

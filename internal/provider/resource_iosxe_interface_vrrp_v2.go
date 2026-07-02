@@ -90,10 +90,10 @@ func (r *InterfaceVRRPV2Resource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "BDI").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "FiftyGigabitEthernet", "HundredGigE", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "BDI").String,
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "BDI"),
+					stringvalidator.OneOf("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "FiftyGigabitEthernet", "HundredGigE", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "BDI"),
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
