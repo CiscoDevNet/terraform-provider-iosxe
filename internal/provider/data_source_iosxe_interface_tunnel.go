@@ -413,6 +413,62 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Security zone",
 				Computed:            true,
 			},
+			"tunnel_key": schema.Int64Attribute{
+				MarkdownDescription: "security or selector key",
+				Computed:            true,
+			},
+			"tunnel_mode_gre_multipoint": schema.BoolAttribute{
+				MarkdownDescription: "mode Multipoint",
+				Computed:            true,
+			},
+			"ip_nhrp_authentication": schema.StringAttribute{
+				MarkdownDescription: "authentication string",
+				Computed:            true,
+			},
+			"ip_nhrp_network_id": schema.Int64Attribute{
+				MarkdownDescription: "Network identifier",
+				Computed:            true,
+			},
+			"ip_nhrp_nhs": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv4": schema.StringAttribute{
+							MarkdownDescription: "Protocol IP address of NHS",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ip_nhrp_maps": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"dest_ipv4": schema.StringAttribute{
+							MarkdownDescription: "IP address of destination",
+							Computed:            true,
+						},
+						"nbma_ipv4": schema.StringAttribute{
+							MarkdownDescription: "IP NBMA address",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ip_nhrp_redirect": schema.BoolAttribute{
+				MarkdownDescription: "Enable NHRP redirect traffic indication",
+				Computed:            true,
+			},
+			"ip_nhrp_shortcut": schema.BoolAttribute{
+				MarkdownDescription: "Enable shortcut switching",
+				Computed:            true,
+			},
+			"mpls_nhrp": schema.BoolAttribute{
+				MarkdownDescription: "MPLS NHRP commands",
+				Computed:            true,
+			},
 		},
 	}
 }

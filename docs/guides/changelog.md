@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `tunnel_key`, `tunnel_mode_gre_multipoint`, `ip_nhrp_authentication`, `ip_nhrp_network_id`, `ip_nhrp_nhs`, `ip_nhrp_maps`, `ip_nhrp_redirect`, `ip_nhrp_shortcut`, and `mpls_nhrp` attributes to `iosxe_interface_tunnel` resource and data source for DMVPN/NHRP configuration
 - Add `iosxe_access_list_ipv6` resource and data source for named IPv6 access-list configuration (`ipv6 access-list`), including sequence entries, remarks, prefix/host/FQDN/object-group matching, single/range/multi-port matching, TCP flags, and ICMPv6 message types
 - Add `iosxe_large_community_list_expanded` resource and data source
 - Add `ip_verify_unicast_source_reachable_via`, `ip_verify_unicast_source_allow_self_ping`, and `ip_verify_unicast_source_allow_default` attributes to `iosxe_interface_ethernet`, `iosxe_interface_vlan`, `iosxe_interface_loopback`, and `iosxe_interface_port_channel` resources and data sources for uRPF (`ip verify unicast source reachable-via`) configuration

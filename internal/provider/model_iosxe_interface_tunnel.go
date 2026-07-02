@@ -103,6 +103,15 @@ type InterfaceTunnel struct {
 	ServicePolicyInput                 types.String                               `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                types.String                               `tfsdk:"service_policy_output"`
 	ZoneMemberSecurity                 types.String                               `tfsdk:"zone_member_security"`
+	TunnelKey                          types.Int64                                `tfsdk:"tunnel_key"`
+	TunnelModeGreMultipoint            types.Bool                                 `tfsdk:"tunnel_mode_gre_multipoint"`
+	IpNhrpAuthentication               types.String                               `tfsdk:"ip_nhrp_authentication"`
+	IpNhrpNetworkId                    types.Int64                                `tfsdk:"ip_nhrp_network_id"`
+	IpNhrpNhs                          []InterfaceTunnelIpNhrpNhs                 `tfsdk:"ip_nhrp_nhs"`
+	IpNhrpMaps                         []InterfaceTunnelIpNhrpMaps                `tfsdk:"ip_nhrp_maps"`
+	IpNhrpRedirect                     types.Bool                                 `tfsdk:"ip_nhrp_redirect"`
+	IpNhrpShortcut                     types.Bool                                 `tfsdk:"ip_nhrp_shortcut"`
+	MplsNhrp                           types.Bool                                 `tfsdk:"mpls_nhrp"`
 }
 type InterfaceTunnelIpv6DhcpServers struct {
 	PoolName    types.String `tfsdk:"pool_name"`
@@ -134,6 +143,13 @@ type InterfaceTunnelIpFlowMonitors struct {
 type InterfaceTunnelIpv6FlowMonitors struct {
 	Name      types.String `tfsdk:"name"`
 	Direction types.String `tfsdk:"direction"`
+}
+type InterfaceTunnelIpNhrpNhs struct {
+	Ipv4 types.String `tfsdk:"ipv4"`
+}
+type InterfaceTunnelIpNhrpMaps struct {
+	DestIpv4 types.String `tfsdk:"dest_ipv4"`
+	NbmaIpv4 types.String `tfsdk:"nbma_ipv4"`
 }
 
 type InterfaceTunnelData struct {
@@ -201,6 +217,15 @@ type InterfaceTunnelData struct {
 	ServicePolicyInput                 types.String                                   `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                types.String                                   `tfsdk:"service_policy_output"`
 	ZoneMemberSecurity                 types.String                                   `tfsdk:"zone_member_security"`
+	TunnelKey                          types.Int64                                    `tfsdk:"tunnel_key"`
+	TunnelModeGreMultipoint            types.Bool                                     `tfsdk:"tunnel_mode_gre_multipoint"`
+	IpNhrpAuthentication               types.String                                   `tfsdk:"ip_nhrp_authentication"`
+	IpNhrpNetworkId                    types.Int64                                    `tfsdk:"ip_nhrp_network_id"`
+	IpNhrpNhs                          []InterfaceTunnelIpNhrpNhsData                 `tfsdk:"ip_nhrp_nhs"`
+	IpNhrpMaps                         []InterfaceTunnelIpNhrpMapsData                `tfsdk:"ip_nhrp_maps"`
+	IpNhrpRedirect                     types.Bool                                     `tfsdk:"ip_nhrp_redirect"`
+	IpNhrpShortcut                     types.Bool                                     `tfsdk:"ip_nhrp_shortcut"`
+	MplsNhrp                           types.Bool                                     `tfsdk:"mpls_nhrp"`
 }
 type InterfaceTunnelIpv6DhcpServersData struct {
 	PoolName    types.String `tfsdk:"pool_name"`
@@ -232,6 +257,13 @@ type InterfaceTunnelIpFlowMonitorsData struct {
 type InterfaceTunnelIpv6FlowMonitorsData struct {
 	Name      types.String `tfsdk:"name"`
 	Direction types.String `tfsdk:"direction"`
+}
+type InterfaceTunnelIpNhrpNhsData struct {
+	Ipv4 types.String `tfsdk:"ipv4"`
+}
+type InterfaceTunnelIpNhrpMapsData struct {
+	DestIpv4 types.String `tfsdk:"dest_ipv4"`
+	NbmaIpv4 types.String `tfsdk:"nbma_ipv4"`
 }
 
 // End of section. //template:end types
@@ -602,6 +634,64 @@ func (data InterfaceTunnel) toBodyXML(ctx context.Context, config InterfaceTunne
 	}
 	if !data.ZoneMemberSecurity.IsNull() && !data.ZoneMemberSecurity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security", data.ZoneMemberSecurity.ValueString())
+	}
+	if !data.TunnelKey.IsNull() && !data.TunnelKey.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/key", strconv.FormatInt(data.TunnelKey.ValueInt64(), 10))
+	}
+	if !data.TunnelModeGreMultipoint.IsNull() && !data.TunnelModeGreMultipoint.IsUnknown() {
+		if data.TunnelModeGreMultipoint.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint")
+		}
+	}
+	if !data.IpNhrpAuthentication.IsNull() && !data.IpNhrpAuthentication.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication", data.IpNhrpAuthentication.ValueString())
+	}
+	if !data.IpNhrpNetworkId.IsNull() && !data.IpNhrpNetworkId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id", strconv.FormatInt(data.IpNhrpNetworkId.ValueInt64(), 10))
+	}
+	if len(data.IpNhrpNhs) > 0 {
+		for _, item := range data.IpNhrpNhs {
+			cBody := netconf.Body{}
+			if !item.Ipv4.IsNull() && !item.Ipv4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv4", item.Ipv4.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4", cBody.Res())
+		}
+	}
+	if len(data.IpNhrpMaps) > 0 {
+		for _, item := range data.IpNhrpMaps {
+			cBody := netconf.Body{}
+			if !item.DestIpv4.IsNull() && !item.DestIpv4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ipv4", item.DestIpv4.ValueString())
+			}
+			if !item.NbmaIpv4.IsNull() && !item.NbmaIpv4.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "nbma-ipv4/nbma-ipv4", item.NbmaIpv4.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4", cBody.Res())
+		}
+	}
+	if !data.IpNhrpRedirect.IsNull() && !data.IpNhrpRedirect.IsUnknown() {
+		if data.IpNhrpRedirect.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
+		}
+	}
+	if !data.IpNhrpShortcut.IsNull() && !data.IpNhrpShortcut.IsUnknown() {
+		if data.IpNhrpShortcut.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut")
+		}
+	}
+	if !data.MplsNhrp.IsNull() && !data.MplsNhrp.IsUnknown() {
+		if data.MplsNhrp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp")
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -1233,6 +1323,115 @@ func (data *InterfaceTunnel) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.ZoneMemberSecurity = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/key"); value.Exists() && !data.TunnelKey.IsNull() {
+		data.TunnelKey = types.Int64Value(value.Int())
+	} else {
+		data.TunnelKey = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint"); !data.TunnelModeGreMultipoint.IsNull() {
+		if value.Exists() {
+			data.TunnelModeGreMultipoint = types.BoolValue(true)
+		} else {
+			data.TunnelModeGreMultipoint = types.BoolValue(false)
+		}
+	} else {
+		data.TunnelModeGreMultipoint = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id"); value.Exists() && !data.IpNhrpNetworkId.IsNull() {
+		data.IpNhrpNetworkId = types.Int64Value(value.Int())
+	} else {
+		data.IpNhrpNetworkId = types.Int64Null()
+	}
+	for i := range data.IpNhrpNhs {
+		keys := [...]string{"ipv4"}
+		keyValues := [...]string{data.IpNhrpNhs[i].Ipv4.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv4"); value.Exists() && !data.IpNhrpNhs[i].Ipv4.IsNull() {
+			data.IpNhrpNhs[i].Ipv4 = types.StringValue(value.String())
+		} else {
+			data.IpNhrpNhs[i].Ipv4 = types.StringNull()
+		}
+	}
+	for i := range data.IpNhrpMaps {
+		keys := [...]string{"dest-ipv4"}
+		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dest-ipv4"); value.Exists() && !data.IpNhrpMaps[i].DestIpv4.IsNull() {
+			data.IpNhrpMaps[i].DestIpv4 = types.StringValue(value.String())
+		} else {
+			data.IpNhrpMaps[i].DestIpv4 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "nbma-ipv4/nbma-ipv4"); value.Exists() && !data.IpNhrpMaps[i].NbmaIpv4.IsNull() {
+			data.IpNhrpMaps[i].NbmaIpv4 = types.StringValue(value.String())
+		} else {
+			data.IpNhrpMaps[i].NbmaIpv4 = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect"); !data.IpNhrpRedirect.IsNull() {
+		if value.Exists() {
+			data.IpNhrpRedirect = types.BoolValue(true)
+		} else {
+			data.IpNhrpRedirect = types.BoolValue(false)
+		}
+	} else {
+		data.IpNhrpRedirect = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut"); !data.IpNhrpShortcut.IsNull() {
+		if value.Exists() {
+			data.IpNhrpShortcut = types.BoolValue(true)
+		} else {
+			data.IpNhrpShortcut = types.BoolValue(false)
+		}
+	} else {
+		data.IpNhrpShortcut = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp"); !data.MplsNhrp.IsNull() {
+		if value.Exists() {
+			data.MplsNhrp = types.BoolValue(true)
+		} else {
+			data.MplsNhrp = types.BoolValue(false)
+		}
+	} else {
+		data.MplsNhrp = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1562,6 +1761,60 @@ func (data *InterfaceTunnel) fromBodyXML(ctx context.Context, res xmldot.Result)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/key"); value.Exists() {
+		data.TunnelKey = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint"); value.Exists() {
+		data.TunnelModeGreMultipoint = types.BoolValue(true)
+	} else {
+		data.TunnelModeGreMultipoint = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication"); value.Exists() {
+		data.IpNhrpAuthentication = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id"); value.Exists() {
+		data.IpNhrpNetworkId = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4"); value.Exists() {
+		data.IpNhrpNhs = make([]InterfaceTunnelIpNhrpNhs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceTunnelIpNhrpNhs{}
+			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
+				item.Ipv4 = types.StringValue(cValue.String())
+			}
+			data.IpNhrpNhs = append(data.IpNhrpNhs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4"); value.Exists() {
+		data.IpNhrpMaps = make([]InterfaceTunnelIpNhrpMaps, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceTunnelIpNhrpMaps{}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv4"); cValue.Exists() {
+				item.DestIpv4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "nbma-ipv4/nbma-ipv4"); cValue.Exists() {
+				item.NbmaIpv4 = types.StringValue(cValue.String())
+			}
+			data.IpNhrpMaps = append(data.IpNhrpMaps, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect"); value.Exists() {
+		data.IpNhrpRedirect = types.BoolValue(true)
+	} else {
+		data.IpNhrpRedirect = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut"); value.Exists() {
+		data.IpNhrpShortcut = types.BoolValue(true)
+	} else {
+		data.IpNhrpShortcut = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp"); value.Exists() {
+		data.MplsNhrp = types.BoolValue(true)
+	} else {
+		data.MplsNhrp = types.BoolValue(false)
 	}
 }
 
@@ -1893,6 +2146,60 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security"); value.Exists() {
 		data.ZoneMemberSecurity = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/key"); value.Exists() {
+		data.TunnelKey = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint"); value.Exists() {
+		data.TunnelModeGreMultipoint = types.BoolValue(true)
+	} else {
+		data.TunnelModeGreMultipoint = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication"); value.Exists() {
+		data.IpNhrpAuthentication = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id"); value.Exists() {
+		data.IpNhrpNetworkId = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4"); value.Exists() {
+		data.IpNhrpNhs = make([]InterfaceTunnelIpNhrpNhsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceTunnelIpNhrpNhsData{}
+			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
+				item.Ipv4 = types.StringValue(cValue.String())
+			}
+			data.IpNhrpNhs = append(data.IpNhrpNhs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4"); value.Exists() {
+		data.IpNhrpMaps = make([]InterfaceTunnelIpNhrpMapsData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceTunnelIpNhrpMapsData{}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv4"); cValue.Exists() {
+				item.DestIpv4 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "nbma-ipv4/nbma-ipv4"); cValue.Exists() {
+				item.NbmaIpv4 = types.StringValue(cValue.String())
+			}
+			data.IpNhrpMaps = append(data.IpNhrpMaps, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect"); value.Exists() {
+		data.IpNhrpRedirect = types.BoolValue(true)
+	} else {
+		data.IpNhrpRedirect = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut"); value.Exists() {
+		data.IpNhrpShortcut = types.BoolValue(true)
+	} else {
+		data.IpNhrpShortcut = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp"); value.Exists() {
+		data.MplsNhrp = types.BoolValue(true)
+	} else {
+		data.MplsNhrp = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1901,6 +2208,90 @@ func (data *InterfaceTunnelData) fromBodyXML(ctx context.Context, res xmldot.Res
 
 func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state InterfaceTunnel, body string) string {
 	b := netconf.NewBody(body)
+	if !state.MplsNhrp.IsNull() && data.MplsNhrp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp")
+	}
+	if !state.IpNhrpShortcut.IsNull() && data.IpNhrpShortcut.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut")
+	}
+	if !state.IpNhrpRedirect.IsNull() && data.IpNhrpRedirect.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
+	}
+	for i := range state.IpNhrpMaps {
+		stateKeys := [...]string{"dest-ipv4"}
+		stateKeyValues := [...]string{state.IpNhrpMaps[i].DestIpv4.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpNhrpMaps[i].DestIpv4.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpNhrpMaps {
+			found = true
+			if state.IpNhrpMaps[i].DestIpv4.ValueString() != data.IpNhrpMaps[j].DestIpv4.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.IpNhrpMaps[i].NbmaIpv4.IsNull() && data.IpNhrpMaps[j].NbmaIpv4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4%v/nbma-ipv4/nbma-ipv4", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4%v", predicates))
+		}
+	}
+	for i := range state.IpNhrpNhs {
+		stateKeys := [...]string{"ipv4"}
+		stateKeyValues := [...]string{state.IpNhrpNhs[i].Ipv4.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpNhrpNhs[i].Ipv4.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpNhrpNhs {
+			found = true
+			if state.IpNhrpNhs[i].Ipv4.ValueString() != data.IpNhrpNhs[j].Ipv4.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4%v", predicates))
+		}
+	}
+	if !state.IpNhrpNetworkId.IsNull() && data.IpNhrpNetworkId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id")
+	}
+	if !state.IpNhrpAuthentication.IsNull() && data.IpNhrpAuthentication.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication")
+	}
+	if !state.TunnelModeGreMultipoint.IsNull() && data.TunnelModeGreMultipoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint")
+	}
+	if !state.TunnelKey.IsNull() && data.TunnelKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/key")
+	}
 	if !state.ZoneMemberSecurity.IsNull() && data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
 	}
@@ -2339,6 +2730,47 @@ func (data *InterfaceTunnel) addDeletedItemsXML(ctx context.Context, state Inter
 
 func (data *InterfaceTunnel) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.MplsNhrp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mpls/Cisco-IOS-XE-mpls:nhrp")
+	}
+	if !data.IpNhrpShortcut.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut")
+	}
+	if !data.IpNhrpRedirect.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/redirect")
+	}
+	for i := range data.IpNhrpMaps {
+		keys := [...]string{"dest-ipv4"}
+		keyValues := [...]string{data.IpNhrpMaps[i].DestIpv4.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4%v", predicates))
+	}
+	for i := range data.IpNhrpNhs {
+		keys := [...]string{"ipv4"}
+		keyValues := [...]string{data.IpNhrpNhs[i].Ipv4.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4%v", predicates))
+	}
+	if !data.IpNhrpNetworkId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id")
+	}
+	if !data.IpNhrpAuthentication.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication")
+	}
+	if !data.TunnelModeGreMultipoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/mode/gre-config/multipoint")
+	}
+	if !data.TunnelKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-tunnel:tunnel/key")
+	}
 	if !data.ZoneMemberSecurity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-zone:zone-member/security")
 	}
