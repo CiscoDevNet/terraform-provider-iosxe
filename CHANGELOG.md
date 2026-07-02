@@ -3,6 +3,9 @@
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute
 - BREAKING CHANGE: Consolidate `iosxe_dhcp_pool` and `iosxe_ipv6_dhcp_pool` into `iosxe_dhcp` as `pools` and `ipv6_pools` list attributes
 - BREAKING CHANGE: Consolidate `iosxe_evpn_profile` into `iosxe_evpn` as a `profiles` list attribute
+- BREAKING CHANGE: Remove RESTCONF protocol support. The provider now exclusively uses NETCONF over SSH. Remove `protocol`, `url` provider attributes and `IOSXE_URL`, `IOSXE_PROTOCOL` environment variables from your configuration.
+- BREAKING CHANGE: Remove `detector_rpc_max_sessions` attribute from `iosxe_eem` resource and data source
+- BREAKING CHANGE: Drop support for IOS-XE 17.12
 - Add `iosxe_interface_vrrp_v2` resource and data source for legacy VRRPv2 (RFC 3768) interface-level configuration, including primary/secondary virtual IPv4 addresses, priority, preempt delay, advertisement timers, plaintext authentication, description, object tracking with priority decrement, and shutdown
 - Add `iosxe_eigrp` resource and data source for EIGRP named mode global IPv4 unicast address-family configuration (`router eigrp <name>` / `address-family ipv4 unicast autonomous-system <asn>`)
 - Add `iosxe_eigrp_vrf` resource and data source for EIGRP named mode VRF IPv4 unicast address-family configuration (`router eigrp <name>` / `address-family ipv4 unicast vrf <vrf> autonomous-system <asn>`)
@@ -21,8 +24,6 @@
 - Add `power_redundancy_mode_combined`, `power_supply_autolc_shutdown`, and `power_supply_autolc_priority` attributes to `iosxe_system` resource and data source for chassis power redundancy mode and automatic linecard power management
 - Add `binding_reachable_lifetime` attribute to `iosxe_device_tracking` resource and data source for configuring the default maximum time a binding entry remains in REACHABLE state (`device-tracking binding reachable-lifetime`)
 - Add `default_information_originate_metric`, `default_information_originate_metric_type`, `default_information_originate_route_map`, `redistribute_static_metric`, `redistribute_static_metric_type`, `redistribute_static_route_map`, `redistribute_static_tag`, `redistribute_static_nssa_only`, `redistribute_connected_metric`, `redistribute_connected_metric_type`, `redistribute_connected_route_map`, `redistribute_connected_tag`, `redistribute_connected_nssa_only`, `redistribute_ospf`, `distribute_list_in_access_lists`, and `distribute_list_out_access_lists` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
-- BREAKING CHANGE: Remove RESTCONF protocol support. The provider now exclusively uses NETCONF over SSH. Remove `protocol`, `url` provider attributes and `IOSXE_URL`, `IOSXE_PROTOCOL` environment variables from your configuration.
-- BREAKING CHANGE: Remove `detector_rpc_max_sessions` attribute from `iosxe_eem` resource and data source
 - Add `voice_vlan` attribute to `iosxe_interface_switchport` resource and data source
 - Add `console` attribute to `iosxe_aaa_authorization` resource and data source
 - Add `iosxe_stackwise_virtual` resource and data source for global StackWise Virtual configuration (`stackwise-virtual`), including domain ID and dual-active detection PAgP trust channel-group
