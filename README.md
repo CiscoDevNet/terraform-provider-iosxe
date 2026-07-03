@@ -22,11 +22,7 @@ Documentation: <https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest
 
 ## Device Configuration
 
-The provider supports both **NETCONF** (SSH-based, default) and **RESTCONF** (HTTPS-based) protocols for device communication.
-
-### NETCONF (Default)
-
-NETCONF is the default protocol. Enable it on your IOS-XE device:
+The provider uses **NETCONF** (SSH-based) for device communication. Enable it on your IOS-XE device:
 
 ```
 netconf-yang
@@ -36,15 +32,6 @@ Optionally, enable the candidate datastore for transactional commits:
 
 ```
 netconf-yang feature candidate-datastore
-```
-
-### RESTCONF
-
-RESTCONF requires the following device configuration:
-
-```
-ip http secure-server
-restconf
 ```
 
 ## Support
