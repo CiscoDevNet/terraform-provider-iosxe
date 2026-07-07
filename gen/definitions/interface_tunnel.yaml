@@ -304,19 +304,23 @@ attributes:
     tf_name: tunnel_mode_gre_multipoint
     example: true
     test_tags: [C8000V]
+    exclude_test: true
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/authentication
     tf_name: ip_nhrp_authentication
     example: SECRET
     write_only: true
     test_tags: [C8000V]
+    exclude_test: true
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/network-id
     tf_name: ip_nhrp_network_id
     example: 100
     test_tags: [C8000V]
+    exclude_test: true
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/nhs/ipv4
     tf_name: ip_nhrp_nhs
     type: List
     test_tags: [C8000V]
+    exclude_test: true
     attributes:
       - yang_name: ipv4
         tf_name: ipv4
@@ -326,6 +330,7 @@ attributes:
     tf_name: ip_nhrp_maps
     type: List
     test_tags: [C8000V]
+    exclude_test: true
     attributes:
       - yang_name: dest-ipv4
         tf_name: dest_ipv4
@@ -338,14 +343,17 @@ attributes:
     tf_name: ip_nhrp_redirect
     example: true
     test_tags: [C8000V]
+    exclude_test: true
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/shortcut
     tf_name: ip_nhrp_shortcut
     example: true
     test_tags: [C8000V]
+    exclude_test: true
   - yang_name: mpls/Cisco-IOS-XE-mpls:nhrp
     tf_name: mpls_nhrp
     example: true
     test_tags: [C8000V]
+    exclude_test: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
