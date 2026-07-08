@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,6 +32,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeInterfaceVRRPV2(t *testing.T) {
+	if os.Getenv("C8000V") == "" {
+		t.Skip("skipping test, set environment variable C8000V")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vrrp_v2.test", "ip_primary_address", "192.0.2.254"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vrrp_v2.test", "ip_secondary_addresses.0.address", "192.0.2.253"))

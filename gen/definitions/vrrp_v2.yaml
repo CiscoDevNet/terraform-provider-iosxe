@@ -3,6 +3,7 @@ name: Interface VRRP v2
 path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group-v2[group-id=%v]
 augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group-v2[group-id=%v]
 doc_category: Interface
+test_tags: [C8000V]
 attributes:
   - yang_name: type
     tf_name: type
