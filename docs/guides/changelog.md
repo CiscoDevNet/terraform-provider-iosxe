@@ -27,7 +27,6 @@ description: |-
 - Add `service` support to `iosxe_object_group` resource and data source for service object groups including TCP, UDP, TCP-UDP port configurations with operators, ranges, source/destination combinations, protocol flags, ICMP types, and group nesting
 - Add `iosxe_qos` resource and data source for global QoS configuration, including the `queue_softmax_multiplier` attribute for queue soft buffer maximum tuning on Catalyst 9000 series
 - Add `iosxe_switch` resource and data source for StackWise member provisioning (`switch <number> provision <model>`)
-- Add `iosxe_privilege` resource and data source for privilege level command mapping configuration (`privilege <mode> level <level> <command>`), including mode selection (exec, configure, interface, router, crypto-map, ipenacl) with nested level and command-list attributes
 - Add `mac_address_table_aging_time` attribute to `iosxe_system` resource and data source
 - Add `password_level`, `password_type`, and `password` attributes to `iosxe_line` aux entries for line aux password configuration
 - Add `power_redundancy_mode_combined`, `power_supply_autolc_shutdown`, and `power_supply_autolc_priority` attributes to `iosxe_system` resource and data source for chassis power redundancy mode and automatic linecard power management
