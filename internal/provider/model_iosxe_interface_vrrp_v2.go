@@ -540,9 +540,6 @@ func (data *InterfaceVRRPV2) addDeletedItemsXML(ctx context.Context, state Inter
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/secondary%v", predicates))
 		}
 	}
-	if !state.IpPrimaryAddress.IsNull() && data.IpPrimaryAddress.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/primary/address")
-	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
@@ -594,9 +591,6 @@ func (data *InterfaceVRRPV2) addDeletePathsXML(ctx context.Context, body string)
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/ip/secondary%v", predicates))
-	}
-	if !data.IpPrimaryAddress.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/primary/address")
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)

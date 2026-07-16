@@ -325,7 +325,7 @@ func (r *PrivilegeResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 
 	if device.Managed {
-		deleteMode := "all"
+		deleteMode := "attributes"
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
