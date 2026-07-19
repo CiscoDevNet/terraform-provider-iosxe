@@ -1,4 +1,4 @@
-## Unreleased
+## 1.0.0
 
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute
 - BREAKING CHANGE: Consolidate `iosxe_dhcp_pool` and `iosxe_ipv6_dhcp_pool` into `iosxe_dhcp` as `pools` and `ipv6_pools` list attributes
