@@ -43,6 +43,7 @@ type CryptoIPSecProfile struct {
 	SetTransformSet                             types.List   `tfsdk:"set_transform_set"`
 	SetIkev2Profile                             types.String `tfsdk:"set_ikev2_profile"`
 	SetIsakmpProfile                            types.String `tfsdk:"set_isakmp_profile"`
+	SetPfs                                      types.Bool   `tfsdk:"set_pfs"`
 	SetPfsGroup                                 types.String `tfsdk:"set_pfs_group"`
 	SetSecurityAssociationLifetimeSeconds       types.Int64  `tfsdk:"set_security_association_lifetime_seconds"`
 	SetSecurityAssociationLifetimeSecondsLegacy types.Int64  `tfsdk:"set_security_association_lifetime_seconds_legacy"`
@@ -55,6 +56,7 @@ type CryptoIPSecProfileData struct {
 	SetTransformSet                             types.List   `tfsdk:"set_transform_set"`
 	SetIkev2Profile                             types.String `tfsdk:"set_ikev2_profile"`
 	SetIsakmpProfile                            types.String `tfsdk:"set_isakmp_profile"`
+	SetPfs                                      types.Bool   `tfsdk:"set_pfs"`
 	SetPfsGroup                                 types.String `tfsdk:"set_pfs_group"`
 	SetSecurityAssociationLifetimeSeconds       types.Int64  `tfsdk:"set_security_association_lifetime_seconds"`
 	SetSecurityAssociationLifetimeSecondsLegacy types.Int64  `tfsdk:"set_security_association_lifetime_seconds_legacy"`
@@ -107,6 +109,13 @@ func (data CryptoIPSecProfile) toBodyXML(ctx context.Context, config CryptoIPSec
 	if !data.SetIsakmpProfile.IsNull() && !data.SetIsakmpProfile.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/set/isakmp-profile", data.SetIsakmpProfile.ValueString())
 	}
+	if !data.SetPfs.IsNull() && !data.SetPfs.IsUnknown() {
+		if data.SetPfs.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/set/pfs", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/set/pfs")
+		}
+	}
 	if !data.SetPfsGroup.IsNull() && !data.SetPfsGroup.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/set/pfs/group", data.SetPfsGroup.ValueString())
 	}
@@ -148,6 +157,15 @@ func (data *CryptoIPSecProfile) updateFromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.SetIsakmpProfile = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/pfs"); !data.SetPfs.IsNull() {
+		if value.Exists() {
+			data.SetPfs = types.BoolValue(true)
+		} else {
+			data.SetPfs = types.BoolValue(false)
+		}
+	} else {
+		data.SetPfs = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/pfs/group"); value.Exists() && !data.SetPfsGroup.IsNull() {
 		data.SetPfsGroup = types.StringValue(value.String())
 	} else {
@@ -181,6 +199,11 @@ func (data *CryptoIPSecProfile) fromBodyXML(ctx context.Context, res xmldot.Resu
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
 		data.SetIsakmpProfile = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/pfs"); value.Exists() {
+		data.SetPfs = types.BoolValue(true)
+	} else {
+		data.SetPfs = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/pfs/group"); value.Exists() {
 		data.SetPfsGroup = types.StringValue(value.String())
 	}
@@ -208,6 +231,11 @@ func (data *CryptoIPSecProfileData) fromBodyXML(ctx context.Context, res xmldot.
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
 		data.SetIsakmpProfile = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/pfs"); value.Exists() {
+		data.SetPfs = types.BoolValue(true)
+	} else {
+		data.SetPfs = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/pfs/group"); value.Exists() {
 		data.SetPfsGroup = types.StringValue(value.String())
 	}
@@ -233,6 +261,9 @@ func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state Cr
 	}
 	if !state.SetPfsGroup.IsNull() && data.SetPfsGroup.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/pfs/group")
+	}
+	if !state.SetPfs.IsNull() && data.SetPfs.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/pfs")
 	}
 	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/isakmp-profile")
@@ -284,6 +315,9 @@ func (data *CryptoIPSecProfile) addDeletePathsXML(ctx context.Context, body stri
 	}
 	if !data.SetPfsGroup.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/pfs/group")
+	}
+	if !data.SetPfs.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/pfs")
 	}
 	if !data.SetIsakmpProfile.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/isakmp-profile")
