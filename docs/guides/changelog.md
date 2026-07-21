@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 1.0.1 (Unreleased)
+
+- Fix perpetual `terraform plan` drift on `iosxe_access_list_extended` port and DSCP attributes where IOS-XE returns symbolic names (e.g., `www`, `bgp`, `ef`, `af41`) via NETCONF get-config for values that were configured numerically (e.g., `80`, `179`, `46`, `34`). The provider now normalizes symbolic names back to numeric equivalents on read.
+
 ## 1.0.0
 
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute
