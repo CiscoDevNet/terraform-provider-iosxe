@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 1.0.1 (Unreleased)
+
+- Fix perpetual `terraform plan` drift on `iosxe_clock` summer time attributes where IOS-XE strips leading zeros from time values (e.g., `02:30` becomes `2:30`) in NETCONF get-config responses. The provider now normalizes time strings to always include leading zeros on read.
+
 ## 1.0.0
 
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute

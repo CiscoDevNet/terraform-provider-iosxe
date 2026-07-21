@@ -221,7 +221,9 @@ func (data Clock) toBodyXML(ctx context.Context, config Clock) string {
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+// Custom implementation - template markers removed to preserve changes
+// IOS-XE strips leading zeros from time values (e.g., "02:30" -> "2:30") in NETCONF
+// get-config responses. NormalizeTimeString pads single-digit hours/minutes to prevent drift.
 
 func (data *Clock) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/calendar-valid"); !data.CalendarValid.IsNull() {
@@ -263,7 +265,7 @@ func (data *Clock) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeDateStartYear = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/start-time"); value.Exists() && !data.SummerTimeDateStartTime.IsNull() {
-		data.SummerTimeDateStartTime = types.StringValue(value.String())
+		data.SummerTimeDateStartTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	} else {
 		data.SummerTimeDateStartTime = types.StringNull()
 	}
@@ -283,7 +285,7 @@ func (data *Clock) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeDateEndYear = types.Int64Null()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/date-end-time"); value.Exists() && !data.SummerTimeDateEndTime.IsNull() {
-		data.SummerTimeDateEndTime = types.StringValue(value.String())
+		data.SummerTimeDateEndTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	} else {
 		data.SummerTimeDateEndTime = types.StringNull()
 	}
@@ -317,7 +319,7 @@ func (data *Clock) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeRecurringStartMonth = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-start-time"); value.Exists() && !data.SummerTimeRecurringStartTime.IsNull() {
-		data.SummerTimeRecurringStartTime = types.StringValue(value.String())
+		data.SummerTimeRecurringStartTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	} else {
 		data.SummerTimeRecurringStartTime = types.StringNull()
 	}
@@ -337,7 +339,7 @@ func (data *Clock) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeRecurringEndMonth = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-end-time"); value.Exists() && !data.SummerTimeRecurringEndTime.IsNull() {
-		data.SummerTimeRecurringEndTime = types.StringValue(value.String())
+		data.SummerTimeRecurringEndTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	} else {
 		data.SummerTimeRecurringEndTime = types.StringNull()
 	}
@@ -363,9 +365,10 @@ func (data *Clock) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 }
 
-// End of section. //template:end updateFromBodyXML
+// End of custom updateFromBodyXML implementation.
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+// Custom implementation - template markers removed to preserve changes
+// See updateFromBodyXML above for rationale.
 
 func (data *Clock) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/calendar-valid"); value.Exists() {
@@ -391,7 +394,7 @@ func (data *Clock) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeDateStartYear = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/start-time"); value.Exists() {
-		data.SummerTimeDateStartTime = types.StringValue(value.String())
+		data.SummerTimeDateStartTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/date-end-day"); value.Exists() {
 		data.SummerTimeDateEndDay = types.Int64Value(value.Int())
@@ -403,7 +406,7 @@ func (data *Clock) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeDateEndYear = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/date-end-time"); value.Exists() {
-		data.SummerTimeDateEndTime = types.StringValue(value.String())
+		data.SummerTimeDateEndTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/offset"); value.Exists() {
 		data.SummerTimeDateOffset = types.Int64Value(value.Int())
@@ -423,7 +426,7 @@ func (data *Clock) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeRecurringStartMonth = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-start-time"); value.Exists() {
-		data.SummerTimeRecurringStartTime = types.StringValue(value.String())
+		data.SummerTimeRecurringStartTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-end"); value.Exists() {
 		data.SummerTimeRecurringEndWeek = types.StringValue(value.String())
@@ -435,7 +438,7 @@ func (data *Clock) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeRecurringEndMonth = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-end-time"); value.Exists() {
-		data.SummerTimeRecurringEndTime = types.StringValue(value.String())
+		data.SummerTimeRecurringEndTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-offset"); value.Exists() {
 		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
@@ -451,9 +454,10 @@ func (data *Clock) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 }
 
-// End of section. //template:end fromBodyXML
+// End of custom fromBodyXML implementation.
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+// Custom implementation - template markers removed to preserve changes
+// See updateFromBodyXML above for rationale.
 
 func (data *ClockData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/calendar-valid"); value.Exists() {
@@ -479,7 +483,7 @@ func (data *ClockData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeDateStartYear = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/start-time"); value.Exists() {
-		data.SummerTimeDateStartTime = types.StringValue(value.String())
+		data.SummerTimeDateStartTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/date-end-day"); value.Exists() {
 		data.SummerTimeDateEndDay = types.Int64Value(value.Int())
@@ -491,7 +495,7 @@ func (data *ClockData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeDateEndYear = types.Int64Value(value.Int())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/date-end-time"); value.Exists() {
-		data.SummerTimeDateEndTime = types.StringValue(value.String())
+		data.SummerTimeDateEndTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/offset"); value.Exists() {
 		data.SummerTimeDateOffset = types.Int64Value(value.Int())
@@ -511,7 +515,7 @@ func (data *ClockData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeRecurringStartMonth = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-start-time"); value.Exists() {
-		data.SummerTimeRecurringStartTime = types.StringValue(value.String())
+		data.SummerTimeRecurringStartTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-end"); value.Exists() {
 		data.SummerTimeRecurringEndWeek = types.StringValue(value.String())
@@ -523,7 +527,7 @@ func (data *ClockData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.SummerTimeRecurringEndMonth = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-end-time"); value.Exists() {
-		data.SummerTimeRecurringEndTime = types.StringValue(value.String())
+		data.SummerTimeRecurringEndTime = types.StringValue(helpers.NormalizeTimeString(value.String()))
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/summer-time/recurring-offset"); value.Exists() {
 		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
@@ -539,7 +543,7 @@ func (data *ClockData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 }
 
-// End of section. //template:end fromBodyDataXML
+// End of custom fromBodyDataXML implementation.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
 
