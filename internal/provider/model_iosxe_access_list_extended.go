@@ -846,7 +846,11 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 
 // End of section. //template:end updateFromBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+// Custom implementation - template markers removed to preserve changes
+// Provider reads symbolic port/DSCP names from NETCONF get-config but writes numeric
+// values via edit-config. Without normalization, Terraform detects false drift
+// (e.g., "www" in state vs "80" in config). NormalizePort/NormalizeDscp convert
+// symbolic names back to numeric for consistent state comparison.
 
 func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
@@ -889,19 +893,19 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.SourceFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq"); cValue.Exists() {
-				item.SourcePortEqual = types.StringValue(cValue.String())
+				item.SourcePortEqual = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-gt"); cValue.Exists() {
-				item.SourcePortGreaterThan = types.StringValue(cValue.String())
+				item.SourcePortGreaterThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-lt"); cValue.Exists() {
-				item.SourcePortLesserThan = types.StringValue(cValue.String())
+				item.SourcePortLesserThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-range1"); cValue.Exists() {
-				item.SourcePortRangeFrom = types.StringValue(cValue.String())
+				item.SourcePortRangeFrom = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-range2"); cValue.Exists() {
-				item.SourcePortRangeTo = types.StringValue(cValue.String())
+				item.SourcePortRangeTo = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port2"); cValue.Exists() {
 				item.SourcePortEqual2 = types.StringValue(cValue.String())
@@ -951,19 +955,19 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.DestinationFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq"); cValue.Exists() {
-				item.DestinationPortEqual = types.StringValue(cValue.String())
+				item.DestinationPortEqual = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-gt"); cValue.Exists() {
-				item.DestinationPortGreaterThan = types.StringValue(cValue.String())
+				item.DestinationPortGreaterThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-lt"); cValue.Exists() {
-				item.DestinationPortLesserThan = types.StringValue(cValue.String())
+				item.DestinationPortLesserThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-range1"); cValue.Exists() {
-				item.DestinationPortRangeFrom = types.StringValue(cValue.String())
+				item.DestinationPortRangeFrom = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-range2"); cValue.Exists() {
-				item.DestinationPortRangeTo = types.StringValue(cValue.String())
+				item.DestinationPortRangeTo = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/ack"); cValue.Exists() {
 				item.Ack = types.BoolValue(true)
@@ -1001,7 +1005,7 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.Established = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dscp"); cValue.Exists() {
-				item.Dscp = types.StringValue(cValue.String())
+				item.Dscp = types.StringValue(helpers.NormalizeDscp(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/fragments"); cValue.Exists() {
 				item.Fragments = types.BoolValue(true)
@@ -1066,7 +1070,7 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 	}
 }
 
-// End of section. //template:end fromBodyXML
+// End of custom fromBodyXML implementation.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
