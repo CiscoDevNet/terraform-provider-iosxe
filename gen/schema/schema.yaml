@@ -9,9 +9,13 @@ wait: bool(required=False)  # Wait for the DB lock to be released, this is requi
 request_timeout: int(required=False)  # Timeout for write request in seconds, default is 60
 test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured
 skip_minimum_test: bool(required=False)  # Set to true if the resource should skip the minimum test
+skip_bulk_resource_test: bool(required=False)  # Set to true if the bulk resource should not generate an acceptance test
 no_augment_config: bool(required=False)  # Set to true if the definition should not be augmented by the YANG models
+bulk_resource: bool(required=False)  # Set to true to generate an additional bulk resource managing all list entries of this path in a single resource
+bulk_name: str(required=False)  # Optionally override the derived name of the bulk resource, otherwise the name is derived by pluralizing 'name'
 ds_description: str(required=False)  # Description for the data source
 res_description: str(required=False)  # Description for the resource
+res_bulk_description: str(required=False)  # Description for the bulk resource
 doc_category: str()  # Documentation category for the resource
 attributes: list(include('attribute'), required=False)  # List of attributes
 test_prerequisites: list(include('test_prerequisite'), required=False)  # List of test prerequisites

@@ -556,6 +556,7 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewFlowRecordResource,
 		NewInterfaceBDIResource,
 		NewInterfaceEthernetResource,
+		NewInterfaceEthernetsResource,
 		NewInterfaceISISResource,
 		NewInterfaceLoopbackResource,
 		NewInterfaceMPLSResource,

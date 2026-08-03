@@ -89,7 +89,17 @@ func (data ASPathAccessListData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data ASPathAccessList) toBodyXML(ctx context.Context, config ASPathAccessList) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data ASPathAccessList) addToBodyXML(ctx context.Context, config ASPathAccessList, body netconf.Body) netconf.Body {
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", strconv.FormatInt(data.Name.ValueInt64(), 10))
 	}
@@ -105,11 +115,7 @@ func (data ASPathAccessList) toBodyXML(ctx context.Context, config ASPathAccessL
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/extended-grouping/extended_grouping", cBody.Res())
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

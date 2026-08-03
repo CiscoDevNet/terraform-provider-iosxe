@@ -496,6 +496,9 @@ func (p *IosxeProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewCommitResource,
 		{{- range .}}
 		New{{camelCase .Name}}Resource,
+		{{- if .BulkResource}}
+		New{{camelCase .BulkName}}Resource,
+		{{- end}}
 		{{- end}}
 	}
 }
