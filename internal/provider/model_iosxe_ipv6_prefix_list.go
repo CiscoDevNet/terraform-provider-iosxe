@@ -104,6 +104,7 @@ func (data IPv6PrefixListData) getXPath() string {
 func (data IPv6PrefixList) toBodyXML(ctx context.Context, config IPv6PrefixList) string {
 	body := netconf.Body{}
 	if len(data.Prefixes) > 0 {
+		PrefixesFragments := make([]string, 0, len(data.Prefixes))
 		for _, item := range data.Prefixes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -124,10 +125,12 @@ func (data IPv6PrefixList) toBodyXML(ctx context.Context, config IPv6PrefixList)
 			if !item.Le.IsNull() && !item.Le.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "le", strconv.FormatInt(item.Le.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/prefixes", cBody.Res())
+			PrefixesFragments = append(PrefixesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/prefixes", PrefixesFragments)
 	}
 	if len(data.PrefixListDescription) > 0 {
+		PrefixListDescriptionFragments := make([]string, 0, len(data.PrefixListDescription))
 		for _, item := range data.PrefixListDescription {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -136,8 +139,9 @@ func (data IPv6PrefixList) toBodyXML(ctx context.Context, config IPv6PrefixList)
 			if !item.Description.IsNull() && !item.Description.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/prefix-list-description", cBody.Res())
+			PrefixListDescriptionFragments = append(PrefixListDescriptionFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/prefix-list-description", PrefixListDescriptionFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -151,29 +155,12 @@ func (data IPv6PrefixList) toBodyXML(ctx context.Context, config IPv6PrefixList)
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *IPv6PrefixList) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	PrefixesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PrefixesKeys := [...]string{"name", "no"}
+	PrefixesItems := helpers.CollectListItemsXML(PrefixesParentScope.Raw, "prefixes", PrefixesKeys[:])
 	for i := range data.Prefixes {
-		keys := [...]string{"name", "no"}
-		keyValues := [...]string{data.Prefixes[i].Name.ValueString(), strconv.FormatInt(data.Prefixes[i].Seq.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/prefixes").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PrefixesKeyValues := [...]string{data.Prefixes[i].Name.ValueString(), strconv.FormatInt(data.Prefixes[i].Seq.ValueInt64(), 10)}
+		r := PrefixesItems[helpers.CompositeKey(PrefixesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Prefixes[i].Name.IsNull() {
 			data.Prefixes[i].Name = types.StringValue(value.String())
 		} else {
@@ -205,29 +192,12 @@ func (data *IPv6PrefixList) updateFromBodyXML(ctx context.Context, res xmldot.Re
 			data.Prefixes[i].Le = types.Int64Null()
 		}
 	}
+	PrefixListDescriptionParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PrefixListDescriptionKeys := [...]string{"name"}
+	PrefixListDescriptionItems := helpers.CollectListItemsXML(PrefixListDescriptionParentScope.Raw, "prefix-list-description", PrefixListDescriptionKeys[:])
 	for i := range data.PrefixListDescription {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PrefixListDescription[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/prefix-list-description").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PrefixListDescriptionKeyValues := [...]string{data.PrefixListDescription[i].Name.ValueString()}
+		r := PrefixListDescriptionItems[helpers.CompositeKey(PrefixListDescriptionKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PrefixListDescription[i].Name.IsNull() {
 			data.PrefixListDescription[i].Name = types.StringValue(value.String())
 		} else {

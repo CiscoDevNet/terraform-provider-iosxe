@@ -104,6 +104,7 @@ func (data CryptoPKIData) getXPath() string {
 func (data CryptoPKI) toBodyXML(ctx context.Context, config CryptoPKI) string {
 	body := netconf.Body{}
 	if len(data.Trustpoints) > 0 {
+		TrustpointsFragments := make([]string, 0, len(data.Trustpoints))
 		for _, item := range data.Trustpoints {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -159,8 +160,9 @@ func (data CryptoPKI) toBodyXML(ctx context.Context, config CryptoPKI) string {
 			if !item.Hash.IsNull() && !item.Hash.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "hash", item.Hash.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/trustpoint", cBody.Res())
+			TrustpointsFragments = append(TrustpointsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/trustpoint", TrustpointsFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -174,29 +176,12 @@ func (data CryptoPKI) toBodyXML(ctx context.Context, config CryptoPKI) string {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CryptoPKI) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	TrustpointsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TrustpointsKeys := [...]string{"id"}
+	TrustpointsItems := helpers.CollectListItemsXML(TrustpointsParentScope.Raw, "trustpoint", TrustpointsKeys[:])
 	for i := range data.Trustpoints {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TrustpointsKeyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
+		r := TrustpointsItems[helpers.CompositeKey(TrustpointsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Trustpoints[i].Id.IsNull() {
 			data.Trustpoints[i].Id = types.StringValue(value.String())
 		} else {

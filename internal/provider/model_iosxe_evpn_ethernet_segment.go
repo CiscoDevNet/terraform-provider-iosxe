@@ -119,6 +119,7 @@ func (data EVPNEthernetSegment) toBodyXML(ctx context.Context, config EVPNEthern
 		}
 	}
 	if len(data.IdentifierTypes) > 0 {
+		IdentifierTypesFragments := make([]string, 0, len(data.IdentifierTypes))
 		for _, item := range data.IdentifierTypes {
 			cBody := netconf.Body{}
 			if !item.Type.IsNull() && !item.Type.IsUnknown() {
@@ -130,8 +131,9 @@ func (data EVPNEthernetSegment) toBodyXML(ctx context.Context, config EVPNEthern
 			if !item.SystemMac.IsNull() && !item.SystemMac.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "system-mac", item.SystemMac.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/identifier/type", cBody.Res())
+			IdentifierTypesFragments = append(IdentifierTypesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/identifier/type", IdentifierTypesFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -173,29 +175,12 @@ func (data *EVPNEthernetSegment) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.RedundancySingleActive = types.BoolNull()
 	}
+	IdentifierTypesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IdentifierTypesKeys := [...]string{"identifier-type"}
+	IdentifierTypesItems := helpers.CollectListItemsXML(IdentifierTypesParentScope.Raw, "identifier/type", IdentifierTypesKeys[:])
 	for i := range data.IdentifierTypes {
-		keys := [...]string{"identifier-type"}
-		keyValues := [...]string{strconv.FormatInt(data.IdentifierTypes[i].Type.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/identifier/type").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IdentifierTypesKeyValues := [...]string{strconv.FormatInt(data.IdentifierTypes[i].Type.ValueInt64(), 10)}
+		r := IdentifierTypesItems[helpers.CompositeKey(IdentifierTypesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "identifier-type"); value.Exists() && !data.IdentifierTypes[i].Type.IsNull() {
 			data.IdentifierTypes[i].Type = types.Int64Value(value.Int())
 		} else {

@@ -130,12 +130,14 @@ func (data ARP) toBodyXML(ctx context.Context, config ARP) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/entry/learn", strconv.FormatInt(data.EntryLearn.ValueInt64(), 10))
 	}
 	if len(data.InspectionFilters) > 0 {
+		InspectionFiltersFragments := make([]string, 0, len(data.InspectionFilters))
 		for _, item := range data.InspectionFilters {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "arpacl", item.Name.ValueString())
 			}
 			if len(item.Vlans) > 0 {
+				VlansFragments := make([]string, 0, len(item.Vlans))
 				for _, citem := range item.Vlans {
 					ccBody := netconf.Body{}
 					if !citem.VlanRange.IsNull() && !citem.VlanRange.IsUnknown() {
@@ -148,11 +150,13 @@ func (data ARP) toBodyXML(ctx context.Context, config ARP) string {
 							ccBody = helpers.RemoveFromXPath(ccBody, "static")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "vlan", ccBody.Res())
+					VlansFragments = append(VlansFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "vlan", VlansFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/inspection/filter", cBody.Res())
+			InspectionFiltersFragments = append(InspectionFiltersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/inspection/filter", InspectionFiltersFragments)
 	}
 	if !data.InspectionValidateSrcMac.IsNull() && !data.InspectionValidateSrcMac.IsUnknown() {
 		if data.InspectionValidateSrcMac.ValueBool() {
@@ -225,57 +229,22 @@ func (data *ARP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.EntryLearn = types.Int64Null()
 	}
+	InspectionFiltersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	InspectionFiltersKeys := [...]string{"arpacl"}
+	InspectionFiltersItems := helpers.CollectListItemsXML(InspectionFiltersParentScope.Raw, "inspection/filter", InspectionFiltersKeys[:])
 	for i := range data.InspectionFilters {
-		keys := [...]string{"arpacl"}
-		keyValues := [...]string{data.InspectionFilters[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/inspection/filter").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		InspectionFiltersKeyValues := [...]string{data.InspectionFilters[i].Name.ValueString()}
+		r := InspectionFiltersItems[helpers.CompositeKey(InspectionFiltersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "arpacl"); value.Exists() && !data.InspectionFilters[i].Name.IsNull() {
 			data.InspectionFilters[i].Name = types.StringValue(value.String())
 		} else {
 			data.InspectionFilters[i].Name = types.StringNull()
 		}
+		VlansKeys := [...]string{"vlan-range"}
+		VlansItems := helpers.CollectListItemsXML(r.Raw, "vlan", VlansKeys[:])
 		for ci := range data.InspectionFilters[i].Vlans {
-			keys := [...]string{"vlan-range"}
-			keyValues := [...]string{data.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "vlan").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			VlansKeyValues := [...]string{data.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()}
+			cr := VlansItems[helpers.CompositeKey(VlansKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "vlan-range"); value.Exists() && !data.InspectionFilters[i].Vlans[ci].VlanRange.IsNull() {
 				data.InspectionFilters[i].Vlans[ci].VlanRange = types.StringValue(value.String())
 			} else {

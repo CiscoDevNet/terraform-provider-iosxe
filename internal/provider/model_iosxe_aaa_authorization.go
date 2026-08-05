@@ -227,6 +227,7 @@ func (data AAAAuthorizationData) getXPath() string {
 func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorization) string {
 	body := netconf.Body{}
 	if len(data.Execs) > 0 {
+		ExecsFragments := make([]string, 0, len(data.Execs))
 		for _, item := range data.Execs {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -356,10 +357,12 @@ func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorizat
 					cBody = helpers.RemoveFromXPath(cBody, "a4/if-authenticated")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exec", cBody.Res())
+			ExecsFragments = append(ExecsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/exec", ExecsFragments)
 	}
 	if len(data.Networks) > 0 {
+		NetworksFragments := make([]string, 0, len(data.Networks))
 		for _, item := range data.Networks {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -405,10 +408,12 @@ func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorizat
 			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "a4/group", item.A4Group.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/network", cBody.Res())
+			NetworksFragments = append(NetworksFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/network", NetworksFragments)
 	}
 	if len(data.Commands) > 0 {
+		CommandsFragments := make([]string, 0, len(data.Commands))
 		for _, item := range data.Commands {
 			cBody := netconf.Body{}
 			if !item.Level.IsNull() && !item.Level.IsUnknown() {
@@ -569,8 +574,9 @@ func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorizat
 					cBody = helpers.RemoveFromXPath(cBody, "a4/tacacs")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/commands", cBody.Res())
+			CommandsFragments = append(CommandsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/commands", CommandsFragments)
 	}
 	if !data.ConfigCommands.IsNull() && !data.ConfigCommands.IsUnknown() {
 		if data.ConfigCommands.ValueBool() {
@@ -580,6 +586,7 @@ func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorizat
 		}
 	}
 	if len(data.ConfigLists) > 0 {
+		ConfigListsFragments := make([]string, 0, len(data.ConfigLists))
 		for _, item := range data.ConfigLists {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -605,8 +612,9 @@ func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorizat
 					cBody = helpers.RemoveFromXPath(cBody, "group1/tacacs")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/configuration/config-list", cBody.Res())
+			ConfigListsFragments = append(ConfigListsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/configuration/config-list", ConfigListsFragments)
 	}
 	if !data.Console.IsNull() && !data.Console.IsUnknown() {
 		if data.Console.ValueBool() {
@@ -627,29 +635,12 @@ func (data AAAAuthorization) toBodyXML(ctx context.Context, config AAAAuthorizat
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *AAAAuthorization) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	ExecsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ExecsKeys := [...]string{"name"}
+	ExecsItems := helpers.CollectListItemsXML(ExecsParentScope.Raw, "exec", ExecsKeys[:])
 	for i := range data.Execs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Execs[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/exec").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ExecsKeyValues := [...]string{data.Execs[i].Name.ValueString()}
+		r := ExecsItems[helpers.CompositeKey(ExecsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Execs[i].Name.IsNull() {
 			data.Execs[i].Name = types.StringValue(value.String())
 		} else {
@@ -820,29 +811,12 @@ func (data *AAAAuthorization) updateFromBodyXML(ctx context.Context, res xmldot.
 			data.Execs[i].A4IfAuthenticated = types.BoolNull()
 		}
 	}
+	NetworksParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NetworksKeys := [...]string{"id"}
+	NetworksItems := helpers.CollectListItemsXML(NetworksParentScope.Raw, "network", NetworksKeys[:])
 	for i := range data.Networks {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Networks[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/network").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NetworksKeyValues := [...]string{data.Networks[i].Id.ValueString()}
+		r := NetworksItems[helpers.CompositeKey(NetworksKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Networks[i].Id.IsNull() {
 			data.Networks[i].Id = types.StringValue(value.String())
 		} else {
@@ -905,29 +879,12 @@ func (data *AAAAuthorization) updateFromBodyXML(ctx context.Context, res xmldot.
 			data.Networks[i].A4Group = types.StringNull()
 		}
 	}
+	CommandsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	CommandsKeys := [...]string{"level", "list-name"}
+	CommandsItems := helpers.CollectListItemsXML(CommandsParentScope.Raw, "commands", CommandsKeys[:])
 	for i := range data.Commands {
-		keys := [...]string{"level", "list-name"}
-		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/commands").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		CommandsKeyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+		r := CommandsItems[helpers.CompositeKey(CommandsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "level"); value.Exists() && !data.Commands[i].Level.IsNull() {
 			data.Commands[i].Level = types.Int64Value(value.Int())
 		} else {
@@ -1148,29 +1105,12 @@ func (data *AAAAuthorization) updateFromBodyXML(ctx context.Context, res xmldot.
 	} else {
 		data.ConfigCommands = types.BoolNull()
 	}
+	ConfigListsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ConfigListsKeys := [...]string{"name"}
+	ConfigListsItems := helpers.CollectListItemsXML(ConfigListsParentScope.Raw, "configuration/config-list", ConfigListsKeys[:])
 	for i := range data.ConfigLists {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/configuration/config-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ConfigListsKeyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
+		r := ConfigListsItems[helpers.CompositeKey(ConfigListsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.ConfigLists[i].Name.IsNull() {
 			data.ConfigLists[i].Name = types.StringValue(value.String())
 		} else {

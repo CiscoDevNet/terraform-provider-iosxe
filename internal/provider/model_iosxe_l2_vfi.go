@@ -104,6 +104,7 @@ func (data L2VFI) toBodyXML(ctx context.Context, config L2VFI) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/vpn/id", strconv.FormatInt(data.VpnId.ValueInt64(), 10))
 	}
 	if len(data.Neighbors) > 0 {
+		NeighborsFragments := make([]string, 0, len(data.Neighbors))
 		for _, item := range data.Neighbors {
 			cBody := netconf.Body{}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
@@ -112,8 +113,9 @@ func (data L2VFI) toBodyXML(ctx context.Context, config L2VFI) string {
 			if !item.Encapsulation.IsNull() && !item.Encapsulation.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "encapsulation", item.Encapsulation.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/neighbor", cBody.Res())
+			NeighborsFragments = append(NeighborsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/neighbor", NeighborsFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -142,29 +144,12 @@ func (data *L2VFI) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.VpnId = types.Int64Null()
 	}
+	NeighborsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NeighborsKeys := [...]string{"router-id"}
+	NeighborsItems := helpers.CollectListItemsXML(NeighborsParentScope.Raw, "neighbor", NeighborsKeys[:])
 	for i := range data.Neighbors {
-		keys := [...]string{"router-id"}
-		keyValues := [...]string{data.Neighbors[i].IpAddress.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/neighbor").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NeighborsKeyValues := [...]string{data.Neighbors[i].IpAddress.ValueString()}
+		r := NeighborsItems[helpers.CompositeKey(NeighborsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "router-id"); value.Exists() && !data.Neighbors[i].IpAddress.IsNull() {
 			data.Neighbors[i].IpAddress = types.StringValue(value.String())
 		} else {

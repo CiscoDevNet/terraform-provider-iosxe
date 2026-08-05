@@ -125,6 +125,7 @@ func (data StaticRoute) toBodyXML(ctx context.Context, config StaticRoute) strin
 		body = helpers.SetFromXPath(body, data.getXPath()+"/mask", data.Mask.ValueString())
 	}
 	if len(data.NextHops) > 0 {
+		NextHopsFragments := make([]string, 0, len(data.NextHops))
 		for _, item := range data.NextHops {
 			cBody := netconf.Body{}
 			if !item.NextHop.IsNull() && !item.NextHop.IsUnknown() {
@@ -153,10 +154,12 @@ func (data StaticRoute) toBodyXML(ctx context.Context, config StaticRoute) strin
 			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "tag", strconv.FormatInt(item.Tag.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/fwd-list", cBody.Res())
+			NextHopsFragments = append(NextHopsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/fwd-list", NextHopsFragments)
 	}
 	if len(data.NextHopsWithTrack) > 0 {
+		NextHopsWithTrackFragments := make([]string, 0, len(data.NextHopsWithTrack))
 		for _, item := range data.NextHopsWithTrack {
 			cBody := netconf.Body{}
 			if !item.NextHop.IsNull() && !item.NextHop.IsUnknown() {
@@ -181,8 +184,9 @@ func (data StaticRoute) toBodyXML(ctx context.Context, config StaticRoute) strin
 					cBody = helpers.RemoveFromXPath(cBody, "permanent")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/fwd-list-with-track", cBody.Res())
+			NextHopsWithTrackFragments = append(NextHopsWithTrackFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/fwd-list-with-track", NextHopsWithTrackFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -206,29 +210,12 @@ func (data *StaticRoute) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.Mask = types.StringNull()
 	}
+	NextHopsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NextHopsKeys := [...]string{"fwd"}
+	NextHopsItems := helpers.CollectListItemsXML(NextHopsParentScope.Raw, "fwd-list", NextHopsKeys[:])
 	for i := range data.NextHops {
-		keys := [...]string{"fwd"}
-		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NextHopsKeyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
+		r := NextHopsItems[helpers.CompositeKey(NextHopsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "fwd"); value.Exists() && !data.NextHops[i].NextHop.IsNull() {
 			data.NextHops[i].NextHop = types.StringValue(value.String())
 		} else {
@@ -268,29 +255,12 @@ func (data *StaticRoute) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 			data.NextHops[i].Tag = types.Int64Null()
 		}
 	}
+	NextHopsWithTrackParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NextHopsWithTrackKeys := [...]string{"fwd"}
+	NextHopsWithTrackItems := helpers.CollectListItemsXML(NextHopsWithTrackParentScope.Raw, "fwd-list-with-track", NextHopsWithTrackKeys[:])
 	for i := range data.NextHopsWithTrack {
-		keys := [...]string{"fwd"}
-		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list-with-track").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NextHopsWithTrackKeyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
+		r := NextHopsWithTrackItems[helpers.CompositeKey(NextHopsWithTrackKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "fwd"); value.Exists() && !data.NextHopsWithTrack[i].NextHop.IsNull() {
 			data.NextHopsWithTrack[i].NextHop = types.StringValue(value.String())
 		} else {

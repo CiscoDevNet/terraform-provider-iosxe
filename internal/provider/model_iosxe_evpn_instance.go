@@ -190,22 +190,26 @@ func (data EVPNInstance) toBodyXML(ctx context.Context, config EVPNInstance) str
 		body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-based/route-target/export/rt-value", data.VlanBasedRouteTargetExportLegacy.ValueString())
 	}
 	if len(data.VlanBasedRouteTargetExports) > 0 {
+		VlanBasedRouteTargetExportsFragments := make([]string, 0, len(data.VlanBasedRouteTargetExports))
 		for _, item := range data.VlanBasedRouteTargetExports {
 			cBody := netconf.Body{}
 			if !item.RouteTarget.IsNull() && !item.RouteTarget.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "rt-value", item.RouteTarget.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vlan-based/route-target-v2/export", cBody.Res())
+			VlanBasedRouteTargetExportsFragments = append(VlanBasedRouteTargetExportsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/vlan-based/route-target-v2/export", VlanBasedRouteTargetExportsFragments)
 	}
 	if len(data.VlanBasedRouteTargetImports) > 0 {
+		VlanBasedRouteTargetImportsFragments := make([]string, 0, len(data.VlanBasedRouteTargetImports))
 		for _, item := range data.VlanBasedRouteTargetImports {
 			cBody := netconf.Body{}
 			if !item.RouteTarget.IsNull() && !item.RouteTarget.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "rt-value", item.RouteTarget.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vlan-based/route-target-v2/import", cBody.Res())
+			VlanBasedRouteTargetImportsFragments = append(VlanBasedRouteTargetImportsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/vlan-based/route-target-v2/import", VlanBasedRouteTargetImportsFragments)
 	}
 	if !data.VlanBasedIpLocalLearningDisable.IsNull() && !data.VlanBasedIpLocalLearningDisable.IsUnknown() {
 		if data.VlanBasedIpLocalLearningDisable.ValueBool() {
@@ -333,58 +337,24 @@ func (data *EVPNInstance) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.VlanBasedRouteTargetExportLegacy = types.StringNull()
 	}
+	VlanBasedRouteTargetExportsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VlanBasedRouteTargetExportsKeys := [...]string{"rt-value"}
+	VlanBasedRouteTargetExportsItems := helpers.CollectListItemsXML(VlanBasedRouteTargetExportsParentScope.Raw, "vlan-based/route-target-v2/export", VlanBasedRouteTargetExportsKeys[:])
 	for i := range data.VlanBasedRouteTargetExports {
-		keys := [...]string{"rt-value"}
-		keyValues := [...]string{data.VlanBasedRouteTargetExports[i].RouteTarget.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-based/route-target-v2/export").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VlanBasedRouteTargetExportsKeyValues := [...]string{data.VlanBasedRouteTargetExports[i].RouteTarget.ValueString()}
+		r := VlanBasedRouteTargetExportsItems[helpers.CompositeKey(VlanBasedRouteTargetExportsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "rt-value"); value.Exists() && !data.VlanBasedRouteTargetExports[i].RouteTarget.IsNull() {
 			data.VlanBasedRouteTargetExports[i].RouteTarget = types.StringValue(value.String())
 		} else {
 			data.VlanBasedRouteTargetExports[i].RouteTarget = types.StringNull()
 		}
 	}
+	VlanBasedRouteTargetImportsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VlanBasedRouteTargetImportsKeys := [...]string{"rt-value"}
+	VlanBasedRouteTargetImportsItems := helpers.CollectListItemsXML(VlanBasedRouteTargetImportsParentScope.Raw, "vlan-based/route-target-v2/import", VlanBasedRouteTargetImportsKeys[:])
 	for i := range data.VlanBasedRouteTargetImports {
-		keys := [...]string{"rt-value"}
-		keyValues := [...]string{data.VlanBasedRouteTargetImports[i].RouteTarget.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-based/route-target-v2/import").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VlanBasedRouteTargetImportsKeyValues := [...]string{data.VlanBasedRouteTargetImports[i].RouteTarget.ValueString()}
+		r := VlanBasedRouteTargetImportsItems[helpers.CompositeKey(VlanBasedRouteTargetImportsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "rt-value"); value.Exists() && !data.VlanBasedRouteTargetImports[i].RouteTarget.IsNull() {
 			data.VlanBasedRouteTargetImports[i].RouteTarget = types.StringValue(value.String())
 		} else {

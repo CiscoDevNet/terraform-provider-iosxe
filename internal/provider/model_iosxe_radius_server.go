@@ -110,6 +110,7 @@ func (data RadiusServerData) getXPath() string {
 func (data RadiusServer) toBodyXML(ctx context.Context, config RadiusServer) string {
 	body := netconf.Body{}
 	if len(data.Attributes) > 0 {
+		AttributesFragments := make([]string, 0, len(data.Attributes))
 		for _, item := range data.Attributes {
 			cBody := netconf.Body{}
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
@@ -123,6 +124,7 @@ func (data RadiusServer) toBodyXML(ctx context.Context, config RadiusServer) str
 				}
 			}
 			if len(item.Attribute31Parameters) > 0 {
+				Attribute31ParametersFragments := make([]string, 0, len(item.Attribute31Parameters))
 				for _, citem := range item.Attribute31Parameters {
 					ccBody := netconf.Body{}
 					if !citem.CallingStationId.IsNull() && !citem.CallingStationId.IsUnknown() {
@@ -148,8 +150,9 @@ func (data RadiusServer) toBodyXML(ctx context.Context, config RadiusServer) str
 							ccBody = helpers.RemoveFromXPath(ccBody, "id-send/mac-only")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "attri31/attri31-list", ccBody.Res())
+					Attribute31ParametersFragments = append(Attribute31ParametersFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "attri31/attri31-list", Attribute31ParametersFragments)
 			}
 			if !item.SendAttributes.IsNull() && !item.SendAttributes.IsUnknown() {
 				var values []string
@@ -158,8 +161,9 @@ func (data RadiusServer) toBodyXML(ctx context.Context, config RadiusServer) str
 					cBody = helpers.AppendFromXPath(cBody, "send-attribute", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:attribute", cBody.Res())
+			AttributesFragments = append(AttributesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-aaa:attribute", AttributesFragments)
 	}
 	if !data.DeadCriteriaTime.IsNull() && !data.DeadCriteriaTime.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time", strconv.FormatInt(data.DeadCriteriaTime.ValueInt64(), 10))
@@ -182,29 +186,12 @@ func (data RadiusServer) toBodyXML(ctx context.Context, config RadiusServer) str
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *RadiusServer) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	AttributesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	AttributesKeys := [...]string{"number"}
+	AttributesItems := helpers.CollectListItemsXML(AttributesParentScope.Raw, "Cisco-IOS-XE-aaa:attribute", AttributesKeys[:])
 	for i := range data.Attributes {
-		keys := [...]string{"number"}
-		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		AttributesKeyValues := [...]string{data.Attributes[i].Number.ValueString()}
+		r := AttributesItems[helpers.CompositeKey(AttributesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.Attributes[i].Number.IsNull() {
 			data.Attributes[i].Number = types.StringValue(value.String())
 		} else {
@@ -219,29 +206,11 @@ func (data *RadiusServer) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 		} else {
 			data.Attributes[i].AccessRequestInclude = types.BoolNull()
 		}
+		Attribute31ParametersKeys := [...]string{"calling-station-id"}
+		Attribute31ParametersItems := helpers.CollectListItemsXML(r.Raw, "attri31/attri31-list", Attribute31ParametersKeys[:])
 		for ci := range data.Attributes[i].Attribute31Parameters {
-			keys := [...]string{"calling-station-id"}
-			keyValues := [...]string{data.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "attri31/attri31-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			Attribute31ParametersKeyValues := [...]string{data.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
+			cr := Attribute31ParametersItems[helpers.CompositeKey(Attribute31ParametersKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "calling-station-id"); value.Exists() && !data.Attributes[i].Attribute31Parameters[ci].CallingStationId.IsNull() {
 				data.Attributes[i].Attribute31Parameters[ci].CallingStationId = types.StringValue(value.String())
 			} else {

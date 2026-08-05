@@ -113,6 +113,7 @@ func (data EIGRPVRF) toBodyXML(ctx context.Context, config EIGRPVRF) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/eigrp/router-id", data.RouterId.ValueString())
 	}
 	if len(data.Networks) > 0 {
+		NetworksFragments := make([]string, 0, len(data.Networks))
 		for _, item := range data.Networks {
 			cBody := netconf.Body{}
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
@@ -121,8 +122,9 @@ func (data EIGRPVRF) toBodyXML(ctx context.Context, config EIGRPVRF) string {
 			if !item.Wildcard.IsNull() && !item.Wildcard.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "wildcard", item.Wildcard.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/network/address-wildcard", cBody.Res())
+			NetworksFragments = append(NetworksFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/network/address-wildcard", NetworksFragments)
 	}
 	if !data.TopologyBase.IsNull() && !data.TopologyBase.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/topology/topo-base/topology-base", data.TopologyBase.ValueString())
@@ -160,29 +162,12 @@ func (data *EIGRPVRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.RouterId = types.StringNull()
 	}
+	NetworksParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	NetworksKeys := [...]string{"ipv4-address", "wildcard"}
+	NetworksItems := helpers.CollectListItemsXML(NetworksParentScope.Raw, "network/address-wildcard", NetworksKeys[:])
 	for i := range data.Networks {
-		keys := [...]string{"ipv4-address", "wildcard"}
-		keyValues := [...]string{data.Networks[i].Ip.ValueString(), data.Networks[i].Wildcard.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/address-wildcard").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		NetworksKeyValues := [...]string{data.Networks[i].Ip.ValueString(), data.Networks[i].Wildcard.ValueString()}
+		r := NetworksItems[helpers.CompositeKey(NetworksKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4-address"); value.Exists() && !data.Networks[i].Ip.IsNull() {
 			data.Networks[i].Ip = types.StringValue(value.String())
 		} else {
