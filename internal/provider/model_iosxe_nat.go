@@ -157,12 +157,14 @@ func (data NATData) getXPath() string {
 func (data NAT) toBodyXML(ctx context.Context, config NAT) string {
 	body := netconf.Body{}
 	if len(data.InsideSourceInterfaces) > 0 {
+		InsideSourceInterfacesFragments := make([]string, 0, len(data.InsideSourceInterfaces))
 		for _, item := range data.InsideSourceInterfaces {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", item.Id.ValueString())
 			}
 			if len(item.Interfaces) > 0 {
+				InterfacesFragments := make([]string, 0, len(item.Interfaces))
 				for _, citem := range item.Interfaces {
 					ccBody := netconf.Body{}
 					if !citem.Interface.IsNull() && !citem.Interface.IsUnknown() {
@@ -175,13 +177,16 @@ func (data NAT) toBodyXML(ctx context.Context, config NAT) string {
 							ccBody = helpers.RemoveFromXPath(ccBody, "overload-new")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "interface", ccBody.Res())
+					InterfacesFragments = append(InterfacesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "interface", InterfacesFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/inside/source/list-interface/list", cBody.Res())
+			InsideSourceInterfacesFragments = append(InsideSourceInterfacesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/inside/source/list-interface/list", InsideSourceInterfacesFragments)
 	}
 	if len(data.InsideSourceStaticEntries) > 0 {
+		InsideSourceStaticEntriesFragments := make([]string, 0, len(data.InsideSourceStaticEntries))
 		for _, item := range data.InsideSourceStaticEntries {
 			cBody := netconf.Body{}
 			if !item.LocalIp.IsNull() && !item.LocalIp.IsUnknown() {
@@ -260,10 +265,12 @@ func (data NAT) toBodyXML(ctx context.Context, config NAT) string {
 			if !item.EgressInterfaceLoopback.IsNull() && !item.EgressInterfaceLoopback.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "egress-interface-new/Loopback", item.EgressInterfaceLoopback.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/inside/source/static/nat-static-transport-list", cBody.Res())
+			InsideSourceStaticEntriesFragments = append(InsideSourceStaticEntriesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/inside/source/static/nat-static-transport-list", InsideSourceStaticEntriesFragments)
 	}
 	if len(data.OutsideSourceStaticEntries) > 0 {
+		OutsideSourceStaticEntriesFragments := make([]string, 0, len(data.OutsideSourceStaticEntries))
 		for _, item := range data.OutsideSourceStaticEntries {
 			cBody := netconf.Body{}
 			if !item.GlobalIp.IsNull() && !item.GlobalIp.IsUnknown() {
@@ -305,8 +312,9 @@ func (data NAT) toBodyXML(ctx context.Context, config NAT) string {
 			if !item.OutsideStaticPool.IsNull() && !item.OutsideStaticPool.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "pool", item.OutsideStaticPool.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf", cBody.Res())
+			OutsideSourceStaticEntriesFragments = append(OutsideSourceStaticEntriesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf", OutsideSourceStaticEntriesFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -320,57 +328,22 @@ func (data NAT) toBodyXML(ctx context.Context, config NAT) string {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *NAT) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	InsideSourceInterfacesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	InsideSourceInterfacesKeys := [...]string{"id"}
+	InsideSourceInterfacesItems := helpers.CollectListItemsXML(InsideSourceInterfacesParentScope.Raw, "inside/source/list-interface/list", InsideSourceInterfacesKeys[:])
 	for i := range data.InsideSourceInterfaces {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		InsideSourceInterfacesKeyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
+		r := InsideSourceInterfacesItems[helpers.CompositeKey(InsideSourceInterfacesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.InsideSourceInterfaces[i].Id.IsNull() {
 			data.InsideSourceInterfaces[i].Id = types.StringValue(value.String())
 		} else {
 			data.InsideSourceInterfaces[i].Id = types.StringNull()
 		}
+		InterfacesKeys := [...]string{"name"}
+		InterfacesItems := helpers.CollectListItemsXML(r.Raw, "interface", InterfacesKeys[:])
 		for ci := range data.InsideSourceInterfaces[i].Interfaces {
-			keys := [...]string{"name"}
-			keyValues := [...]string{data.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "interface").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			InterfacesKeyValues := [...]string{data.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()}
+			cr := InterfacesItems[helpers.CompositeKey(InterfacesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "name"); value.Exists() && !data.InsideSourceInterfaces[i].Interfaces[ci].Interface.IsNull() {
 				data.InsideSourceInterfaces[i].Interfaces[ci].Interface = types.StringValue(value.String())
 			} else {
@@ -387,29 +360,12 @@ func (data *NAT) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	InsideSourceStaticEntriesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	InsideSourceStaticEntriesKeys := [...]string{"local-ip", "global-ip"}
+	InsideSourceStaticEntriesItems := helpers.CollectListItemsXML(InsideSourceStaticEntriesParentScope.Raw, "inside/source/static/nat-static-transport-list", InsideSourceStaticEntriesKeys[:])
 	for i := range data.InsideSourceStaticEntries {
-		keys := [...]string{"local-ip", "global-ip"}
-		keyValues := [...]string{data.InsideSourceStaticEntries[i].LocalIp.ValueString(), data.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/static/nat-static-transport-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		InsideSourceStaticEntriesKeyValues := [...]string{data.InsideSourceStaticEntries[i].LocalIp.ValueString(), data.InsideSourceStaticEntries[i].GlobalIp.ValueString()}
+		r := InsideSourceStaticEntriesItems[helpers.CompositeKey(InsideSourceStaticEntriesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "local-ip"); value.Exists() && !data.InsideSourceStaticEntries[i].LocalIp.IsNull() {
 			data.InsideSourceStaticEntries[i].LocalIp = types.StringValue(value.String())
 		} else {
@@ -519,29 +475,12 @@ func (data *NAT) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.InsideSourceStaticEntries[i].EgressInterfaceLoopback = types.StringNull()
 		}
 	}
+	OutsideSourceStaticEntriesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	OutsideSourceStaticEntriesKeys := [...]string{"global-ip", "local-ip"}
+	OutsideSourceStaticEntriesItems := helpers.CollectListItemsXML(OutsideSourceStaticEntriesParentScope.Raw, "outside/source/static/nat-static-transport-list-no-vrf", OutsideSourceStaticEntriesKeys[:])
 	for i := range data.OutsideSourceStaticEntries {
-		keys := [...]string{"global-ip", "local-ip"}
-		keyValues := [...]string{data.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), data.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/outside/source/static/nat-static-transport-list-no-vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		OutsideSourceStaticEntriesKeyValues := [...]string{data.OutsideSourceStaticEntries[i].GlobalIp.ValueString(), data.OutsideSourceStaticEntries[i].LocalIp.ValueString()}
+		r := OutsideSourceStaticEntriesItems[helpers.CompositeKey(OutsideSourceStaticEntriesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "global-ip"); value.Exists() && !data.OutsideSourceStaticEntries[i].GlobalIp.IsNull() {
 			data.OutsideSourceStaticEntries[i].GlobalIp = types.StringValue(value.String())
 		} else {

@@ -191,6 +191,7 @@ func (data PolicyMap) toBodyXML(ctx context.Context, config PolicyMap) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
 	}
 	if len(data.Classes) > 0 {
+		ClassesFragments := make([]string, 0, len(data.Classes))
 		for _, item := range data.Classes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -213,6 +214,7 @@ func (data PolicyMap) toBodyXML(ctx context.Context, config PolicyMap) string {
 				cBody = helpers.SetFromXPath(cBody, "policy/parameter-map", item.PolicyParameterMap.ValueString())
 			}
 			if len(item.Actions) > 0 {
+				ActionsFragments := make([]string, 0, len(item.Actions))
 				for _, citem := range item.Actions {
 					ccBody := netconf.Body{}
 					if !citem.Type.IsNull() && !citem.Type.IsUnknown() {
@@ -338,11 +340,13 @@ func (data PolicyMap) toBodyXML(ctx context.Context, config PolicyMap) string {
 					if !citem.ServicePolicy.IsNull() && !citem.ServicePolicy.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "service-policy", citem.ServicePolicy.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "action-list", ccBody.Res())
+					ActionsFragments = append(ActionsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "action-list", ActionsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/class", cBody.Res())
+			ClassesFragments = append(ClassesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/class", ClassesFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -380,29 +384,12 @@ func (data *PolicyMap) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 	} else {
 		data.Description = types.StringNull()
 	}
+	ClassesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ClassesKeys := [...]string{"name"}
+	ClassesItems := helpers.CollectListItemsXML(ClassesParentScope.Raw, "class", ClassesKeys[:])
 	for i := range data.Classes {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Classes[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/class").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ClassesKeyValues := [...]string{data.Classes[i].Name.ValueString()}
+		r := ClassesItems[helpers.CompositeKey(ClassesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Classes[i].Name.IsNull() {
 			data.Classes[i].Name = types.StringValue(value.String())
 		} else {
@@ -432,29 +419,11 @@ func (data *PolicyMap) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 		} else {
 			data.Classes[i].PolicyParameterMap = types.StringNull()
 		}
+		ActionsKeys := [...]string{"action-type"}
+		ActionsItems := helpers.CollectListItemsXML(r.Raw, "action-list", ActionsKeys[:])
 		for ci := range data.Classes[i].Actions {
-			keys := [...]string{"action-type"}
-			keyValues := [...]string{data.Classes[i].Actions[ci].Type.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "action-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			ActionsKeyValues := [...]string{data.Classes[i].Actions[ci].Type.ValueString()}
+			cr := ActionsItems[helpers.CompositeKey(ActionsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "action-type"); value.Exists() && !data.Classes[i].Actions[ci].Type.IsNull() {
 				data.Classes[i].Actions[ci].Type = types.StringValue(value.String())
 			} else {

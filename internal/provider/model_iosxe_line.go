@@ -209,6 +209,7 @@ func (data LineData) getXPath() string {
 func (data Line) toBodyXML(ctx context.Context, config Line) string {
 	body := netconf.Body{}
 	if len(data.Console) > 0 {
+		ConsoleFragments := make([]string, 0, len(data.Console))
 		for _, item := range data.Console {
 			var configItem LineConsole
 			for _, ci := range config.Console {
@@ -288,10 +289,12 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 					cBody = helpers.AppendFromXPath(cBody, "transport/output/output", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/console", cBody.Res())
+			ConsoleFragments = append(ConsoleFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/console", ConsoleFragments)
 	}
 	if len(data.Vty) > 0 {
+		VtyFragments := make([]string, 0, len(data.Vty))
 		for _, item := range data.Vty {
 			var configItem LineVty
 			for _, ci := range config.Vty {
@@ -309,6 +312,7 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 				cBody = helpers.SetFromXPath(cBody, "last", strconv.FormatInt(item.Last.ValueInt64(), 10))
 			}
 			if len(item.AccessClasses) > 0 {
+				AccessClassesFragments := make([]string, 0, len(item.AccessClasses))
 				for _, citem := range item.AccessClasses {
 					ccBody := netconf.Body{}
 					if !citem.Direction.IsNull() && !citem.Direction.IsUnknown() {
@@ -324,8 +328,9 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 							ccBody = helpers.RemoveFromXPath(ccBody, "vrf-also")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "access-class/acccess-list", ccBody.Res())
+					AccessClassesFragments = append(AccessClassesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "access-class/acccess-list", AccessClassesFragments)
 			}
 			if !item.ExecTimeoutMinutes.IsNull() && !item.ExecTimeoutMinutes.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "exec-timeout/minutes", strconv.FormatInt(item.ExecTimeoutMinutes.ValueInt64(), 10))
@@ -427,10 +432,12 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 					cBody = helpers.AppendFromXPath(cBody, "transport/output/output", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vty", cBody.Res())
+			VtyFragments = append(VtyFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/vty", VtyFragments)
 	}
 	if len(data.Aux) > 0 {
+		AuxFragments := make([]string, 0, len(data.Aux))
 		for _, item := range data.Aux {
 			var configItem LineAux
 			for _, ci := range config.Aux {
@@ -490,8 +497,9 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 					cBody = helpers.RemoveFromXPath(cBody, "transport/output/none")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/aux", cBody.Res())
+			AuxFragments = append(AuxFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/aux", AuxFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -505,29 +513,12 @@ func (data Line) toBodyXML(ctx context.Context, config Line) string {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	ConsoleParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ConsoleKeys := [...]string{"first"}
+	ConsoleItems := helpers.CollectListItemsXML(ConsoleParentScope.Raw, "console", ConsoleKeys[:])
 	for i := range data.Console {
-		keys := [...]string{"first"}
-		keyValues := [...]string{data.Console[i].First.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/console").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ConsoleKeyValues := [...]string{data.Console[i].First.ValueString()}
+		r := ConsoleItems[helpers.CompositeKey(ConsoleKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "first"); value.Exists() && !data.Console[i].First.IsNull() {
 			data.Console[i].First = types.StringValue(value.String())
 		} else {
@@ -610,29 +601,12 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Console[i].TransportOutput = types.ListNull(types.StringType)
 		}
 	}
+	VtyParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VtyKeys := [...]string{"first"}
+	VtyItems := helpers.CollectListItemsXML(VtyParentScope.Raw, "vty", VtyKeys[:])
 	for i := range data.Vty {
-		keys := [...]string{"first"}
-		keyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vty").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VtyKeyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
+		r := VtyItems[helpers.CompositeKey(VtyKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "first"); value.Exists() && !data.Vty[i].First.IsNull() {
 			data.Vty[i].First = types.Int64Value(value.Int())
 		} else {
@@ -643,29 +617,11 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Vty[i].Last = types.Int64Null()
 		}
+		AccessClassesKeys := [...]string{"direction"}
+		AccessClassesItems := helpers.CollectListItemsXML(r.Raw, "access-class/acccess-list", AccessClassesKeys[:])
 		for ci := range data.Vty[i].AccessClasses {
-			keys := [...]string{"direction"}
-			keyValues := [...]string{data.Vty[i].AccessClasses[ci].Direction.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "access-class/acccess-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			AccessClassesKeyValues := [...]string{data.Vty[i].AccessClasses[ci].Direction.ValueString()}
+			cr := AccessClassesItems[helpers.CompositeKey(AccessClassesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "direction"); value.Exists() && !data.Vty[i].AccessClasses[ci].Direction.IsNull() {
 				data.Vty[i].AccessClasses[ci].Direction = types.StringValue(value.String())
 			} else {
@@ -805,29 +761,12 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Vty[i].TransportOutput = types.ListNull(types.StringType)
 		}
 	}
+	AuxParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	AuxKeys := [...]string{"first"}
+	AuxItems := helpers.CollectListItemsXML(AuxParentScope.Raw, "aux", AuxKeys[:])
 	for i := range data.Aux {
-		keys := [...]string{"first"}
-		keyValues := [...]string{data.Aux[i].First.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/aux").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		AuxKeyValues := [...]string{data.Aux[i].First.ValueString()}
+		r := AuxItems[helpers.CompositeKey(AuxKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "first"); value.Exists() && !data.Aux[i].First.IsNull() {
 			data.Aux[i].First = types.StringValue(value.String())
 		} else {

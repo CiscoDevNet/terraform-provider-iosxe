@@ -130,6 +130,7 @@ func (data StaticRoutesVRF) toBodyXML(ctx context.Context, config StaticRoutesVR
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Vrf.ValueString())
 	}
 	if len(data.Routes) > 0 {
+		RoutesFragments := make([]string, 0, len(data.Routes))
 		for _, item := range data.Routes {
 			cBody := netconf.Body{}
 			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
@@ -139,6 +140,7 @@ func (data StaticRoutesVRF) toBodyXML(ctx context.Context, config StaticRoutesVR
 				cBody = helpers.SetFromXPath(cBody, "mask", item.Mask.ValueString())
 			}
 			if len(item.NextHops) > 0 {
+				NextHopsFragments := make([]string, 0, len(item.NextHops))
 				for _, citem := range item.NextHops {
 					ccBody := netconf.Body{}
 					if !citem.NextHop.IsNull() && !citem.NextHop.IsUnknown() {
@@ -167,10 +169,12 @@ func (data StaticRoutesVRF) toBodyXML(ctx context.Context, config StaticRoutesVR
 					if !citem.Tag.IsNull() && !citem.Tag.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "tag", strconv.FormatInt(citem.Tag.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "fwd-list", ccBody.Res())
+					NextHopsFragments = append(NextHopsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "fwd-list", NextHopsFragments)
 			}
 			if len(item.NextHopsWithTrack) > 0 {
+				NextHopsWithTrackFragments := make([]string, 0, len(item.NextHopsWithTrack))
 				for _, citem := range item.NextHopsWithTrack {
 					ccBody := netconf.Body{}
 					if !citem.NextHop.IsNull() && !citem.NextHop.IsUnknown() {
@@ -195,11 +199,13 @@ func (data StaticRoutesVRF) toBodyXML(ctx context.Context, config StaticRoutesVR
 							ccBody = helpers.RemoveFromXPath(ccBody, "permanent")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "fwd-list-with-track", ccBody.Res())
+					NextHopsWithTrackFragments = append(NextHopsWithTrackFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "fwd-list-with-track", NextHopsWithTrackFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip-route-interface-forwarding-list", cBody.Res())
+			RoutesFragments = append(RoutesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip-route-interface-forwarding-list", RoutesFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -218,29 +224,12 @@ func (data *StaticRoutesVRF) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.Vrf = types.StringNull()
 	}
+	RoutesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RoutesKeys := [...]string{"prefix", "mask"}
+	RoutesItems := helpers.CollectListItemsXML(RoutesParentScope.Raw, "ip-route-interface-forwarding-list", RoutesKeys[:])
 	for i := range data.Routes {
-		keys := [...]string{"prefix", "mask"}
-		keyValues := [...]string{data.Routes[i].Prefix.ValueString(), data.Routes[i].Mask.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip-route-interface-forwarding-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RoutesKeyValues := [...]string{data.Routes[i].Prefix.ValueString(), data.Routes[i].Mask.ValueString()}
+		r := RoutesItems[helpers.CompositeKey(RoutesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "prefix"); value.Exists() && !data.Routes[i].Prefix.IsNull() {
 			data.Routes[i].Prefix = types.StringValue(value.String())
 		} else {
@@ -251,29 +240,11 @@ func (data *StaticRoutesVRF) updateFromBodyXML(ctx context.Context, res xmldot.R
 		} else {
 			data.Routes[i].Mask = types.StringNull()
 		}
+		NextHopsKeys := [...]string{"fwd"}
+		NextHopsItems := helpers.CollectListItemsXML(r.Raw, "fwd-list", NextHopsKeys[:])
 		for ci := range data.Routes[i].NextHops {
-			keys := [...]string{"fwd"}
-			keyValues := [...]string{data.Routes[i].NextHops[ci].NextHop.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "fwd-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			NextHopsKeyValues := [...]string{data.Routes[i].NextHops[ci].NextHop.ValueString()}
+			cr := NextHopsItems[helpers.CompositeKey(NextHopsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "fwd"); value.Exists() && !data.Routes[i].NextHops[ci].NextHop.IsNull() {
 				data.Routes[i].NextHops[ci].NextHop = types.StringValue(value.String())
 			} else {
@@ -313,29 +284,11 @@ func (data *StaticRoutesVRF) updateFromBodyXML(ctx context.Context, res xmldot.R
 				data.Routes[i].NextHops[ci].Tag = types.Int64Null()
 			}
 		}
+		NextHopsWithTrackKeys := [...]string{"fwd"}
+		NextHopsWithTrackItems := helpers.CollectListItemsXML(r.Raw, "fwd-list-with-track", NextHopsWithTrackKeys[:])
 		for ci := range data.Routes[i].NextHopsWithTrack {
-			keys := [...]string{"fwd"}
-			keyValues := [...]string{data.Routes[i].NextHopsWithTrack[ci].NextHop.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "fwd-list-with-track").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			NextHopsWithTrackKeyValues := [...]string{data.Routes[i].NextHopsWithTrack[ci].NextHop.ValueString()}
+			cr := NextHopsWithTrackItems[helpers.CompositeKey(NextHopsWithTrackKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "fwd"); value.Exists() && !data.Routes[i].NextHopsWithTrack[ci].NextHop.IsNull() {
 				data.Routes[i].NextHopsWithTrack[ci].NextHop = types.StringValue(value.String())
 			} else {

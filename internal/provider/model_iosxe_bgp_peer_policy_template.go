@@ -115,6 +115,7 @@ func (data BGPPeerPolicyTemplate) toBodyXML(ctx context.Context, config BGPPeerP
 		body = helpers.SetFromXPath(body, data.getXPath()+"/send-community/send-community-where", data.SendCommunity.ValueString())
 	}
 	if len(data.RouteMaps) > 0 {
+		RouteMapsFragments := make([]string, 0, len(data.RouteMaps))
 		for _, item := range data.RouteMaps {
 			cBody := netconf.Body{}
 			if !item.InOut.IsNull() && !item.InOut.IsUnknown() {
@@ -123,8 +124,9 @@ func (data BGPPeerPolicyTemplate) toBodyXML(ctx context.Context, config BGPPeerP
 			if !item.RouteMapName.IsNull() && !item.RouteMapName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "route-map-name", item.RouteMapName.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/route-map1", cBody.Res())
+			RouteMapsFragments = append(RouteMapsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/route-map1", RouteMapsFragments)
 	}
 	if !data.AllowasInAsNumber.IsNull() && !data.AllowasInAsNumber.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/allowas-in/as-number", strconv.FormatInt(data.AllowasInAsNumber.ValueInt64(), 10))
@@ -167,29 +169,12 @@ func (data *BGPPeerPolicyTemplate) updateFromBodyXML(ctx context.Context, res xm
 	} else {
 		data.SendCommunity = types.StringNull()
 	}
+	RouteMapsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	RouteMapsKeys := [...]string{"inout"}
+	RouteMapsItems := helpers.CollectListItemsXML(RouteMapsParentScope.Raw, "route-map1", RouteMapsKeys[:])
 	for i := range data.RouteMaps {
-		keys := [...]string{"inout"}
-		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map1").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		RouteMapsKeyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
+		r := RouteMapsItems[helpers.CompositeKey(RouteMapsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "inout"); value.Exists() && !data.RouteMaps[i].InOut.IsNull() {
 			data.RouteMaps[i].InOut = types.StringValue(value.String())
 		} else {

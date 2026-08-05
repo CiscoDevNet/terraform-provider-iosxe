@@ -103,13 +103,15 @@ func (data ZoneSecurity) toBodyXML(ctx context.Context, config ZoneSecurity) str
 		body = helpers.SetFromXPath(body, data.getXPath()+"/protection", data.Protection.ValueString())
 	}
 	if len(data.Vpns) > 0 {
+		VpnsFragments := make([]string, 0, len(data.Vpns))
 		for _, item := range data.Vpns {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.Id.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vpn", cBody.Res())
+			VpnsFragments = append(VpnsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/vpn", VpnsFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -138,29 +140,12 @@ func (data *ZoneSecurity) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.Protection = types.StringNull()
 	}
+	VpnsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VpnsKeys := [...]string{"id"}
+	VpnsItems := helpers.CollectListItemsXML(VpnsParentScope.Raw, "vpn", VpnsKeys[:])
 	for i := range data.Vpns {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.Vpns[i].Id.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vpn").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VpnsKeyValues := [...]string{strconv.FormatInt(data.Vpns[i].Id.ValueInt64(), 10)}
+		r := VpnsItems[helpers.CompositeKey(VpnsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Vpns[i].Id.IsNull() {
 			data.Vpns[i].Id = types.Int64Value(value.Int())
 		} else {

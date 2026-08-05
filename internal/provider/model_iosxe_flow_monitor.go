@@ -104,13 +104,15 @@ func (data FlowMonitor) toBodyXML(ctx context.Context, config FlowMonitor) strin
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
 	}
 	if len(data.Exporters) > 0 {
+		ExportersFragments := make([]string, 0, len(data.Exporters))
 		for _, item := range data.Exporters {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/exporter", cBody.Res())
+			ExportersFragments = append(ExportersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/exporter", ExportersFragments)
 	}
 	if !data.CacheTimeoutActive.IsNull() && !data.CacheTimeoutActive.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/cache/timeout/active", strconv.FormatInt(data.CacheTimeoutActive.ValueInt64(), 10))
@@ -143,29 +145,12 @@ func (data *FlowMonitor) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 	} else {
 		data.Description = types.StringNull()
 	}
+	ExportersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ExportersKeys := [...]string{"name"}
+	ExportersItems := helpers.CollectListItemsXML(ExportersParentScope.Raw, "exporter", ExportersKeys[:])
 	for i := range data.Exporters {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/exporter").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ExportersKeyValues := [...]string{data.Exporters[i].Name.ValueString()}
+		r := ExportersItems[helpers.CompositeKey(ExportersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Exporters[i].Name.IsNull() {
 			data.Exporters[i].Name = types.StringValue(value.String())
 		} else {

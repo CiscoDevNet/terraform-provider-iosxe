@@ -211,33 +211,40 @@ func (data InterfaceOSPF) toBodyXML(ctx context.Context, config InterfaceOSPF) s
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ttl-security/hops", strconv.FormatInt(data.TtlSecurityHops.ValueInt64(), 10))
 	}
 	if len(data.ProcessIds) > 0 {
+		ProcessIdsFragments := make([]string, 0, len(data.ProcessIds))
 		for _, item := range data.ProcessIds {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", strconv.FormatInt(item.Id.ValueInt64(), 10))
 			}
 			if len(item.Areas) > 0 {
+				AreasFragments := make([]string, 0, len(item.Areas))
 				for _, citem := range item.Areas {
 					ccBody := netconf.Body{}
 					if !citem.AreaId.IsNull() && !citem.AreaId.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "area-id", citem.AreaId.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "area", ccBody.Res())
+					AreasFragments = append(AreasFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "area", AreasFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/process-id", cBody.Res())
+			ProcessIdsFragments = append(ProcessIdsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/process-id", ProcessIdsFragments)
 	}
 	if len(data.MultiAreaIds) > 0 {
+		MultiAreaIdsFragments := make([]string, 0, len(data.MultiAreaIds))
 		for _, item := range data.MultiAreaIds {
 			cBody := netconf.Body{}
 			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "area-id", item.AreaId.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/multi-area/multi-area-id", cBody.Res())
+			MultiAreaIdsFragments = append(MultiAreaIdsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/multi-area/multi-area-id", MultiAreaIdsFragments)
 	}
 	if len(data.MessageDigestKeys) > 0 {
+		MessageDigestKeysFragments := make([]string, 0, len(data.MessageDigestKeys))
 		for _, item := range data.MessageDigestKeys {
 			var configItem InterfaceOSPFMessageDigestKeys
 			for _, ci := range config.MessageDigestKeys {
@@ -261,8 +268,9 @@ func (data InterfaceOSPF) toBodyXML(ctx context.Context, config InterfaceOSPF) s
 			if !item.Md5AuthType.IsNull() && !item.Md5AuthType.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "md5/auth-type", strconv.FormatInt(item.Md5AuthType.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/message-digest-key", cBody.Res())
+			MessageDigestKeysFragments = append(MessageDigestKeysFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/message-digest-key", MessageDigestKeysFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -367,57 +375,22 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.TtlSecurityHops = types.Int64Null()
 	}
+	ProcessIdsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ProcessIdsKeys := [...]string{"id"}
+	ProcessIdsItems := helpers.CollectListItemsXML(ProcessIdsParentScope.Raw, "process-id", ProcessIdsKeys[:])
 	for i := range data.ProcessIds {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ProcessIdsKeyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
+		r := ProcessIdsItems[helpers.CompositeKey(ProcessIdsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.ProcessIds[i].Id.IsNull() {
 			data.ProcessIds[i].Id = types.Int64Value(value.Int())
 		} else {
 			data.ProcessIds[i].Id = types.Int64Null()
 		}
+		AreasKeys := [...]string{"area-id"}
+		AreasItems := helpers.CollectListItemsXML(r.Raw, "area", AreasKeys[:])
 		for ci := range data.ProcessIds[i].Areas {
-			keys := [...]string{"area-id"}
-			keyValues := [...]string{data.ProcessIds[i].Areas[ci].AreaId.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "area").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			AreasKeyValues := [...]string{data.ProcessIds[i].Areas[ci].AreaId.ValueString()}
+			cr := AreasItems[helpers.CompositeKey(AreasKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "area-id"); value.Exists() && !data.ProcessIds[i].Areas[ci].AreaId.IsNull() {
 				data.ProcessIds[i].Areas[ci].AreaId = types.StringValue(value.String())
 			} else {
@@ -425,58 +398,24 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			}
 		}
 	}
+	MultiAreaIdsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MultiAreaIdsKeys := [...]string{"area-id"}
+	MultiAreaIdsItems := helpers.CollectListItemsXML(MultiAreaIdsParentScope.Raw, "multi-area/multi-area-id", MultiAreaIdsKeys[:])
 	for i := range data.MultiAreaIds {
-		keys := [...]string{"area-id"}
-		keyValues := [...]string{data.MultiAreaIds[i].AreaId.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/multi-area/multi-area-id").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MultiAreaIdsKeyValues := [...]string{data.MultiAreaIds[i].AreaId.ValueString()}
+		r := MultiAreaIdsItems[helpers.CompositeKey(MultiAreaIdsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "area-id"); value.Exists() && !data.MultiAreaIds[i].AreaId.IsNull() {
 			data.MultiAreaIds[i].AreaId = types.StringValue(value.String())
 		} else {
 			data.MultiAreaIds[i].AreaId = types.StringNull()
 		}
 	}
+	MessageDigestKeysParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MessageDigestKeysKeys := [...]string{"id"}
+	MessageDigestKeysItems := helpers.CollectListItemsXML(MessageDigestKeysParentScope.Raw, "message-digest-key", MessageDigestKeysKeys[:])
 	for i := range data.MessageDigestKeys {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/message-digest-key").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MessageDigestKeysKeyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+		r := MessageDigestKeysItems[helpers.CompositeKey(MessageDigestKeysKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.MessageDigestKeys[i].Id.IsNull() {
 			data.MessageDigestKeys[i].Id = types.Int64Value(value.Int())
 		} else {

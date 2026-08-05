@@ -102,6 +102,7 @@ func (data SLAData) getXPath() string {
 func (data SLA) toBodyXML(ctx context.Context, config SLA) string {
 	body := netconf.Body{}
 	if len(data.Entries) > 0 {
+		EntriesFragments := make([]string, 0, len(data.Entries))
 		for _, item := range data.Entries {
 			cBody := netconf.Body{}
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
@@ -116,10 +117,12 @@ func (data SLA) toBodyXML(ctx context.Context, config SLA) string {
 			if !item.IcmpEchoFrequency.IsNull() && !item.IcmpEchoFrequency.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "icmp-echo/frequency", strconv.FormatInt(item.IcmpEchoFrequency.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/entry", cBody.Res())
+			EntriesFragments = append(EntriesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/entry", EntriesFragments)
 	}
 	if len(data.Schedules) > 0 {
+		SchedulesFragments := make([]string, 0, len(data.Schedules))
 		for _, item := range data.Schedules {
 			cBody := netconf.Body{}
 			if !item.EntryNumber.IsNull() && !item.EntryNumber.IsUnknown() {
@@ -135,8 +138,9 @@ func (data SLA) toBodyXML(ctx context.Context, config SLA) string {
 					cBody = helpers.RemoveFromXPath(cBody, "start-time/now-config")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/schedule", cBody.Res())
+			SchedulesFragments = append(SchedulesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/schedule", SchedulesFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -150,29 +154,12 @@ func (data SLA) toBodyXML(ctx context.Context, config SLA) string {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	EntriesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	EntriesKeys := [...]string{"number"}
+	EntriesItems := helpers.CollectListItemsXML(EntriesParentScope.Raw, "entry", EntriesKeys[:])
 	for i := range data.Entries {
-		keys := [...]string{"number"}
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		EntriesKeyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
+		r := EntriesItems[helpers.CompositeKey(EntriesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.Entries[i].Number.IsNull() {
 			data.Entries[i].Number = types.Int64Value(value.Int())
 		} else {
@@ -194,29 +181,12 @@ func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Entries[i].IcmpEchoFrequency = types.Int64Null()
 		}
 	}
+	SchedulesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SchedulesKeys := [...]string{"entry-number"}
+	SchedulesItems := helpers.CollectListItemsXML(SchedulesParentScope.Raw, "schedule", SchedulesKeys[:])
 	for i := range data.Schedules {
-		keys := [...]string{"entry-number"}
-		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SchedulesKeyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
+		r := SchedulesItems[helpers.CompositeKey(SchedulesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "entry-number"); value.Exists() && !data.Schedules[i].EntryNumber.IsNull() {
 			data.Schedules[i].EntryNumber = types.Int64Value(value.Int())
 		} else {

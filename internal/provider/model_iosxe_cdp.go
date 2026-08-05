@@ -114,6 +114,7 @@ func (data CDP) toBodyXML(ctx context.Context, config CDP) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list", data.FilterTlvList.ValueString())
 	}
 	if len(data.TlvLists) > 0 {
+		TlvListsFragments := make([]string, 0, len(data.TlvLists))
 		for _, item := range data.TlvLists {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -154,8 +155,9 @@ func (data CDP) toBodyXML(ctx context.Context, config CDP) string {
 					cBody = helpers.RemoveFromXPath(cBody, "version")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list", cBody.Res())
+			TlvListsFragments = append(TlvListsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list", TlvListsFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -191,29 +193,12 @@ func (data *CDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.FilterTlvList = types.StringNull()
 	}
+	TlvListsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TlvListsKeys := [...]string{"name"}
+	TlvListsItems := helpers.CollectListItemsXML(TlvListsParentScope.Raw, "Cisco-IOS-XE-cdp:tlv-list", TlvListsKeys[:])
 	for i := range data.TlvLists {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TlvListsKeyValues := [...]string{data.TlvLists[i].Name.ValueString()}
+		r := TlvListsItems[helpers.CompositeKey(TlvListsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.TlvLists[i].Name.IsNull() {
 			data.TlvLists[i].Name = types.StringValue(value.String())
 		} else {

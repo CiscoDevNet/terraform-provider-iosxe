@@ -131,6 +131,7 @@ func (data MDTSubscription) toBodyXML(ctx context.Context, config MDTSubscriptio
 		body = helpers.SetFromXPath(body, data.getXPath()+"/base/xpath", data.FilterXpath.ValueString())
 	}
 	if len(data.Receivers) > 0 {
+		ReceiversFragments := make([]string, 0, len(data.Receivers))
 		for _, item := range data.Receivers {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -142,8 +143,9 @@ func (data MDTSubscription) toBodyXML(ctx context.Context, config MDTSubscriptio
 			if !item.Protocol.IsNull() && !item.Protocol.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "protocol", item.Protocol.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/mdt-receivers", cBody.Res())
+			ReceiversFragments = append(ReceiversFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/mdt-receivers", ReceiversFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -199,29 +201,12 @@ func (data *MDTSubscription) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.FilterXpath = types.StringNull()
 	}
+	ReceiversParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ReceiversKeys := [...]string{"address", "port"}
+	ReceiversItems := helpers.CollectListItemsXML(ReceiversParentScope.Raw, "mdt-receivers", ReceiversKeys[:])
 	for i := range data.Receivers {
-		keys := [...]string{"address", "port"}
-		keyValues := [...]string{data.Receivers[i].Address.ValueString(), strconv.FormatInt(data.Receivers[i].Port.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/mdt-receivers").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ReceiversKeyValues := [...]string{data.Receivers[i].Address.ValueString(), strconv.FormatInt(data.Receivers[i].Port.ValueInt64(), 10)}
+		r := ReceiversItems[helpers.CompositeKey(ReceiversKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "address"); value.Exists() && !data.Receivers[i].Address.IsNull() {
 			data.Receivers[i].Address = types.StringValue(value.String())
 		} else {
