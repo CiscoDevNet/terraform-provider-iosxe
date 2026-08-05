@@ -750,6 +750,7 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 		}
 	}
 	if len(data.Hosts) > 0 {
+		HostsFragments := make([]string, 0, len(data.Hosts))
 		for _, item := range data.Hosts {
 			var configItem SNMPServerHosts
 			for _, ci := range config.Hosts {
@@ -782,10 +783,12 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 			if !item.SecurityLevel.IsNull() && !item.SecurityLevel.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "security-level", item.SecurityLevel.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:host-config/ip-community", cBody.Res())
+			HostsFragments = append(HostsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-snmp:host-config/ip-community", HostsFragments)
 	}
 	if len(data.VrfHosts) > 0 {
+		VrfHostsFragments := make([]string, 0, len(data.VrfHosts))
 		for _, item := range data.VrfHosts {
 			var configItem SNMPServerVrfHosts
 			for _, ci := range config.VrfHosts {
@@ -824,8 +827,9 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 			if !item.SecurityLevel.IsNull() && !item.SecurityLevel.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "security-level", item.SecurityLevel.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:host-config/ip-vrf-community", cBody.Res())
+			VrfHostsFragments = append(VrfHostsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-snmp:host-config/ip-vrf-community", VrfHostsFragments)
 	}
 	if !data.SystemShutdown.IsNull() && !data.SystemShutdown.IsUnknown() {
 		if data.SystemShutdown.ValueBool() {
@@ -2088,6 +2092,7 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:trap-source/Vlan", strconv.FormatInt(data.TrapSourceVlan.ValueInt64(), 10))
 	}
 	if len(data.SnmpCommunities) > 0 {
+		SnmpCommunitiesFragments := make([]string, 0, len(data.SnmpCommunities))
 		for _, item := range data.SnmpCommunities {
 			var configItem SNMPServerSnmpCommunities
 			for _, ci := range config.SnmpCommunities {
@@ -2117,19 +2122,23 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 			if !item.AccessListName.IsNull() && !item.AccessListName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "access-list-name", item.AccessListName.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:community-config", cBody.Res())
+			SnmpCommunitiesFragments = append(SnmpCommunitiesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-snmp:community-config", SnmpCommunitiesFragments)
 	}
 	if len(data.Contexts) > 0 {
+		ContextsFragments := make([]string, 0, len(data.Contexts))
 		for _, item := range data.Contexts {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:context", cBody.Res())
+			ContextsFragments = append(ContextsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-snmp:context", ContextsFragments)
 	}
 	if len(data.Views) > 0 {
+		ViewsFragments := make([]string, 0, len(data.Views))
 		for _, item := range data.Views {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -2141,16 +2150,19 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 			if !item.IncExl.IsNull() && !item.IncExl.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "inc-exl", item.IncExl.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:view", cBody.Res())
+			ViewsFragments = append(ViewsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-snmp:view", ViewsFragments)
 	}
 	if len(data.Groups) > 0 {
+		GroupsFragments := make([]string, 0, len(data.Groups))
 		for _, item := range data.Groups {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "id", item.Name.ValueString())
 			}
 			if len(item.V3Security) > 0 {
+				V3SecurityFragments := make([]string, 0, len(item.V3Security))
 				for _, citem := range item.V3Security {
 					ccBody := netconf.Body{}
 					if !citem.SecurityLevel.IsNull() && !citem.SecurityLevel.IsUnknown() {
@@ -2180,13 +2192,16 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 					if !citem.AccessAclName.IsNull() && !citem.AccessAclName.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "access-config/acl-name", citem.AccessAclName.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "v3/security-level-list", ccBody.Res())
+					V3SecurityFragments = append(V3SecurityFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "v3/security-level-list", V3SecurityFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:group", cBody.Res())
+			GroupsFragments = append(GroupsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-snmp:group", GroupsFragments)
 	}
 	if len(data.Users) > 0 {
+		UsersFragments := make([]string, 0, len(data.Users))
 		for _, item := range data.Users {
 			var configItem SNMPServerUsers
 			for _, ci := range config.Users {
@@ -2279,8 +2294,9 @@ func (data SNMPServer) addToBodyXML(ctx context.Context, config SNMPServer, body
 			if !item.V3AuthAccessAclName.IsNull() && !item.V3AuthAccessAclName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "v3/auth-config/access-config/acl-name", item.V3AuthAccessAclName.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-snmp:user/names", cBody.Res())
+			UsersFragments = append(UsersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-snmp:user/names", UsersFragments)
 	}
 	return body
 }
@@ -4049,58 +4065,24 @@ func (data *SNMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.TrapSourceVlan = types.Int64Null()
 	}
+	ContextsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ContextsKeys := [...]string{"name"}
+	ContextsItems := helpers.CollectListItemsXML(ContextsParentScope.Raw, "Cisco-IOS-XE-snmp:context", ContextsKeys[:])
 	for i := range data.Contexts {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Contexts[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:context").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ContextsKeyValues := [...]string{data.Contexts[i].Name.ValueString()}
+		r := ContextsItems[helpers.CompositeKey(ContextsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Contexts[i].Name.IsNull() {
 			data.Contexts[i].Name = types.StringValue(value.String())
 		} else {
 			data.Contexts[i].Name = types.StringNull()
 		}
 	}
+	ViewsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ViewsKeys := [...]string{"name", "mib"}
+	ViewsItems := helpers.CollectListItemsXML(ViewsParentScope.Raw, "Cisco-IOS-XE-snmp:view", ViewsKeys[:])
 	for i := range data.Views {
-		keys := [...]string{"name", "mib"}
-		keyValues := [...]string{data.Views[i].Name.ValueString(), data.Views[i].Mib.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:view").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ViewsKeyValues := [...]string{data.Views[i].Name.ValueString(), data.Views[i].Mib.ValueString()}
+		r := ViewsItems[helpers.CompositeKey(ViewsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Views[i].Name.IsNull() {
 			data.Views[i].Name = types.StringValue(value.String())
 		} else {
@@ -4117,57 +4099,22 @@ func (data *SNMPServer) updateFromBodyXML(ctx context.Context, res xmldot.Result
 			data.Views[i].IncExl = types.StringNull()
 		}
 	}
+	GroupsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	GroupsKeys := [...]string{"id"}
+	GroupsItems := helpers.CollectListItemsXML(GroupsParentScope.Raw, "Cisco-IOS-XE-snmp:group", GroupsKeys[:])
 	for i := range data.Groups {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Groups[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-snmp:group").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		GroupsKeyValues := [...]string{data.Groups[i].Name.ValueString()}
+		r := GroupsItems[helpers.CompositeKey(GroupsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Groups[i].Name.IsNull() {
 			data.Groups[i].Name = types.StringValue(value.String())
 		} else {
 			data.Groups[i].Name = types.StringNull()
 		}
+		V3SecurityKeys := [...]string{"security-level"}
+		V3SecurityItems := helpers.CollectListItemsXML(r.Raw, "v3/security-level-list", V3SecurityKeys[:])
 		for ci := range data.Groups[i].V3Security {
-			keys := [...]string{"security-level"}
-			keyValues := [...]string{data.Groups[i].V3Security[ci].SecurityLevel.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "v3/security-level-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			V3SecurityKeyValues := [...]string{data.Groups[i].V3Security[ci].SecurityLevel.ValueString()}
+			cr := V3SecurityItems[helpers.CompositeKey(V3SecurityKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "security-level"); value.Exists() && !data.Groups[i].V3Security[ci].SecurityLevel.IsNull() {
 				data.Groups[i].V3Security[ci].SecurityLevel = types.StringValue(value.String())
 			} else {

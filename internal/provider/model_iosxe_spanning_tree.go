@@ -164,6 +164,7 @@ func (data SpanningTree) addToBodyXML(ctx context.Context, config SpanningTree, 
 		}
 	}
 	if len(data.MstInstances) > 0 {
+		MstInstancesFragments := make([]string, 0, len(data.MstInstances))
 		for _, item := range data.MstInstances {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -176,10 +177,12 @@ func (data SpanningTree) addToBodyXML(ctx context.Context, config SpanningTree, 
 					cBody = helpers.AppendFromXPath(cBody, "vlan-ids", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance", cBody.Res())
+			MstInstancesFragments = append(MstInstancesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance", MstInstancesFragments)
 	}
 	if len(data.Vlans) > 0 {
+		VlansFragments := make([]string, 0, len(data.Vlans))
 		for _, item := range data.Vlans {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -188,8 +191,9 @@ func (data SpanningTree) addToBodyXML(ctx context.Context, config SpanningTree, 
 			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan", cBody.Res())
+			VlansFragments = append(VlansFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan", VlansFragments)
 	}
 	return body
 }
@@ -249,29 +253,12 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.ExtendSystemId = types.BoolNull()
 	}
+	MstInstancesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MstInstancesKeys := [...]string{"id"}
+	MstInstancesItems := helpers.CollectListItemsXML(MstInstancesParentScope.Raw, "Cisco-IOS-XE-spanning-tree:mst/configuration/instance", MstInstancesKeys[:])
 	for i := range data.MstInstances {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MstInstancesKeyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
+		r := MstInstancesItems[helpers.CompositeKey(MstInstancesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.MstInstances[i].Id.IsNull() {
 			data.MstInstances[i].Id = types.Int64Value(value.Int())
 		} else {
@@ -283,29 +270,12 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 			data.MstInstances[i].VlanIds = types.ListNull(types.Int64Type)
 		}
 	}
+	VlansParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VlansKeys := [...]string{"id"}
+	VlansItems := helpers.CollectListItemsXML(VlansParentScope.Raw, "Cisco-IOS-XE-spanning-tree:vlan", VlansKeys[:])
 	for i := range data.Vlans {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VlansKeyValues := [...]string{data.Vlans[i].Id.ValueString()}
+		r := VlansItems[helpers.CompositeKey(VlansKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Vlans[i].Id.IsNull() {
 			data.Vlans[i].Id = types.StringValue(value.String())
 		} else {
@@ -453,6 +423,11 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state SpanningTree, body string) string {
 	b := netconf.NewBody(body)
+	// Collect per-VLAN removal xPaths and apply them in a single batched call
+	// instead of one helpers.RemoveFromXPath call per VLAN. With declared lists
+	// in the thousands (e.g. shrinking a 4094-VLAN spanning-tree declaration),
+	// calling RemoveFromXPath per item is O(n^2) (see RemoveFromXPathMulti docs).
+	var vlanPriorityRemovePaths []string
 	for i := range state.Vlans {
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
@@ -477,7 +452,7 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			}
 			if found {
 				if !state.Vlans[i].Priority.IsNull() && data.Vlans[j].Priority.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+					vlanPriorityRemovePaths = append(vlanPriorityRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
 				}
 				break
 			}
@@ -486,10 +461,15 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
 			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
 			if !state.Vlans[i].Priority.IsNull() {
-				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+				vlanPriorityRemovePaths = append(vlanPriorityRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
 			}
 		}
 	}
+	b = helpers.RemoveFromXPathMulti(b, vlanPriorityRemovePaths)
+
+	// Same batching for MST instance vlan-ids and whole-instance removals.
+	var mstVlanIdsRemovePaths []string
+	var mstInstanceRemovePaths []string
 	for i := range state.MstInstances {
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{strconv.FormatInt(state.MstInstances[i].Id.ValueInt64(), 10)}
@@ -518,7 +498,7 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 						var values []string
 						state.MstInstances[i].VlanIds.ElementsAs(ctx, &values, false)
 						for _, v := range values {
-							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
+							mstVlanIdsRemovePaths = append(mstVlanIdsRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
 						}
 					} else {
 						var dataValues, stateValues []int
@@ -533,7 +513,7 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 								}
 							}
 							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
+								mstVlanIdsRemovePaths = append(mstVlanIdsRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
 							}
 						}
 					}
@@ -542,9 +522,11 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
+			mstInstanceRemovePaths = append(mstInstanceRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
 		}
 	}
+	b = helpers.RemoveFromXPathMulti(b, mstVlanIdsRemovePaths)
+	b = helpers.RemoveFromXPathMulti(b, mstInstanceRemovePaths)
 	if !state.PortfastBpduguardDefault.IsNull() && data.PortfastBpduguardDefault.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
 	}

@@ -116,22 +116,26 @@ func (data BridgeDomain) addToBodyXML(ctx context.Context, config BridgeDomain, 
 		body = helpers.SetFromXPath(body, data.getXPath()+"/member/vni", strconv.FormatInt(data.MemberVni.ValueInt64(), 10))
 	}
 	if len(data.MemberInterfaces) > 0 {
+		MemberInterfacesFragments := make([]string, 0, len(data.MemberInterfaces))
 		for _, item := range data.MemberInterfaces {
 			cBody := netconf.Body{}
 			if !item.Interface.IsNull() && !item.Interface.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "interface", item.Interface.ValueString())
 			}
 			if len(item.ServiceInstances) > 0 {
+				ServiceInstancesFragments := make([]string, 0, len(item.ServiceInstances))
 				for _, citem := range item.ServiceInstances {
 					ccBody := netconf.Body{}
 					if !citem.InstanceId.IsNull() && !citem.InstanceId.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "instance-id", strconv.FormatInt(citem.InstanceId.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "service-instance-list", ccBody.Res())
+					ServiceInstancesFragments = append(ServiceInstancesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "service-instance-list", ServiceInstancesFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/member/member-interface", cBody.Res())
+			MemberInterfacesFragments = append(MemberInterfacesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/member/member-interface", MemberInterfacesFragments)
 	}
 	return body
 }
@@ -151,57 +155,22 @@ func (data *BridgeDomain) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.MemberVni = types.Int64Null()
 	}
+	MemberInterfacesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MemberInterfacesKeys := [...]string{"interface"}
+	MemberInterfacesItems := helpers.CollectListItemsXML(MemberInterfacesParentScope.Raw, "member/member-interface", MemberInterfacesKeys[:])
 	for i := range data.MemberInterfaces {
-		keys := [...]string{"interface"}
-		keyValues := [...]string{data.MemberInterfaces[i].Interface.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/member/member-interface").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MemberInterfacesKeyValues := [...]string{data.MemberInterfaces[i].Interface.ValueString()}
+		r := MemberInterfacesItems[helpers.CompositeKey(MemberInterfacesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "interface"); value.Exists() && !data.MemberInterfaces[i].Interface.IsNull() {
 			data.MemberInterfaces[i].Interface = types.StringValue(value.String())
 		} else {
 			data.MemberInterfaces[i].Interface = types.StringNull()
 		}
+		ServiceInstancesKeys := [...]string{"instance-id"}
+		ServiceInstancesItems := helpers.CollectListItemsXML(r.Raw, "service-instance-list", ServiceInstancesKeys[:])
 		for ci := range data.MemberInterfaces[i].ServiceInstances {
-			keys := [...]string{"instance-id"}
-			keyValues := [...]string{strconv.FormatInt(data.MemberInterfaces[i].ServiceInstances[ci].InstanceId.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "service-instance-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			ServiceInstancesKeyValues := [...]string{strconv.FormatInt(data.MemberInterfaces[i].ServiceInstances[ci].InstanceId.ValueInt64(), 10)}
+			cr := ServiceInstancesItems[helpers.CompositeKey(ServiceInstancesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "instance-id"); value.Exists() && !data.MemberInterfaces[i].ServiceInstances[ci].InstanceId.IsNull() {
 				data.MemberInterfaces[i].ServiceInstances[ci].InstanceId = types.Int64Value(value.Int())
 			} else {
