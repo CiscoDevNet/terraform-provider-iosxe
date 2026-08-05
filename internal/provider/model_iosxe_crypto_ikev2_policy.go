@@ -133,13 +133,15 @@ func (data CryptoIKEv2Policy) addToBodyXML(ctx context.Context, config CryptoIKE
 		}
 	}
 	if len(data.Proposals) > 0 {
+		ProposalsFragments := make([]string, 0, len(data.Proposals))
 		for _, item := range data.Proposals {
 			cBody := netconf.Body{}
 			if !item.Proposals.IsNull() && !item.Proposals.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "proposals", item.Proposals.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/proposal", cBody.Res())
+			ProposalsFragments = append(ProposalsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/proposal", ProposalsFragments)
 	}
 	return body
 }
@@ -182,29 +184,12 @@ func (data *CryptoIKEv2Policy) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.MatchFvrfAny = types.BoolNull()
 	}
+	ProposalsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ProposalsKeys := [...]string{"proposals"}
+	ProposalsItems := helpers.CollectListItemsXML(ProposalsParentScope.Raw, "proposal", ProposalsKeys[:])
 	for i := range data.Proposals {
-		keys := [...]string{"proposals"}
-		keyValues := [...]string{data.Proposals[i].Proposals.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/proposal").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ProposalsKeyValues := [...]string{data.Proposals[i].Proposals.ValueString()}
+		r := ProposalsItems[helpers.CompositeKey(ProposalsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "proposals"); value.Exists() && !data.Proposals[i].Proposals.IsNull() {
 			data.Proposals[i].Proposals = types.StringValue(value.String())
 		} else {

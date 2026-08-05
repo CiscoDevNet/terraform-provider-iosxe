@@ -318,6 +318,7 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
 	}
 	if len(data.Entries) > 0 {
+		EntriesFragments := make([]string, 0, len(data.Entries))
 		for _, item := range data.Entries {
 			cBody := netconf.Body{}
 			if !item.Seq.IsNull() && !item.Seq.IsUnknown() {
@@ -327,13 +328,15 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 				cBody = helpers.SetFromXPath(cBody, "operation", item.Operation.ValueString())
 			}
 			if len(item.Descriptions) > 0 {
+				DescriptionsFragments := make([]string, 0, len(item.Descriptions))
 				for _, citem := range item.Descriptions {
 					ccBody := netconf.Body{}
 					if !citem.Description.IsNull() && !citem.Description.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "description-leaf", citem.Description.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "descriptions", ccBody.Res())
+					DescriptionsFragments = append(DescriptionsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "descriptions", DescriptionsFragments)
 			}
 			if !item.DescriptionLegacy.IsNull() && !item.DescriptionLegacy.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "description", item.DescriptionLegacy.ValueString())
@@ -818,13 +821,15 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 				}
 			}
 			if len(item.SetAsPathReplaceAs) > 0 {
+				SetAsPathReplaceAsFragments := make([]string, 0, len(item.SetAsPathReplaceAs))
 				for _, citem := range item.SetAsPathReplaceAs {
 					ccBody := netconf.Body{}
 					if !citem.AsNumber.IsNull() && !citem.AsNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "as-number", citem.AsNumber.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/as-container", ccBody.Res())
+					SetAsPathReplaceAsFragments = append(SetAsPathReplaceAsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/as-container", SetAsPathReplaceAsFragments)
 			}
 			if !item.SetCommunityNone.IsNull() && !item.SetCommunityNone.IsUnknown() {
 				if item.SetCommunityNone.ValueBool() {
@@ -889,8 +894,9 @@ func (data RouteMap) addToBodyXML(ctx context.Context, config RouteMap, body net
 			if !item.SetWeight.IsNull() && !item.SetWeight.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/weight", strconv.FormatInt(item.SetWeight.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq", cBody.Res())
+			EntriesFragments = append(EntriesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq", EntriesFragments)
 	}
 	return body
 }
@@ -905,29 +911,12 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.Name = types.StringNull()
 	}
+	EntriesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	EntriesKeys := [...]string{"seq_no"}
+	EntriesItems := helpers.CollectListItemsXML(EntriesParentScope.Raw, "Cisco-IOS-XE-route-map:route-map-without-order-seq", EntriesKeys[:])
 	for i := range data.Entries {
-		keys := [...]string{"seq_no"}
-		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Seq.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-route-map:route-map-without-order-seq").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		EntriesKeyValues := [...]string{strconv.FormatInt(data.Entries[i].Seq.ValueInt64(), 10)}
+		r := EntriesItems[helpers.CompositeKey(EntriesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "seq_no"); value.Exists() && !data.Entries[i].Seq.IsNull() {
 			data.Entries[i].Seq = types.Int64Value(value.Int())
 		} else {
@@ -938,29 +927,11 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].Operation = types.StringNull()
 		}
+		DescriptionsKeys := [...]string{"description-leaf"}
+		DescriptionsItems := helpers.CollectListItemsXML(r.Raw, "descriptions", DescriptionsKeys[:])
 		for ci := range data.Entries[i].Descriptions {
-			keys := [...]string{"description-leaf"}
-			keyValues := [...]string{data.Entries[i].Descriptions[ci].Description.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "descriptions").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			DescriptionsKeyValues := [...]string{data.Entries[i].Descriptions[ci].Description.ValueString()}
+			cr := DescriptionsItems[helpers.CompositeKey(DescriptionsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "description-leaf"); value.Exists() && !data.Entries[i].Descriptions[ci].Description.IsNull() {
 				data.Entries[i].Descriptions[ci].Description = types.StringValue(value.String())
 			} else {
@@ -1505,29 +1476,11 @@ func (data *RouteMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 		} else {
 			data.Entries[i].SetAsPathReplaceAny = types.BoolNull()
 		}
+		SetAsPathReplaceAsKeys := [...]string{"as-number"}
+		SetAsPathReplaceAsItems := helpers.CollectListItemsXML(r.Raw, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/as-container", SetAsPathReplaceAsKeys[:])
 		for ci := range data.Entries[i].SetAsPathReplaceAs {
-			keys := [...]string{"as-number"}
-			keyValues := [...]string{data.Entries[i].SetAsPathReplaceAs[ci].AsNumber.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/as-container").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			SetAsPathReplaceAsKeyValues := [...]string{data.Entries[i].SetAsPathReplaceAs[ci].AsNumber.ValueString()}
+			cr := SetAsPathReplaceAsItems[helpers.CompositeKey(SetAsPathReplaceAsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "as-number"); value.Exists() && !data.Entries[i].SetAsPathReplaceAs[ci].AsNumber.IsNull() {
 				data.Entries[i].SetAsPathReplaceAs[ci].AsNumber = types.StringValue(value.String())
 			} else {

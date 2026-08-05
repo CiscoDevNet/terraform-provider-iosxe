@@ -366,6 +366,7 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 		}
 	}
 	if len(data.SwitchportPortSecurityMaximumRange) > 0 {
+		SwitchportPortSecurityMaximumRangeFragments := make([]string, 0, len(data.SwitchportPortSecurityMaximumRange))
 		for _, item := range data.SwitchportPortSecurityMaximumRange {
 			cBody := netconf.Body{}
 			if !item.Range.IsNull() && !item.Range.IsUnknown() {
@@ -385,8 +386,9 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 					cBody = helpers.RemoveFromXPath(cBody, "vlan/access")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/switchport/port-security/maximum/range", cBody.Res())
+			SwitchportPortSecurityMaximumRangeFragments = append(SwitchportPortSecurityMaximumRangeFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/switchport/port-security/maximum/range", SwitchportPortSecurityMaximumRangeFragments)
 	}
 	if !data.SwitchportPortSecurityViolationProtect.IsNull() && !data.SwitchportPortSecurityViolationProtect.IsUnknown() {
 		if data.SwitchportPortSecurityViolationProtect.ValueBool() {
@@ -592,6 +594,7 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 		}
 	}
 	if len(data.IpAccessGroup) > 0 {
+		IpAccessGroupFragments := make([]string, 0, len(data.IpAccessGroup))
 		for _, item := range data.IpAccessGroup {
 			cBody := netconf.Body{}
 			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
@@ -600,8 +603,9 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 			if !item.AccessList.IsNull() && !item.AccessList.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "access-list", item.AccessList.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/access-group", cBody.Res())
+			IpAccessGroupFragments = append(IpAccessGroupFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/access-group", IpAccessGroupFragments)
 	}
 	if !data.SubscriberAgingInactivityTimerValue.IsNull() && !data.SubscriberAgingInactivityTimerValue.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber/aging/inactivity-timer/value", strconv.FormatInt(data.SubscriberAgingInactivityTimerValue.ValueInt64(), 10))
@@ -628,6 +632,7 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 		}
 	}
 	if len(data.DeviceTrackingAttachPolicy) > 0 {
+		DeviceTrackingAttachPolicyFragments := make([]string, 0, len(data.DeviceTrackingAttachPolicy))
 		for _, item := range data.DeviceTrackingAttachPolicy {
 			cBody := netconf.Body{}
 			if !item.PolicyName.IsNull() && !item.PolicyName.IsUnknown() {
@@ -636,8 +641,9 @@ func (data Template) addToBodyXML(ctx context.Context, config Template, body net
 			if !item.VlanRange.IsNull() && !item.VlanRange.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vlan/vlan-range", item.VlanRange.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/device-tracking/attach-policy/policy-name", cBody.Res())
+			DeviceTrackingAttachPolicyFragments = append(DeviceTrackingAttachPolicyFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/device-tracking/attach-policy/policy-name", DeviceTrackingAttachPolicyFragments)
 	}
 	if !data.DeviceTrackingVlanRange.IsNull() && !data.DeviceTrackingVlanRange.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/device-tracking/vlan/vlan-range", data.DeviceTrackingVlanRange.ValueString())
@@ -815,29 +821,12 @@ func (data *Template) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.SwitchportPortSecurityAgingTypeInactivity = types.BoolNull()
 	}
+	SwitchportPortSecurityMaximumRangeParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SwitchportPortSecurityMaximumRangeKeys := [...]string{"range"}
+	SwitchportPortSecurityMaximumRangeItems := helpers.CollectListItemsXML(SwitchportPortSecurityMaximumRangeParentScope.Raw, "switchport/port-security/maximum/range", SwitchportPortSecurityMaximumRangeKeys[:])
 	for i := range data.SwitchportPortSecurityMaximumRange {
-		keys := [...]string{"range"}
-		keyValues := [...]string{strconv.FormatInt(data.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/switchport/port-security/maximum/range").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SwitchportPortSecurityMaximumRangeKeyValues := [...]string{strconv.FormatInt(data.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64(), 10)}
+		r := SwitchportPortSecurityMaximumRangeItems[helpers.CompositeKey(SwitchportPortSecurityMaximumRangeKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "range"); value.Exists() && !data.SwitchportPortSecurityMaximumRange[i].Range.IsNull() {
 			data.SwitchportPortSecurityMaximumRange[i].Range = types.Int64Value(value.Int())
 		} else {
@@ -1151,29 +1140,12 @@ func (data *Template) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.IpDhcpSnoopingTrust = types.BoolNull()
 	}
+	IpAccessGroupParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpAccessGroupKeys := [...]string{"direction"}
+	IpAccessGroupItems := helpers.CollectListItemsXML(IpAccessGroupParentScope.Raw, "ip/access-group", IpAccessGroupKeys[:])
 	for i := range data.IpAccessGroup {
-		keys := [...]string{"direction"}
-		keyValues := [...]string{data.IpAccessGroup[i].Direction.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/access-group").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpAccessGroupKeyValues := [...]string{data.IpAccessGroup[i].Direction.ValueString()}
+		r := IpAccessGroupItems[helpers.CompositeKey(IpAccessGroupKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "direction"); value.Exists() && !data.IpAccessGroup[i].Direction.IsNull() {
 			data.IpAccessGroup[i].Direction = types.StringValue(value.String())
 		} else {
@@ -1217,29 +1189,12 @@ func (data *Template) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.DeviceTracking = types.BoolNull()
 	}
+	DeviceTrackingAttachPolicyParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	DeviceTrackingAttachPolicyKeys := [...]string{"policy-name"}
+	DeviceTrackingAttachPolicyItems := helpers.CollectListItemsXML(DeviceTrackingAttachPolicyParentScope.Raw, "device-tracking/attach-policy/policy-name", DeviceTrackingAttachPolicyKeys[:])
 	for i := range data.DeviceTrackingAttachPolicy {
-		keys := [...]string{"policy-name"}
-		keyValues := [...]string{data.DeviceTrackingAttachPolicy[i].PolicyName.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/device-tracking/attach-policy/policy-name").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		DeviceTrackingAttachPolicyKeyValues := [...]string{data.DeviceTrackingAttachPolicy[i].PolicyName.ValueString()}
+		r := DeviceTrackingAttachPolicyItems[helpers.CompositeKey(DeviceTrackingAttachPolicyKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "policy-name"); value.Exists() && !data.DeviceTrackingAttachPolicy[i].PolicyName.IsNull() {
 			data.DeviceTrackingAttachPolicy[i].PolicyName = types.StringValue(value.String())
 		} else {

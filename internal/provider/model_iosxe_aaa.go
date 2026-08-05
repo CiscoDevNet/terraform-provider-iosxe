@@ -201,6 +201,7 @@ func (data AAA) addToBodyXML(ctx context.Context, config AAA, body netconf.Body)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:session-id", data.SessionId.ValueString())
 	}
 	if len(data.ServerRadiusDynamicAuthorClients) > 0 {
+		ServerRadiusDynamicAuthorClientsFragments := make([]string, 0, len(data.ServerRadiusDynamicAuthorClients))
 		for _, item := range data.ServerRadiusDynamicAuthorClients {
 			var configItem AAAServerRadiusDynamicAuthorClients
 			for _, ci := range config.ServerRadiusDynamicAuthorClients {
@@ -224,10 +225,12 @@ func (data AAA) addToBodyXML(ctx context.Context, config AAA, body netconf.Body)
 					cBody = helpers.SetFromXPath(cBody, "server-key/string", item.ServerKey.ValueString())
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client", cBody.Res())
+			ServerRadiusDynamicAuthorClientsFragments = append(ServerRadiusDynamicAuthorClientsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client", ServerRadiusDynamicAuthorClientsFragments)
 	}
 	if len(data.GroupServerRadius) > 0 {
+		GroupServerRadiusFragments := make([]string, 0, len(data.GroupServerRadius))
 		for _, item := range data.GroupServerRadius {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -237,13 +240,15 @@ func (data AAA) addToBodyXML(ctx context.Context, config AAA, body netconf.Body)
 				cBody = helpers.SetFromXPath(cBody, "deadtime", strconv.FormatInt(item.Deadtime.ValueInt64(), 10))
 			}
 			if len(item.ServerNames) > 0 {
+				ServerNamesFragments := make([]string, 0, len(item.ServerNames))
 				for _, citem := range item.ServerNames {
 					ccBody := netconf.Body{}
 					if !citem.Name.IsNull() && !citem.Name.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "name", citem.Name.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "server/name", ccBody.Res())
+					ServerNamesFragments = append(ServerNamesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "server/name", ServerNamesFragments)
 			}
 			if !item.IpRadiusSourceInterfaceLoopback.IsNull() && !item.IpRadiusSourceInterfaceLoopback.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ip/radius/source-interface/Loopback", strconv.FormatInt(item.IpRadiusSourceInterfaceLoopback.ValueInt64(), 10))
@@ -272,23 +277,27 @@ func (data AAA) addToBodyXML(ctx context.Context, config AAA, body netconf.Body)
 			if !item.IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() && !item.IpRadiusSourceInterfaceHundredGigabitEthernet.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ip/radius/source-interface/HundredGigE", item.IpRadiusSourceInterfaceHundredGigabitEthernet.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius", cBody.Res())
+			GroupServerRadiusFragments = append(GroupServerRadiusFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius", GroupServerRadiusFragments)
 	}
 	if len(data.GroupServerTacacsplus) > 0 {
+		GroupServerTacacsplusFragments := make([]string, 0, len(data.GroupServerTacacsplus))
 		for _, item := range data.GroupServerTacacsplus {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
 			if len(item.ServerNames) > 0 {
+				ServerNamesFragments := make([]string, 0, len(item.ServerNames))
 				for _, citem := range item.ServerNames {
 					ccBody := netconf.Body{}
 					if !citem.Name.IsNull() && !citem.Name.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "name", citem.Name.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "server/name", ccBody.Res())
+					ServerNamesFragments = append(ServerNamesFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "server/name", ServerNamesFragments)
 			}
 			if !item.IpTacacsSourceInterfaceLoopback.IsNull() && !item.IpTacacsSourceInterfaceLoopback.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ip/tacacs/source-interface/Loopback", strconv.FormatInt(item.IpTacacsSourceInterfaceLoopback.ValueInt64(), 10))
@@ -320,8 +329,9 @@ func (data AAA) addToBodyXML(ctx context.Context, config AAA, body netconf.Body)
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ip/vrf/forwarding", item.Vrf.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus", cBody.Res())
+			GroupServerTacacsplusFragments = append(GroupServerTacacsplusFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus", GroupServerTacacsplusFragments)
 	}
 	if !data.LocalAuthenticationType.IsNull() && !data.LocalAuthenticationType.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:local/authentication/authorization/authen-type", data.LocalAuthenticationType.ValueString())
@@ -363,58 +373,24 @@ func (data *AAA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.SessionId = types.StringNull()
 	}
+	ServerRadiusDynamicAuthorClientsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ServerRadiusDynamicAuthorClientsKeys := [...]string{"ip"}
+	ServerRadiusDynamicAuthorClientsItems := helpers.CollectListItemsXML(ServerRadiusDynamicAuthorClientsParentScope.Raw, "Cisco-IOS-XE-aaa:server/radius/dynamic-author/client", ServerRadiusDynamicAuthorClientsKeys[:])
 	for i := range data.ServerRadiusDynamicAuthorClients {
-		keys := [...]string{"ip"}
-		keyValues := [...]string{data.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ServerRadiusDynamicAuthorClientsKeyValues := [...]string{data.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
+		r := ServerRadiusDynamicAuthorClientsItems[helpers.CompositeKey(ServerRadiusDynamicAuthorClientsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.ServerRadiusDynamicAuthorClients[i].Ip.IsNull() {
 			data.ServerRadiusDynamicAuthorClients[i].Ip = types.StringValue(value.String())
 		} else {
 			data.ServerRadiusDynamicAuthorClients[i].Ip = types.StringNull()
 		}
 	}
+	GroupServerRadiusParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	GroupServerRadiusKeys := [...]string{"name"}
+	GroupServerRadiusItems := helpers.CollectListItemsXML(GroupServerRadiusParentScope.Raw, "Cisco-IOS-XE-aaa:group/server/radius", GroupServerRadiusKeys[:])
 	for i := range data.GroupServerRadius {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.GroupServerRadius[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/radius").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		GroupServerRadiusKeyValues := [...]string{data.GroupServerRadius[i].Name.ValueString()}
+		r := GroupServerRadiusItems[helpers.CompositeKey(GroupServerRadiusKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.GroupServerRadius[i].Name.IsNull() {
 			data.GroupServerRadius[i].Name = types.StringValue(value.String())
 		} else {
@@ -425,29 +401,11 @@ func (data *AAA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.GroupServerRadius[i].Deadtime = types.Int64Null()
 		}
+		ServerNamesKeys := [...]string{"name"}
+		ServerNamesItems := helpers.CollectListItemsXML(r.Raw, "server/name", ServerNamesKeys[:])
 		for ci := range data.GroupServerRadius[i].ServerNames {
-			keys := [...]string{"name"}
-			keyValues := [...]string{data.GroupServerRadius[i].ServerNames[ci].Name.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "server/name").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			ServerNamesKeyValues := [...]string{data.GroupServerRadius[i].ServerNames[ci].Name.ValueString()}
+			cr := ServerNamesItems[helpers.CompositeKey(ServerNamesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "name"); value.Exists() && !data.GroupServerRadius[i].ServerNames[ci].Name.IsNull() {
 				data.GroupServerRadius[i].ServerNames[ci].Name = types.StringValue(value.String())
 			} else {
@@ -500,57 +458,22 @@ func (data *AAA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.GroupServerRadius[i].IpRadiusSourceInterfaceHundredGigabitEthernet = types.StringNull()
 		}
 	}
+	GroupServerTacacsplusParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	GroupServerTacacsplusKeys := [...]string{"name"}
+	GroupServerTacacsplusItems := helpers.CollectListItemsXML(GroupServerTacacsplusParentScope.Raw, "Cisco-IOS-XE-aaa:group/server/tacacsplus", GroupServerTacacsplusKeys[:])
 	for i := range data.GroupServerTacacsplus {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.GroupServerTacacsplus[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:group/server/tacacsplus").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		GroupServerTacacsplusKeyValues := [...]string{data.GroupServerTacacsplus[i].Name.ValueString()}
+		r := GroupServerTacacsplusItems[helpers.CompositeKey(GroupServerTacacsplusKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.GroupServerTacacsplus[i].Name.IsNull() {
 			data.GroupServerTacacsplus[i].Name = types.StringValue(value.String())
 		} else {
 			data.GroupServerTacacsplus[i].Name = types.StringNull()
 		}
+		ServerNamesKeys := [...]string{"name"}
+		ServerNamesItems := helpers.CollectListItemsXML(r.Raw, "server/name", ServerNamesKeys[:])
 		for ci := range data.GroupServerTacacsplus[i].ServerNames {
-			keys := [...]string{"name"}
-			keyValues := [...]string{data.GroupServerTacacsplus[i].ServerNames[ci].Name.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "server/name").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			ServerNamesKeyValues := [...]string{data.GroupServerTacacsplus[i].ServerNames[ci].Name.ValueString()}
+			cr := ServerNamesItems[helpers.CompositeKey(ServerNamesKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "name"); value.Exists() && !data.GroupServerTacacsplus[i].ServerNames[ci].Name.IsNull() {
 				data.GroupServerTacacsplus[i].ServerNames[ci].Name = types.StringValue(value.String())
 			} else {

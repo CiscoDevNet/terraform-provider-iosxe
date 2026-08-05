@@ -183,6 +183,7 @@ func (data CTS) addToBodyXML(ctx context.Context, config CTS, body netconf.Body)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period", strconv.FormatInt(data.SxpRetryPeriod.ValueInt64(), 10))
 	}
 	if len(data.SxpConnectionPeersIpv4) > 0 {
+		SxpConnectionPeersIpv4Fragments := make([]string, 0, len(data.SxpConnectionPeersIpv4))
 		for _, item := range data.SxpConnectionPeersIpv4 {
 			var configItem CTSSxpConnectionPeersIpv4
 			for _, ci := range config.SxpConnectionPeersIpv4 {
@@ -218,10 +219,12 @@ func (data CTS) addToBodyXML(ctx context.Context, config CTS, body netconf.Body)
 			if !item.MaxTime.IsNull() && !item.MaxTime.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "max-time", strconv.FormatInt(item.MaxTime.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf", cBody.Res())
+			SxpConnectionPeersIpv4Fragments = append(SxpConnectionPeersIpv4Fragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf", SxpConnectionPeersIpv4Fragments)
 	}
 	if len(data.SxpConnectionPeersIpv4Vrf) > 0 {
+		SxpConnectionPeersIpv4VrfFragments := make([]string, 0, len(data.SxpConnectionPeersIpv4Vrf))
 		for _, item := range data.SxpConnectionPeersIpv4Vrf {
 			var configItem CTSSxpConnectionPeersIpv4Vrf
 			for _, ci := range config.SxpConnectionPeersIpv4Vrf {
@@ -263,8 +266,9 @@ func (data CTS) addToBodyXML(ctx context.Context, config CTS, body netconf.Body)
 			if !item.MaxTime.IsNull() && !item.MaxTime.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "max-time", strconv.FormatInt(item.MaxTime.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf", cBody.Res())
+			SxpConnectionPeersIpv4VrfFragments = append(SxpConnectionPeersIpv4VrfFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf", SxpConnectionPeersIpv4VrfFragments)
 	}
 	if !data.SxpSpeakerHoldTime.IsNull() && !data.SxpSpeakerHoldTime.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time", strconv.FormatInt(data.SxpSpeakerHoldTime.ValueInt64(), 10))
@@ -329,29 +333,12 @@ func (data *CTS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.SxpRetryPeriod = types.Int64Null()
 	}
+	SxpConnectionPeersIpv4ParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SxpConnectionPeersIpv4Keys := [...]string{"ipv4"}
+	SxpConnectionPeersIpv4Items := helpers.CollectListItemsXML(SxpConnectionPeersIpv4ParentScope.Raw, "Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf", SxpConnectionPeersIpv4Keys[:])
 	for i := range data.SxpConnectionPeersIpv4 {
-		keys := [...]string{"ipv4"}
-		keyValues := [...]string{data.SxpConnectionPeersIpv4[i].Ip.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SxpConnectionPeersIpv4KeyValues := [...]string{data.SxpConnectionPeersIpv4[i].Ip.ValueString()}
+		r := SxpConnectionPeersIpv4Items[helpers.CompositeKey(SxpConnectionPeersIpv4KeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Ip.IsNull() {
 			data.SxpConnectionPeersIpv4[i].Ip = types.StringValue(value.String())
 		} else {
@@ -383,29 +370,12 @@ func (data *CTS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.SxpConnectionPeersIpv4[i].MaxTime = types.Int64Null()
 		}
 	}
+	SxpConnectionPeersIpv4VrfParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SxpConnectionPeersIpv4VrfKeys := [...]string{"ipv4", "vrf"}
+	SxpConnectionPeersIpv4VrfItems := helpers.CollectListItemsXML(SxpConnectionPeersIpv4VrfParentScope.Raw, "Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf", SxpConnectionPeersIpv4VrfKeys[:])
 	for i := range data.SxpConnectionPeersIpv4Vrf {
-		keys := [...]string{"ipv4", "vrf"}
-		keyValues := [...]string{data.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), data.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SxpConnectionPeersIpv4VrfKeyValues := [...]string{data.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), data.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
+		r := SxpConnectionPeersIpv4VrfItems[helpers.CompositeKey(SxpConnectionPeersIpv4VrfKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Ip.IsNull() {
 			data.SxpConnectionPeersIpv4Vrf[i].Ip = types.StringValue(value.String())
 		} else {
