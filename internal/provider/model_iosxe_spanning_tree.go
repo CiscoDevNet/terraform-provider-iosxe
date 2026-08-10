@@ -547,6 +547,16 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 // See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
 func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	// Collect the per-VLAN and per-MST-instance removal xPaths and apply each
+	// group in a single batched call, rather than one helpers.RemoveFromXPath
+	// call per item. This is the same O(n^2) pattern already batched in
+	// addDeletedItemsXML: every RemoveFromXPath re-reads the whole existing
+	// sibling list before appending, so a resource declaring thousands of
+	// VLANs pays quadratic cost building the delete payload. addDeletePathsXML
+	// is reached from the Delete path (terraform destroy), so leaving it
+	// unbatched keeps the worst case on exactly the operation that always
+	// touches every declared item.
+	var vlanPriorityRemovePaths []string
 	for i := range data.Vlans {
 		// Only delete priority if it was set - don't delete entire VLAN from STP
 		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
@@ -558,10 +568,13 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 				predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
 			}
 
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+			vlanPriorityRemovePaths = append(vlanPriorityRemovePaths, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
 		}
 		// VLANs without priority have no config to delete - they're already at default
 	}
+	b = helpers.RemoveFromXPathMulti(b, vlanPriorityRemovePaths)
+
+	var mstInstanceRemovePaths []string
 	for i := range data.MstInstances {
 		keys := [...]string{"id"}
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
@@ -570,8 +583,9 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 			predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
+		mstInstanceRemovePaths = append(mstInstanceRemovePaths, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
 	}
+	b = helpers.RemoveFromXPathMulti(b, mstInstanceRemovePaths)
 	if !data.PortfastBpduguardDefault.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
 	}
