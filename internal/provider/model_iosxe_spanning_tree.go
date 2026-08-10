@@ -421,7 +421,7 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 	// instead of one helpers.RemoveFromXPath call per VLAN. With declared lists
 	// in the thousands (e.g. shrinking a 4094-VLAN spanning-tree declaration),
 	// calling RemoveFromXPath per item is O(n^2) (see RemoveFromXPathMulti docs).
-	var vlanPriorityRemovePaths []string
+	var vlanRemovePaths []string
 	for i := range state.Vlans {
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
@@ -445,21 +445,39 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 				found = false
 			}
 			if found {
+				// VLAN is still declared -- only its priority is being
+				// unset. Stays leaf-only: the VLAN itself remains, so
+				// this is unaffected by the whole-element finding below.
 				if !state.Vlans[i].Priority.IsNull() && data.Vlans[j].Priority.IsNull() {
-					vlanPriorityRemovePaths = append(vlanPriorityRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+					vlanRemovePaths = append(vlanRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
-			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
+			// VLAN fully undeclared -- whole-element removal.
+			//
+			// Hardware-tested 2026-08-10 (C9200L/17.15.4): whole-element
+			// removal (operation="remove" on <vlan>, key only) on a
+			// CONTENT-BEARING entry -- priority set, which is the only
+			// case reached here per the guard below -- reverts to default
+			// WITHOUT disabling STP and leaves no NETCONF residue.
+			// Confirmed at n=1/51/500, with all four leaves
+			// (priority/max-age/forward-time/hello-time) set together,
+			// and composed in a single edit-config alongside reasserted
+			// priorities on other VLANs (the actual shape of a shrink
+			// apply). Only a BARE entry (key only, no children) disables
+			// STP on whole-element removal -- that's the mechanism
+			// disabled_vlans (PR #432, later in this file) relies on
+			// intentionally, and it is untouched by this change.
+			//
+			// Originally leaf-only per PR #431; revised per PR #<TBD>.
 			if !state.Vlans[i].Priority.IsNull() {
-				vlanPriorityRemovePaths = append(vlanPriorityRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+				vlanRemovePaths = append(vlanRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
 			}
 		}
 	}
-	b = helpers.RemoveFromXPathMulti(b, vlanPriorityRemovePaths)
+	b = helpers.RemoveFromXPathMulti(b, vlanRemovePaths)
 
 	// Same batching for MST instance vlan-ids and whole-instance removals.
 	var mstVlanIdsRemovePaths []string
@@ -542,9 +560,11 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 }
 
 // addDeletePathsXML builds the NETCONF XML for deleting the resource.
-// CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// CUSTOMIZED: on resource destroy, every declared VLAN is leaving
+// Terraform's management entirely, so the whole <vlan> element is removed
+// (see the block comment below for why this is safe for content-bearing
+// entries specifically).
+// Originally leaf-only per PR #418; revised per PR #<TBD>.
 func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	// Collect the per-VLAN and per-MST-instance removal xPaths and apply each
@@ -556,10 +576,18 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 	// is reached from the Delete path (terraform destroy), so leaving it
 	// unbatched keeps the worst case on exactly the operation that always
 	// touches every declared item.
-	var vlanPriorityRemovePaths []string
+	//
+	// Hardware-tested 2026-08-10 (C9200L/17.15.4): whole-element removal on
+	// a CONTENT-BEARING entry -- priority set, the only case reached here
+	// per the guard below -- reverts to default WITHOUT disabling STP and
+	// leaves no NETCONF residue. Confirmed at n=1/51/500, with all four
+	// leaves set together, and composed alongside reasserted priorities on
+	// other VLANs in the same edit-config. Only a BARE entry (key only, no
+	// children) disables STP on whole-element removal -- that's the
+	// mechanism disabled_vlans (PR #432, later in this file) relies on
+	// intentionally, and it is untouched by this change.
+	var vlanRemovePaths []string
 	for i := range data.Vlans {
-		// Only delete priority if it was set - don't delete entire VLAN from STP
-		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
 		if !data.Vlans[i].Priority.IsNull() {
 			keys := [...]string{"id"}
 			keyValues := [...]string{data.Vlans[i].Id.ValueString()}
@@ -568,11 +596,11 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 				predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
 			}
 
-			vlanPriorityRemovePaths = append(vlanPriorityRemovePaths, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+			vlanRemovePaths = append(vlanRemovePaths, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
 		}
 		// VLANs without priority have no config to delete - they're already at default
 	}
-	b = helpers.RemoveFromXPathMulti(b, vlanPriorityRemovePaths)
+	b = helpers.RemoveFromXPathMulti(b, vlanRemovePaths)
 
 	var mstInstanceRemovePaths []string
 	for i := range data.MstInstances {
