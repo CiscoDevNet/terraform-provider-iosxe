@@ -290,6 +290,7 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $listGoName := toGoName .TfName }}
 	if len(data.{{toGoName .TfName}}) > 0 {
+		{{$listGoName}}Fragments := make([]string, 0, len(data.{{toGoName .TfName}}))
 		for _, item := range data.{{toGoName .TfName}} {
 			{{- if hasSensitiveAttr .Attributes}}
 			var configItem {{$name}}{{$listGoName}}
@@ -344,6 +345,7 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 			{{- else if or (eq .Type "List") (eq .Type "Set")}}
 			{{- $clistGoName := toGoName .TfName }}
 			if len(item.{{toGoName .TfName}}) > 0 {
+				{{$clistGoName}}Fragments := make([]string, 0, len(item.{{toGoName .TfName}}))
 				for _, citem := range item.{{toGoName .TfName}} {
 					{{- if hasSensitiveAttr .Attributes}}
 					var cConfigItem {{$name}}{{$listGoName}}{{$clistGoName}}
@@ -358,7 +360,9 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 					ccBody := netconf.Body{}
 					{{- range (xpathAttributes .Attributes)}}
 					{{- if or (eq .Type "List") (eq .Type "Set")}}
+					{{- $ccclistGoName := toGoName .TfName }}
 					if len(citem.{{toGoName .TfName}}) > 0 {
+						{{$ccclistGoName}}Fragments := make([]string, 0, len(citem.{{toGoName .TfName}}))
 						for _, ccitem := range citem.{{toGoName .TfName}} {
 							cccBody := netconf.Body{}
 							{{- range (xpathAttributes .Attributes)}}
@@ -384,8 +388,9 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 								{{- end}}
 							}
 							{{- end}}
-							ccBody = helpers.SetRawFromXPath(ccBody, "{{.XPath}}", cccBody.Res())
+							{{$ccclistGoName}}Fragments = append({{$ccclistGoName}}Fragments, cccBody.Res())
 						}
+						ccBody = helpers.SetRawFromXPathMulti(ccBody, "{{.XPath}}", {{$ccclistGoName}}Fragments)
 					}
 					{{- else}}
 					if !citem.{{toGoName .TfName}}.IsNull() && !citem.{{toGoName .TfName}}.IsUnknown() {
@@ -427,13 +432,15 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 					}
 					{{- end}}
 					{{- end}}
-					cBody = helpers.SetRawFromXPath(cBody, "{{.XPath}}", ccBody.Res())
+					{{$clistGoName}}Fragments = append({{$clistGoName}}Fragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "{{.XPath}}", {{$clistGoName}}Fragments)
 			}
 			{{- end}}
 			{{- end}}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/{{.XPath}}", cBody.Res())
+			{{$listGoName}}Fragments = append({{$listGoName}}Fragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/{{.XPath}}", {{$listGoName}}Fragments)
 	}
 	{{- end}}
 	{{- end}}
@@ -512,29 +519,12 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := (toGoName .TfName)}}
+	{{$list}}ParentScope := helpers.GetFromXPath(res, "data" + data.getXPath())
+	{{$list}}Keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
+	{{$list}}Items := helpers.CollectListItemsXML({{$list}}ParentScope.Raw, "{{.XPath}}", {{$list}}Keys[:])
 	for i := range data.{{$list}} {
-		keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
-		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		{{$list}}KeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
+		r := {{$list}}Items[helpers.CompositeKey({{$list}}KeyValues[:]...)]
 
 		{{- range (xpathAttributes .Attributes)}}
 		{{- if not .WriteOnly}}
@@ -598,29 +588,11 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		}
 		{{- else if or (eq .Type "List") (eq .Type "Set")}}
 		{{- $clist := (toGoName .TfName)}}
+		{{$clist}}Keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
+		{{$clist}}Items := helpers.CollectListItemsXML(r.Raw, "{{.XPath}}", {{$clist}}Keys[:])
 		for ci := range data.{{$list}}[i].{{$clist}} {
-			keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
-			keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "{{.XPath}}").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			{{$clist}}KeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
+			cr := {{$clist}}Items[helpers.CompositeKey({{$clist}}KeyValues[:]...)]
 
 			{{- range (xpathAttributes .Attributes)}}
 			{{- if not .WriteOnly}}

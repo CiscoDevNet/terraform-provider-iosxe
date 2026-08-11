@@ -109,6 +109,7 @@ func (data PIMIPv6) toBodyXML(ctx context.Context, config PIMIPv6) string {
 		}
 	}
 	if len(data.Vrfs) > 0 {
+		VrfsFragments := make([]string, 0, len(data.Vrfs))
 		for _, item := range data.Vrfs {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -127,8 +128,9 @@ func (data PIMIPv6) toBodyXML(ctx context.Context, config PIMIPv6) string {
 					cBody = helpers.RemoveFromXPath(cBody, "rp-address/bidir")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", cBody.Res())
+			VrfsFragments = append(VrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", VrfsFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -161,29 +163,12 @@ func (data *PIMIPv6) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.RpAddressBidir = types.BoolNull()
 	}
+	VrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VrfsKeys := [...]string{"id"}
+	VrfsItems := helpers.CollectListItemsXML(VrfsParentScope.Raw, "Cisco-IOS-XE-multicast:vrf", VrfsKeys[:])
 	for i := range data.Vrfs {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VrfsKeyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+		r := VrfsItems[helpers.CompositeKey(VrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
 			data.Vrfs[i].Vrf = types.StringValue(value.String())
 		} else {

@@ -154,6 +154,7 @@ func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) str
 		}
 	}
 	if len(data.MstInstances) > 0 {
+		MstInstancesFragments := make([]string, 0, len(data.MstInstances))
 		for _, item := range data.MstInstances {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -166,10 +167,12 @@ func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) str
 					cBody = helpers.AppendFromXPath(cBody, "vlan-ids", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance", cBody.Res())
+			MstInstancesFragments = append(MstInstancesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance", MstInstancesFragments)
 	}
 	if len(data.Vlans) > 0 {
+		VlansFragments := make([]string, 0, len(data.Vlans))
 		for _, item := range data.Vlans {
 			cBody := netconf.Body{}
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
@@ -178,8 +181,9 @@ func (data SpanningTree) toBodyXML(ctx context.Context, config SpanningTree) str
 			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan", cBody.Res())
+			VlansFragments = append(VlansFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan", VlansFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -243,29 +247,12 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.ExtendSystemId = types.BoolNull()
 	}
+	MstInstancesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MstInstancesKeys := [...]string{"id"}
+	MstInstancesItems := helpers.CollectListItemsXML(MstInstancesParentScope.Raw, "Cisco-IOS-XE-spanning-tree:mst/configuration/instance", MstInstancesKeys[:])
 	for i := range data.MstInstances {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MstInstancesKeyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
+		r := MstInstancesItems[helpers.CompositeKey(MstInstancesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.MstInstances[i].Id.IsNull() {
 			data.MstInstances[i].Id = types.Int64Value(value.Int())
 		} else {
@@ -277,29 +264,12 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 			data.MstInstances[i].VlanIds = types.ListNull(types.Int64Type)
 		}
 	}
+	VlansParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VlansKeys := [...]string{"id"}
+	VlansItems := helpers.CollectListItemsXML(VlansParentScope.Raw, "Cisco-IOS-XE-spanning-tree:vlan", VlansKeys[:])
 	for i := range data.Vlans {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VlansKeyValues := [...]string{data.Vlans[i].Id.ValueString()}
+		r := VlansItems[helpers.CompositeKey(VlansKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Vlans[i].Id.IsNull() {
 			data.Vlans[i].Id = types.StringValue(value.String())
 		} else {
@@ -447,6 +417,11 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 
 func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state SpanningTree, body string) string {
 	b := netconf.NewBody(body)
+	// Collect per-VLAN removal xPaths and apply them in a single batched call
+	// instead of one helpers.RemoveFromXPath call per VLAN. With declared lists
+	// in the thousands (e.g. shrinking a 4094-VLAN spanning-tree declaration),
+	// calling RemoveFromXPath per item is O(n^2) (see RemoveFromXPathMulti docs).
+	var vlanRemovePaths []string
 	for i := range state.Vlans {
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
@@ -470,20 +445,43 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 				found = false
 			}
 			if found {
+				// VLAN is still declared -- only its priority is being
+				// unset. Stays leaf-only: the VLAN itself remains, so
+				// this is unaffected by the whole-element finding below.
 				if !state.Vlans[i].Priority.IsNull() && data.Vlans[j].Priority.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+					vlanRemovePaths = append(vlanRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			// When a VLAN is removed from config, delete only its attributes (not the entire VLAN)
-			// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP entirely
+			// VLAN fully undeclared -- whole-element removal.
+			//
+			// Hardware-tested 2026-08-10 (C9200L/17.15.4): whole-element
+			// removal (operation="remove" on <vlan>, key only) on a
+			// CONTENT-BEARING entry -- priority set, which is the only
+			// case reached here per the guard below -- reverts to default
+			// WITHOUT disabling STP and leaves no NETCONF residue.
+			// Confirmed at n=1/51/500, with all four leaves
+			// (priority/max-age/forward-time/hello-time) set together,
+			// and composed in a single edit-config alongside reasserted
+			// priorities on other VLANs (the actual shape of a shrink
+			// apply). Only a BARE entry (key only, no children) disables
+			// STP on whole-element removal -- that's the mechanism
+			// disabled_vlans (PR #432, later in this file) relies on
+			// intentionally, and it is untouched by this change.
+			//
+			// Originally leaf-only per PR #431; revised per PR #<TBD>.
 			if !state.Vlans[i].Priority.IsNull() {
-				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+				vlanRemovePaths = append(vlanRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
 			}
 		}
 	}
+	b = helpers.RemoveFromXPathMulti(b, vlanRemovePaths)
+
+	// Same batching for MST instance vlan-ids and whole-instance removals.
+	var mstVlanIdsRemovePaths []string
+	var mstInstanceRemovePaths []string
 	for i := range state.MstInstances {
 		stateKeys := [...]string{"id"}
 		stateKeyValues := [...]string{strconv.FormatInt(state.MstInstances[i].Id.ValueInt64(), 10)}
@@ -512,7 +510,7 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 						var values []string
 						state.MstInstances[i].VlanIds.ElementsAs(ctx, &values, false)
 						for _, v := range values {
-							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
+							mstVlanIdsRemovePaths = append(mstVlanIdsRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
 						}
 					} else {
 						var dataValues, stateValues []int
@@ -527,7 +525,7 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 								}
 							}
 							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
+								mstVlanIdsRemovePaths = append(mstVlanIdsRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
 							}
 						}
 					}
@@ -536,9 +534,11 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
+			mstInstanceRemovePaths = append(mstInstanceRemovePaths, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
 		}
 	}
+	b = helpers.RemoveFromXPathMulti(b, mstVlanIdsRemovePaths)
+	b = helpers.RemoveFromXPathMulti(b, mstInstanceRemovePaths)
 	if !state.PortfastBpduguardDefault.IsNull() && data.PortfastBpduguardDefault.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
 	}
@@ -560,14 +560,34 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 }
 
 // addDeletePathsXML builds the NETCONF XML for deleting the resource.
-// CUSTOMIZED: Only deletes priority for VLANs that have it set, to avoid disabling STP entirely.
-// This prevents "no spanning-tree vlan X" which would remove the VLAN from STP.
-// See: https://github.com/CiscoDevNet/terraform-provider-iosxe/pull/418
+// CUSTOMIZED: on resource destroy, every declared VLAN is leaving
+// Terraform's management entirely, so the whole <vlan> element is removed
+// (see the block comment below for why this is safe for content-bearing
+// entries specifically).
+// Originally leaf-only per PR #418; revised per PR #<TBD>.
 func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	// Collect the per-VLAN and per-MST-instance removal xPaths and apply each
+	// group in a single batched call, rather than one helpers.RemoveFromXPath
+	// call per item. This is the same O(n^2) pattern already batched in
+	// addDeletedItemsXML: every RemoveFromXPath re-reads the whole existing
+	// sibling list before appending, so a resource declaring thousands of
+	// VLANs pays quadratic cost building the delete payload. addDeletePathsXML
+	// is reached from the Delete path (terraform destroy), so leaving it
+	// unbatched keeps the worst case on exactly the operation that always
+	// touches every declared item.
+	//
+	// Hardware-tested 2026-08-10 (C9200L/17.15.4): whole-element removal on
+	// a CONTENT-BEARING entry -- priority set, the only case reached here
+	// per the guard below -- reverts to default WITHOUT disabling STP and
+	// leaves no NETCONF residue. Confirmed at n=1/51/500, with all four
+	// leaves set together, and composed alongside reasserted priorities on
+	// other VLANs in the same edit-config. Only a BARE entry (key only, no
+	// children) disables STP on whole-element removal -- that's the
+	// mechanism disabled_vlans (PR #432, later in this file) relies on
+	// intentionally, and it is untouched by this change.
+	var vlanRemovePaths []string
 	for i := range data.Vlans {
-		// Only delete priority if it was set - don't delete entire VLAN from STP
-		// Deleting entire vlan element causes "no spanning-tree vlan X" which disables STP
 		if !data.Vlans[i].Priority.IsNull() {
 			keys := [...]string{"id"}
 			keyValues := [...]string{data.Vlans[i].Id.ValueString()}
@@ -576,10 +596,13 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 				predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
 			}
 
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+			vlanRemovePaths = append(vlanRemovePaths, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
 		}
 		// VLANs without priority have no config to delete - they're already at default
 	}
+	b = helpers.RemoveFromXPathMulti(b, vlanRemovePaths)
+
+	var mstInstanceRemovePaths []string
 	for i := range data.MstInstances {
 		keys := [...]string{"id"}
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
@@ -588,8 +611,9 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 			predicates += fmt.Sprintf("[%s='%s']", keys[j], keyValues[j])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
+		mstInstanceRemovePaths = append(mstInstanceRemovePaths, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
 	}
+	b = helpers.RemoveFromXPathMulti(b, mstInstanceRemovePaths)
 	if !data.PortfastBpduguardDefault.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
 	}

@@ -167,15 +167,18 @@ func (data BGPAddressFamilyIPv6) toBodyXML(ctx context.Context, config BGPAddres
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/redistribute-v6/static/metric", strconv.FormatInt(data.Ipv6UnicastRedistributeStaticMetric.ValueInt64(), 10))
 	}
 	if len(data.Ipv6UnicastAggregateAddresses) > 0 {
+		Ipv6UnicastAggregateAddressesFragments := make([]string, 0, len(data.Ipv6UnicastAggregateAddresses))
 		for _, item := range data.Ipv6UnicastAggregateAddresses {
 			cBody := netconf.Body{}
 			if !item.Ipv6Address.IsNull() && !item.Ipv6Address.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv6-address", item.Ipv6Address.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6-unicast/aggregate-address", cBody.Res())
+			Ipv6UnicastAggregateAddressesFragments = append(Ipv6UnicastAggregateAddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6-unicast/aggregate-address", Ipv6UnicastAggregateAddressesFragments)
 	}
 	if len(data.Ipv6UnicastNetworks) > 0 {
+		Ipv6UnicastNetworksFragments := make([]string, 0, len(data.Ipv6UnicastNetworks))
 		for _, item := range data.Ipv6UnicastNetworks {
 			cBody := netconf.Body{}
 			if !item.Network.IsNull() && !item.Network.IsUnknown() {
@@ -191,10 +194,12 @@ func (data BGPAddressFamilyIPv6) toBodyXML(ctx context.Context, config BGPAddres
 					cBody = helpers.RemoveFromXPath(cBody, "backdoor")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6-unicast/network", cBody.Res())
+			Ipv6UnicastNetworksFragments = append(Ipv6UnicastNetworksFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6-unicast/network", Ipv6UnicastNetworksFragments)
 	}
 	if len(data.Ipv6UnicastAdminDistances) > 0 {
+		Ipv6UnicastAdminDistancesFragments := make([]string, 0, len(data.Ipv6UnicastAdminDistances))
 		for _, item := range data.Ipv6UnicastAdminDistances {
 			cBody := netconf.Body{}
 			if !item.Distance.IsNull() && !item.Distance.IsUnknown() {
@@ -206,8 +211,9 @@ func (data BGPAddressFamilyIPv6) toBodyXML(ctx context.Context, config BGPAddres
 			if !item.PrefixListName.IsNull() && !item.PrefixListName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "prefix-list-name", item.PrefixListName.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ipv6-unicast/distance/adm-distance", cBody.Res())
+			Ipv6UnicastAdminDistancesFragments = append(Ipv6UnicastAdminDistancesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ipv6-unicast/distance/adm-distance", Ipv6UnicastAdminDistancesFragments)
 	}
 	if !data.Ipv6UnicastDistanceBgpExternal.IsNull() && !data.Ipv6UnicastDistanceBgpExternal.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ipv6-unicast/distance/bgp/extern-as", strconv.FormatInt(data.Ipv6UnicastDistanceBgpExternal.ValueInt64(), 10))
@@ -279,58 +285,24 @@ func (data *BGPAddressFamilyIPv6) updateFromBodyXML(ctx context.Context, res xml
 	} else {
 		data.Ipv6UnicastRedistributeStaticMetric = types.Int64Null()
 	}
+	Ipv6UnicastAggregateAddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6UnicastAggregateAddressesKeys := [...]string{"ipv6-address"}
+	Ipv6UnicastAggregateAddressesItems := helpers.CollectListItemsXML(Ipv6UnicastAggregateAddressesParentScope.Raw, "ipv6-unicast/aggregate-address", Ipv6UnicastAggregateAddressesKeys[:])
 	for i := range data.Ipv6UnicastAggregateAddresses {
-		keys := [...]string{"ipv6-address"}
-		keyValues := [...]string{data.Ipv6UnicastAggregateAddresses[i].Ipv6Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/aggregate-address").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6UnicastAggregateAddressesKeyValues := [...]string{data.Ipv6UnicastAggregateAddresses[i].Ipv6Address.ValueString()}
+		r := Ipv6UnicastAggregateAddressesItems[helpers.CompositeKey(Ipv6UnicastAggregateAddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv6-address"); value.Exists() && !data.Ipv6UnicastAggregateAddresses[i].Ipv6Address.IsNull() {
 			data.Ipv6UnicastAggregateAddresses[i].Ipv6Address = types.StringValue(value.String())
 		} else {
 			data.Ipv6UnicastAggregateAddresses[i].Ipv6Address = types.StringNull()
 		}
 	}
+	Ipv6UnicastNetworksParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6UnicastNetworksKeys := [...]string{"number"}
+	Ipv6UnicastNetworksItems := helpers.CollectListItemsXML(Ipv6UnicastNetworksParentScope.Raw, "ipv6-unicast/network", Ipv6UnicastNetworksKeys[:])
 	for i := range data.Ipv6UnicastNetworks {
-		keys := [...]string{"number"}
-		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/network").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6UnicastNetworksKeyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
+		r := Ipv6UnicastNetworksItems[helpers.CompositeKey(Ipv6UnicastNetworksKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.Ipv6UnicastNetworks[i].Network.IsNull() {
 			data.Ipv6UnicastNetworks[i].Network = types.StringValue(value.String())
 		} else {
@@ -351,29 +323,12 @@ func (data *BGPAddressFamilyIPv6) updateFromBodyXML(ctx context.Context, res xml
 			data.Ipv6UnicastNetworks[i].Backdoor = types.BoolNull()
 		}
 	}
+	Ipv6UnicastAdminDistancesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6UnicastAdminDistancesKeys := [...]string{"distance", "src-ipv6-address"}
+	Ipv6UnicastAdminDistancesItems := helpers.CollectListItemsXML(Ipv6UnicastAdminDistancesParentScope.Raw, "ipv6-unicast/distance/adm-distance", Ipv6UnicastAdminDistancesKeys[:])
 	for i := range data.Ipv6UnicastAdminDistances {
-		keys := [...]string{"distance", "src-ipv6-address"}
-		keyValues := [...]string{strconv.FormatInt(data.Ipv6UnicastAdminDistances[i].Distance.ValueInt64(), 10), data.Ipv6UnicastAdminDistances[i].SourceIpv6Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ipv6-unicast/distance/adm-distance").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6UnicastAdminDistancesKeyValues := [...]string{strconv.FormatInt(data.Ipv6UnicastAdminDistances[i].Distance.ValueInt64(), 10), data.Ipv6UnicastAdminDistances[i].SourceIpv6Address.ValueString()}
+		r := Ipv6UnicastAdminDistancesItems[helpers.CompositeKey(Ipv6UnicastAdminDistancesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "distance"); value.Exists() && !data.Ipv6UnicastAdminDistances[i].Distance.IsNull() {
 			data.Ipv6UnicastAdminDistances[i].Distance = types.Int64Value(value.Int())
 		} else {

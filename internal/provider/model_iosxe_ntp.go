@@ -271,6 +271,7 @@ func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:access-group/serve-only/acl", data.AccessGroupServeOnlyAcl.ValueString())
 	}
 	if len(data.AuthenticationKeys) > 0 {
+		AuthenticationKeysFragments := make([]string, 0, len(data.AuthenticationKeys))
 		for _, item := range data.AuthenticationKeys {
 			var configItem NTPAuthenticationKeys
 			for _, ci := range config.AuthenticationKeys {
@@ -329,8 +330,9 @@ func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 			if !item.EncryptionType.IsNull() && !item.EncryptionType.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "encryption-type", strconv.FormatInt(item.EncryptionType.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:authentication-key", cBody.Res())
+			AuthenticationKeysFragments = append(AuthenticationKeysFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-ntp:authentication-key", AuthenticationKeysFragments)
 	}
 	if !data.ClockPeriod.IsNull() && !data.ClockPeriod.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:clock-period", strconv.FormatInt(data.ClockPeriod.ValueInt64(), 10))
@@ -384,6 +386,7 @@ func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:source/Vlan", strconv.FormatInt(data.SourceVlan.ValueInt64(), 10))
 	}
 	if len(data.Servers) > 0 {
+		ServersFragments := make([]string, 0, len(data.Servers))
 		for _, item := range data.Servers {
 			cBody := netconf.Body{}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
@@ -426,16 +429,19 @@ func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 					cBody = helpers.RemoveFromXPath(cBody, "periodic")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:server/server-list", cBody.Res())
+			ServersFragments = append(ServersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-ntp:server/server-list", ServersFragments)
 	}
 	if len(data.ServerVrfs) > 0 {
+		ServerVrfsFragments := make([]string, 0, len(data.ServerVrfs))
 		for _, item := range data.ServerVrfs {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
 			if len(item.Servers) > 0 {
+				ServersFragments := make([]string, 0, len(item.Servers))
 				for _, citem := range item.Servers {
 					ccBody := netconf.Body{}
 					if !citem.IpAddress.IsNull() && !citem.IpAddress.IsUnknown() {
@@ -475,13 +481,16 @@ func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 							ccBody = helpers.RemoveFromXPath(ccBody, "periodic")
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "server-list", ccBody.Res())
+					ServersFragments = append(ServersFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "server-list", ServersFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:server/vrf", cBody.Res())
+			ServerVrfsFragments = append(ServerVrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-ntp:server/vrf", ServerVrfsFragments)
 	}
 	if len(data.Peers) > 0 {
+		PeersFragments := make([]string, 0, len(data.Peers))
 		for _, item := range data.Peers {
 			cBody := netconf.Body{}
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
@@ -503,16 +512,19 @@ func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "version", strconv.FormatInt(item.Version.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:peer/server-list", cBody.Res())
+			PeersFragments = append(PeersFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-ntp:peer/server-list", PeersFragments)
 	}
 	if len(data.PeerVrfs) > 0 {
+		PeerVrfsFragments := make([]string, 0, len(data.PeerVrfs))
 		for _, item := range data.PeerVrfs {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
 			if len(item.Peers) > 0 {
+				PeersFragments := make([]string, 0, len(item.Peers))
 				for _, citem := range item.Peers {
 					ccBody := netconf.Body{}
 					if !citem.IpAddress.IsNull() && !citem.IpAddress.IsUnknown() {
@@ -531,20 +543,24 @@ func (data NTP) toBodyXML(ctx context.Context, config NTP) string {
 					if !citem.Version.IsNull() && !citem.Version.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "version", strconv.FormatInt(citem.Version.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "server-list", ccBody.Res())
+					PeersFragments = append(PeersFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "server-list", PeersFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:peer/vrf", cBody.Res())
+			PeerVrfsFragments = append(PeerVrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-ntp:peer/vrf", PeerVrfsFragments)
 	}
 	if len(data.TrustedKeys) > 0 {
+		TrustedKeysFragments := make([]string, 0, len(data.TrustedKeys))
 		for _, item := range data.TrustedKeys {
 			cBody := netconf.Body{}
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "number", strconv.FormatInt(item.Number.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-ntp:trusted-key", cBody.Res())
+			TrustedKeysFragments = append(TrustedKeysFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-ntp:trusted-key", TrustedKeysFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -596,29 +612,12 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.AccessGroupServeOnlyAcl = types.StringNull()
 	}
+	AuthenticationKeysParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	AuthenticationKeysKeys := [...]string{"number"}
+	AuthenticationKeysItems := helpers.CollectListItemsXML(AuthenticationKeysParentScope.Raw, "Cisco-IOS-XE-ntp:authentication-key", AuthenticationKeysKeys[:])
 	for i := range data.AuthenticationKeys {
-		keys := [...]string{"number"}
-		keyValues := [...]string{strconv.FormatInt(data.AuthenticationKeys[i].Number.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:authentication-key").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		AuthenticationKeysKeyValues := [...]string{strconv.FormatInt(data.AuthenticationKeys[i].Number.ValueInt64(), 10)}
+		r := AuthenticationKeysItems[helpers.CompositeKey(AuthenticationKeysKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.AuthenticationKeys[i].Number.IsNull() {
 			data.AuthenticationKeys[i].Number = types.Int64Value(value.Int())
 		} else {
@@ -702,29 +701,12 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.SourceVlan = types.Int64Null()
 	}
+	ServersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ServersKeys := [...]string{"ip-address"}
+	ServersItems := helpers.CollectListItemsXML(ServersParentScope.Raw, "Cisco-IOS-XE-ntp:server/server-list", ServersKeys[:])
 	for i := range data.Servers {
-		keys := [...]string{"ip-address"}
-		keyValues := [...]string{data.Servers[i].IpAddress.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:server/server-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ServersKeyValues := [...]string{data.Servers[i].IpAddress.ValueString()}
+		r := ServersItems[helpers.CompositeKey(ServersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ip-address"); value.Exists() && !data.Servers[i].IpAddress.IsNull() {
 			data.Servers[i].IpAddress = types.StringValue(value.String())
 		} else {
@@ -782,57 +764,22 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Servers[i].Periodic = types.BoolNull()
 		}
 	}
+	ServerVrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ServerVrfsKeys := [...]string{"name"}
+	ServerVrfsItems := helpers.CollectListItemsXML(ServerVrfsParentScope.Raw, "Cisco-IOS-XE-ntp:server/vrf", ServerVrfsKeys[:])
 	for i := range data.ServerVrfs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.ServerVrfs[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:server/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ServerVrfsKeyValues := [...]string{data.ServerVrfs[i].Name.ValueString()}
+		r := ServerVrfsItems[helpers.CompositeKey(ServerVrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.ServerVrfs[i].Name.IsNull() {
 			data.ServerVrfs[i].Name = types.StringValue(value.String())
 		} else {
 			data.ServerVrfs[i].Name = types.StringNull()
 		}
+		ServersKeys := [...]string{"ip-address"}
+		ServersItems := helpers.CollectListItemsXML(r.Raw, "server-list", ServersKeys[:])
 		for ci := range data.ServerVrfs[i].Servers {
-			keys := [...]string{"ip-address"}
-			keyValues := [...]string{data.ServerVrfs[i].Servers[ci].IpAddress.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "server-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			ServersKeyValues := [...]string{data.ServerVrfs[i].Servers[ci].IpAddress.ValueString()}
+			cr := ServersItems[helpers.CompositeKey(ServersKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ip-address"); value.Exists() && !data.ServerVrfs[i].Servers[ci].IpAddress.IsNull() {
 				data.ServerVrfs[i].Servers[ci].IpAddress = types.StringValue(value.String())
 			} else {
@@ -886,29 +833,12 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	PeersParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PeersKeys := [...]string{"ip-address"}
+	PeersItems := helpers.CollectListItemsXML(PeersParentScope.Raw, "Cisco-IOS-XE-ntp:peer/server-list", PeersKeys[:])
 	for i := range data.Peers {
-		keys := [...]string{"ip-address"}
-		keyValues := [...]string{data.Peers[i].IpAddress.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:peer/server-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PeersKeyValues := [...]string{data.Peers[i].IpAddress.ValueString()}
+		r := PeersItems[helpers.CompositeKey(PeersKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ip-address"); value.Exists() && !data.Peers[i].IpAddress.IsNull() {
 			data.Peers[i].IpAddress = types.StringValue(value.String())
 		} else {
@@ -939,57 +869,22 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Peers[i].Version = types.Int64Null()
 		}
 	}
+	PeerVrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PeerVrfsKeys := [...]string{"name"}
+	PeerVrfsItems := helpers.CollectListItemsXML(PeerVrfsParentScope.Raw, "Cisco-IOS-XE-ntp:peer/vrf", PeerVrfsKeys[:])
 	for i := range data.PeerVrfs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PeerVrfs[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:peer/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PeerVrfsKeyValues := [...]string{data.PeerVrfs[i].Name.ValueString()}
+		r := PeerVrfsItems[helpers.CompositeKey(PeerVrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PeerVrfs[i].Name.IsNull() {
 			data.PeerVrfs[i].Name = types.StringValue(value.String())
 		} else {
 			data.PeerVrfs[i].Name = types.StringNull()
 		}
+		PeersKeys := [...]string{"ip-address"}
+		PeersItems := helpers.CollectListItemsXML(r.Raw, "server-list", PeersKeys[:])
 		for ci := range data.PeerVrfs[i].Peers {
-			keys := [...]string{"ip-address"}
-			keyValues := [...]string{data.PeerVrfs[i].Peers[ci].IpAddress.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "server-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			PeersKeyValues := [...]string{data.PeerVrfs[i].Peers[ci].IpAddress.ValueString()}
+			cr := PeersItems[helpers.CompositeKey(PeersKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "ip-address"); value.Exists() && !data.PeerVrfs[i].Peers[ci].IpAddress.IsNull() {
 				data.PeerVrfs[i].Peers[ci].IpAddress = types.StringValue(value.String())
 			} else {
@@ -1016,29 +911,12 @@ func (data *NTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	TrustedKeysParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TrustedKeysKeys := [...]string{"number"}
+	TrustedKeysItems := helpers.CollectListItemsXML(TrustedKeysParentScope.Raw, "Cisco-IOS-XE-ntp:trusted-key", TrustedKeysKeys[:])
 	for i := range data.TrustedKeys {
-		keys := [...]string{"number"}
-		keyValues := [...]string{strconv.FormatInt(data.TrustedKeys[i].Number.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-ntp:trusted-key").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TrustedKeysKeyValues := [...]string{strconv.FormatInt(data.TrustedKeys[i].Number.ValueInt64(), 10)}
+		r := TrustedKeysItems[helpers.CompositeKey(TrustedKeysKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.TrustedKeys[i].Number.IsNull() {
 			data.TrustedKeys[i].Number = types.Int64Value(value.Int())
 		} else {

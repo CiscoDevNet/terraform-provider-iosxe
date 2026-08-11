@@ -102,6 +102,7 @@ func (data Multicast) toBodyXML(ctx context.Context, config Multicast) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:multipath/s-g-hash", data.MultipathSGHash.ValueString())
 	}
 	if len(data.Vrfs) > 0 {
+		VrfsFragments := make([]string, 0, len(data.Vrfs))
 		for _, item := range data.Vrfs {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -117,8 +118,9 @@ func (data Multicast) toBodyXML(ctx context.Context, config Multicast) string {
 			if !item.MultipathSGHash.IsNull() && !item.MultipathSGHash.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "multipath/s-g-hash", item.MultipathSGHash.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", cBody.Res())
+			VrfsFragments = append(VrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", VrfsFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -146,29 +148,12 @@ func (data *Multicast) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 	} else {
 		data.MultipathSGHash = types.StringNull()
 	}
+	VrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	VrfsKeys := [...]string{"name"}
+	VrfsItems := helpers.CollectListItemsXML(VrfsParentScope.Raw, "Cisco-IOS-XE-multicast:vrf", VrfsKeys[:])
 	for i := range data.Vrfs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-multicast:vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		VrfsKeyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+		r := VrfsItems[helpers.CompositeKey(VrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
 			data.Vrfs[i].Vrf = types.StringValue(value.String())
 		} else {

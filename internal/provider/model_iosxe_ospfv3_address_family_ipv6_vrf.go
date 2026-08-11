@@ -317,15 +317,18 @@ func (data OSPFv3AddressFamilyIPv6VRF) toBodyXML(ctx context.Context, config OSP
 		}
 	}
 	if len(data.SummaryPrefix) > 0 {
+		SummaryPrefixFragments := make([]string, 0, len(data.SummaryPrefix))
 		for _, item := range data.SummaryPrefix {
 			cBody := netconf.Body{}
 			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "prefix", item.Prefix.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/summary-prefix", cBody.Res())
+			SummaryPrefixFragments = append(SummaryPrefixFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/summary-prefix", SummaryPrefixFragments)
 	}
 	if len(data.Areas) > 0 {
+		AreasFragments := make([]string, 0, len(data.Areas))
 		for _, item := range data.Areas {
 			cBody := netconf.Body{}
 			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
@@ -365,8 +368,9 @@ func (data OSPFv3AddressFamilyIPv6VRF) toBodyXML(ctx context.Context, config OSP
 					cBody = helpers.RemoveFromXPath(cBody, "nssa/no-redistribution")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/area-config", cBody.Res())
+			AreasFragments = append(AreasFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/area-config", AreasFragments)
 	}
 	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
 		if data.PassiveInterfaceDefault.ValueBool() {
@@ -597,58 +601,24 @@ func (data *OSPFv3AddressFamilyIPv6VRF) updateFromBodyXML(ctx context.Context, r
 	} else {
 		data.RedistributeConnected = types.BoolNull()
 	}
+	SummaryPrefixParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SummaryPrefixKeys := [...]string{"prefix"}
+	SummaryPrefixItems := helpers.CollectListItemsXML(SummaryPrefixParentScope.Raw, "summary-prefix", SummaryPrefixKeys[:])
 	for i := range data.SummaryPrefix {
-		keys := [...]string{"prefix"}
-		keyValues := [...]string{data.SummaryPrefix[i].Prefix.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/summary-prefix").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SummaryPrefixKeyValues := [...]string{data.SummaryPrefix[i].Prefix.ValueString()}
+		r := SummaryPrefixItems[helpers.CompositeKey(SummaryPrefixKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "prefix"); value.Exists() && !data.SummaryPrefix[i].Prefix.IsNull() {
 			data.SummaryPrefix[i].Prefix = types.StringValue(value.String())
 		} else {
 			data.SummaryPrefix[i].Prefix = types.StringNull()
 		}
 	}
+	AreasParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	AreasKeys := [...]string{"area-id"}
+	AreasItems := helpers.CollectListItemsXML(AreasParentScope.Raw, "area-config", AreasKeys[:])
 	for i := range data.Areas {
-		keys := [...]string{"area-id"}
-		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/area-config").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		AreasKeyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+		r := AreasItems[helpers.CompositeKey(AreasKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "area-id"); value.Exists() && !data.Areas[i].AreaId.IsNull() {
 			data.Areas[i].AreaId = types.StringValue(value.String())
 		} else {

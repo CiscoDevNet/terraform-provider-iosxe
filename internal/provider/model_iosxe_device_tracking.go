@@ -183,6 +183,7 @@ func (data DeviceTracking) toBodyXML(ctx context.Context, config DeviceTracking)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:binding/reachable-lifetime/seconds", strconv.FormatInt(data.BindingReachableLifetime.ValueInt64(), 10))
 	}
 	if len(data.Policies) > 0 {
+		PoliciesFragments := make([]string, 0, len(data.Policies))
 		for _, item := range data.Policies {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -346,8 +347,9 @@ func (data DeviceTracking) toBodyXML(ctx context.Context, config DeviceTracking)
 					cBody = helpers.RemoveFromXPath(cBody, "medium-type-wireless")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:policy", cBody.Res())
+			PoliciesFragments = append(PoliciesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-device-tracking:policy", PoliciesFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -399,29 +401,12 @@ func (data *DeviceTracking) updateFromBodyXML(ctx context.Context, res xmldot.Re
 	} else {
 		data.BindingReachableLifetime = types.Int64Null()
 	}
+	PoliciesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PoliciesKeys := [...]string{"word"}
+	PoliciesItems := helpers.CollectListItemsXML(PoliciesParentScope.Raw, "Cisco-IOS-XE-device-tracking:policy", PoliciesKeys[:])
 	for i := range data.Policies {
-		keys := [...]string{"word"}
-		keyValues := [...]string{data.Policies[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-device-tracking:policy").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PoliciesKeyValues := [...]string{data.Policies[i].Name.ValueString()}
+		r := PoliciesItems[helpers.CompositeKey(PoliciesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "word"); value.Exists() && !data.Policies[i].Name.IsNull() {
 			data.Policies[i].Name = types.StringValue(value.String())
 		} else {

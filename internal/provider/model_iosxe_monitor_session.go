@@ -104,6 +104,7 @@ func (data MonitorSession) toBodyXML(ctx context.Context, config MonitorSession)
 		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.SessionId.ValueInt64(), 10))
 	}
 	if len(data.DestinationInterface) > 0 {
+		DestinationInterfaceFragments := make([]string, 0, len(data.DestinationInterface))
 		for _, item := range data.DestinationInterface {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -112,10 +113,12 @@ func (data MonitorSession) toBodyXML(ctx context.Context, config MonitorSession)
 			if !item.Encapsulation.IsNull() && !item.Encapsulation.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "encapsulation", item.Encapsulation.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/destination/interface", cBody.Res())
+			DestinationInterfaceFragments = append(DestinationInterfaceFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/destination/interface", DestinationInterfaceFragments)
 	}
 	if len(data.SourceInterface) > 0 {
+		SourceInterfaceFragments := make([]string, 0, len(data.SourceInterface))
 		for _, item := range data.SourceInterface {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -124,8 +127,9 @@ func (data MonitorSession) toBodyXML(ctx context.Context, config MonitorSession)
 			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "direction", item.Direction.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/source/interface", cBody.Res())
+			SourceInterfaceFragments = append(SourceInterfaceFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/source/interface", SourceInterfaceFragments)
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -144,29 +148,12 @@ func (data *MonitorSession) updateFromBodyXML(ctx context.Context, res xmldot.Re
 	} else {
 		data.SessionId = types.Int64Null()
 	}
+	DestinationInterfaceParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	DestinationInterfaceKeys := [...]string{"name"}
+	DestinationInterfaceItems := helpers.CollectListItemsXML(DestinationInterfaceParentScope.Raw, "destination/interface", DestinationInterfaceKeys[:])
 	for i := range data.DestinationInterface {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.DestinationInterface[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/interface").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		DestinationInterfaceKeyValues := [...]string{data.DestinationInterface[i].Name.ValueString()}
+		r := DestinationInterfaceItems[helpers.CompositeKey(DestinationInterfaceKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.DestinationInterface[i].Name.IsNull() {
 			data.DestinationInterface[i].Name = types.StringValue(value.String())
 		} else {
@@ -178,29 +165,12 @@ func (data *MonitorSession) updateFromBodyXML(ctx context.Context, res xmldot.Re
 			data.DestinationInterface[i].Encapsulation = types.StringNull()
 		}
 	}
+	SourceInterfaceParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SourceInterfaceKeys := [...]string{"name"}
+	SourceInterfaceItems := helpers.CollectListItemsXML(SourceInterfaceParentScope.Raw, "source/interface", SourceInterfaceKeys[:])
 	for i := range data.SourceInterface {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.SourceInterface[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/interface").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SourceInterfaceKeyValues := [...]string{data.SourceInterface[i].Name.ValueString()}
+		r := SourceInterfaceItems[helpers.CompositeKey(SourceInterfaceKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.SourceInterface[i].Name.IsNull() {
 			data.SourceInterface[i].Name = types.StringValue(value.String())
 		} else {

@@ -198,13 +198,15 @@ func (data InterfaceSwitchport) toBodyXML(ctx context.Context, config InterfaceS
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/vlan-choices/all", data.TrunkAllowedVlansAll.ValueBool())
 	}
 	if len(data.TrunkAllowedVlansAdd) > 0 {
+		TrunkAllowedVlansAddFragments := make([]string, 0, len(data.TrunkAllowedVlansAdd))
 		for _, item := range data.TrunkAllowedVlansAdd {
 			cBody := netconf.Body{}
 			if !item.Vlans.IsNull() && !item.Vlans.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vlans", item.Vlans.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/add-vlans/add", cBody.Res())
+			TrunkAllowedVlansAddFragments = append(TrunkAllowedVlansAddFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/add-vlans/add", TrunkAllowedVlansAddFragments)
 	}
 	if !data.TrunkAllowedVlansExcept.IsNull() && !data.TrunkAllowedVlansExcept.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-switch:trunk/allowed/vlan-v2/except", data.TrunkAllowedVlansExcept.ValueString())

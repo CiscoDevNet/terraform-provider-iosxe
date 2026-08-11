@@ -391,6 +391,7 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/console-config/console", data.Console.ValueBool())
 	}
 	if len(data.SourceInterfacesVrf) > 0 {
+		SourceInterfacesVrfFragments := make([]string, 0, len(data.SourceInterfacesVrf))
 		for _, item := range data.SourceInterfacesVrf {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -399,43 +400,52 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 			if !item.InterfaceName.IsNull() && !item.InterfaceName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "interface-name", item.InterfaceName.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/source-interface-conf/source-interface-vrf", cBody.Res())
+			SourceInterfacesVrfFragments = append(SourceInterfacesVrfFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/source-interface-conf/source-interface-vrf", SourceInterfacesVrfFragments)
 	}
 	if len(data.Ipv4Hosts) > 0 {
+		Ipv4HostsFragments := make([]string, 0, len(data.Ipv4Hosts))
 		for _, item := range data.Ipv4Hosts {
 			cBody := netconf.Body{}
 			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv4-host", item.Ipv4Host.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-list", cBody.Res())
+			Ipv4HostsFragments = append(Ipv4HostsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv4-host-list", Ipv4HostsFragments)
 	}
 	if len(data.Ipv4HostsTransport) > 0 {
+		Ipv4HostsTransportFragments := make([]string, 0, len(data.Ipv4HostsTransport))
 		for _, item := range data.Ipv4HostsTransport {
 			cBody := netconf.Body{}
 			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv4-host", item.Ipv4Host.ValueString())
 			}
 			if len(item.TransportUdpPorts) > 0 {
+				TransportUdpPortsFragments := make([]string, 0, len(item.TransportUdpPorts))
 				for _, citem := range item.TransportUdpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+					TransportUdpPortsFragments = append(TransportUdpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/udp/port-config", TransportUdpPortsFragments)
 			}
 			if len(item.TransportTcpPorts) > 0 {
+				TransportTcpPortsFragments := make([]string, 0, len(item.TransportTcpPorts))
 				for _, citem := range item.TransportTcpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+					TransportTcpPortsFragments = append(TransportTcpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tcp/port-config", TransportTcpPortsFragments)
 			}
 			if len(item.TransportTlsPorts) > 0 {
+				TransportTlsPortsFragments := make([]string, 0, len(item.TransportTlsPorts))
 				for _, citem := range item.TransportTlsPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
@@ -444,13 +454,16 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+					TransportTlsPortsFragments = append(TransportTlsPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tls/port", TransportTlsPortsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-transport-list", cBody.Res())
+			Ipv4HostsTransportFragments = append(Ipv4HostsTransportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv4-host-transport-list", Ipv4HostsTransportFragments)
 	}
 	if len(data.Ipv4VrfHosts) > 0 {
+		Ipv4VrfHostsFragments := make([]string, 0, len(data.Ipv4VrfHosts))
 		for _, item := range data.Ipv4VrfHosts {
 			cBody := netconf.Body{}
 			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
@@ -459,10 +472,12 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-vrf-list", cBody.Res())
+			Ipv4VrfHostsFragments = append(Ipv4VrfHostsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv4-host-vrf-list", Ipv4VrfHostsFragments)
 	}
 	if len(data.Ipv4VrfHostsTransport) > 0 {
+		Ipv4VrfHostsTransportFragments := make([]string, 0, len(data.Ipv4VrfHostsTransport))
 		for _, item := range data.Ipv4VrfHostsTransport {
 			cBody := netconf.Body{}
 			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
@@ -472,24 +487,29 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
 			if len(item.TransportUdpPorts) > 0 {
+				TransportUdpPortsFragments := make([]string, 0, len(item.TransportUdpPorts))
 				for _, citem := range item.TransportUdpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+					TransportUdpPortsFragments = append(TransportUdpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/udp/port-config", TransportUdpPortsFragments)
 			}
 			if len(item.TransportTcpPorts) > 0 {
+				TransportTcpPortsFragments := make([]string, 0, len(item.TransportTcpPorts))
 				for _, citem := range item.TransportTcpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+					TransportTcpPortsFragments = append(TransportTcpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tcp/port-config", TransportTcpPortsFragments)
 			}
 			if len(item.TransportTlsPorts) > 0 {
+				TransportTlsPortsFragments := make([]string, 0, len(item.TransportTlsPorts))
 				for _, citem := range item.TransportTlsPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
@@ -498,46 +518,56 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+					TransportTlsPortsFragments = append(TransportTlsPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tls/port", TransportTlsPortsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv4-host-vrf-transport-list", cBody.Res())
+			Ipv4VrfHostsTransportFragments = append(Ipv4VrfHostsTransportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv4-host-vrf-transport-list", Ipv4VrfHostsTransportFragments)
 	}
 	if len(data.Ipv6Hosts) > 0 {
+		Ipv6HostsFragments := make([]string, 0, len(data.Ipv6Hosts))
 		for _, item := range data.Ipv6Hosts {
 			cBody := netconf.Body{}
 			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv6-host", item.Ipv6Host.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-list", cBody.Res())
+			Ipv6HostsFragments = append(Ipv6HostsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv6/ipv6-host-list", Ipv6HostsFragments)
 	}
 	if len(data.Ipv6HostsTransport) > 0 {
+		Ipv6HostsTransportFragments := make([]string, 0, len(data.Ipv6HostsTransport))
 		for _, item := range data.Ipv6HostsTransport {
 			cBody := netconf.Body{}
 			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv6-host", item.Ipv6Host.ValueString())
 			}
 			if len(item.TransportUdpPorts) > 0 {
+				TransportUdpPortsFragments := make([]string, 0, len(item.TransportUdpPorts))
 				for _, citem := range item.TransportUdpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+					TransportUdpPortsFragments = append(TransportUdpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/udp/port-config", TransportUdpPortsFragments)
 			}
 			if len(item.TransportTcpPorts) > 0 {
+				TransportTcpPortsFragments := make([]string, 0, len(item.TransportTcpPorts))
 				for _, citem := range item.TransportTcpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+					TransportTcpPortsFragments = append(TransportTcpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tcp/port-config", TransportTcpPortsFragments)
 			}
 			if len(item.TransportTlsPorts) > 0 {
+				TransportTlsPortsFragments := make([]string, 0, len(item.TransportTlsPorts))
 				for _, citem := range item.TransportTlsPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
@@ -546,13 +576,16 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+					TransportTlsPortsFragments = append(TransportTlsPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tls/port", TransportTlsPortsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-transport-list", cBody.Res())
+			Ipv6HostsTransportFragments = append(Ipv6HostsTransportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv6/ipv6-host-transport-list", Ipv6HostsTransportFragments)
 	}
 	if len(data.Ipv6VrfHosts) > 0 {
+		Ipv6VrfHostsFragments := make([]string, 0, len(data.Ipv6VrfHosts))
 		for _, item := range data.Ipv6VrfHosts {
 			cBody := netconf.Body{}
 			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
@@ -561,10 +594,12 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-vrf-list", cBody.Res())
+			Ipv6VrfHostsFragments = append(Ipv6VrfHostsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv6/ipv6-host-vrf-list", Ipv6VrfHostsFragments)
 	}
 	if len(data.Ipv6VrfHostsTransport) > 0 {
+		Ipv6VrfHostsTransportFragments := make([]string, 0, len(data.Ipv6VrfHostsTransport))
 		for _, item := range data.Ipv6VrfHostsTransport {
 			cBody := netconf.Body{}
 			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
@@ -574,24 +609,29 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
 			}
 			if len(item.TransportUdpPorts) > 0 {
+				TransportUdpPortsFragments := make([]string, 0, len(item.TransportUdpPorts))
 				for _, citem := range item.TransportUdpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/udp/port-config", ccBody.Res())
+					TransportUdpPortsFragments = append(TransportUdpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/udp/port-config", TransportUdpPortsFragments)
 			}
 			if len(item.TransportTcpPorts) > 0 {
+				TransportTcpPortsFragments := make([]string, 0, len(item.TransportTcpPorts))
 				for _, citem := range item.TransportTcpPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tcp/port-config", ccBody.Res())
+					TransportTcpPortsFragments = append(TransportTcpPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tcp/port-config", TransportTcpPortsFragments)
 			}
 			if len(item.TransportTlsPorts) > 0 {
+				TransportTlsPortsFragments := make([]string, 0, len(item.TransportTlsPorts))
 				for _, citem := range item.TransportTlsPorts {
 					ccBody := netconf.Body{}
 					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
@@ -600,11 +640,13 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "profile", citem.Profile.ValueString())
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "transport/tls/port", ccBody.Res())
+					TransportTlsPortsFragments = append(TransportTlsPortsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "transport/tls/port", TransportTlsPortsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list", cBody.Res())
+			Ipv6VrfHostsTransportFragments = append(Ipv6VrfHostsTransportFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list", Ipv6VrfHostsTransportFragments)
 	}
 	if !data.LoggingCount.IsNull() && !data.LoggingCount.IsUnknown() {
 		if data.LoggingCount.ValueBool() {
@@ -780,29 +822,12 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Console = types.BoolNull()
 	}
+	SourceInterfacesVrfParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	SourceInterfacesVrfKeys := [...]string{"vrf"}
+	SourceInterfacesVrfItems := helpers.CollectListItemsXML(SourceInterfacesVrfParentScope.Raw, "source-interface-conf/source-interface-vrf", SourceInterfacesVrfKeys[:])
 	for i := range data.SourceInterfacesVrf {
-		keys := [...]string{"vrf"}
-		keyValues := [...]string{data.SourceInterfacesVrf[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/source-interface-conf/source-interface-vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		SourceInterfacesVrfKeyValues := [...]string{data.SourceInterfacesVrf[i].Vrf.ValueString()}
+		r := SourceInterfacesVrfItems[helpers.CompositeKey(SourceInterfacesVrfKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.SourceInterfacesVrf[i].Vrf.IsNull() {
 			data.SourceInterfacesVrf[i].Vrf = types.StringValue(value.String())
 		} else {
@@ -814,144 +839,56 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.SourceInterfacesVrf[i].InterfaceName = types.StringNull()
 		}
 	}
+	Ipv4HostsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4HostsKeys := [...]string{"ipv4-host"}
+	Ipv4HostsItems := helpers.CollectListItemsXML(Ipv4HostsParentScope.Raw, "host/ipv4-host-list", Ipv4HostsKeys[:])
 	for i := range data.Ipv4Hosts {
-		keys := [...]string{"ipv4-host"}
-		keyValues := [...]string{data.Ipv4Hosts[i].Ipv4Host.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4HostsKeyValues := [...]string{data.Ipv4Hosts[i].Ipv4Host.ValueString()}
+		r := Ipv4HostsItems[helpers.CompositeKey(Ipv4HostsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4Hosts[i].Ipv4Host.IsNull() {
 			data.Ipv4Hosts[i].Ipv4Host = types.StringValue(value.String())
 		} else {
 			data.Ipv4Hosts[i].Ipv4Host = types.StringNull()
 		}
 	}
+	Ipv4HostsTransportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4HostsTransportKeys := [...]string{"ipv4-host"}
+	Ipv4HostsTransportItems := helpers.CollectListItemsXML(Ipv4HostsTransportParentScope.Raw, "host/ipv4-host-transport-list", Ipv4HostsTransportKeys[:])
 	for i := range data.Ipv4HostsTransport {
-		keys := [...]string{"ipv4-host"}
-		keyValues := [...]string{data.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-transport-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4HostsTransportKeyValues := [...]string{data.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
+		r := Ipv4HostsTransportItems[helpers.CompositeKey(Ipv4HostsTransportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4HostsTransport[i].Ipv4Host.IsNull() {
 			data.Ipv4HostsTransport[i].Ipv4Host = types.StringValue(value.String())
 		} else {
 			data.Ipv4HostsTransport[i].Ipv4Host = types.StringNull()
 		}
+		TransportUdpPortsKeys := [...]string{"port-number"}
+		TransportUdpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/udp/port-config", TransportUdpPortsKeys[:])
 		for ci := range data.Ipv4HostsTransport[i].TransportUdpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportUdpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportUdpPortsItems[helpers.CompositeKey(TransportUdpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
 				data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTcpPortsKeys := [...]string{"port-number"}
+		TransportTcpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tcp/port-config", TransportTcpPortsKeys[:])
 		for ci := range data.Ipv4HostsTransport[i].TransportTcpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTcpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTcpPortsItems[helpers.CompositeKey(TransportTcpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
 				data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTlsPortsKeys := [...]string{"port-number"}
+		TransportTlsPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tls/port", TransportTlsPortsKeys[:])
 		for ci := range data.Ipv4HostsTransport[i].TransportTlsPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTlsPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTlsPortsItems[helpers.CompositeKey(TransportTlsPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
 				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
@@ -964,29 +901,12 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	Ipv4VrfHostsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4VrfHostsKeys := [...]string{"ipv4-host", "vrf"}
+	Ipv4VrfHostsItems := helpers.CollectListItemsXML(Ipv4VrfHostsParentScope.Raw, "host/ipv4-host-vrf-list", Ipv4VrfHostsKeys[:])
 	for i := range data.Ipv4VrfHosts {
-		keys := [...]string{"ipv4-host", "vrf"}
-		keyValues := [...]string{data.Ipv4VrfHosts[i].Ipv4Host.ValueString(), data.Ipv4VrfHosts[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4VrfHostsKeyValues := [...]string{data.Ipv4VrfHosts[i].Ipv4Host.ValueString(), data.Ipv4VrfHosts[i].Vrf.ValueString()}
+		r := Ipv4VrfHostsItems[helpers.CompositeKey(Ipv4VrfHostsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4VrfHosts[i].Ipv4Host.IsNull() {
 			data.Ipv4VrfHosts[i].Ipv4Host = types.StringValue(value.String())
 		} else {
@@ -998,29 +918,12 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv4VrfHosts[i].Vrf = types.StringNull()
 		}
 	}
+	Ipv4VrfHostsTransportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv4VrfHostsTransportKeys := [...]string{"ipv4-host", "vrf"}
+	Ipv4VrfHostsTransportItems := helpers.CollectListItemsXML(Ipv4VrfHostsTransportParentScope.Raw, "host/ipv4-host-vrf-transport-list", Ipv4VrfHostsTransportKeys[:])
 	for i := range data.Ipv4VrfHostsTransport {
-		keys := [...]string{"ipv4-host", "vrf"}
-		keyValues := [...]string{data.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), data.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv4-host-vrf-transport-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv4VrfHostsTransportKeyValues := [...]string{data.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), data.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
+		r := Ipv4VrfHostsTransportItems[helpers.CompositeKey(Ipv4VrfHostsTransportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4-host"); value.Exists() && !data.Ipv4VrfHostsTransport[i].Ipv4Host.IsNull() {
 			data.Ipv4VrfHostsTransport[i].Ipv4Host = types.StringValue(value.String())
 		} else {
@@ -1031,87 +934,33 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Ipv4VrfHostsTransport[i].Vrf = types.StringNull()
 		}
+		TransportUdpPortsKeys := [...]string{"port-number"}
+		TransportUdpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/udp/port-config", TransportUdpPortsKeys[:])
 		for ci := range data.Ipv4VrfHostsTransport[i].TransportUdpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportUdpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportUdpPortsItems[helpers.CompositeKey(TransportUdpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
 				data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTcpPortsKeys := [...]string{"port-number"}
+		TransportTcpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tcp/port-config", TransportTcpPortsKeys[:])
 		for ci := range data.Ipv4VrfHostsTransport[i].TransportTcpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTcpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTcpPortsItems[helpers.CompositeKey(TransportTcpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
 				data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTlsPortsKeys := [...]string{"port-number"}
+		TransportTlsPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tls/port", TransportTlsPortsKeys[:])
 		for ci := range data.Ipv4VrfHostsTransport[i].TransportTlsPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTlsPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTlsPortsItems[helpers.CompositeKey(TransportTlsPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
 				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
@@ -1124,144 +973,56 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	Ipv6HostsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6HostsKeys := [...]string{"ipv6-host"}
+	Ipv6HostsItems := helpers.CollectListItemsXML(Ipv6HostsParentScope.Raw, "host/ipv6/ipv6-host-list", Ipv6HostsKeys[:])
 	for i := range data.Ipv6Hosts {
-		keys := [...]string{"ipv6-host"}
-		keyValues := [...]string{data.Ipv6Hosts[i].Ipv6Host.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6HostsKeyValues := [...]string{data.Ipv6Hosts[i].Ipv6Host.ValueString()}
+		r := Ipv6HostsItems[helpers.CompositeKey(Ipv6HostsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6Hosts[i].Ipv6Host.IsNull() {
 			data.Ipv6Hosts[i].Ipv6Host = types.StringValue(value.String())
 		} else {
 			data.Ipv6Hosts[i].Ipv6Host = types.StringNull()
 		}
 	}
+	Ipv6HostsTransportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6HostsTransportKeys := [...]string{"ipv6-host"}
+	Ipv6HostsTransportItems := helpers.CollectListItemsXML(Ipv6HostsTransportParentScope.Raw, "host/ipv6/ipv6-host-transport-list", Ipv6HostsTransportKeys[:])
 	for i := range data.Ipv6HostsTransport {
-		keys := [...]string{"ipv6-host"}
-		keyValues := [...]string{data.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-transport-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6HostsTransportKeyValues := [...]string{data.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
+		r := Ipv6HostsTransportItems[helpers.CompositeKey(Ipv6HostsTransportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6HostsTransport[i].Ipv6Host.IsNull() {
 			data.Ipv6HostsTransport[i].Ipv6Host = types.StringValue(value.String())
 		} else {
 			data.Ipv6HostsTransport[i].Ipv6Host = types.StringNull()
 		}
+		TransportUdpPortsKeys := [...]string{"port-number"}
+		TransportUdpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/udp/port-config", TransportUdpPortsKeys[:])
 		for ci := range data.Ipv6HostsTransport[i].TransportUdpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportUdpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportUdpPortsItems[helpers.CompositeKey(TransportUdpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
 				data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTcpPortsKeys := [...]string{"port-number"}
+		TransportTcpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tcp/port-config", TransportTcpPortsKeys[:])
 		for ci := range data.Ipv6HostsTransport[i].TransportTcpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTcpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTcpPortsItems[helpers.CompositeKey(TransportTcpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
 				data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTlsPortsKeys := [...]string{"port-number"}
+		TransportTlsPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tls/port", TransportTlsPortsKeys[:])
 		for ci := range data.Ipv6HostsTransport[i].TransportTlsPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTlsPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTlsPortsItems[helpers.CompositeKey(TransportTlsPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
 				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
@@ -1274,29 +1035,12 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		}
 	}
+	Ipv6VrfHostsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6VrfHostsKeys := [...]string{"ipv6-host", "vrf"}
+	Ipv6VrfHostsItems := helpers.CollectListItemsXML(Ipv6VrfHostsParentScope.Raw, "host/ipv6/ipv6-host-vrf-list", Ipv6VrfHostsKeys[:])
 	for i := range data.Ipv6VrfHosts {
-		keys := [...]string{"ipv6-host", "vrf"}
-		keyValues := [...]string{data.Ipv6VrfHosts[i].Ipv6Host.ValueString(), data.Ipv6VrfHosts[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6VrfHostsKeyValues := [...]string{data.Ipv6VrfHosts[i].Ipv6Host.ValueString(), data.Ipv6VrfHosts[i].Vrf.ValueString()}
+		r := Ipv6VrfHostsItems[helpers.CompositeKey(Ipv6VrfHostsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6VrfHosts[i].Ipv6Host.IsNull() {
 			data.Ipv6VrfHosts[i].Ipv6Host = types.StringValue(value.String())
 		} else {
@@ -1308,29 +1052,12 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.Ipv6VrfHosts[i].Vrf = types.StringNull()
 		}
 	}
+	Ipv6VrfHostsTransportParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	Ipv6VrfHostsTransportKeys := [...]string{"ipv6-host", "vrf"}
+	Ipv6VrfHostsTransportItems := helpers.CollectListItemsXML(Ipv6VrfHostsTransportParentScope.Raw, "host/ipv6/ipv6-host-vrf-transport-list", Ipv6VrfHostsTransportKeys[:])
 	for i := range data.Ipv6VrfHostsTransport {
-		keys := [...]string{"ipv6-host", "vrf"}
-		keyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/host/ipv6/ipv6-host-vrf-transport-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		Ipv6VrfHostsTransportKeyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
+		r := Ipv6VrfHostsTransportItems[helpers.CompositeKey(Ipv6VrfHostsTransportKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv6-host"); value.Exists() && !data.Ipv6VrfHostsTransport[i].Ipv6Host.IsNull() {
 			data.Ipv6VrfHostsTransport[i].Ipv6Host = types.StringValue(value.String())
 		} else {
@@ -1341,87 +1068,33 @@ func (data *Logging) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.Ipv6VrfHostsTransport[i].Vrf = types.StringNull()
 		}
+		TransportUdpPortsKeys := [...]string{"port-number"}
+		TransportUdpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/udp/port-config", TransportUdpPortsKeys[:])
 		for ci := range data.Ipv6VrfHostsTransport[i].TransportUdpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/udp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportUdpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportUdpPortsItems[helpers.CompositeKey(TransportUdpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
 				data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTcpPortsKeys := [...]string{"port-number"}
+		TransportTcpPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tcp/port-config", TransportTcpPortsKeys[:])
 		for ci := range data.Ipv6VrfHostsTransport[i].TransportTcpPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tcp/port-config").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTcpPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTcpPortsItems[helpers.CompositeKey(TransportTcpPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
 				data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {
 				data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
 			}
 		}
+		TransportTlsPortsKeys := [...]string{"port-number"}
+		TransportTlsPortsItems := helpers.CollectListItemsXML(r.Raw, "transport/tls/port", TransportTlsPortsKeys[:])
 		for ci := range data.Ipv6VrfHostsTransport[i].TransportTlsPorts {
-			keys := [...]string{"port-number"}
-			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "transport/tls/port").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			TransportTlsPortsKeyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+			cr := TransportTlsPortsItems[helpers.CompositeKey(TransportTlsPortsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
 				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
 			} else {

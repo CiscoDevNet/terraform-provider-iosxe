@@ -617,6 +617,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		}
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
+		MulticastRoutingVrfsFragments := make([]string, 0, len(data.MulticastRoutingVrfs))
 		for _, item := range data.MulticastRoutingVrfs {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -629,8 +630,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 					cBody = helpers.RemoveFromXPath(cBody, "distributed")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf", cBody.Res())
+			MulticastRoutingVrfsFragments = append(MulticastRoutingVrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf", MulticastRoutingVrfsFragments)
 	}
 	if !data.IpHttpAccessClass.IsNull() && !data.IpHttpAccessClass.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/access-class", strconv.FormatInt(data.IpHttpAccessClass.ValueInt64(), 10))
@@ -649,6 +651,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication", data.IpHttpAuthenticationAaaLoginAuthentication.ValueString())
 	}
 	if len(data.IpHttpAuthenticationAaaCommandAuthorization) > 0 {
+		IpHttpAuthenticationAaaCommandAuthorizationFragments := make([]string, 0, len(data.IpHttpAuthenticationAaaCommandAuthorization))
 		for _, item := range data.IpHttpAuthenticationAaaCommandAuthorization {
 			cBody := netconf.Body{}
 			if !item.Level.IsNull() && !item.Level.IsUnknown() {
@@ -657,8 +660,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization", cBody.Res())
+			IpHttpAuthenticationAaaCommandAuthorizationFragments = append(IpHttpAuthenticationAaaCommandAuthorizationFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization", IpHttpAuthenticationAaaCommandAuthorizationFragments)
 	}
 	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.IsUnknown() {
 		if data.IpHttpAuthenticationLocal.ValueBool() {
@@ -702,6 +706,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		}
 	}
 	if len(data.IpNameServersVrf) > 0 {
+		IpNameServersVrfFragments := make([]string, 0, len(data.IpNameServersVrf))
 		for _, item := range data.IpNameServersVrf {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -714,8 +719,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 					cBody = helpers.AppendFromXPath(cBody, "server-ip-list-ordered", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/name-server/vrf", cBody.Res())
+			IpNameServersVrfFragments = append(IpNameServersVrfFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/name-server/vrf", IpNameServersVrfFragments)
 	}
 	if !data.IpDomainLookupNsap.IsNull() && !data.IpDomainLookupNsap.IsUnknown() {
 		if data.IpDomainLookupNsap.ValueBool() {
@@ -732,6 +738,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		}
 	}
 	if len(data.IpDomainLookupVrfs) > 0 {
+		IpDomainLookupVrfsFragments := make([]string, 0, len(data.IpDomainLookupVrfs))
 		for _, item := range data.IpDomainLookupVrfs {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
@@ -764,8 +771,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 			if !item.SourceInterfaceHundredGigabitEthernet.IsNull() && !item.SourceInterfaceHundredGigabitEthernet.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "source-interface/HundredGigE", item.SourceInterfaceHundredGigabitEthernet.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf", cBody.Res())
+			IpDomainLookupVrfsFragments = append(IpDomainLookupVrfsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf", IpDomainLookupVrfsFragments)
 	}
 	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() && !data.IpDomainLookupSourceInterfaceLoopback.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/lookup-settings/lookup/source-interface/Loopback", strconv.FormatInt(data.IpDomainLookupSourceInterfaceLoopback.ValueInt64(), 10))
@@ -940,6 +948,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.ControlPlaneServicePolicyInput.ValueString())
 	}
 	if len(data.PnpProfiles) > 0 {
+		PnpProfilesFragments := make([]string, 0, len(data.PnpProfiles))
 		for _, item := range data.PnpProfiles {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -951,8 +960,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 			if !item.TransportHttpsIpv4Port.IsNull() && !item.TransportHttpsIpv4Port.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "transport/https/ipv4/port", strconv.FormatInt(item.TransportHttpsIpv4Port.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-pnp:pnp/profile", cBody.Res())
+			PnpProfilesFragments = append(PnpProfilesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/Cisco-IOS-XE-pnp:pnp/profile", PnpProfilesFragments)
 	}
 	if !data.IpTacacsSourceInterfaceLoopback.IsNull() && !data.IpTacacsSourceInterfaceLoopback.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Loopback", strconv.FormatInt(data.IpTacacsSourceInterfaceLoopback.ValueInt64(), 10))
@@ -1015,22 +1025,26 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf", data.IpRadiusSourceInterfaceVrf.ValueString())
 	}
 	if len(data.BootSystemFlashFiles) > 0 {
+		BootSystemFlashFilesFragments := make([]string, 0, len(data.BootSystemFlashFiles))
 		for _, item := range data.BootSystemFlashFiles {
 			cBody := netconf.Body{}
 			if !item.Path.IsNull() && !item.Path.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "flash-leaf", item.Path.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/boot/system/flash/flash-list-ordered-by-user", cBody.Res())
+			BootSystemFlashFilesFragments = append(BootSystemFlashFilesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/boot/system/flash/flash-list-ordered-by-user", BootSystemFlashFilesFragments)
 	}
 	if len(data.BootSystemBootfiles) > 0 {
+		BootSystemBootfilesFragments := make([]string, 0, len(data.BootSystemBootfiles))
 		for _, item := range data.BootSystemBootfiles {
 			cBody := netconf.Body{}
 			if !item.Path.IsNull() && !item.Path.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "filename", item.Path.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/boot/system/bootfile/filename-list-ordered-by-user", cBody.Res())
+			BootSystemBootfilesFragments = append(BootSystemBootfilesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/boot/system/bootfile/filename-list-ordered-by-user", BootSystemBootfilesFragments)
 	}
 	if !data.EnableSecret.IsNull() && !data.EnableSecret.IsUnknown() {
 		if !config.EnableSecretWO.IsNull() {
@@ -1046,6 +1060,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/enable/secret/level", strconv.FormatInt(data.EnableSecretLevel.ValueInt64(), 10))
 	}
 	if len(data.IpHosts) > 0 {
+		IpHostsFragments := make([]string, 0, len(data.IpHosts))
 		for _, item := range data.IpHosts {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -1058,16 +1073,19 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 					cBody = helpers.AppendFromXPath(cBody, "ip-list-ordered", v)
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/host/host-list", cBody.Res())
+			IpHostsFragments = append(IpHostsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/host/host-list", IpHostsFragments)
 	}
 	if len(data.IpHostsVrf) > 0 {
+		IpHostsVrfFragments := make([]string, 0, len(data.IpHostsVrf))
 		for _, item := range data.IpHostsVrf {
 			cBody := netconf.Body{}
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "vrf-name", item.Vrf.ValueString())
 			}
 			if len(item.Hosts) > 0 {
+				HostsFragments := make([]string, 0, len(item.Hosts))
 				for _, citem := range item.Hosts {
 					ccBody := netconf.Body{}
 					if !citem.Name.IsNull() && !citem.Name.IsUnknown() {
@@ -1080,11 +1098,13 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 							ccBody = helpers.AppendFromXPath(ccBody, "ip-list", v)
 						}
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "host-name", ccBody.Res())
+					HostsFragments = append(HostsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "host-name", HostsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/host/vrf", cBody.Res())
+			IpHostsVrfFragments = append(IpHostsVrfFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/ip/host/vrf", IpHostsVrfFragments)
 	}
 	if !data.DiagnosticEventLogSize.IsNull() && !data.DiagnosticEventLogSize.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-diagnostics:diagnostic/event-log/size", strconv.FormatInt(data.DiagnosticEventLogSize.ValueInt64(), 10))
@@ -1155,6 +1175,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/version", data.Version.ValueString())
 	}
 	if len(data.TrackObjects) > 0 {
+		TrackObjectsFragments := make([]string, 0, len(data.TrackObjects))
 		for _, item := range data.TrackObjects {
 			cBody := netconf.Body{}
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
@@ -1170,8 +1191,9 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 					cBody = helpers.RemoveFromXPath(cBody, "ip/sla/reachability")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2", cBody.Res())
+			TrackObjectsFragments = append(TrackObjectsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2", TrackObjectsFragments)
 	}
 	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() && !data.IpNbarClassificationDnsClassifyByDomain.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", data.IpNbarClassificationDnsClassifyByDomain.ValueBool())
@@ -1282,6 +1304,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 		}
 	}
 	if len(data.TableMaps) > 0 {
+		TableMapsFragments := make([]string, 0, len(data.TableMaps))
 		for _, item := range data.TableMaps {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -1291,6 +1314,7 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 				cBody = helpers.SetFromXPath(cBody, "Cisco-IOS-XE-qos:default", item.Default.ValueString())
 			}
 			if len(item.Mappings) > 0 {
+				MappingsFragments := make([]string, 0, len(item.Mappings))
 				for _, citem := range item.Mappings {
 					ccBody := netconf.Body{}
 					if !citem.From.IsNull() && !citem.From.IsUnknown() {
@@ -1299,11 +1323,13 @@ func (data System) toBodyXML(ctx context.Context, config System) string {
 					if !citem.To.IsNull() && !citem.To.IsUnknown() {
 						ccBody = helpers.SetFromXPath(ccBody, "to", strconv.FormatInt(citem.To.ValueInt64(), 10))
 					}
-					cBody = helpers.SetRawFromXPath(cBody, "Cisco-IOS-XE-qos:map-list", ccBody.Res())
+					MappingsFragments = append(MappingsFragments, ccBody.Res())
 				}
+				cBody = helpers.SetRawFromXPathMulti(cBody, "Cisco-IOS-XE-qos:map-list", MappingsFragments)
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/table-map", cBody.Res())
+			TableMapsFragments = append(TableMapsFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/table-map", TableMapsFragments)
 	}
 	if !data.MldSnooping.IsNull() && !data.MldSnooping.IsUnknown() {
 		if data.MldSnooping.ValueBool() {
@@ -1486,29 +1512,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpMulticastRoutingDistributed = types.BoolNull()
 	}
+	MulticastRoutingVrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MulticastRoutingVrfsKeys := [...]string{"name"}
+	MulticastRoutingVrfsItems := helpers.CollectListItemsXML(MulticastRoutingVrfsParentScope.Raw, "ip/Cisco-IOS-XE-multicast:multicast-routing/vrf", MulticastRoutingVrfsKeys[:])
 	for i := range data.MulticastRoutingVrfs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.MulticastRoutingVrfs[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MulticastRoutingVrfsKeyValues := [...]string{data.MulticastRoutingVrfs[i].Vrf.ValueString()}
+		r := MulticastRoutingVrfsItems[helpers.CompositeKey(MulticastRoutingVrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.MulticastRoutingVrfs[i].Vrf.IsNull() {
 			data.MulticastRoutingVrfs[i].Vrf = types.StringValue(value.String())
 		} else {
@@ -1548,29 +1557,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpHttpAuthenticationAaaLoginAuthentication = types.StringNull()
 	}
+	IpHttpAuthenticationAaaCommandAuthorizationParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpHttpAuthenticationAaaCommandAuthorizationKeys := [...]string{"level"}
+	IpHttpAuthenticationAaaCommandAuthorizationItems := helpers.CollectListItemsXML(IpHttpAuthenticationAaaCommandAuthorizationParentScope.Raw, "ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization", IpHttpAuthenticationAaaCommandAuthorizationKeys[:])
 	for i := range data.IpHttpAuthenticationAaaCommandAuthorization {
-		keys := [...]string{"level"}
-		keyValues := [...]string{strconv.FormatInt(data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpHttpAuthenticationAaaCommandAuthorizationKeyValues := [...]string{strconv.FormatInt(data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
+		r := IpHttpAuthenticationAaaCommandAuthorizationItems[helpers.CompositeKey(IpHttpAuthenticationAaaCommandAuthorizationKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "level"); value.Exists() && !data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.IsNull() {
 			data.IpHttpAuthenticationAaaCommandAuthorization[i].Level = types.Int64Value(value.Int())
 		} else {
@@ -1645,29 +1637,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpNameServers = types.ListNull(types.StringType)
 	}
+	IpNameServersVrfParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpNameServersVrfKeys := [...]string{"word"}
+	IpNameServersVrfItems := helpers.CollectListItemsXML(IpNameServersVrfParentScope.Raw, "ip/name-server/vrf", IpNameServersVrfKeys[:])
 	for i := range data.IpNameServersVrf {
-		keys := [...]string{"word"}
-		keyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/name-server/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpNameServersVrfKeyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
+		r := IpNameServersVrfItems[helpers.CompositeKey(IpNameServersVrfKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "word"); value.Exists() && !data.IpNameServersVrf[i].Vrf.IsNull() {
 			data.IpNameServersVrf[i].Vrf = types.StringValue(value.String())
 		} else {
@@ -1697,29 +1672,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpDomainLookupRecursive = types.BoolNull()
 	}
+	IpDomainLookupVrfsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpDomainLookupVrfsKeys := [...]string{"vrf-name"}
+	IpDomainLookupVrfsItems := helpers.CollectListItemsXML(IpDomainLookupVrfsParentScope.Raw, "ip/domain/lookup-settings/lookup/vrf", IpDomainLookupVrfsKeys[:])
 	for i := range data.IpDomainLookupVrfs {
-		keys := [...]string{"vrf-name"}
-		keyValues := [...]string{data.IpDomainLookupVrfs[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/domain/lookup-settings/lookup/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpDomainLookupVrfsKeyValues := [...]string{data.IpDomainLookupVrfs[i].Vrf.ValueString()}
+		r := IpDomainLookupVrfsItems[helpers.CompositeKey(IpDomainLookupVrfsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "vrf-name"); value.Exists() && !data.IpDomainLookupVrfs[i].Vrf.IsNull() {
 			data.IpDomainLookupVrfs[i].Vrf = types.StringValue(value.String())
 		} else {
@@ -2019,29 +1977,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ControlPlaneServicePolicyInput = types.StringNull()
 	}
+	PnpProfilesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	PnpProfilesKeys := [...]string{"name"}
+	PnpProfilesItems := helpers.CollectListItemsXML(PnpProfilesParentScope.Raw, "Cisco-IOS-XE-pnp:pnp/profile", PnpProfilesKeys[:])
 	for i := range data.PnpProfiles {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.PnpProfiles[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-pnp:pnp/profile").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		PnpProfilesKeyValues := [...]string{data.PnpProfiles[i].Name.ValueString()}
+		r := PnpProfilesItems[helpers.CompositeKey(PnpProfilesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PnpProfiles[i].Name.IsNull() {
 			data.PnpProfiles[i].Name = types.StringValue(value.String())
 		} else {
@@ -2158,58 +2099,24 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.IpRadiusSourceInterfaceVrf = types.StringNull()
 	}
+	BootSystemFlashFilesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	BootSystemFlashFilesKeys := [...]string{"flash-leaf"}
+	BootSystemFlashFilesItems := helpers.CollectListItemsXML(BootSystemFlashFilesParentScope.Raw, "boot/system/flash/flash-list-ordered-by-user", BootSystemFlashFilesKeys[:])
 	for i := range data.BootSystemFlashFiles {
-		keys := [...]string{"flash-leaf"}
-		keyValues := [...]string{data.BootSystemFlashFiles[i].Path.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/boot/system/flash/flash-list-ordered-by-user").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		BootSystemFlashFilesKeyValues := [...]string{data.BootSystemFlashFiles[i].Path.ValueString()}
+		r := BootSystemFlashFilesItems[helpers.CompositeKey(BootSystemFlashFilesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "flash-leaf"); value.Exists() && !data.BootSystemFlashFiles[i].Path.IsNull() {
 			data.BootSystemFlashFiles[i].Path = types.StringValue(value.String())
 		} else {
 			data.BootSystemFlashFiles[i].Path = types.StringNull()
 		}
 	}
+	BootSystemBootfilesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	BootSystemBootfilesKeys := [...]string{"filename"}
+	BootSystemBootfilesItems := helpers.CollectListItemsXML(BootSystemBootfilesParentScope.Raw, "boot/system/bootfile/filename-list-ordered-by-user", BootSystemBootfilesKeys[:])
 	for i := range data.BootSystemBootfiles {
-		keys := [...]string{"filename"}
-		keyValues := [...]string{data.BootSystemBootfiles[i].Path.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/boot/system/bootfile/filename-list-ordered-by-user").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		BootSystemBootfilesKeyValues := [...]string{data.BootSystemBootfiles[i].Path.ValueString()}
+		r := BootSystemBootfilesItems[helpers.CompositeKey(BootSystemBootfilesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "filename"); value.Exists() && !data.BootSystemBootfiles[i].Path.IsNull() {
 			data.BootSystemBootfiles[i].Path = types.StringValue(value.String())
 		} else {
@@ -2221,29 +2128,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.EnableSecretLevel = types.Int64Null()
 	}
+	IpHostsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpHostsKeys := [...]string{"name"}
+	IpHostsItems := helpers.CollectListItemsXML(IpHostsParentScope.Raw, "ip/host/host-list", IpHostsKeys[:])
 	for i := range data.IpHosts {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.IpHosts[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/host/host-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpHostsKeyValues := [...]string{data.IpHosts[i].Name.ValueString()}
+		r := IpHostsItems[helpers.CompositeKey(IpHostsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.IpHosts[i].Name.IsNull() {
 			data.IpHosts[i].Name = types.StringValue(value.String())
 		} else {
@@ -2255,57 +2145,22 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.IpHosts[i].Ips = types.ListNull(types.StringType)
 		}
 	}
+	IpHostsVrfParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	IpHostsVrfKeys := [...]string{"vrf-name"}
+	IpHostsVrfItems := helpers.CollectListItemsXML(IpHostsVrfParentScope.Raw, "ip/host/vrf", IpHostsVrfKeys[:])
 	for i := range data.IpHostsVrf {
-		keys := [...]string{"vrf-name"}
-		keyValues := [...]string{data.IpHostsVrf[i].Vrf.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/host/vrf").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		IpHostsVrfKeyValues := [...]string{data.IpHostsVrf[i].Vrf.ValueString()}
+		r := IpHostsVrfItems[helpers.CompositeKey(IpHostsVrfKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "vrf-name"); value.Exists() && !data.IpHostsVrf[i].Vrf.IsNull() {
 			data.IpHostsVrf[i].Vrf = types.StringValue(value.String())
 		} else {
 			data.IpHostsVrf[i].Vrf = types.StringNull()
 		}
+		HostsKeys := [...]string{"host-name"}
+		HostsItems := helpers.CollectListItemsXML(r.Raw, "host-name", HostsKeys[:])
 		for ci := range data.IpHostsVrf[i].Hosts {
-			keys := [...]string{"host-name"}
-			keyValues := [...]string{data.IpHostsVrf[i].Hosts[ci].Name.ValueString()}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "host-name").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			HostsKeyValues := [...]string{data.IpHostsVrf[i].Hosts[ci].Name.ValueString()}
+			cr := HostsItems[helpers.CompositeKey(HostsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "host-name"); value.Exists() && !data.IpHostsVrf[i].Hosts[ci].Name.IsNull() {
 				data.IpHostsVrf[i].Hosts[ci].Name = types.StringValue(value.String())
 			} else {
@@ -2430,29 +2285,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Version = types.StringNull()
 	}
+	TrackObjectsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TrackObjectsKeys := [...]string{"object-number"}
+	TrackObjectsItems := helpers.CollectListItemsXML(TrackObjectsParentScope.Raw, "track/Cisco-IOS-XE-track:tracked-object-v2", TrackObjectsKeys[:])
 	for i := range data.TrackObjects {
-		keys := [...]string{"object-number"}
-		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TrackObjectsKeyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
+		r := TrackObjectsItems[helpers.CompositeKey(TrackObjectsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "object-number"); value.Exists() && !data.TrackObjects[i].Number.IsNull() {
 			data.TrackObjects[i].Number = types.StringValue(value.String())
 		} else {
@@ -2631,29 +2469,12 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.DeviceClassifier = types.BoolNull()
 	}
+	TableMapsParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	TableMapsKeys := [...]string{"name"}
+	TableMapsItems := helpers.CollectListItemsXML(TableMapsParentScope.Raw, "table-map", TableMapsKeys[:])
 	for i := range data.TableMaps {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.TableMaps[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/table-map").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		TableMapsKeyValues := [...]string{data.TableMaps[i].Name.ValueString()}
+		r := TableMapsItems[helpers.CompositeKey(TableMapsKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.TableMaps[i].Name.IsNull() {
 			data.TableMaps[i].Name = types.StringValue(value.String())
 		} else {
@@ -2664,29 +2485,11 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.TableMaps[i].Default = types.StringNull()
 		}
+		MappingsKeys := [...]string{"from"}
+		MappingsItems := helpers.CollectListItemsXML(r.Raw, "Cisco-IOS-XE-qos:map-list", MappingsKeys[:])
 		for ci := range data.TableMaps[i].Mappings {
-			keys := [...]string{"from"}
-			keyValues := [...]string{strconv.FormatInt(data.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
-
-			var cr xmldot.Result
-			helpers.GetFromXPath(r, "Cisco-IOS-XE-qos:map-list").ForEach(
-				func(_ int, v xmldot.Result) bool {
-					found := false
-					for ik := range keys {
-						if v.Get(keys[ik]).String() == keyValues[ik] {
-							found = true
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						cr = v
-						return false
-					}
-					return true
-				},
-			)
+			MappingsKeyValues := [...]string{strconv.FormatInt(data.TableMaps[i].Mappings[ci].From.ValueInt64(), 10)}
+			cr := MappingsItems[helpers.CompositeKey(MappingsKeyValues[:]...)]
 			if value := helpers.GetFromXPath(cr, "from"); value.Exists() && !data.TableMaps[i].Mappings[ci].From.IsNull() {
 				data.TableMaps[i].Mappings[ci].From = types.Int64Value(value.Int())
 			} else {

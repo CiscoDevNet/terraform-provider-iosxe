@@ -184,6 +184,7 @@ func (data DeviceSensorData) getXPath() string {
 func (data DeviceSensor) toBodyXML(ctx context.Context, config DeviceSensor) string {
 	body := netconf.Body{}
 	if len(data.FilterListsLldp) > 0 {
+		FilterListsLldpFragments := make([]string, 0, len(data.FilterListsLldp))
 		for _, item := range data.FilterListsLldp {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -224,10 +225,12 @@ func (data DeviceSensor) toBodyXML(ctx context.Context, config DeviceSensor) str
 					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/system-capabilities")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/lldp/list", cBody.Res())
+			FilterListsLldpFragments = append(FilterListsLldpFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-list/lldp/list", FilterListsLldpFragments)
 	}
 	if len(data.FilterListsDhcp) > 0 {
+		FilterListsDhcpFragments := make([]string, 0, len(data.FilterListsDhcp))
 		for _, item := range data.FilterListsDhcp {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -282,10 +285,12 @@ func (data DeviceSensor) toBodyXML(ctx context.Context, config DeviceSensor) str
 					cBody = helpers.RemoveFromXPath(cBody, "option/name/client-fqdn")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/dhcp/list", cBody.Res())
+			FilterListsDhcpFragments = append(FilterListsDhcpFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-list/dhcp/list", FilterListsDhcpFragments)
 	}
 	if len(data.FilterListsCdp) > 0 {
+		FilterListsCdpFragments := make([]string, 0, len(data.FilterListsCdp))
 		for _, item := range data.FilterListsCdp {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -326,62 +331,75 @@ func (data DeviceSensor) toBodyXML(ctx context.Context, config DeviceSensor) str
 					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/platform-type")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/cdp/list", cBody.Res())
+			FilterListsCdpFragments = append(FilterListsCdpFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-list/cdp/list", FilterListsCdpFragments)
 	}
 	if len(data.FilterSpecDhcpIncludes) > 0 {
+		FilterSpecDhcpIncludesFragments := make([]string, 0, len(data.FilterSpecDhcpIncludes))
 		for _, item := range data.FilterSpecDhcpIncludes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/dhcp/include/list", cBody.Res())
+			FilterSpecDhcpIncludesFragments = append(FilterSpecDhcpIncludesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-spec/dhcp/include/list", FilterSpecDhcpIncludesFragments)
 	}
 	if len(data.FilterSpecDhcpExcludes) > 0 {
+		FilterSpecDhcpExcludesFragments := make([]string, 0, len(data.FilterSpecDhcpExcludes))
 		for _, item := range data.FilterSpecDhcpExcludes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/dhcp/exclude/list", cBody.Res())
+			FilterSpecDhcpExcludesFragments = append(FilterSpecDhcpExcludesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-spec/dhcp/exclude/list", FilterSpecDhcpExcludesFragments)
 	}
 	if len(data.FilterSpecLldpIncludes) > 0 {
+		FilterSpecLldpIncludesFragments := make([]string, 0, len(data.FilterSpecLldpIncludes))
 		for _, item := range data.FilterSpecLldpIncludes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/lldp/include/list", cBody.Res())
+			FilterSpecLldpIncludesFragments = append(FilterSpecLldpIncludesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-spec/lldp/include/list", FilterSpecLldpIncludesFragments)
 	}
 	if len(data.FilterSpecLldpExcludes) > 0 {
+		FilterSpecLldpExcludesFragments := make([]string, 0, len(data.FilterSpecLldpExcludes))
 		for _, item := range data.FilterSpecLldpExcludes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/lldp/exclude/list", cBody.Res())
+			FilterSpecLldpExcludesFragments = append(FilterSpecLldpExcludesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-spec/lldp/exclude/list", FilterSpecLldpExcludesFragments)
 	}
 	if len(data.FilterSpecCdpIncludes) > 0 {
+		FilterSpecCdpIncludesFragments := make([]string, 0, len(data.FilterSpecCdpIncludes))
 		for _, item := range data.FilterSpecCdpIncludes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/cdp/include/list", cBody.Res())
+			FilterSpecCdpIncludesFragments = append(FilterSpecCdpIncludesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-spec/cdp/include/list", FilterSpecCdpIncludesFragments)
 	}
 	if len(data.FilterSpecCdpExcludes) > 0 {
+		FilterSpecCdpExcludesFragments := make([]string, 0, len(data.FilterSpecCdpExcludes))
 		for _, item := range data.FilterSpecCdpExcludes {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/cdp/exclude/list", cBody.Res())
+			FilterSpecCdpExcludesFragments = append(FilterSpecCdpExcludesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/filter-spec/cdp/exclude/list", FilterSpecCdpExcludesFragments)
 	}
 	if !data.NotifyAllChanges.IsNull() && !data.NotifyAllChanges.IsUnknown() {
 		if data.NotifyAllChanges.ValueBool() {
@@ -402,29 +420,12 @@ func (data DeviceSensor) toBodyXML(ctx context.Context, config DeviceSensor) str
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *DeviceSensor) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	FilterListsLldpParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterListsLldpKeys := [...]string{"name"}
+	FilterListsLldpItems := helpers.CollectListItemsXML(FilterListsLldpParentScope.Raw, "filter-list/lldp/list", FilterListsLldpKeys[:])
 	for i := range data.FilterListsLldp {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-list/lldp/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterListsLldpKeyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
+		r := FilterListsLldpItems[helpers.CompositeKey(FilterListsLldpKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterListsLldp[i].Name.IsNull() {
 			data.FilterListsLldp[i].Name = types.StringValue(value.String())
 		} else {
@@ -476,29 +477,12 @@ func (data *DeviceSensor) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 			data.FilterListsLldp[i].TlvNameSystemCapabilities = types.BoolNull()
 		}
 	}
+	FilterListsDhcpParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterListsDhcpKeys := [...]string{"name"}
+	FilterListsDhcpItems := helpers.CollectListItemsXML(FilterListsDhcpParentScope.Raw, "filter-list/dhcp/list", FilterListsDhcpKeys[:])
 	for i := range data.FilterListsDhcp {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-list/dhcp/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterListsDhcpKeyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}
+		r := FilterListsDhcpItems[helpers.CompositeKey(FilterListsDhcpKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterListsDhcp[i].Name.IsNull() {
 			data.FilterListsDhcp[i].Name = types.StringValue(value.String())
 		} else {
@@ -568,29 +552,12 @@ func (data *DeviceSensor) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 			data.FilterListsDhcp[i].OptionNameClientFqdn = types.BoolNull()
 		}
 	}
+	FilterListsCdpParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterListsCdpKeys := [...]string{"name"}
+	FilterListsCdpItems := helpers.CollectListItemsXML(FilterListsCdpParentScope.Raw, "filter-list/cdp/list", FilterListsCdpKeys[:])
 	for i := range data.FilterListsCdp {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterListsCdp[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-list/cdp/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterListsCdpKeyValues := [...]string{data.FilterListsCdp[i].Name.ValueString()}
+		r := FilterListsCdpItems[helpers.CompositeKey(FilterListsCdpKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterListsCdp[i].Name.IsNull() {
 			data.FilterListsCdp[i].Name = types.StringValue(value.String())
 		} else {
@@ -642,174 +609,72 @@ func (data *DeviceSensor) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 			data.FilterListsCdp[i].TlvNamePlatformType = types.BoolNull()
 		}
 	}
+	FilterSpecDhcpIncludesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterSpecDhcpIncludesKeys := [...]string{"name"}
+	FilterSpecDhcpIncludesItems := helpers.CollectListItemsXML(FilterSpecDhcpIncludesParentScope.Raw, "filter-spec/dhcp/include/list", FilterSpecDhcpIncludesKeys[:])
 	for i := range data.FilterSpecDhcpIncludes {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterSpecDhcpIncludes[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-spec/dhcp/include/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterSpecDhcpIncludesKeyValues := [...]string{data.FilterSpecDhcpIncludes[i].Name.ValueString()}
+		r := FilterSpecDhcpIncludesItems[helpers.CompositeKey(FilterSpecDhcpIncludesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecDhcpIncludes[i].Name.IsNull() {
 			data.FilterSpecDhcpIncludes[i].Name = types.StringValue(value.String())
 		} else {
 			data.FilterSpecDhcpIncludes[i].Name = types.StringNull()
 		}
 	}
+	FilterSpecDhcpExcludesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterSpecDhcpExcludesKeys := [...]string{"name"}
+	FilterSpecDhcpExcludesItems := helpers.CollectListItemsXML(FilterSpecDhcpExcludesParentScope.Raw, "filter-spec/dhcp/exclude/list", FilterSpecDhcpExcludesKeys[:])
 	for i := range data.FilterSpecDhcpExcludes {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-spec/dhcp/exclude/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterSpecDhcpExcludesKeyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
+		r := FilterSpecDhcpExcludesItems[helpers.CompositeKey(FilterSpecDhcpExcludesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecDhcpExcludes[i].Name.IsNull() {
 			data.FilterSpecDhcpExcludes[i].Name = types.StringValue(value.String())
 		} else {
 			data.FilterSpecDhcpExcludes[i].Name = types.StringNull()
 		}
 	}
+	FilterSpecLldpIncludesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterSpecLldpIncludesKeys := [...]string{"name"}
+	FilterSpecLldpIncludesItems := helpers.CollectListItemsXML(FilterSpecLldpIncludesParentScope.Raw, "filter-spec/lldp/include/list", FilterSpecLldpIncludesKeys[:])
 	for i := range data.FilterSpecLldpIncludes {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-spec/lldp/include/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterSpecLldpIncludesKeyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
+		r := FilterSpecLldpIncludesItems[helpers.CompositeKey(FilterSpecLldpIncludesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecLldpIncludes[i].Name.IsNull() {
 			data.FilterSpecLldpIncludes[i].Name = types.StringValue(value.String())
 		} else {
 			data.FilterSpecLldpIncludes[i].Name = types.StringNull()
 		}
 	}
+	FilterSpecLldpExcludesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterSpecLldpExcludesKeys := [...]string{"name"}
+	FilterSpecLldpExcludesItems := helpers.CollectListItemsXML(FilterSpecLldpExcludesParentScope.Raw, "filter-spec/lldp/exclude/list", FilterSpecLldpExcludesKeys[:])
 	for i := range data.FilterSpecLldpExcludes {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-spec/lldp/exclude/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterSpecLldpExcludesKeyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
+		r := FilterSpecLldpExcludesItems[helpers.CompositeKey(FilterSpecLldpExcludesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecLldpExcludes[i].Name.IsNull() {
 			data.FilterSpecLldpExcludes[i].Name = types.StringValue(value.String())
 		} else {
 			data.FilterSpecLldpExcludes[i].Name = types.StringNull()
 		}
 	}
+	FilterSpecCdpIncludesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterSpecCdpIncludesKeys := [...]string{"name"}
+	FilterSpecCdpIncludesItems := helpers.CollectListItemsXML(FilterSpecCdpIncludesParentScope.Raw, "filter-spec/cdp/include/list", FilterSpecCdpIncludesKeys[:])
 	for i := range data.FilterSpecCdpIncludes {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-spec/cdp/include/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterSpecCdpIncludesKeyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
+		r := FilterSpecCdpIncludesItems[helpers.CompositeKey(FilterSpecCdpIncludesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecCdpIncludes[i].Name.IsNull() {
 			data.FilterSpecCdpIncludes[i].Name = types.StringValue(value.String())
 		} else {
 			data.FilterSpecCdpIncludes[i].Name = types.StringNull()
 		}
 	}
+	FilterSpecCdpExcludesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	FilterSpecCdpExcludesKeys := [...]string{"name"}
+	FilterSpecCdpExcludesItems := helpers.CollectListItemsXML(FilterSpecCdpExcludesParentScope.Raw, "filter-spec/cdp/exclude/list", FilterSpecCdpExcludesKeys[:])
 	for i := range data.FilterSpecCdpExcludes {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.FilterSpecCdpExcludes[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/filter-spec/cdp/exclude/list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		FilterSpecCdpExcludesKeyValues := [...]string{data.FilterSpecCdpExcludes[i].Name.ValueString()}
+		r := FilterSpecCdpExcludesItems[helpers.CompositeKey(FilterSpecCdpExcludesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecCdpExcludes[i].Name.IsNull() {
 			data.FilterSpecCdpExcludes[i].Name = types.StringValue(value.String())
 		} else {
