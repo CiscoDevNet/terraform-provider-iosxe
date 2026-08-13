@@ -10,6 +10,7 @@ description: |-
 ## Unreleased
 
 - Fix perpetual `terraform plan` drift on `iosxe_access_list_extended` port and DSCP attributes where IOS-XE returns symbolic names (e.g., `www`, `bgp`, `ef`, `af41`) via NETCONF get-config for values that were configured numerically (e.g., `80`, `179`, `46`, `34`). The provider now normalizes symbolic names back to numeric equivalents on read.
+- Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
 
 ## 1.0.0
 
