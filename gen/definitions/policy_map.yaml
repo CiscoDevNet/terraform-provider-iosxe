@@ -188,6 +188,11 @@ attributes:
             tf_name: police_cir_exceed_drop
             example: true
             exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-policy-map-case/police-policy-map/police/actions/exceed-transmit/exceed-action/transmit
+            xpath: police-policy-map/police/actions/exceed-transmit/exceed-action/transmit
+            tf_name: police_cir_exceed_transmit
+            example: true
+            exclude_test: true
           - yang_name: action-param/police-case/police-choice/police-rate-percent-case/police-rate-percent/police/rate/percent/percentage
             xpath: police-rate-percent/police/rate/percent/percentage
             tf_name: police_rate_percent

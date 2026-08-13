@@ -84,6 +84,7 @@ type PolicyMapClassesActions struct {
 	PolicePirBe                          types.Int64  `tfsdk:"police_pir_be"`
 	PoliceCirConformTransmit             types.Bool   `tfsdk:"police_cir_conform_transmit"`
 	PoliceCirExceedDrop                  types.Bool   `tfsdk:"police_cir_exceed_drop"`
+	PoliceCirExceedTransmit              types.Bool   `tfsdk:"police_cir_exceed_transmit"`
 	PoliceRatePercent                    types.Int64  `tfsdk:"police_rate_percent"`
 	QueueBuffersRatio                    types.Int64  `tfsdk:"queue_buffers_ratio"`
 	SetDscp                              types.String `tfsdk:"set_dscp"`
@@ -137,6 +138,7 @@ type PolicyMapClassesActionsData struct {
 	PolicePirBe                          types.Int64  `tfsdk:"police_pir_be"`
 	PoliceCirConformTransmit             types.Bool   `tfsdk:"police_cir_conform_transmit"`
 	PoliceCirExceedDrop                  types.Bool   `tfsdk:"police_cir_exceed_drop"`
+	PoliceCirExceedTransmit              types.Bool   `tfsdk:"police_cir_exceed_transmit"`
 	PoliceRatePercent                    types.Int64  `tfsdk:"police_rate_percent"`
 	QueueBuffersRatio                    types.Int64  `tfsdk:"queue_buffers_ratio"`
 	SetDscp                              types.String `tfsdk:"set_dscp"`
@@ -324,6 +326,13 @@ func (data PolicyMap) toBodyXML(ctx context.Context, config PolicyMap) string {
 							ccBody = helpers.SetFromXPath(ccBody, "police-policy-map/police/actions/exceed-drop/exceed-action/drop", "")
 						} else {
 							ccBody = helpers.RemoveFromXPath(ccBody, "police-policy-map/police/actions/exceed-drop/exceed-action/drop")
+						}
+					}
+					if !citem.PoliceCirExceedTransmit.IsNull() && !citem.PoliceCirExceedTransmit.IsUnknown() {
+						if citem.PoliceCirExceedTransmit.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "police-policy-map/police/actions/exceed-transmit/exceed-action/transmit", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "police-policy-map/police/actions/exceed-transmit/exceed-action/transmit")
 						}
 					}
 					if !citem.PoliceRatePercent.IsNull() && !citem.PoliceRatePercent.IsUnknown() {
@@ -624,6 +633,15 @@ func (data *PolicyMap) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 			} else {
 				data.Classes[i].Actions[ci].PoliceCirExceedDrop = types.BoolNull()
 			}
+			if value := helpers.GetFromXPath(cr, "police-policy-map/police/actions/exceed-transmit/exceed-action/transmit"); !data.Classes[i].Actions[ci].PoliceCirExceedTransmit.IsNull() {
+				if value.Exists() {
+					data.Classes[i].Actions[ci].PoliceCirExceedTransmit = types.BoolValue(true)
+				} else {
+					data.Classes[i].Actions[ci].PoliceCirExceedTransmit = types.BoolValue(false)
+				}
+			} else {
+				data.Classes[i].Actions[ci].PoliceCirExceedTransmit = types.BoolNull()
+			}
 			if value := helpers.GetFromXPath(cr, "police-rate-percent/police/rate/percent/percentage"); value.Exists() && !data.Classes[i].Actions[ci].PoliceRatePercent.IsNull() {
 				data.Classes[i].Actions[ci].PoliceRatePercent = types.Int64Value(value.Int())
 			} else {
@@ -788,6 +806,11 @@ func (data *PolicyMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					} else {
 						cItem.PoliceCirExceedDrop = types.BoolValue(false)
 					}
+					if ccValue := helpers.GetFromXPath(cv, "police-policy-map/police/actions/exceed-transmit/exceed-action/transmit"); ccValue.Exists() {
+						cItem.PoliceCirExceedTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceCirExceedTransmit = types.BoolValue(false)
+					}
 					if ccValue := helpers.GetFromXPath(cv, "police-rate-percent/police/rate/percent/percentage"); ccValue.Exists() {
 						cItem.PoliceRatePercent = types.Int64Value(ccValue.Int())
 					}
@@ -950,6 +973,11 @@ func (data *PolicyMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 					} else {
 						cItem.PoliceCirExceedDrop = types.BoolValue(false)
 					}
+					if ccValue := helpers.GetFromXPath(cv, "police-policy-map/police/actions/exceed-transmit/exceed-action/transmit"); ccValue.Exists() {
+						cItem.PoliceCirExceedTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceCirExceedTransmit = types.BoolValue(false)
+					}
 					if ccValue := helpers.GetFromXPath(cv, "police-rate-percent/police/rate/percent/percentage"); ccValue.Exists() {
 						cItem.PoliceRatePercent = types.Int64Value(ccValue.Int())
 					}
@@ -1035,6 +1063,9 @@ func (data *PolicyMap) addDeletedItemsXML(ctx context.Context, state PolicyMap, 
 							}
 							if !state.Classes[i].Actions[ci].PoliceRatePercent.IsNull() && data.Classes[j].Actions[cj].PoliceRatePercent.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-rate-percent/police/rate/percent/percentage", predicates, cpredicates))
+							}
+							if !state.Classes[i].Actions[ci].PoliceCirExceedTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceCirExceedTransmit.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/actions/exceed-transmit/exceed-action/transmit", predicates, cpredicates))
 							}
 							if !state.Classes[i].Actions[ci].PoliceCirExceedDrop.IsNull() && data.Classes[j].Actions[cj].PoliceCirExceedDrop.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class%v/action-list%v/police-policy-map/police/actions/exceed-drop/exceed-action/drop", predicates, cpredicates))
