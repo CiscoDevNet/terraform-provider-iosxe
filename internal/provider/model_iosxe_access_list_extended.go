@@ -457,7 +457,8 @@ func (data AccessListExtended) toBodyXML(ctx context.Context, config AccessListE
 
 // End of section. //template:end toBodyXML
 
-// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+// Custom implementation - template markers removed to preserve normalization changes.
+// Port/DSCP fields are normalized from symbolic to numeric on read to prevent drift.
 
 func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
@@ -548,72 +549,72 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 			data.Entries[i].SourceFqdnGroup = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq"); value.Exists() && !data.Entries[i].SourcePortEqual.IsNull() {
-			data.Entries[i].SourcePortEqual = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-gt"); value.Exists() && !data.Entries[i].SourcePortGreaterThan.IsNull() {
-			data.Entries[i].SourcePortGreaterThan = types.StringValue(value.String())
+			data.Entries[i].SourcePortGreaterThan = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortGreaterThan = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-lt"); value.Exists() && !data.Entries[i].SourcePortLesserThan.IsNull() {
-			data.Entries[i].SourcePortLesserThan = types.StringValue(value.String())
+			data.Entries[i].SourcePortLesserThan = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortLesserThan = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-range1"); value.Exists() && !data.Entries[i].SourcePortRangeFrom.IsNull() {
-			data.Entries[i].SourcePortRangeFrom = types.StringValue(value.String())
+			data.Entries[i].SourcePortRangeFrom = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortRangeFrom = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-range2"); value.Exists() && !data.Entries[i].SourcePortRangeTo.IsNull() {
-			data.Entries[i].SourcePortRangeTo = types.StringValue(value.String())
+			data.Entries[i].SourcePortRangeTo = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortRangeTo = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port2"); value.Exists() && !data.Entries[i].SourcePortEqual2.IsNull() {
-			data.Entries[i].SourcePortEqual2 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual2 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual2 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port3"); value.Exists() && !data.Entries[i].SourcePortEqual3.IsNull() {
-			data.Entries[i].SourcePortEqual3 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual3 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual3 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port4"); value.Exists() && !data.Entries[i].SourcePortEqual4.IsNull() {
-			data.Entries[i].SourcePortEqual4 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual4 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual4 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port5"); value.Exists() && !data.Entries[i].SourcePortEqual5.IsNull() {
-			data.Entries[i].SourcePortEqual5 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual5 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual5 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port6"); value.Exists() && !data.Entries[i].SourcePortEqual6.IsNull() {
-			data.Entries[i].SourcePortEqual6 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual6 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual6 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port7"); value.Exists() && !data.Entries[i].SourcePortEqual7.IsNull() {
-			data.Entries[i].SourcePortEqual7 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual7 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual7 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port8"); value.Exists() && !data.Entries[i].SourcePortEqual8.IsNull() {
-			data.Entries[i].SourcePortEqual8 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual8 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual8 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port9"); value.Exists() && !data.Entries[i].SourcePortEqual9.IsNull() {
-			data.Entries[i].SourcePortEqual9 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual9 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual9 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/src-eq-port10"); value.Exists() && !data.Entries[i].SourcePortEqual10.IsNull() {
-			data.Entries[i].SourcePortEqual10 = types.StringValue(value.String())
+			data.Entries[i].SourcePortEqual10 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].SourcePortEqual10 = types.StringNull()
 		}
@@ -652,27 +653,27 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 			data.Entries[i].DestinationFqdnGroup = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq"); value.Exists() && !data.Entries[i].DestinationPortEqual.IsNull() {
-			data.Entries[i].DestinationPortEqual = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-gt"); value.Exists() && !data.Entries[i].DestinationPortGreaterThan.IsNull() {
-			data.Entries[i].DestinationPortGreaterThan = types.StringValue(value.String())
+			data.Entries[i].DestinationPortGreaterThan = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortGreaterThan = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-lt"); value.Exists() && !data.Entries[i].DestinationPortLesserThan.IsNull() {
-			data.Entries[i].DestinationPortLesserThan = types.StringValue(value.String())
+			data.Entries[i].DestinationPortLesserThan = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortLesserThan = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-range1"); value.Exists() && !data.Entries[i].DestinationPortRangeFrom.IsNull() {
-			data.Entries[i].DestinationPortRangeFrom = types.StringValue(value.String())
+			data.Entries[i].DestinationPortRangeFrom = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortRangeFrom = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-range2"); value.Exists() && !data.Entries[i].DestinationPortRangeTo.IsNull() {
-			data.Entries[i].DestinationPortRangeTo = types.StringValue(value.String())
+			data.Entries[i].DestinationPortRangeTo = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortRangeTo = types.StringNull()
 		}
@@ -740,7 +741,7 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 			data.Entries[i].Established = types.BoolNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dscp"); value.Exists() && !data.Entries[i].Dscp.IsNull() {
-			data.Entries[i].Dscp = types.StringValue(value.String())
+			data.Entries[i].Dscp = types.StringValue(helpers.NormalizeDscp(value.String()))
 		} else {
 			data.Entries[i].Dscp = types.StringNull()
 		}
@@ -787,47 +788,47 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 			data.Entries[i].IcmpNamedMsgType = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port2"); value.Exists() && !data.Entries[i].DestinationPortEqual2.IsNull() {
-			data.Entries[i].DestinationPortEqual2 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual2 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual2 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port3"); value.Exists() && !data.Entries[i].DestinationPortEqual3.IsNull() {
-			data.Entries[i].DestinationPortEqual3 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual3 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual3 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port4"); value.Exists() && !data.Entries[i].DestinationPortEqual4.IsNull() {
-			data.Entries[i].DestinationPortEqual4 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual4 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual4 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port5"); value.Exists() && !data.Entries[i].DestinationPortEqual5.IsNull() {
-			data.Entries[i].DestinationPortEqual5 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual5 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual5 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port6"); value.Exists() && !data.Entries[i].DestinationPortEqual6.IsNull() {
-			data.Entries[i].DestinationPortEqual6 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual6 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual6 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port7"); value.Exists() && !data.Entries[i].DestinationPortEqual7.IsNull() {
-			data.Entries[i].DestinationPortEqual7 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual7 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual7 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port8"); value.Exists() && !data.Entries[i].DestinationPortEqual8.IsNull() {
-			data.Entries[i].DestinationPortEqual8 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual8 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual8 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port9"); value.Exists() && !data.Entries[i].DestinationPortEqual9.IsNull() {
-			data.Entries[i].DestinationPortEqual9 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual9 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual9 = types.StringNull()
 		}
 		if value := helpers.GetFromXPath(r, "ace-rule/dst-eq-port10"); value.Exists() && !data.Entries[i].DestinationPortEqual10.IsNull() {
-			data.Entries[i].DestinationPortEqual10 = types.StringValue(value.String())
+			data.Entries[i].DestinationPortEqual10 = types.StringValue(helpers.NormalizePort(value.String()))
 		} else {
 			data.Entries[i].DestinationPortEqual10 = types.StringNull()
 		}
@@ -844,9 +845,13 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 	}
 }
 
-// End of section. //template:end updateFromBodyXML
+// End of custom updateFromBodyXML implementation.
 
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+// Custom implementation - template markers removed to preserve changes
+// Provider reads symbolic port/DSCP names from NETCONF get-config but writes numeric
+// values via edit-config. Without normalization, Terraform detects false drift
+// (e.g., "www" in state vs "80" in config). NormalizePort/NormalizeDscp convert
+// symbolic names back to numeric for consistent state comparison.
 
 func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
@@ -889,46 +894,46 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.SourceFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq"); cValue.Exists() {
-				item.SourcePortEqual = types.StringValue(cValue.String())
+				item.SourcePortEqual = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-gt"); cValue.Exists() {
-				item.SourcePortGreaterThan = types.StringValue(cValue.String())
+				item.SourcePortGreaterThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-lt"); cValue.Exists() {
-				item.SourcePortLesserThan = types.StringValue(cValue.String())
+				item.SourcePortLesserThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-range1"); cValue.Exists() {
-				item.SourcePortRangeFrom = types.StringValue(cValue.String())
+				item.SourcePortRangeFrom = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-range2"); cValue.Exists() {
-				item.SourcePortRangeTo = types.StringValue(cValue.String())
+				item.SourcePortRangeTo = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port2"); cValue.Exists() {
-				item.SourcePortEqual2 = types.StringValue(cValue.String())
+				item.SourcePortEqual2 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port3"); cValue.Exists() {
-				item.SourcePortEqual3 = types.StringValue(cValue.String())
+				item.SourcePortEqual3 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port4"); cValue.Exists() {
-				item.SourcePortEqual4 = types.StringValue(cValue.String())
+				item.SourcePortEqual4 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port5"); cValue.Exists() {
-				item.SourcePortEqual5 = types.StringValue(cValue.String())
+				item.SourcePortEqual5 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port6"); cValue.Exists() {
-				item.SourcePortEqual6 = types.StringValue(cValue.String())
+				item.SourcePortEqual6 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port7"); cValue.Exists() {
-				item.SourcePortEqual7 = types.StringValue(cValue.String())
+				item.SourcePortEqual7 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port8"); cValue.Exists() {
-				item.SourcePortEqual8 = types.StringValue(cValue.String())
+				item.SourcePortEqual8 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port9"); cValue.Exists() {
-				item.SourcePortEqual9 = types.StringValue(cValue.String())
+				item.SourcePortEqual9 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/src-eq-port10"); cValue.Exists() {
-				item.SourcePortEqual10 = types.StringValue(cValue.String())
+				item.SourcePortEqual10 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dest-ipv4-address"); cValue.Exists() {
 				item.DestinationPrefix = types.StringValue(cValue.String())
@@ -951,19 +956,19 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.DestinationFqdnGroup = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq"); cValue.Exists() {
-				item.DestinationPortEqual = types.StringValue(cValue.String())
+				item.DestinationPortEqual = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-gt"); cValue.Exists() {
-				item.DestinationPortGreaterThan = types.StringValue(cValue.String())
+				item.DestinationPortGreaterThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-lt"); cValue.Exists() {
-				item.DestinationPortLesserThan = types.StringValue(cValue.String())
+				item.DestinationPortLesserThan = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-range1"); cValue.Exists() {
-				item.DestinationPortRangeFrom = types.StringValue(cValue.String())
+				item.DestinationPortRangeFrom = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-range2"); cValue.Exists() {
-				item.DestinationPortRangeTo = types.StringValue(cValue.String())
+				item.DestinationPortRangeTo = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/ack"); cValue.Exists() {
 				item.Ack = types.BoolValue(true)
@@ -1001,7 +1006,7 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.Established = types.BoolValue(false)
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dscp"); cValue.Exists() {
-				item.Dscp = types.StringValue(cValue.String())
+				item.Dscp = types.StringValue(helpers.NormalizeDscp(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/fragments"); cValue.Exists() {
 				item.Fragments = types.BoolValue(true)
@@ -1028,31 +1033,31 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 				item.IcmpNamedMsgType = types.StringValue(cValue.String())
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port2"); cValue.Exists() {
-				item.DestinationPortEqual2 = types.StringValue(cValue.String())
+				item.DestinationPortEqual2 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port3"); cValue.Exists() {
-				item.DestinationPortEqual3 = types.StringValue(cValue.String())
+				item.DestinationPortEqual3 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port4"); cValue.Exists() {
-				item.DestinationPortEqual4 = types.StringValue(cValue.String())
+				item.DestinationPortEqual4 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port5"); cValue.Exists() {
-				item.DestinationPortEqual5 = types.StringValue(cValue.String())
+				item.DestinationPortEqual5 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port6"); cValue.Exists() {
-				item.DestinationPortEqual6 = types.StringValue(cValue.String())
+				item.DestinationPortEqual6 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port7"); cValue.Exists() {
-				item.DestinationPortEqual7 = types.StringValue(cValue.String())
+				item.DestinationPortEqual7 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port8"); cValue.Exists() {
-				item.DestinationPortEqual8 = types.StringValue(cValue.String())
+				item.DestinationPortEqual8 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port9"); cValue.Exists() {
-				item.DestinationPortEqual9 = types.StringValue(cValue.String())
+				item.DestinationPortEqual9 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/dst-eq-port10"); cValue.Exists() {
-				item.DestinationPortEqual10 = types.StringValue(cValue.String())
+				item.DestinationPortEqual10 = types.StringValue(helpers.NormalizePort(cValue.String()))
 			}
 			if cValue := helpers.GetFromXPath(v, "ace-rule/msg-type"); cValue.Exists() {
 				item.IcmpMsgType = types.Int64Value(cValue.Int())
@@ -1066,7 +1071,7 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 	}
 }
 
-// End of section. //template:end fromBodyXML
+// End of custom fromBodyXML implementation.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
