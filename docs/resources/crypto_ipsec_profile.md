@@ -33,7 +33,8 @@ resource "iosxe_crypto_ipsec_profile" "example" {
 - `device` (String) A device name from the provider configuration.
 - `set_ikev2_profile` (String) Specify ikev2 Profile
 - `set_isakmp_profile` (String) Specify isakmp Profile
-- `set_pfs_group` (String) List of supported DH groups
+- `set_pfs` (Boolean) Enable Perfect Forward Secrecy without selecting an explicit classical DH group. Use this form with ML-KEM so that IPsec Child SAs and rekeys inherit the algorithm negotiated by the IKEv2 SA. Do not configure together with `set_pfs_group`.
+- `set_pfs_group` (String) Enable Perfect Forward Secrecy with an explicit classical DH group. Do not configure together with `set_pfs`.
   - Choices: `group1`, `group14`, `group15`, `group16`, `group19`, `group2`, `group20`, `group21`, `group24`, `group5`
 - `set_security_association_lifetime_seconds` (Number) Time-based key duration in seconds
   - Range: `120`-`2592000`

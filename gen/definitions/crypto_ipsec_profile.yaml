@@ -15,8 +15,19 @@ attributes:
     xpath: set/isakmp-profile
     example: vpn300
     exclude_test: true
+  - yang_name: set/pfs
+    xpath: set/pfs
+    tf_name: set_pfs
+    type: Bool
+    type_yang_bool: presence
+    no_augment_config: true
+    description: Enable Perfect Forward Secrecy without selecting an explicit classical DH group. Use this form with ML-KEM so that IPsec Child SAs and rekeys inherit the algorithm negotiated by the IKEv2 SA. Do not configure together with `set_pfs_group`.
+    example: true
+    exclude_example: true
+    exclude_test: true
   - yang_name: set/pfs/group
     tf_name: set_pfs_group
+    description: Enable Perfect Forward Secrecy with an explicit classical DH group. Do not configure together with `set_pfs`.
     example: group20
   - yang_name: set/security-association/lifetime/days-seconds/seconds/seconds-case
     xpath: set/security-association/lifetime/seconds-case

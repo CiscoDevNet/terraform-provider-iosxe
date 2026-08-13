@@ -45,6 +45,10 @@ type CryptoIKEv2Proposal struct {
 	EncryptionAesCbc256 types.Bool   `tfsdk:"encryption_aes_cbc_256"`
 	EncryptionAesGcm128 types.Bool   `tfsdk:"encryption_aes_gcm_128"`
 	EncryptionAesGcm256 types.Bool   `tfsdk:"encryption_aes_gcm_256"`
+	PqcMlkem512         types.Bool   `tfsdk:"pqc_mlkem512"`
+	PqcMlkem768         types.Bool   `tfsdk:"pqc_mlkem768"`
+	PqcMlkem1024        types.Bool   `tfsdk:"pqc_mlkem1024"`
+	PqcOptional         types.Bool   `tfsdk:"pqc_optional"`
 	GroupOne            types.Bool   `tfsdk:"group_one"`
 	GroupTwo            types.Bool   `tfsdk:"group_two"`
 	GroupFourteen       types.Bool   `tfsdk:"group_fourteen"`
@@ -76,6 +80,10 @@ type CryptoIKEv2ProposalData struct {
 	EncryptionAesCbc256 types.Bool   `tfsdk:"encryption_aes_cbc_256"`
 	EncryptionAesGcm128 types.Bool   `tfsdk:"encryption_aes_gcm_128"`
 	EncryptionAesGcm256 types.Bool   `tfsdk:"encryption_aes_gcm_256"`
+	PqcMlkem512         types.Bool   `tfsdk:"pqc_mlkem512"`
+	PqcMlkem768         types.Bool   `tfsdk:"pqc_mlkem768"`
+	PqcMlkem1024        types.Bool   `tfsdk:"pqc_mlkem1024"`
+	PqcOptional         types.Bool   `tfsdk:"pqc_optional"`
 	GroupOne            types.Bool   `tfsdk:"group_one"`
 	GroupTwo            types.Bool   `tfsdk:"group_two"`
 	GroupFourteen       types.Bool   `tfsdk:"group_fourteen"`
@@ -171,6 +179,34 @@ func (data CryptoIKEv2Proposal) toBodyXML(ctx context.Context, config CryptoIKEv
 			body = helpers.SetFromXPath(body, data.getXPath()+"/encryption/aes-gcm-256", "")
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/encryption/aes-gcm-256")
+		}
+	}
+	if !data.PqcMlkem512.IsNull() && !data.PqcMlkem512.IsUnknown() {
+		if data.PqcMlkem512.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/pqc/mlkem512", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/pqc/mlkem512")
+		}
+	}
+	if !data.PqcMlkem768.IsNull() && !data.PqcMlkem768.IsUnknown() {
+		if data.PqcMlkem768.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/pqc/mlkem768", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/pqc/mlkem768")
+		}
+	}
+	if !data.PqcMlkem1024.IsNull() && !data.PqcMlkem1024.IsUnknown() {
+		if data.PqcMlkem1024.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/pqc/mlkem1024", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/pqc/mlkem1024")
+		}
+	}
+	if !data.PqcOptional.IsNull() && !data.PqcOptional.IsUnknown() {
+		if data.PqcOptional.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/pqc/optional", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/pqc/optional")
 		}
 	}
 	if !data.GroupOne.IsNull() && !data.GroupOne.IsUnknown() {
@@ -376,6 +412,42 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 		}
 	} else {
 		data.EncryptionAesGcm256 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem512"); !data.PqcMlkem512.IsNull() {
+		if value.Exists() {
+			data.PqcMlkem512 = types.BoolValue(true)
+		} else {
+			data.PqcMlkem512 = types.BoolValue(false)
+		}
+	} else {
+		data.PqcMlkem512 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem768"); !data.PqcMlkem768.IsNull() {
+		if value.Exists() {
+			data.PqcMlkem768 = types.BoolValue(true)
+		} else {
+			data.PqcMlkem768 = types.BoolValue(false)
+		}
+	} else {
+		data.PqcMlkem768 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem1024"); !data.PqcMlkem1024.IsNull() {
+		if value.Exists() {
+			data.PqcMlkem1024 = types.BoolValue(true)
+		} else {
+			data.PqcMlkem1024 = types.BoolValue(false)
+		}
+	} else {
+		data.PqcMlkem1024 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/optional"); !data.PqcOptional.IsNull() {
+		if value.Exists() {
+			data.PqcOptional = types.BoolValue(true)
+		} else {
+			data.PqcOptional = types.BoolValue(false)
+		}
+	} else {
+		data.PqcOptional = types.BoolNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/one"); !data.GroupOne.IsNull() {
 		if value.Exists() {
@@ -585,6 +657,26 @@ func (data *CryptoIKEv2Proposal) fromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.EncryptionAesGcm256 = types.BoolValue(false)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem512"); value.Exists() {
+		data.PqcMlkem512 = types.BoolValue(true)
+	} else {
+		data.PqcMlkem512 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem768"); value.Exists() {
+		data.PqcMlkem768 = types.BoolValue(true)
+	} else {
+		data.PqcMlkem768 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem1024"); value.Exists() {
+		data.PqcMlkem1024 = types.BoolValue(true)
+	} else {
+		data.PqcMlkem1024 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/optional"); value.Exists() {
+		data.PqcOptional = types.BoolValue(true)
+	} else {
+		data.PqcOptional = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/one"); value.Exists() {
 		data.GroupOne = types.BoolValue(true)
 	} else {
@@ -716,6 +808,26 @@ func (data *CryptoIKEv2ProposalData) fromBodyXML(ctx context.Context, res xmldot
 		data.EncryptionAesGcm256 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesGcm256 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem512"); value.Exists() {
+		data.PqcMlkem512 = types.BoolValue(true)
+	} else {
+		data.PqcMlkem512 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem768"); value.Exists() {
+		data.PqcMlkem768 = types.BoolValue(true)
+	} else {
+		data.PqcMlkem768 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/mlkem1024"); value.Exists() {
+		data.PqcMlkem1024 = types.BoolValue(true)
+	} else {
+		data.PqcMlkem1024 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pqc/optional"); value.Exists() {
+		data.PqcOptional = types.BoolValue(true)
+	} else {
+		data.PqcOptional = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/one"); value.Exists() {
 		data.GroupOne = types.BoolValue(true)
@@ -877,6 +989,18 @@ func (data *CryptoIKEv2Proposal) addDeletedItemsXML(ctx context.Context, state C
 	if !state.GroupOne.IsNull() && data.GroupOne.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/one")
 	}
+	if !state.PqcOptional.IsNull() && data.PqcOptional.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/optional")
+	}
+	if !state.PqcMlkem1024.IsNull() && data.PqcMlkem1024.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/mlkem1024")
+	}
+	if !state.PqcMlkem768.IsNull() && data.PqcMlkem768.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/mlkem768")
+	}
+	if !state.PqcMlkem512.IsNull() && data.PqcMlkem512.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pqc/mlkem512")
+	}
 	if !state.EncryptionAesGcm256.IsNull() && data.EncryptionAesGcm256.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-gcm-256")
 	}
@@ -962,6 +1086,18 @@ func (data *CryptoIKEv2Proposal) addDeletePathsXML(ctx context.Context, body str
 	}
 	if !data.GroupOne.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/one")
+	}
+	if !data.PqcOptional.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pqc/optional")
+	}
+	if !data.PqcMlkem1024.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pqc/mlkem1024")
+	}
+	if !data.PqcMlkem768.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pqc/mlkem768")
+	}
+	if !data.PqcMlkem512.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pqc/mlkem512")
 	}
 	if !data.EncryptionAesGcm256.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-gcm-256")

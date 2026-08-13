@@ -52,6 +52,10 @@ data "iosxe_crypto_ikev2_proposal" "example" {
 - `integrity_sha256` (Boolean) Secure Hash Standard 2 (256 bit)
 - `integrity_sha384` (Boolean) Secure Hash Standard 2 (384 bit)
 - `integrity_sha512` (Boolean) Secure Hash Standard 2 (512 bit)
+- `pqc_mlkem1024` (Boolean) Enable the ML-KEM-1024 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode. IKEv2 fragmentation should be considered because of the larger key size.
+- `pqc_mlkem512` (Boolean) Enable the ML-KEM-512 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.
+- `pqc_mlkem768` (Boolean) Enable the ML-KEM-768 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.
+- `pqc_optional` (Boolean) Allow fallback to classical key exchange when the peer does not support ML-KEM. Requires at least one PQC ML-KEM algorithm and IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.
 - `prf_md5` (Boolean) Message Digest 5
 - `prf_sha1` (Boolean) Secure Hash Standard
 - `prf_sha256` (Boolean) Secure Hash Standard 2 (256 bit)
