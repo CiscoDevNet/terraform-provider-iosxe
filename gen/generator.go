@@ -96,10 +96,52 @@ var templates = []t{
 		prefix: "./examples/resources/iosxe_",
 		suffix: "/import.sh",
 	},
+	{
+		path:   "./gen/templates/bulk/model.go",
+		prefix: "./internal/provider/model_iosxe_",
+		suffix: ".go",
+	},
+	{
+		path:   "./gen/templates/bulk/resource.go",
+		prefix: "./internal/provider/resource_iosxe_",
+		suffix: ".go",
+	},
+	{
+		path:   "./gen/templates/bulk/resource_test.go",
+		prefix: "./internal/provider/resource_iosxe_",
+		suffix: "_test.go",
+	},
+	{
+		path:   "./gen/templates/bulk/resource.tf",
+		prefix: "./examples/resources/iosxe_",
+		suffix: "/resource.tf",
+	},
+	{
+		path:   "./gen/templates/bulk/import.sh",
+		prefix: "./examples/resources/iosxe_",
+		suffix: "/import.sh",
+	},
+}
+
+// isBulkTemplate returns true if the template renders a bulk resource artifact.
+func isBulkTemplate(templatePath string) bool {
+	return strings.Contains(templatePath, "/bulk/")
+}
+
+// skipTemplate returns true if the template should not be rendered for the given config.
+func skipTemplate(config YamlConfig, templatePath string) bool {
+	if !isBulkTemplate(templatePath) {
+		return false
+	}
+	if !config.BulkResource {
+		return true
+	}
+	return config.SkipBulkResourceTest && templatePath == "./gen/templates/bulk/resource_test.go"
 }
 
 type YamlConfig struct {
 	Name                    string                `yaml:"name"`
+	BulkName                string                `yaml:"bulk_name"`
 	Path                    string                `yaml:"path"`
 	AugmentPath             string                `yaml:"augment_path"`
 	NoDelete                bool                  `yaml:"no_delete"`
@@ -109,9 +151,12 @@ type YamlConfig struct {
 	RequestTimeout          int64                 `yaml:"request_timeout"`
 	TestTags                []string              `yaml:"test_tags"`
 	SkipMinimumTest         bool                  `yaml:"skip_minimum_test"`
+	SkipBulkResourceTest    bool                  `yaml:"skip_bulk_resource_test"`
 	NoAugmentConfig         bool                  `yaml:"no_augment_config"`
+	BulkResource            bool                  `yaml:"bulk_resource"`
 	DsDescription           string                `yaml:"ds_description"`
 	ResDescription          string                `yaml:"res_description"`
+	ResBulkDescription      string                `yaml:"res_bulk_description"`
 	DocCategory             string                `yaml:"doc_category"`
 	Attributes              []YamlConfigAttribute `yaml:"attributes"`
 	TestPrerequisites       []YamlTest            `yaml:"test_prerequisites"`
@@ -329,21 +374,268 @@ func ToDotPath(path string) string {
 	return strings.ReplaceAll(path, "/", ".")
 }
 
+// BulkKeySeparator separates the individual key values of a composite bulk map key.
+const BulkKeySeparator = ";"
+
+// countFormatVerbs counts the fmt format verbs (e.g. %s, %v) in a path template.
+// Escaped percent signs ("%%") are not counted.
+func countFormatVerbs(p string) int {
+	count := 0
+	for i := 0; i < len(p)-1; i++ {
+		if p[i] != '%' {
+			continue
+		}
+		if p[i+1] == '%' {
+			i++
+			continue
+		}
+		count++
+	}
+	return count
+}
+
+// BulkParentXPath returns the XPath of the container holding the bulk items, which is the
+// resource path without its last element.
+// Example: "/Cisco-IOS-XE-native:native/interface/%s[name=%v]" -> "/Cisco-IOS-XE-native:native/interface"
+func BulkParentXPath(config YamlConfig) string {
+	return RemoveLastPathElement(config.Path)
+}
+
+// BulkParentAttributes returns the id/reference attributes that are consumed by the parent XPath.
+// These become top-level (resource-level) attributes of the bulk resource.
+func BulkParentAttributes(config YamlConfig) []YamlConfigAttribute {
+	ids := ImportAttributes(config)
+	n := countFormatVerbs(BulkParentXPath(config))
+	if n > len(ids) {
+		n = len(ids)
+	}
+	return ids[:n]
+}
+
+// BulkKeyAttributes returns the id/reference attributes that identify a single item within the
+// parent container. Their values are joined by BulkKeySeparator to form the map key.
+func BulkKeyAttributes(config YamlConfig) []YamlConfigAttribute {
+	ids := ImportAttributes(config)
+	n := countFormatVerbs(BulkParentXPath(config))
+	if n > len(ids) {
+		n = len(ids)
+	}
+	return ids[n:]
+}
+
+// BulkItemAttributes returns all attributes that are rendered inside a bulk item, meaning all
+// attributes except the ones that identify the resource or an item within it.
+func BulkItemAttributes(config YamlConfig) []YamlConfigAttribute {
+	skip := make(map[string]bool)
+	for _, attr := range ImportAttributes(config) {
+		skip[attr.TfName] = true
+	}
+	attributes := []YamlConfigAttribute{}
+	for _, attr := range config.Attributes {
+		if skip[attr.TfName] {
+			continue
+		}
+		attributes = append(attributes, attr)
+	}
+	return attributes
+}
+
+// bulkLastPathSegment returns the last element of the resource path, e.g. "%s[name=%v]".
+func bulkLastPathSegment(config YamlConfig) string {
+	elements := strings.Split(config.Path, "/")
+	return elements[len(elements)-1]
+}
+
+// bulkElementNameTemplate returns the element name portion of the last path segment, meaning the
+// part before the first XPath predicate. Example: "%s[name=%v]" -> "%s".
+func bulkElementNameTemplate(config YamlConfig) string {
+	segment := bulkLastPathSegment(config)
+	if i := strings.Index(segment, "["); i >= 0 {
+		return segment[:i]
+	}
+	return segment
+}
+
+// BulkElementNameIsVerb returns true if the element name of the bulk items is not a literal but
+// provided by the first key attribute, e.g. "/native/interface/%s[name=%v]".
+func BulkElementNameIsVerb(config YamlConfig) bool {
+	return countFormatVerbs(bulkElementNameTemplate(config)) > 0
+}
+
+// BulkElementNameExpr returns a Go expression evaluating to the XML element name of a bulk item.
+func BulkElementNameExpr(config YamlConfig) string {
+	tmpl := bulkElementNameTemplate(config)
+	if !BulkElementNameIsVerb(config) {
+		return `"` + tmpl + `"`
+	}
+	if countFormatVerbs(tmpl) == 1 && strings.HasPrefix(tmpl, "%") && len(tmpl) == 2 {
+		return "keyParts[0]"
+	}
+	return `fmt.Sprintf("` + tmpl + `", keyParts[0])`
+}
+
+// BulkKeyElementEnumValues returns the possible element names of a bulk item. This is only
+// relevant when the element name is provided by a key attribute (see BulkElementNameIsVerb), in
+// which case the enum values of that attribute enumerate every element name to look for when
+// reading all items from a device.
+func BulkKeyElementEnumValues(config YamlConfig) []string {
+	if !BulkElementNameIsVerb(config) {
+		return []string{bulkElementNameTemplate(config)}
+	}
+	keys := BulkKeyAttributes(config)
+	if len(keys) == 0 {
+		return nil
+	}
+	return keys[0].EnumValues
+}
+
+// BulkParentXPathArgs returns the fmt.Sprintf arguments to resolve the format verbs of the parent
+// XPath from the resource-level attributes.
+func BulkParentXPathArgs(config YamlConfig) string {
+	var args []string
+	for _, attr := range BulkParentAttributes(config) {
+		args = append(args, fmt.Sprintf(`fmt.Sprintf("%%v", data.%s.Value%s())`, ToGoName(attr.TfName), attr.Type))
+	}
+	return strings.Join(args, ", ")
+}
+
+// BulkItemXPathArgs returns the fmt.Sprintf arguments to resolve the format verbs of the resource
+// path from the resource-level attributes and the parsed map key.
+func BulkItemXPathArgs(config YamlConfig) string {
+	args := []string{}
+	if a := BulkParentXPathArgs(config); a != "" {
+		args = append(args, a)
+	}
+	for i := range BulkKeyAttributes(config) {
+		args = append(args, fmt.Sprintf("keyParts[%d]", i))
+	}
+	return strings.Join(args, ", ")
+}
+
+// BulkMapKeyParse returns the Go statement parsing a bulk map key into its individual values.
+func BulkMapKeyParse(keyVar string, config YamlConfig) string {
+	return fmt.Sprintf(`keyParts := strings.SplitN(%s, "%s", %d)`, keyVar, BulkKeySeparator, len(BulkKeyAttributes(config)))
+}
+
+// BulkMapKeyExample returns the example map key of a bulk item, built from the example values of
+// the key attributes.
+func BulkMapKeyExample(config YamlConfig) string {
+	var parts []string
+	for _, attr := range BulkKeyAttributes(config) {
+		parts = append(parts, attr.Example)
+	}
+	return strings.Join(parts, BulkKeySeparator)
+}
+
+// BulkMapKeyDescription documents the format of the bulk map key. The returned string is embedded
+// in a Go string literal, hence the escaped newlines.
+func BulkMapKeyDescription(config YamlConfig) string {
+	keys := BulkKeyAttributes(config)
+	if len(keys) == 0 {
+		return ""
+	}
+	var names []string
+	for _, attr := range keys {
+		names = append(names, "`"+attr.TfName+"`")
+	}
+	var sb strings.Builder
+	if len(keys) == 1 {
+		sb.WriteString(fmt.Sprintf("\\n  - Map key: %s", names[0]))
+	} else {
+		sb.WriteString(fmt.Sprintf("\\n  - Map key: %s, joined by `%s`", strings.Join(names, ", "), BulkKeySeparator))
+	}
+	for _, attr := range keys {
+		if len(attr.EnumValues) == 0 {
+			continue
+		}
+		quoted := make([]string, len(attr.EnumValues))
+		for i, v := range attr.EnumValues {
+			quoted[i] = "`" + v + "`"
+		}
+		sb.WriteString(fmt.Sprintf("\\n  - Choices for `%s`: %s", attr.TfName, strings.Join(quoted, ", ")))
+	}
+	return sb.String()
+}
+
+// pluralize returns the plural form of the last word of s.
+func pluralize(s string) string {
+	words := strings.Fields(s)
+	if len(words) == 0 {
+		return s
+	}
+	last := words[len(words)-1]
+	lower := strings.ToLower(last)
+	switch {
+	case strings.HasSuffix(lower, "y") && !strings.HasSuffix(lower, "ay") && !strings.HasSuffix(lower, "ey") &&
+		!strings.HasSuffix(lower, "iy") && !strings.HasSuffix(lower, "oy") && !strings.HasSuffix(lower, "uy"):
+		last = last[:len(last)-1] + "ies"
+	case strings.HasSuffix(lower, "s"), strings.HasSuffix(lower, "x"), strings.HasSuffix(lower, "z"),
+		strings.HasSuffix(lower, "ch"), strings.HasSuffix(lower, "sh"):
+		last += "es"
+	default:
+		last += "s"
+	}
+	words[len(words)-1] = last
+	return strings.Join(words, " ")
+}
+
+// initBulkNames fills in the derived bulk name and description. It does not depend on the YANG
+// augmentation and is therefore applied to every config, so that provider.go can be rendered
+// correctly even when the generator only regenerates a single resource.
+func initBulkNames(config *YamlConfig) {
+	if !config.BulkResource {
+		return
+	}
+	if config.BulkName == "" {
+		config.BulkName = pluralize(config.Name)
+	}
+	if config.ResBulkDescription == "" {
+		config.ResBulkDescription = fmt.Sprintf("This resource can manage the %s configuration of multiple items in a single resource.", config.Name)
+	}
+}
+
+// validateBulkConfig verifies that a bulk resource can actually be generated from the definition.
+// It requires an augmented config, as the key attributes are derived from the YANG models.
+func validateBulkConfig(config YamlConfig) {
+	if !config.BulkResource {
+		return
+	}
+	if len(BulkKeyAttributes(config)) == 0 {
+		log.Fatalf("%q: 'bulk_resource' requires a path ending in a list element, got %q", config.Name, config.Path)
+	}
+	if BulkElementNameIsVerb(config) && len(BulkKeyElementEnumValues(config)) == 0 {
+		log.Fatalf("%q: 'bulk_resource' requires 'enum_values' on attribute %q, as it provides the element name of an item",
+			config.Name, BulkKeyAttributes(config)[0].TfName)
+	}
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
-	"toGoName":          ToGoName,
-	"camelCase":         CamelCase,
-	"snakeCase":         SnakeCase,
-	"hasId":             HasId,
-	"hasSensitiveAttr":  HasSensitiveAttr,
-	"add":               Add,
-	"getImportExcludes": GetImportExcludes,
-	"importAttributes":  ImportAttributes,
-	"getDeletePath":     GetDeletePath,
-	"reverseAttributes": ReverseAttributes,
-	"xpathAttributes":   XPathAttributes,
-	"toRestconfPath":    ToRestconfPath,
-	"toDotPath":         ToDotPath,
+	"toGoName":                 ToGoName,
+	"camelCase":                CamelCase,
+	"snakeCase":                SnakeCase,
+	"hasId":                    HasId,
+	"hasSensitiveAttr":         HasSensitiveAttr,
+	"add":                      Add,
+	"getImportExcludes":        GetImportExcludes,
+	"importAttributes":         ImportAttributes,
+	"getDeletePath":            GetDeletePath,
+	"reverseAttributes":        ReverseAttributes,
+	"xpathAttributes":          XPathAttributes,
+	"toRestconfPath":           ToRestconfPath,
+	"toDotPath":                ToDotPath,
+	"bulkParentXPath":          BulkParentXPath,
+	"bulkParentAttributes":     BulkParentAttributes,
+	"bulkKeyAttributes":        BulkKeyAttributes,
+	"bulkItemAttributes":       BulkItemAttributes,
+	"bulkElementNameIsVerb":    BulkElementNameIsVerb,
+	"bulkElementNameExpr":      BulkElementNameExpr,
+	"bulkKeyElementEnumValues": BulkKeyElementEnumValues,
+	"bulkParentXPathArgs":      BulkParentXPathArgs,
+	"bulkItemXPathArgs":        BulkItemXPathArgs,
+	"bulkMapKeyParse":          BulkMapKeyParse,
+	"bulkMapKeyExample":        BulkMapKeyExample,
+	"bulkMapKeyDescription":    BulkMapKeyDescription,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {
@@ -757,6 +1049,10 @@ func main() {
 	}
 
 	for i := range configs {
+		initBulkNames(&configs[i])
+	}
+
+	for i := range configs {
 		if resourceName != "" && configs[i].Name != resourceName {
 			continue
 		}
@@ -764,6 +1060,7 @@ func main() {
 		if !configs[i].NoAugmentConfig {
 			augmentConfig(&configs[i], yangModules)
 		}
+		validateBulkConfig(configs[i])
 
 		fmt.Printf("Augmented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
 
@@ -782,7 +1079,14 @@ func main() {
 		} else {
 			// Iterate over templates and render files
 			for _, t := range templates {
-				renderTemplate(t.path, t.prefix+SnakeCase(configs[i].Name)+t.suffix, configs[i])
+				if skipTemplate(configs[i], t.path) {
+					continue
+				}
+				name := configs[i].Name
+				if isBulkTemplate(t.path) {
+					name = configs[i].BulkName
+				}
+				renderTemplate(t.path, t.prefix+SnakeCase(name)+t.suffix, configs[i])
 			}
 		}
 	}

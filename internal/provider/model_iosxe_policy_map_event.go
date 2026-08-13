@@ -177,7 +177,17 @@ func (data PolicyMapEventData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data PolicyMapEvent) toBodyXML(ctx context.Context, config PolicyMapEvent) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data PolicyMapEvent) addToBodyXML(ctx context.Context, config PolicyMapEvent, body netconf.Body) netconf.Body {
 	if !data.EventType.IsNull() && !data.EventType.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/event-type", data.EventType.ValueString())
 	}
@@ -375,11 +385,7 @@ func (data PolicyMapEvent) toBodyXML(ctx context.Context, config PolicyMapEvent)
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/class-number", cBody.Res())
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

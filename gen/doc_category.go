@@ -36,8 +36,10 @@ const (
 )
 
 type YamlConfig struct {
-	Name        string `yaml:"name"`
-	DocCategory string `yaml:"doc_category"`
+	Name         string `yaml:"name"`
+	BulkName     string `yaml:"bulk_name"`
+	BulkResource bool   `yaml:"bulk_resource"`
+	DocCategory  string `yaml:"doc_category"`
 }
 
 var docPaths = []string{"./docs/data-sources/", "./docs/resources/"}
@@ -52,6 +54,29 @@ func SnakeCase(s string) string {
 		g = append(g, strings.ToLower(value))
 	}
 	return strings.Join(g, "_")
+}
+
+// pluralize returns the plural form of the last word of s. It must stay in sync with the
+// identically named function in gen/generator.go, which derives the default bulk resource name.
+func pluralize(s string) string {
+	words := strings.Fields(s)
+	if len(words) == 0 {
+		return s
+	}
+	last := words[len(words)-1]
+	lower := strings.ToLower(last)
+	switch {
+	case strings.HasSuffix(lower, "y") && !strings.HasSuffix(lower, "ay") && !strings.HasSuffix(lower, "ey") &&
+		!strings.HasSuffix(lower, "iy") && !strings.HasSuffix(lower, "oy") && !strings.HasSuffix(lower, "uy"):
+		last = last[:len(last)-1] + "ies"
+	case strings.HasSuffix(lower, "s"), strings.HasSuffix(lower, "x"), strings.HasSuffix(lower, "z"),
+		strings.HasSuffix(lower, "ch"), strings.HasSuffix(lower, "sh"):
+		last += "es"
+	default:
+		last += "s"
+	}
+	words[len(words)-1] = last
+	return strings.Join(words, " ")
 }
 
 func main() {
@@ -86,6 +111,22 @@ func main() {
 
 			os.WriteFile(filename, []byte(s), 0644)
 		}
+
+		// Bulk resources only have a resource, no data source
+		if !configs[i].BulkResource {
+			continue
+		}
+		bulkName := configs[i].BulkName
+		if bulkName == "" {
+			bulkName = pluralize(configs[i].Name)
+		}
+		filename := "./docs/resources/" + SnakeCase(bulkName) + ".md"
+		content, err := os.ReadFile(filename)
+		if err != nil {
+			log.Fatalf("Error opening documentation: %v", err)
+		}
+		s := strings.ReplaceAll(string(content), `subcategory: ""`, `subcategory: "`+configs[i].DocCategory+`"`)
+		os.WriteFile(filename, []byte(s), 0644)
 	}
 
 	// Update general resources with "General" subcategory
