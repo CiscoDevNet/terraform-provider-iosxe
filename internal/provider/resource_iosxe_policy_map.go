@@ -324,6 +324,10 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 										MarkdownDescription: helpers.NewAttributeDescription("drop packet").String,
 										Optional:            true,
 									},
+									"police_cir_exceed_transmit": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										Optional:            true,
+									},
 									"police_rate_percent": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 100).String,
 										Optional:            true,
