@@ -40,6 +40,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 )
 
@@ -81,6 +82,8 @@ type IosxeProviderModel struct {
 	Password           types.String               `tfsdk:"password"`
 	Host               types.String               `tfsdk:"host"`
 	Retries            types.Int64                `tfsdk:"retries"`
+	AttemptTimeout     types.Int64                `tfsdk:"attempt_timeout"`
+	TotalTimeout       types.Int64                `tfsdk:"total_timeout"`
 	LockReleaseTimeout types.Int64                `tfsdk:"lock_release_timeout"`
 	ReuseConnection    types.Bool                 `tfsdk:"reuse_connection"`
 	AutoCommit         types.Bool                 `tfsdk:"auto_commit"`
@@ -138,6 +141,20 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 99),
+				},
+			},
+			"attempt_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Number of seconds to wait for a single NETCONF operation attempt to complete before treating it as a transient failure and retrying. Large configuration changes (for example, a `spanning-tree` declaration covering thousands of VLANs) can take a device considerably longer than the default to process a `commit`, causing an otherwise-successful operation to be abandoned and retried. Increase this value if operations fail with `errTimeoutError: channel timeout sending input to device` despite the device still working. Note this applies to every NETCONF operation, so raising it also increases how long a genuinely unresponsive device takes to surface as an error. This can also be set as the IOSXE_ATTEMPT_TIMEOUT environment variable. Defaults to `30`.",
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3600),
+				},
+			},
+			"total_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Number of seconds allowed for a NETCONF operation in total, across all retry attempts. This is an outer ceiling: once it expires the operation fails immediately, regardless of how many retries remain or how much of `attempt_timeout` is left. It must therefore be larger than `attempt_timeout` multiplied by the number of attempts, otherwise raising `attempt_timeout` has no effect. This can also be set as the IOSXE_TOTAL_TIMEOUT environment variable. Defaults to `120`.",
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 14400),
 				},
 			},
 			"lock_release_timeout": schema.Int64Attribute{
@@ -293,6 +310,48 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		insecure = config.Insecure.ValueBool()
 	}
 
+	var attemptTimeout int64
+	if config.AttemptTimeout.IsUnknown() {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as attemptTimeout",
+		)
+		return
+	}
+
+	if config.AttemptTimeout.IsNull() {
+		attemptTimeoutStr := os.Getenv("IOSXE_ATTEMPT_TIMEOUT")
+		if attemptTimeoutStr == "" {
+			attemptTimeout = 30
+		} else {
+			attemptTimeout, _ = strconv.ParseInt(attemptTimeoutStr, 0, 64)
+		}
+	} else {
+		attemptTimeout = config.AttemptTimeout.ValueInt64()
+	}
+
+	var totalTimeout int64
+	if config.TotalTimeout.IsUnknown() {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as totalTimeout",
+		)
+		return
+	}
+
+	if config.TotalTimeout.IsNull() {
+		totalTimeoutStr := os.Getenv("IOSXE_TOTAL_TIMEOUT")
+		if totalTimeoutStr == "" {
+			totalTimeout = 120
+		} else {
+			totalTimeout, _ = strconv.ParseInt(totalTimeoutStr, 0, 64)
+		}
+	} else {
+		totalTimeout = config.TotalTimeout.ValueInt64()
+	}
+
 	var lockReleaseTimeout int64
 	if config.LockReleaseTimeout.IsUnknown() {
 		// Cannot connect to client with an unknown value
@@ -406,6 +465,28 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		return
 	}
 
+	// Log the effective NETCONF client tuning values. These are resolved from
+	// (in precedence order) provider configuration, environment variable, or
+	// built-in default, so this is the only place the actual values in force
+	// are visible -- worth logging because a mismatch between what was
+	// configured and what is in effect is otherwise invisible, and these
+	// directly govern how long operations wait before failing.
+	tflog.Debug(ctx, fmt.Sprintf("NETCONF client settings: attempt_timeout=%ds total_timeout=%ds lock_release_timeout=%ds retries=%d", attemptTimeout, totalTimeout, lockReleaseTimeout, retries))
+
+	// total_timeout is an outer ceiling across all attempts, so if it is not
+	// comfortably larger than attempt_timeout * attempts, it -- not
+	// attempt_timeout -- is what actually ends the operation, and raising
+	// attempt_timeout alone silently has no effect.
+	if totalTimeout <= attemptTimeout {
+		resp.Diagnostics.AddWarning(
+			"NETCONF total_timeout is not larger than attempt_timeout",
+			fmt.Sprintf("total_timeout (%ds) is less than or equal to attempt_timeout (%ds). "+
+				"total_timeout bounds the entire operation including all retries, so it will expire first and "+
+				"attempt_timeout will never be reached. Set total_timeout above attempt_timeout multiplied by the "+
+				"number of attempts (retries + 1, currently %d).", totalTimeout, attemptTimeout, retries+1),
+		)
+	}
+
 	data := IosxeProviderData{}
 	data.Devices = make(map[string]*IosxeProviderDataDevice)
 
@@ -417,6 +498,8 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		netconf.Username(username),
 		netconf.Password(password),
 		netconf.MaxRetries(int(retries)),
+		netconf.AttemptTimeout(time.Duration(attemptTimeout) * time.Second),
+		netconf.TotalTimeout(time.Duration(totalTimeout) * time.Second),
 		netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
 		netconf.WithLogger(logger),
 	}
@@ -462,6 +545,8 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			netconf.Username(username),
 			netconf.Password(password),
 			netconf.MaxRetries(int(retries)),
+			netconf.AttemptTimeout(time.Duration(attemptTimeout) * time.Second),
+			netconf.TotalTimeout(time.Duration(totalTimeout) * time.Second),
 			netconf.LockReleaseTimeout(time.Duration(lockReleaseTimeout) * time.Second),
 			netconf.WithLogger(devLogger),
 		}
