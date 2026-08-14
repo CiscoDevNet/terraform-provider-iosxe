@@ -9,6 +9,8 @@ description: |-
 
 ## Unreleased
 
+- Add `pqc_mlkem512`, `pqc_mlkem768`, `pqc_mlkem1024`, and `pqc_optional` attributes to `iosxe_crypto_ikev2_proposal` resource and data source
+- Add `set_pfs` attribute to `iosxe_crypto_ipsec_profile` resource and data source
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute
 - BREAKING CHANGE: Consolidate `iosxe_dhcp_pool` and `iosxe_ipv6_dhcp_pool` into `iosxe_dhcp` as `pools` and `ipv6_pools` list attributes
 - BREAKING CHANGE: Consolidate `iosxe_evpn_profile` into `iosxe_evpn` as a `profiles` list attribute
