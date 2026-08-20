@@ -509,6 +509,114 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Security zone",
 				Computed:            true,
 			},
+			"access_session_monitor": schema.BoolAttribute{
+				MarkdownDescription: "Apply interface defined access-session monitor",
+				Computed:            true,
+			},
+			"storm_control_broadcast_level_rising_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter rising threshold",
+				Computed:            true,
+			},
+			"storm_control_broadcast_level_falling_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter falling threshold",
+				Computed:            true,
+			},
+			"storm_control_broadcast_level_bps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>",
+				Computed:            true,
+			},
+			"storm_control_broadcast_level_bps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ",
+				Computed:            true,
+			},
+			"storm_control_broadcast_level_pps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]",
+				Computed:            true,
+			},
+			"storm_control_broadcast_level_pps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ",
+				Computed:            true,
+			},
+			"storm_control_multicast_level_rising_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter rising threshold",
+				Computed:            true,
+			},
+			"storm_control_multicast_level_falling_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter falling threshold",
+				Computed:            true,
+			},
+			"storm_control_multicast_level_bps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>",
+				Computed:            true,
+			},
+			"storm_control_multicast_level_bps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ",
+				Computed:            true,
+			},
+			"storm_control_multicast_level_pps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]",
+				Computed:            true,
+			},
+			"storm_control_multicast_level_pps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ",
+				Computed:            true,
+			},
+			"storm_control_unicast_level_rising_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter rising threshold",
+				Computed:            true,
+			},
+			"storm_control_unicast_level_falling_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter falling threshold",
+				Computed:            true,
+			},
+			"storm_control_unicast_level_bps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>",
+				Computed:            true,
+			},
+			"storm_control_unicast_level_bps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ",
+				Computed:            true,
+			},
+			"storm_control_unicast_level_pps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]",
+				Computed:            true,
+			},
+			"storm_control_unicast_level_pps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ",
+				Computed:            true,
+			},
+			"storm_control_unknown_unicast_level_rising_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter rising threshold",
+				Computed:            true,
+			},
+			"storm_control_unknown_unicast_level_falling_threshold": schema.Float64Attribute{
+				MarkdownDescription: "Enter falling threshold",
+				Computed:            true,
+			},
+			"storm_control_unknown_unicast_level_bps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>",
+				Computed:            true,
+			},
+			"storm_control_unknown_unicast_level_bps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]> ",
+				Computed:            true,
+			},
+			"storm_control_unknown_unicast_level_pps_rising_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]",
+				Computed:            true,
+			},
+			"storm_control_unknown_unicast_level_pps_falling_threshold": schema.StringAttribute{
+				MarkdownDescription: "Enter falling threshold - <0.0 - 10000000000.0>[k|m|g] ",
+				Computed:            true,
+			},
+			"storm_control_action_shutdown": schema.BoolAttribute{
+				MarkdownDescription: "Shutdown this interface if a storm occurs",
+				Computed:            true,
+			},
+			"storm_control_action_trap": schema.BoolAttribute{
+				MarkdownDescription: "Send SNMP trap if a storm occurs",
+				Computed:            true,
+			},
 		},
 	}
 }
