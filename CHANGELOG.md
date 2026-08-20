@@ -2,6 +2,9 @@
 
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
 - Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
+- Add `iosxe_discard` action, reverting the candidate datastore to the running configuration. Since the candidate datastore is shared and persists on the device, changes left staged by a failed commit are otherwise re-attempted by every subsequent commit until they are discarded.
+- Add `discard_on_connect` provider attribute (also settable as the `IOSXE_DISCARD_ON_CONNECT` environment variable), discarding the candidate datastore once per run before the first change is staged. Disabled by default, since it also discards staged changes made outside Terraform.
+- Add `discard_on_commit_failure` provider attribute (also settable as the `IOSXE_DISCARD_ON_COMMIT_FAILURE` environment variable), discarding the candidate datastore when the device rejects a commit. Previously the rejected configuration stayed staged and was re-attempted by every subsequent commit, blocking unrelated changes indefinitely. Disabled by default, since it also discards staged changes made outside Terraform. Regardless of the setting, a rejected commit now reports what was left in the candidate datastore instead of failing without explanation.
 
 ## 1.0.0
 

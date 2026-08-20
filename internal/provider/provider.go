@@ -78,18 +78,20 @@ type IosxeProvider struct {
 
 // IosxeProviderModel describes the provider data model.
 type IosxeProviderModel struct {
-	Username           types.String               `tfsdk:"username"`
-	Password           types.String               `tfsdk:"password"`
-	Host               types.String               `tfsdk:"host"`
-	Retries            types.Int64                `tfsdk:"retries"`
-	AttemptTimeout     types.Int64                `tfsdk:"attempt_timeout"`
-	TotalTimeout       types.Int64                `tfsdk:"total_timeout"`
-	LockReleaseTimeout types.Int64                `tfsdk:"lock_release_timeout"`
-	ReuseConnection    types.Bool                 `tfsdk:"reuse_connection"`
-	AutoCommit         types.Bool                 `tfsdk:"auto_commit"`
-	Insecure           types.Bool                 `tfsdk:"insecure"`
-	SelectedDevices    types.List                 `tfsdk:"selected_devices"`
-	Devices            []IosxeProviderModelDevice `tfsdk:"devices"`
+	Username               types.String               `tfsdk:"username"`
+	Password               types.String               `tfsdk:"password"`
+	Host                   types.String               `tfsdk:"host"`
+	Retries                types.Int64                `tfsdk:"retries"`
+	AttemptTimeout         types.Int64                `tfsdk:"attempt_timeout"`
+	TotalTimeout           types.Int64                `tfsdk:"total_timeout"`
+	LockReleaseTimeout     types.Int64                `tfsdk:"lock_release_timeout"`
+	ReuseConnection        types.Bool                 `tfsdk:"reuse_connection"`
+	AutoCommit             types.Bool                 `tfsdk:"auto_commit"`
+	DiscardOnConnect       types.Bool                 `tfsdk:"discard_on_connect"`
+	DiscardOnCommitFailure types.Bool                 `tfsdk:"discard_on_commit_failure"`
+	Insecure               types.Bool                 `tfsdk:"insecure"`
+	SelectedDevices        types.List                 `tfsdk:"selected_devices"`
+	Devices                []IosxeProviderModelDevice `tfsdk:"devices"`
 }
 
 type IosxeProviderModelDevice struct {
@@ -170,6 +172,14 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 			},
 			"auto_commit": schema.BoolAttribute{
 				MarkdownDescription: "Automatically commit configuration changes after each resource operation. When `true` (default), each resource commits its changes immediately. When `false`, changes are left in the candidate datastore and must be explicitly committed using the `iosxe_commit` resource. **Requires reuse_connection=true when disabled**. Only applies to NETCONF protocol with candidate datastore support. This can also be set as the IOSXE_AUTO_COMMIT environment variable. Defaults to `true`.",
+				Optional:            true,
+			},
+			"discard_on_connect": schema.BoolAttribute{
+				MarkdownDescription: "Discard any configuration left staged in the candidate datastore before applying this run's first change. The candidate datastore is shared and persists on the device, so changes left staged by an earlier failed commit are otherwise re-attempted by every subsequent commit and keep failing it. Enabling this clears them automatically. **This discards staged changes made by anyone, not just Terraform** - do not enable it if other tools or engineers stage configuration on the same devices. Only applies to devices with candidate datastore support. This can also be set as the IOSXE_DISCARD_ON_CONNECT environment variable. Defaults to `false`.",
+				Optional:            true,
+			},
+			"discard_on_commit_failure": schema.BoolAttribute{
+				MarkdownDescription: "Discard the candidate datastore when the device rejects a commit. A commit applies the entire candidate datastore, not just the change that triggered it, so a rejected commit leaves the rejected configuration staged, where every subsequent commit re-attempts it and fails the same way until it is discarded. Enabling this clears it automatically. **This discards staged changes made by anyone, not just Terraform** - do not enable it if other tools or engineers stage configuration on the same devices. Whether it is enabled or not, the returned error states what was left in the candidate datastore. Only applies to devices with candidate datastore support. This can also be set as the IOSXE_DISCARD_ON_COMMIT_FAILURE environment variable. Defaults to `false`.",
 				Optional:            true,
 			},
 			"selected_devices": schema.ListAttribute{
@@ -413,6 +423,46 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		autoCommit = config.AutoCommit.ValueBool()
 	}
 
+	var discardOnConnect bool
+	if config.DiscardOnConnect.IsUnknown() {
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as discardOnConnect",
+		)
+		return
+	}
+
+	if config.DiscardOnConnect.IsNull() {
+		discardOnConnectStr := os.Getenv("IOSXE_DISCARD_ON_CONNECT")
+		if discardOnConnectStr == "" {
+			discardOnConnect = false
+		} else {
+			discardOnConnect, _ = strconv.ParseBool(discardOnConnectStr)
+		}
+	} else {
+		discardOnConnect = config.DiscardOnConnect.ValueBool()
+	}
+
+	var discardOnCommitFailure bool
+	if config.DiscardOnCommitFailure.IsUnknown() {
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as discardOnCommitFailure",
+		)
+		return
+	}
+
+	if config.DiscardOnCommitFailure.IsNull() {
+		discardOnCommitFailureStr := os.Getenv("IOSXE_DISCARD_ON_COMMIT_FAILURE")
+		if discardOnCommitFailureStr == "" {
+			discardOnCommitFailure = false
+		} else {
+			discardOnCommitFailure, _ = strconv.ParseBool(discardOnCommitFailureStr)
+		}
+	} else {
+		discardOnCommitFailure = config.DiscardOnCommitFailure.ValueBool()
+	}
+
 	var selectedDevices []string
 	if config.SelectedDevices.IsUnknown() {
 		// Cannot connect to client with an unknown value
@@ -517,6 +567,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		)
 		return
 	}
+	helpers.SetDiscardOptions(c, discardOnConnect, discardOnCommitFailure)
 	data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: true}
 
 	for _, device := range config.Devices {
@@ -564,6 +615,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
+		helpers.SetDiscardOptions(devClient, discardOnConnect, discardOnCommitFailure)
 		data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: devClient, ReuseConnection: reuseConnection, AutoCommit: autoCommit, Managed: managed}
 	}
 
@@ -864,6 +916,7 @@ func (p *IosxeProvider) DataSources(_ context.Context) []func() datasource.DataS
 func (p *IosxeProvider) Actions(_ context.Context) []func() action.Action {
 	return []func() action.Action{
 		NewCommitAction,
+		NewDiscardAction,
 		NewSaveConfigAction,
 	}
 }
