@@ -104,9 +104,25 @@ This provides atomic commits where all changes succeed or fail together, prevent
 
 ### Stale Candidate Changes
 
-The candidate datastore is **shared and persists on the device**; it is not per-session scratch space. If a commit is rejected, the offending changes stay staged in the candidate, and every subsequent commit re-attempts them and fails the same way - even after the offending resource has been removed from your Terraform configuration.
+The candidate datastore is **shared and persists on the device**; it is not per-session scratch space. Anything left staged in it is re-attempted by the next commit, whoever staged it.
 
-Symptoms are a `commit` that keeps failing on a command that is no longer anywhere in your configuration. You can confirm it by reading the candidate datastore over NETCONF and clear it with `<discard-changes/>`, with the `iosxe_discard` action, or by setting:
+When the device rejects a commit, the rejected configuration stays staged in the candidate. Every later commit re-attempts it and fails the same way, so a single bad value blocks unrelated changes until someone clears it. The error always says what was left behind, so this is never silent:
+
+- *The candidate datastore still holds the rejected configuration* - clear it before the next apply, with the `iosxe_discard` action or `<discard-changes/>`.
+- *The candidate datastore has been discarded* - no part of that run was applied, and later runs are unaffected. Correct the rejected value and apply again.
+- *The candidate datastore could not be discarded afterwards* - the discard was attempted and failed; the rejected configuration is still staged.
+
+To have the provider clear it automatically, set:
+
+```terraform
+provider "iosxe" {
+  discard_on_commit_failure = true
+}
+```
+
+This is **disabled by default**, for the same reason as `discard_on_connect` below: a discard is not selective, so it also drops anything another tool or engineer had staged. Leaving it off costs nothing but an explicit cleanup step, and the error tells you when one is needed.
+
+The symptom is a `commit` that keeps failing on a command that is no longer anywhere in your configuration. Confirm it by reading the candidate datastore over NETCONF, then clear it with `<discard-changes/>`, with the `iosxe_discard` action, or by setting:
 
 ```terraform
 provider "iosxe" {

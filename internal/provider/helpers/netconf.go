@@ -186,8 +186,8 @@ func EditConfig(ctx context.Context, client *netconf.Client, body string, commit
 		}
 
 		if commit {
-			if _, err := client.Commit(ctx); err != nil {
-				return fmt.Errorf("failed to commit config: %s", FormatNetconfError(err))
+			if err := commitWithCleanup(ctx, client); err != nil {
+				return err
 			}
 		}
 	} else {
@@ -226,10 +226,50 @@ func Commit(ctx context.Context, client *netconf.Client) error {
 		}
 		defer client.Unlock(ctx, "running")
 
-		if _, err := client.Commit(ctx); err != nil {
-			return fmt.Errorf("failed to commit config: %s", FormatNetconfError(err))
+		if err := commitWithCleanup(ctx, client); err != nil {
+			return err
 		}
 	}
+	return nil
+}
+
+// commitWithCleanup commits the candidate datastore and, when the device
+// rejects the commit and the client has discard_on_commit_failure enabled,
+// discards the candidate before returning the error.
+//
+// A commit applies the whole candidate, not just the change that triggered this
+// call, so a rejected commit leaves the rejected configuration staged. The
+// candidate is shared and persists across sessions, so every later commit
+// re-attempts that configuration and fails the same way, blocking unrelated
+// changes indefinitely until someone discards it out of band. Discarding here
+// keeps a single rejected value from wedging the datastore, and is symmetric
+// with the success path, which also acts on the candidate as a whole.
+//
+// Whichever way it is configured, the returned error states what was left in
+// the candidate datastore: the bare commit error gives no hint that anything
+// beyond the current change is now blocked.
+//
+// Only reachable when the device advertises the :candidate capability; without
+// it there is nothing staged to clean up.
+func commitWithCleanup(ctx context.Context, client *netconf.Client) error {
+	if _, err := client.Commit(ctx); err != nil {
+		commitErr := fmt.Errorf("failed to commit config: %s", FormatNetconfError(err))
+
+		if !discardOnCommitFailure(client) {
+			return fmt.Errorf("%w\n\nThe candidate datastore still holds the rejected configuration, so every subsequent commit fails with the error above until it is discarded, for example with the iosxe_discard action. Set discard_on_commit_failure = true to have the provider clear it automatically.", commitErr)
+		}
+
+		tflog.Debug(ctx, "Commit was rejected, discarding the candidate config")
+		if _, discardErr := client.Discard(ctx); discardErr != nil {
+			// Both errors are reported: the discard failure alone would hide
+			// why the commit was rejected, and the commit failure alone would
+			// leave the datastore quietly wedged.
+			return fmt.Errorf("%w\n\nThe candidate datastore could not be discarded afterwards: %s\nIt still holds the rejected configuration, so every subsequent commit fails with the error above until the candidate is discarded, for example with the iosxe_discard action.", commitErr, FormatNetconfError(discardErr))
+		}
+
+		return fmt.Errorf("%w\n\nThe candidate datastore has been discarded, so no part of this run was applied and later runs are not blocked by it.", commitErr)
+	}
+
 	return nil
 }
 
@@ -237,8 +277,12 @@ func Commit(ctx context.Context, client *netconf.Client) error {
 // datastore, dropping any staged but uncommitted changes.
 //
 // The candidate datastore on IOS-XE is shared and persists across sessions, so
-// edits left behind by a failed commit remain staged and are re-attempted by
-// every subsequent commit. Discarding clears them.
+// anything left staged in it is re-attempted by every subsequent commit,
+// whoever staged it. Discarding clears it.
+//
+// The provider cleans up after its own rejected commits (see commitWithCleanup);
+// this is the escape hatch for everything else, such as changes staged by
+// another tool or from the CLI.
 func Discard(ctx context.Context, client *netconf.Client) error {
 	if err := client.Open(); err != nil {
 		return fmt.Errorf("failed to open NETCONF connection: %w", err)
@@ -255,24 +299,37 @@ func Discard(ctx context.Context, client *netconf.Client) error {
 	return nil
 }
 
-// discardStates tracks, per NETCONF client, whether the candidate datastore is
-// reverted to the running configuration before this run's first change, and
-// whether that has been attempted yet. Keyed by *netconf.Client, so providers
+// discardStates tracks, per NETCONF client, when the candidate datastore should
+// be reverted to the running configuration, and whether the once-per-run
+// discard has been attempted yet. Keyed by *netconf.Client, so providers
 // configured with different values (for example two aliased providers) do not
 // affect each other. A client that was never registered discards nothing.
 var discardStates sync.Map
 
 type discardState struct {
-	enabled bool
-	once    sync.Once
-	err     error
+	onConnect       bool
+	onCommitFailure bool
+	once            sync.Once
+	err             error
 }
 
-// SetDiscardOnConnect records whether stale candidate config should be
-// discarded before this run's first change to client. Called from the provider
-// Configure method, once per client, before the client is used.
-func SetDiscardOnConnect(client *netconf.Client, enabled bool) {
-	discardStates.Store(client, &discardState{enabled: enabled})
+// SetDiscardOptions records when the candidate datastore should be discarded
+// for client: onConnect before this run's first change, onCommitFailure after
+// the device rejects a commit. Called from the provider Configure method, once
+// per client, before the client is used.
+func SetDiscardOptions(client *netconf.Client, onConnect, onCommitFailure bool) {
+	discardStates.Store(client, &discardState{onConnect: onConnect, onCommitFailure: onCommitFailure})
+}
+
+// discardOnCommitFailure reports whether client discards the candidate
+// datastore when the device rejects a commit.
+func discardOnCommitFailure(client *netconf.Client) bool {
+	v, ok := discardStates.Load(client)
+	if !ok {
+		return false
+	}
+
+	return v.(*discardState).onCommitFailure
 }
 
 // discardStaleCandidate reverts the candidate datastore to the running
@@ -293,7 +350,7 @@ func discardStaleCandidate(ctx context.Context, client *netconf.Client) error {
 	}
 
 	state := v.(*discardState)
-	if !state.enabled {
+	if !state.onConnect {
 		return nil
 	}
 
