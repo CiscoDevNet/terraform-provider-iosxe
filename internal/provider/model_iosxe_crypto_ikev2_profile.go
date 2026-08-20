@@ -194,6 +194,7 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 		}
 	}
 	if len(data.MatchIdentityRemoteIpv4Addresses) > 0 {
+		MatchIdentityRemoteIpv4AddressesFragments := make([]string, 0, len(data.MatchIdentityRemoteIpv4Addresses))
 		for _, item := range data.MatchIdentityRemoteIpv4Addresses {
 			cBody := netconf.Body{}
 			if !item.Address.IsNull() && !item.Address.IsUnknown() {
@@ -202,8 +203,9 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "ipv4-mask", item.Mask.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/match/identity/remote/address/ipv4", cBody.Res())
+			MatchIdentityRemoteIpv4AddressesFragments = append(MatchIdentityRemoteIpv4AddressesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/match/identity/remote/address/ipv4", MatchIdentityRemoteIpv4AddressesFragments)
 	}
 	if !data.MatchIdentityRemoteIpv6Prefixes.IsNull() && !data.MatchIdentityRemoteIpv6Prefixes.IsUnknown() {
 		var values []string
@@ -241,13 +243,15 @@ func (data CryptoIKEv2Profile) addToBodyXML(ctx context.Context, config CryptoIK
 		body = helpers.SetFromXPath(body, data.getXPath()+"/match/address/local/interface-options/Loopback", strconv.FormatInt(data.MatchAddressLocalInterfaceLoopbackLegacy.ValueInt64(), 10))
 	}
 	if len(data.MatchAddressLocalInterfaceLoopback) > 0 {
+		MatchAddressLocalInterfaceLoopbackFragments := make([]string, 0, len(data.MatchAddressLocalInterfaceLoopback))
 		for _, item := range data.MatchAddressLocalInterfaceLoopback {
 			cBody := netconf.Body{}
 			if !item.LoopbackNumber.IsNull() && !item.LoopbackNumber.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "Loopback", strconv.FormatInt(item.LoopbackNumber.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/match/address/local/interface-options-local/Loopback", cBody.Res())
+			MatchAddressLocalInterfaceLoopbackFragments = append(MatchAddressLocalInterfaceLoopbackFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/match/address/local/interface-options-local/Loopback", MatchAddressLocalInterfaceLoopbackFragments)
 	}
 	if !data.ConfigExchangeRequest.IsNull() && !data.ConfigExchangeRequest.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/config-exchange/request-1", data.ConfigExchangeRequest.ValueBool())
@@ -326,29 +330,12 @@ func (data *CryptoIKEv2Profile) updateFromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.MatchFvrfAny = types.BoolNull()
 	}
+	MatchIdentityRemoteIpv4AddressesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MatchIdentityRemoteIpv4AddressesKeys := [...]string{"ipv4-address"}
+	MatchIdentityRemoteIpv4AddressesItems := helpers.CollectListItemsXML(MatchIdentityRemoteIpv4AddressesParentScope.Raw, "match/identity/remote/address/ipv4", MatchIdentityRemoteIpv4AddressesKeys[:])
 	for i := range data.MatchIdentityRemoteIpv4Addresses {
-		keys := [...]string{"ipv4-address"}
-		keyValues := [...]string{data.MatchIdentityRemoteIpv4Addresses[i].Address.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/identity/remote/address/ipv4").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MatchIdentityRemoteIpv4AddressesKeyValues := [...]string{data.MatchIdentityRemoteIpv4Addresses[i].Address.ValueString()}
+		r := MatchIdentityRemoteIpv4AddressesItems[helpers.CompositeKey(MatchIdentityRemoteIpv4AddressesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "ipv4-address"); value.Exists() && !data.MatchIdentityRemoteIpv4Addresses[i].Address.IsNull() {
 			data.MatchIdentityRemoteIpv4Addresses[i].Address = types.StringValue(value.String())
 		} else {
@@ -405,29 +392,12 @@ func (data *CryptoIKEv2Profile) updateFromBodyXML(ctx context.Context, res xmldo
 	} else {
 		data.MatchAddressLocalInterfaceLoopbackLegacy = types.Int64Null()
 	}
+	MatchAddressLocalInterfaceLoopbackParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	MatchAddressLocalInterfaceLoopbackKeys := [...]string{"Loopback"}
+	MatchAddressLocalInterfaceLoopbackItems := helpers.CollectListItemsXML(MatchAddressLocalInterfaceLoopbackParentScope.Raw, "match/address/local/interface-options-local/Loopback", MatchAddressLocalInterfaceLoopbackKeys[:])
 	for i := range data.MatchAddressLocalInterfaceLoopback {
-		keys := [...]string{"Loopback"}
-		keyValues := [...]string{strconv.FormatInt(data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/address/local/interface-options-local/Loopback").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		MatchAddressLocalInterfaceLoopbackKeyValues := [...]string{strconv.FormatInt(data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.ValueInt64(), 10)}
+		r := MatchAddressLocalInterfaceLoopbackItems[helpers.CompositeKey(MatchAddressLocalInterfaceLoopbackKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "Loopback"); value.Exists() && !data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber.IsNull() {
 			data.MatchAddressLocalInterfaceLoopback[i].LoopbackNumber = types.Int64Value(value.Int())
 		} else {

@@ -214,6 +214,7 @@ func (data EVPN) addToBodyXML(ctx context.Context, config EVPN, body netconf.Bod
 		}
 	}
 	if len(data.Profiles) > 0 {
+		ProfilesFragments := make([]string, 0, len(data.Profiles))
 		for _, item := range data.Profiles {
 			cBody := netconf.Body{}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
@@ -225,8 +226,9 @@ func (data EVPN) addToBodyXML(ctx context.Context, config EVPN, body netconf.Bod
 			if !item.L2vniBase.IsNull() && !item.L2vniBase.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "l2vni-base", strconv.FormatInt(item.L2vniBase.ValueInt64(), 10))
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/l2-profile/evpn/profile/profile-name-list", cBody.Res())
+			ProfilesFragments = append(ProfilesFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/l2-profile/evpn/profile/profile-name-list", ProfilesFragments)
 	}
 	return body
 }
@@ -351,29 +353,12 @@ func (data *EVPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.MulticastAdvertise = types.BoolNull()
 	}
+	ProfilesParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	ProfilesKeys := [...]string{"name"}
+	ProfilesItems := helpers.CollectListItemsXML(ProfilesParentScope.Raw, "l2-profile/evpn/profile/profile-name-list", ProfilesKeys[:])
 	for i := range data.Profiles {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Profiles[i].Name.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/l2-profile/evpn/profile/profile-name-list").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		ProfilesKeyValues := [...]string{data.Profiles[i].Name.ValueString()}
+		r := ProfilesItems[helpers.CompositeKey(ProfilesKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Profiles[i].Name.IsNull() {
 			data.Profiles[i].Name = types.StringValue(value.String())
 		} else {

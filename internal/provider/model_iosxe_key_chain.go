@@ -206,6 +206,7 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 		}
 	}
 	if len(data.Keys) > 0 {
+		KeysFragments := make([]string, 0, len(data.Keys))
 		for _, item := range data.Keys {
 			var configItem KeyChainKeys
 			for _, ci := range config.Keys {
@@ -373,8 +374,9 @@ func (data KeyChain) addToBodyXML(ctx context.Context, config KeyChain, body net
 			if !item.AcceptAoMismatch.IsNull() && !item.AcceptAoMismatch.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "accept-ao-mismatch", item.AcceptAoMismatch.ValueBool())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/key", cBody.Res())
+			KeysFragments = append(KeysFragments, cBody.Res())
 		}
+		body = helpers.SetRawFromXPathMulti(body, data.getXPath()+"/key", KeysFragments)
 	}
 	return body
 }
@@ -407,29 +409,12 @@ func (data *KeyChain) updateFromBodyXML(ctx context.Context, res xmldot.Result) 
 	} else {
 		data.Tcp = types.BoolNull()
 	}
+	KeysParentScope := helpers.GetFromXPath(res, "data"+data.getXPath())
+	KeysKeys := [...]string{"id"}
+	KeysItems := helpers.CollectListItemsXML(KeysParentScope.Raw, "key", KeysKeys[:])
 	for i := range data.Keys {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Keys[i].Id.ValueString()}
-
-		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/key").ForEach(
-			func(_ int, v xmldot.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
+		KeysKeyValues := [...]string{data.Keys[i].Id.ValueString()}
+		r := KeysItems[helpers.CompositeKey(KeysKeyValues[:]...)]
 		if value := helpers.GetFromXPath(r, "id"); value.Exists() && !data.Keys[i].Id.IsNull() {
 			data.Keys[i].Id = types.StringValue(value.String())
 		} else {
