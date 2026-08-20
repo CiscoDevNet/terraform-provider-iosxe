@@ -369,6 +369,124 @@ attributes:
     tf_name: zone_member_security
     example: INSIDE
     exclude_test: true
+  - yang_name: access-session/monitor
+    example: true
+  - yang_name: storm-control/broadcast/level/threshold/rising-threshold
+    xpath: storm-control/broadcast/level/threshold/rising-threshold
+    tf_name: storm_control_broadcast_level_rising_threshold
+    example: 10.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/broadcast/level/threshold/falling-threshold
+    xpath: storm-control/broadcast/level/threshold/falling-threshold
+    tf_name: storm_control_broadcast_level_falling_threshold
+    example: 8.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/broadcast/level/bps/rising-threshold
+    xpath: storm-control/broadcast/level/bps/rising-threshold
+    tf_name: storm_control_broadcast_level_bps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/broadcast/level/bps/falling-threshold
+    xpath: storm-control/broadcast/level/bps/falling-threshold
+    tf_name: storm_control_broadcast_level_bps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/broadcast/level/pps/rising-threshold
+    xpath: storm-control/broadcast/level/pps/rising-threshold
+    tf_name: storm_control_broadcast_level_pps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/broadcast/level/pps/falling-threshold
+    xpath: storm-control/broadcast/level/pps/falling-threshold
+    tf_name: storm_control_broadcast_level_pps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/multicast/level/threshold/rising-threshold
+    xpath: storm-control/multicast/level/threshold/rising-threshold
+    tf_name: storm_control_multicast_level_rising_threshold
+    example: 10.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/multicast/level/threshold/falling-threshold
+    xpath: storm-control/multicast/level/threshold/falling-threshold
+    tf_name: storm_control_multicast_level_falling_threshold
+    example: 8.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/multicast/level/bps/rising-threshold
+    xpath: storm-control/multicast/level/bps/rising-threshold
+    tf_name: storm_control_multicast_level_bps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/multicast/level/bps/falling-threshold
+    xpath: storm-control/multicast/level/bps/falling-threshold
+    tf_name: storm_control_multicast_level_bps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/multicast/level/pps/rising-threshold
+    xpath: storm-control/multicast/level/pps/rising-threshold
+    tf_name: storm_control_multicast_level_pps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/multicast/level/pps/falling-threshold
+    xpath: storm-control/multicast/level/pps/falling-threshold
+    tf_name: storm_control_multicast_level_pps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/unicast/level/threshold/rising-threshold
+    xpath: storm-control/unicast/level/threshold/rising-threshold
+    tf_name: storm_control_unicast_level_rising_threshold
+    example: 10.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/unicast/level/threshold/falling-threshold
+    xpath: storm-control/unicast/level/threshold/falling-threshold
+    tf_name: storm_control_unicast_level_falling_threshold
+    example: 8.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/unicast/level/bps/rising-threshold
+    xpath: storm-control/unicast/level/bps/rising-threshold
+    tf_name: storm_control_unicast_level_bps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/unicast/level/bps/falling-threshold
+    xpath: storm-control/unicast/level/bps/falling-threshold
+    tf_name: storm_control_unicast_level_bps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/unicast/level/pps/rising-threshold
+    xpath: storm-control/unicast/level/pps/rising-threshold
+    tf_name: storm_control_unicast_level_pps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/unicast/level/pps/falling-threshold
+    xpath: storm-control/unicast/level/pps/falling-threshold
+    tf_name: storm_control_unicast_level_pps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/unknown-unicast/level/threshold/rising-threshold
+    xpath: storm-control/unknown-unicast/level/threshold/rising-threshold
+    tf_name: storm_control_unknown_unicast_level_rising_threshold
+    example: 10.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/unknown-unicast/level/threshold/falling-threshold
+    xpath: storm-control/unknown-unicast/level/threshold/falling-threshold
+    tf_name: storm_control_unknown_unicast_level_falling_threshold
+    example: 8.5
+    min_float: 0
+    max_float: 100
+  - yang_name: storm-control/unknown-unicast/level/bps/rising-threshold
+    xpath: storm-control/unknown-unicast/level/bps/rising-threshold
+    tf_name: storm_control_unknown_unicast_level_bps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/unknown-unicast/level/bps/falling-threshold
+    xpath: storm-control/unknown-unicast/level/bps/falling-threshold
+    tf_name: storm_control_unknown_unicast_level_bps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/unknown-unicast/level/pps/rising-threshold
+    xpath: storm-control/unknown-unicast/level/pps/rising-threshold
+    tf_name: storm_control_unknown_unicast_level_pps_rising_threshold
+    example: "10k"
+  - yang_name: storm-control/unknown-unicast/level/pps/falling-threshold
+    xpath: storm-control/unknown-unicast/level/pps/falling-threshold
+    tf_name: storm_control_unknown_unicast_level_pps_falling_threshold
+    example: "8k"
+  - yang_name: storm-control/action/shutdown
+    example: true
+  - yang_name: storm-control/action/trap
+    example: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
