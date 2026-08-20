@@ -221,6 +221,28 @@ func Commit(ctx context.Context, client *netconf.Client) error {
 	return nil
 }
 
+// Discard reverts the candidate datastore to the contents of the running
+// datastore, dropping any staged but uncommitted changes.
+//
+// The candidate datastore on IOS-XE is shared and persists across sessions, so
+// edits left behind by a failed commit remain staged and are re-attempted by
+// every subsequent commit. Discarding clears them.
+func Discard(ctx context.Context, client *netconf.Client) error {
+	if err := client.Open(); err != nil {
+		return fmt.Errorf("failed to open NETCONF connection: %w", err)
+	}
+
+	if !client.ServerHasCapability("urn:ietf:params:netconf:capability:candidate:1.0") {
+		return fmt.Errorf("device does not support the candidate datastore capability, nothing to discard")
+	}
+
+	if _, err := client.Discard(ctx); err != nil {
+		return fmt.Errorf("failed to discard candidate config: %s", FormatNetconfError(err))
+	}
+
+	return nil
+}
+
 // SaveConfig saves the running configuration to startup configuration.
 // This is equivalent to 'copy running-config startup-config' in the CLI.
 // Uses the cisco-ia:save-config RPC operation.
