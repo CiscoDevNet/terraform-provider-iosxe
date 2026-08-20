@@ -162,6 +162,11 @@ func EditConfig(ctx context.Context, client *netconf.Client, body string, commit
 	candidate := client.ServerHasCapability("urn:ietf:params:netconf:capability:candidate:1.0")
 
 	if candidate {
+		// Clear anything an earlier run left staged, before this run's first change.
+		if err := discardStaleCandidate(ctx, client); err != nil {
+			return err
+		}
+
 		if commit {
 			// Lock running datastore
 			if _, err := client.Lock(ctx, "running"); err != nil {
@@ -208,6 +213,13 @@ func Commit(ctx context.Context, client *netconf.Client) error {
 	candidate := client.ServerHasCapability("urn:ietf:params:netconf:capability:candidate:1.0")
 
 	if candidate {
+		// Covers a run whose only write is the commit itself: without this, a
+		// stale candidate left by an earlier run would still be committed here.
+		// A no-op if an EditConfig in this run already discarded.
+		if err := discardStaleCandidate(ctx, client); err != nil {
+			return err
+		}
+
 		// Lock running datastore
 		if _, err := client.Lock(ctx, "running"); err != nil {
 			return fmt.Errorf("failed to lock running datastore: %s", FormatNetconfError(err))
@@ -241,6 +253,60 @@ func Discard(ctx context.Context, client *netconf.Client) error {
 	}
 
 	return nil
+}
+
+// discardStates tracks, per NETCONF client, whether the candidate datastore is
+// reverted to the running configuration before this run's first change, and
+// whether that has been attempted yet. Keyed by *netconf.Client, so providers
+// configured with different values (for example two aliased providers) do not
+// affect each other. A client that was never registered discards nothing.
+var discardStates sync.Map
+
+type discardState struct {
+	enabled bool
+	once    sync.Once
+	err     error
+}
+
+// SetDiscardOnConnect records whether stale candidate config should be
+// discarded before this run's first change to client. Called from the provider
+// Configure method, once per client, before the client is used.
+func SetDiscardOnConnect(client *netconf.Client, enabled bool) {
+	discardStates.Store(client, &discardState{enabled: enabled})
+}
+
+// discardStaleCandidate reverts the candidate datastore to the running
+// configuration once per client, before this run's first change.
+//
+// The candidate datastore is shared and persists on the device, so edits left
+// staged by an earlier failed commit are otherwise re-attempted by this run's
+// commit and fail it again indefinitely.
+//
+// This must happen at most once per run. With auto_commit=false the provider
+// accumulates many edits in the candidate before committing, so discarding
+// again part-way through would drop this run's own staged changes. Callers
+// must only invoke it when the device advertises the :candidate capability.
+func discardStaleCandidate(ctx context.Context, client *netconf.Client) error {
+	v, ok := discardStates.Load(client)
+	if !ok {
+		return nil
+	}
+
+	state := v.(*discardState)
+	if !state.enabled {
+		return nil
+	}
+
+	// once.Do blocks concurrent callers until the first attempt has finished,
+	// so no edit can slip in ahead of the discard.
+	state.once.Do(func() {
+		tflog.Debug(ctx, "Discarding stale candidate config before first change")
+		if _, err := client.Discard(ctx); err != nil {
+			state.err = fmt.Errorf("failed to discard stale candidate config: %s", FormatNetconfError(err))
+		}
+	})
+
+	return state.err
 }
 
 // SaveConfig saves the running configuration to startup configuration.

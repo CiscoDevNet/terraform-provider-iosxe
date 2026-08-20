@@ -76,6 +76,7 @@ The following provider attributes control NETCONF behavior:
 | `lock_release_timeout` | Seconds to wait for datastore lock release | `120` | `IOSXE_LOCK_RELEASE_TIMEOUT` |
 | `reuse_connection` | Keep SSH connections open between operations | `true` | `IOSXE_REUSE_CONNECTION` |
 | `auto_commit` | Automatically commit changes after each operation | `true` | `IOSXE_AUTO_COMMIT` |
+| `discard_on_connect` | Discard leftover candidate datastore changes before the first change of a run | `false` | `IOSXE_DISCARD_ON_CONNECT` |
 
 ### Port Configuration
 
@@ -100,6 +101,20 @@ When your device supports the candidate datastore capability (enabled with `netc
 5. **Unlock** both datastores
 
 This provides atomic commits where all changes succeed or fail together, preventing partial configuration states.
+
+### Stale Candidate Changes
+
+The candidate datastore is **shared and persists on the device**; it is not per-session scratch space. If a commit is rejected, the offending changes stay staged in the candidate, and every subsequent commit re-attempts them and fails the same way - even after the offending resource has been removed from your Terraform configuration.
+
+Symptoms are a `commit` that keeps failing on a command that is no longer anywhere in your configuration. You can confirm it by reading the candidate datastore over NETCONF and clear it with `<discard-changes/>`, with the `iosxe_discard` action, or by setting:
+
+```terraform
+provider "iosxe" {
+  discard_on_connect = true
+}
+```
+
+With `discard_on_connect = true` the provider reverts the candidate to the running configuration once per run, before staging this run's first change. It is **disabled by default** because a discard is not selective: it also drops changes staged by other tools or by an engineer at the CLI. Leave it off if anything other than Terraform stages configuration on these devices.
 
 ### Without Candidate Datastore
 
