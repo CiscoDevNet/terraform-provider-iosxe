@@ -91,7 +91,34 @@ resource "iosxe_interface_ethernet" "example" {
       queue_length = 50
     }
   ]
-  ip_igmp_version = 3
+  ip_igmp_version                                           = 3
+  access_session_monitor                                    = true
+  storm_control_broadcast_level_rising_threshold            = 10.5
+  storm_control_broadcast_level_falling_threshold           = 8.5
+  storm_control_broadcast_level_bps_rising_threshold        = "10k"
+  storm_control_broadcast_level_bps_falling_threshold       = "8k"
+  storm_control_broadcast_level_pps_rising_threshold        = "10k"
+  storm_control_broadcast_level_pps_falling_threshold       = "8k"
+  storm_control_multicast_level_rising_threshold            = 10.5
+  storm_control_multicast_level_falling_threshold           = 8.5
+  storm_control_multicast_level_bps_rising_threshold        = "10k"
+  storm_control_multicast_level_bps_falling_threshold       = "8k"
+  storm_control_multicast_level_pps_rising_threshold        = "10k"
+  storm_control_multicast_level_pps_falling_threshold       = "8k"
+  storm_control_unicast_level_rising_threshold              = 10.5
+  storm_control_unicast_level_falling_threshold             = 8.5
+  storm_control_unicast_level_bps_rising_threshold          = "10k"
+  storm_control_unicast_level_bps_falling_threshold         = "8k"
+  storm_control_unicast_level_pps_rising_threshold          = "10k"
+  storm_control_unicast_level_pps_falling_threshold         = "8k"
+  storm_control_unknown_unicast_level_rising_threshold      = 10.5
+  storm_control_unknown_unicast_level_falling_threshold     = 8.5
+  storm_control_unknown_unicast_level_bps_rising_threshold  = "10k"
+  storm_control_unknown_unicast_level_bps_falling_threshold = "8k"
+  storm_control_unknown_unicast_level_pps_rising_threshold  = "10k"
+  storm_control_unknown_unicast_level_pps_falling_threshold = "8k"
+  storm_control_action_shutdown                             = true
+  storm_control_action_trap                                 = true
 }
 ```
 
@@ -106,6 +133,7 @@ resource "iosxe_interface_ethernet" "example" {
 
 ### Optional
 
+- `access_session_monitor` (Boolean) Apply interface defined access-session monitor
 - `arp_timeout` (Number) Set ARP cache timeout
   - Range: `0`-`2147483`
 - `authentication_event_fail_action_authorize_vlan` (Number) Configure Authentication Fail vlan
@@ -280,6 +308,32 @@ resource "iosxe_interface_ethernet" "example" {
 - `speed_40000` (Boolean) 40000 Mbps operation
 - `speed_5000` (Boolean) 5000 Mbps operation
 - `speed_nonegotiate` (Boolean)
+- `storm_control_action_shutdown` (Boolean) Shutdown this interface if a storm occurs
+- `storm_control_action_trap` (Boolean) Send SNMP trap if a storm occurs
+- `storm_control_broadcast_level_bps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_broadcast_level_bps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_broadcast_level_falling_threshold` (Number) Enter falling threshold
+- `storm_control_broadcast_level_pps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_broadcast_level_pps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_broadcast_level_rising_threshold` (Number) Enter rising threshold
+- `storm_control_multicast_level_bps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_multicast_level_bps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_multicast_level_falling_threshold` (Number) Enter falling threshold
+- `storm_control_multicast_level_pps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_multicast_level_pps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_multicast_level_rising_threshold` (Number) Enter rising threshold
+- `storm_control_unicast_level_bps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_unicast_level_bps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_unicast_level_falling_threshold` (Number) Enter falling threshold
+- `storm_control_unicast_level_pps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_unicast_level_pps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_unicast_level_rising_threshold` (Number) Enter rising threshold
+- `storm_control_unknown_unicast_level_bps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_unknown_unicast_level_bps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]>
+- `storm_control_unknown_unicast_level_falling_threshold` (Number) Enter falling threshold
+- `storm_control_unknown_unicast_level_pps_falling_threshold` (String) Enter falling threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_unknown_unicast_level_pps_rising_threshold` (String) Enter rising threshold - <0.0 - 10000000000.0>[k|m|g]
+- `storm_control_unknown_unicast_level_rising_threshold` (Number) Enter rising threshold
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
