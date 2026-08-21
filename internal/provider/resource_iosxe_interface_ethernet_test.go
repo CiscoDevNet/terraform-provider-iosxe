@@ -106,6 +106,33 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "hold_queues.0.direction", "in"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "hold_queues.0.queue_length", "50"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_igmp_version", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "access_session_monitor", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_broadcast_level_rising_threshold", "10.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_broadcast_level_falling_threshold", "8.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_broadcast_level_bps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_broadcast_level_bps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_broadcast_level_pps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_broadcast_level_pps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_multicast_level_rising_threshold", "10.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_multicast_level_falling_threshold", "8.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_multicast_level_bps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_multicast_level_bps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_multicast_level_pps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_multicast_level_pps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unicast_level_rising_threshold", "10.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unicast_level_falling_threshold", "8.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unicast_level_bps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unicast_level_bps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unicast_level_pps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unicast_level_pps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unknown_unicast_level_rising_threshold", "10.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unknown_unicast_level_falling_threshold", "8.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unknown_unicast_level_bps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unknown_unicast_level_bps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unknown_unicast_level_pps_rising_threshold", "10k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_unknown_unicast_level_pps_falling_threshold", "8k"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_action_shutdown", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "storm_control_action_trap", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -299,6 +326,33 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `		queue_length = 50` + "\n"
 	config += `	}]` + "\n"
 	config += `	ip_igmp_version = 3` + "\n"
+	config += `	access_session_monitor = true` + "\n"
+	config += `	storm_control_broadcast_level_rising_threshold = 10.5` + "\n"
+	config += `	storm_control_broadcast_level_falling_threshold = 8.5` + "\n"
+	config += `	storm_control_broadcast_level_bps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_broadcast_level_bps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_broadcast_level_pps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_broadcast_level_pps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_multicast_level_rising_threshold = 10.5` + "\n"
+	config += `	storm_control_multicast_level_falling_threshold = 8.5` + "\n"
+	config += `	storm_control_multicast_level_bps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_multicast_level_bps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_multicast_level_pps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_multicast_level_pps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_unicast_level_rising_threshold = 10.5` + "\n"
+	config += `	storm_control_unicast_level_falling_threshold = 8.5` + "\n"
+	config += `	storm_control_unicast_level_bps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_unicast_level_bps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_unicast_level_pps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_unicast_level_pps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_unknown_unicast_level_rising_threshold = 10.5` + "\n"
+	config += `	storm_control_unknown_unicast_level_falling_threshold = 8.5` + "\n"
+	config += `	storm_control_unknown_unicast_level_bps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_unknown_unicast_level_bps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_unknown_unicast_level_pps_rising_threshold = "10k"` + "\n"
+	config += `	storm_control_unknown_unicast_level_pps_falling_threshold = "8k"` + "\n"
+	config += `	storm_control_action_shutdown = true` + "\n"
+	config += `	storm_control_action_trap = true` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 	return config
