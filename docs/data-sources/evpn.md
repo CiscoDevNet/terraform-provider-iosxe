@@ -52,3 +52,4 @@ Read-Only:
 - `evi_base` (Number) Evpn instance identifier base
 - `l2vni_base` (Number) VxLAN Layer 2 VNI base
 - `name` (String) EVPN L2 profile name
+- `re_originate_route_type5` (Boolean) Re-originate route-type 5

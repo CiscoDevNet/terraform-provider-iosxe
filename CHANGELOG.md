@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `re_originate_route_type5` attribute to `profiles` list in `iosxe_evpn` resource and data source for L2VPN EVPN profile `re-originate route-type5` configuration
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
 - Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
 
