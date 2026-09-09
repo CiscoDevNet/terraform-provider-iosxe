@@ -56,6 +56,7 @@ func TestAccIosxeEVPN(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.name", "MY_EVPN_PROFILE"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.evi_base", "1000"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.l2vni_base", "10000"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "profiles.0.re_originate_route_type5", "true"))
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -129,6 +130,7 @@ func testAccIosxeEVPNConfig_all() string {
 		config += `		name = "MY_EVPN_PROFILE"` + "\n"
 		config += `		evi_base = 1000` + "\n"
 		config += `		l2vni_base = 10000` + "\n"
+		config += `		re_originate_route_type5 = true` + "\n"
 		config += `	}]` + "\n"
 	}
 	config += `}` + "\n"

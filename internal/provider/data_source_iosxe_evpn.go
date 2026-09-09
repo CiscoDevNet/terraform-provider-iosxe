@@ -145,6 +145,10 @@ func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "VxLAN Layer 2 VNI base",
 							Computed:            true,
 						},
+						"re_originate_route_type5": schema.BoolAttribute{
+							MarkdownDescription: "Re-originate route-type 5",
+							Computed:            true,
+						},
 					},
 				},
 			},
