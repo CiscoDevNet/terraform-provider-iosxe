@@ -112,14 +112,6 @@ attributes:
         tf_name: match_as_paths_legacy
         example: 10
         test_tags: [IOSXE1712]
-      - yang_name: match/community/name
-        tf_name: match_community_lists_legacy
-        example: COMM1
-        test_tags: [IOSXE1712]
-      - yang_name: match/extcommunity/name
-        tf_name: match_extcommunity_lists_legacy
-        example: EXTCOMM1
-        test_tags: [IOSXE1712]
       - yang_name: match/local-preference/values
         tf_name: match_local_preferences_legacy
         example: 100
@@ -235,44 +227,6 @@ attributes:
         tf_name: set_as_path_tag_legacy
         test_tags: [IOSXE1712]
         example: true
-      - yang_name: set/community/community-well-known-choice/none/none
-        xpath: set/community/none
-        tf_name: set_community_none_legacy
-        exclude_test: true
-        example: true
-        test_tags: [IOSXE1712]
-      - yang_name: set/community/community-well-known-choice/community-well-known/community-well-known/community-list
-        xpath: set/community/community-well-known/community-list
-        tf_name: set_communities_legacy
-        read_filter: GetNormalizedCommunityList
-        example: "no-export"
-        test_tags: [IOSXE1712]
-      - yang_name: set/community/community-well-known-choice/community-well-known/community-well-known/additive
-        xpath: set/community/community-well-known/additive
-        tf_name: set_communities_additive_legacy
-        example: true
-        test_tags: [IOSXE1712]
-      - yang_name: set/comm-list/delete
-        tf_name: set_community_list_delete_legacy
-        example: true
-        test_tags: [IOSXE1712]
-      - yang_name: set/comm-list/comm-list-choice/comm-list-standard/comm-list-standard
-        xpath: set/comm-list/comm-list-standard
-        tf_name: set_community_list_standard_legacy
-        exclude_test: true
-        example: 10
-        test_tags: [IOSXE1712]
-      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-choice/comm-list-expanded/comm-list-expanded
-        xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded
-        tf_name: set_community_list_expanded_legacy
-        exclude_test: true
-        example: 110
-        test_tags: [IOSXE1712]
-      - yang_name: set/comm-list/comm-list-choice/comm-list-name/comm-list-name
-        xpath: set/comm-list/comm-list-name
-        tf_name: set_community_list_name_legacy
-        example: COMML1
-        test_tags: [IOSXE1712]
       - yang_name: set/extcommunity/rt/asn-nn
         tf_name: set_extcomunity_rt_legacy
         example: "10:10"
@@ -320,8 +274,8 @@ attributes:
         tf_name: set_community_none
         exclude_test: true
         example: true
-      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/community-list
-        xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list
+      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/community-list-v2
+        xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list-v2
         tf_name: set_communities
         read_filter: GetNormalizedCommunityList
         example: "no-export"
@@ -331,6 +285,19 @@ attributes:
         tf_name: set_communities_additive
         exclude_test: true
         example: true
+      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/community-list
+        xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list
+        tf_name: set_communities_legacy
+        read_filter: GetNormalizedCommunityList
+        example: "no-export"
+        test_tags: [IOSXE1712]
+        description: "BGP community value (deprecated community-list path) - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)"
+      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/additive
+        xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/additive
+        tf_name: set_communities_additive_legacy
+        exclude_test: true
+        example: true
+        test_tags: [IOSXE1712]
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/delete
         tf_name: set_community_list_delete
         exclude_test: true

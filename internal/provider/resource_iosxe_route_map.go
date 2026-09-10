@@ -268,16 +268,6 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							ElementType:         types.Int64Type,
 							Optional:            true,
 						},
-						"match_community_lists_legacy": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Named Access List (OBSOLETE- please use community-list in Cisco-IOS-XE-bgp.yang)").String,
-							ElementType:         types.StringType,
-							Optional:            true,
-						},
-						"match_extcommunity_lists_legacy": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Named Access List (OBSOLETE- please use extcommunity-list in Cisco-IOS-XE-bgp.yang)").String,
-							ElementType:         types.StringType,
-							Optional:            true,
-						},
 						"match_local_preferences_legacy": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							ElementType:         types.Int64Type,
@@ -470,41 +460,6 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
 							Optional:            true,
 						},
-						"set_community_none_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No community attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
-							Optional:            true,
-						},
-						"set_communities_legacy": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							ElementType:         types.StringType,
-							Optional:            true,
-						},
-						"set_communities_additive_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
-						"set_community_list_delete_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Delete matching communities (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
-							Optional:            true,
-						},
-						"set_community_list_standard_legacy": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 99).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 99),
-							},
-						},
-						"set_community_list_expanded_legacy": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(100, 500).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(100, 500),
-							},
-						},
-						"set_community_list_name_legacy": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-						},
 						"set_extcomunity_rt_legacy": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							ElementType:         types.StringType,
@@ -582,6 +537,15 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_communities_additive": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"set_communities_legacy": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("BGP community value (deprecated community-list path) - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"set_communities_additive_legacy": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 						},
