@@ -285,19 +285,6 @@ attributes:
         tf_name: set_communities_additive
         exclude_test: true
         example: true
-      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/community-list
-        xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list
-        tf_name: set_communities_legacy
-        read_filter: GetNormalizedCommunityList
-        example: "no-export"
-        test_tags: [IOSXE1712]
-        description: "BGP community value (deprecated community-list path) - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)"
-      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/additive
-        xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/additive
-        tf_name: set_communities_additive_legacy
-        exclude_test: true
-        example: true
-        test_tags: [IOSXE1712]
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/delete
         tf_name: set_community_list_delete
         exclude_test: true

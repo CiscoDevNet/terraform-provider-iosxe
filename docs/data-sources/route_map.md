@@ -90,8 +90,6 @@ Read-Only:
 - `set_as_path_tag_legacy` (Boolean) Set the tag as an AS-path attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `set_communities` (List of String) BGP community value - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)
 - `set_communities_additive` (Boolean)
-- `set_communities_additive_legacy` (Boolean)
-- `set_communities_legacy` (List of String) BGP community value (deprecated community-list path) - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)
 - `set_community_list_delete` (Boolean) Delete matching communities
 - `set_community_list_expanded` (Number)
 - `set_community_list_name` (String)

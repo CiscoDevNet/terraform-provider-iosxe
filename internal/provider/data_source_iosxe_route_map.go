@@ -456,15 +456,6 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"set_communities_legacy": schema.ListAttribute{
-							MarkdownDescription: "BGP community value (deprecated community-list path) - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)",
-							ElementType:         types.StringType,
-							Computed:            true,
-						},
-						"set_communities_additive_legacy": schema.BoolAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
 						"set_community_list_delete": schema.BoolAttribute{
 							MarkdownDescription: "Delete matching communities",
 							Computed:            true,
