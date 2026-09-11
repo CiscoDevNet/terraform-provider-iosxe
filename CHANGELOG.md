@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add `ip_nhrp_nhs.nbma_ipv4`, `ip_nhrp_map_multicast_dynamic`, and `ip_nhrp_map_multicast_nbma_ipv4` attributes to `iosxe_interface_tunnel` resource and data source for NHRP NHS NBMA address and dynamic multicast map support
+
 ## 1.0.0
 
 - BREAKING CHANGE: Consolidate `iosxe_device_tracking_policy` into `iosxe_device_tracking` as a `policies` list attribute

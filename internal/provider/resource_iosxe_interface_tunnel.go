@@ -558,8 +558,24 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
 						},
+						"nbma_ipv4": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv4 address").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
 					},
 				},
+			},
+			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub").String,
+				Optional:            true,
+			},
+			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				ElementType:         types.StringType,
+				Optional:            true,
 			},
 			"ip_nhrp_maps": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,

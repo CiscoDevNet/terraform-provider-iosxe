@@ -438,8 +438,21 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 							MarkdownDescription: "Protocol IP address of NHS",
 							Computed:            true,
 						},
+						"nbma_ipv4": schema.StringAttribute{
+							MarkdownDescription: "IPv4 address",
+							Computed:            true,
+						},
 					},
 				},
+			},
+			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
+				MarkdownDescription: "Dynamically learn destinations from client registrations on hub",
+				Computed:            true,
+			},
+			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
+				MarkdownDescription: "",
+				ElementType:         types.StringType,
+				Computed:            true,
 			},
 			"ip_nhrp_maps": schema.ListNestedAttribute{
 				MarkdownDescription: "",
