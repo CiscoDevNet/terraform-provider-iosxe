@@ -57,7 +57,7 @@ func (d *CryptoMapGDOIDataSource) Metadata(_ context.Context, req datasource.Met
 func (d *CryptoMapGDOIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "",
+		MarkdownDescription: "This data source can read the Crypto Map GDOI configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{

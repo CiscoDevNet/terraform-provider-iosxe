@@ -66,7 +66,7 @@ func (r *CryptoMapGDOIResource) Metadata(_ context.Context, req resource.Metadat
 func (r *CryptoMapGDOIResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "",
+		MarkdownDescription: "This resource can manage the Crypto Map GDOI configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
