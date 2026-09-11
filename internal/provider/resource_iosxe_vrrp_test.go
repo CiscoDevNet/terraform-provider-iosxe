@@ -38,6 +38,7 @@ func TestAccIosxeVRRP(t *testing.T) {
 		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrrp.test", "group_id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrrp.test", "address_primary_address", "192.0.2.254"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrrp.test", "address_primary", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vrrp.test", "secondary_addresses.0.address", "192.0.2.253"))

@@ -78,21 +78,14 @@ func (r *FHRPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
 			"version_vrrp": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure Virtual Router Redundancy Protocol version").AddStringEnumDescription("v3").AddDefaultValueDescription("v3").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Virtual Router Redundancy Protocol version").AddStringEnumDescription("v2", "v3").AddDefaultValueDescription("v2").String,
 				Optional:            true,
 				Computed:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("v3"),
+					stringvalidator.OneOf("v2", "v3"),
 				},
-				Default: stringdefault.StaticString("v3"),
+				Default: stringdefault.StaticString("v2"),
 			},
 		},
 	}
@@ -307,12 +300,7 @@ func (r *FHRPResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	}
 
 	if device.Managed {
-		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
+		deleteMode := "attributes"
 
 		// NETCONF - Serialize write operations
 		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)

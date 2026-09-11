@@ -54,7 +54,6 @@ func TestAccDataSourceIosxeFHRP(t *testing.T) {
 
 func testAccDataSourceIosxeFHRPConfig() string {
 	config := `resource "iosxe_fhrp" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	version_vrrp = "v3"` + "\n"
 	config += `}` + "\n"
 

@@ -83,22 +83,22 @@ type VRRPSecondaryAddressesData struct {
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data VRRP) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/Cisco-IOS-XE-vrrp:vrrp/vrrp-group=%v/address-family/ipv4", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.GroupId.ValueInt64())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/Cisco-IOS-XE-vrrp:vrrp/vrrp-group=%v", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.GroupId.ValueInt64())))
 }
 
 func (data VRRPData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/Cisco-IOS-XE-vrrp:vrrp/vrrp-group=%v/address-family/ipv4", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.GroupId.ValueInt64())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/Cisco-IOS-XE-vrrp:vrrp/vrrp-group=%v", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.GroupId.ValueInt64())))
 }
 
 // getXPath returns the XPath for NETCONF operations
 func (data VRRP) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]/address-family/ipv4"
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.GroupId.ValueInt64()))
 	return path
 }
 
 func (data VRRPData) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]/address-family/ipv4"
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.GroupId.ValueInt64()))
 	return path
 }
@@ -119,14 +119,17 @@ func (data VRRP) toBodyXML(ctx context.Context, config VRRP) string {
 // addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
 // resources use this to serialize all of their items into a single NETCONF payload.
 func (data VRRP) addToBodyXML(ctx context.Context, config VRRP, body netconf.Body) netconf.Body {
+	if !data.GroupId.IsNull() && !data.GroupId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/group-id", strconv.FormatInt(data.GroupId.ValueInt64(), 10))
+	}
 	if !data.AddressPrimaryAddress.IsNull() && !data.AddressPrimaryAddress.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/address/primary/address", data.AddressPrimaryAddress.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/address/primary/address", data.AddressPrimaryAddress.ValueString())
 	}
 	if !data.AddressPrimary.IsNull() && !data.AddressPrimary.IsUnknown() {
 		if data.AddressPrimary.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/address/primary/primary", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/address/primary/primary", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address/primary/primary")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/address/primary/primary")
 		}
 	}
 	if len(data.SecondaryAddresses) > 0 {
@@ -142,26 +145,26 @@ func (data VRRP) addToBodyXML(ctx context.Context, config VRRP, body netconf.Bod
 					cBody = helpers.RemoveFromXPath(cBody, "secondary")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address/secondary", cBody.Res())
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/address/secondary", cBody.Res())
 		}
 	}
 	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
 	}
 	if !data.PreemptDelayMinimum.IsNull() && !data.PreemptDelayMinimum.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/preempt-new/preempt-delay/preempt/delay/minimum", strconv.FormatInt(data.PreemptDelayMinimum.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum", strconv.FormatInt(data.PreemptDelayMinimum.ValueInt64(), 10))
 	}
 	if !data.TimersAdvertise.IsNull() && !data.TimersAdvertise.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/timers/advertise", strconv.FormatInt(data.TimersAdvertise.ValueInt64(), 10))
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/timers/advertise", strconv.FormatInt(data.TimersAdvertise.ValueInt64(), 10))
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/description", data.Description.ValueString())
 	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
-			body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", "")
+			body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/shutdown", "")
 		} else {
-			body = helpers.RemoveFromXPath(body, data.getXPath()+"/shutdown")
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/address-family/ipv4/shutdown")
 		}
 	}
 	return body
@@ -172,12 +175,17 @@ func (data VRRP) addToBodyXML(ctx context.Context, config VRRP, body netconf.Bod
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *VRRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/primary/address"); value.Exists() && !data.AddressPrimaryAddress.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group-id"); value.Exists() && !data.GroupId.IsNull() {
+		data.GroupId = types.Int64Value(value.Int())
+	} else {
+		data.GroupId = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/primary/address"); value.Exists() && !data.AddressPrimaryAddress.IsNull() {
 		data.AddressPrimaryAddress = types.StringValue(value.String())
 	} else {
 		data.AddressPrimaryAddress = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/primary/primary"); !data.AddressPrimary.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/primary/primary"); !data.AddressPrimary.IsNull() {
 		if value.Exists() {
 			data.AddressPrimary = types.BoolValue(true)
 		} else {
@@ -191,7 +199,7 @@ func (data *VRRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.SecondaryAddresses[i].Address.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/secondary").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/secondary").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -224,27 +232,27 @@ func (data *VRRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.SecondaryAddresses[i].Secondary = types.BoolNull()
 		}
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/priority"); value.Exists() && !data.Priority.IsNull() {
 		data.Priority = types.Int64Value(value.Int())
 	} else {
 		data.Priority = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/preempt-new/preempt-delay/preempt/delay/minimum"); value.Exists() && !data.PreemptDelayMinimum.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum"); value.Exists() && !data.PreemptDelayMinimum.IsNull() {
 		data.PreemptDelayMinimum = types.Int64Value(value.Int())
 	} else {
 		data.PreemptDelayMinimum = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timers/advertise"); value.Exists() && !data.TimersAdvertise.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/timers/advertise"); value.Exists() && !data.TimersAdvertise.IsNull() {
 		data.TimersAdvertise = types.Int64Value(value.Int())
 	} else {
 		data.TimersAdvertise = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/description"); value.Exists() && !data.Description.IsNull() {
 		data.Description = types.StringValue(value.String())
 	} else {
 		data.Description = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/shutdown"); !data.Shutdown.IsNull() {
 		if value.Exists() {
 			data.Shutdown = types.BoolValue(true)
 		} else {
@@ -260,15 +268,15 @@ func (data *VRRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *VRRP) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/primary/address"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/primary/address"); value.Exists() {
 		data.AddressPrimaryAddress = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/primary/primary"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/primary/primary"); value.Exists() {
 		data.AddressPrimary = types.BoolValue(true)
 	} else {
 		data.AddressPrimary = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/secondary"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/secondary"); value.Exists() {
 		data.SecondaryAddresses = make([]VRRPSecondaryAddresses, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := VRRPSecondaryAddresses{}
@@ -284,19 +292,19 @@ func (data *VRRP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/preempt-new/preempt-delay/preempt/delay/minimum"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum"); value.Exists() {
 		data.PreemptDelayMinimum = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timers/advertise"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/timers/advertise"); value.Exists() {
 		data.TimersAdvertise = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(true)
 	} else {
 		data.Shutdown = types.BoolValue(false)
@@ -308,15 +316,15 @@ func (data *VRRP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *VRRPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/primary/address"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/primary/address"); value.Exists() {
 		data.AddressPrimaryAddress = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/primary/primary"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/primary/primary"); value.Exists() {
 		data.AddressPrimary = types.BoolValue(true)
 	} else {
 		data.AddressPrimary = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address/secondary"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/address/secondary"); value.Exists() {
 		data.SecondaryAddresses = make([]VRRPSecondaryAddressesData, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := VRRPSecondaryAddressesData{}
@@ -332,19 +340,19 @@ func (data *VRRPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/preempt-new/preempt-delay/preempt/delay/minimum"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum"); value.Exists() {
 		data.PreemptDelayMinimum = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timers/advertise"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/timers/advertise"); value.Exists() {
 		data.TimersAdvertise = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/shutdown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(true)
 	} else {
 		data.Shutdown = types.BoolValue(false)
@@ -358,19 +366,19 @@ func (data *VRRPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 func (data *VRRP) addDeletedItemsXML(ctx context.Context, state VRRP, body string) string {
 	b := netconf.NewBody(body)
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/shutdown")
 	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/description")
 	}
 	if !state.TimersAdvertise.IsNull() && data.TimersAdvertise.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/advertise")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/timers/advertise")
 	}
 	if !state.PreemptDelayMinimum.IsNull() && data.PreemptDelayMinimum.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/preempt-new/preempt-delay/preempt/delay/minimum")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum")
 	}
 	if !state.Priority.IsNull() && data.Priority.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/priority")
 	}
 	for i := range state.SecondaryAddresses {
 		stateKeys := [...]string{"address"}
@@ -396,13 +404,13 @@ func (data *VRRP) addDeletedItemsXML(ctx context.Context, state VRRP, body strin
 			}
 			if found {
 				if !state.SecondaryAddresses[i].Secondary.IsNull() && data.SecondaryAddresses[j].Secondary.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address/secondary%v/secondary", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/address/secondary%v/secondary", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address/secondary%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/address/secondary%v", predicates))
 		}
 	}
 
@@ -417,19 +425,19 @@ func (data *VRRP) addDeletedItemsXML(ctx context.Context, state VRRP, body strin
 func (data *VRRP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.Shutdown.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/shutdown")
 	}
 	if !data.Description.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/description")
 	}
 	if !data.TimersAdvertise.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers/advertise")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/timers/advertise")
 	}
 	if !data.PreemptDelayMinimum.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/preempt-new/preempt-delay/preempt/delay/minimum")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum")
 	}
 	if !data.Priority.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/priority")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/priority")
 	}
 	for i := range data.SecondaryAddresses {
 		keys := [...]string{"address"}
@@ -439,7 +447,7 @@ func (data *VRRP) addDeletePathsXML(ctx context.Context, body string) string {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address/secondary%v", predicates))
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/address/secondary%v", predicates))
 	}
 
 	b = helpers.CleanupRedundantRemoveOperations(b)

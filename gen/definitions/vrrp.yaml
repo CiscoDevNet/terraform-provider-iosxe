@@ -1,7 +1,7 @@
 ---
 name: VRRP
-path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]/address-family/ipv4
-augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]/address-family/ipv4
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]
 doc_category: Interface
 test_tags: [C8000V]
 attributes:
@@ -28,21 +28,21 @@ attributes:
     example: 123
   - yang_name: group-id
     example: 1
-  - yang_name: address/primary/address
+  - yang_name: address-family/ipv4/address/primary/address
     tf_name: address_primary_address
     description: Virtual primary IPv4 address
     type: String
     mandatory: true
     no_delete: true
     example: 192.0.2.254
-  - yang_name: address/primary/primary
+  - yang_name: address-family/ipv4/address/primary/primary
     tf_name: address_primary
     type_yang_bool: empty
     description: Mark address as primary IPv4 address
     default_value: true
     no_delete: true
     example: true
-  - yang_name: address/secondary
+  - yang_name: address-family/ipv4/address/secondary
     tf_name: secondary_addresses
     type: List
     description: Secondary virtual IPv4 addresses
@@ -57,24 +57,27 @@ attributes:
         default_value: true
         description: Mark address as secondary
         example: true
-  - yang_name: priority
+  - yang_name: address-family/ipv4/priority
+    tf_name: priority
     description: Priority level
     default_value: 100
     example: 110
-  - yang_name: preempt-new/preempt-choice/preempt-delay/preempt-delay/preempt/delay/minimum
-    xpath: preempt-new/preempt-delay/preempt/delay/minimum
+  - yang_name: address-family/ipv4/preempt-new/preempt-choice/preempt-delay/preempt-delay/preempt/delay/minimum
+    xpath: address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum
     tf_name: preempt_delay_minimum
     description: Seconds to delay before preempting
     example: 30
-  - yang_name: timers/advertise
+  - yang_name: address-family/ipv4/timers/advertise
     tf_name: timers_advertise
     description: Advertisement interval in milliseconds
     example: 3000
-  - yang_name: description
+  - yang_name: address-family/ipv4/description
+    tf_name: description
     type: String
     description: Group description
     example: VRRP-GROUP-1
-  - yang_name: shutdown
+  - yang_name: address-family/ipv4/shutdown
+    tf_name: shutdown
     type_yang_bool: empty
     description: Shutdown the VRRP group
     example: false

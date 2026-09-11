@@ -37,7 +37,6 @@ import (
 type FHRP struct {
 	Device      types.String `tfsdk:"device"`
 	Id          types.String `tfsdk:"id"`
-	DeleteMode  types.String `tfsdk:"delete_mode"`
 	VersionVrrp types.String `tfsdk:"version_vrrp"`
 }
 
