@@ -40,7 +40,12 @@ data "iosxe_crypto_gdoi" "example" {
 - `server_local_authorization_identity` (String) Set authorization by identity
 - `server_local_gdoi` (Boolean) Enable GDOI (ISAKMP) Protocol for Registration and Rekey
 - `server_local_gikev2` (String) Enable G-IKEv2 (IKEv2) Protocol for Registration and Rekey - accepts the IKEv2 profile name
+- `server_local_pfs` (Boolean) Enable PFS on Key Server - requires gikev2 to be configured
 - `server_local_redundancy` (Boolean) Enter cooperative key server configuration mode
+- `server_local_redundancy_local_priority` (Number) Set local server priority
+- `server_local_redundancy_peer_address_ipv4` (List of String) Peer server IPv4 addresses
+- `server_local_redundancy_protocol_pdu` (Number) Maximum size of COOP messages
+- `server_local_redundancy_protocol_version` (String) Set COOP ANN version
 - `server_local_registration_interface` (String) Identify an interface on which to respond to GKM registrations
 - `server_local_rekey_acknowledgement` (String) Request group members to acknowledge rekeys
 - `server_local_rekey_address_ipv4` (String) IPv4 ACL for rekey packet format

@@ -58,7 +58,7 @@ func TestAccIosxeCryptoGDOI(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeCryptoGDOIImportStateIdFunc("iosxe_crypto_gdoi.test"),
-				ImportStateVerifyIgnore: []string{"server_local_gdoi", "server_local_rekey_retransmit_periodic", "server_local_redundancy", "server_local_sa_receive_only", "server_local_sa_ipsec.0.replay_time", "server_local_sa_ipsec.0.tag_cts_sgt"},
+				ImportStateVerifyIgnore: []string{"server_local_gdoi", "server_local_pfs", "server_local_rekey_retransmit_periodic", "server_local_redundancy", "server_local_sa_receive_only", "server_local_sa_ipsec.0.replay_time", "server_local_sa_ipsec.0.tag_cts_sgt"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

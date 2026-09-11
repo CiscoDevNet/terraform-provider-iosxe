@@ -47,6 +47,7 @@ type CryptoGDOI struct {
 	ServerLocalAddressIpv4                    types.String                   `tfsdk:"server_local_address_ipv4"`
 	ServerLocalGdoi                           types.Bool                     `tfsdk:"server_local_gdoi"`
 	ServerLocalGikev2                         types.String                   `tfsdk:"server_local_gikev2"`
+	ServerLocalPfs                            types.Bool                     `tfsdk:"server_local_pfs"`
 	ServerLocalAuthorizationAddressIpv4       types.String                   `tfsdk:"server_local_authorization_address_ipv4"`
 	ServerLocalAuthorizationIdentity          types.String                   `tfsdk:"server_local_authorization_identity"`
 	ServerLocalRegistrationInterface          types.String                   `tfsdk:"server_local_registration_interface"`
@@ -60,6 +61,10 @@ type CryptoGDOI struct {
 	ServerLocalRekeySigHashAlgorithm          types.String                   `tfsdk:"server_local_rekey_sig_hash_algorithm"`
 	ServerLocalRekeyTransportUnicast          types.Bool                     `tfsdk:"server_local_rekey_transport_unicast"`
 	ServerLocalRedundancy                     types.Bool                     `tfsdk:"server_local_redundancy"`
+	ServerLocalRedundancyLocalPriority        types.Int64                    `tfsdk:"server_local_redundancy_local_priority"`
+	ServerLocalRedundancyPeerAddressIpv4      types.List                     `tfsdk:"server_local_redundancy_peer_address_ipv4"`
+	ServerLocalRedundancyProtocolPdu          types.Int64                    `tfsdk:"server_local_redundancy_protocol_pdu"`
+	ServerLocalRedundancyProtocolVersion      types.String                   `tfsdk:"server_local_redundancy_protocol_version"`
 	ServerLocalSaReceiveOnly                  types.Bool                     `tfsdk:"server_local_sa_receive_only"`
 	ServerLocalSaIpsec                        []CryptoGDOIServerLocalSaIpsec `tfsdk:"server_local_sa_ipsec"`
 	ServerAddressIpv4                         types.List                     `tfsdk:"server_address_ipv4"`
@@ -84,6 +89,7 @@ type CryptoGDOIData struct {
 	ServerLocalAddressIpv4                    types.String                       `tfsdk:"server_local_address_ipv4"`
 	ServerLocalGdoi                           types.Bool                         `tfsdk:"server_local_gdoi"`
 	ServerLocalGikev2                         types.String                       `tfsdk:"server_local_gikev2"`
+	ServerLocalPfs                            types.Bool                         `tfsdk:"server_local_pfs"`
 	ServerLocalAuthorizationAddressIpv4       types.String                       `tfsdk:"server_local_authorization_address_ipv4"`
 	ServerLocalAuthorizationIdentity          types.String                       `tfsdk:"server_local_authorization_identity"`
 	ServerLocalRegistrationInterface          types.String                       `tfsdk:"server_local_registration_interface"`
@@ -97,6 +103,10 @@ type CryptoGDOIData struct {
 	ServerLocalRekeySigHashAlgorithm          types.String                       `tfsdk:"server_local_rekey_sig_hash_algorithm"`
 	ServerLocalRekeyTransportUnicast          types.Bool                         `tfsdk:"server_local_rekey_transport_unicast"`
 	ServerLocalRedundancy                     types.Bool                         `tfsdk:"server_local_redundancy"`
+	ServerLocalRedundancyLocalPriority        types.Int64                        `tfsdk:"server_local_redundancy_local_priority"`
+	ServerLocalRedundancyPeerAddressIpv4      types.List                         `tfsdk:"server_local_redundancy_peer_address_ipv4"`
+	ServerLocalRedundancyProtocolPdu          types.Int64                        `tfsdk:"server_local_redundancy_protocol_pdu"`
+	ServerLocalRedundancyProtocolVersion      types.String                       `tfsdk:"server_local_redundancy_protocol_version"`
 	ServerLocalSaReceiveOnly                  types.Bool                         `tfsdk:"server_local_sa_receive_only"`
 	ServerLocalSaIpsec                        []CryptoGDOIServerLocalSaIpsecData `tfsdk:"server_local_sa_ipsec"`
 	ServerAddressIpv4                         types.List                         `tfsdk:"server_address_ipv4"`
@@ -179,6 +189,13 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 	if !data.ServerLocalGikev2.IsNull() && !data.ServerLocalGikev2.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/gikev2", data.ServerLocalGikev2.ValueString())
 	}
+	if !data.ServerLocalPfs.IsNull() && !data.ServerLocalPfs.IsUnknown() {
+		if data.ServerLocalPfs.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/pfs", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/pfs")
+		}
+	}
 	if !data.ServerLocalAuthorizationAddressIpv4.IsNull() && !data.ServerLocalAuthorizationAddressIpv4.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/authorization/address/ipv4", data.ServerLocalAuthorizationAddressIpv4.ValueString())
 	}
@@ -229,6 +246,22 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 		} else {
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/server/local/redundancy")
 		}
+	}
+	if !data.ServerLocalRedundancyLocalPriority.IsNull() && !data.ServerLocalRedundancyLocalPriority.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/redundancy/local/priority", strconv.FormatInt(data.ServerLocalRedundancyLocalPriority.ValueInt64(), 10))
+	}
+	if !data.ServerLocalRedundancyPeerAddressIpv4.IsNull() && !data.ServerLocalRedundancyPeerAddressIpv4.IsUnknown() {
+		var values []string
+		data.ServerLocalRedundancyPeerAddressIpv4.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/server/local/redundancy/peer/address/ipv4-addr", v)
+		}
+	}
+	if !data.ServerLocalRedundancyProtocolPdu.IsNull() && !data.ServerLocalRedundancyProtocolPdu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/redundancy/protocol/pdu", strconv.FormatInt(data.ServerLocalRedundancyProtocolPdu.ValueInt64(), 10))
+	}
+	if !data.ServerLocalRedundancyProtocolVersion.IsNull() && !data.ServerLocalRedundancyProtocolVersion.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/server/local/redundancy/protocol/version", data.ServerLocalRedundancyProtocolVersion.ValueString())
 	}
 	if !data.ServerLocalSaReceiveOnly.IsNull() && !data.ServerLocalSaReceiveOnly.IsUnknown() {
 		if data.ServerLocalSaReceiveOnly.ValueBool() {
@@ -332,6 +365,15 @@ func (data *CryptoGDOI) updateFromBodyXML(ctx context.Context, res xmldot.Result
 	} else {
 		data.ServerLocalGikev2 = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/pfs"); !data.ServerLocalPfs.IsNull() {
+		if value.Exists() {
+			data.ServerLocalPfs = types.BoolValue(true)
+		} else {
+			data.ServerLocalPfs = types.BoolValue(false)
+		}
+	} else {
+		data.ServerLocalPfs = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/authorization/address/ipv4"); value.Exists() && !data.ServerLocalAuthorizationAddressIpv4.IsNull() {
 		data.ServerLocalAuthorizationAddressIpv4 = types.StringValue(value.String())
 	} else {
@@ -408,6 +450,26 @@ func (data *CryptoGDOI) updateFromBodyXML(ctx context.Context, res xmldot.Result
 		}
 	} else {
 		data.ServerLocalRedundancy = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/local/priority"); value.Exists() && !data.ServerLocalRedundancyLocalPriority.IsNull() {
+		data.ServerLocalRedundancyLocalPriority = types.Int64Value(value.Int())
+	} else {
+		data.ServerLocalRedundancyLocalPriority = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/peer/address/ipv4-addr"); value.Exists() && !data.ServerLocalRedundancyPeerAddressIpv4.IsNull() {
+		data.ServerLocalRedundancyPeerAddressIpv4 = helpers.GetStringListXML(value.Array())
+	} else {
+		data.ServerLocalRedundancyPeerAddressIpv4 = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/protocol/pdu"); value.Exists() && !data.ServerLocalRedundancyProtocolPdu.IsNull() {
+		data.ServerLocalRedundancyProtocolPdu = types.Int64Value(value.Int())
+	} else {
+		data.ServerLocalRedundancyProtocolPdu = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/protocol/version"); value.Exists() && !data.ServerLocalRedundancyProtocolVersion.IsNull() {
+		data.ServerLocalRedundancyProtocolVersion = types.StringValue(value.String())
+	} else {
+		data.ServerLocalRedundancyProtocolVersion = types.StringNull()
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/sa/receive-only"); !data.ServerLocalSaReceiveOnly.IsNull() {
 		if value.Exists() {
@@ -525,6 +587,11 @@ func (data *CryptoGDOI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/gikev2"); value.Exists() {
 		data.ServerLocalGikev2 = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/pfs"); value.Exists() {
+		data.ServerLocalPfs = types.BoolValue(true)
+	} else {
+		data.ServerLocalPfs = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/authorization/address/ipv4"); value.Exists() {
 		data.ServerLocalAuthorizationAddressIpv4 = types.StringValue(value.String())
 	}
@@ -569,6 +636,20 @@ func (data *CryptoGDOI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.ServerLocalRedundancy = types.BoolValue(true)
 	} else {
 		data.ServerLocalRedundancy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/local/priority"); value.Exists() {
+		data.ServerLocalRedundancyLocalPriority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/peer/address/ipv4-addr"); value.Exists() {
+		data.ServerLocalRedundancyPeerAddressIpv4 = helpers.GetStringListXML(value.Array())
+	} else {
+		data.ServerLocalRedundancyPeerAddressIpv4 = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/protocol/pdu"); value.Exists() {
+		data.ServerLocalRedundancyProtocolPdu = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/protocol/version"); value.Exists() {
+		data.ServerLocalRedundancyProtocolVersion = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/sa/receive-only"); value.Exists() {
 		data.ServerLocalSaReceiveOnly = types.BoolValue(true)
@@ -644,6 +725,11 @@ func (data *CryptoGDOIData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/gikev2"); value.Exists() {
 		data.ServerLocalGikev2 = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/pfs"); value.Exists() {
+		data.ServerLocalPfs = types.BoolValue(true)
+	} else {
+		data.ServerLocalPfs = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/authorization/address/ipv4"); value.Exists() {
 		data.ServerLocalAuthorizationAddressIpv4 = types.StringValue(value.String())
 	}
@@ -688,6 +774,20 @@ func (data *CryptoGDOIData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 		data.ServerLocalRedundancy = types.BoolValue(true)
 	} else {
 		data.ServerLocalRedundancy = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/local/priority"); value.Exists() {
+		data.ServerLocalRedundancyLocalPriority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/peer/address/ipv4-addr"); value.Exists() {
+		data.ServerLocalRedundancyPeerAddressIpv4 = helpers.GetStringListXML(value.Array())
+	} else {
+		data.ServerLocalRedundancyPeerAddressIpv4 = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/protocol/pdu"); value.Exists() {
+		data.ServerLocalRedundancyProtocolPdu = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/redundancy/protocol/version"); value.Exists() {
+		data.ServerLocalRedundancyProtocolVersion = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/local/sa/receive-only"); value.Exists() {
 		data.ServerLocalSaReceiveOnly = types.BoolValue(true)
@@ -824,6 +924,40 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 	if !state.ServerLocalSaReceiveOnly.IsNull() && data.ServerLocalSaReceiveOnly.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/sa/receive-only")
 	}
+	if !state.ServerLocalRedundancyProtocolVersion.IsNull() && data.ServerLocalRedundancyProtocolVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy/protocol/version")
+	}
+	if !state.ServerLocalRedundancyProtocolPdu.IsNull() && data.ServerLocalRedundancyProtocolPdu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy/protocol/pdu")
+	}
+	if !state.ServerLocalRedundancyPeerAddressIpv4.IsNull() {
+		if data.ServerLocalRedundancyPeerAddressIpv4.IsNull() {
+			var values []string
+			state.ServerLocalRedundancyPeerAddressIpv4.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/redundancy/peer/address/ipv4-addr[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.ServerLocalRedundancyPeerAddressIpv4.ElementsAs(ctx, &dataValues, false)
+			state.ServerLocalRedundancyPeerAddressIpv4.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/server/local/redundancy/peer/address/ipv4-addr[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.ServerLocalRedundancyLocalPriority.IsNull() && data.ServerLocalRedundancyLocalPriority.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy/local/priority")
+	}
 	if !state.ServerLocalRedundancy.IsNull() && data.ServerLocalRedundancy.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/redundancy")
 	}
@@ -862,6 +996,9 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 	}
 	if !state.ServerLocalAuthorizationAddressIpv4.IsNull() && data.ServerLocalAuthorizationAddressIpv4.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/authorization/address/ipv4")
+	}
+	if !state.ServerLocalPfs.IsNull() && data.ServerLocalPfs.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/pfs")
 	}
 	if !state.ServerLocalGikev2.IsNull() && data.ServerLocalGikev2.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/server/local/gikev2")
@@ -909,6 +1046,22 @@ func (data *CryptoGDOI) addDeletePathsXML(ctx context.Context, body string) stri
 	if !data.ServerLocalSaReceiveOnly.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/sa/receive-only")
 	}
+	if !data.ServerLocalRedundancyProtocolVersion.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/redundancy/protocol/version")
+	}
+	if !data.ServerLocalRedundancyProtocolPdu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/redundancy/protocol/pdu")
+	}
+	if !data.ServerLocalRedundancyPeerAddressIpv4.IsNull() {
+		var values []string
+		data.ServerLocalRedundancyPeerAddressIpv4.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/server/local/redundancy/peer/address/ipv4-addr[.=%v]", v))
+		}
+	}
+	if !data.ServerLocalRedundancyLocalPriority.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/redundancy/local/priority")
+	}
 	if !data.ServerLocalRedundancy.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/redundancy")
 	}
@@ -947,6 +1100,9 @@ func (data *CryptoGDOI) addDeletePathsXML(ctx context.Context, body string) stri
 	}
 	if !data.ServerLocalAuthorizationAddressIpv4.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/authorization/address/ipv4")
+	}
+	if !data.ServerLocalPfs.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/pfs")
 	}
 	if !data.ServerLocalGikev2.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/server/local/gikev2")

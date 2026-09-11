@@ -92,6 +92,10 @@ func (d *CryptoGDOIDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable G-IKEv2 (IKEv2) Protocol for Registration and Rekey - accepts the IKEv2 profile name",
 				Computed:            true,
 			},
+			"server_local_pfs": schema.BoolAttribute{
+				MarkdownDescription: "Enable PFS on Key Server - requires gikev2 to be configured",
+				Computed:            true,
+			},
 			"server_local_authorization_address_ipv4": schema.StringAttribute{
 				MarkdownDescription: "Set authorization by IPv4 address ACL",
 				Computed:            true,
@@ -142,6 +146,23 @@ func (d *CryptoGDOIDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"server_local_redundancy": schema.BoolAttribute{
 				MarkdownDescription: "Enter cooperative key server configuration mode",
+				Computed:            true,
+			},
+			"server_local_redundancy_local_priority": schema.Int64Attribute{
+				MarkdownDescription: "Set local server priority",
+				Computed:            true,
+			},
+			"server_local_redundancy_peer_address_ipv4": schema.ListAttribute{
+				MarkdownDescription: "Peer server IPv4 addresses",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"server_local_redundancy_protocol_pdu": schema.Int64Attribute{
+				MarkdownDescription: "Maximum size of COOP messages",
+				Computed:            true,
+			},
+			"server_local_redundancy_protocol_version": schema.StringAttribute{
+				MarkdownDescription: "Set COOP ANN version",
 				Computed:            true,
 			},
 			"server_local_sa_receive_only": schema.BoolAttribute{

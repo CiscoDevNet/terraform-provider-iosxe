@@ -119,6 +119,10 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable G-IKEv2 (IKEv2) Protocol for Registration and Rekey - accepts the IKEv2 profile name").String,
 				Optional:            true,
 			},
+			"server_local_pfs": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable PFS on Key Server - requires gikev2 to be configured").String,
+				Optional:            true,
+			},
 			"server_local_authorization_address_ipv4": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set authorization by IPv4 address ACL").String,
 				Optional:            true,
@@ -185,6 +189,32 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"server_local_redundancy": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enter cooperative key server configuration mode").String,
 				Optional:            true,
+			},
+			"server_local_redundancy_local_priority": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set local server priority").AddIntegerRangeDescription(0, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 255),
+				},
+			},
+			"server_local_redundancy_peer_address_ipv4": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Peer server IPv4 addresses").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"server_local_redundancy_protocol_pdu": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum size of COOP messages").AddIntegerRangeDescription(1, 65000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65000),
+				},
+			},
+			"server_local_redundancy_protocol_version": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set COOP ANN version").AddStringEnumDescription("base", "optimize").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("base", "optimize"),
+				},
 			},
 			"server_local_sa_receive_only": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure SA to work only in inbound direction").String,

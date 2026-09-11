@@ -31,6 +31,12 @@ attributes:
     description: Enable G-IKEv2 (IKEv2) Protocol for Registration and Rekey - accepts the IKEv2 profile name
     example: GETVPN-IKE
     exclude_test: true
+  - yang_name: server/local/pfs
+    tf_name: server_local_pfs
+    description: Enable PFS on Key Server - requires gikev2 to be configured
+    type: Bool
+    example: true
+    exclude_test: true
   - yang_name: server/local/authorization/address/ipv4
     tf_name: server_local_authorization_address_ipv4
     description: Set authorization by IPv4 address ACL
@@ -111,6 +117,32 @@ attributes:
     description: Enter cooperative key server configuration mode
     type: Bool
     example: true
+    exclude_test: true
+  - yang_name: server/local/redundancy/local/priority
+    tf_name: server_local_redundancy_local_priority
+    description: Set local server priority
+    type: Int64
+    example: 100
+    exclude_test: true
+  - yang_name: server/local/redundancy/peer/address/ipv4-addr
+    tf_name: server_local_redundancy_peer_address_ipv4
+    description: Peer server IPv4 addresses
+    type: StringList
+    example: 198.51.100.2
+    exclude_test: true
+  - yang_name: server/local/redundancy/protocol/pdu
+    tf_name: server_local_redundancy_protocol_pdu
+    description: Maximum size of COOP messages
+    type: Int64
+    example: 4000
+    exclude_test: true
+  - yang_name: server/local/redundancy/protocol/version
+    tf_name: server_local_redundancy_protocol_version
+    description: Set COOP ANN version
+    example: optimize
+    enum_values:
+      - base
+      - optimize
     exclude_test: true
   - yang_name: server/local/sa/receive-only
     tf_name: server_local_sa_receive_only
