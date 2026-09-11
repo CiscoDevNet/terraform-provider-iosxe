@@ -9,5 +9,12 @@ resource "iosxe_eigrp" "example" {
     }
   ]
   auto_summary = false
-  shutdown     = false
+  af_interfaces = [
+    {
+      interface         = "default"
+      passive_interface = true
+      split_horizon     = false
+    }
+  ]
+  shutdown = false
 }
