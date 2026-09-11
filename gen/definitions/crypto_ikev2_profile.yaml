@@ -88,6 +88,35 @@ attributes:
         type: Int64
         no_augment_config: true
         example: 100
+  - yang_name: authentication/local/ecdsa-sig
+    description: ECDSA Signature
+    example: true
+    exclude_test: true
+  - yang_name: authentication/local/rsa-sig
+    description: Rivest-Shamir-Adleman Signature
+    example: true
+  - yang_name: authentication/remote/ecdsa-sig
+    description: ECDSA Signature
+    example: true
+    exclude_test: true
+  - yang_name: authentication/remote/rsa-sig
+    description: Rivest-Shamir-Adleman Signature
+    example: true
+  - yang_name: match/certificate-map
+    tf_name: match_certificate_maps
+    description: Peer certificate attributes
+    example: map1
+  - yang_name: pki/trust-points
+    tf_name: pki_trustpoints
+    description: PKI certificate authority trustpoints
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: myCA
+      - yang_name: uses
+        description: "Trustpoint usage: sign or verify"
+        example: sign
   - yang_name: config-exchange/request-1
     tf_name: config_exchange_request
     example: false
@@ -103,4 +132,10 @@ test_prerequisites:
       - name: name
         value: VRF1
       - name: address-family/ipv4
+        value: ""
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki/trustpoint[id=myCA]
+    attributes:
+      - name: id
+        value: myCA
+      - name: enrollment/enrollment-method/selfsigned
         value: ""

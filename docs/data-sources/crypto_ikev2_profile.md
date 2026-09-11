@@ -31,8 +31,12 @@ data "iosxe_crypto_ikev2_profile" "example" {
 
 ### Read-Only
 
+- `authentication_local_ecdsa_sig` (Boolean) ECDSA Signature
 - `authentication_local_pre_share` (Boolean) Pre-Shared Key
+- `authentication_local_rsa_sig` (Boolean) Rivest-Shamir-Adleman Signature
+- `authentication_remote_ecdsa_sig` (Boolean) ECDSA Signature
 - `authentication_remote_pre_share` (Boolean) Pre-Shared Key
+- `authentication_remote_rsa_sig` (Boolean) Rivest-Shamir-Adleman Signature
 - `config_exchange_request` (Boolean) enable config-exchange request
 - `description` (String) Specify a description of this profile
 - `dpd_interval` (Number)
@@ -47,12 +51,14 @@ data "iosxe_crypto_ikev2_profile" "example" {
 - `match_address_local_interface_loopback` (Attributes List) (see [below for nested schema](#nestedatt--match_address_local_interface_loopback))
 - `match_address_local_interface_loopback_legacy` (Number) Loopback interface. Use this for IOS-XE versions before `17.18.1`.
 - `match_address_local_ip` (String)
+- `match_certificate_maps` (List of String) Peer certificate attributes
 - `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
 - `match_identity_remote_ipv4_addresses` (Attributes List) (see [below for nested schema](#nestedatt--match_identity_remote_ipv4_addresses))
 - `match_identity_remote_ipv6_prefixes` (List of String)
 - `match_identity_remote_keys` (List of String) key-id opaque string
 - `match_inbound_only` (Boolean) Match the profile for incoming connections only
+- `pki_trustpoints` (Attributes List) PKI certificate authority trustpoints (see [below for nested schema](#nestedatt--pki_trustpoints))
 
 <a id="nestedatt--match_address_local_interface_loopback"></a>
 ### Nested Schema for `match_address_local_interface_loopback`
@@ -69,3 +75,12 @@ Read-Only:
 
 - `address` (String)
 - `mask` (String)
+
+
+<a id="nestedatt--pki_trustpoints"></a>
+### Nested Schema for `pki_trustpoints`
+
+Read-Only:
+
+- `name` (String)
+- `uses` (String) Trustpoint usage: sign or verify

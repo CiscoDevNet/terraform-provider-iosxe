@@ -1,5 +1,6 @@
 ## 1.1.0
 
+- Add `authentication_local_rsa_sig`, `authentication_remote_rsa_sig`, `authentication_local_ecdsa_sig`, `authentication_remote_ecdsa_sig`, `pki_trustpoints`, and `match_certificate_maps` attributes to `iosxe_crypto_ikev2_profile` resource and data source for PKI certificate-based authentication support
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
 - Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
 - Fix `iosxe_snmp_server` `hosts`, `vrf_hosts`, and `snmp_communities` list attributes to no longer attempt drift detection during refresh, since they are keyed in part by a write-only attribute (e.g. `community_or_user`) that can never be read back from the device; only changes made through Terraform config are applied to these lists going forward
