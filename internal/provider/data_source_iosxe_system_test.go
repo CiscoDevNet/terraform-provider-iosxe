@@ -78,6 +78,18 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_authentication_retries", "3"))
+	if os.Getenv("IOSXE1716") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_server_algorithm_encryption.0", "aes128-ctr"))
+	}
+	if os.Getenv("IOSXE1716") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_server_algorithm_mac.0", "hmac-sha2-256"))
+	}
+	if os.Getenv("IOSXE1716") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_server_algorithm_kex.0", "diffie-hellman-group14-sha256"))
+	}
+	if os.Getenv("IOSXE1716") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_server_algorithm_authentication.0", "publickey"))
+	}
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
@@ -196,6 +208,18 @@ func testAccDataSourceIosxeSystemConfig() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
+	if os.Getenv("IOSXE1716") != "" {
+		config += `	ip_ssh_server_algorithm_encryption = ["aes128-ctr"]` + "\n"
+	}
+	if os.Getenv("IOSXE1716") != "" {
+		config += `	ip_ssh_server_algorithm_mac = ["hmac-sha2-256"]` + "\n"
+	}
+	if os.Getenv("IOSXE1716") != "" {
+		config += `	ip_ssh_server_algorithm_kex = ["diffie-hellman-group14-sha256"]` + "\n"
+	}
+	if os.Getenv("IOSXE1716") != "" {
+		config += `	ip_ssh_server_algorithm_authentication = ["publickey"]` + "\n"
+	}
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_hosts = [{` + "\n"
 		config += `		name = "test.router.com"` + "\n"
