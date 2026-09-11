@@ -1,0 +1,13 @@
+---
+name: FHRP
+path: /Cisco-IOS-XE-native:native/fhrp
+doc_category: System
+attributes:
+  - yang_name: version/vrrp
+    tf_name: version_vrrp
+    description: Configure Virtual Router Redundancy Protocol version
+    type: String
+    enum_values:
+      - v3
+    default_value: v3
+    example: v3
