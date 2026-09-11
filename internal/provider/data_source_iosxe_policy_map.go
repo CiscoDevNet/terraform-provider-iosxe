@@ -230,6 +230,10 @@ func (d *PolicyMapDataSource) Schema(ctx context.Context, req datasource.SchemaR
 										MarkdownDescription: "drop packet",
 										Computed:            true,
 									},
+									"police_cir_exceed_transmit": schema.BoolAttribute{
+										MarkdownDescription: "transmit packet",
+										Computed:            true,
+									},
 									"police_rate_percent": schema.Int64Attribute{
 										MarkdownDescription: "",
 										Computed:            true,

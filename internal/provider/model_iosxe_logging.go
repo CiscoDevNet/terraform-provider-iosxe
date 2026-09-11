@@ -328,7 +328,17 @@ func (data LoggingData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data Logging) addToBodyXML(ctx context.Context, config Logging, body netconf.Body) netconf.Body {
 	if !data.MonitorSeverity.IsNull() && !data.MonitorSeverity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/monitor-config/common-config/monitor/severity", data.MonitorSeverity.ValueString())
 	}
@@ -667,11 +677,7 @@ func (data Logging) toBodyXML(ctx context.Context, config Logging) string {
 	if !data.RateLimitConsoleAllExceptSeverity.IsNull() && !data.RateLimitConsoleAllExceptSeverity.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/rate-limit-config/common-config/rate-limit/console/all/common-options/except/range", data.RateLimitConsoleAllExceptSeverity.ValueString())
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

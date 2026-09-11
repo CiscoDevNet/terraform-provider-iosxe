@@ -5,6 +5,7 @@ augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]
 wait: true
 test_tags: [C8000V]
 no_delete: true
+bulk_resource: true
 doc_category: Interface
 attributes:
   - yang_name: type

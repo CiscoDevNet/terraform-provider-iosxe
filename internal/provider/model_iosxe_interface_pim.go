@@ -96,7 +96,17 @@ func (data InterfacePIMData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data InterfacePIM) toBodyXML(ctx context.Context, config InterfacePIM) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data InterfacePIM) addToBodyXML(ctx context.Context, config InterfacePIM, body netconf.Body) netconf.Body {
 	if !data.Passive.IsNull() && !data.Passive.IsUnknown() {
 		if data.Passive.ValueBool() {
 			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive", "")
@@ -149,11 +159,7 @@ func (data InterfacePIM) toBodyXML(ctx context.Context, config InterfacePIM) str
 	if !data.DrPriority.IsNull() && !data.DrPriority.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:dr-priority", strconv.FormatInt(data.DrPriority.ValueInt64(), 10))
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

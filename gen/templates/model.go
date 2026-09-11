@@ -247,7 +247,17 @@ func (data {{camelCase .Name}}Data) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCase .Name}}) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data {{camelCase .Name}}) addToBodyXML(ctx context.Context, config {{camelCase .Name}}, body netconf.Body) netconf.Body {
 	{{- range (xpathAttributes .Attributes)}}
 	{{- if and (not .Reference) (ne .Type "List") (ne .Type "Set")}}
 	if !data.{{toGoName .TfName}}.IsNull() && !data.{{toGoName .TfName}}.IsUnknown() {
@@ -437,11 +447,7 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context, config {{camelCas
 	}
 	{{- end}}
 	{{- end}}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML
@@ -512,6 +518,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := (toGoName .TfName)}}
+	{{- if not (hasWriteOnlyId .Attributes)}}
 	for i := range data.{{$list}} {
 		keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
 		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -598,6 +605,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		}
 		{{- else if or (eq .Type "List") (eq .Type "Set")}}
 		{{- $clist := (toGoName .TfName)}}
+		{{- if not (hasWriteOnlyId .Attributes)}}
 		for ci := range data.{{$list}}[i].{{$clist}} {
 			keys := [...]string{ {{range .Attributes}}{{if .Id}}"{{.XPath}}", {{end}}{{end}} }
 			keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -689,7 +697,9 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		{{- end}}
 		{{- end}}
 		{{- end}}
+		{{- end}}
 	}
+	{{- end}}
 	{{- end}}
 	{{- end}}
 	{{- end}}

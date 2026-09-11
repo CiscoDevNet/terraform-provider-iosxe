@@ -85,7 +85,17 @@ func (data InterfaceStackwiseVirtualData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data InterfaceStackwiseVirtual) toBodyXML(ctx context.Context, config InterfaceStackwiseVirtual) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data InterfaceStackwiseVirtual) addToBodyXML(ctx context.Context, config InterfaceStackwiseVirtual, body netconf.Body) netconf.Body {
 	if !data.Link.IsNull() && !data.Link.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/link", strconv.FormatInt(data.Link.ValueInt64(), 10))
 	}
@@ -96,11 +106,7 @@ func (data InterfaceStackwiseVirtual) toBodyXML(ctx context.Context, config Inte
 			body = helpers.RemoveFromXPath(body, data.getXPath()+"/dual-active-detection")
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML

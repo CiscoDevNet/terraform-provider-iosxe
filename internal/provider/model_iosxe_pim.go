@@ -193,7 +193,17 @@ func (data PIMData) getXPath() string {
 // Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
 
 func (data PIM) toBodyXML(ctx context.Context, config PIM) string {
-	body := netconf.Body{}
+	body := data.addToBodyXML(ctx, config, netconf.Body{})
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// addToBodyXML adds this object to an existing body instead of starting from an empty one. Bulk
+// resources use this to serialize all of their items into a single NETCONF payload.
+func (data PIM) addToBodyXML(ctx context.Context, config PIM, body netconf.Body) netconf.Body {
 	if !data.Autorp.IsNull() && !data.Autorp.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/autorp", data.Autorp.ValueBool())
 	}
@@ -416,11 +426,7 @@ func (data PIM) toBodyXML(ctx context.Context, config PIM) string {
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-multicast:vrf", cBody.Res())
 		}
 	}
-	bodyString, err := body.String()
-	if err != nil {
-		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
-	}
-	return bodyString
+	return body
 }
 
 // End of section. //template:end toBodyXML
