@@ -326,6 +326,22 @@ attributes:
         tf_name: ipv4
         id: true
         example: 192.168.10.1
+      - yang_name: nbma/ipv4/ipv4
+        tf_name: nbma_ipv4
+        example: 203.0.113.1
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/dynamic_new
+    tf_name: ip_nhrp_map_multicast_dynamic
+    example: true
+    default_value: true
+    test_tags: [C8000V]
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/multicast/nbma_ipv4
+    tf_name: ip_nhrp_map_multicast_nbma_ipv4
+    type: StringList
+    description: Static NBMA addresses for multicast mapping.
+    example: 203.0.113.1
+    test_tags: [C8000V]
+    exclude_test: true
   - yang_name: ip/Cisco-IOS-XE-nhrp:nhrp-v4/nhrp/map/dest-ipv4
     tf_name: ip_nhrp_maps
     type: List

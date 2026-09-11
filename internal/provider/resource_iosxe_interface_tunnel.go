@@ -33,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -558,8 +559,26 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
 						},
+						"nbma_ipv4": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv4 address").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
 					},
 				},
+			},
+			"ip_nhrp_map_multicast_dynamic": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Dynamically learn destinations from client registrations on hub").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
+			},
+			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Static NBMA addresses for multicast mapping.").String,
+				ElementType:         types.StringType,
+				Optional:            true,
 			},
 			"ip_nhrp_maps": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
