@@ -9,6 +9,7 @@ description: |-
 
 ## Unreleased
 
+- Add `iosxe_crypto_gdoi` resource and data source for GET VPN GDOI group and key server configuration (`crypto gdoi group`), including group identity, server local address, rekey authentication, rekey transport unicast, SA IPsec entries with replay counter window-size, and G-IKEv2 profile association
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
 - Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`
 - Fix `iosxe_snmp_server` `hosts`, `vrf_hosts`, and `snmp_communities` list attributes to no longer attempt drift detection during refresh, since they are keyed in part by a write-only attribute (e.g. `community_or_user`) that can never be read back from the device; only changes made through Terraform config are applied to these lists going forward

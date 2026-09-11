@@ -1,0 +1,179 @@
+---
+name: Crypto GDOI
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:gdoi/group[name=%v]
+doc_category: Crypto
+attributes:
+  - yang_name: name
+    description: GDOI group name
+    example: GETVPN-GROUP
+  - yang_name: identity/number
+    tf_name: identity_number
+    description: Set the identity of the group as a number
+    type: Int64
+    example: 100
+  - yang_name: server/local
+    tf_name: server_local
+    description: Configure GKM group server defined locally
+    type: Bool
+    example: true
+  - yang_name: server/local/address/ipv4
+    tf_name: server_local_address_ipv4
+    description: Set ipv4 address of local server
+    example: 198.51.100.1
+  - yang_name: server/local/gdoi
+    tf_name: server_local_gdoi
+    description: Enable GDOI (ISAKMP) Protocol for Registration and Rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: server/local/gikev2
+    tf_name: server_local_gikev2
+    description: Enable G-IKEv2 (IKEv2) Protocol for Registration and Rekey - accepts the IKEv2 profile name
+    example: GETVPN-IKE
+    exclude_test: true
+  - yang_name: server/local/authorization/address/ipv4
+    tf_name: server_local_authorization_address_ipv4
+    description: Set authorization by IPv4 address ACL
+    example: "199"
+    exclude_test: true
+  - yang_name: server/local/authorization/identity
+    tf_name: server_local_authorization_identity
+    description: Set authorization by identity
+    example: my-identity
+    exclude_test: true
+  - yang_name: server/local/registration/interface
+    tf_name: server_local_registration_interface
+    description: Identify an interface on which to respond to GKM registrations
+    example: Loopback0
+    exclude_test: true
+  - yang_name: server/local/rekey/acknowledgement
+    tf_name: server_local_rekey_acknowledgement
+    description: Request group members to acknowledge rekeys
+    example: cisco
+    enum_values:
+      - any
+      - cisco
+      - interoperable
+    exclude_test: true
+  - yang_name: server/local/rekey/address/ipv4
+    tf_name: server_local_rekey_address_ipv4
+    description: IPv4 ACL for rekey packet format
+    example: "199"
+    exclude_test: true
+  - yang_name: server/local/rekey/authentication/mypubkey/rsa
+    tf_name: server_local_rekey_authentication_mypubkey_rsa
+    description: Identify an RSA keypair for rekey authentication
+    example: REKEY-RSA
+    exclude_test: true
+  - yang_name: server/local/rekey/lifetime/seconds
+    tf_name: server_local_rekey_lifetime_seconds
+    description: Time-based rekey lifetime in seconds
+    type: Int64
+    example: 86400
+    exclude_test: true
+  - yang_name: server/local/rekey/retransmit/seconds
+    tf_name: server_local_rekey_retransmit_seconds
+    description: Rekey retransmit interval in seconds
+    type: Int64
+    example: 10
+    exclude_test: true
+  - yang_name: server/local/rekey/retransmit/number-periodic/number-case/number
+    xpath: server/local/rekey/retransmit/number
+    tf_name: server_local_rekey_retransmit_number
+    description: Retransmit this many times
+    type: Int64
+    example: 3
+    exclude_test: true
+  - yang_name: server/local/rekey/retransmit/number-periodic/periodic-case/periodic
+    xpath: server/local/rekey/retransmit/periodic
+    tf_name: server_local_rekey_retransmit_periodic
+    description: Periodically send retransmit rekeys
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: server/local/rekey/sig-hash/algorithm
+    tf_name: server_local_rekey_sig_hash_algorithm
+    description: Set the rekey signature-hash algorithm
+    example: sha256
+    enum_values:
+      - sha
+      - sha256
+      - sha384
+      - sha512
+    exclude_test: true
+  - yang_name: server/local/rekey/transport/unicast
+    tf_name: server_local_rekey_transport_unicast
+    description: Specify unicast rekey distribution
+    type: Bool
+    example: true
+  - yang_name: server/local/redundancy
+    tf_name: server_local_redundancy
+    description: Enter cooperative key server configuration mode
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: server/local/sa/receive-only
+    tf_name: server_local_sa_receive_only
+    description: Configure SA to work only in inbound direction
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: server/local/sa/ipsec
+    tf_name: server_local_sa_ipsec
+    description: Configure an IPsec SA
+    type: List
+    attributes:
+      - yang_name: sequence
+        tf_name: sequence
+        id: true
+        description: IPsec SA sequence number
+        type: Int64
+        example: 100
+      - yang_name: match/address/ipv4
+        tf_name: match_address_ipv4
+        description: Match ipv4 packets ACL
+        example: "102"
+        exclude_test: true
+      - yang_name: profile
+        description: Configure an ipsec profile for the SA
+        example: GETVPN-PROFILE
+        exclude_test: true
+      - yang_name: replay/counter
+        tf_name: replay_counter
+        description: Enable anti-replay check for single source traffic by using sequence number
+        type: Bool
+        example: true
+      - yang_name: replay/counter/window-size
+        tf_name: replay_counter_window_size
+        description: Set replay window size
+        example: "512"
+        enum_values:
+          - "64"
+          - "128"
+          - "256"
+          - "512"
+          - "1024"
+      - yang_name: replay/time
+        tf_name: replay_time
+        description: Enable anti-replay check for any traffic by using time
+        type: Bool
+        example: true
+        exclude_test: true
+      - yang_name: replay/time/window-size
+        tf_name: replay_time_window_size
+        description: Time based replay window size
+        type: Int64
+        example: 5
+        exclude_test: true
+      - yang_name: tag/cts/sgt
+        tf_name: tag_cts_sgt
+        description: Cisco Trust Security - Security Group Tag
+        type: Bool
+        example: true
+        exclude_test: true
+  - yang_name: server/address/ipv4
+    tf_name: server_address_ipv4
+    description: Set the IPv4 address of the group server
+    type: StringList
+    example: 198.51.100.1
+    exclude_test: true
