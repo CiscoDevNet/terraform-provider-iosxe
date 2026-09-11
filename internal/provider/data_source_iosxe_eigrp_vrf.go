@@ -108,6 +108,14 @@ func (d *EIGRPVRFDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "Enable automatic network number summarization",
 				Computed:            true,
 			},
+			"stub_connected": schema.BoolAttribute{
+				MarkdownDescription: "Advertise connected routes",
+				Computed:            true,
+			},
+			"stub_summary": schema.BoolAttribute{
+				MarkdownDescription: "Advertise summary routes",
+				Computed:            true,
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: "Shutdown address family",
 				Computed:            true,
