@@ -35,6 +35,7 @@ attributes:
     type: String
     mandatory: true
     no_delete: true
+    normalize_ipv6: true
     example: FE80::1
   - yang_name: address-family/ipv6/address/primary/primary
     tf_name: ipv6_primary
@@ -52,6 +53,7 @@ attributes:
         id: true
         type: String
         description: IPv6 prefix
+        normalize_ipv6: true
         example: 2001:DB8::FFFF/64
   - yang_name: address-family/ipv6/priority
     tf_name: priority
