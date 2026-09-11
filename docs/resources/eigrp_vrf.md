@@ -24,8 +24,10 @@ resource "iosxe_eigrp_vrf" "example" {
       wildcard = "0.0.255.255"
     }
   ]
-  auto_summary = false
-  shutdown     = false
+  auto_summary   = false
+  stub_connected = true
+  stub_summary   = true
+  shutdown       = false
 }
 ```
 
@@ -49,6 +51,8 @@ resource "iosxe_eigrp_vrf" "example" {
 - `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
 - `router_id` (String) Router ID for this EIGRP process
 - `shutdown` (Boolean) Shutdown address family
+- `stub_connected` (Boolean) Advertise connected routes
+- `stub_summary` (Boolean) Advertise summary routes
 - `topology_base` (String) Base topology (always base)
   - Choices: `base`
   - Default value: `base`

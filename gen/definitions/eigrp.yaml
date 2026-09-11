@@ -44,6 +44,16 @@ attributes:
     no_delete: true
     example: false
     description: Enable automatic network number summarization
+  - yang_name: eigrp/stub/stub-type-choice/advertise/advertise/connected
+    xpath: eigrp/stub/advertise/connected
+    tf_name: stub_connected
+    example: true
+    description: Advertise connected routes
+  - yang_name: eigrp/stub/stub-type-choice/advertise/advertise/summary
+    xpath: eigrp/stub/advertise/summary
+    tf_name: stub_summary
+    example: true
+    description: Advertise summary routes
   - yang_name: shutdown
     example: false
     description: Shutdown address family
