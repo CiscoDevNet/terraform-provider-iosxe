@@ -31,29 +31,28 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeVRRP(t *testing.T) {
+func TestAccDataSourceIosxeVRRPIPv6(t *testing.T) {
 	if os.Getenv("C8000V") == "" {
 		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "address_primary_address", "192.0.2.254"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "address_primary", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "secondary_addresses.0.address", "192.0.2.253"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "secondary_addresses.0.secondary", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "priority", "110"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "preempt_delay_minimum", "30"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "timers_advertise", "3000"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "description", "VRRP-GROUP-1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "tracks.0.object_id", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "tracks.0.decrement", "20"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "tracks.0.shutdown", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp.test", "shutdown", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "ipv6_link_local", "FE80::1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "ipv6_primary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "ipv6_prefixes.0.prefix", "2001:DB8::FFFF/64"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "priority", "110"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "preempt_delay_minimum", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "timers_advertise", "3000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "description", "VRRP-IPV6-GROUP-2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "tracks.0.object_id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "tracks.0.decrement", "20"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "tracks.0.shutdown", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrrp_ipv6.test", "shutdown", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeVRRPPrerequisitesConfig + testAccDataSourceIosxeVRRPConfig(),
+				Config: testAccDataSourceIosxeVRRPIPv6PrerequisitesConfig + testAccDataSourceIosxeVRRPIPv6Config(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -63,7 +62,7 @@ func TestAccDataSourceIosxeVRRP(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccDataSourceIosxeVRRPPrerequisitesConfig = `
+const testAccDataSourceIosxeVRRPIPv6PrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
 	path = "/Cisco-IOS-XE-native:native/fhrp/version"
 	attributes = {
@@ -79,10 +78,9 @@ resource "iosxe_yang" "PreReq1" {
 }
 
 resource "iosxe_yang" "PreReq2" {
-	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ip/address/primary"
+	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/Cisco-IOS-XE-ipv6:address/link-local-address[address=FE80::1]"
 	attributes = {
-		"address" = "192.0.2.1"
-		"mask" = "255.255.255.0"
+		"address" = "FE80::1"
 	}
 }
 
@@ -92,22 +90,21 @@ resource "iosxe_yang" "PreReq2" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeVRRPConfig() string {
-	config := `resource "iosxe_vrrp" "test" {` + "\n"
+func testAccDataSourceIosxeVRRPIPv6Config() string {
+	config := `resource "iosxe_vrrp_ipv6" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	type = "Vlan"` + "\n"
 	config += `	name = "123"` + "\n"
-	config += `	group_id = 1` + "\n"
-	config += `	address_primary_address = "192.0.2.254"` + "\n"
-	config += `	address_primary = true` + "\n"
-	config += `	secondary_addresses = [{` + "\n"
-	config += `		address = "192.0.2.253"` + "\n"
-	config += `		secondary = true` + "\n"
+	config += `	group_id = 2` + "\n"
+	config += `	ipv6_link_local = "FE80::1"` + "\n"
+	config += `	ipv6_primary = true` + "\n"
+	config += `	ipv6_prefixes = [{` + "\n"
+	config += `		prefix = "2001:DB8::FFFF/64"` + "\n"
 	config += `	}]` + "\n"
 	config += `	priority = 110` + "\n"
 	config += `	preempt_delay_minimum = 30` + "\n"
 	config += `	timers_advertise = 3000` + "\n"
-	config += `	description = "VRRP-GROUP-1"` + "\n"
+	config += `	description = "VRRP-IPV6-GROUP-2"` + "\n"
 	config += `	tracks = [{` + "\n"
 	config += `		object_id = "1"` + "\n"
 	config += `		decrement = 20` + "\n"
@@ -118,11 +115,11 @@ func testAccDataSourceIosxeVRRPConfig() string {
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_vrrp" "test" {
+		data "iosxe_vrrp_ipv6" "test" {
 			type = "Vlan"
 			name = "123"
-			group_id = 1
-			depends_on = [iosxe_vrrp.test]
+			group_id = 2
+			depends_on = [iosxe_vrrp_ipv6.test]
 		}
 	`
 	return config

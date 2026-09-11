@@ -38,26 +38,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &VRRPDataSource{}
-	_ datasource.DataSourceWithConfigure = &VRRPDataSource{}
+	_ datasource.DataSource              = &VRRPIPv6DataSource{}
+	_ datasource.DataSourceWithConfigure = &VRRPIPv6DataSource{}
 )
 
-func NewVRRPDataSource() datasource.DataSource {
-	return &VRRPDataSource{}
+func NewVRRPIPv6DataSource() datasource.DataSource {
+	return &VRRPIPv6DataSource{}
 }
 
-type VRRPDataSource struct {
+type VRRPIPv6DataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *VRRPDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_vrrp"
+func (d *VRRPIPv6DataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_vrrp_ipv6"
 }
 
-func (d *VRRPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *VRRPIPv6DataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the VRRP configuration.",
+		MarkdownDescription: "This data source can read the VRRP IPv6 configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -80,25 +80,21 @@ func (d *VRRPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "VRRP group number",
 				Required:            true,
 			},
-			"address_primary_address": schema.StringAttribute{
-				MarkdownDescription: "Virtual primary IPv4 address",
+			"ipv6_link_local": schema.StringAttribute{
+				MarkdownDescription: "IPv6 link-local address",
 				Computed:            true,
 			},
-			"address_primary": schema.BoolAttribute{
-				MarkdownDescription: "Mark address as primary IPv4 address",
+			"ipv6_primary": schema.BoolAttribute{
+				MarkdownDescription: "Mark address as primary IPv6 address",
 				Computed:            true,
 			},
-			"secondary_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: "Secondary virtual IPv4 addresses",
+			"ipv6_prefixes": schema.ListNestedAttribute{
+				MarkdownDescription: "IPv6 prefix addresses",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: "Secondary IPv4 address",
-							Computed:            true,
-						},
-						"secondary": schema.BoolAttribute{
-							MarkdownDescription: "Mark address as secondary",
+						"prefix": schema.StringAttribute{
+							MarkdownDescription: "IPv6 prefix",
 							Computed:            true,
 						},
 					},
@@ -148,7 +144,7 @@ func (d *VRRPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 	}
 }
 
-func (d *VRRPDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *VRRPIPv6DataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -160,8 +156,8 @@ func (d *VRRPDataSource) Configure(_ context.Context, req datasource.ConfigureRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *VRRPDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config VRRPData
+func (d *VRRPIPv6DataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config VRRPIPv6Data
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)

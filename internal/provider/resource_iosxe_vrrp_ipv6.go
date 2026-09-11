@@ -50,26 +50,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &VRRPResource{}
-	_ resource.ResourceWithImportState = &VRRPResource{}
+	_ resource.Resource                = &VRRPIPv6Resource{}
+	_ resource.ResourceWithImportState = &VRRPIPv6Resource{}
 )
 
-func NewVRRPResource() resource.Resource {
-	return &VRRPResource{}
+func NewVRRPIPv6Resource() resource.Resource {
+	return &VRRPIPv6Resource{}
 }
 
-type VRRPResource struct {
+type VRRPIPv6Resource struct {
 	data *IosxeProviderData
 }
 
-func (r *VRRPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_vrrp"
+func (r *VRRPIPv6Resource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_vrrp_ipv6"
 }
 
-func (r *VRRPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *VRRPIPv6Resource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the VRRP configuration.",
+		MarkdownDescription: "This resource can manage the VRRP IPv6 configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -120,36 +120,32 @@ func (r *VRRPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					int64planmodifier.RequiresReplace(),
 				},
 			},
-			"address_primary_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Virtual primary IPv4 address").String,
+			"ipv6_link_local": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 link-local address").String,
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+					stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
 				},
 			},
-			"address_primary": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Mark address as primary IPv4 address").AddDefaultValueDescription("true").String,
+			"ipv6_primary": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Mark address as primary IPv6 address").AddDefaultValueDescription("true").String,
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(true),
 			},
-			"secondary_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Secondary virtual IPv4 addresses").String,
+			"ipv6_prefixes": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix addresses").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Secondary IPv4 address").String,
+						"prefix": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix").String,
 							Required:            true,
 							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
 							},
-						},
-						"secondary": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Mark address as secondary").AddDefaultValueDescription("true").String,
-							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
 						},
 					},
 				},
@@ -215,7 +211,7 @@ func (r *VRRPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 	}
 }
 
-func (r *VRRPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *VRRPIPv6Resource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -227,8 +223,8 @@ func (r *VRRPResource) Configure(_ context.Context, req resource.ConfigureReques
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *VRRPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan, config VRRP
+func (r *VRRPIPv6Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan, config VRRPIPv6
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -282,8 +278,8 @@ func (r *VRRPResource) Create(ctx context.Context, req resource.CreateRequest, r
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *VRRPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state VRRP
+func (r *VRRPIPv6Resource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state VRRPIPv6
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -346,8 +342,8 @@ func (r *VRRPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *VRRPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state, config VRRP
+func (r *VRRPIPv6Resource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state, config VRRPIPv6
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -405,8 +401,8 @@ func (r *VRRPResource) Update(ctx context.Context, req resource.UpdateRequest, r
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *VRRPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state VRRP
+func (r *VRRPIPv6Resource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state VRRPIPv6
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -465,7 +461,7 @@ func (r *VRRPResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *VRRPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *VRRPIPv6Resource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -486,7 +482,7 @@ func (r *VRRPResource) ImportState(ctx context.Context, req resource.ImportState
 	}
 
 	// construct path for 'id' attribute
-	var state VRRP
+	var state VRRPIPv6
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

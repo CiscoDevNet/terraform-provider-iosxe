@@ -14,5 +14,12 @@ resource "iosxe_vrrp" "example" {
   preempt_delay_minimum = 30
   timers_advertise      = 3000
   description           = "VRRP-GROUP-1"
-  shutdown              = false
+  tracks = [
+    {
+      object_id = "1"
+      decrement = 20
+      shutdown  = false
+    }
+  ]
+  shutdown = false
 }

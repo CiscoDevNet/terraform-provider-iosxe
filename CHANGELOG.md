@@ -1,6 +1,7 @@
 ## Unreleased
 
-- Add `iosxe_vrrp` resource and data source for VRRPv3 IPv4 interface-level configuration (`vrrp <group> address-family ipv4`), including primary/secondary virtual IPv4 addresses, priority, preempt delay, advertisement timers (milliseconds), description, and shutdown
+- Add `iosxe_vrrp` resource and data source for VRRPv3 IPv4 interface-level configuration (`vrrp <group> address-family ipv4`), including primary/secondary virtual IPv4 addresses, priority, preempt delay, advertisement timers (milliseconds), description, object tracking with priority decrement and shutdown actions, and group shutdown
+- Add `iosxe_vrrp_ipv6` resource and data source for VRRPv3 IPv6 interface-level configuration (`vrrp <group> address-family ipv6`), including link-local primary address, secondary IPv6 prefixes, priority, preempt delay, advertisement timers (milliseconds), description, object tracking with priority decrement and shutdown actions, and group shutdown
 - Add `iosxe_fhrp` resource and data source for global FHRP version configuration (`fhrp version vrrp v3`)
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
 - Add `police_cir_exceed_transmit` attribute to `iosxe_policy_map` resource and data source for `police cir ... exceed-action transmit` use cases such as CoPP `class-default`

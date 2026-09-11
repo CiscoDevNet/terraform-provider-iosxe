@@ -51,11 +51,17 @@ type VRRP struct {
 	PreemptDelayMinimum   types.Int64              `tfsdk:"preempt_delay_minimum"`
 	TimersAdvertise       types.Int64              `tfsdk:"timers_advertise"`
 	Description           types.String             `tfsdk:"description"`
+	Tracks                []VRRPTracks             `tfsdk:"tracks"`
 	Shutdown              types.Bool               `tfsdk:"shutdown"`
 }
 type VRRPSecondaryAddresses struct {
 	Address   types.String `tfsdk:"address"`
 	Secondary types.Bool   `tfsdk:"secondary"`
+}
+type VRRPTracks struct {
+	ObjectId  types.String `tfsdk:"object_id"`
+	Decrement types.Int64  `tfsdk:"decrement"`
+	Shutdown  types.Bool   `tfsdk:"shutdown"`
 }
 
 type VRRPData struct {
@@ -71,11 +77,17 @@ type VRRPData struct {
 	PreemptDelayMinimum   types.Int64                  `tfsdk:"preempt_delay_minimum"`
 	TimersAdvertise       types.Int64                  `tfsdk:"timers_advertise"`
 	Description           types.String                 `tfsdk:"description"`
+	Tracks                []VRRPTracksData             `tfsdk:"tracks"`
 	Shutdown              types.Bool                   `tfsdk:"shutdown"`
 }
 type VRRPSecondaryAddressesData struct {
 	Address   types.String `tfsdk:"address"`
 	Secondary types.Bool   `tfsdk:"secondary"`
+}
+type VRRPTracksData struct {
+	ObjectId  types.String `tfsdk:"object_id"`
+	Decrement types.Int64  `tfsdk:"decrement"`
+	Shutdown  types.Bool   `tfsdk:"shutdown"`
 }
 
 // End of section. //template:end types
@@ -159,6 +171,25 @@ func (data VRRP) addToBodyXML(ctx context.Context, config VRRP, body netconf.Bod
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/address-family/ipv4/description", data.Description.ValueString())
+	}
+	if len(data.Tracks) > 0 {
+		for _, item := range data.Tracks {
+			cBody := netconf.Body{}
+			if !item.ObjectId.IsNull() && !item.ObjectId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "object-id", item.ObjectId.ValueString())
+			}
+			if !item.Decrement.IsNull() && !item.Decrement.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "decrement", strconv.FormatInt(item.Decrement.ValueInt64(), 10))
+			}
+			if !item.Shutdown.IsNull() && !item.Shutdown.IsUnknown() {
+				if item.Shutdown.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "shutdown", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "shutdown")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/address-family/ipv4/track/event", cBody.Res())
+		}
 	}
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		if data.Shutdown.ValueBool() {
@@ -252,6 +283,49 @@ func (data *VRRP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Description = types.StringNull()
 	}
+	for i := range data.Tracks {
+		keys := [...]string{"object-id"}
+		keyValues := [...]string{data.Tracks[i].ObjectId.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/track/event").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "object-id"); value.Exists() && !data.Tracks[i].ObjectId.IsNull() {
+			data.Tracks[i].ObjectId = types.StringValue(value.String())
+		} else {
+			data.Tracks[i].ObjectId = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "decrement"); value.Exists() && !data.Tracks[i].Decrement.IsNull() {
+			data.Tracks[i].Decrement = types.Int64Value(value.Int())
+		} else {
+			data.Tracks[i].Decrement = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "shutdown"); !data.Tracks[i].Shutdown.IsNull() {
+			if value.Exists() {
+				data.Tracks[i].Shutdown = types.BoolValue(true)
+			} else {
+				data.Tracks[i].Shutdown = types.BoolValue(false)
+			}
+		} else {
+			data.Tracks[i].Shutdown = types.BoolNull()
+		}
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/shutdown"); !data.Shutdown.IsNull() {
 		if value.Exists() {
 			data.Shutdown = types.BoolValue(true)
@@ -304,6 +378,25 @@ func (data *VRRP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/track/event"); value.Exists() {
+		data.Tracks = make([]VRRPTracks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRRPTracks{}
+			if cValue := helpers.GetFromXPath(v, "object-id"); cValue.Exists() {
+				item.ObjectId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "decrement"); cValue.Exists() {
+				item.Decrement = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "shutdown"); cValue.Exists() {
+				item.Shutdown = types.BoolValue(true)
+			} else {
+				item.Shutdown = types.BoolValue(false)
+			}
+			data.Tracks = append(data.Tracks, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(true)
 	} else {
@@ -352,6 +445,25 @@ func (data *VRRPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/track/event"); value.Exists() {
+		data.Tracks = make([]VRRPTracksData, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := VRRPTracksData{}
+			if cValue := helpers.GetFromXPath(v, "object-id"); cValue.Exists() {
+				item.ObjectId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "decrement"); cValue.Exists() {
+				item.Decrement = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "shutdown"); cValue.Exists() {
+				item.Shutdown = types.BoolValue(true)
+			} else {
+				item.Shutdown = types.BoolValue(false)
+			}
+			data.Tracks = append(data.Tracks, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/address-family/ipv4/shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(true)
 	} else {
@@ -367,6 +479,42 @@ func (data *VRRP) addDeletedItemsXML(ctx context.Context, state VRRP, body strin
 	b := netconf.NewBody(body)
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/shutdown")
+	}
+	for i := range state.Tracks {
+		stateKeys := [...]string{"object-id"}
+		stateKeyValues := [...]string{state.Tracks[i].ObjectId.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Tracks[i].ObjectId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Tracks {
+			found = true
+			if state.Tracks[i].ObjectId.ValueString() != data.Tracks[j].ObjectId.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Tracks[i].Shutdown.IsNull() && data.Tracks[j].Shutdown.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/track/event%v/shutdown", predicates))
+				}
+				if !state.Tracks[i].Decrement.IsNull() && data.Tracks[j].Decrement.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/track/event%v/decrement", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/address-family/ipv4/track/event%v", predicates))
+		}
 	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address-family/ipv4/description")
@@ -426,6 +574,16 @@ func (data *VRRP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.Shutdown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/shutdown")
+	}
+	for i := range data.Tracks {
+		keys := [...]string{"object-id"}
+		keyValues := [...]string{data.Tracks[i].ObjectId.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/address-family/ipv4/track/event%v", predicates))
 	}
 	if !data.Description.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address-family/ipv4/description")
