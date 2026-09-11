@@ -153,6 +153,30 @@ func (r *EIGRPVRFResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
 			},
+			"af_interfaces": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter Address Family interface configuration").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"interface": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Interface name or default for the default AF interface").String,
+							Required:            true,
+						},
+						"passive_interface": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Suppress address updates on an interface").AddDefaultValueDescription("false").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(false),
+						},
+						"split_horizon": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Perform split horizon").AddDefaultValueDescription("true").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(true),
+						},
+					},
+				},
+			},
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Shutdown address family").String,
 				Optional:            true,

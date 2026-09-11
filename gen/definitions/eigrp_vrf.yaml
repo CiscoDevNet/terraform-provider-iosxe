@@ -56,6 +56,23 @@ attributes:
     no_delete: true
     example: false
     description: Enable automatic network number summarization
+  - yang_name: af-interface
+    tf_name: af_interfaces
+    type: List
+    description: Enter Address Family interface configuration
+    attributes:
+      - yang_name: interface
+        id: true
+        example: default
+        description: Interface name or default for the default AF interface
+      - yang_name: passive-interface
+        default_value: "false"
+        example: true
+        description: Suppress address updates on an interface
+      - yang_name: split-horizon
+        default_value: "true"
+        example: false
+        description: Perform split horizon
   - yang_name: shutdown
     example: false
     description: Shutdown address family
