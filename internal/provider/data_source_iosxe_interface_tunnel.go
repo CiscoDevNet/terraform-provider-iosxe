@@ -450,7 +450,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				Computed:            true,
 			},
 			"ip_nhrp_map_multicast_nbma_ipv4": schema.ListAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Static NBMA addresses for multicast mapping.",
 				ElementType:         types.StringType,
 				Computed:            true,
 			},

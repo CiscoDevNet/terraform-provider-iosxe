@@ -56,7 +56,7 @@ data "iosxe_interface_tunnel" "example" {
 - `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_nhrp_authentication` (String) authentication string
 - `ip_nhrp_map_multicast_dynamic` (Boolean) Dynamically learn destinations from client registrations on hub
-- `ip_nhrp_map_multicast_nbma_ipv4` (List of String)
+- `ip_nhrp_map_multicast_nbma_ipv4` (List of String) Static NBMA addresses for multicast mapping.
 - `ip_nhrp_maps` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_maps))
 - `ip_nhrp_network_id` (Number) Network identifier
 - `ip_nhrp_nhs` (Attributes List) (see [below for nested schema](#nestedatt--ip_nhrp_nhs))
