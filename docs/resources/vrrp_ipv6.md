@@ -53,8 +53,6 @@ resource "iosxe_vrrp_ipv6" "example" {
 
 ### Optional
 
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `description` (String) Group description
 - `device` (String) A device name from the provider configuration.
 - `ipv6_prefixes` (Attributes List) IPv6 prefix addresses (see [below for nested schema](#nestedatt--ipv6_prefixes))

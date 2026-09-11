@@ -107,7 +107,7 @@ resource "iosxe_yang" "PreReq1" {
 }
 
 resource "iosxe_yang" "PreReq2" {
-	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/Cisco-IOS-XE-ipv6:address/link-local-address[address=FE80::1]"
+	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/address/link-local-address[address=FE80::1]"
 	attributes = {
 		"address" = "FE80::1"
 	}

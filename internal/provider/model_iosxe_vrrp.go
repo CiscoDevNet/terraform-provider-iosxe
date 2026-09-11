@@ -40,7 +40,6 @@ import (
 type VRRP struct {
 	Device                types.String             `tfsdk:"device"`
 	Id                    types.String             `tfsdk:"id"`
-	DeleteMode            types.String             `tfsdk:"delete_mode"`
 	Type                  types.String             `tfsdk:"type"`
 	Name                  types.String             `tfsdk:"name"`
 	GroupId               types.Int64              `tfsdk:"group_id"`

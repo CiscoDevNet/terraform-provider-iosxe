@@ -94,7 +94,6 @@ resource "iosxe_yang" "PreReq2" {
 
 func testAccDataSourceIosxeVRRPConfig() string {
 	config := `resource "iosxe_vrrp" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	type = "Vlan"` + "\n"
 	config += `	name = "123"` + "\n"
 	config += `	group_id = 1` + "\n"

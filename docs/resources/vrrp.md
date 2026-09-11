@@ -56,8 +56,6 @@ resource "iosxe_vrrp" "example" {
 
 - `address_primary` (Boolean) Mark address as primary IPv4 address
   - Default value: `true`
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `description` (String) Group description
 - `device` (String) A device name from the provider configuration.
 - `preempt_delay_minimum` (Number) Seconds to delay before preempting

@@ -78,7 +78,7 @@ resource "iosxe_yang" "PreReq1" {
 }
 
 resource "iosxe_yang" "PreReq2" {
-	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/Cisco-IOS-XE-ipv6:address/link-local-address[address=FE80::1]"
+	path = "/Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/address/link-local-address[address=FE80::1]"
 	attributes = {
 		"address" = "FE80::1"
 	}
@@ -92,7 +92,6 @@ resource "iosxe_yang" "PreReq2" {
 
 func testAccDataSourceIosxeVRRPIPv6Config() string {
 	config := `resource "iosxe_vrrp_ipv6" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	type = "Vlan"` + "\n"
 	config += `	name = "123"` + "\n"
 	config += `	group_id = 2` + "\n"
