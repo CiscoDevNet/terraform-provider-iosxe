@@ -209,6 +209,83 @@ func (d *CryptoGDOIDataSource) Schema(ctx context.Context, req datasource.Schema
 					},
 				},
 			},
+			"client_bypass_policy": schema.BoolAttribute{
+				MarkdownDescription: "Allow group-key management traffic sent to this GM only",
+				Computed:            true,
+			},
+			"client_pfs": schema.BoolAttribute{
+				MarkdownDescription: "Enable/Disable PFS on Group Member - by default PFS is enabled",
+				Computed:            true,
+			},
+			"client_fail_close_revert": schema.BoolAttribute{
+				MarkdownDescription: "Revert to Fail-Close policy in case of Registration Failure",
+				Computed:            true,
+			},
+			"client_protocol_gdoi": schema.BoolAttribute{
+				MarkdownDescription: "Use GDOI (ISAKMP) Protocol for Registration and Rekey",
+				Computed:            true,
+			},
+			"client_protocol_gikev2": schema.StringAttribute{
+				MarkdownDescription: "Use G-IKEv2 Protocol for Registration and Rekey - accepts the IKEv2 profile name",
+				Computed:            true,
+			},
+			"client_recovery_check_interval": schema.Int64Attribute{
+				MarkdownDescription: "Waiting period in seconds between consecutive recovery registrations",
+				Computed:            true,
+			},
+			"client_registration_interface": schema.StringAttribute{
+				MarkdownDescription: "Set the group client management/register interface",
+				Computed:            true,
+			},
+			"client_rekey_encryption_3des_cbc": schema.BoolAttribute{
+				MarkdownDescription: "Accept 3DES-CBC cipher for rekey",
+				Computed:            true,
+			},
+			"client_rekey_encryption_aes_128": schema.BoolAttribute{
+				MarkdownDescription: "Accept 128-bit AES cipher for rekey",
+				Computed:            true,
+			},
+			"client_rekey_encryption_aes_192": schema.BoolAttribute{
+				MarkdownDescription: "Accept 192-bit AES cipher for rekey",
+				Computed:            true,
+			},
+			"client_rekey_encryption_aes_256": schema.BoolAttribute{
+				MarkdownDescription: "Accept 256-bit AES cipher for rekey",
+				Computed:            true,
+			},
+			"client_rekey_encryption_des_cbc": schema.BoolAttribute{
+				MarkdownDescription: "Accept DES in CBC mode cipher for rekey",
+				Computed:            true,
+			},
+			"client_rekey_hash_sha": schema.BoolAttribute{
+				MarkdownDescription: "Accept SHA hash for rekey",
+				Computed:            true,
+			},
+			"client_rekey_hash_sha256": schema.BoolAttribute{
+				MarkdownDescription: "Accept SHA-256 hash for rekey",
+				Computed:            true,
+			},
+			"client_rekey_hash_sha384": schema.BoolAttribute{
+				MarkdownDescription: "Accept SHA-384 hash for rekey",
+				Computed:            true,
+			},
+			"client_rekey_hash_sha512": schema.BoolAttribute{
+				MarkdownDescription: "Accept SHA-512 hash for rekey",
+				Computed:            true,
+			},
+			"client_status_active_sa_track": schema.Int64Attribute{
+				MarkdownDescription: "Enable stub tracking object for TEK SA with positive remaining lifetime",
+				Computed:            true,
+			},
+			"client_transform_sets": schema.ListAttribute{
+				MarkdownDescription: "Specify list of group client acceptable transform sets",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"client_transport_encrypt_key": schema.StringAttribute{
+				MarkdownDescription: "Enforce group or pair-wise keying for transport encryption",
+				Computed:            true,
+			},
 			"server_address_ipv4": schema.ListAttribute{
 				MarkdownDescription: "Set the IPv4 address of the group server",
 				ElementType:         types.StringType,

@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -267,6 +268,94 @@ func (r *CryptoGDOIResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Optional:            true,
 						},
 					},
+				},
+			},
+			"client_bypass_policy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow group-key management traffic sent to this GM only").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
+			},
+			"client_pfs": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable PFS on Group Member - by default PFS is enabled").String,
+				Optional:            true,
+			},
+			"client_fail_close_revert": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Revert to Fail-Close policy in case of Registration Failure").String,
+				Optional:            true,
+			},
+			"client_protocol_gdoi": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use GDOI (ISAKMP) Protocol for Registration and Rekey").String,
+				Optional:            true,
+			},
+			"client_protocol_gikev2": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use G-IKEv2 Protocol for Registration and Rekey - accepts the IKEv2 profile name").String,
+				Optional:            true,
+			},
+			"client_recovery_check_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Waiting period in seconds between consecutive recovery registrations").AddIntegerRangeDescription(100, 1000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(100, 1000),
+				},
+			},
+			"client_registration_interface": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the group client management/register interface").String,
+				Optional:            true,
+			},
+			"client_rekey_encryption_3des_cbc": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 3DES-CBC cipher for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_encryption_aes_128": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 128-bit AES cipher for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_encryption_aes_192": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 192-bit AES cipher for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_encryption_aes_256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept 256-bit AES cipher for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_encryption_des_cbc": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept DES in CBC mode cipher for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_hash_sha": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA hash for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_hash_sha256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-256 hash for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_hash_sha384": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-384 hash for rekey").String,
+				Optional:            true,
+			},
+			"client_rekey_hash_sha512": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept SHA-512 hash for rekey").String,
+				Optional:            true,
+			},
+			"client_status_active_sa_track": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable stub tracking object for TEK SA with positive remaining lifetime").AddIntegerRangeDescription(1, 1000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1000),
+				},
+			},
+			"client_transform_sets": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify list of group client acceptable transform sets").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"client_transport_encrypt_key": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enforce group or pair-wise keying for transport encryption").AddStringEnumDescription("group-key", "pair-wise-key").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("group-key", "pair-wise-key"),
 				},
 			},
 			"server_address_ipv4": schema.ListAttribute{

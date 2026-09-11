@@ -67,6 +67,25 @@ type CryptoGDOI struct {
 	ServerLocalRedundancyProtocolVersion      types.String                   `tfsdk:"server_local_redundancy_protocol_version"`
 	ServerLocalSaReceiveOnly                  types.Bool                     `tfsdk:"server_local_sa_receive_only"`
 	ServerLocalSaIpsec                        []CryptoGDOIServerLocalSaIpsec `tfsdk:"server_local_sa_ipsec"`
+	ClientBypassPolicy                        types.Bool                     `tfsdk:"client_bypass_policy"`
+	ClientPfs                                 types.Bool                     `tfsdk:"client_pfs"`
+	ClientFailCloseRevert                     types.Bool                     `tfsdk:"client_fail_close_revert"`
+	ClientProtocolGdoi                        types.Bool                     `tfsdk:"client_protocol_gdoi"`
+	ClientProtocolGikev2                      types.String                   `tfsdk:"client_protocol_gikev2"`
+	ClientRecoveryCheckInterval               types.Int64                    `tfsdk:"client_recovery_check_interval"`
+	ClientRegistrationInterface               types.String                   `tfsdk:"client_registration_interface"`
+	ClientRekeyEncryption3desCbc              types.Bool                     `tfsdk:"client_rekey_encryption_3des_cbc"`
+	ClientRekeyEncryptionAes128               types.Bool                     `tfsdk:"client_rekey_encryption_aes_128"`
+	ClientRekeyEncryptionAes192               types.Bool                     `tfsdk:"client_rekey_encryption_aes_192"`
+	ClientRekeyEncryptionAes256               types.Bool                     `tfsdk:"client_rekey_encryption_aes_256"`
+	ClientRekeyEncryptionDesCbc               types.Bool                     `tfsdk:"client_rekey_encryption_des_cbc"`
+	ClientRekeyHashSha                        types.Bool                     `tfsdk:"client_rekey_hash_sha"`
+	ClientRekeyHashSha256                     types.Bool                     `tfsdk:"client_rekey_hash_sha256"`
+	ClientRekeyHashSha384                     types.Bool                     `tfsdk:"client_rekey_hash_sha384"`
+	ClientRekeyHashSha512                     types.Bool                     `tfsdk:"client_rekey_hash_sha512"`
+	ClientStatusActiveSaTrack                 types.Int64                    `tfsdk:"client_status_active_sa_track"`
+	ClientTransformSets                       types.List                     `tfsdk:"client_transform_sets"`
+	ClientTransportEncryptKey                 types.String                   `tfsdk:"client_transport_encrypt_key"`
 	ServerAddressIpv4                         types.List                     `tfsdk:"server_address_ipv4"`
 }
 type CryptoGDOIServerLocalSaIpsec struct {
@@ -109,6 +128,25 @@ type CryptoGDOIData struct {
 	ServerLocalRedundancyProtocolVersion      types.String                       `tfsdk:"server_local_redundancy_protocol_version"`
 	ServerLocalSaReceiveOnly                  types.Bool                         `tfsdk:"server_local_sa_receive_only"`
 	ServerLocalSaIpsec                        []CryptoGDOIServerLocalSaIpsecData `tfsdk:"server_local_sa_ipsec"`
+	ClientBypassPolicy                        types.Bool                         `tfsdk:"client_bypass_policy"`
+	ClientPfs                                 types.Bool                         `tfsdk:"client_pfs"`
+	ClientFailCloseRevert                     types.Bool                         `tfsdk:"client_fail_close_revert"`
+	ClientProtocolGdoi                        types.Bool                         `tfsdk:"client_protocol_gdoi"`
+	ClientProtocolGikev2                      types.String                       `tfsdk:"client_protocol_gikev2"`
+	ClientRecoveryCheckInterval               types.Int64                        `tfsdk:"client_recovery_check_interval"`
+	ClientRegistrationInterface               types.String                       `tfsdk:"client_registration_interface"`
+	ClientRekeyEncryption3desCbc              types.Bool                         `tfsdk:"client_rekey_encryption_3des_cbc"`
+	ClientRekeyEncryptionAes128               types.Bool                         `tfsdk:"client_rekey_encryption_aes_128"`
+	ClientRekeyEncryptionAes192               types.Bool                         `tfsdk:"client_rekey_encryption_aes_192"`
+	ClientRekeyEncryptionAes256               types.Bool                         `tfsdk:"client_rekey_encryption_aes_256"`
+	ClientRekeyEncryptionDesCbc               types.Bool                         `tfsdk:"client_rekey_encryption_des_cbc"`
+	ClientRekeyHashSha                        types.Bool                         `tfsdk:"client_rekey_hash_sha"`
+	ClientRekeyHashSha256                     types.Bool                         `tfsdk:"client_rekey_hash_sha256"`
+	ClientRekeyHashSha384                     types.Bool                         `tfsdk:"client_rekey_hash_sha384"`
+	ClientRekeyHashSha512                     types.Bool                         `tfsdk:"client_rekey_hash_sha512"`
+	ClientStatusActiveSaTrack                 types.Int64                        `tfsdk:"client_status_active_sa_track"`
+	ClientTransformSets                       types.List                         `tfsdk:"client_transform_sets"`
+	ClientTransportEncryptKey                 types.String                       `tfsdk:"client_transport_encrypt_key"`
 	ServerAddressIpv4                         types.List                         `tfsdk:"server_address_ipv4"`
 }
 type CryptoGDOIServerLocalSaIpsecData struct {
@@ -311,6 +349,115 @@ func (data CryptoGDOI) addToBodyXML(ctx context.Context, config CryptoGDOI, body
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/server/local/sa/ipsec", cBody.Res())
 		}
+	}
+	if !data.ClientBypassPolicy.IsNull() && !data.ClientBypassPolicy.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/client/bypass-policy-new", data.ClientBypassPolicy.ValueBool())
+	}
+	if !data.ClientPfs.IsNull() && !data.ClientPfs.IsUnknown() {
+		if data.ClientPfs.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/pfs", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/pfs")
+		}
+	}
+	if !data.ClientFailCloseRevert.IsNull() && !data.ClientFailCloseRevert.IsUnknown() {
+		if data.ClientFailCloseRevert.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/fail-close/revert", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/fail-close/revert")
+		}
+	}
+	if !data.ClientProtocolGdoi.IsNull() && !data.ClientProtocolGdoi.IsUnknown() {
+		if data.ClientProtocolGdoi.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/protocol/gdoi", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/protocol/gdoi")
+		}
+	}
+	if !data.ClientProtocolGikev2.IsNull() && !data.ClientProtocolGikev2.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/client/protocol/gikev2", data.ClientProtocolGikev2.ValueString())
+	}
+	if !data.ClientRecoveryCheckInterval.IsNull() && !data.ClientRecoveryCheckInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/client/recovery-check/interval", strconv.FormatInt(data.ClientRecoveryCheckInterval.ValueInt64(), 10))
+	}
+	if !data.ClientRegistrationInterface.IsNull() && !data.ClientRegistrationInterface.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/client/registration/interface", data.ClientRegistrationInterface.ValueString())
+	}
+	if !data.ClientRekeyEncryption3desCbc.IsNull() && !data.ClientRekeyEncryption3desCbc.IsUnknown() {
+		if data.ClientRekeyEncryption3desCbc.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc")
+		}
+	}
+	if !data.ClientRekeyEncryptionAes128.IsNull() && !data.ClientRekeyEncryptionAes128.IsUnknown() {
+		if data.ClientRekeyEncryptionAes128.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-128", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-128")
+		}
+	}
+	if !data.ClientRekeyEncryptionAes192.IsNull() && !data.ClientRekeyEncryptionAes192.IsUnknown() {
+		if data.ClientRekeyEncryptionAes192.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-192", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-192")
+		}
+	}
+	if !data.ClientRekeyEncryptionAes256.IsNull() && !data.ClientRekeyEncryptionAes256.IsUnknown() {
+		if data.ClientRekeyEncryptionAes256.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-256", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/aes-256")
+		}
+	}
+	if !data.ClientRekeyEncryptionDesCbc.IsNull() && !data.ClientRekeyEncryptionDesCbc.IsUnknown() {
+		if data.ClientRekeyEncryptionDesCbc.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/encryption/des-cbc", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/encryption/des-cbc")
+		}
+	}
+	if !data.ClientRekeyHashSha.IsNull() && !data.ClientRekeyHashSha.IsUnknown() {
+		if data.ClientRekeyHashSha.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha")
+		}
+	}
+	if !data.ClientRekeyHashSha256.IsNull() && !data.ClientRekeyHashSha256.IsUnknown() {
+		if data.ClientRekeyHashSha256.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha256", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha256")
+		}
+	}
+	if !data.ClientRekeyHashSha384.IsNull() && !data.ClientRekeyHashSha384.IsUnknown() {
+		if data.ClientRekeyHashSha384.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha384", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha384")
+		}
+	}
+	if !data.ClientRekeyHashSha512.IsNull() && !data.ClientRekeyHashSha512.IsUnknown() {
+		if data.ClientRekeyHashSha512.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/client/rekey/hash/sha512", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/client/rekey/hash/sha512")
+		}
+	}
+	if !data.ClientStatusActiveSaTrack.IsNull() && !data.ClientStatusActiveSaTrack.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/client/status/active-sa/track", strconv.FormatInt(data.ClientStatusActiveSaTrack.ValueInt64(), 10))
+	}
+	if !data.ClientTransformSets.IsNull() && !data.ClientTransformSets.IsUnknown() {
+		var values []string
+		data.ClientTransformSets.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/client/transform-sets", v)
+		}
+	}
+	if !data.ClientTransportEncryptKey.IsNull() && !data.ClientTransportEncryptKey.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/client/transport-encrypt-key", data.ClientTransportEncryptKey.ValueString())
 	}
 	if !data.ServerAddressIpv4.IsNull() && !data.ServerAddressIpv4.IsUnknown() {
 		var values []string
@@ -556,6 +703,151 @@ func (data *CryptoGDOI) updateFromBodyXML(ctx context.Context, res xmldot.Result
 			data.ServerLocalSaIpsec[i].TagCtsSgt = types.BoolNull()
 		}
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/bypass-policy-new"); !data.ClientBypassPolicy.IsNull() {
+		if value.Exists() {
+			data.ClientBypassPolicy = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.ClientBypassPolicy = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/pfs"); !data.ClientPfs.IsNull() {
+		if value.Exists() {
+			data.ClientPfs = types.BoolValue(true)
+		} else {
+			data.ClientPfs = types.BoolValue(false)
+		}
+	} else {
+		data.ClientPfs = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/fail-close/revert"); !data.ClientFailCloseRevert.IsNull() {
+		if value.Exists() {
+			data.ClientFailCloseRevert = types.BoolValue(true)
+		} else {
+			data.ClientFailCloseRevert = types.BoolValue(false)
+		}
+	} else {
+		data.ClientFailCloseRevert = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/protocol/gdoi"); !data.ClientProtocolGdoi.IsNull() {
+		if value.Exists() {
+			data.ClientProtocolGdoi = types.BoolValue(true)
+		} else {
+			data.ClientProtocolGdoi = types.BoolValue(false)
+		}
+	} else {
+		data.ClientProtocolGdoi = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/protocol/gikev2"); value.Exists() && !data.ClientProtocolGikev2.IsNull() {
+		data.ClientProtocolGikev2 = types.StringValue(value.String())
+	} else {
+		data.ClientProtocolGikev2 = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/recovery-check/interval"); value.Exists() && !data.ClientRecoveryCheckInterval.IsNull() {
+		data.ClientRecoveryCheckInterval = types.Int64Value(value.Int())
+	} else {
+		data.ClientRecoveryCheckInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/registration/interface"); value.Exists() && !data.ClientRegistrationInterface.IsNull() {
+		data.ClientRegistrationInterface = types.StringValue(value.String())
+	} else {
+		data.ClientRegistrationInterface = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc"); !data.ClientRekeyEncryption3desCbc.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyEncryption3desCbc = types.BoolValue(true)
+		} else {
+			data.ClientRekeyEncryption3desCbc = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyEncryption3desCbc = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-128"); !data.ClientRekeyEncryptionAes128.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyEncryptionAes128 = types.BoolValue(true)
+		} else {
+			data.ClientRekeyEncryptionAes128 = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyEncryptionAes128 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-192"); !data.ClientRekeyEncryptionAes192.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyEncryptionAes192 = types.BoolValue(true)
+		} else {
+			data.ClientRekeyEncryptionAes192 = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyEncryptionAes192 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-256"); !data.ClientRekeyEncryptionAes256.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyEncryptionAes256 = types.BoolValue(true)
+		} else {
+			data.ClientRekeyEncryptionAes256 = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyEncryptionAes256 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/des-cbc"); !data.ClientRekeyEncryptionDesCbc.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyEncryptionDesCbc = types.BoolValue(true)
+		} else {
+			data.ClientRekeyEncryptionDesCbc = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyEncryptionDesCbc = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha"); !data.ClientRekeyHashSha.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyHashSha = types.BoolValue(true)
+		} else {
+			data.ClientRekeyHashSha = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyHashSha = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha256"); !data.ClientRekeyHashSha256.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyHashSha256 = types.BoolValue(true)
+		} else {
+			data.ClientRekeyHashSha256 = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyHashSha256 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha384"); !data.ClientRekeyHashSha384.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyHashSha384 = types.BoolValue(true)
+		} else {
+			data.ClientRekeyHashSha384 = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyHashSha384 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha512"); !data.ClientRekeyHashSha512.IsNull() {
+		if value.Exists() {
+			data.ClientRekeyHashSha512 = types.BoolValue(true)
+		} else {
+			data.ClientRekeyHashSha512 = types.BoolValue(false)
+		}
+	} else {
+		data.ClientRekeyHashSha512 = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/status/active-sa/track"); value.Exists() && !data.ClientStatusActiveSaTrack.IsNull() {
+		data.ClientStatusActiveSaTrack = types.Int64Value(value.Int())
+	} else {
+		data.ClientStatusActiveSaTrack = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/transform-sets"); value.Exists() && !data.ClientTransformSets.IsNull() {
+		data.ClientTransformSets = helpers.GetStringListXML(value.Array())
+	} else {
+		data.ClientTransformSets = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/transport-encrypt-key"); value.Exists() && !data.ClientTransportEncryptKey.IsNull() {
+		data.ClientTransportEncryptKey = types.StringValue(value.String())
+	} else {
+		data.ClientTransportEncryptKey = types.StringNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/address/ipv4"); value.Exists() && !data.ServerAddressIpv4.IsNull() {
 		data.ServerAddressIpv4 = helpers.GetStringListXML(value.Array())
 	} else {
@@ -693,6 +985,91 @@ func (data *CryptoGDOI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.ServerLocalSaIpsec = append(data.ServerLocalSaIpsec, item)
 			return true
 		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/bypass-policy-new"); value.Exists() {
+		data.ClientBypassPolicy = types.BoolValue(value.Bool())
+	} else {
+		data.ClientBypassPolicy = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/pfs"); value.Exists() {
+		data.ClientPfs = types.BoolValue(true)
+	} else {
+		data.ClientPfs = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/fail-close/revert"); value.Exists() {
+		data.ClientFailCloseRevert = types.BoolValue(true)
+	} else {
+		data.ClientFailCloseRevert = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/protocol/gdoi"); value.Exists() {
+		data.ClientProtocolGdoi = types.BoolValue(true)
+	} else {
+		data.ClientProtocolGdoi = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/protocol/gikev2"); value.Exists() {
+		data.ClientProtocolGikev2 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/recovery-check/interval"); value.Exists() {
+		data.ClientRecoveryCheckInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/registration/interface"); value.Exists() {
+		data.ClientRegistrationInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc"); value.Exists() {
+		data.ClientRekeyEncryption3desCbc = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryption3desCbc = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-128"); value.Exists() {
+		data.ClientRekeyEncryptionAes128 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionAes128 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-192"); value.Exists() {
+		data.ClientRekeyEncryptionAes192 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionAes192 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-256"); value.Exists() {
+		data.ClientRekeyEncryptionAes256 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionAes256 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/des-cbc"); value.Exists() {
+		data.ClientRekeyEncryptionDesCbc = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionDesCbc = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha"); value.Exists() {
+		data.ClientRekeyHashSha = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha256"); value.Exists() {
+		data.ClientRekeyHashSha256 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha256 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha384"); value.Exists() {
+		data.ClientRekeyHashSha384 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha384 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha512"); value.Exists() {
+		data.ClientRekeyHashSha512 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha512 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/status/active-sa/track"); value.Exists() {
+		data.ClientStatusActiveSaTrack = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/transform-sets"); value.Exists() {
+		data.ClientTransformSets = helpers.GetStringListXML(value.Array())
+	} else {
+		data.ClientTransformSets = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/transport-encrypt-key"); value.Exists() {
+		data.ClientTransportEncryptKey = types.StringValue(value.String())
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/address/ipv4"); value.Exists() {
 		data.ServerAddressIpv4 = helpers.GetStringListXML(value.Array())
@@ -832,6 +1209,91 @@ func (data *CryptoGDOIData) fromBodyXML(ctx context.Context, res xmldot.Result) 
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/bypass-policy-new"); value.Exists() {
+		data.ClientBypassPolicy = types.BoolValue(value.Bool())
+	} else {
+		data.ClientBypassPolicy = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/pfs"); value.Exists() {
+		data.ClientPfs = types.BoolValue(true)
+	} else {
+		data.ClientPfs = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/fail-close/revert"); value.Exists() {
+		data.ClientFailCloseRevert = types.BoolValue(true)
+	} else {
+		data.ClientFailCloseRevert = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/protocol/gdoi"); value.Exists() {
+		data.ClientProtocolGdoi = types.BoolValue(true)
+	} else {
+		data.ClientProtocolGdoi = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/protocol/gikev2"); value.Exists() {
+		data.ClientProtocolGikev2 = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/recovery-check/interval"); value.Exists() {
+		data.ClientRecoveryCheckInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/registration/interface"); value.Exists() {
+		data.ClientRegistrationInterface = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc"); value.Exists() {
+		data.ClientRekeyEncryption3desCbc = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryption3desCbc = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-128"); value.Exists() {
+		data.ClientRekeyEncryptionAes128 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionAes128 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-192"); value.Exists() {
+		data.ClientRekeyEncryptionAes192 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionAes192 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/aes-256"); value.Exists() {
+		data.ClientRekeyEncryptionAes256 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionAes256 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/encryption/des-cbc"); value.Exists() {
+		data.ClientRekeyEncryptionDesCbc = types.BoolValue(true)
+	} else {
+		data.ClientRekeyEncryptionDesCbc = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha"); value.Exists() {
+		data.ClientRekeyHashSha = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha256"); value.Exists() {
+		data.ClientRekeyHashSha256 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha256 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha384"); value.Exists() {
+		data.ClientRekeyHashSha384 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha384 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/rekey/hash/sha512"); value.Exists() {
+		data.ClientRekeyHashSha512 = types.BoolValue(true)
+	} else {
+		data.ClientRekeyHashSha512 = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/status/active-sa/track"); value.Exists() {
+		data.ClientStatusActiveSaTrack = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/transform-sets"); value.Exists() {
+		data.ClientTransformSets = helpers.GetStringListXML(value.Array())
+	} else {
+		data.ClientTransformSets = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/client/transport-encrypt-key"); value.Exists() {
+		data.ClientTransportEncryptKey = types.StringValue(value.String())
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/server/address/ipv4"); value.Exists() {
 		data.ServerAddressIpv4 = helpers.GetStringListXML(value.Array())
 	} else {
@@ -869,6 +1331,85 @@ func (data *CryptoGDOI) addDeletedItemsXML(ctx context.Context, state CryptoGDOI
 				}
 			}
 		}
+	}
+	if !state.ClientTransportEncryptKey.IsNull() && data.ClientTransportEncryptKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/transport-encrypt-key")
+	}
+	if !state.ClientTransformSets.IsNull() {
+		if data.ClientTransformSets.IsNull() {
+			var values []string
+			state.ClientTransformSets.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/client/transform-sets[.=%v]", v))
+			}
+		} else {
+			var dataValues, stateValues []string
+			data.ClientTransformSets.ElementsAs(ctx, &dataValues, false)
+			state.ClientTransformSets.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/client/transform-sets[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.ClientStatusActiveSaTrack.IsNull() && data.ClientStatusActiveSaTrack.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/status/active-sa/track")
+	}
+	if !state.ClientRekeyHashSha512.IsNull() && data.ClientRekeyHashSha512.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha512")
+	}
+	if !state.ClientRekeyHashSha384.IsNull() && data.ClientRekeyHashSha384.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha384")
+	}
+	if !state.ClientRekeyHashSha256.IsNull() && data.ClientRekeyHashSha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha256")
+	}
+	if !state.ClientRekeyHashSha.IsNull() && data.ClientRekeyHashSha.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/hash/sha")
+	}
+	if !state.ClientRekeyEncryptionDesCbc.IsNull() && data.ClientRekeyEncryptionDesCbc.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/des-cbc")
+	}
+	if !state.ClientRekeyEncryptionAes256.IsNull() && data.ClientRekeyEncryptionAes256.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/aes-256")
+	}
+	if !state.ClientRekeyEncryptionAes192.IsNull() && data.ClientRekeyEncryptionAes192.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/aes-192")
+	}
+	if !state.ClientRekeyEncryptionAes128.IsNull() && data.ClientRekeyEncryptionAes128.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/aes-128")
+	}
+	if !state.ClientRekeyEncryption3desCbc.IsNull() && data.ClientRekeyEncryption3desCbc.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/rekey/encryption/rekey-3des-cbc")
+	}
+	if !state.ClientRegistrationInterface.IsNull() && data.ClientRegistrationInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/registration/interface")
+	}
+	if !state.ClientRecoveryCheckInterval.IsNull() && data.ClientRecoveryCheckInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/recovery-check/interval")
+	}
+	if !state.ClientProtocolGikev2.IsNull() && data.ClientProtocolGikev2.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/protocol/gikev2")
+	}
+	if !state.ClientProtocolGdoi.IsNull() && data.ClientProtocolGdoi.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/protocol/gdoi")
+	}
+	if !state.ClientFailCloseRevert.IsNull() && data.ClientFailCloseRevert.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/fail-close/revert")
+	}
+	if !state.ClientPfs.IsNull() && data.ClientPfs.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/pfs")
+	}
+	if !state.ClientBypassPolicy.IsNull() && data.ClientBypassPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/client/bypass-policy-new")
 	}
 	for i := range state.ServerLocalSaIpsec {
 		stateKeys := [...]string{"sequence"}
@@ -1032,6 +1573,67 @@ func (data *CryptoGDOI) addDeletePathsXML(ctx context.Context, body string) stri
 		for _, v := range values {
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/server/address/ipv4[.=%v]", v))
 		}
+	}
+	if !data.ClientTransportEncryptKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/transport-encrypt-key")
+	}
+	if !data.ClientTransformSets.IsNull() {
+		var values []string
+		data.ClientTransformSets.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/client/transform-sets[.=%v]", v))
+		}
+	}
+	if !data.ClientStatusActiveSaTrack.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/status/active-sa/track")
+	}
+	if !data.ClientRekeyHashSha512.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/hash/sha512")
+	}
+	if !data.ClientRekeyHashSha384.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/hash/sha384")
+	}
+	if !data.ClientRekeyHashSha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/hash/sha256")
+	}
+	if !data.ClientRekeyHashSha.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/hash/sha")
+	}
+	if !data.ClientRekeyEncryptionDesCbc.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/encryption/des-cbc")
+	}
+	if !data.ClientRekeyEncryptionAes256.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/encryption/aes-256")
+	}
+	if !data.ClientRekeyEncryptionAes192.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/encryption/aes-192")
+	}
+	if !data.ClientRekeyEncryptionAes128.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/encryption/aes-128")
+	}
+	if !data.ClientRekeyEncryption3desCbc.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/rekey/encryption/rekey-3des-cbc")
+	}
+	if !data.ClientRegistrationInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/registration/interface")
+	}
+	if !data.ClientRecoveryCheckInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/recovery-check/interval")
+	}
+	if !data.ClientProtocolGikev2.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/protocol/gikev2")
+	}
+	if !data.ClientProtocolGdoi.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/protocol/gdoi")
+	}
+	if !data.ClientFailCloseRevert.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/fail-close/revert")
+	}
+	if !data.ClientPfs.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/pfs")
+	}
+	if !data.ClientBypassPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/client/bypass-policy-new")
 	}
 	for i := range data.ServerLocalSaIpsec {
 		keys := [...]string{"sequence"}

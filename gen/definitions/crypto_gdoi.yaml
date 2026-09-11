@@ -203,6 +203,125 @@ attributes:
         type: Bool
         example: true
         exclude_test: true
+  - yang_name: client/bypass-policy-new
+    tf_name: client_bypass_policy
+    description: Allow group-key management traffic sent to this GM only
+    type: Bool
+    default_value: "true"
+    example: true
+    exclude_test: true
+  - yang_name: client/pfs
+    tf_name: client_pfs
+    description: Enable/Disable PFS on Group Member - by default PFS is enabled
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/fail-close/revert
+    tf_name: client_fail_close_revert
+    description: Revert to Fail-Close policy in case of Registration Failure
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/protocol/gdoi
+    tf_name: client_protocol_gdoi
+    description: Use GDOI (ISAKMP) Protocol for Registration and Rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/protocol/gikev2
+    tf_name: client_protocol_gikev2
+    description: Use G-IKEv2 Protocol for Registration and Rekey - accepts the IKEv2 profile name
+    example: GETVPN-IKE
+    exclude_test: true
+  - yang_name: client/recovery-check/interval
+    tf_name: client_recovery_check_interval
+    description: Waiting period in seconds between consecutive recovery registrations
+    type: Int64
+    min_int: 100
+    max_int: 1000
+    example: 300
+    exclude_test: true
+  - yang_name: client/registration/interface
+    tf_name: client_registration_interface
+    description: Set the group client management/register interface
+    example: Loopback0
+    exclude_test: true
+  - yang_name: client/rekey/encryption/rekey-3des-cbc
+    tf_name: client_rekey_encryption_3des_cbc
+    description: Accept 3DES-CBC cipher for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/encryption/aes-128
+    tf_name: client_rekey_encryption_aes_128
+    description: Accept 128-bit AES cipher for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/encryption/aes-192
+    tf_name: client_rekey_encryption_aes_192
+    description: Accept 192-bit AES cipher for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/encryption/aes-256
+    tf_name: client_rekey_encryption_aes_256
+    description: Accept 256-bit AES cipher for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/encryption/des-cbc
+    tf_name: client_rekey_encryption_des_cbc
+    description: Accept DES in CBC mode cipher for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/hash/sha
+    tf_name: client_rekey_hash_sha
+    description: Accept SHA hash for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/hash/sha256
+    tf_name: client_rekey_hash_sha256
+    description: Accept SHA-256 hash for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/hash/sha384
+    tf_name: client_rekey_hash_sha384
+    description: Accept SHA-384 hash for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/rekey/hash/sha512
+    tf_name: client_rekey_hash_sha512
+    description: Accept SHA-512 hash for rekey
+    type: Bool
+    example: true
+    exclude_test: true
+  - yang_name: client/status/active-sa/track
+    tf_name: client_status_active_sa_track
+    description: Enable stub tracking object for TEK SA with positive remaining lifetime
+    type: Int64
+    min_int: 1
+    max_int: 1000
+    example: 1
+    exclude_test: true
+  - yang_name: client/transform-sets
+    tf_name: client_transform_sets
+    description: Specify list of group client acceptable transform sets
+    type: StringList
+    example: TS1
+    exclude_test: true
+  - yang_name: client/transport-encrypt-key
+    tf_name: client_transport_encrypt_key
+    description: Enforce group or pair-wise keying for transport encryption
+    example: group-key
+    enum_values:
+      - group-key
+      - pair-wise-key
+    exclude_test: true
   - yang_name: server/address/ipv4
     tf_name: server_address_ipv4
     description: Set the IPv4 address of the group server
