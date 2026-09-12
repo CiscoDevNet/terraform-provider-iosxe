@@ -90,6 +90,7 @@ func (r *BGPAddressFamilyL2VPNResource) Schema(ctx context.Context, req resource
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"af_name": schema.StringAttribute{

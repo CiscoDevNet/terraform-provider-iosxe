@@ -92,6 +92,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"vrf": schema.StringAttribute{
@@ -111,6 +112,9 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 			"remote_as": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP peer-group remote-as").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					helpers.UseAsnNormalization(),
+				},
 			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Neighbor specific description").String,

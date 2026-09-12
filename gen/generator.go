@@ -196,6 +196,7 @@ type YamlConfigAttribute struct {
 	NoDelete           bool                  `yaml:"no_delete"`
 	ReadFilter         string                `yaml:"read_filter"`
 	NormalizeIPv6      bool                  `yaml:"normalize_ipv6"`
+	NormalizeASN       bool                  `yaml:"normalize_asn"`
 	TestTags           []string              `yaml:"test_tags"`
 	Attributes         []YamlConfigAttribute `yaml:"attributes"`
 }

@@ -92,6 +92,7 @@ func (r *BGPBMPServerResource) Schema(ctx context.Context, req resource.SchemaRe
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"server_id": schema.Int64Attribute{
