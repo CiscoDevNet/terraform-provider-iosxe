@@ -91,6 +91,7 @@ func (r *BGPAddressFamilyIPv6Resource) Schema(ctx context.Context, req resource.
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					helpers.UseAsnNormalization(),
 				},
 			},
 			"af_name": schema.StringAttribute{

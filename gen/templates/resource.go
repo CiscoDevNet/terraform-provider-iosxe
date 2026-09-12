@@ -149,10 +149,17 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 					{{- if .NormalizeIPv6}}
 					helpers.UseIPv6Normalization(),
 					{{- end}}
+					{{- if .NormalizeASN}}
+					helpers.UseAsnNormalization(),
+					{{- end}}
 				},
 				{{- else if .NormalizeIPv6}}
 				PlanModifiers: []planmodifier.String{
 					helpers.UseIPv6Normalization(),
+				},
+				{{- else if .NormalizeASN}}
+				PlanModifiers: []planmodifier.String{
+					helpers.UseAsnNormalization(),
 				},
 				{{- end}}
 				{{- if and (len .DefaultValue) (eq .Type "Int64")}}
@@ -220,6 +227,11 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 								helpers.UseIPv6Normalization(),
 							},
 							{{- end}}
+							{{- if .NormalizeASN}}
+							PlanModifiers: []planmodifier.String{
+								helpers.UseAsnNormalization(),
+							},
+							{{- end}}
 							{{- if and (len .DefaultValue) (eq .Type "Int64")}}
 							Default:             int64default.StaticInt64({{.DefaultValue}}),
 							{{- else if and (len .DefaultValue) (eq .Type "Bool")}}
@@ -283,6 +295,11 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 										{{- if .NormalizeIPv6}}
 										PlanModifiers: []planmodifier.String{
 											helpers.UseIPv6Normalization(),
+										},
+										{{- end}}
+										{{- if .NormalizeASN}}
+										PlanModifiers: []planmodifier.String{
+											helpers.UseAsnNormalization(),
 										},
 										{{- end}}
 										{{- if and (len .DefaultValue) (eq .Type "Int64")}}

@@ -6,6 +6,7 @@ doc_category: BGP
 attributes:
   - yang_name: id
     tf_name: asn
+    normalize_asn: true
     example: 65000
   - yang_name: af-name
     example: unicast

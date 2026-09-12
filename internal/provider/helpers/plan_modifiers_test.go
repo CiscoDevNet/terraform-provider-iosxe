@@ -143,6 +143,101 @@ func TestNetconfTrailingWhitespaceTrimModifier_ConfigUnknown(t *testing.T) {
 	}
 }
 
+func TestAsnNormalizationModifier_AsdotVsAsplain(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseAsnNormalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("4201634865"),
+		StateValue:  types.StringValue("64111.56369"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "64111.56369" {
+		t.Errorf("expected state value %q, got %q", "64111.56369", resp.PlanValue.ValueString())
+	}
+}
+
+func TestAsnNormalizationModifier_GenuineChange(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseAsnNormalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("65001"),
+		StateValue:  types.StringValue("64111.56369"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "65001" {
+		t.Errorf("expected config value %q, got %q", "65001", resp.PlanValue.ValueString())
+	}
+}
+
+func TestAsnNormalizationModifier_NullConfig(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseAsnNormalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringNull(),
+		StateValue:  types.StringValue("64111.56369"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if !resp.PlanValue.IsNull() {
+		t.Errorf("expected null plan value, got %q", resp.PlanValue.ValueString())
+	}
+}
+
+func TestAsnNormalizationModifier_Create(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseAsnNormalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("4201634865"),
+		StateValue:  types.StringNull(),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "4201634865" {
+		t.Errorf("expected config value %q on create, got %q", "4201634865", resp.PlanValue.ValueString())
+	}
+}
+
+func TestAsnNormalizationModifier_BothAsplain(t *testing.T) {
+	ctx := context.Background()
+	modifier := UseAsnNormalization()
+
+	req := planmodifier.StringRequest{
+		ConfigValue: types.StringValue("65000"),
+		StateValue:  types.StringValue("65000"),
+	}
+	resp := &planmodifier.StringResponse{
+		PlanValue: req.ConfigValue,
+	}
+
+	modifier.PlanModifyString(ctx, req, resp)
+
+	if resp.PlanValue.ValueString() != "65000" {
+		t.Errorf("expected state value %q, got %q", "65000", resp.PlanValue.ValueString())
+	}
+}
+
 func TestIPv6NormalizationModifier_SameAddressDifferentCase(t *testing.T) {
 	ctx := context.Background()
 	modifier := UseIPv6Normalization()
