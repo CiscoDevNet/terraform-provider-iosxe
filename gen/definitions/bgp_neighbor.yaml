@@ -19,31 +19,39 @@ attributes:
     example: BGP Neighbor Description
   - yang_name: shutdown
     example: false
+    default_value: false
   - yang_name: cluster-id
     example: 1234
   - yang_name: version
     example: 4
   - yang_name: disable-connected-check
     example: false
+    default_value: false
   - yang_name: fall-over/default/enable
     example: false
+    default_value: false
   - yang_name: fall-over/default/route-map
     example: RMAP
   - yang_name: fall-over/bfd
     example: true
+    default_value: false
   - yang_name: fall-over/bfd/hop-choice/multi-hop/multi-hop
     xpath: fall-over/bfd/multi-hop
     tf_name: fall_over_bfd_multi_hop
     example: true
     exclude_test: true
+    default_value: false
   - yang_name: fall-over/bfd/hop-choice/single-hop/single-hop
     xpath: fall-over/bfd/single-hop
     tf_name: fall_over_bfd_single_hop
     example: true
+    default_value: false
   - yang_name: fall-over/bfd/check-control-plane-failure
     example: true
+    default_value: false
   - yang_name: fall-over/bfd/strict-mode
     example: true
+    default_value: false
   - yang_name: fall-over/maximum-metric/route-map
     example: RMAP
   - yang_name: local-as/as-no
@@ -53,14 +61,18 @@ attributes:
   - yang_name: local-as/no-prepend
     example: false
     exclude_test: true
+    default_value: false
   - yang_name: local-as/replace-as
     example: false
     exclude_test: true
+    default_value: false
   - yang_name: local-as/dual-as
     example: false
     exclude_test: true
+    default_value: false
   - yang_name: log-neighbor-changes
     example: true
+    default_value: false
   - yang_name: password/enctype
     tf_name: password_type
     delete_parent: true
@@ -96,6 +108,7 @@ attributes:
   - yang_name: ebgp-multihop
     example: true
     exclude_test: true
+    default_value: false
   - yang_name: ebgp-multihop/max-hop
     example: 10
     exclude_test: true
@@ -109,12 +122,14 @@ attributes:
     delete_parent: true
     example: true
     exclude_test: true
+    default_value: false
   - yang_name: ao/accept-ao-mismatch-connections
     tf_name: ao_accept_mismatch_connections
     type_yang_bool: empty
     delete_parent: true
     example: true
     exclude_test: true
+    default_value: false
   - yang_name: inherit/peer-session
     example: PEER_SESSION_TEMPLATE_1
     exclude_test: true
