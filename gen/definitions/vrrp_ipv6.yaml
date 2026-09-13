@@ -1,0 +1,115 @@
+---
+name: VRRP IPv6
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]
+doc_category: Interface
+no_delete: true
+test_tags: [C8000V]
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - FiftyGigabitEthernet
+      - HundredGigE
+      - Vlan
+      - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - BDI
+    example: Vlan
+  - yang_name: name
+    example: 123
+  - yang_name: group-id
+    example: 2
+  - yang_name: address-family/ipv6/address/primary/ipv6-link-local
+    tf_name: ipv6_link_local
+    description: IPv6 link-local address
+    type: String
+    mandatory: true
+    no_delete: true
+    normalize_ipv6: true
+    example: FE80::1
+  - yang_name: address-family/ipv6/address/primary/primary
+    tf_name: ipv6_primary
+    type_yang_bool: empty
+    description: Mark address as primary IPv6 address
+    default_value: true
+    no_delete: true
+    example: true
+  - yang_name: address-family/ipv6/address/ipv6-prefix
+    tf_name: ipv6_prefixes
+    type: List
+    description: IPv6 prefix addresses
+    attributes:
+      - yang_name: prefix
+        id: true
+        type: String
+        description: IPv6 prefix
+        normalize_ipv6: true
+        example: 2001:DB8::FFFF/64
+  - yang_name: address-family/ipv6/priority
+    tf_name: priority
+    description: Priority level
+    default_value: 100
+    example: 110
+  - yang_name: address-family/ipv6/preempt-new/preempt-choice/preempt-delay/preempt-delay/preempt/delay/minimum
+    xpath: address-family/ipv6/preempt-new/preempt-delay/preempt/delay/minimum
+    tf_name: preempt_delay_minimum
+    description: Seconds to delay before preempting
+    example: 30
+  - yang_name: address-family/ipv6/timers/advertise
+    tf_name: timers_advertise
+    description: Advertisement interval in milliseconds
+    example: 3000
+  - yang_name: address-family/ipv6/description
+    tf_name: description
+    type: String
+    description: Group description
+    example: VRRP-IPV6-GROUP-2
+  - yang_name: address-family/ipv6/track/event
+    tf_name: tracks
+    type: List
+    description: Object tracking configuration
+    attributes:
+      - yang_name: object-id
+        id: true
+        description: Specify the tracked object-id
+        example: 1
+      - yang_name: action/priority/decrement
+        xpath: decrement
+        tf_name: decrement
+        description: Decrement value for tracked object
+        example: 20
+      - yang_name: action/other/shutdown
+        xpath: shutdown
+        tf_name: shutdown
+        type_yang_bool: empty
+        description: Shutdown group when tracked object goes down
+        example: false
+  - yang_name: address-family/ipv6/shutdown
+    tf_name: shutdown
+    type_yang_bool: empty
+    description: Shutdown the VRRP group
+    example: false
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/fhrp/version
+    attributes:
+      - name: vrrp
+        value: v3
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]
+    attributes:
+      - name: name
+        value: 123
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ipv6/address/link-local-address[address=FE80::1]
+    attributes:
+      - name: address
+        value: FE80::1

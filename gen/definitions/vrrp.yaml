@@ -1,0 +1,120 @@
+---
+name: VRRP
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/Cisco-IOS-XE-vrrp:vrrp/vrrp-group[group-id=%v]
+doc_category: Interface
+no_delete: true
+test_tags: [C8000V]
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - FiftyGigabitEthernet
+      - HundredGigE
+      - Vlan
+      - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - BDI
+    example: Vlan
+  - yang_name: name
+    example: 123
+  - yang_name: group-id
+    example: 1
+  - yang_name: address-family/ipv4/address/primary/address
+    tf_name: address_primary_address
+    description: Virtual primary IPv4 address
+    type: String
+    mandatory: true
+    no_delete: true
+    example: 192.0.2.254
+  - yang_name: address-family/ipv4/address/primary/primary
+    tf_name: address_primary
+    type_yang_bool: empty
+    description: Mark address as primary IPv4 address
+    default_value: true
+    no_delete: true
+    example: true
+  - yang_name: address-family/ipv4/address/secondary
+    tf_name: secondary_addresses
+    type: List
+    description: Secondary virtual IPv4 addresses
+    attributes:
+      - yang_name: address
+        id: true
+        type: String
+        description: Secondary IPv4 address
+        example: 192.0.2.253
+      - yang_name: secondary
+        type_yang_bool: empty
+        default_value: true
+        description: Mark address as secondary
+        example: true
+  - yang_name: address-family/ipv4/priority
+    tf_name: priority
+    description: Priority level
+    default_value: 100
+    example: 110
+  - yang_name: address-family/ipv4/preempt-new/preempt-choice/preempt-delay/preempt-delay/preempt/delay/minimum
+    xpath: address-family/ipv4/preempt-new/preempt-delay/preempt/delay/minimum
+    tf_name: preempt_delay_minimum
+    description: Seconds to delay before preempting
+    example: 30
+  - yang_name: address-family/ipv4/timers/advertise
+    tf_name: timers_advertise
+    description: Advertisement interval in milliseconds
+    example: 3000
+  - yang_name: address-family/ipv4/description
+    tf_name: description
+    type: String
+    description: Group description
+    example: VRRP-GROUP-1
+  - yang_name: address-family/ipv4/track/event
+    tf_name: tracks
+    type: List
+    description: Object tracking configuration
+    attributes:
+      - yang_name: object-id
+        id: true
+        description: Specify the tracked object-id
+        example: 1
+      - yang_name: action/priority/decrement
+        xpath: decrement
+        tf_name: decrement
+        description: Decrement value for tracked object
+        example: 20
+      - yang_name: action/other/shutdown
+        xpath: shutdown
+        tf_name: shutdown
+        type_yang_bool: empty
+        description: Shutdown group when tracked object goes down
+        example: false
+  - yang_name: address-family/ipv4/shutdown
+    tf_name: shutdown
+    type_yang_bool: empty
+    description: Shutdown the VRRP group
+    example: false
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/fhrp/version
+    attributes:
+      - name: vrrp
+        value: v3
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]
+    attributes:
+      - name: name
+        value: 123
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ip/address/primary
+    attributes:
+      - name: address
+        value: 192.0.2.1
+      - name: mask
+        value: 255.255.255.0
