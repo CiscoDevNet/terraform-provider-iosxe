@@ -51,8 +51,8 @@ data "iosxe_interface_hsrp" "example" {
 
 Read-Only:
 
-- `authentication_text` (String) Plain text authentication string
-- `authentication_word` (String) Authentication word (plain text)
+- `authentication_text` (String, Sensitive) Plain text authentication string
+- `authentication_word` (String, Sensitive) Authentication word (plain text)
 - `follow` (String) Name of HSRP group to follow
 - `group_number` (Number) HSRP group number
 - `ip` (Boolean) Enable HSRP and set the virtual IP address

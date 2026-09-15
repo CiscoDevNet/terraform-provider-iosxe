@@ -56,27 +56,31 @@ type InterfaceHSRP struct {
 	StandbyList                 []InterfaceHSRPStandbyList `tfsdk:"standby_list"`
 }
 type InterfaceHSRPStandbyList struct {
-	GroupNumber                types.Int64                                    `tfsdk:"group_number"`
-	AuthenticationWord         types.String                                   `tfsdk:"authentication_word"`
-	AuthenticationText         types.String                                   `tfsdk:"authentication_text"`
-	Follow                     types.String                                   `tfsdk:"follow"`
-	Ip                         types.Bool                                     `tfsdk:"ip"`
-	IpAddress                  types.String                                   `tfsdk:"ip_address"`
-	IpSecondaryAddresses       []InterfaceHSRPStandbyListIpSecondaryAddresses `tfsdk:"ip_secondary_addresses"`
-	Ipv6LinkLocal              types.String                                   `tfsdk:"ipv6_link_local"`
-	Ipv6Addresses              []InterfaceHSRPStandbyListIpv6Addresses        `tfsdk:"ipv6_addresses"`
-	MacAddress                 types.String                                   `tfsdk:"mac_address"`
-	Name                       types.String                                   `tfsdk:"name"`
-	Preempt                    types.Bool                                     `tfsdk:"preempt"`
-	PreemptDelayMinimum        types.Int64                                    `tfsdk:"preempt_delay_minimum"`
-	PreemptDelayReload         types.Int64                                    `tfsdk:"preempt_delay_reload"`
-	PreemptDelaySync           types.Int64                                    `tfsdk:"preempt_delay_sync"`
-	Priority                   types.Int64                                    `tfsdk:"priority"`
-	TimersHelloIntervalSeconds types.Int64                                    `tfsdk:"timers_hello_interval_seconds"`
-	TimersHelloIntervalMsec    types.Int64                                    `tfsdk:"timers_hello_interval_msec"`
-	TimersHoldTimeSeconds      types.Int64                                    `tfsdk:"timers_hold_time_seconds"`
-	TimersHoldTimeMsec         types.Int64                                    `tfsdk:"timers_hold_time_msec"`
-	Tracks                     []InterfaceHSRPStandbyListTracks               `tfsdk:"tracks"`
+	GroupNumber                 types.Int64                                    `tfsdk:"group_number"`
+	AuthenticationWord          types.String                                   `tfsdk:"authentication_word"`
+	AuthenticationWordWO        types.String                                   `tfsdk:"authentication_word_wo"`
+	AuthenticationWordWOVersion types.Int64                                    `tfsdk:"authentication_word_wo_version"`
+	AuthenticationText          types.String                                   `tfsdk:"authentication_text"`
+	AuthenticationTextWO        types.String                                   `tfsdk:"authentication_text_wo"`
+	AuthenticationTextWOVersion types.Int64                                    `tfsdk:"authentication_text_wo_version"`
+	Follow                      types.String                                   `tfsdk:"follow"`
+	Ip                          types.Bool                                     `tfsdk:"ip"`
+	IpAddress                   types.String                                   `tfsdk:"ip_address"`
+	IpSecondaryAddresses        []InterfaceHSRPStandbyListIpSecondaryAddresses `tfsdk:"ip_secondary_addresses"`
+	Ipv6LinkLocal               types.String                                   `tfsdk:"ipv6_link_local"`
+	Ipv6Addresses               []InterfaceHSRPStandbyListIpv6Addresses        `tfsdk:"ipv6_addresses"`
+	MacAddress                  types.String                                   `tfsdk:"mac_address"`
+	Name                        types.String                                   `tfsdk:"name"`
+	Preempt                     types.Bool                                     `tfsdk:"preempt"`
+	PreemptDelayMinimum         types.Int64                                    `tfsdk:"preempt_delay_minimum"`
+	PreemptDelayReload          types.Int64                                    `tfsdk:"preempt_delay_reload"`
+	PreemptDelaySync            types.Int64                                    `tfsdk:"preempt_delay_sync"`
+	Priority                    types.Int64                                    `tfsdk:"priority"`
+	TimersHelloIntervalSeconds  types.Int64                                    `tfsdk:"timers_hello_interval_seconds"`
+	TimersHelloIntervalMsec     types.Int64                                    `tfsdk:"timers_hello_interval_msec"`
+	TimersHoldTimeSeconds       types.Int64                                    `tfsdk:"timers_hold_time_seconds"`
+	TimersHoldTimeMsec          types.Int64                                    `tfsdk:"timers_hold_time_msec"`
+	Tracks                      []InterfaceHSRPStandbyListTracks               `tfsdk:"tracks"`
 }
 type InterfaceHSRPStandbyListIpSecondaryAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -225,15 +229,31 @@ func (data InterfaceHSRP) addToBodyXML(ctx context.Context, config InterfaceHSRP
 	}
 	if len(data.StandbyList) > 0 {
 		for _, item := range data.StandbyList {
+			var configItem InterfaceHSRPStandbyList
+			for _, ci := range config.StandbyList {
+				if ci.GroupNumber.ValueInt64() != item.GroupNumber.ValueInt64() {
+					continue
+				}
+				configItem = ci
+				break
+			}
 			cBody := netconf.Body{}
 			if !item.GroupNumber.IsNull() && !item.GroupNumber.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "group-number", strconv.FormatInt(item.GroupNumber.ValueInt64(), 10))
 			}
 			if !item.AuthenticationWord.IsNull() && !item.AuthenticationWord.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "authentication/word", item.AuthenticationWord.ValueString())
+				if !configItem.AuthenticationWordWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "authentication/word", configItem.AuthenticationWordWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "authentication/word", item.AuthenticationWord.ValueString())
+				}
 			}
 			if !item.AuthenticationText.IsNull() && !item.AuthenticationText.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "authentication/text", item.AuthenticationText.ValueString())
+				if !configItem.AuthenticationTextWO.IsNull() {
+					cBody = helpers.SetFromXPath(cBody, "authentication/text", configItem.AuthenticationTextWO.ValueString())
+				} else {
+					cBody = helpers.SetFromXPath(cBody, "authentication/text", item.AuthenticationText.ValueString())
+				}
 			}
 			if !item.Follow.IsNull() && !item.Follow.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "follow", item.Follow.ValueString())

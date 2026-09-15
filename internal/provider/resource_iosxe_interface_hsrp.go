@@ -190,9 +190,29 @@ func (r *InterfaceHSRPResource) Schema(ctx context.Context, req resource.SchemaR
 						"authentication_word": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication word (plain text)").String,
 							Optional:            true,
+							Sensitive:           true,
+						},
+						"authentication_word_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"authentication_word_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
+							Optional:            true,
 						},
 						"authentication_text": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Plain text authentication string").String,
+							Optional:            true,
+							Sensitive:           true,
+						},
+						"authentication_text_wo": schema.StringAttribute{
+							MarkdownDescription: "The write-only value of the attribute.",
+							WriteOnly:           true,
+							Optional:            true,
+						},
+						"authentication_text_wo_version": schema.Int64Attribute{
+							MarkdownDescription: "The write-only version of the attribute.",
 							Optional:            true,
 						},
 						"follow": schema.StringAttribute{

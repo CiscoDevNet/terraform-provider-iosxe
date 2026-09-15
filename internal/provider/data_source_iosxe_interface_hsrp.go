@@ -128,10 +128,12 @@ func (d *InterfaceHSRPDataSource) Schema(ctx context.Context, req datasource.Sch
 						"authentication_word": schema.StringAttribute{
 							MarkdownDescription: "Authentication word (plain text)",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"authentication_text": schema.StringAttribute{
 							MarkdownDescription: "Plain text authentication string",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"follow": schema.StringAttribute{
 							MarkdownDescription: "Name of HSRP group to follow",

@@ -104,8 +104,12 @@ Required:
 
 Optional:
 
-- `authentication_text` (String) Plain text authentication string
-- `authentication_word` (String) Authentication word (plain text)
+- `authentication_text` (String, Sensitive) Plain text authentication string
+- `authentication_text_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `authentication_text_wo_version` (Number) The write-only version of the attribute.
+- `authentication_word` (String, Sensitive) Authentication word (plain text)
+- `authentication_word_wo` (String, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) The write-only value of the attribute.
+- `authentication_word_wo_version` (Number) The write-only version of the attribute.
 - `follow` (String) Name of HSRP group to follow
 - `ip` (Boolean) Enable HSRP and set the virtual IP address
 - `ip_address` (String) Virtual IPv4 address

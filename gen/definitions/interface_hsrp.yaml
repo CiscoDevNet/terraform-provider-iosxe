@@ -93,13 +93,16 @@ attributes:
         tf_name: authentication_word
         description: Authentication word (plain text)
         type: String
+        sensitive: true
         example: SECRET123
+        # word and text are arms of the same YANG choice auth; can't set both in one test config
         exclude_test: true
       - yang_name: authentication/auth/text
         xpath: authentication/text
         tf_name: authentication_text
         description: Plain text authentication string
         type: String
+        sensitive: true
         example: MySecret
       - yang_name: follow
         description: Name of HSRP group to follow
