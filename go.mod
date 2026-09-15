@@ -12,7 +12,7 @@ require (
 	github.com/netascode/go-netconf v0.6.2-0.20260915142959-168c716833ad
 	github.com/netascode/xmldot v0.5.1
 	github.com/openconfig/goyang v1.6.3
-	golang.org/x/tools v0.49.0
+	golang.org/x/tools v0.50.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -84,7 +84,7 @@ require (
 	golang.org/x/net v0.59.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/sys v0.48.0 // indirect
-	golang.org/x/telemetry v0.0.0-20260811182544-a038080d80e5 // indirect
+	golang.org/x/telemetry v0.0.0-20260908163034-4bcc4b2ee518 // indirect
 	golang.org/x/text v0.42.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260908043556-f8649ddbbfe6 // indirect
