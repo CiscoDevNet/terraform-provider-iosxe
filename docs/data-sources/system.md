@@ -311,6 +311,9 @@ Read-Only:
 
 Read-Only:
 
+- `interface_name` (String) Interface name to track
+- `interface_protocol` (String) Tracking protocol
+- `interface_routing` (Boolean) Track interface IPv6 routing capability
 - `ip_sla_number` (Number) Entry number
 - `ip_sla_reachability` (Boolean) Reachability
 - `number` (String) Tracked object
