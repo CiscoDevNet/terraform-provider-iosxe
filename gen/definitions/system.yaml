@@ -646,6 +646,25 @@ attributes:
       - yang_name: track-type/ip-case/ip/sla/option/reachability-case/reachability
         xpath: ip/sla/reachability
         example: true
+      - yang_name: track-type/interface-case/interface/name
+        xpath: interface/name
+        tf_name: interface_name
+        description: Interface name to track
+        example: GigabitEthernet1
+      - yang_name: track-type/interface-case/interface/protocol
+        xpath: interface/protocol
+        tf_name: interface_protocol
+        description: Tracking protocol
+        example: line-protocol
+        enum_values:
+          - ip
+          - ipv6
+          - line-protocol
+      - yang_name: track-type/interface-case/interface/routing
+        xpath: interface/routing
+        tf_name: interface_routing
+        description: Track interface routing capability
+        example: true
   - yang_name: ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default
     tf_name: ip_nbar_classification_dns_classify_by_domain
     example: true

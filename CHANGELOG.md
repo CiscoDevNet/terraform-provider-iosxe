@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add `interface_name`, `interface_protocol`, and `interface_routing` attributes to `iosxe_system` resource and data source `track_objects` list for interface object tracking configuration (`track <num> interface <name> line-protocol` and `track <num> interface <name> ip routing`)
+
 ## 1.1.0
 
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
