@@ -85,8 +85,12 @@ func (d *CryptoIPSecProfileDataSource) Schema(ctx context.Context, req datasourc
 				MarkdownDescription: "Specify isakmp Profile",
 				Computed:            true,
 			},
+			"set_pfs": schema.BoolAttribute{
+				MarkdownDescription: "Enable Perfect Forward Secrecy without selecting an explicit classical DH group. Use this form with ML-KEM so that IPsec Child SAs and rekeys inherit the algorithm negotiated by the IKEv2 SA. Do not configure together with `set_pfs_group`.",
+				Computed:            true,
+			},
 			"set_pfs_group": schema.StringAttribute{
-				MarkdownDescription: "List of supported DH groups",
+				MarkdownDescription: "Enable Perfect Forward Secrecy with an explicit classical DH group. Do not configure together with `set_pfs`.",
 				Computed:            true,
 			},
 			"set_security_association_lifetime_seconds": schema.Int64Attribute{

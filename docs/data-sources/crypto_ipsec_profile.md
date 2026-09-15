@@ -34,7 +34,8 @@ data "iosxe_crypto_ipsec_profile" "example" {
 - `id` (String) The path of the retrieved object.
 - `set_ikev2_profile` (String) Specify ikev2 Profile
 - `set_isakmp_profile` (String) Specify isakmp Profile
-- `set_pfs_group` (String) List of supported DH groups
+- `set_pfs` (Boolean) Enable Perfect Forward Secrecy without selecting an explicit classical DH group. Use this form with ML-KEM so that IPsec Child SAs and rekeys inherit the algorithm negotiated by the IKEv2 SA. Do not configure together with `set_pfs_group`.
+- `set_pfs_group` (String) Enable Perfect Forward Secrecy with an explicit classical DH group. Do not configure together with `set_pfs`.
 - `set_security_association_lifetime_seconds` (Number) Time-based key duration in seconds
 - `set_security_association_lifetime_seconds_legacy` (Number) Security association lifetime in seconds. Use this for IOS-XE versions before `17.15.1`.
 - `set_transform_set` (List of String) Specify list of transform sets in priority order

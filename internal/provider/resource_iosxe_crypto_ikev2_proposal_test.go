@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -36,6 +37,18 @@ func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "name", "PROPOSAL1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "encryption_aes_cbc_256", "true"))
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "pqc_mlkem512", "true"))
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "pqc_mlkem768", "true"))
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "pqc_mlkem1024", "true"))
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "pqc_optional", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "group_sixteen", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_proposal.test", "integrity_sha256", "true"))
 	resource.Test(t, resource.TestCase{
@@ -54,7 +67,7 @@ func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeCryptoIKEv2ProposalImportStateIdFunc("iosxe_crypto_ikev2_proposal.test"),
-				ImportStateVerifyIgnore: []string{"encryption_en_3des", "encryption_aes_cbc_128", "encryption_aes_cbc_192", "encryption_aes_gcm_128", "encryption_aes_gcm_256", "group_one", "group_two", "group_fourteen", "group_fifteen", "group_nineteen", "group_twenty", "group_twenty_one", "group_twenty_four", "integrity_md5", "integrity_sha1", "integrity_sha384", "integrity_sha512", "prf_md5", "prf_sha1", "prf_sha256", "prf_sha384", "prf_sha512"},
+				ImportStateVerifyIgnore: []string{"encryption_en_3des", "encryption_aes_cbc_128", "encryption_aes_cbc_192", "encryption_aes_gcm_128", "encryption_aes_gcm_256", "pqc_mlkem512", "pqc_mlkem768", "pqc_mlkem1024", "pqc_optional", "group_one", "group_two", "group_fourteen", "group_fifteen", "group_nineteen", "group_twenty", "group_twenty_one", "group_twenty_four", "integrity_md5", "integrity_sha1", "integrity_sha384", "integrity_sha512", "prf_md5", "prf_sha1", "prf_sha256", "prf_sha384", "prf_sha512"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -96,6 +109,18 @@ func testAccIosxeCryptoIKEv2ProposalConfig_all() string {
 	config := `resource "iosxe_crypto_ikev2_proposal" "test" {` + "\n"
 	config += `	name = "PROPOSAL1"` + "\n"
 	config += `	encryption_aes_cbc_256 = true` + "\n"
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_mlkem512 = true` + "\n"
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_mlkem768 = true` + "\n"
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_mlkem1024 = true` + "\n"
+	}
+	if os.Getenv("IOSXE2611_C8000G2") != "" {
+		config += `	pqc_optional = true` + "\n"
+	}
 	config += `	group_sixteen = true` + "\n"
 	config += `	integrity_sha256 = true` + "\n"
 	config += `}` + "\n"
