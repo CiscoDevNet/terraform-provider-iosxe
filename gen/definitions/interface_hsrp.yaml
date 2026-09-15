@@ -1,0 +1,233 @@
+---
+name: Interface HSRP
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/standby
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/standby
+doc_category: Interface
+test_tags: [C8000V]
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - FiftyGigabitEthernet
+      - HundredGigE
+      - Vlan
+      - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - BDI
+    example: Vlan
+  - yang_name: name
+    example: 123
+  - yang_name: version
+    description: HSRP version
+    type: String
+    enum_values:
+      - "1"
+      - "2"
+    default_value: "1"
+    example: "2"
+  - yang_name: bfd-config
+    tf_name: bfd
+    description: Enable HSRP BFD
+    default_value: true
+    example: true
+  - yang_name: delay/minimum
+    tf_name: delay_minimum
+    description: HSRP initialisation minimum delay
+    example: 100
+  - yang_name: delay/reload
+    tf_name: delay_reload
+    description: HSRP initialisation delay after reload
+    example: 200
+  - yang_name: mac-refresh
+    tf_name: mac_refresh
+    description: Refresh MAC cache on switch by periodically sending packet from virtual mac address
+    default_value: 10
+    example: 30
+  - yang_name: use-bia
+    tf_name: use_bia
+    type_yang_bool: presence
+    description: HSRP uses interface's burned in address
+    example: true
+  - yang_name: use-bia/scope/interface
+    tf_name: use_bia_scope_interface
+    type_yang_bool: empty
+    description: Use-bia applies to all groups on this interface or sub-interface
+    example: false
+  - yang_name: redirect/timers/advertisement
+    tf_name: redirect_timers_advertisement
+    description: Redirect advertisement timer in seconds
+    example: 60
+    exclude_test: true
+  - yang_name: redirect/timers/holddown
+    tf_name: redirect_timers_holddown
+    description: Redirect holddown timer in seconds
+    example: 120
+    exclude_test: true
+  - yang_name: redirect/unknown
+    tf_name: redirect_unknown
+    description: Redirect to non-HSRP routers
+    default_value: true
+    example: false
+    exclude_test: true
+  - yang_name: standby-list
+    tf_name: standby_list
+    type: List
+    description: HSRP group configuration
+    attributes:
+      - yang_name: group-number
+        tf_name: group_number
+        id: true
+        description: HSRP group number
+        example: 10
+      - yang_name: authentication/auth/word
+        xpath: authentication/word
+        tf_name: authentication_word
+        description: Authentication word (plain text)
+        type: String
+        sensitive: true
+        example: SECRET123
+        # word and text are arms of the same YANG choice auth; can't set both in one test config
+        exclude_test: true
+      - yang_name: authentication/auth/text
+        xpath: authentication/text
+        tf_name: authentication_text
+        description: Plain text authentication string
+        type: String
+        sensitive: true
+        example: MySecret
+      - yang_name: follow
+        description: Name of HSRP group to follow
+        type: String
+        example: HSRP_LEADER
+        exclude_test: true
+      - yang_name: ip-config
+        tf_name: ip
+        type_yang_bool: presence
+        description: Enable HSRP and set the virtual IP address
+        example: true
+      - yang_name: ip-config/address
+        tf_name: ip_address
+        description: Virtual IPv4 address
+        type: String
+        example: 192.0.2.254
+      - yang_name: ip-config/secondary-address
+        tf_name: ip_secondary_addresses
+        type: List
+        description: Secondary virtual IPv4 addresses
+        attributes:
+          - yang_name: address
+            id: true
+            type: String
+            example: 192.0.2.253
+          - yang_name: secondary
+            type_yang_bool: empty
+            default_value: true
+            example: true
+      - yang_name: ipv6-config/ipv6-link-local
+        tf_name: ipv6_link_local
+        description: IPv6 link-local address or autoconfig
+        type: String
+        example: autoconfig
+        exclude_test: true
+      - yang_name: ipv6-config/ipv6_prefix
+        tf_name: ipv6_addresses
+        type: List
+        description: IPv6 global unicast prefix addresses
+        exclude_test: true
+        attributes:
+          - yang_name: prefix
+            id: true
+            type: String
+            example: "2001:db8::1/64"
+      - yang_name: mac-address
+        description: Virtual MAC address
+        type: String
+        example: 0000.0c07.ac0a
+        exclude_test: true
+      - yang_name: name
+        tf_name: name
+        description: Redundancy name string
+        type: String
+        example: HSRP_GROUP_10
+        exclude_test: true
+      - yang_name: preempt
+        tf_name: preempt
+        type_yang_bool: presence
+        description: Overthrow lower priority Active routers
+        example: true
+      - yang_name: preempt/delay/minimum
+        tf_name: preempt_delay_minimum
+        description: Minimum preempt delay in seconds
+        example: 30
+      - yang_name: preempt/delay/reload
+        tf_name: preempt_delay_reload
+        description: Preempt delay after reload in seconds
+        example: 60
+      - yang_name: preempt/delay/sync
+        tf_name: preempt_delay_sync
+        description: Wait for IP redundancy client sync delay in seconds
+        example: 120
+      - yang_name: priority
+        description: Priority level
+        default_value: 100
+        example: 110
+      - yang_name: timers/hello-interval/hello-interval-choice/seconds/seconds
+        xpath: timers/hello-interval/seconds
+        tf_name: timers_hello_interval_seconds
+        description: Hello interval in seconds
+        example: 3
+      - yang_name: timers/hello-interval/hello-interval-choice/msec/msec
+        xpath: timers/hello-interval/msec
+        tf_name: timers_hello_interval_msec
+        description: Hello interval in milliseconds
+        example: 250
+        exclude_test: true
+      - yang_name: timers/hold-time/hold-time-choice/seconds/seconds
+        xpath: timers/hold-time/seconds
+        tf_name: timers_hold_time_seconds
+        description: Hold time in seconds
+        example: 10
+      - yang_name: timers/hold-time/hold-time-choice/msec/msec
+        xpath: timers/hold-time/msec
+        tf_name: timers_hold_time_msec
+        description: Hold time in milliseconds
+        example: 750
+        exclude_test: true
+      - yang_name: track
+        tf_name: tracks
+        type: List
+        description: Priority tracking
+        attributes:
+          - yang_name: number
+            id: true
+            description: Tracked object number
+            example: 1
+          - yang_name: decrement
+            description: Priority decrement
+            default_value: 10
+            example: 20
+          - yang_name: shutdown
+            type_yang_bool: empty
+            description: Shutdown group when tracked object goes down
+            example: false
+
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]
+    attributes:
+      - name: name
+        value: 123
+  - path: /Cisco-IOS-XE-native:native/interface/Vlan[name=123]/ip/address/primary
+    attributes:
+      - name: address
+        value: 192.0.2.1
+      - name: mask
+        value: 255.255.255.0

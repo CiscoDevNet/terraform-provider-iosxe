@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `iosxe_interface_hsrp` resource and data source for HSRP (Hot Standby Router Protocol) interface-level standby configuration, including version selection, BFD, delay timers, MAC refresh, use-bia, redirect settings, and per-group configuration with virtual IPv4/IPv6 addresses, priority, preemption with delay options, hello/hold timers (seconds and milliseconds), plain text and MD5 authentication, object tracking with priority decrement or shutdown, virtual MAC address, redundancy naming, and group following
+
 ## 1.1.0
 
 - Add `iosxe_interface_ethernets` bulk resource, managing all ethernet interfaces of a device through an `items` map keyed by `<type>;<name>` (e.g. `"GigabitEthernet;3"`), requiring a single NETCONF read and write operation regardless of the number of interfaces. See the [bulk resources guide](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs/guides/bulk_resources) for details.
