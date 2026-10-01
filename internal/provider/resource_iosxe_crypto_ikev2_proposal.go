@@ -106,6 +106,22 @@ func (r *CryptoIKEv2ProposalResource) Schema(ctx context.Context, req resource.S
 				MarkdownDescription: helpers.NewAttributeDescription("Combined-mode,256 bit key,16 byte ICV(Authentication Tag)").String,
 				Optional:            true,
 			},
+			"pqc_mlkem512": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the ML-KEM-512 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.").String,
+				Optional:            true,
+			},
+			"pqc_mlkem768": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the ML-KEM-768 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.").String,
+				Optional:            true,
+			},
+			"pqc_mlkem1024": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the ML-KEM-1024 post-quantum key exchange algorithm. Requires IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode. IKEv2 fragmentation should be considered because of the larger key size.").String,
+				Optional:            true,
+			},
+			"pqc_optional": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow fallback to classical key exchange when the peer does not support ML-KEM. Requires at least one PQC ML-KEM algorithm and IOS XE 26.1.1 or later on a supported Cisco Secure Router G2 platform in autonomous mode.").String,
+				Optional:            true,
+			},
 			"group_one": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("DH 768 MODP").String,
 				Optional:            true,
@@ -195,6 +211,35 @@ func (r *CryptoIKEv2ProposalResource) Configure(_ context.Context, req resource.
 }
 
 // End of section. //template:end model
+
+var _ resource.ResourceWithValidateConfig = &CryptoIKEv2ProposalResource{}
+
+// ValidateConfig enforces relationships that are not represented by the IOS XE
+// YANG model. The device rejects the optional fallback keyword unless at least
+// one ML-KEM algorithm is configured in the same proposal.
+func (r *CryptoIKEv2ProposalResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var config CryptoIKEv2Proposal
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
+	if resp.Diagnostics.HasError() || config.PqcOptional.IsNull() || config.PqcOptional.IsUnknown() || !config.PqcOptional.ValueBool() {
+		return
+	}
+
+	algorithms := []types.Bool{config.PqcMlkem512, config.PqcMlkem768, config.PqcMlkem1024}
+	for _, algorithm := range algorithms {
+		if algorithm.IsUnknown() {
+			return
+		}
+		if !algorithm.IsNull() && algorithm.ValueBool() {
+			return
+		}
+	}
+
+	resp.Diagnostics.AddAttributeError(
+		path.Root("pqc_optional"),
+		"Missing PQC algorithm",
+		"pqc_optional requires at least one of pqc_mlkem512, pqc_mlkem768, or pqc_mlkem1024 to be true.",
+	)
+}
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
