@@ -7,6 +7,13 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `iosxe_voice_class_sip_profiles` resource and data source for `voice class sip-profiles` SIP/SDP header normalization rules (request/response header modify, add, remove, copy)
+- Add `iosxe_voice_class_sip_hdr_passthrulist` resource and data source for `voice class sip-hdr-passthrulist` pass-through header lists
+- Add `iosxe_voice_class_sip_copylist` resource and data source for `voice class sip-copylist` header copy lists
+- Add `iosxe_voice_class_sip_event_list` resource and data source for `voice class sip-event-list` SIP event lists
+
 ## 1.1.1
 
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices

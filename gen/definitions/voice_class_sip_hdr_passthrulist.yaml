@@ -1,0 +1,19 @@
+---
+name: Voice Class SIP Header Passthrulist
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/sip-hdr-passthrulist[sip-hdr-passthrulist-tag=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice class resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: sip-hdr-passthrulist-tag
+    tf_name: tag
+    id: true
+    example: 100
+  - yang_name: passthru-hdr
+    tf_name: passthru_headers
+    # Unordered leaf-list (no `ordered-by user`); StringSet avoids spurious diffs.
+    type: StringSet
+    example: Call-Info
+  - yang_name: passthru-hdr-unsupp
+    tf_name: passthru_hdr_unsupp
+    example: true
