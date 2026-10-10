@@ -1,3 +1,14 @@
+## Unreleased
+
+- Add `iosxe_voice_class_codec` resource and data source for `voice class codec` codec preference lists
+- Add `iosxe_voice_class_dpg` resource and data source for `voice class dpg` dial-peer groups
+- Add `iosxe_voice_class_server_group` resource and data source for `voice class server-group` SIP server groups
+- Add `iosxe_voice_class_e164_pattern_map` resource and data source for `voice class e164-pattern-map` E.164 pattern maps
+- Add `iosxe_voice_class_uri` resource and data source for `voice class uri` inbound/outbound URI classification
+- Add `iosxe_voice_class_media` resource and data source for `voice class media` media policies
+- Add `iosxe_voice_class_stun_usage` resource and data source for `voice class stun-usage` (ICE / firewall-traversal)
+- Add `iosxe_voice_class_sip_options_keepalive` resource and data source for `voice class sip-options-keepalive` dial-peer monitoring
+
 ## 1.1.1
 
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices
