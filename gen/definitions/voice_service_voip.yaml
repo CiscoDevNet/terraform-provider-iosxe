@@ -1,0 +1,276 @@
+---
+name: Voice Service VoIP
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/service[type=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects `voice service voip`.
+test_tags: [C8000V]
+# Always-present global singleton: the device protects the default `fax protocol
+# t38`, so the whole `voice service voip` container cannot be deleted. Delete the
+# managed attributes individually instead (same pattern as system, line).
+no_delete: true
+# NOTE: `media anti-trombone` and the H.323 `h323 / call service stop` block are NOT present in
+# Cisco-IOS-XE-voice (2024-07-01) and cannot be modeled. The SIP `call service stop` IS modeled
+# (sip_call_service_stop below). Also NOT modeled at the service-voip-sip level in this train:
+# `srtp-crypto` (only exists under voice class tenant / dial-peer) and `srtp-auth`.
+attributes:
+  - yang_name: type
+    id: true
+    example: voip
+  - yang_name: address-hiding
+    example: true
+  # --- Media ---
+  - yang_name: media/bulk-stats
+    tf_name: media_bulk_stats
+    example: true
+  - yang_name: media/statistics
+    tf_name: media_statistics
+    example: true
+  - yang_name: media/disable-detailed-stats
+    tf_name: media_disable_detailed_stats
+    example: true
+  # --- Mode / connections / redirect / rtcp ---
+  - yang_name: mode/mode-choice/border-element-case/border-element
+    xpath: mode/border-element
+    tf_name: mode_border_element
+    example: true
+  - yang_name: allow-connections/sip/to/sip
+    tf_name: allow_connections_sip_to_sip
+    example: true
+  - yang_name: redirect/ip2ip
+    tf_name: redirect_ip2ip
+    example: true
+  - yang_name: rtcp/keepalive
+    tf_name: rtcp_keepalive
+    example: true
+  - yang_name: redundancy-group
+    exclude_test: true
+    example: 1
+  # --- DTMF / emergency / global toggles ---
+  - yang_name: dtmf-interworking
+    tf_name: dtmf_interworking
+    example: rtp-nte
+  - yang_name: emergency
+    exclude_test: true
+    example: "911"
+  - yang_name: gcid
+    example: true
+  - yang_name: shutdown
+    exclude_test: true
+    example: false
+  - yang_name: rtcp/all-pass-through
+    tf_name: rtcp_all_pass_through
+    example: true
+  # --- IP address trusted list (toll-fraud prevention) ---
+  - yang_name: ip/address/trusted/authenticate
+    tf_name: ip_address_trusted_authenticate
+    example: true
+  - yang_name: ip/address/trusted/call-block
+    tf_name: ip_address_trusted_call_block
+    exclude_test: true
+    example: true
+  - yang_name: ip/address/trusted/list/ipv4
+    tf_name: ip_address_trusted_list_ipv4
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: address
+        id: true
+        example: 10.0.0.0
+      - yang_name: mask
+        example: 255.255.255.0
+  # --- SRTP (service-level) ---
+  - yang_name: srtp/srtp-choice/fallback-case/fallback
+    xpath: srtp/fallback
+    tf_name: srtp_fallback
+    example: true
+  # --- Supplementary services ---
+  - yang_name: supplementary-service/sip/moved-temporarily
+    tf_name: supplementary_service_sip_moved_temporarily
+    example: true
+  - yang_name: supplementary-service/sip/handle-replaces
+    tf_name: supplementary_service_sip_handle_replaces
+    example: true
+  - yang_name: supplementary-service/sip/refer
+    tf_name: supplementary_service_sip_refer
+    exclude_test: true
+    example: true
+  - yang_name: supplementary-service/media-renegotiate
+    tf_name: supplementary_service_media_renegotiate
+    example: true
+  # --- Fax ---
+  - yang_name: fax/protocol
+    tf_name: fax_protocol
+    no_delete: true # device refuses `no fax protocol t38` (protected default)
+    example: t38
+  - yang_name: fax/fallback
+    tf_name: fax_fallback
+    exclude_test: true
+    example: none
+  # --- Trace ---
+  - yang_name: trace
+    tf_name: trace
+    example: true
+  - yang_name: trace/shutdown
+    tf_name: trace_shutdown
+    exclude_test: true
+    example: false
+  # --- STUN (media path optimization / ICE; pairs with voice class stun-usage) ---
+  - yang_name: stun/stun/flowdata/agent-id-config/agent-id
+    tf_name: stun_flowdata_agent_id
+    example: 1
+  - yang_name: stun/stun/flowdata/agent-id-config/boot-count
+    tf_name: stun_flowdata_boot_count
+    example: 6
+  # --- SIP ---
+  - yang_name: sip/call/service/stop
+    tf_name: sip_call_service_stop
+    exclude_test: true # shuts down the SIP service; blocks removing other sip leaves during teardown
+    example: true
+  # --- Local SIP registrar (gateway-as-registrar; SGW / SRST) ---
+  - yang_name: sip/registrar/server/expires/max
+    tf_name: sip_registrar_server_expires_max
+    exclude_test: true
+    example: 3600
+  - yang_name: sip/registrar/server/expires/min
+    tf_name: sip_registrar_server_expires_min
+    exclude_test: true
+    example: 60
+  - yang_name: sip/session/refresh
+    tf_name: sip_session_refresh
+    example: true
+  - yang_name: sip/session/transport/transport-choice/tcp/tcp/tls
+    xpath: sip/session/transport/tcp/tls
+    tf_name: sip_session_transport_tcp_tls
+    example: true
+  - yang_name: sip/header-passing
+    tf_name: sip_header_passing
+    example: true
+  - yang_name: sip/error-passthru
+    tf_name: sip_error_passthru
+    example: true
+  - yang_name: sip/referto-passing
+    tf_name: sip_referto_passing
+    example: true
+  - yang_name: sip/asserted-id/asserted-id-choice/pai-case/pai
+    xpath: sip/asserted-id/pai
+    tf_name: sip_asserted_id_pai
+    example: true
+  - yang_name: sip/asymmetric/payload/payload-case/full-case/full
+    xpath: sip/asymmetric/payload/full
+    tf_name: sip_asymmetric_payload_full
+    example: true
+  - yang_name: sip/srtp/negotiate/cisco
+    tf_name: sip_srtp_negotiate_cisco
+    example: true
+  - yang_name: sip/early-offer/forced
+    tf_name: sip_early_offer_forced
+    example: true
+  - yang_name: sip/midcall-signaling/passthru
+    xpath: sip/midcall-signaling/passthru
+    tf_name: sip_midcall_signaling_passthru
+    type: Bool
+    type_yang_bool: presence
+    # Individual `no midcall-signaling passthru` works, but during teardown the
+    # device refuses it when batched with `no allow-connections sip to sip` (its
+    # `when` parent): "inconsistent value: Device refused one or more commands"
+    # (seen on 17.18.03a). Excluded from the lifecycle test until the provider
+    # can order that removal before allow-connections.
+    exclude_test: true
+    example: true
+  - yang_name: sip/pass-thru/headers/headers-choice/unsupp-case/unsupp
+    xpath: sip/pass-thru/headers/unsupp
+    tf_name: sip_pass_thru_headers_unsupp
+    example: true
+  - yang_name: sip/pass-thru/content/unsupp
+    tf_name: sip_pass_thru_content_unsupp
+    example: true
+  - yang_name: sip/pass-thru/content/sdp/mode
+    tf_name: sip_pass_thru_content_sdp
+    exclude_test: true
+    example: non-rtp
+  - yang_name: sip/audio/forced
+    tf_name: sip_audio_forced
+    example: true
+  # --- SIP: bind / localhost / passthrough / g729 / conn-reuse ---
+  - yang_name: sip/localhost
+    tf_name: sip_localhost
+    exclude_test: true
+    example: dns:cube.example.com
+  - yang_name: sip/bind/control/source-interface/source-interface-std/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: sip/bind/control/source-interface/source-interface-std/GigabitEthernet
+    tf_name: sip_bind_control_source_interface
+    exclude_test: true
+    example: "1"
+  - yang_name: sip/bind/media/source-interface/source-interface-std/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: sip/bind/media/source-interface/source-interface-std/GigabitEthernet
+    tf_name: sip_bind_media_source_interface
+    exclude_test: true
+    example: "1"
+  - yang_name: sip/bind/control/source-interface/source-interface-std/interface-choice/Loopback/Loopback
+    xpath: sip/bind/control/source-interface/source-interface-std/Loopback
+    tf_name: sip_bind_control_source_interface_loopback
+    exclude_test: true
+    example: 0
+  - yang_name: sip/bind/media/source-interface/source-interface-std/interface-choice/Loopback/Loopback
+    xpath: sip/bind/media/source-interface/source-interface-std/Loopback
+    tf_name: sip_bind_media_source_interface_loopback
+    exclude_test: true
+    example: 0
+  - yang_name: sip/bind/control/source-interface/source-interface-std/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: sip/bind/control/source-interface/source-interface-std/TenGigabitEthernet
+    tf_name: sip_bind_control_source_interface_ten_gigabit_ethernet
+    exclude_test: true
+    example: "0/0/0"
+  - yang_name: sip/bind/media/source-interface/source-interface-std/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: sip/bind/media/source-interface/source-interface-std/TenGigabitEthernet
+    tf_name: sip_bind_media_source_interface_ten_gigabit_ethernet
+    exclude_test: true
+    example: "0/0/0"
+  - yang_name: sip/bind/control/source-interface/source-interface-std/interface-choice/Port-channel/Port-channel
+    xpath: sip/bind/control/source-interface/source-interface-std/Port-channel
+    tf_name: sip_bind_control_source_interface_port_channel
+    exclude_test: true
+    example: 1
+  - yang_name: sip/bind/media/source-interface/source-interface-std/interface-choice/Port-channel/Port-channel
+    xpath: sip/bind/media/source-interface/source-interface-std/Port-channel
+    tf_name: sip_bind_media_source_interface_port_channel
+    exclude_test: true
+    example: 1
+  - yang_name: sip/contact-passing
+    tf_name: sip_contact_passing
+    example: true
+  - yang_name: sip/requri-passing
+    tf_name: sip_requri_passing
+    example: true
+  - yang_name: sip/update-callerid
+    tf_name: sip_update_callerid
+    example: true
+  - yang_name: sip/anat
+    tf_name: sip_anat
+    example: false
+  - yang_name: sip/g729/annexb-all
+    tf_name: sip_g729_annexb_all
+    example: true
+  - yang_name: sip/privacy-policy/passthru
+    tf_name: sip_privacy_policy_passthru
+    example: true
+  - yang_name: sip/conn-reuse
+    tf_name: sip_conn_reuse
+    example: true
+  # --- SIP: global sip-profiles references ---
+  - yang_name: sip/sip-profiles/outbound-id/id
+    tf_name: sip_sip_profiles
+    exclude_test: true
+    example: 1
+  - yang_name: sip/sip-profiles/sip-profiles-inbound/id
+    tf_name: sip_sip_profiles_inbound
+    exclude_test: true
+    example: 1
+  # `inbound` empty leaf turns the inbound SIP-profiles feature on; setting the
+  # id alone does not (verified on 17.18: id-only reads back without inbound).
+  - yang_name: sip/sip-profiles/sip-profiles-inbound/inbound
+    tf_name: sip_sip_profiles_inbound_enable
+    type: Bool
+    type_yang_bool: presence
+    exclude_test: true
+    example: true
