@@ -1,3 +1,9 @@
+## Unreleased
+
+- Add `iosxe_voice_class_tls_profile` resource and data source for `voice class tls-profile` (trustpoint, cipher list, SNI, CN/SAN validation) used by CUBE SIP-TLS
+- Add `iosxe_voice_class_srtp_crypto` resource and data source for `voice class srtp-crypto` cipher-suite preference lists
+- Add `iosxe_voice_class_tls_cipher` resource and data source for `voice class tls-cipher` cipher lists referenced by `voice class tls-profile`
+
 ## 1.1.1
 
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices

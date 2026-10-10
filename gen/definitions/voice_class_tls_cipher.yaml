@@ -1,0 +1,22 @@
+---
+name: Voice Class TLS Cipher
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/tls-cipher[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects `voice class tls-cipher`.
+test_tags: [C8000V]
+# TLS cipher-suite list referenced by voice class tls-profile (cipher tls-cipher <id>).
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 1
+  - yang_name: cipher
+    tf_name: ciphers
+    type: List
+    attributes:
+      - yang_name: preference
+        id: true
+        example: 1
+      - yang_name: type
+        tf_name: cipher_suite
+        example: ECDHE_RSA_AES256_GCM_SHA384
