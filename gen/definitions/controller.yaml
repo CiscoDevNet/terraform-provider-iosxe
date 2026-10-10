@@ -1,0 +1,34 @@
+---
+name: Controller
+path: /Cisco-IOS-XE-native:native/controller/Cisco-IOS-XE-controller:controller-tx-ex-list[name=%v][number=%v]
+doc_category: Interface
+# Requires a physical T1/E1 NIM; gate acceptance tests behind the TDM env var.
+# The T1/E1 controllers appear only after `card type t1|e1` is provisioned AND
+# the device is reloaded (verified on 17.18.03a: with `card type e1` set but no
+# reload, controller-oper is empty and controller config is refused). `no_delete`
+# removes framing/e1-framing/pri-group as individual attributes.
+test_tags: [TDM]
+no_delete: true
+attributes:
+  - yang_name: name
+    tf_name: type
+    id: true
+    example: T1
+  - yang_name: number
+    id: true
+    example: "0/1/0"
+  - yang_name: framing-config/tx-framing
+    tf_name: framing
+    exclude_test: true
+    example: esf
+  # E1 framing (`when ../../name = 'E1'`); excluded from the T1 example test.
+  # `crc4` is the E1 default and the device rejects setting it; `no-crc4` is a
+  # real change (verified on a C8300 with a NIM-4MFT-T1/E1).
+  - yang_name: framing-config/e1-framing
+    tf_name: e1_framing
+    exclude_test: true
+    example: no-crc4
+  - yang_name: pri-group/timeslots
+    tf_name: pri_group_timeslots
+    exclude_test: true
+    example: "1-24"

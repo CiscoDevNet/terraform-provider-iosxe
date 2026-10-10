@@ -7,6 +7,16 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `iosxe_voice_dspfarm_profile` resource and data source for `dspfarm profile`.
+- Add `iosxe_sccp` resource and data source for `sccp` (DSPfarm control protocol).
+- Add `iosxe_voice_card` resource and data source for `voice-card`.
+- Add `iosxe_voice_port` resource and data source for `voice-port`.
+- Add `iosxe_voice_trunk_group` resource and data source for `voice class trunk group`.
+- Add `iosxe_card` resource and data source for `card type` (NIM/module provisioning).
+- Add `iosxe_controller` resource and data source for `controller` T1/E1, including T1 `tx-framing` and E1 `e1-framing` and PRI group timeslots.
+
 ## 1.1.1
 
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices

@@ -1,0 +1,60 @@
+---
+name: SCCP
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:sccp-config
+doc_category: Voice
+# SCCP is the control protocol for DSPfarm; `sccp local` needs the DSP
+# subsystem, so gate acceptance tests behind the TDM env var.
+test_tags: [TDM]
+attributes:
+  - yang_name: sccp/local
+    tf_name: local_interface
+    example: GigabitEthernet0/0/0
+  - yang_name: sccp/ip/precedence
+    tf_name: ip_precedence
+    exclude_test: true
+    example: 5
+  - yang_name: sccp/sccp-ccm-list/ccm
+    tf_name: ccm_servers
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: host
+        id: true
+        example: 10.1.1.1
+      - yang_name: identifier
+        example: 1
+      - yang_name: version
+        exclude_test: true
+        example: "7.0+"
+  - yang_name: sccp/sccp-ccm-group-list/ccm/group
+    tf_name: ccm_groups
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: id
+        tf_name: group_id
+        id: true
+        example: 1
+      - yang_name: description
+        exclude_test: true
+        example: CUCM group
+      - yang_name: associate/ccm
+        tf_name: associate_ccm
+        type: List
+        attributes:
+          - yang_name: id
+            tf_name: ccm_id
+            id: true
+            example: 1
+          - yang_name: priority
+            example: 1
+      - yang_name: associate/profile
+        tf_name: associate_profiles
+        type: List
+        attributes:
+          - yang_name: id
+            tf_name: profile_id
+            id: true
+            example: 1
+          - yang_name: register
+            example: MTP000C29A0
