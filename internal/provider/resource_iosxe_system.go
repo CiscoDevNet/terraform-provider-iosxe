@@ -924,6 +924,17 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							MarkdownDescription: helpers.NewAttributeDescription("Reachability").String,
 							Optional:            true,
 						},
+						"interface_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Interface name").String,
+							Optional:            true,
+						},
+						"interface_protocol": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Protocol").AddStringEnumDescription("ip", "ipv6", "line-protocol").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("ip", "ipv6", "line-protocol"),
+							},
+						},
 					},
 				},
 			},

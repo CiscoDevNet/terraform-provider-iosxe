@@ -7,6 +7,12 @@ description: |-
 
 # Changelog
 
+## Unreleased
+
+- Add `iosxe_redundancy_application_group` resource and data source for `redundancy application redundancy group` (RG inter-chassis HA), including priority/failover, timers, control/data interfaces, preempt, and tracked-object decrements.
+- Add RG redundancy attributes (`redundancy rii` and `redundancy group` virtual-IP) to the `iosxe_interface_ethernet` resource and data source.
+- Add the interface tracking case (`interface_name`, `interface_protocol`) to the `track_objects` list on the `iosxe_system` resource and data source.
+
 ## 1.1.1
 
 - Bump `go-netconf` dependency to v0.6.2, reverting a transitive `scrapligo` dependency bump to v1.4.1 that caused intermittent connection errors on the first operation of a new NETCONF session against some IOS-XE devices

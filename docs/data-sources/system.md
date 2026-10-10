@@ -311,6 +311,8 @@ Read-Only:
 
 Read-Only:
 
+- `interface_name` (String) Interface name
+- `interface_protocol` (String) Protocol
 - `ip_sla_number` (Number) Entry number
 - `ip_sla_reachability` (Boolean) Reachability
 - `number` (String) Tracked object

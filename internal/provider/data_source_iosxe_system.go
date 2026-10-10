@@ -759,6 +759,14 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							MarkdownDescription: "Reachability",
 							Computed:            true,
 						},
+						"interface_name": schema.StringAttribute{
+							MarkdownDescription: "Interface name",
+							Computed:            true,
+						},
+						"interface_protocol": schema.StringAttribute{
+							MarkdownDescription: "Protocol",
+							Computed:            true,
+						},
 					},
 				},
 			},

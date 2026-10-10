@@ -257,6 +257,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
   - Range: `64`-`18000`
 - `negotiation_auto` (Boolean) Enable link autonegotiation
+- `redundancy_groups` (Attributes List) RG redundancy traffic interface config (see [below for nested schema](#nestedatt--redundancy_groups))
+- `redundancy_rii_id` (Number) - Range: `1`-`65535`
 - `service_instances` (Attributes List) Configure Ether Service Instance (see [below for nested schema](#nestedatt--service_instances))
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
@@ -400,6 +402,33 @@ Required:
 Optional:
 
 - `link_local` (Boolean) Use link-local address
+
+
+<a id="nestedatt--redundancy_groups"></a>
+### Nested Schema for `redundancy_groups`
+
+Required:
+
+- `group_id` (Number) RG Group Id
+  - Range: `1`-`2`
+
+Optional:
+
+- `virtual_ips` (Attributes List) Virtual-IP address family (see [below for nested schema](#nestedatt--redundancy_groups--virtual_ips))
+
+<a id="nestedatt--redundancy_groups--virtual_ips"></a>
+### Nested Schema for `redundancy_groups.virtual_ips`
+
+Required:
+
+- `ip_family` (String) IP Address family
+  - Choices: `ip`
+
+Optional:
+
+- `exclusive` (Boolean) Exclusive
+- `ipv4_address` (String)
+
 
 
 <a id="nestedatt--service_instances"></a>

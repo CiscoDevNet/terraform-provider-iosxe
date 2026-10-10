@@ -433,6 +433,9 @@ Required:
 
 Optional:
 
+- `interface_name` (String) Interface name
+- `interface_protocol` (String) Protocol
+  - Choices: `ip`, `ipv6`, `line-protocol`
 - `ip_sla_number` (Number) Entry number
   - Range: `0`-`4294967295`
 - `ip_sla_reachability` (Boolean) Reachability

@@ -253,6 +253,8 @@ type SystemTrackObjects struct {
 	Number            types.String `tfsdk:"number"`
 	IpSlaNumber       types.Int64  `tfsdk:"ip_sla_number"`
 	IpSlaReachability types.Bool   `tfsdk:"ip_sla_reachability"`
+	InterfaceName     types.String `tfsdk:"interface_name"`
+	InterfaceProtocol types.String `tfsdk:"interface_protocol"`
 }
 type SystemTableMaps struct {
 	Name     types.String              `tfsdk:"name"`
@@ -481,6 +483,8 @@ type SystemTrackObjectsData struct {
 	Number            types.String `tfsdk:"number"`
 	IpSlaNumber       types.Int64  `tfsdk:"ip_sla_number"`
 	IpSlaReachability types.Bool   `tfsdk:"ip_sla_reachability"`
+	InterfaceName     types.String `tfsdk:"interface_name"`
+	InterfaceProtocol types.String `tfsdk:"interface_protocol"`
 }
 type SystemTableMapsData struct {
 	Name     types.String                  `tfsdk:"name"`
@@ -1179,6 +1183,12 @@ func (data System) addToBodyXML(ctx context.Context, config System, body netconf
 				} else {
 					cBody = helpers.RemoveFromXPath(cBody, "ip/sla/reachability")
 				}
+			}
+			if !item.InterfaceName.IsNull() && !item.InterfaceName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "interface/name", item.InterfaceName.ValueString())
+			}
+			if !item.InterfaceProtocol.IsNull() && !item.InterfaceProtocol.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "interface/protocol", item.InterfaceProtocol.ValueString())
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2", cBody.Res())
 		}
@@ -2478,6 +2488,16 @@ func (data *System) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		} else {
 			data.TrackObjects[i].IpSlaReachability = types.BoolNull()
 		}
+		if value := helpers.GetFromXPath(r, "interface/name"); value.Exists() && !data.TrackObjects[i].InterfaceName.IsNull() {
+			data.TrackObjects[i].InterfaceName = types.StringValue(value.String())
+		} else {
+			data.TrackObjects[i].InterfaceName = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "interface/protocol"); value.Exists() && !data.TrackObjects[i].InterfaceProtocol.IsNull() {
+			data.TrackObjects[i].InterfaceProtocol = types.StringValue(value.String())
+		} else {
+			data.TrackObjects[i].InterfaceProtocol = types.StringNull()
+		}
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default"); !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
 		if value.Exists() {
@@ -3370,6 +3390,12 @@ func (data *System) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.IpSlaReachability = types.BoolValue(false)
 			}
+			if cValue := helpers.GetFromXPath(v, "interface/name"); cValue.Exists() {
+				item.InterfaceName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interface/protocol"); cValue.Exists() {
+				item.InterfaceProtocol = types.StringValue(cValue.String())
+			}
 			data.TrackObjects = append(data.TrackObjects, item)
 			return true
 		})
@@ -4145,6 +4171,12 @@ func (data *SystemData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			} else {
 				item.IpSlaReachability = types.BoolValue(false)
 			}
+			if cValue := helpers.GetFromXPath(v, "interface/name"); cValue.Exists() {
+				item.InterfaceName = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "interface/protocol"); cValue.Exists() {
+				item.InterfaceProtocol = types.StringValue(cValue.String())
+			}
 			data.TrackObjects = append(data.TrackObjects, item)
 			return true
 		})
@@ -4532,6 +4564,12 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 				found = false
 			}
 			if found {
+				if !state.TrackObjects[i].InterfaceProtocol.IsNull() && data.TrackObjects[j].InterfaceProtocol.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2%v/interface/protocol", predicates))
+				}
+				if !state.TrackObjects[i].InterfaceName.IsNull() && data.TrackObjects[j].InterfaceName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2%v/interface/name", predicates))
+				}
 				if !state.TrackObjects[i].IpSlaReachability.IsNull() && data.TrackObjects[j].IpSlaReachability.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/track/Cisco-IOS-XE-track:tracked-object-v2%v/ip/sla/reachability", predicates))
 				}
