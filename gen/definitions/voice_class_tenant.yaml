@@ -1,0 +1,356 @@
+---
+name: Voice Class Tenant
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/class/tenant[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: 100
+  # --- Session transport ---
+  - yang_name: session/transport/transport-choice/tcp/tcp/tls
+    xpath: session/transport/tcp/tls
+    tf_name: session_transport_tcp_tls
+    example: true
+  - yang_name: session/transport/transport-choice/tcp/tcp
+    xpath: session/transport/tcp
+    tf_name: session_transport_tcp
+    exclude_test: true
+    example: true
+  - yang_name: session/transport/transport-choice/udp/udp
+    xpath: session/transport/udp
+    tf_name: session_transport_udp
+    exclude_test: true
+    example: true
+  # --- Bind source interface (std form; valid when sip-ua is configured) ---
+  - yang_name: bind/control/source-interface/source-interface-std/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: bind/control/source-interface/source-interface-std/GigabitEthernet
+    tf_name: bind_control_source_interface
+    exclude_test: true
+    example: "1"
+  - yang_name: bind/media/source-interface/source-interface-std/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: bind/media/source-interface/source-interface-std/GigabitEthernet
+    tf_name: bind_media_source_interface
+    exclude_test: true
+    example: "1"
+  - yang_name: bind/control/source-interface/source-interface-std/interface-choice/Loopback/Loopback
+    xpath: bind/control/source-interface/source-interface-std/Loopback
+    tf_name: bind_control_source_interface_loopback
+    exclude_test: true
+    example: 0
+  - yang_name: bind/media/source-interface/source-interface-std/interface-choice/Loopback/Loopback
+    xpath: bind/media/source-interface/source-interface-std/Loopback
+    tf_name: bind_media_source_interface_loopback
+    exclude_test: true
+    example: 0
+  - yang_name: bind/control/source-interface/source-interface-std/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: bind/control/source-interface/source-interface-std/TenGigabitEthernet
+    tf_name: bind_control_source_interface_ten_gigabit_ethernet
+    exclude_test: true
+    example: "0/0/0"
+  - yang_name: bind/media/source-interface/source-interface-std/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: bind/media/source-interface/source-interface-std/TenGigabitEthernet
+    tf_name: bind_media_source_interface_ten_gigabit_ethernet
+    exclude_test: true
+    example: "0/0/0"
+  - yang_name: bind/control/source-interface/source-interface-std/interface-choice/Port-channel/Port-channel
+    xpath: bind/control/source-interface/source-interface-std/Port-channel
+    tf_name: bind_control_source_interface_port_channel
+    exclude_test: true
+    example: 1
+  - yang_name: bind/media/source-interface/source-interface-std/interface-choice/Port-channel/Port-channel
+    xpath: bind/media/source-interface/source-interface-std/Port-channel
+    tf_name: bind_media_source_interface_port_channel
+    exclude_test: true
+    example: 1
+  # --- Localhost / SIP behavior ---
+  - yang_name: localhost
+    example: dns:cube.example.com
+  - yang_name: header-passing
+    example: true
+  - yang_name: error-passthru
+    example: true
+  - yang_name: referto-passing
+    example: true
+  - yang_name: contact-passing
+    example: true
+  - yang_name: requri-passing
+    example: true
+  - yang_name: update-callerid
+    example: true
+  - yang_name: redirection
+    example: true
+  - yang_name: random-contact
+    example: true
+  - yang_name: anat
+    example: false
+  - yang_name: override-hostname
+    example: false
+  - yang_name: remote-party-id
+    exclude_test: true
+    example: true
+  # --- Request-URI scheme / reliable provisional responses ---
+  - yang_name: url/url-type/url-type-sip/sip
+    xpath: url/sip
+    tf_name: url_sip
+    exclude_test: true
+    example: true
+  - yang_name: url/url-type/url-type-sips/sips
+    xpath: url/sips
+    tf_name: url_sips
+    example: true
+  - yang_name: rel1xx/rel1xx-type/rel1xx-disable/disable
+    xpath: rel1xx/disable
+    tf_name: rel1xx_disable
+    example: true
+  # --- Early offer / privacy / SDP block / pass-thru / audio ---
+  - yang_name: early-offer/forced
+    tf_name: early_offer_forced
+    example: true
+  - yang_name: privacy-policy/passthru
+    tf_name: privacy_policy_passthru
+    example: true
+  - yang_name: block/one-eighty-three/sdp
+    tf_name: block_183_sdp
+    example: present
+  - yang_name: pass-thru/content/custom-sdp
+    tf_name: pass_thru_content_custom_sdp
+    example: true
+  - yang_name: audio/forced
+    tf_name: audio_forced
+    example: true
+  # --- References to other voice classes ---
+  - yang_name: srtp-crypto
+    tf_name: srtp_crypto
+    exclude_test: true
+    example: 200
+  - yang_name: tls-profile
+    tf_name: tls_profile
+    exclude_test: true
+    example: 100
+  - yang_name: sip-profiles/id
+    tf_name: sip_profiles
+    exclude_test: true
+    example: 100
+  - yang_name: sip-profiles/inbound
+    tf_name: sip_profiles_inbound
+    exclude_test: true
+    example: true
+  - yang_name: copy-list
+    tf_name: copy_list
+    exclude_test: true
+    example: 1
+  # --- Connection reuse ---
+  - yang_name: connection-reuse
+    example: true
+  - yang_name: connection-reuse/via-port
+    example: true
+  # --- SIP server / outbound-proxy ---
+  - yang_name: sip-server
+    tf_name: sip_server
+    exclude_test: true
+    example: ipv4:10.0.0.1
+  - yang_name: outbound-proxy/outbound-proxy-choice/address-choice/address
+    xpath: outbound-proxy/address
+    tf_name: outbound_proxy
+    exclude_test: true
+    example: dns:sip.example.com
+  # --- SIP UA common options ---
+  - yang_name: handle-replaces
+    example: true
+  - yang_name: reason-header/override
+    tf_name: reason_header_override
+    example: true
+  - yang_name: host-registrar
+    example: true
+  - yang_name: max-forwards
+    example: 70
+  - yang_name: g729-annexb/override
+    tf_name: g729_annexb_override
+    example: true
+  - yang_name: disable-early-media
+    example: "180"
+  # --- Asserted-id / asymmetric / midcall ---
+  - yang_name: asserted-id/asserted-id-choice/pai-case/pai
+    xpath: asserted-id/pai
+    tf_name: asserted_id_pai
+    example: true
+  - yang_name: asymmetric/payload/payload-case/full-case/full
+    xpath: asymmetric/payload/full
+    tf_name: asymmetric_payload_full
+    example: true
+  - yang_name: midcall-signaling/passthru
+    xpath: midcall-signaling/passthru
+    tf_name: midcall_signaling_passthru
+    type: Bool
+    type_yang_bool: presence
+    example: true
+  # --- SRTP negotiate / conn-reuse (firewall) ---
+  - yang_name: srtp/negotiate/cisco
+    tf_name: srtp_negotiate_cisco
+    example: true
+  - yang_name: conn-reuse
+    tf_name: conn_reuse
+    example: true
+  # --- Options-ping / listen-port ---
+  - yang_name: options-ping/interval
+    tf_name: options_ping_interval
+    example: 60
+  - yang_name: listen-port/non-secure
+    tf_name: listen_port_non_secure
+    exclude_test: true
+    example: 5060
+  - yang_name: listen-port/secure
+    tf_name: listen_port_secure
+    exclude_test: true
+    example: 5061
+  # --- Pass-thru (expanded) ---
+  - yang_name: pass-thru/headers/headers-choice/unsupp-case/unsupp
+    xpath: pass-thru/headers/unsupp
+    tf_name: pass_thru_headers_unsupp
+    example: true
+  - yang_name: pass-thru/content/unsupp
+    tf_name: pass_thru_content_unsupp
+    example: true
+  # --- Retries ---
+  - yang_name: retry/invite
+    tf_name: retry_invite
+    exclude_test: true
+    example: 6
+  - yang_name: retry/register
+    tf_name: retry_register
+    exclude_test: true
+    example: 6
+  - yang_name: retry/rel1xx
+    tf_name: retry_rel1xx
+    exclude_test: true
+    example: 6
+  - yang_name: retry/response
+    tf_name: retry_response
+    exclude_test: true
+    example: 6
+  # --- Timers ---
+  - yang_name: timers/expires
+    tf_name: timers_expires
+    exclude_test: true
+    example: 180000
+  - yang_name: timers/connect
+    tf_name: timers_connect
+    exclude_test: true
+    example: 500
+  - yang_name: timers/trying
+    tf_name: timers_trying
+    exclude_test: true
+    example: 500
+  # --- Digest authentication ---
+  # Two separate YANG containers: `username-password` (no realm) and
+  # `auth-with-realm` (username + password + realm together - the CLI
+  # `authentication username X password Y realm Z` form). Modeled explicitly so
+  # the realm form doesn't leave a half-configured `username-password` container.
+  # Excluded from the test because storing the password needs `key config-key
+  # password-encrypt` (type-6) on the device.
+  - yang_name: authentication/username-password/username
+    tf_name: authentication_username
+    exclude_test: true
+    example: cube-auth
+  - yang_name: authentication/username-password/password/encryption
+    tf_name: authentication_password_type
+    exclude_test: true
+    example: "0"
+  - yang_name: authentication/username-password/password/password-string
+    tf_name: authentication_password
+    sensitive: true
+    write_only: true
+    exclude_test: true
+    example: Cisco123
+  - yang_name: authentication/auth-with-realm/username
+    tf_name: authentication_realm_username
+    exclude_test: true
+    example: cube-auth
+  - yang_name: authentication/auth-with-realm/password/password-string
+    tf_name: authentication_realm_password
+    sensitive: true
+    write_only: true
+    exclude_test: true
+    example: Cisco123
+  - yang_name: authentication/auth-with-realm/realm
+    tf_name: authentication_realm
+    exclude_test: true
+    example: cisco.com
+  # --- Registration credentials ---
+  - yang_name: credentials/number-list
+    tf_name: credentials_numbers
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: number
+        id: true
+        example: "1001"
+      - yang_name: username
+        example: cube-auth
+      - yang_name: password/encryption
+        tf_name: password_type
+        example: "0"
+      - yang_name: password/password-string
+        tf_name: password
+        sensitive: true
+        write_only: true
+        example: Cisco123
+      - yang_name: realm
+        example: cisco.com
+  # --- SIP registrar ---
+  - yang_name: registrar/primary-registrar/registrar-config
+    tf_name: registrar_primary
+    exclude_test: true
+    example: ipv4:10.0.0.100
+  - yang_name: registrar/primary-registrar/expires
+    tf_name: registrar_primary_expires
+    exclude_test: true
+    example: 3600
+  - yang_name: registrar/primary-registrar/scheme
+    tf_name: registrar_primary_scheme
+    exclude_test: true
+    example: sip
+  - yang_name: registrar/primary-registrar/refresh-ratio
+    tf_name: registrar_primary_refresh_ratio
+    exclude_test: true
+    example: 80
+  - yang_name: registrar/secondary-registrar/registrar-config
+    tf_name: registrar_secondary
+    exclude_test: true
+    example: ipv4:10.0.0.101
+  - yang_name: registrar/secondary-registrar/refresh-ratio
+    tf_name: registrar_secondary_refresh_ratio
+    exclude_test: true
+    example: 80
+  # --- Analog DN (SIP line) ---
+  - yang_name: analog-dn/dn
+    tf_name: analog_dn
+    exclude_test: true
+    example: "1001"
+  - yang_name: analog-dn/dial-peer-tag
+    tf_name: analog_dn_dial_peer_tag
+    exclude_test: true
+    example: 100
+
+test_prerequisites:
+  # The tenant `early-offer` leaf has a `when` on voice service voip
+  # allow-connections, so the data plane must be active for the test.
+  - path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/service[type=voip]
+    no_delete: true
+    attributes:
+      - name: type
+        value: voip
+      - name: allow-connections/sip/to/sip
+        value: ""
+  # --- Early-media update handling ---
+  - yang_name: early-media/update/block
+    tf_name: early_media_update_block
+    exclude_test: true
+    example: true
+  - yang_name: early-media/update/block/re-negotiate
+    tf_name: early_media_update_block_re_negotiate
+    exclude_test: true
+    example: true

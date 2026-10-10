@@ -1,0 +1,19 @@
+---
+name: Voice Translation Profile
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-voice:voice/translation-profile[id=%v]
+doc_category: Voice
+# CUBE is a router feature; a switch rejects these voice resources.
+test_tags: [C8000V]
+attributes:
+  - yang_name: id
+    tf_name: tag
+    id: true
+    example: TP_INBOUND
+  - yang_name: translate/called
+    tf_name: translate_called
+    exclude_test: true
+    example: 200
+  - yang_name: translate/calling
+    tf_name: translate_calling
+    exclude_test: true
+    example: 200
