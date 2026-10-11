@@ -49,6 +49,8 @@ attribute:
   no_augment_config: bool(required=False)  # Set to true if the attribute should not be augmented by the YANG models
   delete_parent: bool(required=False)  # Set to true if the attribute should delete the parent YANG element when the attribute is deleted
   no_delete: bool(required=False)  # Set to true if the attribute should not be deleted
+  macro: bool(required=False)  # Set to true for CLI-macro attributes (e.g. auto qos) that are not idempotent — triggers a pre-read before write to skip attributes already present on the device
+  delete_command: str(required=False)  # CLI command to execute via config-ios-cli-trans RPC during destroy instead of standard NETCONF delete (e.g. "no auto qos")
   read_filter: str(required=False)  # Name of a Go helper function used to normalize values on read (e.g., community AA:NN normalization)
   normalize_ipv6: bool(required=False)  # Set to true if the attribute contains an IPv6 address or prefix that should be normalized to prevent case/compression drift
   test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured

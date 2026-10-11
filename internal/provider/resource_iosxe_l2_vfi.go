@@ -170,7 +170,6 @@ func (r *L2VFIResource) Create(ctx context.Context, req resource.CreateRequest, 
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
@@ -296,7 +295,6 @@ func (r *L2VFIResource) Update(ctx context.Context, req resource.UpdateRequest, 
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 		body = plan.addDeletedItemsXML(ctx, state, body)
 

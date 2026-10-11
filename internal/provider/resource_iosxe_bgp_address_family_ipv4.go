@@ -324,7 +324,6 @@ func (r *BGPAddressFamilyIPv4Resource) Create(ctx context.Context, req resource.
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
@@ -450,7 +449,6 @@ func (r *BGPAddressFamilyIPv4Resource) Update(ctx context.Context, req resource.
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 		body = plan.addDeletedItemsXML(ctx, state, body)
 

@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 	"html"
+	"net/url"
 	"regexp"
 	"strings"
 	"sync"
@@ -1810,4 +1811,21 @@ func IsGetConfigResponseEmpty(res *netconf.Res) bool {
 	}
 
 	return true
+}
+
+// InterfaceContextFromXPath extracts the IOS-XE CLI interface context line
+// from a resource XPath like "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2F0%2F7".
+func InterfaceContextFromXPath(xPath string) string {
+	parts := strings.Split(xPath, "/")
+	for _, part := range parts {
+		if idx := strings.Index(part, "="); idx > 0 {
+			ifType := part[:idx]
+			ifName, _ := url.QueryUnescape(part[idx+1:])
+			if ifType == "Port-channel-subinterface" {
+				continue
+			}
+			return fmt.Sprintf("interface %s%s", ifType, ifName)
+		}
+	}
+	return ""
 }

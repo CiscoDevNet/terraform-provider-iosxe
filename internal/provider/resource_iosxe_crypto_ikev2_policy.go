@@ -159,7 +159,6 @@ func (r *CryptoIKEv2PolicyResource) Create(ctx context.Context, req resource.Cre
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 
 		if err := helpers.EditConfig(ctx, device.NetconfClient, body, device.AutoCommit); err != nil {
@@ -285,7 +284,6 @@ func (r *CryptoIKEv2PolicyResource) Update(ctx context.Context, req resource.Upd
 			defer device.NetconfOpMutex.Unlock()
 		}
 		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-
 		body := plan.toBodyXML(ctx, config)
 		body = plan.addDeletedItemsXML(ctx, state, body)
 
